@@ -1,11 +1,11 @@
 name: PR
 on: pull_request
 jobs:
-  run_autotester:
+  run_unit_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: cmake
+      - name: build
         run: |
           cd Team00/Code00
           mkdir build
@@ -14,5 +14,21 @@ jobs:
       - name: make
         run: |
           cd Team00/Code00/build
-          make -i
+          make unit_testing
+      - name: test
+        run: ./Team00/Code00/build/src/unit_testing/unit_testing
+
+#   run_autotester:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: cmake
+#         run: |
+#           cd Team00/Code00
+#           mkdir build
+#           cd build
+#           cmake ..
+#       - name: make
+#         run: |
+#           cd Team00/Code00/build
 
