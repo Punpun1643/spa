@@ -35,7 +35,7 @@ jobs:
       - name: make
         run: |
           cd Team00/Code00/build
-          make autotester
+          make autotester -i
       - name: run autotest
         run: |
           cd Team00/Code00
