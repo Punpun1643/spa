@@ -8,7 +8,6 @@ on:
 jobs:
   run_unit_tests:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: build
         run: |
@@ -20,7 +19,6 @@ jobs:
       - run: ./Team00/Code00/build/src/unit_testing/unit_testing
   run_autotester:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: build
         run: |
