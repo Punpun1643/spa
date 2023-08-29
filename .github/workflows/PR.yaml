@@ -5,8 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: check cmake
-        run: cmake
-      - name: check make
-        run: make
+      - run: cd Team00/Code00/
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make -j4
 
