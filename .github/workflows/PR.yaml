@@ -9,7 +9,12 @@ jobs:
         run: |
           cd Team00/Code00/
           mkdir build
-          cd build
+      - name: cmake
+        run: |
+          cd Team00/Code00/build
           cmake ..
+      - name: make
+        run: |
+          cd Team00/Code00/build
           make -j4
 
