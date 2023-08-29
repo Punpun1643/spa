@@ -1,0 +1,8 @@
+name: PR
+on: pull_request
+jobs:
+  run_autotester:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "test"
+

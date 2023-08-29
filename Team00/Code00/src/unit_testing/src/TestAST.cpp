@@ -16,4 +16,9 @@ TEST_CASE("1st Test") {
     require(1 == 1);
 }
 
+TEST_CASE("kw\'s test case") {
 
+  TNode T;
+
+  require(1 + 6 == 7);
+}
