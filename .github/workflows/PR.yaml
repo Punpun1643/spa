@@ -16,7 +16,8 @@ jobs:
           mkdir build
           cd build
           cmake ..
-          make unit_testing
+          # make unit_testing
+          make
       - run: ./Team00/Code00/build/src/unit_testing/unit_testing
   run_autotester:
     runs-on: ubuntu-latest
