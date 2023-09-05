@@ -26,6 +26,18 @@ C++ Standard | C++17
 
 No additional instructions required.
 
+## Continuous Integration
+
+### clang-format
+#### Requirements
+- Requirement: `clang-format` installed on your local environment ([macs](https://formulae.brew.sh/formula/clang-format), [windows](https://clang.llvm.org/docs/ClangFormat.html) - apparently there's a VS plugin)
+- For mac, can try run `clang-format --version` to see if it's installed correctly
+
+##### Details
+- Auto formatter based on the specified config defined in `.clang-format` at the root directory
+- To format all files: `find . -name '*.cpp' -o -name '*.h' | xargs clang-format -i`
+- To format specific file: `clang-format -i File_To_Format.cpp`
+
 # Team Members
 
 Name | Mobile | Email | Development OS/Toolchain
