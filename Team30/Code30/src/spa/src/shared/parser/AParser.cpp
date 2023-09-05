@@ -6,7 +6,7 @@
 using namespace std;
 
 #include "AParser.h"
-#include "../../PKB.h"
+#include "../../program_knowledge_base/PKB.h"
 #include "../../source_processor/node/TNode.h"
 
 int Parse () {

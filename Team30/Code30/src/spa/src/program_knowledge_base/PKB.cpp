@@ -6,7 +6,7 @@
 using namespace std;
 
 #include "PKB.h"
-#include "source_processor/node/TNode.h"
+#include "../source_processor/node/TNode.h"
 
 int PKB::setProcToAST(PROC p, TNode* r) {
 	return 0;
