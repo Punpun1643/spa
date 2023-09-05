@@ -5,10 +5,9 @@
 
 using namespace std;
 
-#include "PKB.h"
-#include "TNode.h"
 
-int Parse () {
+#include "../../PKB.h"
 
+int DesignExtractor () {
 	return 0;
 }
