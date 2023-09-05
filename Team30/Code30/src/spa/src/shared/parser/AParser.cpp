@@ -5,6 +5,7 @@
 
 using namespace std;
 
+#include "AParser.h"
 #include "../../PKB.h"
 #include "../../source_processor/node/TNode.h"
 
