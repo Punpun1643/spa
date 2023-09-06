@@ -1,4 +1,3 @@
-
 #include "../../spa/src/source_processor/node/TNode.h"
 
 #include "catch.hpp"
