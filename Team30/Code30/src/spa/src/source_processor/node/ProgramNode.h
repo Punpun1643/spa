@@ -13,5 +13,5 @@ public:
     ~ProgramNode() = default;
 
 private:
-    std::vector <std::shared_ptr<ProcedureNode>> procedures;
+    const std::vector <std::shared_ptr<ProcedureNode>> procedures;
 };

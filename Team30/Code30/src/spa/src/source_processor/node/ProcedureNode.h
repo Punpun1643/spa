@@ -14,6 +14,6 @@ public:
     ~ProcedureNode() = default;
 
 private:
-    std::string procedureName;
-    std::shared_ptr <StmtLstNode> stmtLstNode;
+    const std::string procedureName;
+    const std::shared_ptr <StmtLstNode> stmtLstNode;
 };
