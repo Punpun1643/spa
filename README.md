@@ -1,5 +1,5 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/B246QqbV)
-# Team 00
+# Team 30
 
 > Please fill in this Readme with the required information, and delete this box.
 >
@@ -26,8 +26,25 @@ C++ Standard | C++17
 
 No additional instructions required.
 
+## Continuous Integration
+
+### clang-format
+#### Requirements
+- Requirement: `clang-format` installed on your local environment ([macs](https://formulae.brew.sh/formula/clang-format), [windows](https://clang.llvm.org/docs/ClangFormat.html) - apparently there's a VS plugin)
+- For mac, can try run `clang-format --version` to see if it's installed correctly
+
+##### Details
+- Auto formatter based on the specified config defined in `.clang-format` at the root directory
+- To format all files: `find . -name '*.cpp' -o -name '*.h' | xargs clang-format -i`
+- To format specific file: `clang-format -i File_To_Format.cpp`
+
 # Team Members
 
-Name | Mobile | Email | Development OS/Toolchain
--:|:-:|:-|-|
-John Doe | 99887766 | john@doe.com | 
+Name | Mobile | Email                   | Development OS/Toolchain
+-:|:-:|:------------------------|-|
+Lee Kang Wei | 99887766 | john@doe.com            |
+Lim Wei Liang | 99887766 | john@doe.com            |
+Papattarada Apithanangsiri | 99887766 | papattarada.a@u.nus.edu | **OS:** macOS Ventura 13.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+Ryan Ong Ren-An | 99887766 | john@doe.com            |
+Tang Swen Yi | 99887766 | john@doe.com            |
+Tay Yan Han | 99887766 | john@doe.com            | 
