@@ -1,5 +1,6 @@
-class ANode
-{
-public:
+#pragma once
 
+class ANode {
+ public:
+    virtual ~ANode() = default;
 };
