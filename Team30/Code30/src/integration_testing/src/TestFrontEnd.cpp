@@ -7,7 +7,7 @@ void require(bool b) {
 
 TEST_CASE("1st Test") {
 
-    ANode T;
+//    ANode T;
     require(1 == 1);
 }
 

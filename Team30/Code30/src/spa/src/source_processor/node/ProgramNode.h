@@ -9,7 +9,7 @@
 class ProgramNode : public ANode {
 public:
     explicit ProgramNode(std::vector <std::shared_ptr<ProcedureNode>> procedures);
-
+    void accept(IDesignExtractor &designExtractor) override;
     ~ProgramNode() = default;
 
 private:
