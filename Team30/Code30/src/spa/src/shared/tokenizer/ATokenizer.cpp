@@ -1,4 +1,4 @@
 #include "ATokenizer.h"
 
-ATokenizer::ATokenizer() {
-}
+// ATokenizer::ATokenizer() {
+// }
