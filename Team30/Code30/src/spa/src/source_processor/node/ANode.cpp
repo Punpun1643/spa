@@ -1,4 +1,3 @@
 #include "ANode.h"
 
-ANode::ANode() {
-}
+ANode::ANode() {}
