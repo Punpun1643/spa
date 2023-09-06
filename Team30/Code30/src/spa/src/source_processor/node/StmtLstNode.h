@@ -10,6 +10,8 @@ class StmtLstNode : public ANode {
 public:
     explicit StmtLstNode(std::vector <std::shared_ptr<StmtNode>> stmts);
 
+    void accept(IDesignExtractor &designExtractor) override;
+
     ~StmtLstNode() = default;
 
 private:
