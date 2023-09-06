@@ -11,6 +11,8 @@ class ProcedureNode : public ANode {
 public:
     explicit ProcedureNode(std::string procedureName, std::shared_ptr <StmtLstNode> stmtLstNode);
 
+    void accept(IDesignExtractor &designExtractor) override;
+
     ~ProcedureNode() = default;
 
 private:
