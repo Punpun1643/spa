@@ -1,7 +1,8 @@
 #pragma once
 
 class ANode {
- public:
+public:
     ANode();
+
     virtual ~ANode() = default;
 };

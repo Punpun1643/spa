@@ -1,8 +1,17 @@
-//
-// Created by Papattarada Apithanangsiri on 6/9/23.
-//
+#pragma once
 
-#ifndef INC_23S1_CP_SPA_TEAM_30_STMTLSTNODE_H
-#define INC_23S1_CP_SPA_TEAM_30_STMTLSTNODE_H
+#include <memory>
+#include <vector>
 
-#endif //INC_23S1_CP_SPA_TEAM_30_STMTLSTNODE_H
+#include "ANode.h"
+#include "stmt_node/StmtNode.h"
+
+class StmtLstNode : public ANode {
+public:
+    explicit StmtLstNode(std::vector <std::shared_ptr<StmtNode>> stmts);
+
+    ~StmtLstNode() = default;
+
+private:
+
+};

@@ -5,13 +5,15 @@
 #include <vector>
 
 #include "ANode.h"
+#include "StmtLstNode.h"
 
-// declare the class ProcedureNode
 class ProcedureNode : public ANode {
- public:
-    ProcedureNode(std::string procedureName);
+public:
+    explicit ProcedureNode(std::string procedureName, std::shared_ptr <StmtLstNode> stmtLstNode);
+
     ~ProcedureNode() = default;
 
-  private:
+private:
     std::string procedureName;
+    std::shared_ptr <StmtLstNode> stmtLstNode;
 };
