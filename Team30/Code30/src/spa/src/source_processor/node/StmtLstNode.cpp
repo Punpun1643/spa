@@ -1,2 +1,3 @@
 #include "StmtLstNode.h"
-#include "stmt_node/StmtNode.h"
+
+StmtLstNode::StmtLstNode(std::vector <std::shared_ptr<StmtNode>> stmts) : stmts(stmts) {}
