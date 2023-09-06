@@ -1,5 +1,5 @@
 
-#include "../../spa/src/source_processor/node/TNode.h"
+#include "../../spa/src/source_processor/node/ANode.h"
 
 #include "catch.hpp"
 using namespace std;
