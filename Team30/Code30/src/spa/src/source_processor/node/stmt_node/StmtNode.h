@@ -5,7 +5,7 @@
 
 class StmtNode : public ANode {
 public:
-    StmtNode(int stmtIndex, StmtType stmtType);
+    explicit StmtNode(int stmtIndex, StmtType stmtType);
 
     virtual ~StmtNode() = default;
 

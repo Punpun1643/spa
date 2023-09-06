@@ -7,7 +7,7 @@
 
 class ReadNode : public StmtNode {
 public:
-    ReadNode(int stmtIndex, StmtType stmtType, std::string varName);
+    explicit ReadNode(int stmtIndex, StmtType stmtType, std::string varName);
 
     ~ReadNode() = default;
 
