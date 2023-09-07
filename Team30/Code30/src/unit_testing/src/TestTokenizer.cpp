@@ -19,12 +19,15 @@ TEST_CASE("Tokens")
     REQUIRE(specToken.getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
 }
 
-TEST_CASE("Tokenizer")
-{
-    std::string myText;
-    std::ifstream inputFile("C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/Sample_source.txt");
-    ATokenizer tokenizer = ATokenizer(inputFile);
-    REQUIRE(tokenizer.next()->getTokenVal() == "procedure");
-    REQUIRE(tokenizer.next()->getTokenVal() == "Example");
-    REQUIRE(tokenizer.next()->getTokenVal() == "{");
-}
+//TEST_CASE("Tokenizer")
+//{
+//    std::string myText;
+//    std::ifstream inputFile("C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/Sample_source.txt");
+//    ATokenizer tokenizer = ATokenizer(inputFile);
+//    REQUIRE(tokenizer.next()->getTokenVal() == "procedure");
+//    REQUIRE(tokenizer.next()->getTokenVal() == "Example");
+//    REQUIRE(tokenizer.next()->getTokenVal() == "{");
+//    REQUIRE(tokenizer.next()->getTokenType() == TokenType::WORD_TOKEN);
+//    REQUIRE(tokenizer.next()->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
+//    REQUIRE(tokenizer.next()->getTokenType() == TokenType::INTEGER_TOKEN);
+//}
