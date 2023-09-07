@@ -30,4 +30,8 @@ TEST_CASE("Tokens")
 //    REQUIRE(tokenizer.next()->getTokenType() == TokenType::WORD_TOKEN);
 //    REQUIRE(tokenizer.next()->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
 //    REQUIRE(tokenizer.next()->getTokenType() == TokenType::INTEGER_TOKEN);
+//
+//    std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
+//    REQUIRE(tokens[0]->getTokenVal() == ";");
+//    REQUIRE(tokens.size() == 161);
 //}
