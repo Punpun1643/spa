@@ -12,10 +12,11 @@ public:
     explicit ProcedureNode(std::string procedureName, std::shared_ptr <StmtLstNode> stmtLstNode);
 
     void accept(IDesignExtractor &designExtractor) override;
+    const std::string procedureName;
 
     ~ProcedureNode() = default;
 
 private:
-    const std::string procedureName;
+//    const std::string procedureName;
     const std::shared_ptr <StmtLstNode> stmtLstNode;
 };

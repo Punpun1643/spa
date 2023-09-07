@@ -18,13 +18,13 @@ public:
 
     std::shared_ptr <ProcedureNode> parseProcedure();
 
-    std::shared_ptr <StmtLstNode> parseStmtLst();
-
-    std::shared_ptr <ReadNode> parseRead();
-
-    std::shared_ptr <PrintNode> parsePrint();
-
-    std::shared_ptr <CallNode> parseCall();
+//    std::shared_ptr <StmtLstNode> parseStmtLst();
+//
+//    std::shared_ptr <ReadNode> parseRead();
+//
+//    std::shared_ptr <PrintNode> parsePrint();
+//
+//    std::shared_ptr <CallNode> parseCall();
 
     void parse() override;
 
