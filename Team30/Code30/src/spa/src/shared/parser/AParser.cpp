@@ -6,7 +6,7 @@ Token AParser::nextToken() {
     if (currTokenIndex < tokens.size()) {
         return tokens[currTokenIndex++];
     }
-};
+}
 
 Token AParser::peekToken() {
     if (currTokenIndex + 1 < tokens.size()) {
