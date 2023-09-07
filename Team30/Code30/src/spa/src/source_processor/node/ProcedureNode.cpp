@@ -10,6 +10,6 @@ void ProcedureNode::accept(IDesignExtractor &designExtractor) {
     designExtractor.extractFromProcedure(thisProcedureNodePtr);
 }
 
-std::vector<std::shared_ptr<StmtLstNode>> ProcedureNode::getChildren() const {
+std::vector <std::shared_ptr<StmtLstNode>> ProcedureNode::getChildren() const {
     return {this->stmtLstNode};
 }

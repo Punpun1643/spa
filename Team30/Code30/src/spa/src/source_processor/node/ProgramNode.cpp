@@ -11,6 +11,6 @@ void ProgramNode::accept(IDesignExtractor &designExtractor) {
     designExtractor.extractFromProgram(thisProgramNodePtr);
 };
 
-std::vector<std::shared_ptr<ProcedureNode>> ProgramNode::getChildren() const {
+std::vector <std::shared_ptr<ProcedureNode>> ProgramNode::getChildren() const {
     return this->procedures;
 }

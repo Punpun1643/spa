@@ -13,7 +13,7 @@ public:
 
     void accept(IDesignExtractor &designExtractor) override;
 
-    std::vector<std::shared_ptr<StmtLstNode>> getChildren() const;
+    std::vector <std::shared_ptr<StmtLstNode>> getChildren() const;
 
     ~ProcedureNode() = default;
 

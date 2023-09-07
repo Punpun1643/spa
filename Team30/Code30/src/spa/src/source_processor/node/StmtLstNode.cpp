@@ -8,6 +8,6 @@ void StmtLstNode::accept(IDesignExtractor &designExtractor) {
     designExtractor.extractFromStmtLst(thisStmtLstNodePtr);
 }
 
-std::vector<std::shared_ptr<StmtNode>> StmtLstNode::getChildren() const {
+std::vector <std::shared_ptr<StmtNode>> StmtLstNode::getChildren() const {
     return this->stmts;
 }
