@@ -1,8 +1,10 @@
 #include "Token.h"
 
-Token::Token(std::string val) : value(val) {
+Token::Token(std::string val) : value(val)
+{
 }
 
-std::string Token::getTokenVal() {
+std::string Token::getTokenVal()
+{
     return value;
 }
