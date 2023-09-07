@@ -18,7 +18,7 @@ public:
 
     std::shared_ptr <ProcedureNode> parseProcedure();
 
-//    std::shared_ptr <StmtLstNode> parseStmtLst();
+    std::shared_ptr <StmtLstNode> parseStmtLst();
 //
 //    std::shared_ptr <ReadNode> parseRead();
 //

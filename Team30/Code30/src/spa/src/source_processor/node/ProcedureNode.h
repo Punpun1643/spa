@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <memory>
@@ -12,7 +13,10 @@ public:
     explicit ProcedureNode(std::string procedureName, std::shared_ptr <StmtLstNode> stmtLstNode);
 
     void accept(IDesignExtractor &designExtractor) override;
-    const std::string procedureName;
+
+    std::vector<std::shared_ptr<StmtLstNode>> getChildren() const;
+
+    const std::string procedureName; // for testing purposes
 
     ~ProcedureNode() = default;
 
