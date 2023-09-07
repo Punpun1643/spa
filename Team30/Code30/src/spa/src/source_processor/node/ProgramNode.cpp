@@ -10,3 +10,7 @@ void ProgramNode::accept(IDesignExtractor &designExtractor) {
     auto thisProgramNodePtr = std::dynamic_pointer_cast<ProgramNode>(shared_from_this());
     designExtractor.extractFromProgram(thisProgramNodePtr);
 };
+
+std::vector<std::shared_ptr<ProcedureNode>> ProgramNode::getChildren() const {
+    return this->procedures;
+}
