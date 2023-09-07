@@ -1,17 +1,9 @@
-#include<stdio.h>
-#include <iostream>
-#include <string>
-#include <vector>
-
-//using namespace std;
-//
-//#include "AParser.h"
-//#include "../../program_knowledge_base/PKB.h"
-//#include "../../source_processor/node/ANode.h"
-//
-//int Parse () {
-//
-//	return 0;
-//}
-
 #include "AParser.h"
+
+AParser::AParser(std::vector <Token> tokens) : tokens(tokens) {}
+
+Token AParser::nextToken() {
+    if (currTokenIndex < tokens.size()) {
+        return tokens[currTokenIndex++];
+    }
+};
