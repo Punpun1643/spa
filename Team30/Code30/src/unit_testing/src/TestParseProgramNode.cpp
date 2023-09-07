@@ -7,7 +7,7 @@
 TEST_CASE("Parser parseProgram") {
     std::vector<std::shared_ptr<Token>> tokens;
 
-    SECTION("Valid program with one procedure") {
+    SECTION("Valid program with one procedure has one procedure node") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("procedure")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("main")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
@@ -20,7 +20,7 @@ TEST_CASE("Parser parseProgram") {
         REQUIRE(programNode->getChildren().at(0)->procedureName == "main");
     }
 
-    SECTION("Invalid program with no procedures") {
+    SECTION("Invalid program with no procedures throws exception") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("not_procedure")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("main")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
