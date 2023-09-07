@@ -1,11 +1,11 @@
 #pragma once
 
-#include "EntityExtractor.h"
-#include "FollowsExtractor.h"
+#include "IEntityExtractor.h"
+#include "IFollowsExtractor.h"
 #include "IExtractionController.h"
-#include "ModifiesExtractor.h"
-#include "ParentExtractor.h"
-#include "UsesExtractor.h"
+#include "IModifiesExtractor.h"
+#include "IParentExtractor.h"
+#include "IUsesExtractor.h"
 
 class ExtractionController : public IExtractionController {
  public:
@@ -21,9 +21,9 @@ class ExtractionController : public IExtractionController {
     for (std::shared_ptr<IDesignExtractor> e : extractors) {
       node->accept(e);
     }
-    std::vector<std::shared_ptr<Node>> children = node->getChildren();
+    std::vector<std::shared_ptr<TNode>> children = node->getChildren();
     if (children != nullptr && !children.empty()) {
-      for (std::shared_ptr<Node> child : children) {
+      for (std::shared_ptr<TNode> child : children) {
         executeExtract(child);
       }
     }

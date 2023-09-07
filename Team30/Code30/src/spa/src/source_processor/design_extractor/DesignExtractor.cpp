@@ -34,4 +34,4 @@ class DesignExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override {
     // TODO
   }
-}
+};

@@ -34,4 +34,4 @@ class UsesExtractor : public DesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override {
     // TODO
   }
-}
+};
