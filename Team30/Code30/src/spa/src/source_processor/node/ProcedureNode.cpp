@@ -9,3 +9,7 @@ void ProcedureNode::accept(IDesignExtractor &designExtractor) {
     auto thisProcedureNodePtr = std::dynamic_pointer_cast<ProcedureNode>(shared_from_this());
     designExtractor.extractFromProcedure(thisProcedureNodePtr);
 }
+
+std::vector<std::shared_ptr<StmtLstNode>> ProcedureNode::getChildren() const {
+    return {this->stmtLstNode};
+}
