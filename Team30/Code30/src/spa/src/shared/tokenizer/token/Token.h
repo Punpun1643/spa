@@ -13,11 +13,8 @@ private:
 
 public:
     explicit Token(std::string val);
+    ~Token() = default;
 
-    std::string getTokenVal()
-    {
-        return value;
-    }
-      
+    std::string getTokenVal();
     virtual TokenType getTokenType() = 0;
 };
