@@ -1,15 +1,15 @@
-#include<stdio.h>
+#include <stdio.h>
+
 #include <iostream>
 #include <string>
 #include <vector>
 
 using namespace std;
 
-
 #include "../../program_knowledge_base/PKB.h"
-#include "IDesignExtractor.h"
+#include "DesignExtractor.cpp"
 
-class DesignExtractor : public IDesignExtractor {
+class FollowsExtractor : public DesignExtractor {
  public:
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override {
     // TODO
@@ -20,7 +20,10 @@ class DesignExtractor : public IDesignExtractor {
   }
 
   void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override {
-    // TODO
+    std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();
+    for (int i = 0; i < children.size() - 1; i++) {
+      // PKB::insertFollows(children[i], children[i + 1]);
+    }
   }
 
   void extractFromCall(std::shared_ptr<CallNode> node) override {

@@ -1,15 +1,15 @@
-#include<stdio.h>
+#include <stdio.h>
+
 #include <iostream>
 #include <string>
 #include <vector>
 
 using namespace std;
 
-
 #include "../../program_knowledge_base/PKB.h"
-#include "IDesignExtractor.h"
+#include "DesignExtractor.cpp"
 
-class DesignExtractor : public IDesignExtractor {
+class ParentExtractor : public DesignExtractor {
  public:
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override {
     // TODO
