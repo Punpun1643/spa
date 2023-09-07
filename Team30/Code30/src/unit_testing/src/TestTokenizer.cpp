@@ -21,7 +21,6 @@ TEST_CASE("Tokens")
 
 //TEST_CASE("Tokenizer")
 //{
-//    std::string myText;
 //    std::ifstream inputFile("C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/Sample_source.txt");
 //    ATokenizer tokenizer = ATokenizer(inputFile);
 //    REQUIRE(tokenizer.next()->getTokenVal() == "procedure");
