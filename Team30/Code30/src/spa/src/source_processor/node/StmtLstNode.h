@@ -12,6 +12,8 @@ public:
 
     void accept(IDesignExtractor &designExtractor) override;
 
+    std::vector<std::shared_ptr<StmtNode>> getChildren() const;
+
     ~StmtLstNode() = default;
 
 private:

@@ -7,3 +7,7 @@ void StmtLstNode::accept(IDesignExtractor &designExtractor) {
     auto thisStmtLstNodePtr = std::dynamic_pointer_cast<StmtLstNode>(shared_from_this());
     designExtractor.extractFromStmtLst(thisStmtLstNodePtr);
 }
+
+std::vector<std::shared_ptr<StmtNode>> StmtLstNode::getChildren() const {
+    return this->stmts;
+}
