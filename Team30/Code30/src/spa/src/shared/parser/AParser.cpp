@@ -1,19 +1,19 @@
 #include "AParser.h"
 
-AParser::AParser(std::vector <Token> tokens) : tokens(tokens) {}
+AParser::AParser(std::vector <std::shared_ptr<Token>> tokens) : tokens(std::move(tokens)) {}
 
-Token AParser::nextToken() {
+std::shared_ptr<Token> AParser::nextToken() {
     if (currTokenIndex < tokens.size()) {
         return tokens[currTokenIndex++];
     }
 }
 
-Token AParser::peekToken() {
+std::shared_ptr<Token> AParser::peekToken() {
     if (currTokenIndex + 1 < tokens.size()) {
         return tokens[currTokenIndex + 1];
     }
 }
 
-Token AParser::getCurrToken() {
+std::shared_ptr<Token> AParser::getCurrToken() {
     return tokens[currTokenIndex];
 }
