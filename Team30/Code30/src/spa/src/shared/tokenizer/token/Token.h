@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-
-enum class TokenType { WORD_TOKEN, SPECIAL_CHAR_TOKEN, INTEGER_TOKEN, EOF_TOKEN };
+#include "shared/tokenizer/token/TokenType.h"
 
 class Token {
  private:
