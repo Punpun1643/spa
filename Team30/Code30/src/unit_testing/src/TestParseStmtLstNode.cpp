@@ -132,10 +132,10 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         REQUIRE(stmtLstNode != nullptr);
         REQUIRE(stmtLstNode->getChildren().size() == 2);
         REQUIRE(readNode != nullptr);
-        REQUIRE(readNode->stmtType == StmtType::READ_STMT);
+        REQUIRE(readNode->getStmtType() == StmtType::READ_STMT);
         REQUIRE(readNode->varName == "variable1");
         REQUIRE(printNode != nullptr);
-        REQUIRE(printNode->stmtType == StmtType::PRINT_STMT);
+        REQUIRE(printNode->getStmtType() == StmtType::PRINT_STMT);
         REQUIRE(printNode->varName == "variable2");
     }
 
@@ -213,10 +213,10 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         REQUIRE(stmtLstNode != nullptr);
         REQUIRE(stmtLstNode->getChildren().size() == 2);
         REQUIRE(callNode != nullptr);
-        REQUIRE(callNode->stmtType == StmtType::CALL_STMT);
+        REQUIRE(callNode->getStmtType() == StmtType::CALL_STMT);
         REQUIRE(callNode->procName == "variable1");
         REQUIRE(readNode != nullptr);
-        REQUIRE(readNode->stmtType == StmtType::READ_STMT);
+        REQUIRE(readNode->getStmtType() == StmtType::READ_STMT);
         REQUIRE(readNode->varName == "variable2");
     }
 

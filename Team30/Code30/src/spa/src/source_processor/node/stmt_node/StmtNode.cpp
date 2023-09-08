@@ -5,3 +5,7 @@ StmtNode::StmtNode(int stmtIndex, StmtType stmtType) : stmtIndex(stmtIndex), stm
 int StmtNode::getStmtIndex() const {
     return stmtIndex;
 }
+
+StmtType StmtNode::getStmtType() const {
+    return stmtType;
+}

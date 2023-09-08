@@ -7,13 +7,13 @@ class StmtNode : public ANode {
 public:
     explicit StmtNode(int stmtIndex, StmtType stmtType);
 
-    const StmtType stmtType; // for testing only
-
     int getStmtIndex() const;
+
+    StmtType getStmtType() const;
 
     virtual ~StmtNode() = default;
 
 private:
-//    const StmtType stmtType;
+    const StmtType stmtType;
     const int stmtIndex;
 };
