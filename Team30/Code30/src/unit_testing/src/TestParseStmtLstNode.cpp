@@ -31,4 +31,26 @@ TEST_CASE("Parser parseStmtLst") {
         REQUIRE(printNode != nullptr);
         REQUIRE(printNode->varName == "variable");
     }
+
+    SECTION("Stmtlst with two statement return two statement nodes") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+
+        SpParser parser = SpParser(tokens);
+        auto stmtLstNode = parser.parseStmtLst();
+        auto printNodeOne = std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
+        auto printNodeTwo = std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(1));
+
+        REQUIRE(stmtLstNode != nullptr);
+        REQUIRE(stmtLstNode->getChildren().size() == 2);
+        REQUIRE(printNodeOne != nullptr);
+        REQUIRE(printNodeOne->varName == "variable1");
+        REQUIRE(printNodeTwo != nullptr);
+        REQUIRE(printNodeTwo->varName == "variable2");
+    }
 }
