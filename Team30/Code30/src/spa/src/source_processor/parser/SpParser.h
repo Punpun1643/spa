@@ -21,8 +21,8 @@ public:
     std::shared_ptr <StmtLstNode> parseStmtLst();
 
     std::shared_ptr <PrintNode> parsePrint();
-//
-//    std::shared_ptr <ReadNode> parseRead();
+
+    std::shared_ptr <ReadNode> parseRead();
 //
 
 //

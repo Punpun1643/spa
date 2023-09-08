@@ -69,12 +69,29 @@ std::shared_ptr <PrintNode> SpParser::parsePrint() {
         if (getCurrToken()->getTokenVal() == ";") {
             // increment index token to get next token
             nextToken();
-            return std::make_shared<PrintNode>(1, StmtType::PRINT_STMT, varName);
+            return std::make_shared<PrintNode>(1, StmtType::READ_STMT, varName);
         } else {
             throw std::invalid_argument("Invalid print 1");
         }
     } else {
         throw std::invalid_argument("Invalid print 2");
+    }
+}
+
+std::shared_ptr <ReadNode> SpParser::parseRead() {
+    std::shared_ptr<Token> currToken = getCurrToken();
+
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
+        std::string varName = currToken->getTokenVal();
+        nextToken();
+        if (getCurrToken()->getTokenVal() == ";") {
+            nextToken();
+            return std::make_shared<ReadNode>(1, StmtType::READ_STMT, varName);
+        } else {
+            throw std::invalid_argument("Invalid read 1");
+        }
+    } else {
+        throw std::invalid_argument("Invalid read 2");
     }
 }
 
@@ -85,10 +102,13 @@ std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
         //current token
         std::shared_ptr<Token> currToken = getCurrToken();
         if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "print") {
-            // increment index token to get next token
             nextToken();
             // parse print
             stmts.push_back(parsePrint());
+        } else if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "read") {
+            nextToken();
+            // parse read
+            stmts.push_back(parseRead());
         } else {
             throw std::invalid_argument("Invalid StmtLst");
         }
