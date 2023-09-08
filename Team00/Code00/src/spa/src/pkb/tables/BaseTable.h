@@ -1,3 +1,5 @@
+#pragma once
+
 #include <any>
 #include <iostream>
 #include <stdio.h>
