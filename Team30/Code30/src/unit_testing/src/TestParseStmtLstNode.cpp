@@ -5,6 +5,7 @@
 #include "../../spa/src/shared/tokenizer/token/EofToken.h"
 #include "../../spa/src/shared/tokenizer/token/WordToken.h"
 #include "../../spa/src/source_processor/node/stmt_node/PrintNode.h"
+#include "../../spa/src/source_processor/node/stmt_node/StmtType.h"
 
 TEST_CASE("Parser parseStmtLst print stmts") {
     std::vector<std::shared_ptr<Token>> tokens;

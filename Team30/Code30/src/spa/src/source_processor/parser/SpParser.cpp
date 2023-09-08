@@ -69,7 +69,7 @@ std::shared_ptr <PrintNode> SpParser::parsePrint() {
         if (getCurrToken()->getTokenVal() == ";") {
             // increment index token to get next token
             nextToken();
-            return std::make_shared<PrintNode>(1, StmtType::READ_STMT, varName);
+            return std::make_shared<PrintNode>(1, StmtType::PRINT_STMT, varName);
         } else {
             throw std::invalid_argument("Invalid print 1");
         }
@@ -121,12 +121,3 @@ std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
 void SpParser::parse() {
     // dummy
 }
-
-//        } else if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "read") {
-//            nextToken();
-//            // parse read
-//            stmts.push_back(parseRead());
-//        } else if ( currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "call") {
-//            nextToken();
-//            // parse call
-//            stmts.push_back(parseCall());
