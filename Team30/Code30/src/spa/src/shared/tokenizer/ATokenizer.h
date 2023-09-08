@@ -1,20 +1,20 @@
 #pragma once
-#include "token/Token.h"
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
 
-class ATokenizer
-{
-private:
-    std::istream &input;
-    std::shared_ptr<Token> handleSpecialChar(char c);
+#include "token/Token.h"
 
-public:
-    explicit ATokenizer(std::istream &input);
-    ~ATokenizer() = default;
+class ATokenizer {
+ private:
+  std::istream& input;
+  std::shared_ptr<Token> handleSpecialChar(char c);
 
-    std::vector<std::shared_ptr<Token>> tokenize();
-    std::shared_ptr<Token> next();
-    bool hasNext();
+ public:
+  explicit ATokenizer(std::istream& input);
+  ~ATokenizer() = default;
+
+  std::vector<std::shared_ptr<Token>> tokenize();
+  std::shared_ptr<Token> next();
+  bool hasNext();
 };
