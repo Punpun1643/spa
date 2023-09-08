@@ -55,6 +55,21 @@ TEST_CASE("Parser parseProgram") {
         REQUIRE(programNode->getChildren().at(1)->procedureName == "proc");
     }
 
+    SECTION("Invalid program with one valid procedure and one invalid procedure") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("procedure")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("main")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("{")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("dummy")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("not_procedure")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("proc")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("{")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("dummy")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
 
+        SpParser parser = SpParser(tokens);
+        REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
+    }
 }
 
