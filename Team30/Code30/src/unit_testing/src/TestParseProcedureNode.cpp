@@ -19,7 +19,7 @@ TEST_CASE("Parser parseProcedure") {
     SECTION("Invalid procedure with } and { swap position") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("main")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("flag")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("{")));
 
         SpParser parser = SpParser(tokens);
@@ -29,7 +29,9 @@ TEST_CASE("Parser parseProcedure") {
     SECTION("Valid procedure with one statement has one statement node") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("main")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("{")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("flag")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
 
         SpParser parser = SpParser(tokens);

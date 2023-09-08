@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 
 #include "SpParser.h"
 
@@ -36,7 +35,6 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
         // increment index token to get next token
         nextToken();
         // check if valid procedure
-        // check if it has {
         if (getCurrToken()->getTokenVal() == START_PROCEDURE) {
             // increment index token to get next token
             nextToken();
@@ -56,18 +54,59 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
     } else {
         throw std::invalid_argument("Invalid procedure 4");
     }
+}
 
-    // dummy return
-    // return std::make_shared<ProcedureNode>(getCurrToken()->getTokenVal(), nullptr);
+
+std::shared_ptr <PrintNode> SpParser::parsePrint() {
+    // check if valid print
+    std::shared_ptr<Token> currToken = getCurrToken();
+
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
+        std::string varName = currToken->getTokenVal();
+        // increment index token to get next token
+        nextToken();
+        // check if valid print
+        if (getCurrToken()->getTokenVal() == ";") {
+            // increment index token to get next token
+            nextToken();
+            return std::make_shared<PrintNode>(1, StmtType::PRINT_STMT, varName);
+        } else {
+            throw std::invalid_argument("Invalid print 1");
+        }
+    } else {
+        throw std::invalid_argument("Invalid print 2");
+    }
 }
 
 std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
-    nextToken();
-    std::vector<std::shared_ptr<StmtNode>> empty_stmts;
-    auto  stmtLstNode = std::make_shared<StmtLstNode>(empty_stmts);
-    return stmtLstNode;
+    std::vector <std::shared_ptr<StmtNode>> stmts;
+
+    while (getCurrToken()->getTokenVal() != END_PROCEDURE) {
+        //current token
+        std::shared_ptr<Token> currToken = getCurrToken();
+        if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "print") {
+            // increment index token to get next token
+            nextToken();
+            // parse print
+            stmts.push_back(parsePrint());
+        } else {
+            throw std::invalid_argument("Invalid StmtLst");
+        }
+    }
+
+    return std::make_shared<StmtLstNode>(stmts);
 }
+
 
 void SpParser::parse() {
     // dummy
 }
+
+//        } else if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "read") {
+//            nextToken();
+//            // parse read
+//            stmts.push_back(parseRead());
+//        } else if ( currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "call") {
+//            nextToken();
+//            // parse call
+//            stmts.push_back(parseCall());
