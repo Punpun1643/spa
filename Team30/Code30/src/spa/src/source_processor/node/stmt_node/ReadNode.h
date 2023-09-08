@@ -11,10 +11,10 @@ public:
 
     void accept(IDesignExtractor &designExtractor) override;
 
-    const std::string varName; // for testing only
+    const std::string &getVarName() const;
 
     ~ReadNode() = default;
 
 private:
-//    const std::string varName;
+    const std::string varName;
 };

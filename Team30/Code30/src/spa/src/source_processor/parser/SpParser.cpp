@@ -12,7 +12,7 @@ std::shared_ptr <ProgramNode> SpParser::parseProgram() {
 
     while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
         //current token
-        std::shared_ptr<Token> currToken = getCurrToken();
+        std::shared_ptr <Token> currToken = getCurrToken();
         if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "procedure") {
             // increment index token to get next token
             nextToken();
@@ -28,7 +28,7 @@ std::shared_ptr <ProgramNode> SpParser::parseProgram() {
 
 std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
     // check if valid procedureName
-    std::shared_ptr<Token> currToken = getCurrToken();
+    std::shared_ptr <Token> currToken = getCurrToken();
 
     if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
         std::string procedureName = currToken->getTokenVal();
@@ -39,7 +39,7 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
             // increment index token to get next token
             nextToken();
             // parse stmtLst
-            std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
+            std::shared_ptr <StmtLstNode> stmtLst = parseStmtLst();
             // check if valid procedure
             if (getCurrToken()->getTokenVal() == END_PROCEDURE) {
                 // increment index token to get next token
@@ -59,7 +59,7 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
 
 std::shared_ptr <PrintNode> SpParser::parsePrint() {
     // check if valid print
-    std::shared_ptr<Token> currToken = getCurrToken();
+    std::shared_ptr <Token> currToken = getCurrToken();
 
     if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
         std::string varName = currToken->getTokenVal();
@@ -79,7 +79,7 @@ std::shared_ptr <PrintNode> SpParser::parsePrint() {
 }
 
 std::shared_ptr <ReadNode> SpParser::parseRead() {
-    std::shared_ptr<Token> currToken = getCurrToken();
+    std::shared_ptr <Token> currToken = getCurrToken();
 
     if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
         std::string varName = currToken->getTokenVal();
@@ -96,7 +96,7 @@ std::shared_ptr <ReadNode> SpParser::parseRead() {
 }
 
 std::shared_ptr <CallNode> SpParser::parseCall() {
-    std::shared_ptr<Token> currToken = getCurrToken();
+    std::shared_ptr <Token> currToken = getCurrToken();
 
     if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
         std::string procedureName = currToken->getTokenVal();
@@ -117,7 +117,7 @@ std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
 
     while (getCurrToken()->getTokenVal() != END_PROCEDURE) {
         //current token
-        std::shared_ptr<Token> currToken = getCurrToken();
+        std::shared_ptr <Token> currToken = getCurrToken();
         if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "print") {
             nextToken();
             // parse print

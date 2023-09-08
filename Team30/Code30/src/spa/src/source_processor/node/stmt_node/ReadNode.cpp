@@ -8,3 +8,7 @@ void ReadNode::accept(IDesignExtractor &designExtractor) {
     auto thisReadNodePtr = std::dynamic_pointer_cast<ReadNode>(shared_from_this());
     designExtractor.extractFromRead(thisReadNodePtr);
 }
+
+const std::string &ReadNode::getVarName() const {
+    return varName;
+}

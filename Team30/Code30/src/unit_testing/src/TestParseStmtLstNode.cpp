@@ -31,7 +31,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         REQUIRE(stmtLstNode != nullptr);
         REQUIRE(stmtLstNode->getChildren().size() == 1);
         REQUIRE(printNode != nullptr);
-        REQUIRE(printNode->varName == "variable");
+        REQUIRE(printNode->getVarName() == "variable");
     }
 
     SECTION("StmtLst with two statement return two statement nodes") {
@@ -53,9 +53,9 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         REQUIRE(stmtLstNode != nullptr);
         REQUIRE(stmtLstNode->getChildren().size() == 2);
         REQUIRE(printNodeOne != nullptr);
-        REQUIRE(printNodeOne->varName == "variable1");
+        REQUIRE(printNodeOne->getVarName() == "variable1");
         REQUIRE(printNodeTwo != nullptr);
-        REQUIRE(printNodeTwo->varName == "variable2");
+        REQUIRE(printNodeTwo->getVarName() == "variable2");
     }
 
     SECTION("StmtLst with invalid stmt missing ;") {
@@ -110,7 +110,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         REQUIRE(stmtLstNode != nullptr);
         REQUIRE(stmtLstNode->getChildren().size() == 1);
         REQUIRE(printNode != nullptr);
-        REQUIRE(printNode->varName == "variable");
+        REQUIRE(printNode->getVarName() == "variable");
     }
 
     SECTION("StmtLst with one read stmt and one print stmt return two statement nodes") {
@@ -133,10 +133,10 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         REQUIRE(stmtLstNode->getChildren().size() == 2);
         REQUIRE(readNode != nullptr);
         REQUIRE(readNode->getStmtType() == StmtType::READ_STMT);
-        REQUIRE(readNode->varName == "variable1");
+        REQUIRE(readNode->getVarName() == "variable1");
         REQUIRE(printNode != nullptr);
         REQUIRE(printNode->getStmtType() == StmtType::PRINT_STMT);
-        REQUIRE(printNode->varName == "variable2");
+        REQUIRE(printNode->getVarName() == "variable2");
     }
 
     SECTION("StmtLst with invalid stmt missing ;") {
@@ -191,7 +191,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         REQUIRE(stmtLstNode != nullptr);
         REQUIRE(stmtLstNode->getChildren().size() == 1);
         REQUIRE(callNode != nullptr);
-        REQUIRE(callNode->procName == "variable");
+        REQUIRE(callNode->getProcName() == "variable");
     }
 
     SECTION("StmtLst with one call stmt and one read stmt return two statement nodes") {
@@ -214,10 +214,10 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         REQUIRE(stmtLstNode->getChildren().size() == 2);
         REQUIRE(callNode != nullptr);
         REQUIRE(callNode->getStmtType() == StmtType::CALL_STMT);
-        REQUIRE(callNode->procName == "variable1");
+        REQUIRE(callNode->getProcName() == "variable1");
         REQUIRE(readNode != nullptr);
         REQUIRE(readNode->getStmtType() == StmtType::READ_STMT);
-        REQUIRE(readNode->varName == "variable2");
+        REQUIRE(readNode->getVarName() == "variable2");
     }
 
     SECTION("StmtLst with invalid stmt missing ;") {

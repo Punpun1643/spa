@@ -11,10 +11,10 @@ public:
 
     void accept(IDesignExtractor &designExtractor) override;
 
-    const std::string procName; // for testing only
+    const std::string &getProcName() const;
 
     ~CallNode() = default;
 
 private:
-//    const std::string procName;
+    const std::string procName;
 };

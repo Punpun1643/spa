@@ -8,3 +8,7 @@ void PrintNode::accept(IDesignExtractor &designExtractor) {
     auto thisPrintNodePtr = std::dynamic_pointer_cast<PrintNode>(shared_from_this());
     designExtractor.extractFromPrint(thisPrintNodePtr);
 }
+
+const std::string &PrintNode::getVarName() const {
+    return varName;
+}
