@@ -95,6 +95,23 @@ std::shared_ptr <ReadNode> SpParser::parseRead() {
     }
 }
 
+std::shared_ptr <CallNode> SpParser::parseCall() {
+    std::shared_ptr<Token> currToken = getCurrToken();
+
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
+        std::string procedureName = currToken->getTokenVal();
+        nextToken();
+        if (getCurrToken()->getTokenVal() == ";") {
+            nextToken();
+            return std::make_shared<CallNode>(1, StmtType::CALL_STMT, procedureName);
+        } else {
+            throw std::invalid_argument("Invalid call 1");
+        }
+    } else {
+        throw std::invalid_argument("Invalid call 2");
+    }
+}
+
 std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
     std::vector <std::shared_ptr<StmtNode>> stmts;
 
@@ -109,6 +126,10 @@ std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
             nextToken();
             // parse read
             stmts.push_back(parseRead());
+        } else if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "call") {
+            nextToken();
+            // parse call
+            stmts.push_back(parseCall());
         } else {
             throw std::invalid_argument("Invalid StmtLst");
         }

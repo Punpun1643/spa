@@ -23,10 +23,8 @@ public:
     std::shared_ptr <PrintNode> parsePrint();
 
     std::shared_ptr <ReadNode> parseRead();
-//
 
-//
-//    std::shared_ptr <CallNode> parseCall();
+    std::shared_ptr <CallNode> parseCall();
 
     void parse() override;
 
