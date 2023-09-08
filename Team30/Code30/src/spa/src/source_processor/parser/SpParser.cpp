@@ -32,7 +32,7 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
 
     if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
         std::string procedureName = currToken->getTokenVal();
-        // increment index token to get next token
+
         nextToken();
         // check if valid procedure
         if (getCurrToken()->getTokenVal() == START_PROCEDURE) {
@@ -40,9 +40,8 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
             nextToken();
             // parse stmtLst
             std::shared_ptr <StmtLstNode> stmtLst = parseStmtLst();
-            // check if valid procedure
+
             if (getCurrToken()->getTokenVal() == END_PROCEDURE) {
-                // increment index token to get next token
                 nextToken();
                 return std::make_shared<ProcedureNode>(procedureName, stmtLst);
             } else {
@@ -58,17 +57,17 @@ std::shared_ptr <ProcedureNode> SpParser::parseProcedure() {
 
 
 std::shared_ptr <PrintNode> SpParser::parsePrint() {
-    // check if valid print
     std::shared_ptr <Token> currToken = getCurrToken();
 
     if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
         std::string varName = currToken->getTokenVal();
-        // increment index token to get next token
+
         nextToken();
+
         // check if valid print
         if (getCurrToken()->getTokenVal() == ";") {
-            // increment index token to get next token
             nextToken();
+
             return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT, varName);
         } else {
             throw std::invalid_argument("Invalid print 1");
@@ -116,7 +115,6 @@ std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
     std::vector <std::shared_ptr<StmtNode>> stmts;
 
     while (getCurrToken()->getTokenVal() != END_PROCEDURE) {
-        //current token
         std::shared_ptr <Token> currToken = getCurrToken();
         if (currToken->getTokenType() == TokenType::WORD_TOKEN && currToken->getTokenVal() == "print") {
             nextToken();
@@ -138,7 +136,10 @@ std::shared_ptr <StmtLstNode> SpParser::parseStmtLst() {
     return std::make_shared<StmtLstNode>(stmts);
 }
 
-
 void SpParser::parse() {
-    // dummy
+    sourceProgramNode = parseProgram();
+}
+
+std::shared_ptr <ProgramNode> SpParser::getSourceProgramNode() {
+    return sourceProgramNode;
 }

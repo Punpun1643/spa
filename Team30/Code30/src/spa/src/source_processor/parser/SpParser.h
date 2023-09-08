@@ -26,10 +26,14 @@ public:
 
     std::shared_ptr <CallNode> parseCall();
 
+    std::shared_ptr <ProgramNode> getSourceProgramNode();
+
     void parse() override;
 
     ~SpParser() = default;
 
 private:
     int currStmtIndex = 1;
+
+    std::shared_ptr <ProgramNode> sourceProgramNode;
 };
