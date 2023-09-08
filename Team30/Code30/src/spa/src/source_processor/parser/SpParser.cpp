@@ -69,7 +69,7 @@ std::shared_ptr <PrintNode> SpParser::parsePrint() {
         if (getCurrToken()->getTokenVal() == ";") {
             // increment index token to get next token
             nextToken();
-            return std::make_shared<PrintNode>(1, StmtType::PRINT_STMT, varName);
+            return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT, varName);
         } else {
             throw std::invalid_argument("Invalid print 1");
         }
@@ -86,7 +86,7 @@ std::shared_ptr <ReadNode> SpParser::parseRead() {
         nextToken();
         if (getCurrToken()->getTokenVal() == ";") {
             nextToken();
-            return std::make_shared<ReadNode>(1, StmtType::READ_STMT, varName);
+            return std::make_shared<ReadNode>(currStmtIndex++, StmtType::READ_STMT, varName);
         } else {
             throw std::invalid_argument("Invalid read 1");
         }
@@ -103,7 +103,7 @@ std::shared_ptr <CallNode> SpParser::parseCall() {
         nextToken();
         if (getCurrToken()->getTokenVal() == ";") {
             nextToken();
-            return std::make_shared<CallNode>(1, StmtType::CALL_STMT, procedureName);
+            return std::make_shared<CallNode>(currStmtIndex++, StmtType::CALL_STMT, procedureName);
         } else {
             throw std::invalid_argument("Invalid call 1");
         }

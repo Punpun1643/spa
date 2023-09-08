@@ -9,9 +9,11 @@ public:
 
     const StmtType stmtType; // for testing only
 
+    int getStmtIndex() const;
+
     virtual ~StmtNode() = default;
 
 private:
-    const int stmtIndex;
 //    const StmtType stmtType;
+    const int stmtIndex;
 };

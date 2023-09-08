@@ -254,3 +254,48 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
     }
 }
+
+TEST_CASE("Parser parseStmtLst stmtIndexing") {
+    std::vector <std::shared_ptr<Token>> tokens;
+
+    SECTION("StmtLst with one statement the stmt should have stmtIndex 1") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+
+        SpParser parser = SpParser(tokens);
+        auto stmtLstNode = parser.parseStmtLst();
+        auto printNode = std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
+
+        REQUIRE(stmtLstNode != nullptr);
+        REQUIRE(stmtLstNode->getChildren().size() == 1);
+        REQUIRE(printNode != nullptr);
+        REQUIRE(printNode->getStmtIndex() == 1);
+    }
+
+    SECTION("StmtLst with one read stmt and one print stmt each should have index 1 and 2 respectively") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("read")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+
+        SpParser parser = SpParser(tokens);
+        auto stmtLstNode = parser.parseStmtLst();
+        auto readNode = std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
+        auto printNode = std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(1));
+
+        REQUIRE(stmtLstNode != nullptr);
+        REQUIRE(stmtLstNode->getChildren().size() == 2);
+        REQUIRE(readNode != nullptr);
+        REQUIRE(readNode->getStmtIndex() == 1);
+        REQUIRE(printNode != nullptr);
+        REQUIRE(printNode->getStmtIndex() == 2);
+    }
+}

@@ -30,5 +30,6 @@ public:
 
     ~SpParser() = default;
 
-
+private:
+    int currStmtIndex = 1;
 };

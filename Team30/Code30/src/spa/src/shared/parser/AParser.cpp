@@ -4,7 +4,7 @@ AParser::AParser(std::vector <std::shared_ptr<Token>> tokens) : tokens(std::move
 
 std::shared_ptr<Token> AParser::nextToken() {
     if (currTokenIndex < tokens.size()) {
-        return tokens[currTokenIndex++];
+        return tokens[++currTokenIndex];
     }
 }
 
