@@ -11,6 +11,7 @@ TEST_CASE("Parser parseStmtLst") {
 
     SECTION("StmtLst with no statement return empty vector") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
 
         SpParser parser = SpParser(tokens);
         REQUIRE(parser.parseStmtLst()->getChildren().empty());
@@ -21,6 +22,7 @@ TEST_CASE("Parser parseStmtLst") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -32,7 +34,7 @@ TEST_CASE("Parser parseStmtLst") {
         REQUIRE(printNode->varName == "variable");
     }
 
-    SECTION("Stmtlst with two statement return two statement nodes") {
+    SECTION("StmtLst with two statement return two statement nodes") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
@@ -40,6 +42,8 @@ TEST_CASE("Parser parseStmtLst") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -52,5 +56,39 @@ TEST_CASE("Parser parseStmtLst") {
         REQUIRE(printNodeOne->varName == "variable1");
         REQUIRE(printNodeTwo != nullptr);
         REQUIRE(printNodeTwo->varName == "variable2");
+    }
+
+    SECTION("StmtLst with invalid stmt missing ;") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+
+        SpParser parser = SpParser(tokens);
+        REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    }
+
+    SECTION("StmtLst with invalid stmt missing variable name") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+
+        SpParser parser = SpParser(tokens);
+        REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    }
+
+    SECTION("StmtLst with ine invalid stmt missing variable name and one valid stmt") {
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+
+        SpParser parser = SpParser(tokens);
+        REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
     }
 }
