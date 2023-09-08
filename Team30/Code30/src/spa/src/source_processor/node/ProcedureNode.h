@@ -14,13 +14,13 @@ public:
 
     void accept(IDesignExtractor &designExtractor) override;
 
-    std::vector<std::shared_ptr<StmtLstNode>> getChildren() const;
+    std::vector <std::shared_ptr<StmtLstNode>> getChildren() const;
 
-    const std::string procedureName; // for testing purposes
+    std::string getProcedureName() const;
 
     ~ProcedureNode() = default;
 
 private:
-//    const std::string procedureName;
+    const std::string procedureName;
     const std::shared_ptr <StmtLstNode> stmtLstNode;
 };
