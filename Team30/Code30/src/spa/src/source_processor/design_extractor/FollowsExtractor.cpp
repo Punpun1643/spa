@@ -7,9 +7,9 @@
 using namespace std;
 
 #include "../../program_knowledge_base/PKB.h"
-#include "DesignExtractor.cpp"
+#include "IDesignExtractor.h"
 
-class FollowsExtractor : public DesignExtractor {
+class FollowsExtractor : public IDesignExtractor {
  public:
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override {
     // TODO
