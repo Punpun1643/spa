@@ -38,5 +38,26 @@ TEST_CASE("Test parse() method") {
         REQUIRE(programNode != nullptr);
         REQUIRE(programNode->getChildren().size() == 1);
         REQUIRE(programNode->getChildren().at(0)->getProcedureName() == "computeAverage");
+
+        auto procedureNode = programNode->getChildren().at(0);
+        REQUIRE(procedureNode->getChildren().size() == 1);
+
+        auto stmtListNode = procedureNode->getChildren().at(0);
+        REQUIRE(stmtListNode->getChildren().size() == 5);
+
+        auto readNode1 = std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(0));
+        REQUIRE(readNode1->getVarName() == "num1");
+
+        auto readNode2 = std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(1));
+        REQUIRE(readNode2->getVarName() == "num2");
+
+        auto readNode3 = std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(2));
+        REQUIRE(readNode3->getVarName() == "num3");
+
+        auto printNode = std::dynamic_pointer_cast<PrintNode>(stmtListNode->getChildren().at(3));
+        REQUIRE(printNode->getVarName() == "ave");
+
+        auto callNode = std::dynamic_pointer_cast<CallNode>(stmtListNode->getChildren().at(4));
+        REQUIRE(callNode->getProcName() == "dummy");
     }
 }
