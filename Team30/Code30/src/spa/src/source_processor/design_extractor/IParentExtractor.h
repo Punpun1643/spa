@@ -2,7 +2,7 @@
 
 #include "IDesignExtractor.h"
 
-class ParentExtractor : public DesignExtractor {
+class ParentExtractor : public IDesignExtractor {
  public:
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 

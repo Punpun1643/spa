@@ -3,12 +3,12 @@
 #include <memory>
 #include <vector>
 
-#include "../node/TNode.h"
+#include "../node/ANode.h"
 #include "IDesignExtractor.h"
 
 class IExtractionController {
  public:
-  virtual void executeExtract(std::shared_ptr<TNode> node) = 0;
+  virtual void executeExtract(std::shared_ptr<ANode> node) = 0;
 
   virtual ~IExtractionController() = default;
 

@@ -17,13 +17,13 @@ class ExtractionController : public IExtractionController {
     extractors.push_back(std::make_shared<EntityExtractor>());
   }
 
-  void executeExtract(std::shared_ptr<TNode> node) {
+  void executeExtract(std::shared_ptr<ANode> node) {
     for (std::shared_ptr<IDesignExtractor> e : extractors) {
-      node->accept(e);
+      node->accept(*e);
     }
-    std::vector<std::shared_ptr<TNode>> children = node->getChildren();
-    if (children != nullptr && !children.empty()) {
-      for (std::shared_ptr<TNode> child : children) {
+    std::vector<std::shared_ptr<ANode>> children = node->getChildren<ANode>();
+    if (!children.empty()) {
+      for (std::shared_ptr<ANode> child : children) {
         executeExtract(child);
       }
     }
