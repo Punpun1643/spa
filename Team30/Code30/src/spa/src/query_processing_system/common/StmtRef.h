@@ -31,4 +31,6 @@ class StmtRef {
   int getStmtNum();
 
   std::shared_ptr<PqlDeclaration> getDeclaration();
+
+  EntityType getDeclarationType();
 };

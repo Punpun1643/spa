@@ -36,9 +36,18 @@ int StmtRef::getStmtNum() {
       throw std::runtime_error("StmtRef does not contain a statement number.");
   }
 }
+
 std::shared_ptr<PqlDeclaration> StmtRef::getDeclaration() {
   if (ref_type == DECLARATION) {
       return declaration;
+  } else {
+      throw std::runtime_error("StmtRef does not contain a PQL declaration.");
+  }
+}
+
+EntityType StmtRef::getDeclarationType() {
+  if (ref_type == DECLARATION) {
+      return declaration->getEntityType();
   } else {
       throw std::runtime_error("StmtRef does not contain a PQL declaration.");
   }
