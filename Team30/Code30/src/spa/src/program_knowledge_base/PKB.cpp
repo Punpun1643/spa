@@ -39,22 +39,22 @@ class PKB {
     return true;
   }
 
-  std::vector<std::string> getFollows(int lineNum, EntityType type) {
+  std::vector<int> getFollows(int lineNum, EntityType type) {
     //std::vector<int> l1Follows = relData.get(Follows, lineNum)
     //entityLines = entData.getAll(type)
-    return {"foo"};
+    return {1};
   }
 
-  std::vector<std::string> getFollows(EntityType type, int lineNum) {
+  std::vector<int> getFollows(EntityType type, int lineNum) {
     //std::vector<int> l2Follows = relData.get(Follows, lineNum)
     //entityLines = entData.getAll(type)
-    return {"foo"};
+    return {1};
   }
 
-  std::vector<std::string> getFollows(EntityType type1, EntityType type2) {
+  std::vector<int> getFollows(EntityType type1, EntityType type2) {
     //std::vector<int> l2Follows = relData.get(Follows, lineNum)
     //entityLines1 = entData.getAll(type1)
     //entityLines2 = entData.getAll(type2)
-    return {"foo"};
+    return {1};
   }
 };
