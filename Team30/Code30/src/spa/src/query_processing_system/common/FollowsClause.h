@@ -3,7 +3,7 @@
 #include "StmtRef.h"
 #include <memory>
 
-class FollowsClause: SuchThatClause{
+class FollowsClause: public SuchThatClause{
  private:
   std::unique_ptr<StmtRef> arg1;
   std::unique_ptr<StmtRef> arg2;

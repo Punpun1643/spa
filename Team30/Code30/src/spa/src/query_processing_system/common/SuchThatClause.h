@@ -1,4 +1,4 @@
 #pragma once
 #include "Clause.h"
 
-class SuchThatClause: Clause{};
+class SuchThatClause: public Clause{};

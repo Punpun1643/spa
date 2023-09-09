@@ -1,8 +1,10 @@
 #pragma once
-#include "PqlDeclaration.h"
 #include <memory>
 
-class SelectClause {
+#include "Clause.h"
+#include "PqlDeclaration.h"
+
+class SelectClause : public Clause {
  private:
   std::shared_ptr<PqlDeclaration> declaration;
  public:
