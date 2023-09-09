@@ -19,22 +19,23 @@ enum RelType
 class RelDatabase
 {
 
-  std::unordered_map<RelType, StmtStmtRelTable> relationships;
+  std::unordered_map<RelType, StmtStmtRelTable*> relationships;
   
   public:  
 
   RelDatabase() {
-    relationships = {Follows, new StmtStmtRelTable()}; //stmtNum, stmtNums[]
+    relationships = {{Follows, new StmtStmtRelTable()}}; //stmtNum, stmtNums[]
   };
 
   std::vector<int> get(RelType type, int lineNum)
   {
-    return relationships[type].queryData(lineNum);
+    relationships[type]->queryData(lineNum);
+    return {1};
   }
   //we can overload int, var for Uses/Modifies
   bool insert(RelType type, int lineNum1, int lineNum2)
   {
-    relationships[type].insertData(lineNum1, lineNum2);
+    relationships[type]->insertData(lineNum1, lineNum2);
     return true;
   }
 };

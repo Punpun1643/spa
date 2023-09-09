@@ -8,13 +8,13 @@
 #include <vector>
 
 #include "../source_processor/node/ANode.h"
-#include "pkb/EntityDatabase.h"
-#include "pkb/RelDatabase.h"
-
+#include "../source_processor/node/stmt_node/StmtNode.h"
+#include "program_knowledge_base/EntityDatabase.h"
+#include "program_knowledge_base/RelDatabase.h"
 
 class PKB {
-  EntityDatabase entData;
-  RelDatabase relData;
+  EntityDatabase* entData;
+  RelDatabase* relData;
 
   //TODO: Separate out Insertion and Query API Logic (2 different Handler Classes)
   //TODO: Implement actual API Logic.
@@ -25,7 +25,7 @@ class PKB {
     relData = new RelDatabase();
   }
 
-  bool insertFollows(stmtNode stmt1, stmtNode stmt2) {
+  bool insertFollows(ANode stmt1, ANode stmt2) {
     //relData.insert(Follows, stmt1, stmt2);
     //entData.insert(stmt1);
     //entData.insert(stmt2);

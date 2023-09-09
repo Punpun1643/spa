@@ -13,8 +13,6 @@ class StmtStmtRelTable {
 
   std::unordered_map<int, std::vector<int>> dataTable;
 
-
-
   public:
 
   StmtStmtRelTable() {
@@ -50,4 +48,4 @@ class StmtStmtRelTable {
       return got->second;
     }
   }
-}
+};

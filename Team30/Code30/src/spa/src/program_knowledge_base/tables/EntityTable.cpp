@@ -41,14 +41,14 @@ class EntityTable {
     std::unordered_map<std::string, std::vector<int>>::const_iterator got = dataTable.find(key);
     
     if (got == dataTable.end()) { //data not found
-      return -1; //TODO: Should we use optional instead of hardcoding a -1 value?
+      return {-1}; //TODO: Should we use optional instead of hardcoding a -1 value?
     }
     else { //return value from hashmap
       return got->second;
     }
   }
 
-  //Returns all names/values of entities
+  //Returns all names/values of entities, for SP-PKB API.
   std::vector<std::string> queryAllKeys() {
     std::vector<std::string> keys;
     keys.reserve(dataTable.size());
@@ -59,4 +59,4 @@ class EntityTable {
 
     return keys;
   }
-}
+};

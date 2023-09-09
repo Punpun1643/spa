@@ -18,7 +18,7 @@ enum EntityType
 class EntityDatabase {
   
   //TODO: Replace EntityType and EntityNode with correct names based on implementation
-  std::unordered_map<EntityType, EntityTable> entities;
+  std::unordered_map<EntityType, EntityTable*> entities;
 
   public:
 

@@ -5,6 +5,9 @@
 #include "BaseTable.h"
 
 class BaseTable {
+ 
+  public:
+
   virtual bool insertData(std::any key, std::any value) {
     return true;
   }

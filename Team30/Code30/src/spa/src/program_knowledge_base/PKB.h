@@ -8,11 +8,11 @@
 #include <vector>
 
 #include "../source_processor/node/ANode.h"
-#include "pkb/EntityDatabase.h"
-#include "pkb/RelDatabase.h"
+#include "program_knowledge_base/EntityDatabase.h"
+#include "program_knowledge_base/RelDatabase.h"
 
 class PKB {
-  bool insertFollows(stmtNode stmt1, stmtNode stmt2);
+  bool insertFollows(ANode stmt1, ANode stmt2);
   bool checkFollows(int lineNum1, int lineNum2);
   std::vector<std::string> getFollows(int lineNum, EntityType type);
   std::vector<std::string> getFollows(EntityType type, int lineNum);
