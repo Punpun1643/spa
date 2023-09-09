@@ -7,8 +7,16 @@
 class ClauseResult {
  private:
   std::unordered_map<PqlDeclaration, std::vector<std::string>,
-      PqlDeclarationHash> declaration_possible_values;
-  // may wanna make pointers in the future to speed this up.
+      PqlDeclarationHash> results;
+
+  static std::unique_ptr<std::vector<std::string>> getIntersectingValues(
+      std::vector<std::string> &arr_1,
+      std::vector<std::string> &arr_2);
+  // may want to use pointers in the future to speed this up.
  public:
-  // ClauseResult();
+  ClauseResult();
+  void insertData(PqlDeclaration declaration,
+             std::vector<std::string> possible_values);
+
+  std::unique_ptr<ClauseResult> combineResults(ClauseResult other);
 };
