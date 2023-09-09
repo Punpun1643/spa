@@ -8,6 +8,7 @@ using namespace std;
 
 #include "../../program_knowledge_base/PKB.h"
 #include "IDesignExtractor.h"
+#include "EntityExtractor.h"
 
 class EntityExtractor : public IDesignExtractor {
  public:

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "IEntityExtractor.h"
-#include "IFollowsExtractor.h"
+#include "EntityExtractor.h"
+#include "FollowsExtractor.h"
 #include "IExtractionController.h"
-#include "IModifiesExtractor.h"
-#include "IParentExtractor.h"
-#include "IUsesExtractor.h"
+#include "ModifiesExtractor.h"
+#include "ParentExtractor.h"
+#include "UsesExtractor.h"
 
 class ExtractionController : public IExtractionController {
  public:
