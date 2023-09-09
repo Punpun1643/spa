@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
-#include "../../source_processor/node/ProgramNode.h"
 #include "../tokenizer/token/Token.h"
 
 class AParser {

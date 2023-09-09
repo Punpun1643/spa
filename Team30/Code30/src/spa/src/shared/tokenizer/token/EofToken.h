@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "EofToken.h"
 #include "Token.h"
 
