@@ -29,7 +29,7 @@ TEST_CASE("Test parse() method") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("dummy")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         parser.parse();

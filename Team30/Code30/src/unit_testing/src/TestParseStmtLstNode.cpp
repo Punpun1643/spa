@@ -11,7 +11,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     SECTION("StmtLst with no statement return empty vector") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE(parser.parseStmtLst()->getChildren().empty());
@@ -22,7 +22,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -42,8 +42,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -62,7 +62,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -72,7 +72,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -85,8 +85,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -101,7 +100,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -121,8 +120,8 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -143,7 +142,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("read")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -153,7 +152,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("read")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -166,8 +165,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("read")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -182,7 +180,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -202,8 +200,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -224,7 +221,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("call")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable1")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -234,7 +231,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("call")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -247,8 +244,8 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("call")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -263,7 +260,7 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();
@@ -283,8 +280,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable2")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto stmtLstNode = parser.parseStmtLst();

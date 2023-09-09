@@ -11,7 +11,7 @@ TEST_CASE("Parser parseProgram") {
     SECTION("Invalid program with no procedures throws exception") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("not_procedure")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("main")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
@@ -25,7 +25,7 @@ TEST_CASE("Parser parseProgram") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto programNode = parser.parseProgram();
@@ -50,7 +50,7 @@ TEST_CASE("Parser parseProgram") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto programNode = parser.parseProgram();
@@ -74,7 +74,7 @@ TEST_CASE("Parser parseProgram") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("{")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);

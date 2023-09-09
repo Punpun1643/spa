@@ -11,7 +11,7 @@ TEST_CASE("Parser parseProcedure") {
 
     SECTION("Invalid procedure with no statements throws exception") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
@@ -22,7 +22,7 @@ TEST_CASE("Parser parseProcedure") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("{")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
@@ -34,7 +34,7 @@ TEST_CASE("Parser parseProcedure") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>(";")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
@@ -47,7 +47,7 @@ TEST_CASE("Parser parseProcedure") {
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<WordToken>("variable")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
         tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("}")));
-        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>("")));
+        tokens.push_back(std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
         SpParser parser = SpParser(tokens);
         auto procedureNode = parser.parseProcedure();
