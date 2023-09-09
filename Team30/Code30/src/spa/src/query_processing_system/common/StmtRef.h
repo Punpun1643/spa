@@ -15,6 +15,8 @@ class StmtRef {
  private:
   StmtRefType ref_type;
   int stmt_num;
+  const std::vector<EntityType> VALID_STMT_TYPES =
+      {STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN};
   std::shared_ptr<PqlDeclaration> declaration;
 
  public:

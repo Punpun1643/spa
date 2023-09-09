@@ -1,17 +1,26 @@
 #include "StmtRef.h"
 
 #include "EntityType.h"
+#include "InvalidSemanticsException.h"
 
-StmtRef::StmtRef() {
-  ref_type = WILD;
-}
+StmtRef::StmtRef(): ref_type(WILD) {}
 
 StmtRef::StmtRef(std::shared_ptr<PqlDeclaration> declaration) {
+  EntityType declaration_type = declaration->getEntityType();
+  if (std::find(VALID_STMT_TYPES.begin(), VALID_STMT_TYPES.end(),
+                declaration_type) == VALID_STMT_TYPES.end()) {
+    throw InvalidSemanticsException("Not a statement type");
+  }
+
   ref_type = DECLARATION;
   this->declaration = declaration;
 }
 
 StmtRef::StmtRef(int stmt_num) {
+  if (stmt_num <= 0) {
+    throw InvalidSemanticsException("Statement number cannot be less than 1.");
+  }
+
   ref_type = NUMBER;
   this->stmt_num = stmt_num;
 }
