@@ -1,6 +1,6 @@
 #include "QueryEvaluator.h"
 
-QueryEvaluator::QueryEvaluator(PKB& pkb): pkb(pkb) {}
+QueryEvaluator::QueryEvaluator(PKB& pkb) : pkb(pkb) {}
 
 std::unique_ptr<std::vector<std::string>> QueryEvaluator::evaluateQuery(
     std::unique_ptr<SelectClause> select_clause) {

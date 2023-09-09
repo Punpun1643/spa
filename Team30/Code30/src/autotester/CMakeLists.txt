@@ -5,4 +5,4 @@ target_link_libraries(autotester spa ${AUTOTESTER_LIBRARIES})
 
 if (NOT WIN32)
     target_link_libraries(autotester pthread)
-endif()
+endif ()

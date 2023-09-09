@@ -1,7 +1,7 @@
+#include "SpParser.h"
+
 #include <stdexcept>
 #include <string>
-
-#include "SpParser.h"
 
 std::string const START_PROCEDURE = "{";
 std::string const END_PROCEDURE = "}";

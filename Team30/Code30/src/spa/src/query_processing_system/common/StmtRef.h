@@ -6,8 +6,7 @@
 
 class StmtRef {
  private:
-
-public:
+ public:
   StmtRef();
 
   explicit StmtRef(int stmt_num);
