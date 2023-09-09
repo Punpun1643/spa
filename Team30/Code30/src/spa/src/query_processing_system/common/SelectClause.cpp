@@ -9,7 +9,7 @@ std::shared_ptr<PqlDeclaration> SelectClause::getDeclaration() {
   return declaration;
 }
 
-std::unique_ptr<ClauseResult> SelectClause::evaluate(PKB& pkb) {
+std::unique_ptr<ClauseResult> SelectClause::evaluate(PkbApi& pkb) {
   EntityType entity_type = declaration->getEntityType();
 
   std::vector<std::string> possible_values =

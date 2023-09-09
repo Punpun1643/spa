@@ -1,13 +1,13 @@
 #pragma once
-#include "../../program_knowledge_base/PKB.h"
+#include "../../program_knowledge_base/PkbApi.h"
 #include "../common/SelectClause.h"
 #include "../common/SuchThatClause.h"
 
 class QueryEvaluator {
  private:
-  PKB& pkb;
+  PkbApi& pkb;
  public:
-  QueryEvaluator(PKB& pkb);
+  explicit QueryEvaluator(PkbApi& pkb);
 
   std::unique_ptr<std::vector<std::string>> evaluateQuery(
       std::unique_ptr<SelectClause> select_clause);
