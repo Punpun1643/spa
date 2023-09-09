@@ -1,5 +1,5 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/B246QqbV)
-# Team 00
+# Team 30
 
 > Please fill in this Readme with the required information, and delete this box.
 >
@@ -40,6 +40,11 @@ No additional instructions required.
 
 # Team Members
 
-Name | Mobile | Email | Development OS/Toolchain
--:|:-:|:-|-|
-John Doe | 99887766 | john@doe.com | 
+Name | Mobile | Email                   | Development OS/Toolchain
+-:|:-:|:------------------------|-|
+Lee Kang Wei | 99887766 | john@doe.com            |
+Lim Wei Liang | 99887766 | john@doe.com            |
+Papattarada Apithanangsiri | 99887766 | papattarada.a@u.nus.edu | **OS:** macOS Ventura 13.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+Ryan Ong Ren-An | 99887766 | john@doe.com            |
+Tang Swen Yi | 99887766 | john@doe.com            |
+Tay Yan Han | 99887766 | john@doe.com            | 
