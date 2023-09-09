@@ -1,5 +1,4 @@
 #include "ATokenizer.h"
-
 #include "token/IntegerToken.h"
 #include "token/SpecialCharToken.h"
 #include "token/WordToken.h"
