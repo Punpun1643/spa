@@ -4,5 +4,5 @@
 
 class Clause {
 public:
-    virtual ClauseResult evaluate(PKB& pkb) = 0;
+    virtual std::unique_ptr<ClauseResult> evaluate(PKB& pkb) = 0;
 };

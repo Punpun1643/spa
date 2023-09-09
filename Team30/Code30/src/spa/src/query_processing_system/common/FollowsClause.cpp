@@ -6,6 +6,6 @@ FollowsClause::FollowsClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<Stmt
   // verify inputs are semantically valid.
 }
 
-ClauseResult FollowsClause::evaluate(PKB pkb) {
-  return ClauseResult();
+std::unique_ptr<ClauseResult> FollowsClause::evaluate(PKB pkb) {
+  return std::make_unique<ClauseResult>();
 }
