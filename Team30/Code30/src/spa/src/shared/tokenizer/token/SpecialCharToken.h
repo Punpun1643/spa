@@ -3,10 +3,10 @@
 #include "Token.h"
 
 class SpecialCharToken : public Token {
-public:
-    explicit SpecialCharToken(std::string val);
+ public:
+  explicit SpecialCharToken(std::string val);
 
-    ~SpecialCharToken() = default;
+  ~SpecialCharToken() = default;
 
-    TokenType getTokenType();
+  TokenType getTokenType();
 };

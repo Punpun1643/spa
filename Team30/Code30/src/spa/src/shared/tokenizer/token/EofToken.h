@@ -4,10 +4,10 @@
 #include "Token.h"
 
 class EofToken : public Token {
-public:
-    explicit EofToken(std::string val);
+ public:
+  explicit EofToken(std::string val);
 
-    ~EofToken() = default;
+  ~EofToken() = default;
 
-    TokenType getTokenType();
+  TokenType getTokenType();
 };

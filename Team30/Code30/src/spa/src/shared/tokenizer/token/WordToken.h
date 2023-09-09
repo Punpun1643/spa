@@ -3,10 +3,10 @@
 #include "Token.h"
 
 class WordToken : public Token {
-public:
-    explicit WordToken(std::string val);
+ public:
+  explicit WordToken(std::string val);
 
-    ~WordToken() = default;
+  ~WordToken() = default;
 
-    TokenType getTokenType();
+  TokenType getTokenType();
 };

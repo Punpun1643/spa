@@ -6,23 +6,23 @@
 #include "../tokenizer/token/Token.h"
 
 class AParser {
-public:
-    AParser(std::vector <std::shared_ptr<Token>> tokens);
+ public:
+  AParser(std::vector<std::shared_ptr<Token>> tokens);
 
-    // move pointer to the next token
-    std::shared_ptr<Token> nextToken();
+  // move pointer to the next token
+  std::shared_ptr<Token> nextToken();
 
-    // explore the next token without moving the pointer
-    std::shared_ptr<Token> peekToken();
+  // explore the next token without moving the pointer
+  std::shared_ptr<Token> peekToken();
 
-    // get the current token
-    std::shared_ptr<Token> getCurrToken();
+  // get the current token
+  std::shared_ptr<Token> getCurrToken();
 
-    virtual void parse() = 0;
+  virtual void parse() = 0;
 
-    virtual ~AParser() = default;
+  virtual ~AParser() = default;
 
-protected:
-    std::vector <std::shared_ptr<Token>> tokens;
-    size_t currTokenIndex = 0;
+ protected:
+  std::vector<std::shared_ptr<Token>> tokens;
+  size_t currTokenIndex = 0;
 };
