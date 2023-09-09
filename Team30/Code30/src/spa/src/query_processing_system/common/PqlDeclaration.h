@@ -8,11 +8,14 @@ struct PqlDeclarationHash;
 class PqlDeclaration {
   friend PqlDeclarationHash;
  private:
-  std::shared_ptr<const std::string> name;
+  const std::shared_ptr<const std::string> name;
   EntityType const entity_type;
 
  public:
   PqlDeclaration(std::shared_ptr<const std::string> name, EntityType entity_type);
+  std::shared_ptr<const std::string> getName() const;
+  EntityType getEntityType() const;
+  bool operator==(const PqlDeclaration &other) const;
 };
 
 struct PqlDeclarationHash {
