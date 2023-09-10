@@ -8,7 +8,9 @@
 #include <vector>
 
 #include "../source_processor/node/stmt_node/StmtNode.h"
-enum EntityType { PROCEDURE, VARIABLE, CONSTANT, STATEMENT };
+#include "../query_processing_system/common/EntityType.h"
+#include "tables/EntityTable.h"
+
 
 class EntityDatabase {
   std::unordered_map<EntityType, EntityTable*> entities;

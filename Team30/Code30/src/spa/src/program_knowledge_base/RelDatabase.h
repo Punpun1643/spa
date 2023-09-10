@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+
+#include "tables/StmtStmtRelTable.h"
+
 enum RelType { FOLLOWS, PARENT, USES, MODIFIES };
 
 class RelDatabase

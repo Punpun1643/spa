@@ -10,17 +10,16 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "tables/EntityTable.h"
 
-enum EntityType { PROCEDURE, VARIABLE, CONSTANT, STATEMENT };
 
   //TODO: Replace EntityType and EntityNode with correct names based on implementation
 
 
   EntityDatabase::EntityDatabase() {
     entities = {
-        {procedure, new EntityTable()}, //name, stmtNums
-        {variable, new EntityTable()},  //name, stmtNums
-        {constant, new EntityTable()},   //value (as str), stmtNums
-        {statement, new EntityTable()}, //ENUM str, stmtNums
+        {PROCEDURE, new EntityTable()}, //name, stmtNums
+        {VARIABLE, new EntityTable()},  //name, stmtNums
+        {CONSTANT, new EntityTable()},   //value (as str), stmtNums
+        {STMT, new EntityTable()}, //ENUM str, stmtNums
     };              
   };
 

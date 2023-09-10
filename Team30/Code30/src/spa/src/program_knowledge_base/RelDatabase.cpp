@@ -7,19 +7,11 @@
 #include "tables/StmtStmtRelTable.h"
 #include "RelDatabase.h"
 
-enum RelType {
-  FOLLOWS,
-  PARENT,
-  USES,
-  MODIFIES
-};
 
 //TODO: Replace RelType with correct names based on implementation
-class RelDatabase
-{
 
   RelDatabase::RelDatabase() {
-    relationships = {{Follows, new StmtStmtRelTable()}}; //stmtNum, stmtNums[]
+    relationships = {{FOLLOWS, new StmtStmtRelTable()}}; //stmtNum, stmtNums[]
   };
 
   std::vector<int> RelDatabase::get(RelType type, int lineNum)
@@ -33,4 +25,3 @@ class RelDatabase
     relationships[type]->insertData(lineNum1, lineNum2);
     return true;
   }
-};
