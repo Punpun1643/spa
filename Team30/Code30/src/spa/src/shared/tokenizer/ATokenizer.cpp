@@ -24,7 +24,7 @@ std::shared_ptr<Token> ATokenizer::next() {
     if (std::isalpha(c)) {
       std::string word;
       word += c;
-      while (std::isalpha(input.peek())) {
+      while (std::isalnum(input.peek())) {
         input.get(c);
         word += c;
       }
