@@ -690,3 +690,6 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/qt,qtcreator,linux,windows,macos,visualstudio,visualstudiocode,clion,c++
+Team30/Code30/CppProperties.json
+Team30/Code30/CMakeSettings.json
+Team30/Code30/CMakeSettings.json

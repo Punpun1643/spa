@@ -9,18 +9,19 @@
 #include "StmtLstNode.h"
 
 class ProcedureNode : public ANode {
-public:
-    explicit ProcedureNode(std::string procedureName, std::shared_ptr <StmtLstNode> stmtLstNode);
+ public:
+  explicit ProcedureNode(std::string procedureName,
+                         std::shared_ptr<StmtLstNode> stmtLstNode);
 
-    void accept(IDesignExtractor &designExtractor) override;
+  void accept(IDesignExtractor& designExtractor) override;
 
-    std::vector<std::shared_ptr<StmtLstNode>> getChildren() const;
+  std::vector<std::shared_ptr<StmtLstNode>> getChildren() const;
 
-    const std::string procedureName; // for testing purposes
+  std::string getProcedureName() const;
 
-    ~ProcedureNode() = default;
+  ~ProcedureNode() = default;
 
-private:
-//    const std::string procedureName;
-    const std::shared_ptr <StmtLstNode> stmtLstNode;
+ private:
+  std::string const procedureName;
+  std::shared_ptr<StmtLstNode> const stmtLstNode;
 };

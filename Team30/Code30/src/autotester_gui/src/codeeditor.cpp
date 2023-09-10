@@ -26,7 +26,7 @@ int CodeEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-	//int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
+    //int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 
     return 20;
 }
@@ -91,33 +91,33 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 
 
     QTextBlock block = firstVisibleBlock();
-	int blockNumber = 0;// block.blockNumber();
+    int blockNumber = 0;// block.blockNumber();
     int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
     int bottom = top + (int) blockBoundingRect(block).height();
 
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
-			int cnt = block.text().count(QLatin1Char(';'));
+            int cnt = block.text().count(QLatin1Char(';'));
 
-			cnt+=block.text().count(QString("if"));
-			cnt += block.text().count(QString("while"));
-			if (cnt > 0) {
-				blockNumber += cnt;
-				QString number = QString::number(blockNumber);
-				painter.setPen(Qt::black);
-				painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
-					Qt::AlignRight, number);
-			}
-		}
-		else {
+            cnt+=block.text().count(QString("if"));
+            cnt += block.text().count(QString("while"));
+            if (cnt > 0) {
+                blockNumber += cnt;
+                QString number = QString::number(blockNumber);
+                painter.setPen(Qt::black);
+                painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
+                                 Qt::AlignRight, number);
+            }
+        }
+        else {
 
-			int cnt = block.text().count(QLatin1Char(';'));
-			cnt += block.text().count(QString("if"));
-			cnt += block.text().count(QString("while"));
-			if (cnt > 0) {
-				blockNumber += cnt;
-			}
-		}
+            int cnt = block.text().count(QLatin1Char(';'));
+            cnt += block.text().count(QString("if"));
+            cnt += block.text().count(QString("while"));
+            if (cnt > 0) {
+                blockNumber += cnt;
+            }
+        }
 
         block = block.next();
         top = bottom;

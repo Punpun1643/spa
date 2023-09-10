@@ -7,14 +7,15 @@
 #include "ProcedureNode.h"
 
 class ProgramNode : public ANode {
-public:
-    explicit ProgramNode(std::vector <std::shared_ptr<ProcedureNode>> procedures);
-    void accept(IDesignExtractor &designExtractor) override;
+ public:
+  explicit ProgramNode(std::vector<std::shared_ptr<ProcedureNode>> procedures);
 
-    std::vector<std::shared_ptr<ProcedureNode>> getChildren() const;
+  void accept(IDesignExtractor& designExtractor) override;
 
-    ~ProgramNode() = default;
+  std::vector<std::shared_ptr<ProcedureNode>> getChildren() const;
 
-private:
-    const std::vector <std::shared_ptr<ProcedureNode>> procedures;
+  ~ProgramNode() = default;
+
+ private:
+  std::vector<std::shared_ptr<ProcedureNode>> const procedures;
 };
