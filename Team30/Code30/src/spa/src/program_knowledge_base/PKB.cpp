@@ -7,10 +7,9 @@
 #include <utility>
 #include <vector>
 
-#include "../source_processor/node/ANode.h"
-#include "../source_processor/node/stmt_node/StmtNode.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
+
 
 class PKB {
   EntityDatabase* entData;
@@ -23,38 +22,5 @@ class PKB {
   PKB() {
     entData = new EntityDatabase();
     relData = new RelDatabase();
-  }
-
-  bool insertFollows(ANode stmt1, ANode stmt2) {
-    //relData.insert(Follows, stmt1, stmt2);
-    //entData.insert(stmt1);
-    //entData.insert(stmt2);
-      
-    return true;
-  }
-
-  bool checkFollows(int lineNum1, int lineNum2) {
-    //std::vector<int> l1Follows = relData.get(Follows, lineNum1)
-    //if std::find(v.begin(), v.end(), key) != v.end()
-    return true;
-  }
-
-  std::vector<int> getFollows(int lineNum, EntityType type) {
-    //std::vector<int> l1Follows = relData.get(Follows, lineNum)
-    //entityLines = entData.getAll(type)
-    return {1};
-  }
-
-  std::vector<int> getFollows(EntityType type, int lineNum) {
-    //std::vector<int> l2Follows = relData.get(Follows, lineNum)
-    //entityLines = entData.getAll(type)
-    return {1};
-  }
-
-  std::vector<int> getFollows(EntityType type1, EntityType type2) {
-    //std::vector<int> l2Follows = relData.get(Follows, lineNum)
-    //entityLines1 = entData.getAll(type1)
-    //entityLines2 = entData.getAll(type2)
-    return {1};
   }
 };

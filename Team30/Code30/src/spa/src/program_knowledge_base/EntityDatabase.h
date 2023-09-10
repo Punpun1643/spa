@@ -1,12 +1,15 @@
 #pragma once
 
-#include <iostream>
 #include <stdio.h>
+
+#include <iostream>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
+
+#include "../source_processor/node/stmt_node/StmtNode.h"
 
 class EntityDatabase {
-  bool insert(EntityNode ent);
+  bool insert(StmtNode ent);
   std::vector<std::string> getAll(EntityType type);
 };

@@ -1,11 +1,14 @@
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <vector>
-#include <unordered_map>
-
-#include "tables/EntityTable.h"
 #include "EntityDatabase.h"
+
+#include <stdio.h>
+
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "../source_processor/node/stmt_node/StmtNode.h"
+#include "tables/EntityTable.h"
 
 enum EntityType
 {
@@ -32,7 +35,7 @@ class EntityDatabase {
   };
 
 
-  bool insert(EntityNode ent) {
+  bool insert(StmtNode ent) {
     /*
     if (ent.type() in {procedure, variable, constant}) {
       entities[ent.type()].insertData(std::to_string(ent.val()), 

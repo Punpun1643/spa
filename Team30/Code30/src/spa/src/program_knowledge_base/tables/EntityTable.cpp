@@ -11,7 +11,7 @@
 
 class EntityTable {
   std::unordered_map<std::string, std::vector<int>> dataTable; 
-  //int = StmtNum
+  //key = value or stmtType; int = StmtNum
 
   public:
 
