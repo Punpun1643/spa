@@ -8,6 +8,7 @@ using namespace std;
 
 #include "../../program_knowledge_base/PKB.h"
 #include "IDesignExtractor.h"
+#include <program_knowledge_base/PkbApi.h>
 
 class FollowsExtractor : public IDesignExtractor {
  public:
@@ -22,7 +23,7 @@ class FollowsExtractor : public IDesignExtractor {
   void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override {
     std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();
     for (int i = 0; i < children.size() - 1; i++) {
-      // PKB::insertFollows(children[i], children[i + 1]);
+      PkbApi::insertFollows(children[i], children[i + 1]);
     }
   }
 
