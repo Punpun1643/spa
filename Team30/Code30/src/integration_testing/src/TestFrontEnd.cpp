@@ -8,5 +8,5 @@ void require(bool b) {
 TEST_CASE("1st Test") {
 
 //    ANode T;
-require(1 == 1);
+    require(1 == 1);
 }
