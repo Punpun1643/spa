@@ -11,4 +11,3 @@ class FollowsClause: public SuchThatClause{
   FollowsClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<StmtRef> arg2);
   std::unique_ptr<ClauseResult> evaluate(PKB pkb);
 };
-

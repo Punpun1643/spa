@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "shared/tokenizer/token/TokenType.h"
+#include "TokenType.h"
 
 class Token {
  private:
