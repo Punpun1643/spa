@@ -59,8 +59,6 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
-    tokens.push_back(
-        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
@@ -171,8 +169,6 @@ TEST_CASE("Parser parseStmtLst read stmts") {
         std::make_shared<SpecialCharToken>(";")));
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("}")));
-    tokens.push_back(
-        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
@@ -352,8 +348,6 @@ TEST_CASE("Parser parseStmtLst call stmts") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
-    tokens.push_back(
-        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
@@ -403,8 +397,6 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>(";")));
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("}")));
-    tokens.push_back(
-        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
