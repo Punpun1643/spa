@@ -1,21 +1,28 @@
 #pragma once
-//using namespace std;
-//int Parse();
 
-#include "../../source_processor/node/ProgramNode.h"
+#include <vector>
+#include <memory>
+
 #include "../tokenizer/token/Token.h"
 
 class AParser {
-public:
-    AParser();
+ public:
+  AParser(std::vector<std::shared_ptr<Token>> tokens);
 
-    ProgramNode parse() {};
+  // move pointer to the next token
+  std::shared_ptr<Token> nextToken();
 
-    Token nextToken();
+  // explore the next token without moving the pointer
+  std::shared_ptr<Token> peekToken();
 
-    Token peekToken();
+  // get the current token
+  std::shared_ptr<Token> getCurrToken();
 
-    Token getCurrToken();
+  virtual void parse() = 0;
 
-    virtual ~AParser() = default;
+  virtual ~AParser() = default;
+
+ protected:
+  std::vector<std::shared_ptr<Token>> tokens;
+  size_t currTokenIndex = 0;
 };

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <memory>
@@ -8,16 +9,19 @@
 #include "StmtLstNode.h"
 
 class ProcedureNode : public ANode {
-public:
-    explicit ProcedureNode(std::string procedureName, std::shared_ptr <StmtLstNode> stmtLstNode);
+ public:
+  explicit ProcedureNode(std::string procedureName,
+                         std::shared_ptr<StmtLstNode> stmtLstNode);
 
-    void accept(IDesignExtractor &designExtractor) override;
+  void accept(IDesignExtractor& designExtractor) override;
 
-    std::vector <std::shared_ptr<StmtLstNode>> getChildren() const;
+  std::vector<std::shared_ptr<StmtLstNode>> getChildren() const;
 
-    ~ProcedureNode() = default;
+  std::string getProcedureName() const;
 
-private:
-    const std::string procedureName;
-    const std::shared_ptr <StmtLstNode> stmtLstNode;
+  ~ProcedureNode() = default;
+
+ private:
+  std::string const procedureName;
+  std::shared_ptr<StmtLstNode> const stmtLstNode;
 };
