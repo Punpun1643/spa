@@ -1,15 +1,5 @@
-#pragma once
-
-#include <string>
-
 #include "EofToken.h"
-#include "Token.h"
 
-class EofToken : public Token {
- public:
-  explicit EofToken(std::string val);
+EofToken::EofToken() : Token() {}
 
-  ~EofToken() = default;
-
-  TokenType getTokenType();
-};
+TokenType EofToken::getTokenType() { return TokenType::EOF_TOKEN; };
