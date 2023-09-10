@@ -7,33 +7,28 @@
 #include "tables/StmtStmtRelTable.h"
 #include "RelDatabase.h"
 
-enum RelType
-{
-  Follows,
-  Parent,
-  Uses,
-  Modifies
+enum RelType {
+  FOLLOWS,
+  PARENT,
+  USES,
+  MODIFIES
 };
 
 //TODO: Replace RelType with correct names based on implementation
 class RelDatabase
 {
 
-  std::unordered_map<RelType, StmtStmtRelTable*> relationships;
-  
-  public:  
-
-  RelDatabase() {
+  RelDatabase::RelDatabase() {
     relationships = {{Follows, new StmtStmtRelTable()}}; //stmtNum, stmtNums[]
   };
 
-  std::vector<int> get(RelType type, int lineNum)
+  std::vector<int> RelDatabase::get(RelType type, int lineNum)
   {
     relationships[type]->queryData(lineNum);
     return {1};
   }
   //we can overload int, var for Uses/Modifies
-  bool insert(RelType type, int lineNum1, int lineNum2)
+  bool RelDatabase::insert(RelType type, int lineNum1, int lineNum2)
   {
     relationships[type]->insertData(lineNum1, lineNum2);
     return true;

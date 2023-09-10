@@ -4,14 +4,10 @@
 
 #include "BaseTable.h"
 
-class BaseTable {
- 
-  public:
+bool BaseTable::insertData(std::any key, std::any value) {
+   return true;
+}
 
-  virtual bool insertData(std::any key, std::any value) {
-    return true;
-  }
-  virtual std::any queryData(std::any key) {
-    return -1;
-  }
-};
+std::any BaseTable::queryData(std::any key) {
+   return -1;
+}

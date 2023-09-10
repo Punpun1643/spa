@@ -10,22 +10,12 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "tables/EntityTable.h"
 
-enum EntityType
-{
-  procedure,
-  variable,
-  constant,
-  statement
-};
+enum EntityType { PROCEDURE, VARIABLE, CONSTANT, STATEMENT };
 
-class EntityDatabase {
-  
   //TODO: Replace EntityType and EntityNode with correct names based on implementation
-  std::unordered_map<EntityType, EntityTable*> entities;
 
-  public:
 
-  EntityDatabase() {
+  EntityDatabase::EntityDatabase() {
     entities = {
         {procedure, new EntityTable()}, //name, stmtNums
         {variable, new EntityTable()},  //name, stmtNums
@@ -35,7 +25,7 @@ class EntityDatabase {
   };
 
 
-  bool insert(StmtNode ent) {
+  bool EntityDatabase::insert(StmtNode ent) {
     /*
     if (ent.type() in {procedure, variable, constant}) {
       entities[ent.type()].insertData(std::to_string(ent.val()), 
@@ -48,7 +38,7 @@ class EntityDatabase {
   }
 
 
-  std::vector<std::string> getAll(EntityType type) {
+  std::vector<std::string> EntityDatabase::getAll(EntityType type) {
     std::vector<std::string>  stringResult = {};
     /*
     if (type in {procedure, variable, constant}) {
@@ -64,4 +54,3 @@ class EntityDatabase {
   }
 
   
-};

@@ -9,18 +9,12 @@
 //StmtStmtRelTable stores relationships that have (stmt,stmt) parameters
 //i.e follows, parent
 
-class StmtStmtRelTable {
-
-  std::unordered_map<int, std::vector<int>> dataTable;
-
-  public:
-
-  StmtStmtRelTable() {
+  StmtStmtRelTable::StmtStmtRelTable() {
     dataTable = {};
   }
 
   //inserts relation into table, key=stmtnum1, val=stmtnum2
-  bool insertData(int key, int value)
+  bool StmtStmtRelTable::insertData(int key, int value)
   {
     std::unordered_map<int, std::vector<int>>::const_iterator got =
         dataTable.find(key);
@@ -37,7 +31,7 @@ class StmtStmtRelTable {
   }
 
   //query a value from the table based on a key, useful for getRelation APIs.
-  std::vector<int> queryData(int key)
+  std::vector<int> StmtStmtRelTable::queryData(int key)
   {
     std::unordered_map<int, std::vector<int>>::const_iterator got =
         dataTable.find(key);
@@ -48,4 +42,3 @@ class StmtStmtRelTable {
       return got->second;
     }
   }
-};

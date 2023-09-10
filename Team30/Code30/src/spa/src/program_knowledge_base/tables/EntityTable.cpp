@@ -9,20 +9,17 @@
 //Entity Table class extended from base table class, will be used for NAMED entities
 //i.e proc, stmt, var, const
 
-class EntityTable {
-  std::unordered_map<std::string, std::vector<int>> dataTable; 
-  //key = value or stmtType; int = StmtNum
 
-  public:
+//key = value or stmtType; int = StmtNum
 
-  EntityTable() {
+  EntityTable::EntityTable() {
     dataTable = {};
   }
   
   //Based on Entity Node, inserts the relevant name/value/type into the table as key
   //Linenum position as value.
 
-  bool insertData(std::string key, int value) {
+  bool EntityTable::insertData(std::string key, int value) {
     std::unordered_map<std::string, std::vector<int>>::const_iterator got = dataTable.find(key);
 
     if (got == dataTable.end()) { //add new key-value pair if not in map.
@@ -37,7 +34,7 @@ class EntityTable {
   }
 
   //Returns Stmtnums of entity types from the table based on their name
-  std::vector<int> queryData(std::string key) {
+  std::vector<int> EntityTable::queryData(std::string key) {
     std::unordered_map<std::string, std::vector<int>>::const_iterator got = dataTable.find(key);
     
     if (got == dataTable.end()) { //data not found
@@ -49,7 +46,7 @@ class EntityTable {
   }
 
   //Returns all names/values of entities, for SP-PKB API.
-  std::vector<std::string> queryAllKeys() {
+  std::vector<std::string> EntityTable::queryAllKeys() {
     std::vector<std::string> keys;
     keys.reserve(dataTable.size());
 
@@ -59,4 +56,3 @@ class EntityTable {
 
     return keys;
   }
-};
