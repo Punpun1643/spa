@@ -11,7 +11,6 @@
 class QueryEvaluator {
  private:
   PKB& pkb;
-
  public:
   QueryEvaluator(PKB& pkb);
 

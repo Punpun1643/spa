@@ -1,9 +1,9 @@
 #ifndef TESTWRAPPER_H
 #define TESTWRAPPER_H
 
+#include <string>
 #include <iostream>
 #include <list>
-#include <string>
 
 // include your other headers here
 #include "AbstractWrapper.h"

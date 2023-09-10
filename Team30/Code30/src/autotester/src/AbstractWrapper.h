@@ -1,29 +1,28 @@
 #ifndef ABSTRACTWRAPPER_H
 #define ABSTRACTWRAPPER_H
 
+#include <string>
 #include <iostream>
 #include <list>
-#include <string>
 
 class AbstractWrapper {
  public:
-  static bool volatile GlobalStop;
+  static volatile bool GlobalStop;
   // method for parsing the SIMPLE source
   virtual void parse(std::string filename) = 0;
   // method for evaluating a query
-  virtual void evaluate(std::string query, std::list<std::string>& results) = 0;
+  virtual void evaluate(std::string query, std::list<std::string>& results) =0;
 };
 
 class WrapperFactory {
- public:
+public:
   // static method for creating a wrapper
   static AbstractWrapper* createWrapper();
-
- private:
+private:
   // the following three will prevent the creation of WrapperFactory objects
   WrapperFactory();
-  WrapperFactory(WrapperFactory const&);
-  WrapperFactory& operator=(WrapperFactory const&);
+  WrapperFactory(const WrapperFactory&);
+  WrapperFactory& operator=(const WrapperFactory&);
 
   // the Wrapper object
   static AbstractWrapper* wrapper;

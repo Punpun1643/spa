@@ -10,11 +10,11 @@ class PqlDeclaration {
   friend PqlDeclarationHash;
 
  private:
-  std::shared_ptr<std::string const> name;
+  std::shared_ptr<const std::string> name;
   EntityType const entity_type;
 
  public:
-  PqlDeclaration(std::shared_ptr<std::string const> name,
+  PqlDeclaration(std::shared_ptr<const std::string> name,
                  EntityType entity_type);
 };
 

@@ -1,9 +1,10 @@
 #ifndef TESTWRAPPER_H
 #define TESTWRAPPER_H
 
+#include <string>
 #include <iostream>
 #include <list>
-#include <string>
+
 
 class GUIWrapper {
  public:

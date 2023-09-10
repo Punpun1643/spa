@@ -1,8 +1,8 @@
 #ifndef CODEEDITOR_H
 #define CODEEDITOR_H
 
-#include <QObject>
 #include <QPlainTextEdit>
+#include <QObject>
 
 class QPaintEvent;
 class QResizeEvent;
@@ -11,42 +11,49 @@ class QWidget;
 
 class LineNumberArea;
 
-class CodeEditor : public QPlainTextEdit {
-  Q_OBJECT
 
- public:
-  CodeEditor(QWidget* parent = 0);
+class CodeEditor : public QPlainTextEdit
+{
+    Q_OBJECT
 
-  void lineNumberAreaPaintEvent(QPaintEvent* event);
-  int lineNumberAreaWidth();
+public:
+    CodeEditor(QWidget *parent = 0);
 
- protected:
-  void resizeEvent(QResizeEvent* event) override;
+    void lineNumberAreaPaintEvent(QPaintEvent *event);
+    int lineNumberAreaWidth();
 
- private slots:
-  void updateLineNumberAreaWidth(int newBlockCount);
-  void highlightCurrentLine();
-  void updateLineNumberArea(QRect const&, int);
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
- private:
-  QWidget* lineNumberArea;
+private slots:
+            void updateLineNumberAreaWidth(int newBlockCount);
+    void highlightCurrentLine();
+    void updateLineNumberArea(const QRect &, int);
+
+private:
+    QWidget *lineNumberArea;
 };
 
-class LineNumberArea : public QWidget {
- public:
-  LineNumberArea(CodeEditor* editor) : QWidget(editor) { codeEditor = editor; }
 
-  QSize sizeHint() const override {
-    return QSize(codeEditor->lineNumberAreaWidth(), 0);
-  }
+class LineNumberArea : public QWidget
+{
+public:
+    LineNumberArea(CodeEditor *editor) : QWidget(editor) {
+        codeEditor = editor;
+    }
 
- protected:
-  void paintEvent(QPaintEvent* event) override {
-    codeEditor->lineNumberAreaPaintEvent(event);
-  }
+    QSize sizeHint() const override {
+        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+    }
 
- private:
-  CodeEditor* codeEditor;
+protected:
+    void paintEvent(QPaintEvent *event) override {
+        codeEditor->lineNumberAreaPaintEvent(event);
+    }
+
+private:
+    CodeEditor *codeEditor;
 };
+
 
 #endif
