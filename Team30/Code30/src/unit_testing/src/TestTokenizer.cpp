@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -23,9 +24,9 @@ TEST_CASE("Tokens") {
 }
 
 TEST_CASE("Tokenizer") {
-  std::ifstream inputFile(
-      "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
-      "Sample_source.txt");
+  std::filesystem::path currentDir = std::filesystem::current_path();
+  std::ifstream inputFile(currentDir /
+                          "../../../../../Tests30/Sample_source.txt");
   ATokenizer tokenizer = ATokenizer(inputFile);
 
   std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
