@@ -1,6 +1,7 @@
 #include "FollowsClause.h"
 
 #include <string>
+#include <stdexcept>
 
 FollowsClause::FollowsClause(std::unique_ptr<StmtRef> arg1,
                              std::unique_ptr<StmtRef> arg2)
