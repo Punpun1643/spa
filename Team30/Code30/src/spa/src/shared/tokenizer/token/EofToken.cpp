@@ -2,4 +2,4 @@
 
 EofToken::EofToken() : Token() {}
 
-TokenType EofToken::getTokenType() { return TokenType::EOF_TOKEN; };_TOKEN; };
+TokenType EofToken::getTokenType() { return TokenType::EOF_TOKEN; };

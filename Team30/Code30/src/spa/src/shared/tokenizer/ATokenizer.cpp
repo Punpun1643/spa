@@ -4,6 +4,7 @@
 #include "token/IntegerToken.h"
 #include "token/SpecialCharToken.h"
 #include "token/WordToken.h"
+#include "token/EofToken.h"
 
 ATokenizer::ATokenizer(std::istream& input) : input(input) {}
 

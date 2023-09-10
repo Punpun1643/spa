@@ -1,5 +1,9 @@
-#include "EofToken.h"
+#pragma once
+#include "Token.h"
 
-EofToken::EofToken() : Token() {}
-
-TokenType EofToken::getTokenType() { return TokenType::EOF_TOKEN; };
+class EofToken : public Token {
+ public:
+  explicit EofToken();
+  ~EofToken() = default;
+  TokenType getTokenType();
+};
