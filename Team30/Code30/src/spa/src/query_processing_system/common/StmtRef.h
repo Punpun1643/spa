@@ -26,11 +26,11 @@ class StmtRef {
 
   explicit StmtRef(std::shared_ptr<PqlDeclaration> stmt_type);
 
-  StmtRefType getStmtRefType();
+  StmtRefType getStmtRefType() const;
 
-  int getStmtNum();
+  int getStmtNum() const;
 
-  std::shared_ptr<PqlDeclaration> getDeclaration();
+  std::shared_ptr<PqlDeclaration> getDeclaration() const;
 
-  EntityType getDeclarationType();
+  EntityType getDeclarationType() const;
 };

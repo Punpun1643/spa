@@ -6,5 +6,5 @@ class InvalidSemanticsException : public std::invalid_argument {
    * Thrown when a Clause is given arguments that make it semantically invalid.
    */
  public:
-  InvalidSemanticsException(const std::string& what_arg);
+  explicit InvalidSemanticsException(const std::string& what_arg);
 };
