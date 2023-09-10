@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <utility>
 #include <optional>
 #include "../query_processing_system/common/EntityType.h"
 
