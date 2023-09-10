@@ -1,7 +1,7 @@
 #include "PqlDeclaration.h"
 
 // Needs to be hashable so that it can be put into a dict.
-PqlDeclaration::PqlDeclaration(std::shared_ptr<const std::string> name, EntityType entity_type)
+PqlDeclaration::PqlDeclaration(std::shared_ptr<std::string> name, EntityType entity_type)
     :name(name), entity_type(entity_type) {}
 
 EntityType PqlDeclaration::getEntityType() const {
@@ -13,9 +13,6 @@ std::shared_ptr<const std::string> PqlDeclaration::getName() const {
 }
 
 bool PqlDeclaration::operator==(const PqlDeclaration &other) const {
-  if (*name == *(other.name) && entity_type == other.entity_type) {
-    return true;
-  } else {
-    return false;
-  }
+  return (*name == *(other.name) &&
+          entity_type == other.entity_type);
 }
