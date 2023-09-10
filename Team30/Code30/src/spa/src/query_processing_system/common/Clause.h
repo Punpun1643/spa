@@ -1,8 +1,11 @@
 #pragma once
-#include "../../program_knowledge_base/PKB.h"
+#include <memory>
+
+#include "../../program_knowledge_base/PkbApi.h"
 #include "ClauseResult.h"
 
 class Clause {
-public:
-    virtual std::unique_ptr<ClauseResult> evaluate(PKB& pkb) = 0;
+ public:
+  virtual std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) = 0;
+  virtual ~Clause();
 };

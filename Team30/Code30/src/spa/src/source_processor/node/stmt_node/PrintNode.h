@@ -6,13 +6,15 @@
 #include "StmtType.h"
 
 class PrintNode : public StmtNode {
-public:
-    explicit PrintNode(int stmtIndex, StmtType stmtType, std::string varName);
+ public:
+  explicit PrintNode(int stmtIndex, StmtType stmtType, std::string varName);
 
-    void accept(IDesignExtractor &designExtractor) override;
+  void accept(IDesignExtractor& designExtractor) override;
 
-    ~PrintNode() = default;
+  std::string const& getVarName() const;
 
-private:
-    const std::string varName;
+  ~PrintNode() = default;
+
+ private:
+  std::string const varName;
 };
