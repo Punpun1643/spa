@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+
 #include "../../program_knowledge_base/PkbApi.h"
 #include "ClauseResult.h"
 
