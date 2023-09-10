@@ -1,4 +1,3 @@
-#include <filesystem>
 #include <string>
 
 #include "../../spa/src/source_processor/SpController.h"
@@ -8,13 +7,12 @@
 #include "../../spa/src/source_processor/node/stmt_node/StmtType.h"
 #include "catch.hpp"
 
-std::string currentDir = std::filesystem::current_path().string();
-
 TEST_CASE("Test SpController parseInputFile w_4_short.txt") {
   SECTION("Test file with valid path and valid source code") {
     SpController spController = SpController();
     std::string filePath =
-        currentDir + "/../../../../../Tests30/Sample_source_w4_short.txt";
+        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+        "Sample_source_w4_short.txt";
     std::shared_ptr<ProgramNode> programNode =
         spController.parseInputFile(filePath);
     std::shared_ptr<ProcedureNode> procedureNode =
@@ -44,7 +42,8 @@ TEST_CASE("Test SpController parseInputFile for Example 1 and 2") {
       "Test file with valid path and valid source code for Example 1 and 2") {
     SpController spController = SpController();
     std::string filePath =
-        currentDir + "/../../../../../Tests30/Sample_source_w4_medium.txt";
+        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+        "Sample_source_w4_medium.txt";
     auto programNode = spController.parseInputFile(filePath);
 
     REQUIRE(programNode->getChildren().size() == 3);
