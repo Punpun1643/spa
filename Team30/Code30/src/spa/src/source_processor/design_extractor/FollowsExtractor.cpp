@@ -8,7 +8,6 @@ using namespace std;
 
 #include "../../program_knowledge_base/PKB.h"
 #include "IDesignExtractor.h"
-#include "FollowsExtractor.h"
 
 class FollowsExtractor : public IDesignExtractor {
  public:
@@ -38,4 +37,6 @@ class FollowsExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override {
     // TODO
   }
+
+  FollowsExtractor() = default;
 };
