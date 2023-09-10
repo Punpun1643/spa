@@ -3,7 +3,7 @@
 #include "EntityType.h"
 #include "InvalidSemanticsException.h"
 
-StmtRef::StmtRef(): ref_type(WILD) {}
+StmtRef::StmtRef() : ref_type(WILD) {}
 
 StmtRef::StmtRef(std::shared_ptr<PqlDeclaration> declaration) {
   EntityType declaration_type = declaration->getEntityType();
@@ -25,30 +25,28 @@ StmtRef::StmtRef(int stmt_num) {
   this->stmt_num = stmt_num;
 }
 
-StmtRefType StmtRef::getStmtRefType() const {
-  return ref_type;
-}
+StmtRefType StmtRef::getStmtRefType() const { return ref_type; }
 
 int StmtRef::getStmtNum() const {
   if (ref_type == NUMBER) {
-      return stmt_num;
+    return stmt_num;
   } else {
-      throw std::runtime_error("StmtRef does not contain a statement number.");
+    throw std::runtime_error("StmtRef does not contain a statement number.");
   }
 }
 
 std::shared_ptr<PqlDeclaration> StmtRef::getDeclaration() const {
   if (ref_type == DECLARATION) {
-      return declaration;
+    return declaration;
   } else {
-      throw std::runtime_error("StmtRef does not contain a PQL declaration.");
+    throw std::runtime_error("StmtRef does not contain a PQL declaration.");
   }
 }
 
 EntityType StmtRef::getDeclarationType() const {
   if (ref_type == DECLARATION) {
-      return declaration->getEntityType();
+    return declaration->getEntityType();
   } else {
-      throw std::runtime_error("StmtRef does not contain a PQL declaration.");
+    throw std::runtime_error("StmtRef does not contain a PQL declaration.");
   }
 }

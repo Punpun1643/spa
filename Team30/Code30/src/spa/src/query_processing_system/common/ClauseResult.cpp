@@ -7,12 +7,13 @@ ClauseResult::ClauseResult(PqlDeclaration d, std::vector<std::string> values) {
   value_map[d] = values;
 }
 
-ClauseResult::ClauseResult(PqlDeclaration d1, PqlDeclaration d2,
-                           std::vector<std::pair<std::string, std::string>> values) {
+ClauseResult::ClauseResult(
+    PqlDeclaration d1, PqlDeclaration d2,
+    std::vector<std::pair<std::string, std::string>> values) {
   /* Create a clause result with paired declarations */
   if (d1 == d2) {
     std::vector<std::string> intersecting;
-    for (auto &pair: values) {
+    for (auto& pair : values) {
       if (pair.first == pair.second) {
         intersecting.push_back(pair.first);
       }
@@ -22,7 +23,7 @@ ClauseResult::ClauseResult(PqlDeclaration d1, PqlDeclaration d2,
     // separate out the paired vectors
     std::vector<std::string> v1;
     std::vector<std::string> v2;
-    for (auto &pair: values) {
+    for (auto& pair : values) {
       v1.push_back(pair.first);
       v2.push_back(pair.second);
     }
@@ -45,7 +46,6 @@ std::vector<std::string> ClauseResult::getIntersectingValues(
   return intersecting_values;
 }
 
-
 std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
     PqlDeclaration& declaration) const {
   if (value_map.count(declaration) == 0) {
@@ -56,24 +56,28 @@ std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
 
 void ClauseResult::combineResults(ClauseResult& other) {
   /* For now, assume that at most 1 overlap. Can ignore linkages.*/
-  std::unique_ptr<std::vector<PqlDeclaration>> common_declarations = getCommonDeclarations(other);
+  std::unique_ptr<std::vector<PqlDeclaration>> common_declarations =
+      getCommonDeclarations(other);
   if (common_declarations->empty()) {
-    for (const auto& [key, value] : other.value_map) {
+    for (auto const& [key, value] : other.value_map) {
       value_map[key] = value;
     }
-    for (const auto& [key, value]: other.linkedDeclarations) {
+    for (auto const& [key, value] : other.linkedDeclarations) {
       linkedDeclarations[key] = value;
     }
   } else if (common_declarations->size() == 1) {
     PqlDeclaration shared_d = (*common_declarations)[0];
-    value_map[shared_d] = getIntersectingValues(value_map[shared_d], other.value_map[shared_d]);
+    value_map[shared_d] =
+        getIntersectingValues(value_map[shared_d], other.value_map[shared_d]);
     // We ought to copy the rest, but for now it doesn't matter.
   }
 }
 
-std::unique_ptr<std::vector<PqlDeclaration>> ClauseResult::getCommonDeclarations(ClauseResult& other) {
-  std::unique_ptr<std::vector<PqlDeclaration>> common_declarations = std::make_unique<std::vector<PqlDeclaration>>();
-  for (auto& it: value_map) {
+std::unique_ptr<std::vector<PqlDeclaration>>
+ClauseResult::getCommonDeclarations(ClauseResult& other) {
+  std::unique_ptr<std::vector<PqlDeclaration>> common_declarations =
+      std::make_unique<std::vector<PqlDeclaration>>();
+  for (auto& it : value_map) {
     if (other.value_map.count(it.first) == 1) {
       common_declarations->push_back(it.first);
     }

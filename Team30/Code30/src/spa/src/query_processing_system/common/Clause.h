@@ -3,7 +3,7 @@
 #include "ClauseResult.h"
 
 class Clause {
-public:
-    virtual std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) = 0;
-    virtual ~Clause();
+ public:
+  virtual std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) = 0;
+  virtual ~Clause();
 };

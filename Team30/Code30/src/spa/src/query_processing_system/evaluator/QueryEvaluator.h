@@ -6,6 +6,7 @@
 class QueryEvaluator {
  private:
   PkbApi& pkb;
+
  public:
   explicit QueryEvaluator(PkbApi& pkb);
 

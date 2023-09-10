@@ -4,4 +4,5 @@
 
 #include "InvalidSemanticsException.h"
 InvalidSemanticsException::InvalidSemanticsException(
-    const std::string& what_arg): invalid_argument(what_arg) {}
+    std::string const& what_arg)
+    : invalid_argument(what_arg) {}
