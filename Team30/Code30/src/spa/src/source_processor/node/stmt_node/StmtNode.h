@@ -4,12 +4,16 @@
 #include "StmtType.h"
 
 class StmtNode : public ANode {
-public:
-    explicit StmtNode(int stmtIndex, StmtType stmtType);
+ public:
+  explicit StmtNode(int stmtIndex, StmtType stmtType);
 
-    virtual ~StmtNode() = default;
+  int getStmtIndex() const;
 
-private:
-    const int stmtIndex;
-    const StmtType stmtType;
+  StmtType getStmtType() const;
+
+  virtual ~StmtNode() = default;
+
+ private:
+  StmtType const stmtType;
+  int const stmtIndex;
 };
