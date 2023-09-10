@@ -16,11 +16,12 @@ class ClauseResult {
                      std::unordered_set<PqlDeclaration, PqlDeclarationHash>,
                      PqlDeclarationHash> linkedDeclarations;
 
-  void addLinkedDeclarations(PqlDeclaration d1, PqlDeclaration d2);
-
-  static std::unique_ptr<std::vector<std::string>> getIntersectingValues(
-      std::vector<std::string> &arr_1,
+  std::vector<std::string> getIntersectingValues(std::vector<std::string> &arr_1,
       std::vector<std::string> &arr_2);
+
+  std::unique_ptr<std::vector<PqlDeclaration>> getCommonDeclarations(ClauseResult& other);
+
+
   // may want to use pointers in the future to speed this up.
  public:
   // empty ClauseResult
@@ -33,8 +34,8 @@ class ClauseResult {
   ClauseResult(PqlDeclaration d1, PqlDeclaration d2,
                std::vector<std::pair<std::string, std::string>> values);
 
-  std::unique_ptr<ClauseResult> combineResults(ClauseResult &other);
-
   std::unique_ptr<std::vector<std::string>> getValues(
-      PqlDeclaration declaration);
+      PqlDeclaration &declaration) const;
+
+  void combineResults(ClauseResult &other);
 };

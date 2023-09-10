@@ -44,7 +44,8 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
       return std::make_unique<ClauseResult>(*(arg1->getDeclaration()),
                                             values);
     } else {
-      return std::make_unique<ClauseResult>();
+      return std::make_unique<ClauseResult>(*(arg1->getDeclaration()),
+                                            std::vector<std::string>());
     }
   } else if (stmt_ref_type_1 == StmtRefType::NUMBER &&
            stmt_ref_type_2 == StmtRefType::DECLARATION) {
@@ -56,7 +57,8 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
       return std::make_unique<ClauseResult>(*(arg2->getDeclaration()),
                                             values);
     } else {
-      return std::make_unique<ClauseResult>();
+      return std::make_unique<ClauseResult>(*(arg2->getDeclaration()),
+                                            std::vector<std::string>());
     }
   } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
              stmt_ref_type_2 == StmtRefType::DECLARATION) {
