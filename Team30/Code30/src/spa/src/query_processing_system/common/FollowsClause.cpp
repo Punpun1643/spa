@@ -13,11 +13,9 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
   StmtRefType stmt_ref_type_2 = arg2->getStmtRefType();
 
   // ACTUALLY, it only matters if the Follows Statement has >= 1 declaration.
-  std::unique_ptr<ClauseResult> clause_result = std::make_unique<ClauseResult>();
-
   if (stmt_ref_type_1 != StmtRefType::DECLARATION &&
       stmt_ref_type_2 != StmtRefType::DECLARATION) {
-    return clause_result;
+    return std::make_unique<ClauseResult>();
   } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
              stmt_ref_type_2 == StmtRefType::WILD) {
     std::vector<std::pair<int, int>> result = *pkb.getFollows(arg1->getDeclarationType(), EntityType::STMT);
@@ -26,34 +24,8 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
     for (auto pair: result) {
       declaration_values.push_back(std::to_string(pair.first));
     }
-    clause_result->insertData(*(arg1->getDeclaration()), declaration_values);
-    return clause_result;
-
-  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
-             stmt_ref_type_2 == StmtRefType::NUMBER) {
-    std::optional<std::pair<int, int>> result = pkb.getFollows(arg1->getDeclarationType(), arg2->getStmtNum());
-    if (result.has_value()) {
-      clause_result->insertData(*(arg1->getDeclaration()), {std::to_string(result->first)});
-      return clause_result;
-    } else {
-      return clause_result;
-    }
-
-  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
-             stmt_ref_type_2 == StmtRefType::DECLARATION) {
-    std::vector<std::pair<int, int>> result = *pkb.getFollows(arg1->getDeclarationType(), arg2->getDeclarationType());
-    // CLAUSE RESULT MUST ACCEPT LINKED PAIR.
-
-  } else if (stmt_ref_type_1 == StmtRefType::NUMBER &&
-             stmt_ref_type_2 == StmtRefType::DECLARATION) {
-    // think about how to reduce duplication...
-    std::optional<std::pair<int, int>> result = pkb.getFollows(arg1->getStmtNum(), arg2->getDeclarationType());
-    if (result.has_value()) {
-      clause_result->insertData(*(arg2->getDeclaration()), {std::to_string(result->second)});
-      return clause_result;
-    } else {
-      return clause_result;
-    }
+    return std::make_unique<ClauseResult>(*(arg1->getDeclaration()),
+                                          declaration_values);
   } else if (stmt_ref_type_1 == StmtRefType::WILD &&
              stmt_ref_type_2 == StmtRefType::DECLARATION) {
     std::vector<std::pair<int, int>> result = *pkb.getFollows(EntityType::STMT, arg2->getDeclarationType());
@@ -62,8 +34,43 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
     for (auto pair: result) {
       declaration_values.push_back(std::to_string(pair.second));
     }
-    clause_result->insertData(*(arg2->getDeclaration()), declaration_values);
-    return clause_result;
+    return std::make_unique<ClauseResult>(*(arg2->getDeclaration()),
+                                          declaration_values);
+  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
+             stmt_ref_type_2 == StmtRefType::NUMBER) {
+    std::optional<std::pair<int, int>> result = pkb.getFollows(arg1->getDeclarationType(), arg2->getStmtNum());
+    if (result.has_value()) {
+      std::vector<std::string> values = {std::to_string(result->first)};
+      return std::make_unique<ClauseResult>(*(arg1->getDeclaration()),
+                                            values);
+    } else {
+      return std::make_unique<ClauseResult>();
+    }
+  } else if (stmt_ref_type_1 == StmtRefType::NUMBER &&
+           stmt_ref_type_2 == StmtRefType::DECLARATION) {
+    // think about how to reduce duplication...
+    std::optional<std::pair<int, int>> result =
+        pkb.getFollows(arg1->getStmtNum(), arg2->getDeclarationType());
+    if (result.has_value()) {
+      std::vector<std::string> values = {std::to_string(result->second)};
+      return std::make_unique<ClauseResult>(*(arg2->getDeclaration()),
+                                            values);
+    } else {
+      return std::make_unique<ClauseResult>();
+    }
+  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
+             stmt_ref_type_2 == StmtRefType::DECLARATION) {
+    std::vector<std::pair<int, int>> result =
+        *pkb.getFollows(arg1->getDeclarationType(), arg2->getDeclarationType());
+    // Convert to string vector
+    std::vector<std::pair<std::string, std::string>> str_results;
+    for (auto int_pair : result) {
+      str_results.push_back(std::make_pair(std::to_string(int_pair.first),
+                                           std::to_string(int_pair.second)));
+    }
+    return std::make_unique<ClauseResult>(
+        *(arg1->getDeclaration()), *(arg2->getDeclaration()), str_results);
+  } else {
+    throw std::runtime_error("Should not have gotten here.");
   }
 }
-
