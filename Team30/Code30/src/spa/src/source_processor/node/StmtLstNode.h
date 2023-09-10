@@ -7,15 +7,15 @@
 #include "stmt_node/StmtNode.h"
 
 class StmtLstNode : public ANode {
-public:
-    explicit StmtLstNode(std::vector <std::shared_ptr<StmtNode>> stmts);
+ public:
+  explicit StmtLstNode(std::vector<std::shared_ptr<StmtNode>> stmts);
 
-    void accept(IDesignExtractor &designExtractor) override;
+  void accept(IDesignExtractor& designExtractor) override;
 
-    std::vector <std::shared_ptr<StmtNode>> getChildren() const;
+  std::vector<std::shared_ptr<StmtNode>> getChildren() const;
 
-    ~StmtLstNode() = default;
+  ~StmtLstNode() = default;
 
-private:
-    const std::vector <std::shared_ptr<StmtNode>> stmts;
+ private:
+  std::vector<std::shared_ptr<StmtNode>> const stmts;
 };

@@ -1,4 +1,9 @@
 #pragma once
+
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "../../program_knowledge_base/PkbApi.h"
 #include "../common/SelectClause.h"
 #include "../common/SuchThatClause.h"
