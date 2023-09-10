@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "shared/tokenizer/token/TokenType.h"
 
 class Token {
