@@ -1,6 +1,7 @@
 #include "QpParser.h"
 
 #include <map>
+#include <stdexcept>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
 #include "../common/FollowsClause.h"
