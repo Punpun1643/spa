@@ -1,7 +1,9 @@
 #include "QpParser.h"
+
+#include <map>
+
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
 #include "../common/PqlDeclaration.h"
-#include <map>
 
 bool isWordToken(std::shared_ptr<Token> token) {
   if (token->getTokenType() != TokenType::WORD_TOKEN) {
@@ -17,8 +19,10 @@ bool isSpecialCharToken(std::shared_ptr<Token> token) {
   return true;
 }
 
+void QpParser::parse(){};
 
-QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens) : AParser(tokens) {}
+QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
+    : AParser(tokens) {}
 
 std::shared_ptr<ParsedQuery> QpParser::parseQuery() {
   std::map<std::string, std::shared_ptr<PqlDeclaration>> declarations;
@@ -31,21 +35,23 @@ std::shared_ptr<ParsedQuery> QpParser::parseQuery() {
       nextToken();
       std::shared_ptr<Token> nameToken = getCurrToken();
       std::string name = nameToken->getTokenVal();
-      std::shared_ptr<PqlDeclaration> declaration = std::make_shared<PqlDeclaration> (
-          std::make_shared<std::string>(name), EntityType::STMT);
-
+      std::shared_ptr<PqlDeclaration> declaration =
+          std::make_shared<PqlDeclaration>(std::make_shared<std::string>(name),
+                                           EntityType::STMT);
 
       /* std::shared_ptr<PqlDeclaration> declaration = PqlDeclaration( */
-      /*    std::shared_ptr<std::string>(nameToken->getTokenVal()), EntityType::STMT); */
+      /*    std::shared_ptr<std::string>(nameToken->getTokenVal()),
+       * EntityType::STMT); */
       declarations.insert(make_pair(nameToken->getTokenVal(), declaration));
       nextToken();
     }
     std::shared_ptr<Token> semicolonToken = getCurrToken();
     std::string semicolonTokenValue = semicolonToken->getTokenVal();
-    if (isSpecialCharToken(currToken) && semicolonTokenValue == ";") {
+    if (isSpecialCharToken(semicolonToken) && semicolonTokenValue == ";") {
       nextToken();
       continue;
     } else {
+      printf("cond a is %d\n", isSpecialCharToken(currToken));
       throw std::invalid_argument("Invalid declaration");
     }
   }

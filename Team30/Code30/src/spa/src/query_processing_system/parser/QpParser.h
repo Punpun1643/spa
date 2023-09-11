@@ -16,4 +16,5 @@ class QpParser : public AParser {
     QpParser(std::vector <std::shared_ptr<Token>> tokens);
 
     std::shared_ptr <ParsedQuery> parseQuery();
+    void parse() override;
 };
