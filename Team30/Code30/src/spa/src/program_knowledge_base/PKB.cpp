@@ -20,7 +20,7 @@ PKB::PKB() {
     relData = new RelDatabase();
 }
 
-bool PKB::insertFollows(StmtNode stmt1, StmtNode stmt2) {
+bool PKB::insertFollows(std::shared_ptr<StmtNode> stmt1, std::shared_ptr<StmtNode> stmt2) {
     //entData.insert(stmt1);
     //entData.insert(stmt2);
     //relData.insert(Follows, stmt1, stmt2)

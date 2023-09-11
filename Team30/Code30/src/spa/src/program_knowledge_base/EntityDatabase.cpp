@@ -24,7 +24,7 @@
   };
 
 
-  bool EntityDatabase::insert(StmtNode ent) {
+  bool EntityDatabase::insert(std::shared_ptr<StmtNode> ent) {
     /*
     if (ent.type() in {procedure, variable, constant}) {
       entities[ent.type()].insertData(std::to_string(ent.val()), 

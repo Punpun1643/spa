@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "../query_processing_system/common/EntityType.h"
@@ -17,6 +18,6 @@ class EntityDatabase {
 
  public:
   EntityDatabase();
-  bool insert(StmtNode ent);
+  bool insert(std::shared_ptr<StmtNode> ent);
   std::vector<std::string> getAll(EntityType type);
 };

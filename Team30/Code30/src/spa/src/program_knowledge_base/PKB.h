@@ -22,7 +22,7 @@ class PKB : public PkbApi{
 
 public:
     PKB();
-    bool insertFollows(StmtNode stmt1, StmtNode stmt2);
+    bool insertFollows(std::shared_ptr<StmtNode> stmt1, std::shared_ptr<StmtNode> stmt2);
     std::unique_ptr<std::vector<std::string>> getEntitiesWithType(EntityType type);
     std::optional<std::pair<int, int>> getFollows(int s1_line_num, EntityType s2_type);
     std::optional<std::pair<int, int>> getFollows(EntityType s1_type, int s2_line_num);
