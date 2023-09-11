@@ -4,18 +4,27 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
+#include <optional>
+#include <memory>
 
-using namespace std;
-typedef short PROC;
 
-class TNode;
+#include "../source_processor/node/stmt_node/StmtNode.h"
+#include "../query_processing_system/common/EntityType.h"
+#include "program_knowledge_base/EntityDatabase.h"
+#include "program_knowledge_base/RelDatabase.h"
+#include "PkbApi.h"
 
-class VarTable;  // no need to #include "VarTable.h" as all I need is pointer
+class PKB : public PkbApi{
+    EntityDatabase* entData;
+    RelDatabase* relData;
 
-class PKB {
- public:
-  static VarTable* varTable;
-  static int setProcToAST(PROC p, TNode* r);
-  static TNode* getRootAST(PROC p);
+public:
+    PKB();
+    bool insertFollows(std::shared_ptr<StmtNode> stmt1, std::shared_ptr<StmtNode> stmt2);
+    std::unique_ptr<std::vector<std::string>> getEntitiesWithType(EntityType type);
+    std::optional<std::pair<int, int>> getFollows(int s1_line_num, EntityType s2_type);
+    std::optional<std::pair<int, int>> getFollows(EntityType s1_type, int s2_line_num);
+    std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(EntityType s1_type, EntityType s2_type);
 };
