@@ -1,9 +1,19 @@
 #pragma once
 
+#include <memory>
+
 #include "IDesignExtractor.h"
+#include "../node/ProgramNode.h"
+#include "../node/ProcedureNode.h"
+#include "../node/StmtLstNode.h"
+#include "../node/stmt_node/CallNode.h"
+#include "../node/stmt_node/PrintNode.h"
+#include "../node/stmt_node/ReadNode.h"
 
 class EntityExtractor : public IDesignExtractor {
  public:
+  explicit EntityExtractor();
+
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
   void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;

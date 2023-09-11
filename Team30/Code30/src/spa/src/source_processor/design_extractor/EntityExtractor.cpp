@@ -1,37 +1,29 @@
-#include <stdio.h>
+#include "EntityExtractor.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
 
-using namespace std;
+EntityExtractor::EntityExtractor() {}
 
-#include "../../program_knowledge_base/PKB.h"
-#include "IDesignExtractor.h"
+void EntityExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node)  {
+  // TODO
+}
 
-class EntityExtractor : public IDesignExtractor {
- public:
-  void extractFromProgram(std::shared_ptr<ProgramNode> node) override {
-    // TODO
-  }
+void EntityExtractor::extractFromProcedure(std::shared_ptr<ProcedureNode> node)  {
+  // TODO
+}
 
-  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override {
-    // TODO
-  }
+void EntityExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
+  // TODO
+}
 
-  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override {
-    // TODO
-  }
+void EntityExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
+  // TODO
+}
 
-  void extractFromCall(std::shared_ptr<CallNode> node) override {
-    // TODO
-  }
+void EntityExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
+  // TODO
+}
 
-  void extractFromPrint(std::shared_ptr<PrintNode> node) override {
-    // TODO
-  }
+void EntityExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
+  // TODO
+}
 
-  void extractFromRead(std::shared_ptr<ReadNode> node) override {
-    // TODO
-  }
-};
