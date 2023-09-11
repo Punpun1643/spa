@@ -6,13 +6,15 @@
 #include "StmtType.h"
 
 class CallNode : public StmtNode {
-public:
-    explicit CallNode(int stmtIndex, StmtType stmtType, std::string procName);
+ public:
+  explicit CallNode(int stmtIndex, StmtType stmtType, std::string procName);
 
-    void accept(IDesignExtractor &designExtractor) override;
+  void accept(IDesignExtractor& designExtractor) override;
 
-    ~CallNode() = default;
+  std::string const& getProcName() const;
 
-private:
-    const std::string procName;
+  ~CallNode() = default;
+
+ private:
+  std::string const procName;
 };

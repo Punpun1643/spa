@@ -1,7 +1,3 @@
 #pragma once
 
-enum MatchType {
-    EXACT,
-    PARTIAL,
-    WILD
-};
+enum MatchType { EXACT, PARTIAL, WILD };

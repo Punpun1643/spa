@@ -1,14 +1,11 @@
-#include "PKB.h"
-
 #include <stdio.h>
-
 #include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 #include <optional>
 
-
+#include "PKB.h"
 #include "../source_processor/node/ANode.h"
 #include "../query_processing_system/common/EntityType.h"
 #include "program_knowledge_base/EntityDatabase.h"
@@ -53,3 +50,7 @@ std::unique_ptr<std::vector<std::pair<int, int>>> PKB::getFollows(EntityType s1_
     std::vector<std::pair<int, int>> pairs = {matchPair};
     return std::make_unique<std::vector<std::pair<int,int>>>(pairs);
 }
+
+// int PKB::setProcToAST(PROC p, TNode* r) { return 0; }
+
+// TNode* PKB::getRootAST(PROC p) { return nullptr; }
