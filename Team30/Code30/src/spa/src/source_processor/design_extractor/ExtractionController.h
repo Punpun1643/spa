@@ -13,6 +13,8 @@ class ExtractionController : public IExtractionController {
 
   void executeExtract(std::shared_ptr<ANode> node);
 
+  ~ExtractionController() = default;
+
  private:
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
 };
