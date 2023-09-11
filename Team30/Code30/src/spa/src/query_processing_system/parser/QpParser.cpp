@@ -1,8 +1,6 @@
 #include "QpParser.h"
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
-#include "../../shared/tokenizer/token/Token.h"
-#include "../../shared/tokenizer/token/TokenType.h"
-#include "../common/SelectClause.h"
+#include "../common/PqlDeclaration.h"
 #include <map>
 
 bool isWordToken(std::shared_ptr<Token> token) {
@@ -19,24 +17,32 @@ bool isSpecialCharToken(std::shared_ptr<Token> token) {
   return true;
 }
 
-std::shared_ptr<ParsedQuery> parse() {
-  map<std::string, std::shared_ptr<PqlDeclaration>> declarations;
+
+QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens) : AParser(tokens) {}
+
+std::shared_ptr<ParsedQuery> QpParser::parseQuery() {
+  std::map<std::string, std::shared_ptr<PqlDeclaration>> declarations;
 
   // get declarations
   while (getCurrToken()->getTokenVal() != "select") {
     std::shared_ptr<Token> currToken = getCurrToken();
-    std::string tokenValue = currToken->getTokenVal();
-    if (isWordToken(currToken) && tokenValue == "stmt") {
+    std::string currTokenValue = currToken->getTokenVal();
+    if (isWordToken(currToken) && currTokenValue == "stmt") {
       nextToken();
       std::shared_ptr<Token> nameToken = getCurrToken();
-      std::shared_ptr<PqlDeclaration> declaration = new PqlDeclaration(
-          new std::string(nameToken->getTokenVal()), EntityType::STMT);
-      declarations.insert(make_pair(nameToken->getTokenValue(), declaration));
+      std::string name = nameToken->getTokenVal();
+      std::shared_ptr<PqlDeclaration> declaration = std::make_shared<PqlDeclaration> (
+          std::make_shared<std::string>(name), EntityType::STMT);
+
+
+      /* std::shared_ptr<PqlDeclaration> declaration = PqlDeclaration( */
+      /*    std::shared_ptr<std::string>(nameToken->getTokenVal()), EntityType::STMT); */
+      declarations.insert(make_pair(nameToken->getTokenVal(), declaration));
       nextToken();
     }
     std::shared_ptr<Token> semicolonToken = getCurrToken();
-    std::string tokenValue = semicolonToken->getTokenVal();
-    if (isSpecialCharToken(currToken) && tokenValue) {
+    std::string semicolonTokenValue = semicolonToken->getTokenVal();
+    if (isSpecialCharToken(currToken) && semicolonTokenValue == ";") {
       nextToken();
       continue;
     } else {
@@ -44,7 +50,8 @@ std::shared_ptr<ParsedQuery> parse() {
     }
   }
 
-  ParsedQuery parsedQuery;
+  /* std::shared_ptr<ParsedQuery> parsedQuery = {nullptr, nullptr}; */
+  std::shared_ptr<ParsedQuery> parsedQuery = std::make_shared<ParsedQuery>();
   // select
   while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
     std::shared_ptr<Token> currToken = getCurrToken();
@@ -52,9 +59,11 @@ std::shared_ptr<ParsedQuery> parse() {
     nextToken();
     std::shared_ptr<Token> entityNameToken = getCurrToken();
     std::shared_ptr<PqlDeclaration> declaration =
-        map[entityNametoken->getTokenVal()];
-    std::shared_ptr<SelectClause> selectClause =
-        new SelectClause(declaration) parsedQuery.selectClause = selectClause;
+        declarations[entityNameToken->getTokenVal()];
+    /* struct ParsedQuery parsedQuery = { */
+    /*     SelectClause(declaration) */
+    /* }; */
+    parsedQuery->selectClause = SelectClause(declaration);
     nextToken();
     // such that clause stuff follows here. implement follows first. abstract
     // each clause algo into a function?

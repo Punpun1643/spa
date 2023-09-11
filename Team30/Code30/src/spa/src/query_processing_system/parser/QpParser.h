@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../common/FollowsClause.h"
 #include "../common/SelectClause.h"
 #include "../common/SuchThatClause.h"
 #include "../../shared/parser/AParser.h"
@@ -8,12 +7,13 @@
 
 struct ParsedQuery {
   SelectClause selectClause;
-  SuchThatClause suchThatClause;
-}
+  SuchThatClause* suchThatClause;
+  ParsedQuery() : selectClause(nullptr), suchThatClause(nullptr) {}
+};
 
 class QpParser : public AParser {
   public:
     QpParser(std::vector <std::shared_ptr<Token>> tokens);
 
-    std::shared_ptr <ParsedQuery> parse() override;
-}
+    std::shared_ptr <ParsedQuery> parseQuery();
+};
