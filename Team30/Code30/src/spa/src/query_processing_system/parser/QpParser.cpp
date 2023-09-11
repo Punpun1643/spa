@@ -14,6 +14,13 @@ bool isWordToken(std::shared_ptr<Token> token) {
   return true;
 }
 
+bool isIntegerToken(std::shared_ptr<Token> token) {
+  if (token->getTokenType() != TokenType::INTEGER_TOKEN) {
+    return false;
+  }
+  return true;
+}
+
 bool isSpecialCharToken(std::shared_ptr<Token> token) {
   if (token->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN) {
     return false;
@@ -50,13 +57,10 @@ std::queue<std::shared_ptr<Clause>> QpParser::parseQuery() {
       nextToken();
       continue;
     } else {
-      printf("cond a is %d\n", isSpecialCharToken(currToken));
       throw std::invalid_argument("Invalid declaration");
     }
   }
 
-  /* std::shared_ptr<ParsedQuery> parsedQuery = std::make_shared<ParsedQuery>();
-   */
   std::queue<std::shared_ptr<Clause>> clauseQueue;
   // select
   while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
@@ -78,35 +82,58 @@ std::queue<std::shared_ptr<Clause>> QpParser::parseQuery() {
         if (getCurrToken()->getTokenVal() != "(") {
           throw std::invalid_argument("Invalid Follows syntax");
         }
-        printf("chkpt1!!!\n");
+
         nextToken();  // entity 1
-        // TODO: logic to determine entity type?
-        std::shared_ptr<PqlDeclaration> entity1 =
-            std::make_shared<PqlDeclaration>(
-                std::make_shared<std::string>(getCurrToken()->getTokenVal()),
-                EntityType::STMT);
-        std::unique_ptr<StmtRef> stmtRef1 = std::make_unique<StmtRef>(entity1);
-        printf("chkpt2!!!\n");
+        std::unique_ptr<StmtRef> stmtRef1;
+        if (isIntegerToken(getCurrToken())) {
+          stmtRef1 =
+              std::make_unique<StmtRef>(stoi(getCurrToken()->getTokenVal()));
+        } else if (isSpecialCharToken(getCurrToken())) {
+          if (getCurrToken()->getTokenVal() != "_") {
+            throw std::invalid_argument("Invalid Follows syntax");
+          }
+          stmtRef1 = std::make_unique<StmtRef>();
+        } else {
+          const std::string tokenValue1 = getCurrToken()->getTokenVal();
+          std::shared_ptr<PqlDeclaration> declaration1 =
+              declarations[tokenValue1];
+          if (!declaration1) {
+            throw std::invalid_argument(tokenValue1 + " was not declared");
+          }
+          stmtRef1 = std::make_unique<StmtRef>(declaration1);
+        }
+
         nextToken();  // ,
-        printf("chkpt3!!!\n");
         if (getCurrToken()->getTokenVal() != ",") {
           throw std::invalid_argument("Invalid Follows syntax");
         }
+
         nextToken();  // entity 2
-        // TODO: logic to determine entity type
-        std::shared_ptr<PqlDeclaration> entity2 =
-            std::make_shared<PqlDeclaration>(
-                std::make_shared<std::string>(getCurrToken()->getTokenVal()),
-                EntityType::STMT);
-        std::unique_ptr<StmtRef> stmtRef2 = std::make_unique<StmtRef>(entity2);
+        std::unique_ptr<StmtRef> stmtRef2;
+        if (isIntegerToken(getCurrToken())) {
+          stmtRef2 =
+              std::make_unique<StmtRef>(stoi(getCurrToken()->getTokenVal()));
+        } else if (isSpecialCharToken(getCurrToken())) {
+          if (getCurrToken()->getTokenVal() != "_") {
+            throw std::invalid_argument("Invalid Follows syntax");
+          }
+          stmtRef2 = std::make_unique<StmtRef>();
+        } else {
+          const std::string tokenValue2 = getCurrToken()->getTokenVal();
+          std::shared_ptr<PqlDeclaration> declaration2 =
+              declarations[tokenValue2];
+          if (!declaration2) {
+            throw std::invalid_argument(tokenValue2 + " was not declared");
+          }
+          stmtRef2 = std::make_unique<StmtRef>(declaration2);
+        }
+
         nextToken();  // )
         if (getCurrToken()->getTokenVal() != ")") {
           throw std::invalid_argument("Invalid Follows syntax");
         }
         clauseQueue.push(std::make_shared<FollowsClause>(std::move(stmtRef1),
                                                          std::move(stmtRef2)));
-        /* clauseQueue.push(std::make_shared<Clause>(FollowsClause(std::move(stmtRef1),
-         * std::move(stmtRef2)))); */
         nextToken();
       }
     }
