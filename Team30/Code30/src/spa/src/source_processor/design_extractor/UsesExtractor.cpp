@@ -1,37 +1,28 @@
-#include <stdio.h>
+#include "UsesExtractor.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
+UsesExtractor::UsesExtractor() {}
 
-using namespace std;
+void UsesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
+  // TODO
+}
 
-#include "../../program_knowledge_base/PKB.h"
-#include "IDesignExtractor.h"
+void UsesExtractor::extractFromProcedure(std::shared_ptr<ProcedureNode> node) {
+  // TODO
+}
 
-class UsesExtractor : public IDesignExtractor {
- public:
-  void extractFromProgram(std::shared_ptr<ProgramNode> node) override {
-    // TODO
-  }
+void UsesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
+  // TODO
+}
 
-  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override {
-    // TODO
-  }
+void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
+  // TODO
+}
 
-  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override {
-    // TODO
-  }
+void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
+  // TODO
+}
 
-  void extractFromCall(std::shared_ptr<CallNode> node) override {
-    // TODO
-  }
+void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
+  // TODO
+}
 
-  void extractFromPrint(std::shared_ptr<PrintNode> node) override {
-    // TODO
-  }
-
-  void extractFromRead(std::shared_ptr<ReadNode> node) override {
-    // TODO
-  }
-};
