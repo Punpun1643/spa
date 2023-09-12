@@ -5,51 +5,37 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "tables/EntityTable.h"
 
+// TODO: Replace EntityType and EntityNode with correct names based on
+// implementation
+using namespace std;
 
-  //TODO: Replace EntityType and EntityNode with correct names based on implementation
+EntityDatabase::EntityDatabase() {
+  unordered_map<EntityType, unordered_set<string>> entities;
 
+  entities[EntityType::PROCEDURE] = {};
+  entities[EntityType::STMT] = {};
+  entities[EntityType::READ] = {};
+  entities[EntityType::PRINT] = {};
+  entities[EntityType::ASSIGN] = {};
+  entities[EntityType::CALL] = {};
+  entities[EntityType::WHILE] = {};
+  entities[EntityType::IF] = {};
+  entities[EntityType::VARIABLE] = {};
+  entities[EntityType::CONSTANT] = {};
+};
 
-  EntityDatabase::EntityDatabase() {
-    entities = {
-        {PROCEDURE, new EntityTable()}, //name, stmtNums
-        {VARIABLE, new EntityTable()},  //name, stmtNums
-        {CONSTANT, new EntityTable()},   //value (as str), stmtNums
-        {STMT, new EntityTable()}, //ENUM str, stmtNums
-    };              
-  };
+bool EntityDatabase::insert(EntityType type, string value) {
+  entities[type].insert(value);
+  return true;
+}
 
-
-  bool EntityDatabase::insert(std::shared_ptr<StmtNode> ent) {
-    /*
-    if (ent.type() in {procedure, variable, constant}) {
-      entities[ent.type()].insertData(std::to_string(ent.val()), 
-      ent.stmtNum());
-    } else {
-      entities[statement].insertData(ent.type(), ent.stmtNum()); 
-    }
-    */
-    return true;
-  }
-
-
-  std::vector<std::string> EntityDatabase::getAll(EntityType type) {
-    std::vector<std::string>  stringResult = {};
-    /*
-    if (type in {procedure, variable, constant}) {
-      stringResult = entities[type].queryAllKeys();
-    } else {
-      std::vector<int> lineNums = entities[statement].queryData(type);
-      for(int i : lineNums) {
-        stringResult.push_back(std::to_string(i));
-      } 
-    }
-    */
-    return stringResult;
-  }
-
-  
+unordered_set<string> EntityDatabase::get(EntityType type) {
+  unordered_set<string> results = entities[type];
+  return results;
+}
