@@ -3,7 +3,7 @@
 
 #include "ParentExtractor.h"
 
-ParentExtractor::ParentExtractor() {}
+ParentExtractor::ParentExtractor(PkbApi& pkb) : pkb(pkb) {}
 
 void ParentExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO

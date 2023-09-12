@@ -12,7 +12,7 @@
 
 class ParentExtractor : public IDesignExtractor {
  public:
-  explicit ParentExtractor();
+  explicit ParentExtractor(PkbApi& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -27,4 +27,7 @@ class ParentExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
   ~ParentExtractor() = default;
+
+ private:
+  PkbApi& pkb;
 };

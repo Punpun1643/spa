@@ -6,12 +6,12 @@
 #include "ExtractionController.h"
 
 
-ExtractionController::ExtractionController() {
-  extractors.push_back(std::make_shared<FollowsExtractor>());
-  extractors.push_back(std::make_shared<ParentExtractor>());
-  extractors.push_back(std::make_shared<UsesExtractor>());
-  extractors.push_back(std::make_shared<ModifiesExtractor>());
-  extractors.push_back(std::make_shared<EntityExtractor>());
+ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
+  extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
+  extractors.push_back(std::make_shared<ParentExtractor>(pkb));
+  extractors.push_back(std::make_shared<UsesExtractor>(pkb));
+  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb));
+  extractors.push_back(std::make_shared<EntityExtractor>(pkb));
 }
 
 void ExtractionController::executeProgramExtraction(std::shared_ptr<ProgramNode> node) {
