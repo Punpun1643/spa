@@ -1,9 +1,19 @@
 #pragma once
 
+#include <memory>
+
 #include "IDesignExtractor.h"
+#include "../node/ProgramNode.h"
+#include "../node/ProcedureNode.h"
+#include "../node/StmtLstNode.h"
+#include "../node/stmt_node/CallNode.h"
+#include "../node/stmt_node/PrintNode.h"
+#include "../node/stmt_node/ReadNode.h"
 
 class FollowsExtractor : public IDesignExtractor {
  public:
+  explicit FollowsExtractor();
+
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
   void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
@@ -15,4 +25,6 @@ class FollowsExtractor : public IDesignExtractor {
   void extractFromPrint(std::shared_ptr<PrintNode> node) override;
 
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
+
+  ~FollowsExtractor() = default;
 };
