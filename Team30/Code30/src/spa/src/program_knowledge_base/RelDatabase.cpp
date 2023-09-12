@@ -9,7 +9,6 @@
 
 #include "tables/StmtStmtRelTable.h"
 
-// TODO: Replace RelType with correct names based on implementation
 RelDatabase::RelDatabase() {
   relationships = {{FOLLOWS, new StmtStmtRelTable()}};  // stmtNum, stmtNums[]
 };

@@ -10,8 +10,6 @@
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
-#include "../source_processor/node/stmt_node/StmtNode.h"
-#include "tables/EntityTable.h"
 
 using namespace std;
 

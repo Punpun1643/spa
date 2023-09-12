@@ -8,11 +8,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../source_processor/node/stmt_node/StmtNode.h"
-#include "tables/EntityTable.h"
-
-// TODO: Replace EntityType and EntityNode with correct names based on
-// implementation
 using namespace std;
 
 EntityDatabase::EntityDatabase() {
