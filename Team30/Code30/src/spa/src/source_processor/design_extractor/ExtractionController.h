@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "IExtractionController.h"
+#include "IDesignExtractor.h"
 #include "../node/ANode.h"
 #include "IDesignExtractor.h"
 #include "IExtractionController.h"
