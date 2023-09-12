@@ -1,21 +1,17 @@
 #pragma once
 
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <vector>
 #include <unordered_map>
 
-#include "tables/StmtStmtRelTable.h"
+#include "tables/BaseTable.h"
+#include "tables/FollowsTable.h"
+#include "tables/ParentsTable.h"
 
-enum RelType { FOLLOWS, PARENT, USES, MODIFIES };
+enum class RelType { FOLLOWS, PARENT, USES, MODIFIES };
 
-class RelDatabase
-{
-  std::unordered_map<RelType, StmtStmtRelTable*> relationships;
+class RelDatabase {
+  std::unordered_map<RelType, BaseTable> relationships;
 
  public:
   RelDatabase();
-  std::vector<int> get(RelType type, int lineNum);
-  bool insert(RelType type, int lineNum1, int lineNum2);
+  ~RelDatabase() = default;
 };

@@ -1,8 +1,3 @@
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <string>
-
 #include "../../spa/src/program_knowledge_base/EntityDatabase.h"
 #include "catch.hpp"
 
