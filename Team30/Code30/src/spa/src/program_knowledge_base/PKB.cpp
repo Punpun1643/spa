@@ -8,13 +8,13 @@
 #include "PKB.h"
 #include "../source_processor/node/ANode.h"
 #include "../query_processing_system/common/EntityType.h"
-#include "program_knowledge_base/EntityDatabase.h"
-#include "program_knowledge_base/RelDatabase.h"
+#include "EntityDatabase.h"
+#include "RelDatabase.h"
 #include "PkbApi.h"
 
 PKB::PKB() {
-    entData = new EntityDatabase();
-    relData = new RelDatabase();
+//    entData = new EntityDatabase();
+//    relData = new RelDatabase();
 }
 
 bool PKB::insertFollows(std::shared_ptr<StmtNode> stmt1, std::shared_ptr<StmtNode> stmt2) {

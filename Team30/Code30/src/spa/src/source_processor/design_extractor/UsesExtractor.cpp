@@ -1,6 +1,6 @@
 #include "UsesExtractor.h"
 
-UsesExtractor::UsesExtractor() {}
+UsesExtractor::UsesExtractor(PkbApi& pkb) : pkb(pkb) {}
 
 void UsesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO
