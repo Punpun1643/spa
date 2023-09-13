@@ -1,6 +1,12 @@
-//#pragma once
-//
-//class SPA {
-// public:
-//  void process();
-//};
+#pragma once
+
+#include <string>
+
+class SPA {
+ public:
+  void process();
+  ~SPA() = default;
+
+ private:
+  std::string filePath;
+};
