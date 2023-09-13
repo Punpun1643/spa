@@ -188,55 +188,55 @@ TEST_CASE("Select and Follows Clause with 1 common declarations") {
   std::unique_ptr<FollowsClause> follows_clause;
   std::vector<std::string> result;
 
-//  // Some overlapping values between declarations
-//  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-//  follows_clause = QeFactoryMethods::getFollowsClause(
-//      StmtRef(QeFactoryMethods::getDeclaration("a", EntityType::STMT)),
-//      StmtRef(QeFactoryMethods::getDeclaration("s", EntityType::STMT)));
-//  result =
-//      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-//  REQUIRE(result == std::vector<std::string>({"2"}));
-//
-//  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-//  follows_clause = QeFactoryMethods::getFollowsClause(
-//      StmtRef(QeFactoryMethods::getDeclaration("asd", EntityType::STMT)),
-//      StmtRef(QeFactoryMethods::getDeclaration("a", EntityType::STMT)));
-//  result =
-//      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-//  REQUIRE(result == std::vector<std::string>({"1", "2"}));
-//
-//  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-//  follows_clause = QeFactoryMethods::getFollowsClause(
-//      StmtRef(),
-//      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)));
-//  result =
-//      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-//  REQUIRE(result == std::vector<std::string>({"1", "3"}));
-//
-//  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-//  follows_clause = QeFactoryMethods::getFollowsClause(
-//      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)),
-//      StmtRef(1));
-//  result =
-//      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-//  REQUIRE(result == std::vector<std::string>({"2"}));
-//
-//  // No overlapping values between declarations
-//  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-//  follows_clause = QeFactoryMethods::getFollowsClause(
-//      StmtRef(1),
-//      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)));
-//  result =
-//      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-//  REQUIRE(result.empty());
-//
-//  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-//  follows_clause = QeFactoryMethods::getFollowsClause(
-//      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)),
-//      StmtRef());
-//  result =
-//      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-//  REQUIRE(result.empty());
+  // Some overlapping values between declarations
+  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
+  follows_clause = QeFactoryMethods::getFollowsClause(
+      StmtRef(QeFactoryMethods::getDeclaration("a", EntityType::STMT)),
+      StmtRef(QeFactoryMethods::getDeclaration("s", EntityType::STMT)));
+  result =
+      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
+  REQUIRE(result == std::vector<std::string>({"2"}));
+
+  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
+  follows_clause = QeFactoryMethods::getFollowsClause(
+      StmtRef(QeFactoryMethods::getDeclaration("asd", EntityType::STMT)),
+      StmtRef(QeFactoryMethods::getDeclaration("a", EntityType::STMT)));
+  result =
+      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
+  REQUIRE(result == std::vector<std::string>({"1", "2"}));
+
+  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
+  follows_clause = QeFactoryMethods::getFollowsClause(
+      StmtRef(),
+      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)));
+  result =
+      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
+  REQUIRE(result == std::vector<std::string>({"1", "3"}));
+
+  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
+  follows_clause = QeFactoryMethods::getFollowsClause(
+      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)),
+      StmtRef(1));
+  result =
+      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
+  REQUIRE(result == std::vector<std::string>({"2"}));
+
+  // No overlapping values between declarations
+  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
+  follows_clause = QeFactoryMethods::getFollowsClause(
+      StmtRef(1),
+      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)));
+  result =
+      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
+  REQUIRE(result.empty());
+
+  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
+  follows_clause = QeFactoryMethods::getFollowsClause(
+      StmtRef(QeFactoryMethods::getDeclaration("abc", EntityType::STMT)),
+      StmtRef());
+  result =
+      *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
+  REQUIRE(result.empty());
 
   select_clause = QeFactoryMethods::getSelectClause("a", EntityType::PRINT);
   follows_clause = QeFactoryMethods::getFollowsClause(
