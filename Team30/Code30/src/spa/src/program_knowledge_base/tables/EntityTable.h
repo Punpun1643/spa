@@ -1,14 +1,15 @@
 #pragma once
 
-#include <iostream>
 #include <stdio.h>
+
+#include <iostream>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 class EntityTable {
   static std::unordered_map<std::string, std::vector<int>> dataTable;
- 
+
  public:
   EntityTable();
   bool insertData(std::string key, int value);
