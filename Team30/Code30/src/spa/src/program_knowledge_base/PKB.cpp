@@ -21,7 +21,6 @@ bool PKB::insertFollows(std::shared_ptr<StmtNode> stmt1, std::shared_ptr<StmtNod
     //entData.insert(stmt1);
     //entData.insert(stmt2);
     //relData.insert(Follows, stmt1, stmt2)
-    std::cout << "called PKB insertFollows" << std::endl;
     return true;
 }
 
