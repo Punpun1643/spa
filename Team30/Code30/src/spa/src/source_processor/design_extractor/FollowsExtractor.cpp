@@ -9,7 +9,9 @@
 #include <program_knowledge_base/PkbApi.h>
 #include "FollowsExtractor.h"
 
-FollowsExtractor::FollowsExtractor(PkbApi& pkb) : pkb(pkb) {}
+FollowsExtractor::FollowsExtractor(PkbApi& pkb) : pkb(pkb) {
+  std::cout << "Address of PKB FollowsExtractor: " << &pkb << std::endl;
+}
 
 void FollowsExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO
@@ -24,8 +26,9 @@ void FollowsExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
   std::cout << "children size: " << children.size() << std::endl;
   for (int i = 0; i < children.size() - 1; i++) {
     std::shared_ptr<StmtNode> node = children.at(i);
+    std::cout << "Address of PKB extractFromStmtLst: " << &pkb << std::endl;
     pkb.insertFollows(children[i], children[i + 1]);
-    std::cout << "inserting follows" << std::endl;
+    std::cout << "inserting follows extractFromStmtLst" << std::endl;
   }
 }
 

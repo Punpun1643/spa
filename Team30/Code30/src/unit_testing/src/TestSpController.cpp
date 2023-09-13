@@ -19,17 +19,20 @@ namespace TestSpController {
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 }
 
-class PkbStub : public PkbApi {
-
+class PkbStubSpController : public PkbApi {
  public:
   int insertFollowsCallCount;
-  PkbStub() : insertFollowsCallCount(0) {}
+  PkbStubSpController() : insertFollowsCallCount(0) {}
 
   bool insertFollows(std::shared_ptr<StmtNode> stmt1,
                    std::shared_ptr<StmtNode> stmt2) override {
     std::cout << insertFollowsCallCount << std::endl;
-    ++insertFollowsCallCount;
+    insertFollowsCallCount++;
     return true;
+  }
+
+  void getPkbAddress() {
+    std::cout << "Address of  hahaha: " << this << std::endl;
   }
 
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
@@ -90,8 +93,9 @@ TEST_CASE("Test SpController parses and extract nodes information successfully",
     std::string filePath =
         "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_short.txt";
-    PkbStub pkb = PkbStub();
+    PkbStubSpController pkb = PkbStubSpController();
     spController.parseAndExtract(pkb, filePath);
+    pkb.getPkbAddress();
 
     REQUIRE(pkb.insertFollowsCallCount == 2);
   }

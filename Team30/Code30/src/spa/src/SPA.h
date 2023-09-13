@@ -1,6 +1,6 @@
-#pragma once
-
-class SPA {
- public:
-  void process();
-};
+//#pragma once
+//
+//class SPA {
+// public:
+//  void process();
+//};

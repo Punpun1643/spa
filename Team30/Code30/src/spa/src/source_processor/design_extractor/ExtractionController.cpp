@@ -4,9 +4,11 @@
 #include "ParentExtractor.h"
 #include "UsesExtractor.h"
 #include "ExtractionController.h"
+#include <iostream>
 
 
 ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
+  std::cout << "Address of PKB ExtractionController: " << &pkb << std::endl;
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
   extractors.push_back(std::make_shared<UsesExtractor>(pkb));
