@@ -10,8 +10,8 @@
 
 class PkbApi {
  public:
-  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                                  std::shared_ptr<StmtNode> stmt2);
+  virtual bool insertFollows(std::shared_ptr<StmtNode> stmt1,
+                                  std::shared_ptr<StmtNode> stmt2) = 0;
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;
   virtual std::optional<std::pair<int, int>> getFollows(int s1_line_num,

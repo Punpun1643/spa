@@ -10,37 +10,6 @@
 #include "../../spa/src/program_knowledge_base/PkbApi.h"
 #include "catch.hpp"
 
-//class PkbStub : public PkbApi {
-//  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-//                     std::shared_ptr<StmtNode> stmt2) {
-//    fCounter_insertFollows++;
-//    std::cout << "InsertFollows called";
-//    return true;
-//  }
-//
-//  int getFCounter_insertFollows() { return fCounter_insertFollows; }
-//
-//  std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
-//      EntityType type) {
-//    return NULL;
-//  }
-//  std::optional<std::pair<int, int>> getFollows(int s1_line_num,
-//                                                EntityType s2_type) {
-//    return std::make_optional<std::pair<int, int>>();
-//  }
-//  std::optional<std::pair<int, int>> getFollows(EntityType s1_type,
-//                                                int s2_line_num) {
-//    return std::make_optional<std::pair<int, int>>();
-//  };
-//  virtual std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(
-//      EntityType s1_type, EntityType s2_type) {
-//    return NULL;
-//  }
-//
-// public:
-//  int fCounter_insertFollows;
-//};
-
 class PkbApiStub : public PkbApi {
  public:
   int insertFollowsCallCount;
@@ -75,23 +44,68 @@ class PkbApiStub : public PkbApi {
   }
 };
 
-TEST_CASE("Extract Follows") {
-  std::string varName = "var";
-  PrintNode p1 = PrintNode(1, StmtType::PRINT_STMT, "varName");
-  PrintNode p2 = PrintNode(2, StmtType::PRINT_STMT, "varName");
-  std::vector<std::shared_ptr<StmtNode>> stmts;
-  stmts.push_back(std::make_shared<PrintNode>(p1));
-  stmts.push_back(std::make_shared<PrintNode>(p2));
-  StmtLstNode stl = StmtLstNode(stmts);
-  ProcedureNode proc =
-      ProcedureNode("proc", std::make_shared<StmtLstNode>(stl));
-  std::vector<std::shared_ptr<ProcedureNode>> procs;
-  procs.push_back(std::make_shared<ProcedureNode>(proc));
-  ProgramNode prog = ProgramNode(procs);
+/// <summary>
+/// procedure proc {
+///     read varName;
+///     print varName;
+///     call proc;
+/// }
+/// </summary>
 
+class ASTBuilder {
+ public:
+  std::shared_ptr<ReadNode> r;
+  std::shared_ptr<PrintNode> pr;
+  std::shared_ptr<CallNode> c;
+  std::shared_ptr<StmtLstNode> stl;
+  std::shared_ptr<ProcedureNode> proc;
+  std::shared_ptr<ProgramNode> prog;
+
+  ASTBuilder::ASTBuilder() {
+    r = std::make_shared<ReadNode>(1, StmtType::READ_STMT, "varName");
+    pr = std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "varName");
+    c = std::make_shared<CallNode>(2, StmtType::CALL_STMT, "proc");
+    std::vector<std::shared_ptr<StmtNode>> stmts;
+    stmts.push_back(r);
+    stmts.push_back(pr);
+    stmts.push_back(c);
+    stl = std::make_shared<StmtLstNode>(stmts);
+    proc = std::make_shared<ProcedureNode>("proc", stl);
+    std::vector<std::shared_ptr<ProcedureNode>> procs;
+    procs.push_back(proc);
+    prog = std::make_shared<ProgramNode>(procs);
+  }
+
+  std::shared_ptr<ReadNode> getReadNode() { return r; }
+  std::shared_ptr<PrintNode> getPrintNode() { return pr; }
+  std::shared_ptr<CallNode> getCallNode() { return c; }
+  std::shared_ptr<StmtLstNode> getStmtLstNode() { return stl; }
+  std::shared_ptr<ProcedureNode> getProcedureNode() { return proc; }
+  std::shared_ptr<ProgramNode> getProgramNode() { return prog; }
+};
+
+class ExtractorBuilder {
+ public:
+  std::shared_ptr<FollowsExtractor> fExtractor;
+  std::shared_ptr<EntityExtractor> eExtractor;
+  PkbApiStub pkb;
+  ExtractorBuilder::ExtractorBuilder(PkbApiStub& pkb) : pkb(pkb) {
+    fExtractor = std::make_shared<FollowsExtractor>(pkb);
+  }
+};
+
+TEST_CASE("SP extractor unit tests") {
   PkbApiStub pkb = PkbApiStub();
+  ASTBuilder ast = ASTBuilder();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(std::make_shared<ProgramNode>(prog));
-  //ec.executeStmtLstExtraction(std::make_shared<StmtLstNode>(stl));
-  REQUIRE(pkb.insertFollowsCallCount == 1);
+  SECTION("Test full extraction") {
+    ec.executeProgramExtraction(ast.getProgramNode());
+    REQUIRE(pkb.insertFollowsCallCount == 2);
+  }
+  pkb.insertFollowsCallCount = 0;
+  SECTION("Follows extraction from StmtLst") {
+    eb.fExtractor->extractFromStmtLst(ast.getStmtLstNode());
+    REQUIRE(pkb.insertFollowsCallCount == 2);
+  }
 }
