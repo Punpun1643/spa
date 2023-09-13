@@ -34,9 +34,11 @@ bool PKB::isRelationTrue(string value_1, string value_2,
   return t->isRelated(stoi(value_1), stoi(value_2));
 };
 
-// bool PKB::isRelationTrueGivenFirstValue(std::string value,
-//                                         RelationType rel_type) = 0;
-// bool PKB::isRelationTrueGivenSecondValue(std::string value,
+bool PKB::isRelationTrueGivenFirstValue(std::string value,
+                                        RelationType rel_type) {
+  shared_ptr<BaseTable> t = relData.getTable(rel_type);
+}
+  // bool PKB::isRelationTrueGivenSecondValue(std::string value,
 //                                          RelationType rel_type) = 0;
 // bool PKB::isRelationTrueForAny(RelationType relation_type) = 0;
 //
