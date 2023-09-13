@@ -48,7 +48,7 @@ int ClauseResult::getNumDeclarations() const { return num_declarations; }
 bool ClauseResult::isBooleanResult() const { return num_declarations == 0; }
 
 bool ClauseResult::getBooleanClauseValue() const {
-  if (not isBooleanResult()) {
+  if (!isBooleanResult()) {
     throw std::runtime_error("ClauseResult obj has no boolean value.");
   } else {
     return boolean_clause_value;

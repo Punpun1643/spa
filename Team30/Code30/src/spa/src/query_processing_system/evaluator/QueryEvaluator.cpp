@@ -1,5 +1,8 @@
 #include "QueryEvaluator.h"
 
+#include <algorithm>
+#include <iterator>
+
 QueryEvaluator::QueryEvaluator(PkbApi& pkb) : pkb(pkb) {}
 
 std::unique_ptr<std::vector<std::string>> QueryEvaluator::evaluateQuery(
