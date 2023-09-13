@@ -36,14 +36,5 @@ class PkbApi {
                                                                                               EntityType entity_type_2,
                                                                                               RelationType rel_type) = 0;
 
-
-  // OLD FUNCTIONS - DELETE WHEN QPS EVALUATOR UPDATED.
-  virtual std::optional<std::pair<int, int>> getFollows(int s1_line_num,
-                                                        EntityType s2_type) = 0;
-  virtual std::optional<std::pair<int, int>> getFollows(EntityType s1_type,
-                                                        int s2_line_num) = 0;
-  virtual std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(
-      EntityType s1_type, EntityType s2_type) = 0;
-
   virtual ~PkbApi();  // so that the subclass destructors will be called
 };
