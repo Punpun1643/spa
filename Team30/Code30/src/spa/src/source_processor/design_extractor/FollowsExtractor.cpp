@@ -21,8 +21,11 @@ void FollowsExtractor::extractFromProcedure(std::shared_ptr<ProcedureNode> node)
 
 void FollowsExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();
+  std::cout << "children size: " << children.size() << std::endl;
   for (int i = 0; i < children.size() - 1; i++) {
-//    pkb.insertFollows(children[i], children[i + 1]);
+    std::shared_ptr<StmtNode> node = children.at(i);
+    pkb.insertFollows(children[i], children[i + 1]);
+    std::cout << "inserting follows" << std::endl;
   }
 }
 

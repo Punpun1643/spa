@@ -15,6 +15,7 @@ ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
 }
 
 void ExtractionController::executeProgramExtraction(std::shared_ptr<ProgramNode> node) {
+
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->accept(*e);
   }
