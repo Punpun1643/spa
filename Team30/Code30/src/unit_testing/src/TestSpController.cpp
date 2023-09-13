@@ -21,7 +21,6 @@ namespace TestSpController {
 
 class PkbStub : public PkbApi {
 
-
  public:
   int insertFollowsCallCount;
   PkbStub() : insertFollowsCallCount(0) {}
@@ -83,7 +82,6 @@ class PkbStub : public PkbApi {
     }
   }
 };
-
 
 TEST_CASE("Test SpController parses and extract nodes information successfully",
           "[]") {
