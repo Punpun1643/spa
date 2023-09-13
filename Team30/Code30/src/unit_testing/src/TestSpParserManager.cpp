@@ -1,20 +1,22 @@
 #include <string>
 
-#include "../../spa/src/source_processor/SpController.h"
 #include "../../spa/src/source_processor/node/stmt_node/CallNode.h"
 #include "../../spa/src/source_processor/node/stmt_node/PrintNode.h"
 #include "../../spa/src/source_processor/node/stmt_node/ReadNode.h"
 #include "../../spa/src/source_processor/node/stmt_node/StmtType.h"
+#include "../../spa/src/source_processor/parser/SpParserManager.h"
 #include "catch.hpp"
 
-TEST_CASE("Test SpController parseInputFile w_4_short.txt") {
+TEST_CASE(
+    "Test SpParserManager parses short length source program successfully",
+    "[parseInputFile, Sample_source_w4_short.txt]") {
   SECTION("Test file with valid path and valid source code") {
-    SpController spController = SpController();
+    SpParserManager spParserManager = SpParserManager();
     std::string filePath =
         "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_short.txt";
     std::shared_ptr<ProgramNode> programNode =
-        spController.parseInputFile(filePath);
+        spParserManager.parseInputFile(filePath);
     std::shared_ptr<ProcedureNode> procedureNode =
         programNode->getChildren().at(0);
     std::shared_ptr<StmtLstNode> stmtLstNode =
@@ -37,18 +39,20 @@ TEST_CASE("Test SpController parseInputFile w_4_short.txt") {
   }
 }
 
-TEST_CASE("Test SpController parseInputFile for Example 1 and 2") {
+TEST_CASE(
+    "Test SpParserManager parses medium length source program successfully",
+    "[parseInputFile, Sample_source_w4_medium.txt]") {
   SECTION(
       "Test file with valid path and valid source code for Example 1 and 2") {
-    SpController spController = SpController();
+    SpParserManager spParserManager = SpParserManager();
     std::string filePath =
         "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_medium.txt";
-    auto programNode = spController.parseInputFile(filePath);
+    auto programNode = spParserManager.parseInputFile(filePath);
 
     REQUIRE(programNode->getChildren().size() == 3);
 
-    // Test details for Example 1
+    // Test details for procedure Example 1
     {
       auto procedureNode = programNode->getChildren().at(0);
       auto stmtLstNode = procedureNode->getChildren().at(0);
@@ -65,7 +69,7 @@ TEST_CASE("Test SpController parseInputFile for Example 1 and 2") {
       REQUIRE(printNode->getVarName() == "output1");
     }
 
-    // Test details for Example 2
+    // Test details for procedure Example 2
     {
       auto procedureNode = programNode->getChildren().at(1);
       auto stmtLstNode = procedureNode->getChildren().at(0);
@@ -84,7 +88,7 @@ TEST_CASE("Test SpController parseInputFile for Example 1 and 2") {
       REQUIRE(callNode2->getProcName() == "Cleanup");
     }
 
-    // Test details for Example 3
+    // Test details for procedure Example 3
     {
       auto procedureNode = programNode->getChildren().at(2);
       auto stmtLstNode = procedureNode->getChildren().at(0);
