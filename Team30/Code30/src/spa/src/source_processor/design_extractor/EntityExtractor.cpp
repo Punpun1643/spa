@@ -1,7 +1,7 @@
 #include "EntityExtractor.h"
 
 
-EntityExtractor::EntityExtractor() {}
+EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
 
 void EntityExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node)  {
   // TODO

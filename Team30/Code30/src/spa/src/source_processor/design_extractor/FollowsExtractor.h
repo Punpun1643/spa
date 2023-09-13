@@ -12,7 +12,7 @@
 
 class FollowsExtractor : public IDesignExtractor {
  public:
-  explicit FollowsExtractor();
+  explicit FollowsExtractor(PkbApi& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -27,4 +27,7 @@ class FollowsExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
   ~FollowsExtractor() = default;
+
+ private:
+  PkbApi& pkb;
 };

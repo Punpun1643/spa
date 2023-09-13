@@ -12,7 +12,7 @@
 
 class UsesExtractor : public IDesignExtractor {
  public:
-  explicit UsesExtractor();
+  explicit UsesExtractor(PkbApi& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -27,4 +27,7 @@ class UsesExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
   ~UsesExtractor() = default;
+
+ private:
+  PkbApi& pkb;
 };
