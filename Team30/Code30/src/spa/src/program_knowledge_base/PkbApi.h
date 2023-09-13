@@ -4,12 +4,13 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 
 #include "../query_processing_system/common/EntityType.h"
 #include <source_processor/node/stmt_node/StmtNode.h>
 #include "RelationType.h"
 
-
+using namespace std;
 
 class PkbApi {
 
@@ -17,7 +18,8 @@ class PkbApi {
   static bool insertFollows(std::shared_ptr<StmtNode> stmt1,
                             std::shared_ptr<StmtNode> stmt2);
 
-  virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(EntityType type) = 0;
+  virtual unique_ptr<vector<string>> getEntitiesWithType(
+      EntityType type) = 0;
 
   // 0 Declarations
   virtual bool isRelationTrue(std::string value_1, std::string value_2, RelationType rel_type) = 0;
