@@ -1,14 +1,15 @@
 #include "ClauseResult.h"
-#include <algorithm>
-#include <stdexcept>
-#include <iterator>
 
-ClauseResult::ClauseResult(bool is_valid): num_declarations(0),
-                                            boolean_clause_value(is_valid) {}
+#include <algorithm>
+#include <iterator>
+#include <stdexcept>
+
+ClauseResult::ClauseResult(bool is_valid)
+    : num_declarations(0), boolean_clause_value(is_valid) {}
 
 ClauseResult::ClauseResult(PqlDeclaration d,
-                           std::unique_ptr<std::vector<std::string>> values):
-num_declarations(1) {
+                           std::unique_ptr<std::vector<std::string>> values)
+    : num_declarations(1) {
   /* Create clause result with 1 declaration */
   value_map[d] = *values;
 }
@@ -42,13 +43,9 @@ ClauseResult::ClauseResult(
   }
 }
 
-int ClauseResult::getNumDeclarations() const {
-  return num_declarations;
-}
+int ClauseResult::getNumDeclarations() const { return num_declarations; }
 
-bool ClauseResult::isBooleanResult() const {
-  return num_declarations == 0;
-}
+bool ClauseResult::isBooleanResult() const { return num_declarations == 0; }
 
 bool ClauseResult::getBooleanClauseValue() const {
   if (not isBooleanResult()) {
@@ -58,12 +55,12 @@ bool ClauseResult::getBooleanClauseValue() const {
   }
 }
 
-bool ClauseResult::contains(const PqlDeclaration& d) const {
+bool ClauseResult::contains(PqlDeclaration const& d) const {
   return value_map.count(d) == 1;
 }
 
-std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(const
-    PqlDeclaration& declaration) const {
+std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
+    PqlDeclaration const& declaration) const {
   if (value_map.count(declaration) == 0) {
     throw std::runtime_error("Given declaration does not exist.");
   }
@@ -71,7 +68,8 @@ std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(const
 }
 
 //
-//std::unique_ptr<ClauseResult> ClauseResult::combineResults(const ClauseResult& other) const{
+// std::unique_ptr<ClauseResult> ClauseResult::combineResults(const
+// ClauseResult& other) const{
 //  if (num_declarations == 0) {
 //    if (boolean_clause_value) {
 //      return std::make_unique<ClauseResult>(other);
@@ -113,8 +111,8 @@ std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(const
 //  }
 //}
 //
-//std::unique_ptr<std::vector<PqlDeclaration>>
-//ClauseResult::getCommonDeclarations(const ClauseResult& other) const {
+// std::unique_ptr<std::vector<PqlDeclaration>>
+// ClauseResult::getCommonDeclarations(const ClauseResult& other) const {
 //  auto common_declarations =
 //      std::make_unique<std::vector<PqlDeclaration>>();
 //  for (auto& it : value_map) {

@@ -13,8 +13,7 @@ class QueryEvaluator {
   PkbApi& pkb;
 
   static std::unique_ptr<std::vector<std::string>> getIntersectingValues(
-      std::vector<std::string> arr_1,
-      std::vector<std::string> arr_2) ;
+      std::vector<std::string> arr_1, std::vector<std::string> arr_2);
 
  public:
   explicit QueryEvaluator(PkbApi& pkb);

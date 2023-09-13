@@ -12,7 +12,6 @@ std::unique_ptr<std::vector<std::string>> QueryEvaluator::evaluateQuery(
 std::unique_ptr<std::vector<std::string>> QueryEvaluator::evaluateQuery(
     std::unique_ptr<SelectClause> select_clause,
     std::unique_ptr<SuchThatClause> such_that_clause) {
-
   std::unique_ptr<ClauseResult> select_result = select_clause->evaluate(pkb);
   std::unique_ptr<ClauseResult> such_that_result =
       such_that_clause->evaluate(pkb);
@@ -35,7 +34,6 @@ std::unique_ptr<std::vector<std::string>> QueryEvaluator::evaluateQuery(
     return select_result->getValues(selected_declaration);
   }
 }
-
 
 std::unique_ptr<std::vector<std::string>> QueryEvaluator::getIntersectingValues(
     std::vector<std::string> arr_1, std::vector<std::string> arr_2) {
