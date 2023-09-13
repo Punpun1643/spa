@@ -8,6 +8,7 @@
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "program_knowledge_base/PkbApi.h"
 
 class IDesignExtractor {
  public:

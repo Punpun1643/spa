@@ -14,8 +14,8 @@
 class PkbApi {
 
  public:
-  static bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                            std::shared_ptr<StmtNode> stmt2);
+  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
+                                  std::shared_ptr<StmtNode> stmt2);
 
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(EntityType type) = 0;
 
