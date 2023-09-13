@@ -5,6 +5,7 @@
 
 #include "../shared/tokenizer/ATokenizer.h"
 #include "parser/SpParser.h"
+#include "design_extractor/ExtractionController.h"
 
 SpController::SpController() {}
 

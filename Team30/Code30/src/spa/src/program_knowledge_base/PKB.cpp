@@ -1,15 +1,9 @@
 #include "PKB.h"
 
-#include <stdio.h>
-
-#include <iostream>
-#include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
-#include "../source_processor/node/ANode.h"
 #include "PkbApi.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
@@ -30,15 +24,15 @@ unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
 //// 0 Declarations
 bool PKB::isRelationTrue(string value_1, string value_2,
                          RelationType rel_type) {
-  shared_ptr<BaseTable> t = relData.getTable(rel_type);
-  return t->isRelated(stoi(value_1), stoi(value_2));
+  return relData.getTable(rel_type)->isRelated(stoi(value_1), stoi(value_2));
 };
 
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   shared_ptr<BaseTable> t = relData.getTable(rel_type);
+  return true;
 }
-  // bool PKB::isRelationTrueGivenSecondValue(std::string value,
+// bool PKB::isRelationTrueGivenSecondValue(std::string value,
 //                                          RelationType rel_type) = 0;
 // bool PKB::isRelationTrueForAny(RelationType relation_type) = 0;
 //
@@ -62,14 +56,6 @@ bool PKB::isRelationTrueGivenFirstValue(std::string value,
 // virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 // getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 //                   RelationType rel_type) = 0;
-
-bool PKB::insertFollows(std::shared_ptr<StmtNode> stmt1,
-                        std::shared_ptr<StmtNode> stmt2) {
-  // entData.insert(stmt1);
-  // entData.insert(stmt2);
-  // relData.insert(Follows, stmt1, stmt2)
-  return true;
-}
 
 std::optional<std::pair<int, int>> PKB::getFollows(int s1_line_num,
                                                    EntityType s2_type) {

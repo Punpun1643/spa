@@ -5,14 +5,13 @@
 
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
-      make_shared<BaseTable>(DictionaryTable());
+      make_shared<DictionaryTable>(DictionaryTable());
   relationships[RelationType::FOLLOWS] =
-      make_shared<BaseTable>(DictionaryTable());
+      make_shared<DictionaryTable>(DictionaryTable());
   relationships[RelationType::FOLLOWS_STAR] =
-      make_shared<BaseTable>(UFDSTable());
+      make_shared<UFDSTable>(UFDSTable());
   relationships[RelationType::PARENT_STAR] =
-      make_shared<BaseTable>(UFDSTable());
-  ;
+      make_shared<UFDSTable>(UFDSTable());
 }
 
 shared_ptr<BaseTable> RelDatabase::getTable(RelationType type) {

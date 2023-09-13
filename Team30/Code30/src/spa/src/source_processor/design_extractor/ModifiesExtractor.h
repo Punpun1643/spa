@@ -12,6 +12,8 @@
 
 class ModifiesExtractor : public IDesignExtractor {
  public:
+  explicit ModifiesExtractor(PkbApi& pkb);
+
   explicit ModifiesExtractor();
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
@@ -27,4 +29,7 @@ class ModifiesExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
   ~ModifiesExtractor() = default;
+
+ private:
+  PkbApi& pkb;
 };

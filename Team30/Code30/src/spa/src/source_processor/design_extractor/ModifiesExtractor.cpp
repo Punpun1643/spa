@@ -3,7 +3,7 @@
 
 #include "ModifiesExtractor.h"
 
-ModifiesExtractor::ModifiesExtractor() {}
+ModifiesExtractor::ModifiesExtractor(PkbApi& pkb) : pkb(pkb) {}
 
 void ModifiesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO

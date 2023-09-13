@@ -9,7 +9,7 @@
 #include "tables/UFDSTable.h"
 
 class RelDatabase {
-  std::unordered_map<RelationType, shared_ptr<BaseTable>> relationships;
+  std::unordered_map<RelationType, shared_ptr<BaseTable>> relationships = {};
 
  public:
   RelDatabase();
