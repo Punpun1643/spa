@@ -13,6 +13,7 @@ class UFDSTable : public BaseTable {
  public:
   UFDSTable();
   ~UFDSTable() = default;
-  void insert(int i, int j) { relations.unionSets(i, j); };
-  bool isRelated(int i, int j) { return i < j && relations.isSameSet(i, j); };
+  void insert(string i, string j) ;
+  bool isRelated(string i, string j);
+  //unique_ptr<vector<string>> isRelatedAll(unordered_set<string> ls);
 };

@@ -9,11 +9,12 @@
 using namespace std;
 
 class DictionaryTable : public BaseTable {
-  unordered_map<int, unordered_set<int>> relations = {};
+  unordered_map<string, unordered_set<string>> relations = {};
 
  public:
   DictionaryTable();
   ~DictionaryTable() = default;
-  void insert(int i, int j);
-  bool isRelated(int i, int j);
+  void insert(string i, string j);
+  bool isRelated(string i, string j);
+  //unique_ptr<vector<string>> isRelatedAll(unordered_set<string> ls);
 };

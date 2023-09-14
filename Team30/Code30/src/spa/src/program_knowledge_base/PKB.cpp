@@ -24,21 +24,34 @@ unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
 //// 0 Declarations
 bool PKB::isRelationTrue(string value_1, string value_2,
                          RelationType rel_type) {
-  return relData.getTable(rel_type)->isRelated(stoi(value_1), stoi(value_2));
+  return relData.getTable(rel_type)->isRelated(value_1, value_2);
 };
 
-bool PKB::isRelationTrueGivenFirstValue(std::string value,
-                                        RelationType rel_type) {
-  shared_ptr<BaseTable> t = relData.getTable(rel_type);
-  return true;
-}
-// bool PKB::isRelationTrueGivenSecondValue(std::string value,
-//                                          RelationType rel_type) = 0;
-// bool PKB::isRelationTrueForAny(RelationType relation_type) = 0;
+//// example Follows(1, _)
+// bool PKB::isRelationTrueGivenFirstValue(std::string value,
+//                                         RelationType rel_type) {
+//   shared_ptr<BaseTable> t = relData.getTable(rel_type);
+//   return true;
+// }
 //
-//// 1 Declarations
-// unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
-//     EntityType entity_type, RelationType rel_type) = 0;
+//// example Follows(_, 1)
+// bool PKB::isRelationTrueGivenSecondValue(std::string value,
+//                                          RelationType rel_type) {
+//   return true;
+// }
+//
+//// example Follows(_, _)
+// bool PKB::isRelationTrueForAny(RelationType relation_type) { return true; }
+
+// 1 Declarations
+// example Parent(s, _), Uses*(s, _)
+unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
+    EntityType entity_type, RelationType rel_type) {
+  shared_ptr<BaseTable> t = relData.getTable(rel_type);
+  unordered_set<string> ent = entData.get(entity_type);
+  //return t.isRelatedAll(ent);
+  return NULL;
+}
 //
 //
 // unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(EntityType
