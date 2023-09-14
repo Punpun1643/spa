@@ -22,24 +22,30 @@ PKB::PKB() : PkbApi() {
                     {RelationType::PARENT, RelationType::PARENT_STAR}}};
 };
 
+// ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
   entData->insert(type, entity);
 };
 
 void PKB::insertRelation(RelationType type, string stmt1, string stmt2) {
+  // Inserts into more than 1 table simultaneously
+  // Add all related tables to relatedTables
   for (RelationType rt : relatedTables[type]) {
     shared_ptr<BaseTable> table = relData->getTable(rt);
     table->insert(stmt1, stmt2);
   }
 };
 
+// ---------- RETRIEVE ENTITIES ----------
 unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
   shared_ptr<unordered_set<string>> e = entData->get(type);
   vector<string> v(e->begin(), e->end());
   return make_unique<vector<string>>(v);
 };
 
-//// 0 Declarations
+// ---------- RETRIEVE RELATIONS ----------
+// 0 Declarations
+// example Follows(1, 3)
 bool PKB::isRelationTrue(string value_1, string value_2,
                          RelationType rel_type) {
   return relData->getTable(rel_type)->isRelated(value_1, value_2);
