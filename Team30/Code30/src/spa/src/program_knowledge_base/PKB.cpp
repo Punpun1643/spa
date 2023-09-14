@@ -80,7 +80,7 @@ bool PKB::isRelationTrueForAny(RelationType relation_type) {
 // example Parent(s, _), ParentsStar(s, _)
 unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
     EntityType entity_type, RelationType rel_type) {
-  vector<string> output;
+  unordered_set<string> output;
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   unordered_set<string> ents1 = entData->get(entity_type);
   unordered_set<string> ents2 =
@@ -90,17 +90,20 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
   for (string ent1 : ents1) {
     for (string ent2 : ents2) {
       if (table->isRelated(ent1, ent2)) {
-        output.push_back(ent1);
+        output.insert(ent1);
       }
     }
   }
-  return make_unique<vector<string>>(output);
+
+  vector<string> output_vector;
+  output_vector.assign(output.begin(), output.end());
+  return make_unique<vector<string>>(output_vector);
 }
 
 // example Follows(_, 3), FolowsStar(_, 3)
 unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
     EntityType entity_type, RelationType rel_type) {
-  vector<string> output;
+  unordered_set<string> output;
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   unordered_set<string> ents1 =
       entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
@@ -110,40 +113,49 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
   for (string ent1 : ents1) {
     for (string ent2 : ents2) {
       if (table->isRelated(ent1, ent2)) {
-        output.push_back(ent2);
+        output.insert(ent2);
       }
     }
   }
-  return make_unique<vector<string>>(output);
+
+  vector<string> output_vector;
+  output_vector.assign(output.begin(), output.end());
+  return make_unique<vector<string>>(output_vector);
 };
 
 // example Follows(s, 3), FolowsStar(s, 3)
 unique_ptr<vector<string>> PKB::getRelationValues(EntityType entity_type,
                                                   std::string value,
                                                   RelationType rel_type) {
-  vector<string> output;
+  unordered_set<string> output;
   unordered_set<string> ents = entData->get(entity_type);
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   for (string ent : ents) {
     if (table->isRelated(ent, value)) {
-      output.push_back(ent);
+      output.insert(ent);
     }
   }
-  return make_unique<vector<string>>(output);
+
+  vector<string> output_vector;
+  output_vector.assign(output.begin(), output.end());
+  return make_unique<vector<string>>(output_vector);
 }
 
 unique_ptr<vector<string>> PKB::getRelationValues(string value,
                                                   EntityType entity_type,
                                                   RelationType rel_type) {
-  vector<string> output;
+  unordered_set<string> output;
   unordered_set<string> ents = entData->get(entity_type);
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   for (string ent : ents) {
     if (table->isRelated(ent, value)) {
-      output.push_back(ent);
+      output.insert(ent);
     }
   }
-  return make_unique<vector<string>>(output);
+
+  vector<string> output_vector;
+  output_vector.assign(output.begin(), output.end());
+  return make_unique<vector<string>>(output_vector);
 }
 
 //// 2 Declarations
