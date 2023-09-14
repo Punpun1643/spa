@@ -120,7 +120,7 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
   unordered_set<string> output;
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   shared_ptr<unordered_set<string>> ents1 = entData->get(EntityType::STMT);
-  shared_ptr<unordered_set<string >> ents2 = entData->get(entity_type);
+  shared_ptr<unordered_set<string>> ents2 = entData->get(entity_type);
 
   // TODO: Optimise
   for (string ent1 : *ents1) {
@@ -138,7 +138,7 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
 
 // example Follows(s, 3), FolowsStar(s, 3)
 unique_ptr<vector<string>> PKB::getRelationValues(EntityType entity_type,
-                                                  std::string value,
+                                                  string value,
                                                   RelationType rel_type) {
   unordered_set<string> output;
   shared_ptr<unordered_set<string>> ents = entData->get(entity_type);
@@ -154,6 +154,7 @@ unique_ptr<vector<string>> PKB::getRelationValues(EntityType entity_type,
   return make_unique<vector<string>>(output_vector);
 }
 
+// example Follows(3, s)
 unique_ptr<vector<string>> PKB::getRelationValues(string value,
                                                   EntityType entity_type,
                                                   RelationType rel_type) {
@@ -161,7 +162,7 @@ unique_ptr<vector<string>> PKB::getRelationValues(string value,
   shared_ptr<unordered_set<string>> ents = entData->get(entity_type);
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   for (string ent : *ents) {
-    if (table->isRelated(ent, value)) {
+    if (table->isRelated(value, ent)) {
       output.insert(ent);
     }
   }

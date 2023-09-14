@@ -96,14 +96,42 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   REQUIRE(*pkb.getRelationValuesGivenFirstType(
               EntityType::WHILE, RelationType::PARENT) == empty_vector);
 
-  // Returns all s such that Relation(_, s)
-  // statement 7 is an assign statement as is the child of 6
-  tmp = {"7"};
-  REQUIRE(*pkb.getRelationValuesGivenSecondType(EntityType::ASSIGN,
-                                                RelationType::PARENT) == tmp);
-  // there are no while statements
-  REQUIRE(*pkb.getRelationValuesGivenSecondType(
-              EntityType::WHILE, RelationType::PARENT) == empty_vector);
+  // Returns all s such that Relation(s, int)
+  // statement 3 follows 1 and 2
+  tmp = {"1", "2"};
+  REQUIRE(*pkb.getRelationValues(EntityType::STMT, "3",
+                                 RelationType::FOLLOWS_STAR) == tmp);
+  // statement 4 is the only if statement that is a parent of 7
+  tmp = {"4"};
+  REQUIRE(*pkb.getRelationValues(EntityType::IF, "7",
+                                 RelationType::PARENT_STAR) == tmp);
+  // statement 2 is the only CALL statement that is followed by 3
+  tmp = {"2"};
+  REQUIRE(*pkb.getRelationValues(EntityType::CALL, "3",
+                                 RelationType::FOLLOWS) == tmp);
+  // no call statements followed by 4
+  REQUIRE(*pkb.getRelationValues(EntityType::CALL, "4",
+                                 RelationType::FOLLOWS) == empty_vector);
+
+  // Returns all s such that Relation(int, s)
+  // 3 and 4 follows* 2
+  tmp = {"3", "4"};
+  REQUIRE(*pkb.getRelationValues("2", EntityType::STMT,
+                                 RelationType::FOLLOWS_STAR) == tmp);
+  // 4 and 6 are parents* of 7
+  tmp = {"5", "6", "7"};
+  REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
+                                 RelationType::PARENT_STAR) == tmp);
+  //// 3 is not a parent
+  REQUIRE(*pkb.getRelationValues("3", EntityType::STMT, RelationType::PARENT) ==
+          empty_vector);
+
+  // Returns all s1, s2 such that Relation(s1, s2)
+  vector<pair<string, string>> tmp_pair;
+  tmp_pair = {{"4", "5"}, {"4", "6"}, {"6", "7"}};
+  REQUIRE(
+      *pkb.getRelationValues(EntityType::STMT, EntityType::STMT,
+                                 RelationType::PARENT) == tmp_pair);
 }
 
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
