@@ -15,7 +15,9 @@ using namespace std;
 
 class PkbApi {
  public:
-  virtual void insertRelation(RelationType type, std::string stmt1, std::string stmt2);
+  virtual void insertEntity(EntityType type, string entity) = 0;
+  virtual void insertRelation(RelationType type, string stmt1,
+                              string stmt2) = 0;
 
   virtual unique_ptr<vector<string>> getEntitiesWithType(EntityType type) = 0;
 

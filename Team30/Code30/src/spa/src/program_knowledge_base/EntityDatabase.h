@@ -14,14 +14,14 @@
 using namespace std;
 
 class EntityDatabase {
-  unordered_map<EntityType, unordered_set<string>> entities;
-  unordered_set<string> statement_numbers;
+  unordered_map<EntityType, shared_ptr<unordered_set<string>>> entities;
+  shared_ptr<unordered_set<string>> statement_numbers;
   unordered_set<EntityType> entityTypesThatStoreStatementNumbers;
 
  public:
   EntityDatabase();
   ~EntityDatabase() = default;
   void insert(EntityType type, string value);
-  unordered_set<string> get(EntityType type);
-  unordered_set<string> getAllStatements();
+  shared_ptr<unordered_set<string>> get(EntityType type);
+  shared_ptr<unordered_set<string>> getAllStatements();
 };

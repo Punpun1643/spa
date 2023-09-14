@@ -20,12 +20,16 @@ using namespace std;
 class PKB : public PkbApi {
   unique_ptr<EntityDatabase> entData;
   unique_ptr<RelDatabase> relData;
+  unordered_map<RelationType, vector<RelationType>> relatedTables;
 
  public:
   PKB();
-  unique_ptr<vector<string>> getEntitiesWithType(EntityType type);
+  ~PKB() = default;
 
+  void insertEntity(EntityType type, std::string entity);
   void insertRelation(RelationType type, string stmt1, string stmt2);
+
+  unique_ptr<vector<string>> getEntitiesWithType(EntityType type);
 
   // 0 Declarations
   bool isRelationTrue(string value_1, string value_2, RelationType rel_type);
@@ -48,7 +52,7 @@ class PKB : public PkbApi {
   // 2 Declarations
   unique_ptr<vector<pair<string, string>>> getRelationValues(
       EntityType entity_type_1, EntityType entity_type_2,
-      RelationType rel_type) = 0;
+      RelationType rel_type);
 
   // ---------- Delete after migration ------------------
   std::optional<std::pair<int, int>> getFollows(int s1_line_num,

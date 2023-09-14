@@ -11,39 +11,38 @@
 using namespace std;
 
 EntityDatabase::EntityDatabase() {
-  unordered_map<EntityType, unordered_set<string>> entities;
-  unordered_set<string> statement_numbers;
+  entities[EntityType::PROCEDURE] = make_shared<unordered_set<string>>();
+  entities[EntityType::STMT] = make_shared<unordered_set<string>>();
+  entities[EntityType::READ] = make_shared<unordered_set<string>>();
+  entities[EntityType::PRINT] = make_shared<unordered_set<string>>();
+  entities[EntityType::ASSIGN] = make_shared<unordered_set<string>>();
+  entities[EntityType::CALL] = make_shared<unordered_set<string>>();
+  entities[EntityType::WHILE] = make_shared<unordered_set<string>>();
+  entities[EntityType::IF] = make_shared<unordered_set<string>>();
+  entities[EntityType::VARIABLE] = make_shared<unordered_set<string>>();
+  entities[EntityType::CONSTANT] = make_shared<unordered_set<string>>();
 
-  entities[EntityType::PROCEDURE] = {};
-  entities[EntityType::STMT] = {};
-  entities[EntityType::READ] = {};
-  entities[EntityType::PRINT] = {};
-  entities[EntityType::ASSIGN] = {};
-  entities[EntityType::CALL] = {};
-  entities[EntityType::WHILE] = {};
-  entities[EntityType::IF] = {};
-  entities[EntityType::VARIABLE] = {};
-  entities[EntityType::CONSTANT] = {};
+  statement_numbers = make_shared<unordered_set<string>>();
 
-  unordered_set<EntityType> entityTypesThatStoreStatementNumbers = {
+  entityTypesThatStoreStatementNumbers = {
       EntityType::STMT,   EntityType::READ, EntityType::PRINT,
       EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
       EntityType::IF};
 };
 
 void EntityDatabase::insert(EntityType type, string value) {
-  entities[type].insert(value);
+  (entities[type])->insert(value);
   if (entityTypesThatStoreStatementNumbers.find(type) !=
       entityTypesThatStoreStatementNumbers.end()) {
-    statement_numbers.insert(value);
+    statement_numbers->insert(value);
   };
 };
 
-unordered_set<string> EntityDatabase::get(EntityType type) {
-  unordered_set<string> results = entities[type];
+shared_ptr<unordered_set<string>> EntityDatabase::get(EntityType type) {
+  shared_ptr<unordered_set<string>> results = entities[type];
   return results;
 };
 
-unordered_set<string> EntityDatabase::getAllStatements() {
+shared_ptr<unordered_set<string>> EntityDatabase::getAllStatements() {
   return statement_numbers;
 };
