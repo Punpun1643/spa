@@ -48,6 +48,7 @@ class PkbApi {
                     RelationType rel_type) = 0;
 
   // OLD FUNCTIONS - DELETE WHEN QPS EVALUATOR UPDATED.
+
   virtual std::optional<std::pair<int, int>> getFollows(int s1_line_num,
                                                         EntityType s2_type) = 0;
   virtual std::optional<std::pair<int, int>> getFollows(EntityType s1_type,

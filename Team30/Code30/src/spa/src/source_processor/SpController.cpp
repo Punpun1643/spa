@@ -1,24 +1,15 @@
 #include "SpController.h"
 
-#include <fstream>
-#include <memory>
-
-#include "../shared/tokenizer/ATokenizer.h"
-#include "parser/SpParser.h"
 #include "design_extractor/ExtractionController.h"
+#include "parser/SpParserManager.h"
 
 SpController::SpController() {}
 
-std::shared_ptr<ProgramNode> SpController::parseInputFile(
-    std::string filePath) {
-  std::ifstream inputFileStream(filePath);
-
-  ATokenizer tokenizer = ATokenizer(inputFileStream);
-
-  std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
-
-  SpParser parser(tokens);
-  parser.parse();
-  std::shared_ptr<ProgramNode> programNode = parser.getSourceProgramNode();
-  return programNode;
+void SpController::parseAndExtract(PkbApi& pkb,
+                                   std::string sourceProgramFilePath) {
+  SpParserManager parserManager;
+  std::shared_ptr<ProgramNode> programNode =
+      parserManager.parseInputFile(sourceProgramFilePath);
+  ExtractionController extractionController = ExtractionController(pkb);
+  extractionController.executeProgramExtraction(programNode);
 }
