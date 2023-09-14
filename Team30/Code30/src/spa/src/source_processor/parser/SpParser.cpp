@@ -3,8 +3,16 @@
 #include <stdexcept>
 #include <string>
 
+namespace SpParserConstant {
 std::string const START_PROCEDURE = "{";
 std::string const END_PROCEDURE = "}";
+std::string const STMT_TERMINATOR = ";";
+std::string const PROCEDURE_KEYWORD = "procedure";
+std::string const PRINT_KEYWORD = "print";
+std::string const READ_KEYWORD = "read";
+std::string const CALL_KEYWORD = "call";
+std::string const WHILE_KEYWORD = "while";
+}  // namespace SpParserConstant
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
@@ -16,7 +24,7 @@ std::shared_ptr<ProgramNode> SpParser::parseProgram() {
     // current token
     std::shared_ptr<Token> currToken = getCurrToken();
     if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-        currToken->getTokenVal() == "procedure") {
+        currToken->getTokenVal() == SpParserConstant::PROCEDURE_KEYWORD) {
       // increment index token to get next token
       nextToken();
       // parse procedure
@@ -38,13 +46,13 @@ std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
 
     nextToken();
     // check if valid procedure
-    if (getCurrToken()->getTokenVal() == START_PROCEDURE) {
+    if (getCurrToken()->getTokenVal() == SpParserConstant::START_PROCEDURE) {
       // increment index token to get next token
       nextToken();
       // parse stmtLst
       std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
-      if (getCurrToken()->getTokenVal() == END_PROCEDURE) {
+      if (getCurrToken()->getTokenVal() == SpParserConstant::END_PROCEDURE) {
         nextToken();
         return std::make_shared<ProcedureNode>(procedureName, stmtLst);
       } else {
@@ -67,7 +75,7 @@ std::shared_ptr<PrintNode> SpParser::parsePrint() {
     nextToken();
 
     // check if valid print
-    if (getCurrToken()->getTokenVal() == ";") {
+    if (getCurrToken()->getTokenVal() == SpParserConstant::STMT_TERMINATOR) {
       nextToken();
 
       return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT,
@@ -86,7 +94,7 @@ std::shared_ptr<ReadNode> SpParser::parseRead() {
   if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
     std::string varName = currToken->getTokenVal();
     nextToken();
-    if (getCurrToken()->getTokenVal() == ";") {
+    if (getCurrToken()->getTokenVal() == SpParserConstant::STMT_TERMINATOR) {
       nextToken();
       return std::make_shared<ReadNode>(currStmtIndex++, StmtType::READ_STMT,
                                         varName);
@@ -104,7 +112,7 @@ std::shared_ptr<CallNode> SpParser::parseCall() {
   if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
     std::string procedureName = currToken->getTokenVal();
     nextToken();
-    if (getCurrToken()->getTokenVal() == ";") {
+    if (getCurrToken()->getTokenVal() == SpParserConstant::STMT_TERMINATOR) {
       nextToken();
       return std::make_shared<CallNode>(currStmtIndex++, StmtType::CALL_STMT,
                                         procedureName);
@@ -119,20 +127,20 @@ std::shared_ptr<CallNode> SpParser::parseCall() {
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
-  while (getCurrToken()->getTokenVal() != END_PROCEDURE) {
+  while (getCurrToken()->getTokenVal() != SpParserConstant::END_PROCEDURE) {
     std::shared_ptr<Token> currToken = getCurrToken();
     if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-        currToken->getTokenVal() == "print") {
+        currToken->getTokenVal() == SpParserConstant::PRINT_KEYWORD) {
       nextToken();
       // parse print
       stmts.push_back(parsePrint());
     } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == "read") {
+               currToken->getTokenVal() == SpParserConstant::READ_KEYWORD) {
       nextToken();
       // parse read
       stmts.push_back(parseRead());
     } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == "call") {
+               currToken->getTokenVal() == SpParserConstant::CALL_KEYWORD) {
       nextToken();
       // parse call
       stmts.push_back(parseCall());
