@@ -12,13 +12,50 @@
 
 class PkbApiStub : public PkbApi {
  public:
+  int insertEntityCallCount;
+  int insertRelationCallCount;
   int insertFollowsCallCount;
-  PkbApiStub() : insertFollowsCallCount(0) {}
+  int insertParentCallCount;
+  int insertUsesCallCount;
+  int insertModifiesCallCount;
+
+  PkbApiStub()
+      : insertEntityCallCount(0),
+        insertRelationCallCount(0),
+        insertFollowsCallCount(0),
+        insertParentCallCount(0),
+        insertUsesCallCount(0),
+        insertModifiesCallCount(0) {}
 
   bool insertFollows(std::shared_ptr<StmtNode> stmt1,
                      std::shared_ptr<StmtNode> stmt2) {
     ++insertFollowsCallCount;
     return true;
+  }
+
+  void insertEntity(EntityType type, std::string entity) {
+    ++insertEntityCallCount;
+  }
+
+  void insertRelation(RelationType type, std::string s1_line_num,
+      std::string s2_line_num) {
+    ++insertRelationCallCount;
+    switch (type) {
+      case (RelationType::FOLLOWS):
+        ++insertFollowsCallCount;
+        break;
+      case (RelationType::PARENT):
+        ++insertParentCallCount;
+        break;
+      case (RelationType::USES):
+        ++insertUsesCallCount;
+        break;
+      case (RelationType:: MODIFIES):
+        ++insertModifiesCallCount;
+        break;
+      default:
+        break;
+    }
   }
 
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
