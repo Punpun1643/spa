@@ -118,7 +118,7 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   tmp = {"3", "4"};
   REQUIRE(*pkb.getRelationValues("2", EntityType::STMT,
                                  RelationType::FOLLOWS_STAR) == tmp);
-  // 4 and 6 are parents* of 7
+  // 4 is a parent of 5, 6, 7
   tmp = {"5", "6", "7"};
   REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
                                  RelationType::PARENT_STAR) == tmp);
