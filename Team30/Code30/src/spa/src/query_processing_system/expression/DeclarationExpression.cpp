@@ -1,7 +1,14 @@
 #include "DeclarationExpression.h"
-#include "../interpreter/QueryInterpreter.h"
 
 
-void DeclarationExpression::acceptInterpreter(std::unique_ptr<QueryInterpreter> interpreter) {
-  interpreter->interpret(std::make_unique<DeclarationExpression>(*this));
+void DeclarationExpression::acceptInterpreter(QueryInterpreter &interpreter) {
+  interpreter.InterpretDeclarations(*this);
+}
+
+std::string DeclarationExpression::getDesignEntity() {
+  return this->designEntity;
+}
+
+std::string DeclarationExpression::getSynonym() {
+  return this->synonym;
 }

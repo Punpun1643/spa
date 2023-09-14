@@ -3,16 +3,25 @@
 #include <map>
 
 #include "../common/PqlDeclaration.h"
+#include "../common/Clause.h"
 
 
-typedef std::map<std::string, std::shared_ptr<PqlDeclaration>> DECLARATION_MAP_TYPE;
+typedef std::map<std::string, std::shared_ptr<PqlDeclaration>> DeclarationMap;
+typedef std::vector<std::shared_ptr<Clause>> ClauseList;
 
 class DeclarationExpression;
+class DeclarationListExpression;
+class QueryExpression;
+class SelectExpression;
 
 class QueryInterpreter {
   public:
-    void interpret(std::unique_ptr<DeclarationExpression> declarationExpression);
-    std::unique_ptr<DECLARATION_MAP_TYPE> getDeclarations();
+    std::shared_ptr<DeclarationMap> getDeclarations();
+    void Interpret(QueryExpression &query_expression);
+    void Interpret(DeclarationListExpression &declaration_list_expression);
+    void Interpret(SelectExpression &select_expression);
+    void InterpretDeclarations(DeclarationExpression &declaration_expression);
   private:
-    std::unique_ptr<DECLARATION_MAP_TYPE> declarations;
+    std::shared_ptr<DeclarationMap> declarations;
+    ClauseList clause_list;
 };

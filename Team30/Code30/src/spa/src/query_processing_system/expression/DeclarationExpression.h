@@ -3,13 +3,12 @@
 #include <string>
 
 #include "AExpression.h"
+#include "../interpreter/QueryInterpreter.h"
 
-
-class QueryInterpreter;
 
 class DeclarationExpression : public AExpression {
   public:
-    void acceptInterpreter(std::unique_ptr<QueryInterpreter> interpreter) override;
+    void acceptInterpreter(QueryInterpreter &interpreter) override;
     std::string getDesignEntity();
     std::string getSynonym();
   private:
