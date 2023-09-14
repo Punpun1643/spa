@@ -12,7 +12,7 @@
 // TODO: Replace RelType with correct names based on implementation
 
 RelDatabase::RelDatabase() {
-  relationships = {{FOLLOWS, new StmtStmtRelTable()}};  // stmtNum, stmtNums[]
+  relationships = {{RelationType::FOLLOWS, new StmtStmtRelTable()}};  // stmtNum, stmtNums[]
 };
 
 std::vector<int> RelDatabase::get(RelationType type, int lineNum) {
