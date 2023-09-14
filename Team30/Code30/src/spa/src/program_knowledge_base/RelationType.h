@@ -1,10 +1,5 @@
 #pragma once
 
-enum RelationType {
-  FOLLOWS,
-  FOLLOWS_STAR,
-  PARENT,
-  PARENT_STAR,
-  MODIFIES,
-  USES
+enum class RelationType {
+  FOLLOWS, FOLLOWS_STAR, PARENT, PARENT_STAR, MODIFIES, USES
 };
