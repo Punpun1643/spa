@@ -5,7 +5,7 @@
 #include "PqlDeclaration.h"
 
 SelectClause::SelectClause(std::shared_ptr<PqlDeclaration> declaration)
-    : declaration(declaration) {}
+    : declaration(std::move(declaration)) {}
 
 std::shared_ptr<PqlDeclaration> SelectClause::getDeclaration() {
   return declaration;
