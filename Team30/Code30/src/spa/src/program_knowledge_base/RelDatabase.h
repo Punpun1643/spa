@@ -1,16 +1,16 @@
 #pragma once
 
-#include <iostream>
 #include <stdio.h>
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include "RelationType.h"
 
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "RelationType.h"
 #include "tables/StmtStmtRelTable.h"
 
-class RelDatabase
-{
+class RelDatabase {
   std::unordered_map<RelationType, StmtStmtRelTable*> relationships;
 
  public:
