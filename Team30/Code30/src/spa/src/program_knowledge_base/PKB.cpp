@@ -10,13 +10,13 @@
 
 using namespace std;
 
-PKB::PKB() {
-  entData = EntityDatabase();
-  relData = RelDatabase();
+PKB::PKB() : PkbApi() {
+  entData = make_unique<EntityDatabase>(EntityDatabase());
+  relData = make_unique<RelDatabase>(RelDatabase());
 }
 
 unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
-  unordered_set<string> e = entData.get(type);
+  unordered_set<string> e = entData->get(type);
   vector<string> v(e.begin(), e.end());
   return make_unique<vector<string>>(v);
 };
@@ -24,7 +24,7 @@ unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
 //// 0 Declarations
 bool PKB::isRelationTrue(string value_1, string value_2,
                          RelationType rel_type) {
-  return relData.getTable(rel_type)->isRelated(value_1, value_2);
+  return relData->getTable(rel_type)->isRelated(value_1, value_2);
 };
 
 //// example Follows(1, _)
@@ -44,31 +44,67 @@ bool PKB::isRelationTrue(string value_1, string value_2,
 // bool PKB::isRelationTrueForAny(RelationType relation_type) { return true; }
 
 // 1 Declarations
-// example Parent(s, _), Uses*(s, _)
-unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
-    EntityType entity_type, RelationType rel_type) {
-  shared_ptr<BaseTable> t = relData.getTable(rel_type);
-  unordered_set<string> ent = entData.get(entity_type);
-  //return t.isRelatedAll(ent);
-  return NULL;
-}
+// example Parent(s, _), ParentsStar(s, _)
+// unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
+//    EntityType entity_type, RelationType rel_type) {
+//  shared_ptr<BaseTable> t = relData.getTable(rel_type);
+//  unordered_set<string> ent = entData.get(entity_type);
+//  //return t.isRelatedAll(ent);
+//  return NULL;
+//}
 //
-//
+// example Follows(_, 3), FolowsStar(_, 3)
 // unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(EntityType
 // entity_type,
 //                                  RelationType rel_type) = 0;
 //
-//
-// unique_ptr<vector<string>> PKB::getRelationValues(
-//     EntityType entity_type, std::string value, RelationType rel_type) = 0;
-//
-// unique_ptr<vector<string>> getRelationValues(
-//     string value, EntityType entity_type, RelationType rel_type) = 0;
-//
+
+// example Follows(s, 3), FolowsStar(s, 3)
+unique_ptr<vector<string>> PKB::getRelationValues(EntityType entity_type,
+                                                  std::string value,
+                                                  RelationType rel_type) {
+  vector<string> output;
+  unordered_set<string> ents = entData->get(entity_type);
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (string ent : ents) {
+    if (table->isRelated(ent, value)) {
+      output.push_back(ent);
+    }
+  }
+  return make_unique<vector<string>>(output);
+}
+
+unique_ptr<vector<string>> PKB::getRelationValues(string value,
+                                                  EntityType entity_type,
+                                                  RelationType rel_type) {
+  vector<string> output;
+  unordered_set<string> ents = entData->get(entity_type);
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (string ent : ents) {
+    if (table->isRelated(ent, value)) {
+      output.push_back(ent);
+    }
+  }
+  return make_unique<vector<string>>(output);
+}
+
 //// 2 Declarations
-// virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-// getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
-//                   RelationType rel_type) = 0;
+// example Follows(s1, s2), FolowsStar(s1, s2)
+unique_ptr<vector<pair<string, string>>> PKB::getRelationValues(
+    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
+  vector<pair<string, string>> output;
+  unordered_set<string> ents1 = PKB::entData->get(entity_type_1);
+  unordered_set<string> ents2 = entData->get(entity_type_2);
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (string ent1 : ents1) {
+    for (string ent2 : ents2) {
+      if (table->isRelated(ent1, ent2)) {
+        output.push_back(make_pair(ent1, ent2));
+      }
+    }
+  }
+  return make_unique<vector<pair<string, string>>>(output);
+};
 
 std::optional<std::pair<int, int>> PKB::getFollows(int s1_line_num,
                                                    EntityType s2_type) {

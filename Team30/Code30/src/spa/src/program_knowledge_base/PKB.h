@@ -18,8 +18,8 @@
 using namespace std;
 
 class PKB : public PkbApi {
-  EntityDatabase entData;
-  RelDatabase relData;
+  unique_ptr<EntityDatabase> entData;
+  unique_ptr<RelDatabase> relData;
 
  public:
   PKB();
