@@ -9,12 +9,16 @@ TEST_CASE("Parent & Follows (DictionaryTable)") {
 
   // added relation
   REQUIRE(p.isRelated("1", "4"));
+  // non added relation
+  REQUIRE(p.isRelated("2", "4") == false);
+
   // non reflexive
+  REQUIRE(p.isRelated("4", "4") == false);
+  // non symmetric
   REQUIRE(p.isRelated("4", "1") == false);
   // non transitive
   REQUIRE(p.isRelated("1", "7") == false);
-  // non added relation
-  REQUIRE(p.isRelated("2", "4") == false);
+
 }
 
 TEST_CASE("Parents Star & Follows Star (UFDSTable)") {
@@ -25,12 +29,16 @@ TEST_CASE("Parents Star & Follows Star (UFDSTable)") {
 
   // added relation
   REQUIRE(ps.isRelated("1", "4"));
+  // non added relation
+  REQUIRE(ps.isRelated("2", "7") == false);
+
   // non reflexive
+  REQUIRE(ps.isRelated("4", "4") == false);
+  // non symmetric
   REQUIRE(ps.isRelated("4", "1") == false);
   // transitive
   REQUIRE(ps.isRelated("1", "7"));
-  // non reflexive + transitive
+  // non symmetric + transitive
   REQUIRE(ps.isRelated("7", "1") == false);
-  // non added relation
-  REQUIRE(ps.isRelated("2", "7") == false);
+
 }

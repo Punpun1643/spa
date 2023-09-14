@@ -27,37 +27,95 @@ bool PKB::isRelationTrue(string value_1, string value_2,
   return relData->getTable(rel_type)->isRelated(value_1, value_2);
 };
 
-//// example Follows(1, _)
-// bool PKB::isRelationTrueGivenFirstValue(std::string value,
-//                                         RelationType rel_type) {
-//   shared_ptr<BaseTable> t = relData.getTable(rel_type);
-//   return true;
-// }
-//
-//// example Follows(_, 1)
-// bool PKB::isRelationTrueGivenSecondValue(std::string value,
-//                                          RelationType rel_type) {
-//   return true;
-// }
-//
-//// example Follows(_, _)
-// bool PKB::isRelationTrueForAny(RelationType relation_type) { return true; }
+// example Follows(1, _)
+bool PKB::isRelationTrueGivenFirstValue(std::string value,
+                                        RelationType rel_type) {
+  unordered_set<string> ents =
+      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+
+  // TODO: Optimise
+  for (string ent : ents) {
+    if (table->isRelated(value, ent)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// example Follows(_, 1)
+bool PKB::isRelationTrueGivenSecondValue(std::string value,
+                                         RelationType rel_type) {
+  unordered_set<string> ents =
+      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+
+  // TODO: Optimise
+  for (string ent : ents) {
+    if (table->isRelated(ent, value)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// example Follows(_, _)
+bool PKB::isRelationTrueForAny(RelationType relation_type) {
+  unordered_set<string> ents =
+      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  shared_ptr<BaseTable> table = relData->getTable(relation_type);
+
+  // TODO: Optimise
+  for (string ent1 : ents) {
+    for (string ent2 : ents) {
+      if (table->isRelated(ent1, ent2)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 // 1 Declarations
 // example Parent(s, _), ParentsStar(s, _)
-// unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
-//    EntityType entity_type, RelationType rel_type) {
-//  shared_ptr<BaseTable> t = relData.getTable(rel_type);
-//  unordered_set<string> ent = entData.get(entity_type);
-//  //return t.isRelatedAll(ent);
-//  return NULL;
-//}
-//
+unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
+    EntityType entity_type, RelationType rel_type) {
+  vector<string> output;
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  unordered_set<string> ents1 = entData->get(entity_type);
+  unordered_set<string> ents2 =
+      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+
+  // TODO: Optimise
+  for (string ent1 : ents1) {
+    for (string ent2 : ents2) {
+      if (table->isRelated(ent1, ent2)) {
+        output.push_back(ent1);
+      }
+    }
+  }
+  return make_unique<vector<string>>(output);
+}
+
 // example Follows(_, 3), FolowsStar(_, 3)
-// unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(EntityType
-// entity_type,
-//                                  RelationType rel_type) = 0;
-//
+unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
+    EntityType entity_type, RelationType rel_type) {
+  vector<string> output;
+  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  unordered_set<string> ents1 =
+      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  unordered_set<string> ents2 = entData->get(entity_type);
+
+  // TODO: Optimise
+  for (string ent1 : ents1) {
+    for (string ent2 : ents2) {
+      if (table->isRelated(ent1, ent2)) {
+        output.push_back(ent2);
+      }
+    }
+  }
+  return make_unique<vector<string>>(output);
+};
 
 // example Follows(s, 3), FolowsStar(s, 3)
 unique_ptr<vector<string>> PKB::getRelationValues(EntityType entity_type,
