@@ -26,6 +26,13 @@ class FollowsExtractor : public IDesignExtractor {
 
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
+  // void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+  //
+  // void extractFromIf(std::shared_ptr<IfNode> node) override;
+  //
+  // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+
+
   ~FollowsExtractor() = default;
 
  private:

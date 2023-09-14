@@ -2,13 +2,13 @@
 
 #include <memory>
 
-#include "IDesignExtractor.h"
-#include "../node/ProgramNode.h"
 #include "../node/ProcedureNode.h"
+#include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "IDesignExtractor.h"
 
 class EntityExtractor : public IDesignExtractor {
  public:
@@ -25,6 +25,12 @@ class EntityExtractor : public IDesignExtractor {
   void extractFromPrint(std::shared_ptr<PrintNode> node) override;
 
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
+
+  // void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+  //
+  // void extractFromIf(std::shared_ptr<IfNode> node) override;
+  //
+  // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
   ~EntityExtractor() = default;
 

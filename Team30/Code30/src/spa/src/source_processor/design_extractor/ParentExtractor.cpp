@@ -29,3 +29,9 @@ void ParentExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
 
+// void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {}
+//
+// void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {}
+//
+// void ParentExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+

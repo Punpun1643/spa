@@ -27,3 +27,9 @@ void EntityExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // pkb.insertEntity(EntityType::READ, std::to_string(node->getStmtIndex()));
 }
 
+// void EntityExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {}
+//
+// void EntityExtractor::extractFromIf(std::shared_ptr<IfNode> node) {}
+//
+// void EntityExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+

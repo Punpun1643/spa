@@ -24,5 +24,11 @@ class IDesignExtractor {
 
   virtual void extractFromRead(std::shared_ptr<ReadNode> node) = 0;
 
+  // virtual void extractFromWhile(std::shared_ptr<WhileNode> node) = 0;
+  // 
+  // virtual void extractFromIf(std::shared_ptr<IfNode> node) = 0;
+  // 
+  // virtual void extractFromAssign(std::shared_ptr<AssignNode> node) = 0;
+ 
   virtual ~IDesignExtractor() = default;
 };

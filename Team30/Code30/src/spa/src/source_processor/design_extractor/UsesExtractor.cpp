@@ -26,3 +26,9 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
 
+// void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {}
+//
+// void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {}
+//
+// void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+
