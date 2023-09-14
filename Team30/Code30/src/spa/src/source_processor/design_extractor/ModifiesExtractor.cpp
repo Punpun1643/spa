@@ -29,3 +29,6 @@ void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
 
+void ModifiesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+  // TODO
+}

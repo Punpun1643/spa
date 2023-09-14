@@ -27,3 +27,7 @@ void EntityExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
 
+void EntityExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+  // TODO
+}
+

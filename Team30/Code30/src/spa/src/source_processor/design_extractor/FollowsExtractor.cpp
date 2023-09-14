@@ -38,3 +38,7 @@ void FollowsExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
 
+void FollowsExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+  // TODO
+}
+

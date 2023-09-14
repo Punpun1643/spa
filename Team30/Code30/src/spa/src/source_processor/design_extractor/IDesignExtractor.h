@@ -8,6 +8,7 @@
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "../node/stmt_node/WhileNode.h"
 #include "program_knowledge_base/PkbApi.h"
 
 class IDesignExtractor {
@@ -23,6 +24,8 @@ class IDesignExtractor {
   virtual void extractFromPrint(std::shared_ptr<PrintNode> node) = 0;
 
   virtual void extractFromRead(std::shared_ptr<ReadNode> node) = 0;
+
+  virtual void extractFromWhile(std::shared_ptr<WhileNode> node) = 0;
 
   virtual ~IDesignExtractor() = default;
 };
