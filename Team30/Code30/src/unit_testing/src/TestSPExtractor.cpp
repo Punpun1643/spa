@@ -86,20 +86,28 @@ class ASTBuilder {
 
 class ExtractorBuilder {
  public:
-  std::shared_ptr<FollowsExtractor> fExtractor;
   std::shared_ptr<EntityExtractor> eExtractor;
+  std::shared_ptr<FollowsExtractor> fExtractor;
+  std::shared_ptr<ParentExtractor> pExtractor;
+  std::shared_ptr<ModifiesExtractor> mExtractor;
+  std::shared_ptr<UsesExtractor> uExtractor;
+
   PkbApiStub pkb;
   ExtractorBuilder::ExtractorBuilder(PkbApiStub& pkb) : pkb(pkb) {
+    eExtractor = std::make_shared<EntityExtractor>(pkb);
     fExtractor = std::make_shared<FollowsExtractor>(pkb);
+    pExtractor = std::make_shared<ParentExtractor>(pkb);
+    mExtractor = std::make_shared<ModifiesExtractor>(pkb);
+    uExtractor = std::make_shared<UsesExtractor>(pkb);
   }
 };
 
-TEST_CASE("SP extractor unit tests") {
+TEST_CASE("Follows extraction") {
   PkbApiStub pkb = PkbApiStub();
   ASTBuilder ast = ASTBuilder();
   ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
-  SECTION("Test full extraction") {
+  SECTION("Full extraction") {
     ec.executeProgramExtraction(ast.getProgramNode());
     REQUIRE(pkb.insertFollowsCallCount == 2);
   }
