@@ -30,8 +30,7 @@ bool PKB::isRelationTrue(string value_1, string value_2,
 // example Follows(1, _)
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
-  unordered_set<string> ents =
-      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  unordered_set<string> ents = entData->getAllStatements();
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -46,8 +45,7 @@ bool PKB::isRelationTrueGivenFirstValue(std::string value,
 // example Follows(_, 1)
 bool PKB::isRelationTrueGivenSecondValue(std::string value,
                                          RelationType rel_type) {
-  unordered_set<string> ents =
-      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  unordered_set<string> ents = entData->getAllStatements();
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -61,8 +59,7 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 
 // example Follows(_, _)
 bool PKB::isRelationTrueForAny(RelationType relation_type) {
-  unordered_set<string> ents =
-      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  unordered_set<string> ents = entData->getAllStatements();
   shared_ptr<BaseTable> table = relData->getTable(relation_type);
 
   // TODO: Optimise
@@ -83,8 +80,7 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
   unordered_set<string> output;
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   unordered_set<string> ents1 = entData->get(entity_type);
-  unordered_set<string> ents2 =
-      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  unordered_set<string> ents2 = entData->getAllStatements();
 
   // TODO: Optimise
   for (string ent1 : ents1) {
@@ -105,8 +101,7 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
     EntityType entity_type, RelationType rel_type) {
   unordered_set<string> output;
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  unordered_set<string> ents1 =
-      entData->getByValueType(EntityValueType::STATEMENT_NUMBER);
+  unordered_set<string> ents1 = entData->getAllStatements();
   unordered_set<string> ents2 = entData->get(entity_type);
 
   // TODO: Optimise
@@ -176,6 +171,7 @@ unique_ptr<vector<pair<string, string>>> PKB::getRelationValues(
   return make_unique<vector<pair<string, string>>>(output);
 };
 
+// --------------------------------------- DELETE AFTER MIGRATION -------------------------------------------------------
 std::optional<std::pair<int, int>> PKB::getFollows(int s1_line_num,
                                                    EntityType s2_type) {
   // Code logic to be implemented here
