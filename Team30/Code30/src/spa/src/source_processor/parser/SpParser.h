@@ -11,6 +11,8 @@
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "../node/stmt_node/WhileNode.h"
+#include "../node/util_node/CondExprNode.h"
 
 class SpParser : public AParser {
  public:
@@ -27,6 +29,10 @@ class SpParser : public AParser {
   std::shared_ptr<ReadNode> parseRead();
 
   std::shared_ptr<CallNode> parseCall();
+
+  std::shared_ptr<WhileNode> parseWhile();
+
+  std::shared_ptr<CondExprNode> parseCondExpr();
 
   std::shared_ptr<ProgramNode> getSourceProgramNode();
 

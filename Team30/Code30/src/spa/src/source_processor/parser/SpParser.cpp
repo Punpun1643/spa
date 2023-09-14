@@ -6,6 +6,10 @@
 namespace SpParserConstant {
 std::string const START_PROCEDURE = "{";
 std::string const END_PROCEDURE = "}";
+std::string const START_WHILE_STMTLST = "{";
+std::string const END_WHILE_STMTLST = "}";
+std::string const START_COND_EXPR = "(";
+std::string const END_COND_EXPR = ")";
 std::string const STMT_TERMINATOR = ";";
 std::string const PROCEDURE_KEYWORD = "procedure";
 std::string const PRINT_KEYWORD = "print";
@@ -124,6 +128,58 @@ std::shared_ptr<CallNode> SpParser::parseCall() {
   }
 }
 
+std::shared_ptr<WhileNode> SpParser::parseWhile() {
+  std::shared_ptr<Token> currToken = getCurrToken();
+  std::shared_ptr<CondExprNode> condExpr;
+  std::shared_ptr<StmtLstNode> stmtLst;
+
+  if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
+      currToken->getTokenVal() == SpParserConstant::WHILE_KEYWORD) {
+    nextToken();
+
+    currToken = getCurrToken();
+    if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+        currToken->getTokenVal() != SpParserConstant::START_COND_EXPR) {
+      throw std::invalid_argument("Invalid while");
+    }
+
+    nextToken();
+    condExpr = parseCondExpr();
+
+    currToken = getCurrToken();
+    if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+        currToken->getTokenVal() != SpParserConstant::END_COND_EXPR) {
+      throw std::invalid_argument("Invalid while");
+    }
+
+    nextToken();
+    currToken = getCurrToken();
+    if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+        currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
+      throw std::invalid_argument("Invalid while");
+    }
+
+    nextToken();
+    stmtLst = parseStmtLst();
+
+    currToken = getCurrToken();
+    if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+        currToken->getTokenVal() != SpParserConstant::END_WHILE_STMTLST) {
+      throw std::invalid_argument("Invalid while");
+    }
+
+    nextToken();
+    return std::make_shared<WhileNode>(currStmtIndex++, StmtType::WHILE_STMT,
+                                       condExpr, stmtLst);
+  } else {
+    throw std::invalid_argument("Invalid while");
+  }
+}
+
+std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
+  return std::shared_ptr<CondExprNode>();
+}
+
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
@@ -144,8 +200,14 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
       nextToken();
       // parse call
       stmts.push_back(parseCall());
+    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
+               currToken->getTokenVal() == SpParserConstant::WHILE_KEYWORD) {
+      // parse while
+      stmts.push_back(parseWhile());
     } else {
-      throw std::invalid_argument("Invalid StmtLst");
+      throw std::invalid_argument(
+          "The stmtLst is invalid as there are stmts that are not print, read, "
+          "call or while");
     }
   }
 
