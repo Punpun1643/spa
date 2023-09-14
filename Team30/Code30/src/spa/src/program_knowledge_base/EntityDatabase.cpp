@@ -22,27 +22,19 @@ EntityDatabase::EntityDatabase() {
   entities[EntityType::VARIABLE] = make_shared<unordered_set<string>>();
   entities[EntityType::CONSTANT] = make_shared<unordered_set<string>>();
 
-  statement_numbers = make_shared<unordered_set<string>>();
-
-  entityTypesThatStoreStatementNumbers = {
-      EntityType::STMT,   EntityType::READ, EntityType::PRINT,
-      EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
-      EntityType::IF};
+  statementTypes = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
+                    EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
+                    EntityType::IF};
 };
 
 void EntityDatabase::insert(EntityType type, string value) {
   (entities[type])->insert(value);
-  if (entityTypesThatStoreStatementNumbers.find(type) !=
-      entityTypesThatStoreStatementNumbers.end()) {
-    statement_numbers->insert(value);
+  if (statementTypes.find(type) != statementTypes.end()) {
+    (entities[EntityType::STMT])->insert(value);
   };
 };
 
 shared_ptr<unordered_set<string>> EntityDatabase::get(EntityType type) {
   shared_ptr<unordered_set<string>> results = entities[type];
   return results;
-};
-
-shared_ptr<unordered_set<string>> EntityDatabase::getAllStatements() {
-  return statement_numbers;
 };

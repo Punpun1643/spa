@@ -16,12 +16,11 @@ using namespace std;
 class EntityDatabase {
   unordered_map<EntityType, shared_ptr<unordered_set<string>>> entities;
   shared_ptr<unordered_set<string>> statement_numbers;
-  unordered_set<EntityType> entityTypesThatStoreStatementNumbers;
+  unordered_set<EntityType> statementTypes;
 
  public:
   EntityDatabase();
   ~EntityDatabase() = default;
   void insert(EntityType type, string value);
   shared_ptr<unordered_set<string>> get(EntityType type);
-  shared_ptr<unordered_set<string>> getAllStatements();
 };
