@@ -15,8 +15,7 @@ using namespace std;
 
 class PkbApi {
  public:
-  static bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                            std::shared_ptr<StmtNode> stmt2);
+  virtual void insertRelation(RelationType type, std::string stmt1, std::string stmt2);
 
   virtual unique_ptr<vector<string>> getEntitiesWithType(EntityType type) = 0;
 

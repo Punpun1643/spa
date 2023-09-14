@@ -15,6 +15,11 @@ PKB::PKB() : PkbApi() {
   relData = make_unique<RelDatabase>(RelDatabase());
 }
 
+void PKB::insertRelation(RelationType type, string stmt1, string stmt2){
+  shared_ptr<BaseTable> table = relData->getTable(type);
+  table->insert(stmt1, stmt2);
+};
+
 unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
   unordered_set<string> e = entData->get(type);
   vector<string> v(e.begin(), e.end());

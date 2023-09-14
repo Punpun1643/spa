@@ -24,12 +24,8 @@ class PKB : public PkbApi {
  public:
   PKB();
   unique_ptr<vector<string>> getEntitiesWithType(EntityType type);
-  std::optional<std::pair<int, int>> getFollows(int s1_line_num,
-                                                EntityType s2_type);
-  std::optional<std::pair<int, int>> getFollows(EntityType s1_type,
-                                                int s2_line_num);
-  std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(
-      EntityType s1_type, EntityType s2_type);
+
+  void insertRelation(RelationType type, string stmt1, string stmt2);
 
   // 0 Declarations
   bool isRelationTrue(string value_1, string value_2, RelationType rel_type);
@@ -53,4 +49,12 @@ class PKB : public PkbApi {
   unique_ptr<vector<pair<string, string>>> getRelationValues(
       EntityType entity_type_1, EntityType entity_type_2,
       RelationType rel_type) = 0;
+
+  // ---------- Delete after migration ------------------
+  std::optional<std::pair<int, int>> getFollows(int s1_line_num,
+                                                EntityType s2_type);
+  std::optional<std::pair<int, int>> getFollows(EntityType s1_type,
+                                                int s2_line_num);
+  std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(
+      EntityType s1_type, EntityType s2_type);
 };
