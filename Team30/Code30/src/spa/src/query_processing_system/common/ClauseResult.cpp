@@ -1,7 +1,8 @@
 #include "ClauseResult.h"
+
 #include <algorithm>
-#include <stdexcept>
 #include <iterator>
+#include <stdexcept>
 
 ClauseResult::ClauseResult() = default;
 

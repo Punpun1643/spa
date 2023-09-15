@@ -2,16 +2,18 @@
 
 #include <string>
 
-#include "AExpression.h"
+#include "../common/EntityType.h"
 #include "../interpreter/QueryInterpreter.h"
-
+#include "AExpression.h"
 
 class DeclarationExpression : public AExpression {
-  public:
-    void acceptInterpreter(QueryInterpreter &interpreter) override;
-    std::string getDesignEntity();
-    std::string getSynonym();
-  private:
-    std::string designEntity;
-    std::string synonym;
+ public:
+  DeclarationExpression(EntityType entity_type, std::string synonym);
+  void acceptInterpreter(QueryInterpreter& interpreter) override;
+  EntityType getEntityType();
+  std::string getSynonym();
+
+ private:
+  EntityType entity_type;
+  std::string synonym;
 };

@@ -1,9 +1,9 @@
 #include "SelectExpression.h"
 
-std::string SelectExpression::GetSynonym() {
-  return this->synonym;
-}
+SelectExpression::SelectExpression(std::string synonym) : synonym(synonym){};
 
-void SelectExpression::acceptInterpreter(QueryInterpreter &interpreter) {
+std::string SelectExpression::GetSynonym() { return this->synonym; }
+
+void SelectExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(*this);
 }

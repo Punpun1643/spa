@@ -2,10 +2,9 @@
 
 #include "../interpreter/QueryInterpreter.h"
 
-
 class QueryInterpreter;
 
 class AExpression {
-  public:
-    virtual void acceptInterpreter(QueryInterpreter &interpreter) = 0;
+ public:
+  virtual void acceptInterpreter(QueryInterpreter& interpreter) = 0;
 };
