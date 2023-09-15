@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
@@ -42,6 +43,10 @@ class SpParser : public AParser {
 
  private:
   int currStmtIndex = 1;
+
+  int precedence(const std::string& op);
+
+  bool isOperator(const std::string& tokenVal);
 
   std::shared_ptr<ProgramNode> sourceProgramNode;
 };

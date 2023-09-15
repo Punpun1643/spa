@@ -1,7 +1,8 @@
 #include "SpParser.h"
 
+#include <queue>
+#include <stack>
 #include <stdexcept>
-#include <string>
 
 namespace SpParserConstant {
 std::string const START_PROCEDURE = "{";
@@ -10,6 +11,8 @@ std::string const START_WHILE_STMTLST = "{";
 std::string const END_WHILE_STMTLST = "}";
 std::string const START_COND_EXPR = "(";
 std::string const END_COND_EXPR = ")";
+std::string const LEFT_PARENTHESIS = "(";
+std::string const RIGHT_PARENTHESIS = ")";
 std::string const STMT_TERMINATOR = ";";
 std::string const PROCEDURE_KEYWORD = "procedure";
 std::string const PRINT_KEYWORD = "print";
@@ -17,6 +20,29 @@ std::string const READ_KEYWORD = "read";
 std::string const CALL_KEYWORD = "call";
 std::string const WHILE_KEYWORD = "while";
 }  // namespace SpParserConstant
+
+namespace SpParserMathOperator {
+std::string const PLUS = "+";
+std::string const MINUS = "-";
+std::string const MULTIPLY = "*";
+std::string const DIVIDE = "/";
+std::string const MODULO = "%";
+}  // namespace SpParserMathOperator
+
+namespace SpParserComparisonOperator {
+std::string const EQUAL = "==";
+std::string const NOT_EQUAL = "!=";
+std::string const LESS_THAN = "<";
+std::string const LESS_THAN_EQUAL = "<=";
+std::string const GREATER_THAN = ">";
+std::string const GREATER_THAN_EQUAL = ">=";
+}  // namespace SpParserComparisonOperator
+
+namespace SpRelationLogicalOperator {
+std::string const AND = "&&";
+std::string const OR = "||";
+std::string const NOT = "!";
+}  // namespace SpRelationLogicalOperator
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
@@ -168,12 +194,104 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
                                      condExpr, stmtLst);
 }
 
+// std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
+//   // dummy for testing purposes
+//   nextToken();
+//   nextToken();
+//   nextToken();
+//   return std::make_shared<CondExprNode>(std::unordered_set<std::string>{"1",
+//   "2", "3"}, std::unordered_set<int>{1,2,3});
+// }
+
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
-  // dummy for testing purposes
-  nextToken();
-  nextToken();
-  nextToken();
-  return std::make_shared<CondExprNode>(std::unordered_set<std::string>{"1", "2", "3"}, std::unordered_set<int>{1,2,3});
+  std::queue<std::shared_ptr<std::string>> postFixQueue;
+  std::stack<std::shared_ptr<std::string>> operatorStack;
+
+  int parenCount = 0;
+
+  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+    std::shared_ptr<Token> currToken = getCurrToken();
+
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN ||
+        currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
+      postFixQueue.push(
+          std::make_shared<std::string>(currToken->getTokenVal()));
+    } else if (currToken->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN) {
+      // if token is (, push to stack
+      if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
+        ++parenCount;
+        operatorStack.push(
+            std::make_shared<std::string>(currToken->getTokenVal()));
+      } else if (currToken->getTokenVal() ==
+                 SpParserConstant::RIGHT_PARENTHESIS) {
+        if (parenCount <= 0) {
+          throw std::invalid_argument("No matching parenthesis");
+        }
+        // if token is ), pop from stack and push to queue until ( is popped
+        while (operatorStack.top()->compare(
+                   SpParserConstant::LEFT_PARENTHESIS) != 0) {
+          postFixQueue.push(operatorStack.top());
+          operatorStack.pop();
+        }
+        operatorStack.pop();
+        --parenCount;
+      } else if (isOperator(currToken->getTokenVal())) {
+        // if it's an operator, pop operators from the stack to the postFix
+        // until the stack top has an operator for lower precedence or the stack
+        // is empty
+        while (!operatorStack.empty() &&
+               precedence(operatorStack.top()->c_str()) <=
+                   precedence(currToken->getTokenVal())) {
+          postFixQueue.push(operatorStack.top());
+          operatorStack.pop();
+        }
+        operatorStack.push(
+            std::make_shared<std::string>(currToken->getTokenVal()));
+      }
+    }
+  }
+}
+
+bool SpParser::isOperator(std::string const& tokenVal) {
+  return tokenVal == SpParserMathOperator::PLUS ||
+         tokenVal == SpParserMathOperator::MINUS ||
+         tokenVal == SpParserMathOperator::MULTIPLY ||
+         tokenVal == SpParserMathOperator::DIVIDE ||
+         tokenVal == SpParserMathOperator::MODULO ||
+         tokenVal == SpParserComparisonOperator::EQUAL ||
+         tokenVal == SpParserComparisonOperator::NOT_EQUAL ||
+         tokenVal == SpParserComparisonOperator::LESS_THAN ||
+         tokenVal == SpParserComparisonOperator::LESS_THAN_EQUAL ||
+         tokenVal == SpParserComparisonOperator::GREATER_THAN ||
+         tokenVal == SpParserComparisonOperator::GREATER_THAN_EQUAL ||
+         tokenVal == SpRelationLogicalOperator::AND ||
+         tokenVal == SpRelationLogicalOperator::OR ||
+         tokenVal == SpRelationLogicalOperator::NOT;
+}
+
+// helper function to calculate precedence of operator
+int SpParser::precedence(std::string const& op) {
+  if (op.compare(SpParserMathOperator::MULTIPLY) == 0 ||
+      op.compare(SpParserMathOperator::DIVIDE) == 0 ||
+      op.compare(SpParserMathOperator::MODULO) == 0) {
+    return 4;
+  } else if (op.compare(SpParserMathOperator::PLUS) == 0 ||
+             op.compare(SpParserMathOperator::MINUS) == 0) {
+    return 3;
+  } else if (op.compare(SpParserComparisonOperator::EQUAL) == 0 ||
+             op.compare(SpParserComparisonOperator::NOT_EQUAL) == 0 ||
+             op.compare(SpParserComparisonOperator::LESS_THAN) == 0 ||
+             op.compare(SpParserComparisonOperator::LESS_THAN_EQUAL) == 0 ||
+             op.compare(SpParserComparisonOperator::GREATER_THAN) == 0 ||
+             op.compare(SpParserComparisonOperator::GREATER_THAN_EQUAL) == 0) {
+    return 2;
+  } else if (op.compare(SpRelationLogicalOperator::AND) == 0 ||
+             op.compare(SpRelationLogicalOperator::OR) == 0 ||
+             op.compare(SpRelationLogicalOperator::NOT) == 0) {
+    return 1;
+  } else {
+    return -1;
+  }
 }
 
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
