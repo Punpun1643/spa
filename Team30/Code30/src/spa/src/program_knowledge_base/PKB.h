@@ -27,7 +27,15 @@ class PKB : public PkbApi {
   ~PKB() = default;
 
   void insertEntity(EntityType type, std::string entity);
-  void insertRelation(RelationType type, string stmt1, string stmt2);
+  void insertRelation(RelationType rel_type, std::string s1_line_num,
+                      std::string s2_line_num);
+  void insertRelation(RelationType rel_type, std::string s_line_num,
+                              EntityType ent_type, std::string enity);
+  void insertRelation(RelationType rel_type, EntityType ent_type,
+                              std::string entity, std::string s_line_num);
+  void insertRelation(RelationType rel_type, EntityType ent_type1,
+                              std::string entity1, EntityType ent_type2,
+                              std::string entity2);
 
   unique_ptr<vector<string>> getEntitiesWithType(EntityType type);
 

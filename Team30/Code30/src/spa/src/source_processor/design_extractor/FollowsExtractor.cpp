@@ -42,3 +42,11 @@ void FollowsExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
 void FollowsExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
+
+void FollowsExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+  // TODO
+}
+
+void FollowsExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+  // TODO
+}

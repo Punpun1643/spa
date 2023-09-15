@@ -23,8 +23,7 @@ PKB::PKB() : PkbApi() {
 
       {RelationType::USES, {RelationType::USES}},
       {RelationType::MODIFIES, {RelationType::MODIFIES}}};
-
-  };
+};
 
 // ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
@@ -39,6 +38,14 @@ void PKB::insertRelation(RelationType type, string stmt1, string stmt2) {
     table->insert(stmt1, stmt2);
   }
 };
+
+void PKB::insertRelation(RelationType rel_type, std::string s_line_num,
+                         EntityType ent_type, std::string enity){};
+void PKB::insertRelation(RelationType rel_type, EntityType ent_type,
+                         std::string entity, std::string s_line_num){};
+void PKB::insertRelation(RelationType rel_type, EntityType ent_type1,
+                         std::string entity1, EntityType ent_type2,
+                         std::string entity2){};
 
 // ---------- RETRIEVE ENTITIES ----------
 unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
@@ -115,7 +122,6 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
   } else {
     ents2 = entData->get(EntityType::STMT);
   }
-  
 
   // TODO: Optimise
   for (string ent1 : *ents1) {

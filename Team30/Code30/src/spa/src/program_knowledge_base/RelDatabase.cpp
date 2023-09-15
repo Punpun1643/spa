@@ -12,7 +12,7 @@ RelDatabase::RelDatabase() {
       make_shared<UFDSTable>(UFDSTable());
   relationships[RelationType::PARENT_STAR] =
       make_shared<UFDSTable>(UFDSTable());
-  relationships[RelationType::USES] = 
+  relationships[RelationType::USES] =
       make_shared<DictionaryTable>(DictionaryTable());
   relationships[RelationType::MODIFIES] =
       make_shared<DictionaryTable>(DictionaryTable());

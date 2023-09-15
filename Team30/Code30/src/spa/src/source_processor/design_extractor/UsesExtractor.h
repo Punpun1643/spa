@@ -9,6 +9,8 @@
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "../node/stmt_node/WhileNode.h"
+#include "../node/stmt_node/IfNode.h"
 
 class UsesExtractor : public IDesignExtractor {
  public:
@@ -25,6 +27,10 @@ class UsesExtractor : public IDesignExtractor {
   void extractFromPrint(std::shared_ptr<PrintNode> node) override;
 
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
+
+  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+
+  void extractFromIf(std::shared_ptr<IfNode> node) override;
 
   ~UsesExtractor() = default;
 
