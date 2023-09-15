@@ -10,7 +10,9 @@
 #include "../../program_knowledge_base/PKB.h"
 #include "IDesignExtractor.h"
 
-FollowsExtractor::FollowsExtractor(PkbApi& pkb) : pkb(pkb) {}
+FollowsExtractor::FollowsExtractor(PkbApi& pkb) : pkb(pkb) {
+  // TODO
+}
 
 void FollowsExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {}
 
