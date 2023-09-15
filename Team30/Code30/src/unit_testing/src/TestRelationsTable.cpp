@@ -43,12 +43,12 @@ TEST_CASE("Parents Star & Follows Star (UFDSTable)") {
 }
 
  TEST_CASE("Uses & Modifies (Dictionary Table)") {
-    DictionaryTable p = DictionaryTable();
+    DictionaryTable ps = DictionaryTable();
 
-    p.insert("2", "foo");
-    p.insert("2", "bar");
-    p.insert("5", "foo");
-    p.insert("main", "bar");
+    ps.insert("2", "foo");
+    ps.insert("2", "bar");
+    ps.insert("5", "foo");
+    ps.insert("main", "bar");
 
     // added relation
     REQUIRE(ps.isRelated("2", "foo"));
