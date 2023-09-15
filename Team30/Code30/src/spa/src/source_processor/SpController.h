@@ -2,14 +2,14 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "../shared/tokenizer/token/Token.h"
 #include "node/ProgramNode.h"
+#include "parser/SpParserManager.h"
+#include "../program_knowledge_base/PkbApi.h"
 
 class SpController {
  public:
   SpController();
-  std::shared_ptr<ProgramNode> parseInputFile(std::string filePath);
+  void parseAndExtract(PkbApi& pkb, std::string sourceProgramFilePath);
   ~SpController() = default;
 };

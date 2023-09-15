@@ -1,7 +1,7 @@
 #include "FollowsClause.h"
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 FollowsClause::FollowsClause(std::unique_ptr<StmtRef> arg1,
                              std::unique_ptr<StmtRef> arg2)
@@ -11,71 +11,85 @@ FollowsClause::FollowsClause(std::unique_ptr<StmtRef> arg1,
 }
 
 std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
-  StmtRefType stmt_ref_type_1 = arg1->getStmtRefType();
-  StmtRefType stmt_ref_type_2 = arg2->getStmtRefType();
+  StmtRefType stmt_type_1 = arg1->getStmtRefType();
+  StmtRefType stmt_type_2 = arg2->getStmtRefType();
 
-  // ACTUALLY, it only matters if the Follows Statement has >= 1 declaration.
-  if (stmt_ref_type_1 != StmtRefType::DECLARATION &&
-      stmt_ref_type_2 != StmtRefType::DECLARATION) {
-    return std::make_unique<ClauseResult>();
-  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
-             stmt_ref_type_2 == StmtRefType::WILD) {
-    std::vector<std::pair<int, int>> result =
-        *pkb.getFollows(arg1->getDeclarationType(), EntityType::STMT);
-    // only interested in the first part of the pair
-    std::vector<std::string> declaration_values;
-    for (auto pair : result) {
-      declaration_values.push_back(std::to_string(pair.first));
-    }
-    return std::make_unique<ClauseResult>(*(arg1->getDeclaration()),
-                                          declaration_values);
-  } else if (stmt_ref_type_1 == StmtRefType::WILD &&
-             stmt_ref_type_2 == StmtRefType::DECLARATION) {
-    std::vector<std::pair<int, int>> result =
-        *pkb.getFollows(EntityType::STMT, arg2->getDeclarationType());
-    // only interested in the second part of the pair
-    std::vector<std::string> declaration_values;
-    for (auto pair : result) {
-      declaration_values.push_back(std::to_string(pair.second));
-    }
-    return std::make_unique<ClauseResult>(*(arg2->getDeclaration()),
-                                          declaration_values);
-  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
-             stmt_ref_type_2 == StmtRefType::NUMBER) {
-    std::optional<std::pair<int, int>> result =
-        pkb.getFollows(arg1->getDeclarationType(), arg2->getStmtNum());
-    if (result.has_value()) {
-      std::vector<std::string> values = {std::to_string(result->first)};
-      return std::make_unique<ClauseResult>(*(arg1->getDeclaration()), values);
-    } else {
-      return std::make_unique<ClauseResult>(*(arg1->getDeclaration()),
-                                            std::vector<std::string>());
-    }
-  } else if (stmt_ref_type_1 == StmtRefType::NUMBER &&
-             stmt_ref_type_2 == StmtRefType::DECLARATION) {
-    // think about how to reduce duplication...
-    std::optional<std::pair<int, int>> result =
-        pkb.getFollows(arg1->getStmtNum(), arg2->getDeclarationType());
-    if (result.has_value()) {
-      std::vector<std::string> values = {std::to_string(result->second)};
-      return std::make_unique<ClauseResult>(*(arg2->getDeclaration()), values);
-    } else {
-      return std::make_unique<ClauseResult>(*(arg2->getDeclaration()),
-                                            std::vector<std::string>());
-    }
-  } else if (stmt_ref_type_1 == StmtRefType::DECLARATION &&
-             stmt_ref_type_2 == StmtRefType::DECLARATION) {
-    std::vector<std::pair<int, int>> result =
-        *pkb.getFollows(arg1->getDeclarationType(), arg2->getDeclarationType());
-    // Convert to string vector
-    std::vector<std::pair<std::string, std::string>> str_results;
-    for (auto int_pair : result) {
-      str_results.push_back(std::make_pair(std::to_string(int_pair.first),
-                                           std::to_string(int_pair.second)));
-    }
-    return std::make_unique<ClauseResult>(
-        *(arg1->getDeclaration()), *(arg2->getDeclaration()), str_results);
+  if (stmt_type_1 == StmtRefType::WILD && stmt_type_2 == StmtRefType::WILD) {
+    bool is_valid_rel = pkb.isRelationTrueForAny(RELATION_TYPE);
+    return std::make_unique<ClauseResult>(is_valid_rel);
+
+  } else if (stmt_type_1 == StmtRefType::NUMBER &&
+             stmt_type_2 == StmtRefType::WILD) {
+    std::string first_value = std::to_string(arg1->getStmtNum());
+    bool is_valid_rel =
+        pkb.isRelationTrueGivenFirstValue(first_value, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(is_valid_rel);
+
+  } else if (stmt_type_1 == StmtRefType::WILD &&
+             stmt_type_2 == StmtRefType::NUMBER) {
+    std::string second_value = std::to_string(arg2->getStmtNum());
+    bool is_valid_rel =
+        pkb.isRelationTrueGivenSecondValue(second_value, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(is_valid_rel);
+
+  } else if (stmt_type_1 == StmtRefType::NUMBER &&
+             stmt_type_2 == StmtRefType::NUMBER) {
+    std::string first_value = std::to_string(arg1->getStmtNum());
+    std::string second_value = std::to_string(arg2->getStmtNum());
+    bool is_valid_rel =
+        pkb.isRelationTrue(first_value, second_value, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(is_valid_rel);
+
+  } else if (stmt_type_1 == StmtRefType::DECLARATION &&
+             stmt_type_2 == StmtRefType::WILD) {
+    EntityType entity_type = arg1->getDeclarationType();
+    PqlDeclaration declaration = *(arg1->getDeclaration());
+    auto possible_values =
+        pkb.getRelationValuesGivenFirstType(entity_type, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(declaration,
+                                          std::move(possible_values));
+
+  } else if (stmt_type_1 == StmtRefType::WILD &&
+             stmt_type_2 == StmtRefType::DECLARATION) {
+    EntityType entity_type = arg2->getDeclarationType();
+    PqlDeclaration declaration = *(arg2->getDeclaration());
+    auto possible_values =
+        pkb.getRelationValuesGivenSecondType(entity_type, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(declaration,
+                                          std::move(possible_values));
+
+  } else if (stmt_type_1 == StmtRefType::DECLARATION &&
+             stmt_type_2 == StmtRefType::NUMBER) {
+    EntityType entity_type = arg1->getDeclarationType();
+    PqlDeclaration declaration = *(arg1->getDeclaration());
+    std::string second_value = std::to_string(arg2->getStmtNum());
+    auto possible_values =
+        pkb.getRelationValues(entity_type, second_value, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(declaration,
+                                          std::move(possible_values));
+
+  } else if (stmt_type_1 == StmtRefType::NUMBER &&
+             stmt_type_2 == StmtRefType::DECLARATION) {
+    EntityType entity_type = arg2->getDeclarationType();
+    PqlDeclaration declaration = *(arg2->getDeclaration());
+    std::string first_value = std::to_string(arg1->getStmtNum());
+    auto possible_values =
+        pkb.getRelationValues(first_value, entity_type, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(declaration,
+                                          std::move(possible_values));
+
+  } else if (stmt_type_1 == StmtRefType::DECLARATION &&
+             stmt_type_2 == StmtRefType::DECLARATION) {
+    EntityType entity_type_1 = arg1->getDeclarationType();
+    EntityType entity_type_2 = arg2->getDeclarationType();
+    PqlDeclaration declaration_1 = *(arg1->getDeclaration());
+    PqlDeclaration declaration_2 = *(arg2->getDeclaration());
+
+    auto possible_values =
+        pkb.getRelationValues(entity_type_1, entity_type_2, RELATION_TYPE);
+    return std::make_unique<ClauseResult>(declaration_1, declaration_2,
+                                          std::move(possible_values));
   } else {
-    throw std::runtime_error("Should not have gotten here.");
+    throw std::runtime_error("Unknown combination of StmtRef types");
   }
 }
