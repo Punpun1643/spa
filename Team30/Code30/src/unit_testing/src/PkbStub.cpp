@@ -2,10 +2,28 @@
 
 PkbStub::PkbStub() : insertFollowsCallCount(0) {}
 
-bool PkbStub::insertFollows(std::shared_ptr<StmtNode> stmt1,
-                   std::shared_ptr<StmtNode> stmt2) {
-  ++insertFollowsCallCount;
-  return true;
+void PkbStub::insertEntity(EntityType type, std::string entity) {}
+
+// Relation (integer, integer)
+void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
+                    std::string s2_line_num) {
+
+}
+
+// Relation (integer, EntityType)
+void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
+                    EntityType ent_type, std::string enity) {
+}
+
+// Relation (EntityType, integer)
+void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,
+                    std::string entity, std::string s_line_num) {
+}
+
+// Relation (EntityType, EntityType)
+void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
+                    std::string entity1, EntityType ent_type2,
+                    std::string entity2) {
 }
 
 std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(

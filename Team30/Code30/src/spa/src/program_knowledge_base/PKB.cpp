@@ -19,13 +19,6 @@ PKB::PKB() {
   //    relData = new RelDatabase();
 }
 
-bool PKB::insertFollows(std::shared_ptr<StmtNode> stmt1,
-                        std::shared_ptr<StmtNode> stmt2) {
-  // entData.insert(stmt1);
-  // entData.insert(stmt2);
-  // relData.insert(Follows, stmt1, stmt2)
-  return true;
-}
 
 std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
     EntityType type) {

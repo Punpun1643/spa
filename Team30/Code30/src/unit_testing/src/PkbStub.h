@@ -11,8 +11,24 @@ class PkbStub : public PkbApi {
   int insertFollowsCallCount;
   PkbStub();
 
-  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                     std::shared_ptr<StmtNode> stmt2) override;
+  void insertEntity(EntityType type, std::string entity) override;
+
+  // Relation (integer, integer)
+  void insertRelation(RelationType rel_type, std::string s1_line_num,
+                              std::string s2_line_num) override;
+
+  // Relation (integer, EntityType)
+  void insertRelation(RelationType rel_type, std::string s_line_num,
+                              EntityType ent_type, std::string enity) override;
+
+  // Relation (EntityType, integer)
+  void insertRelation(RelationType rel_type, EntityType ent_type,
+                              std::string entity, std::string s_line_num) override;
+
+  // Relation (EntityType, EntityType)
+  void insertRelation(RelationType rel_type, EntityType ent_type1,
+                              std::string entity1, EntityType ent_type2,
+                              std::string entity2) override;
 
   // Select Clause
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
