@@ -15,13 +15,22 @@ class PkbApi {
   // Cast integers to strings
   void insertEntity(EntityType type, std::string entity);
 
-  // Relation (integer, integer) e.g. Follows(1, 3). Cast the integer to string.
-  void insertRelation(RelationType type, std::string s1_line_num,
+  // Relation (integer, integer)
+  void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num);
 
-  // Relation (integer, EntityType) e.g. Uses(1, v).
-  void insertRelation(RelationType type, std::string s_line_num,
-                      EntityType entity);
+  // Relation (integer, EntityType)
+  void insertRelation(RelationType rel_type, std::string s_line_num,
+                      EntityType ent_type, std::string enity);
+
+  // Relation (EntityType, integer)
+  void insertRelation(RelationType rel_type, EntityType ent_type,
+                      std::string entity, std::string s_line_num);
+
+  // Relation (EntityType, EntityType)
+  void insertRelation(RelationType rel_type, EntityType ent_type1,
+                      std::string entity1, EntityType ent_type2,
+                      std::string entity2);
 
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;
