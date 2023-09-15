@@ -43,24 +43,24 @@ TEST_CASE("Parents Star & Follows Star (UFDSTable)") {
 }
 
  TEST_CASE("Uses & Modifies (Dictionary Table)") {
-    DictionaryTable p = DictionaryTable();
+    DictionaryTable um = DictionaryTable();
 
-    p.insert("2", "foo");
-    p.insert("2", "bar");
-    p.insert("5", "foo");
-    p.insert("main", "bar");
+    um.insert("2", "foo");
+    um.insert("2", "bar");
+    um.insert("5", "foo");
+    um.insert("main", "bar");
 
     // added relation
-    REQUIRE(ps.isRelated("2", "foo"));
+    REQUIRE(um.isRelated("2", "foo"));
     // non added relation
-    REQUIRE(ps.isRelated("3", "flan") == false);
+    REQUIRE(um.isRelated("3", "flan") == false);
 
     // non reflexive
-    REQUIRE(ps.isRelated("2", "2") == false);
+    REQUIRE(um.isRelated("2", "2") == false);
     // non symmetric
-    REQUIRE(ps.isRelated("foo", "5") == false);
+    REQUIRE(um.isRelated("foo", "5") == false);
 
-    REQUIRE(ps.isRelated("main", "2") == false);
+    REQUIRE(um.isRelated("main", "2") == false);
     
     //TODO: Case where procedure contains a statement that has a known Relation
     //But no way to know if procedure contains statement? 
