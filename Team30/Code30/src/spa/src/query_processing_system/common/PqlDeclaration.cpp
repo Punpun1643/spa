@@ -1,9 +1,11 @@
 #include "PqlDeclaration.h"
 
+#include <utility>
+
 // Needs to be hashable so that it can be put into a dict.
 PqlDeclaration::PqlDeclaration(std::shared_ptr<std::string> name,
                                EntityType entity_type)
-    : name(name), entity_type(entity_type) {}
+    : name(std::move(name)), entity_type(entity_type) {}
 
 EntityType PqlDeclaration::getEntityType() const { return entity_type; }
 
