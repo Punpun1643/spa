@@ -249,21 +249,21 @@ class ExtractorBuilder {
   }
 };
 
-//TEST_CASE("Follows extraction") {
-//  PkbApiStub pkb = PkbApiStub();
-//  ASTBuilder ast = ASTBuilder();
-//  ExtractorBuilder eb = ExtractorBuilder(pkb);
-//  ExtractionController ec = ExtractionController(pkb);
-//  SECTION("Full extraction") {
-//    ec.executeProgramExtraction(ast.getProgramNode());
-//    REQUIRE(pkb.insertFollowsCallCount == 4);
-//  }
-//  pkb.insertFollowsCallCount = 0;
-//  SECTION("Follows extraction from StmtLst") {
-//    eb.fExtractor->extractFromStmtLst(ast.getStmtLstNode());
-//    REQUIRE(pkb.insertFollowsCallCount == 4);
-//  }
-//}
+TEST_CASE("Follows extraction") {
+  PkbApiStub pkb = PkbApiStub();
+  ASTBuilder ast = ASTBuilder();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  SECTION("Full extraction") {
+    ec.executeProgramExtraction(ast.getProgramNode());
+    REQUIRE(pkb.insertFollowsCallCount == 7);
+  }
+  pkb.insertFollowsCallCount = 0;
+  SECTION("Follows extraction from StmtLst") {
+    eb.fExtractor->extractFromStmtLst(ast.getStmtLstNode());
+    REQUIRE(pkb.insertFollowsCallCount == 4);
+  }
+}
 
 TEST_CASE("Parent extraction") {
   PkbApiStub pkb = PkbApiStub();
