@@ -15,6 +15,11 @@ std::vector<std::string> VARIABLES = {"varX"};
 std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
 class PkbStub : public PkbApi {
+  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
+                     std::shared_ptr<StmtNode> stmt2) override {
+    return true;
+  }
+
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override {
     std::unique_ptr<std::vector<std::string>> output =
