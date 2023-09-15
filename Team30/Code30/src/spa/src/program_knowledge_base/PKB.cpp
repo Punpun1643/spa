@@ -21,8 +21,12 @@ PKB::PKB() : PkbApi() {
 
       {RelationType::PARENT, {RelationType::PARENT, RelationType::PARENT_STAR}},
 
-      {RelationType::USES, {RelationType::USES}},
-      {RelationType::MODIFIES, {RelationType::MODIFIES}}};
+      {RelationType::USES_S, {RelationType::USES_S}},
+      {RelationType::USES_P, {RelationType::USES_P}},
+
+      {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}},
+      {RelationType::MODIFIES_P, {RelationType::MODIFIES_P}}
+  };
 
   };
 
@@ -31,12 +35,36 @@ void PKB::insertEntity(EntityType type, std::string entity) {
   entData->insert(type, entity);
 };
 
-void PKB::insertRelation(RelationType type, string stmt1, string stmt2) {
+void PKB::insertRelation(RelationType type, string input1, string input2) {
   // Inserts into more than 1 table simultaneously
   // Add all related tables to relatedTables
-  for (RelationType rt : relatedTables[type]) {
+
+  // For MODIFIES and USES, Check the type of the first string input1
+  // If first char is an int then it is a stmt_num and it needs to be placed in _S table
+  // else it is a procedure and should be placed in _P table
+  RelationType target = type;
+  char firstChar = str.at(0);
+
+  if (target == RelationType::USES) {
+    if (isdigit(firstChar)) { //Stmt Num
+      target = RelationType::USES_S;
+    } else { //procedure
+      target = RelationType::USES_P;
+    } 
+  }
+
+  if (target == RelationType::MODIFIES) {
+    if (isdigit(firstChar)) {  // Stmt Num
+      target = RelationType::MODIFIES_S;
+    } else { //procedure
+      target = RelationType::MODIFIES_P;
+    }
+  }
+  
+
+  for (RelationType rt : relatedTables[target]) {
     shared_ptr<BaseTable> table = relData->getTable(rt);
-    table->insert(stmt1, stmt2);
+    table->insert(input1, input2);
   }
 };
 
