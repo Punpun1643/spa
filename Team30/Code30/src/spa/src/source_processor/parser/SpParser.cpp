@@ -229,7 +229,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       operatorStack.push(
           std::make_shared<std::string>(currToken->getTokenVal()));
     } else if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
-      parenCount++;
+      ++parenCount;
       operatorStack.push(
           std::make_shared<std::string>(currToken->getTokenVal()));
     } else if (currToken->getTokenVal() ==
@@ -311,16 +311,9 @@ int SpParser::precedence(std::string const& op) {
   } else if (op.compare(SpParserMathOperator::PLUS) == 0 ||
              op.compare(SpParserMathOperator::MINUS) == 0) {
     return 3;
-  } else if (op.compare(SpParserComparisonOperator::EQUAL) == 0 ||
-             op.compare(SpParserComparisonOperator::NOT_EQUAL) == 0 ||
-             op.compare(SpParserComparisonOperator::LESS_THAN) == 0 ||
-             op.compare(SpParserComparisonOperator::LESS_THAN_EQUAL) == 0 ||
-             op.compare(SpParserComparisonOperator::GREATER_THAN) == 0 ||
-             op.compare(SpParserComparisonOperator::GREATER_THAN_EQUAL) == 0) {
+  } else if (isComparisonOperator(op)) {
     return 2;
-  } else if (op.compare(SpRelationLogicalOperator::AND) == 0 ||
-             op.compare(SpRelationLogicalOperator::OR) == 0 ||
-             op.compare(SpRelationLogicalOperator::NOT) == 0) {
+  } else if (isLogicalOperator(op)) {
     return 1;
   } else {
     return -1;
