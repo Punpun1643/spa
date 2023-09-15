@@ -1,5 +1,4 @@
 #pragma once
-#include <source_processor/node/stmt_node/StmtNode.h>
 
 #include <memory>
 #include <optional>
@@ -14,11 +13,13 @@
 class PkbApi {
  public:
   virtual bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                                  std::shared_ptr<StmtNode> stmt2) = 0;
+                             std::shared_ptr<StmtNode> stmt2) = 0;
+
+  // Select Clause
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;
 
-  // 0 Declarations
+  // 0 Declarations - SuchThatClauses
   // Relation(value, value) e.g. Follows (int, int)
   virtual bool isRelationTrue(std::string value_1, std::string value_2,
                               RelationType rel_type) = 0;
@@ -31,7 +32,7 @@ class PkbApi {
   // Relation(wild, wild) e.g. Follows(_, _)
   virtual bool isRelationTrueForAny(RelationType relation_type) = 0;
 
-  // 1 Declarations
+  // 1 Declarations - SuchThatClauses
   // Relation(declaration, wild) e.g. Follows(s, _)
   virtual std::unique_ptr<std::vector<std::string>>
   getRelationValuesGivenFirstType(EntityType entity_type,
@@ -47,7 +48,7 @@ class PkbApi {
   virtual std::unique_ptr<std::vector<std::string>> getRelationValues(
       std::string value, EntityType entity_type, RelationType rel_type) = 0;
 
-  // 2 Declarations
+  // 2 Declarations - SuchThatClauses
   // Relation (declaration, declaration) e.g. Follows(s1, s2)
   virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getRelationValues(EntityType entity_type_1, EntityType entity_type_2,

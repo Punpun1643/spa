@@ -3,28 +3,50 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
-#include <optional>
-#include <memory>
 
-
-#include "../source_processor/node/stmt_node/StmtNode.h"
 #include "../query_processing_system/common/EntityType.h"
+#include "../source_processor/node/stmt_node/StmtNode.h"
+#include "PkbApi.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
-#include "PkbApi.h"
 
-class PKB : public PkbApi{
-    EntityDatabase* entData;
-    RelDatabase* relData;
+class PKB : public PkbApi {
+  EntityDatabase* entData;
+  RelDatabase* relData;
 
-public:
-    PKB();
-    bool insertFollows(std::shared_ptr<StmtNode> stmt1, std::shared_ptr<StmtNode> stmt2) override;
-    std::unique_ptr<std::vector<std::string>> getEntitiesWithType(EntityType type) override;
-    std::optional<std::pair<int, int>> getFollows(int s1_line_num, EntityType s2_type) override;
-    std::optional<std::pair<int, int>> getFollows(EntityType s1_type, int s2_line_num) override;
-    std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(EntityType s1_type, EntityType s2_type) override;
+ public:
+  PKB();
+  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
+                     std::shared_ptr<StmtNode> stmt2) override;
+
+  // Select Clause
+  std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
+      EntityType type) override;
+
+  // 0 Declarations - SuchThatClauses
+  bool isRelationTrue(std::string value_1, std::string value_2,
+                      RelationType rel_type) override;
+  bool isRelationTrueGivenFirstValue(std::string value, RelationType rel_type) override;
+  bool isRelationTrueGivenSecondValue(std::string value, RelationType rel_type) override;
+  bool isRelationTrueForAny(RelationType relation_type) override;
+
+  // 1 Declarations - SuchThatClauses
+  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenFirstType(
+      EntityType entity_type, RelationType rel_type) override;
+  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenSecondType(
+      EntityType entity_type, RelationType rel_type) override;
+  std::unique_ptr<std::vector<std::string>> getRelationValues(
+      EntityType entity_type, std::string value, RelationType rel_type) override;
+  std::unique_ptr<std::vector<std::string>> getRelationValues(
+      std::string value, EntityType entity_type, RelationType rel_type) override;
+
+  // 2 Declarations - SuchThatClauses
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+                    RelationType rel_type) override;
 };
