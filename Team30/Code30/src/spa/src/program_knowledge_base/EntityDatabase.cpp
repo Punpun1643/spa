@@ -16,8 +16,6 @@
 using namespace std;
 
 EntityDatabase::EntityDatabase() {
-  unordered_map<EntityType, unordered_set<string>> entities;
-
   entities[EntityType::PROCEDURE] = {};
   entities[EntityType::STMT] = {};
   entities[EntityType::READ] = {};
