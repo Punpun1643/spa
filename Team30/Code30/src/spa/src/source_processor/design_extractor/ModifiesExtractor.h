@@ -38,4 +38,6 @@ class ModifiesExtractor : public IDesignExtractor {
 
  private:
   PkbApi& pkb;
+
+  std::vector<std::string> modifyActors;
 };
