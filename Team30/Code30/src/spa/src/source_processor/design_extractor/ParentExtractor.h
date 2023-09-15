@@ -29,6 +29,8 @@ class ParentExtractor : public IDesignExtractor {
 
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
+  void extractFromIf(std::shared_ptr<IfNode> node) override;
+
   ~ParentExtractor() = default;
 
  private:

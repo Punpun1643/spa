@@ -33,3 +33,6 @@ void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   // TODO
 }
 
+void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+  // TODO
+}

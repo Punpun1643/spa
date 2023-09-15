@@ -1,26 +1,16 @@
-#pragma once
+#include "../../spa/src/program_knowledge_base/PkbApi.h"
 
-#include <stdio.h>
-
-#include <iostream>
-#include <memory>
-#include <optional>
-#include <string>
-#include <utility>
-#include <vector>
-
-#include "../query_processing_system/common/EntityType.h"
-#include "../source_processor/node/stmt_node/StmtNode.h"
-#include "PkbApi.h"
-#include "program_knowledge_base/EntityDatabase.h"
-#include "program_knowledge_base/RelDatabase.h"
-
-class PKB : public PkbApi {
-  EntityDatabase* entData;
-  RelDatabase* relData;
-
+class PkbStub : public PkbApi {
  public:
-  PKB();
+  std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
+                                         "procedure3"};
+  std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
+  std::vector<std::string> VARIABLES = {"varX"};
+  std::vector<std::string> STATEMENTS = {"1", "2", "3"};
+
+  int insertFollowsCallCount;
+  PkbStub();
+
   bool insertFollows(std::shared_ptr<StmtNode> stmt1,
                      std::shared_ptr<StmtNode> stmt2) override;
 

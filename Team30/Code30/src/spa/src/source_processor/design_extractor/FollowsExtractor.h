@@ -10,6 +10,7 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
+#include "../node/stmt_node/IfNode.h"
 
 class FollowsExtractor : public IDesignExtractor {
  public:
@@ -29,6 +30,8 @@ class FollowsExtractor : public IDesignExtractor {
 
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
+  void extractFromIf(std::shared_ptr<IfNode> node) override;
+  
   ~FollowsExtractor() = default;
 
  private:

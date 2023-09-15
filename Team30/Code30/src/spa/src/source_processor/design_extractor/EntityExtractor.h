@@ -10,6 +10,7 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
+#include "../node/stmt_node/IfNode.h"
 
 class EntityExtractor : public IDesignExtractor {
  public:
@@ -28,6 +29,8 @@ class EntityExtractor : public IDesignExtractor {
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+
+  void extractFromIf(std::shared_ptr<IfNode> node) override;
 
   ~EntityExtractor() = default;
 

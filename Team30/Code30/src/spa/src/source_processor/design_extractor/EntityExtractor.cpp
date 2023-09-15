@@ -1,6 +1,5 @@
 #include "EntityExtractor.h"
 
-
 EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
 
 void EntityExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node)  {
@@ -31,3 +30,6 @@ void EntityExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   // TODO
 }
 
+void EntityExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+  // TODO
+}
