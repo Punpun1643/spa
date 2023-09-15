@@ -20,6 +20,9 @@ std::string const PRINT_KEYWORD = "print";
 std::string const READ_KEYWORD = "read";
 std::string const CALL_KEYWORD = "call";
 std::string const WHILE_KEYWORD = "while";
+std::string const IF_KEYWORD = "if";
+std::string const THEN_KEYWORD = "then";
+std::string const ELSE_KEYWORD = "else";
 }  // namespace SpParserConstant
 
 namespace SpParserMathOperator {
@@ -154,6 +157,81 @@ std::shared_ptr<CallNode> SpParser::parseCall() {
     throw std::invalid_argument("Invalid call 2");
   }
 }
+
+std::shared_ptr<IfNode> SpParser::parseIf() {
+  std::shared_ptr<Token> currToken = getCurrToken();
+  std::shared_ptr<CondExprNode> condExpr;
+  std::shared_ptr<StmtLstNode> thenStmtLst;
+  std::shared_ptr<StmtLstNode> elseStmtLst;
+
+  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::START_COND_EXPR) {
+    throw std::invalid_argument("Invalid if 1");
+  }
+
+  condExpr = parseCondExpr();
+
+  currToken = getCurrToken();
+  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::END_COND_EXPR) {
+    throw std::invalid_argument("Invalid if 2");
+  }
+
+  nextToken();
+  currToken = getCurrToken();
+
+  if (currToken->getTokenType() != TokenType::WORD_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::THEN_KEYWORD) {
+    throw std::invalid_argument("Invalid if 3");
+  }
+
+  nextToken();
+  getCurrToken();
+
+  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
+    throw std::invalid_argument("Invalid if 4");
+  }
+
+  nextToken();
+  thenStmtLst = parseStmtLst();
+
+  currToken = getCurrToken();
+  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::END_WHILE_STMTLST) {
+    throw std::invalid_argument("Invalid if 5");
+  }
+
+  nextToken();
+  currToken = getCurrToken();
+
+  if (currToken->getTokenType() != TokenType::WORD_TOKEN &&
+      currToken->getTokenVal() != SpParserConstant::ELSE_KEYWORD) {
+    throw std::invalid_argument("Invalid if 6");
+  }
+
+  nextToken();
+  currToken = getCurrToken();
+
+  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
+    throw std::invalid_argument("Invalid if 7");
+  }
+
+  nextToken();
+  elseStmtLst = parseStmtLst();
+
+  currToken = getCurrToken();
+  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
+      currToken->getTokenVal() != SpParserConstant::END_WHILE_STMTLST) {
+    throw std::invalid_argument("Invalid if 8");
+  }
+
+  nextToken();
+  return std::make_shared<IfNode>(currStmtIndex++, StmtType::IF_STMT, condExpr,
+                                  thenStmtLst, elseStmtLst);
+}
+
 
 std::shared_ptr<WhileNode> SpParser::parseWhile() {
   std::shared_ptr<Token> currToken = getCurrToken();
@@ -345,6 +423,11 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
       nextToken();
       // parse while
       stmts.push_back(parseWhile());
+    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
+               currToken->getTokenVal() == SpParserConstant::IF_KEYWORD) {
+      nextToken();
+      // parse if
+      stmts.push_back(parseIf());
     } else {
       throw std::invalid_argument(
           "The stmtLst is invalid as there are stmts that are not print, read, "
