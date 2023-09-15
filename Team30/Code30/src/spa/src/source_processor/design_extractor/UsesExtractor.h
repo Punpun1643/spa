@@ -36,4 +36,6 @@ class UsesExtractor : public IDesignExtractor {
 
  private:
   PkbApi& pkb;
+
+  std::vector<std::string> usesActors;
 };

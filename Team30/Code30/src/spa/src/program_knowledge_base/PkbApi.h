@@ -14,16 +14,16 @@ class PkbApi {
  public:
   virtual bool insertFollows(std::shared_ptr<StmtNode> stmt1,
                              std::shared_ptr<StmtNode> stmt2) = 0;
-  // Cast integers to strings
-  void insertEntity(EntityType type, std::string entity);
+  //// Cast integers to strings
+  //void insertEntity(EntityType type, std::string entity);
 
-  // Relation (integer, integer) e.g. Follows(1, 3). Cast the integer to string.
-  void insertRelation(RelationType type, std::string s1_line_num,
-                      std::string s2_line_num);
+  //// Relation (integer, integer) e.g. Follows(1, 3). Cast the integer to string.
+  //void insertRelation(RelationType type, std::string s1_line_num,
+  //                    std::string s2_line_num);
 
-  // Relation (integer, EntityType) e.g. Uses(1, v).
-  void insertRelation(RelationType type, std::string s_line_num,
-                      EntityType entity);
+  //// Relation (integer, EntityType) e.g. Uses(1, v).
+  //void insertRelation(RelationType type, std::string s_line_num,
+  //                    EntityType entity);
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;
 
