@@ -1,97 +1,11 @@
 #include <memory>
-#include <optional>
 
 #include "../../spa/src/program_knowledge_base/PkbApi.h"
-#include "../../spa/src/query_processing_system/common/EntityType.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
+#include "PkbStub.h"
 #include "catch.hpp"
-
-std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
-                                       "procedure3"};
-std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
-std::vector<std::string> VARIABLES = {"varX"};
-std::vector<std::string> STATEMENTS = {"1", "2", "3"};
-
-class PkbStub : public PkbApi {
-  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                     std::shared_ptr<StmtNode> stmt2) override {
-    return true;
-  }
-
-  std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
-      EntityType type) override {
-    std::unique_ptr<std::vector<std::string>> output =
-        std::make_unique<std::vector<std::string>>();
-
-    if (type == PROCEDURE) {
-      *output = PROCEDURES;
-    } else if (type == CONSTANT) {
-      *output = CONSTANTS;
-    } else if (type == VARIABLE) {
-      *output = VARIABLES;
-    } else {  // statement type
-      *output = STATEMENTS;
-    }
-    return output;
-  }
-
-  bool isRelationTrue(std::string value_1, std::string value_2,
-                      RelationType rel_type) override {
-    return true;
-  }
-  bool isRelationTrueGivenFirstValue(std::string value,
-                                     RelationType rel_type) override {
-    return false;
-  }
-  bool isRelationTrueGivenSecondValue(std::string value,
-                                      RelationType rel_type) override {
-    return true;
-  }
-  bool isRelationTrueForAny(RelationType relation_type) override {
-    return false;
-  }
-
-  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenFirstType(
-      EntityType entity_type, RelationType rel_type) override {
-    return std::make_unique<std::vector<std::string>>();  // empty
-  }
-  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenSecondType(
-      EntityType entity_type, RelationType rel_type) override {
-    std::vector<std::string> vec = {"1", "3", "5", "7", "9"};
-    return std::make_unique<std::vector<std::string>>(vec);
-  }
-
-  std::unique_ptr<std::vector<std::string>> getRelationValues(
-      EntityType entity_type, std::string value,
-      RelationType rel_type) override {
-    std::vector<std::string> vec = {"2", "4", "6", "8", "10"};
-    return std::make_unique<std::vector<std::string>>(vec);
-  }
-  std::unique_ptr<std::vector<std::string>> getRelationValues(
-      std::string value, EntityType entity_type,
-      RelationType rel_type) override {
-    return std::make_unique<std::vector<std::string>>();  // empty
-  }
-
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
-                    RelationType rel_type) override {
-    if (entity_type_1 == STMT && entity_type_2 == STMT) {
-      auto result =
-          std::make_unique<std::vector<std::pair<std::string, std::string>>>();
-      result->push_back(std::make_pair("5", "10"));
-      result->push_back(std::make_pair("9", "1"));
-      result->push_back(std::make_pair("2", "2"));
-      result->push_back(std::make_pair("2", "1"));
-      return result;
-    } else {
-      return std::make_unique<
-          std::vector<std::pair<std::string, std::string>>>();
-    }
-  }
-};
 
 class QeFactoryMethods {
  public:
@@ -120,19 +34,19 @@ TEST_CASE("Evaluate query with only select clause") {
   std::unique_ptr<SelectClause> clause =
       QeFactoryMethods::getSelectClause("a", EntityType::CONSTANT);
   std::vector<std::string> result = *qe.evaluateQuery(std::move(clause));
-  REQUIRE(result == CONSTANTS);
+  REQUIRE(result == pkb.CONSTANTS);
 
   clause = QeFactoryMethods::getSelectClause("bc", EntityType::PROCEDURE);
   result = *qe.evaluateQuery(std::move(clause));
-  REQUIRE(result == PROCEDURES);
+  REQUIRE(result == pkb.PROCEDURES);
 
   clause = QeFactoryMethods::getSelectClause("ddd", EntityType::VARIABLE);
   result = *qe.evaluateQuery(std::move(clause));
-  REQUIRE(result == VARIABLES);
+  REQUIRE(result == pkb.VARIABLES);
 
-  clause = QeFactoryMethods::getSelectClause("fawfnaawf", EntityType::STMT);
+  clause = QeFactoryMethods::getSelectClause("Longname", EntityType::STMT);
   result = *qe.evaluateQuery(std::move(clause));
-  REQUIRE(result == STATEMENTS);
+  REQUIRE(result == pkb.STATEMENTS);
 }
 
 TEST_CASE("Select and Follows Clause with boolean result") {
@@ -146,13 +60,13 @@ TEST_CASE("Select and Follows Clause with boolean result") {
   follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef(1));
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == CONSTANTS);
+  REQUIRE(result == pkb.CONSTANTS);
 
   select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
   follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef(1));
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == STATEMENTS);
+  REQUIRE(result == pkb.STATEMENTS);
 
   select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
   follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
@@ -180,7 +94,7 @@ TEST_CASE("Select and Follows Clause with 0 common declarations") {
       StmtRef());
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == CONSTANTS);
+  REQUIRE(result == pkb.CONSTANTS);
 
   select_clause = QeFactoryMethods::getSelectClause("a", EntityType::PROCEDURE);
   follows_clause = QeFactoryMethods::getFollowsClause(
@@ -188,7 +102,7 @@ TEST_CASE("Select and Follows Clause with 0 common declarations") {
       StmtRef(QeFactoryMethods::getDeclaration("b", EntityType::PRINT)));
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == PROCEDURES);
+  REQUIRE(result == pkb.PROCEDURES);
 
   // Case where follows clause has declarations that are different from select
   // clause
@@ -198,7 +112,7 @@ TEST_CASE("Select and Follows Clause with 0 common declarations") {
       StmtRef(QeFactoryMethods::getDeclaration("s", EntityType::STMT)));
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == STATEMENTS);
+  REQUIRE(result == pkb.STATEMENTS);
 }
 
 TEST_CASE("Select and Follows Clause with 1 common declarations") {
