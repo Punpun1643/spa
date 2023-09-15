@@ -3,7 +3,7 @@
 #include "../design_extractor/IDesignExtractor.h"
 
 StmtLstNode::StmtLstNode(std::vector<std::shared_ptr<StmtNode>> stmts)
-    : stmts(stmts) {}
+    : stmts(std::move(stmts)) {}
 
 void StmtLstNode::accept(IDesignExtractor& designExtractor) {
   auto thisStmtLstNodePtr =
