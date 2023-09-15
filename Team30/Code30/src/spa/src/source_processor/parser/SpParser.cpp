@@ -1,10 +1,10 @@
 #include "SpParser.h"
 
+#include <iostream>
 #include <queue>
 #include <stack>
 #include <stdexcept>
 #include <unordered_set>
-#include <iostream>
 
 namespace SpParserConstant {
 std::string const START_PROCEDURE = "{";
@@ -166,7 +166,6 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
     throw std::invalid_argument("Invalid while 1");
   }
 
-//  nextToken();
   condExpr = parseCondExpr();
 
   currToken = getCurrToken();
@@ -195,15 +194,6 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
   return std::make_shared<WhileNode>(currStmtIndex++, StmtType::WHILE_STMT,
                                      condExpr, stmtLst);
 }
-
-// std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
-//   // dummy for testing purposes
-//   nextToken();
-//   nextToken();
-//   nextToken();
-//   return std::make_shared<CondExprNode>(std::unordered_set<std::string>{"1",
-//   "2", "3"}, std::unordered_set<int>{1,2,3});
-// }
 
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   std::queue<std::shared_ptr<std::string>> postFixQueue;
@@ -243,28 +233,23 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       parenCount++;
       operatorStack.push(
           std::make_shared<std::string>(currToken->getTokenVal()));
-      std::cout << "parenCount left: " << parenCount << std::endl;
     } else if (currToken->getTokenVal() ==
                SpParserConstant::RIGHT_PARENTHESIS) {
-
       if (parenCount <= 0) {
-
         throw std::invalid_argument("No matching parenthesis");
       }
-      // if token is ), pop from stack and push to queue until ( is popped
-      while (operatorStack.top()->compare(
-                 SpParserConstant::LEFT_PARENTHESIS) != 0) {
+      while (operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
+             0) {
         if (isComparisonOperator(operatorStack.top()->c_str())) {
-          isParseRelExpr = true;  // we are closing relExpr
+          isParseRelExpr = true;  // closing relExpr
         }
         postFixQueue.push(operatorStack.top());
         operatorStack.pop();
       }
       operatorStack.pop();
       --parenCount;
-      std::cout << "parenCount right: " << parenCount << std::endl;
+
       // check valid relExpr
-      std::cout << "isParseRelExpr: " << isParseRelExpr << std::endl;
       if (isParseRelExpr && !operatorStack.empty() &&
           !isLogicalOperator(peekToken()->getTokenVal()) &&
           operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) ==
@@ -282,7 +267,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   if (parenCount != 0) {
     throw std::invalid_argument("Unmatched parentheses");
   }
-//  nextToken();
+
   return std::make_shared<CondExprNode>(variables, constants);
 }
 
