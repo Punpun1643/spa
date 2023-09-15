@@ -108,7 +108,14 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
   unordered_set<string> output;
   shared_ptr<BaseTable> table = relData->getTable(rel_type);
   shared_ptr<unordered_set<string>> ents1 = entData->get(entity_type);
-  shared_ptr<unordered_set<string>> ents2 = entData->get(EntityType::STMT);
+  shared_ptr<unordered_set<string>> ents2;
+
+  if (rel_type == RelationType::USES || rel_type == RelationType::MODIFIES) {
+    ents2 = entData->get(EntityType::VARIABLE);
+  } else {
+    ents2 = entData->get(EntityType::STMT);
+  }
+  
 
   // TODO: Optimise
   for (string ent1 : *ents1) {
