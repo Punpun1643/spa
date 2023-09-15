@@ -15,12 +15,16 @@ PKB::PKB() : PkbApi() {
   relData = make_unique<RelDatabase>(RelDatabase());
 
   // TODO: Find a cleaner way to insert to multiple tables simultaneously
-  relatedTables = {{RelationType::FOLLOWS,
-                    {RelationType::FOLLOWS, RelationType::FOLLOWS_STAR}},
+  relatedTables = {
+      {RelationType::FOLLOWS,
+       {RelationType::FOLLOWS, RelationType::FOLLOWS_STAR}},
 
-                   {RelationType::PARENT,
-                    {RelationType::PARENT, RelationType::PARENT_STAR}}};
-};
+      {RelationType::PARENT, {RelationType::PARENT, RelationType::PARENT_STAR}},
+
+      {RelationType::USES, {RelationType::USES}},
+      {RelationType::MODIFIES, {RelationType::MODIFIES}}};
+
+  };
 
 // ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
