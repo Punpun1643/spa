@@ -48,5 +48,9 @@ class SpParser : public AParser {
 
   bool isOperator(const std::string& tokenVal);
 
+  bool isComparisonOperator(const std::string& tokenVal);
+
+  bool isLogicalOperator(const std::string& tokenVal);
+
   std::shared_ptr<ProgramNode> sourceProgramNode;
 };

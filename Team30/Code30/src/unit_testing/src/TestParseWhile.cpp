@@ -157,7 +157,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     SpParser parser = SpParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid condExpr"));
   }
 
   SECTION(
@@ -307,7 +307,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     REQUIRE_THROWS_AS(parser.parseWhile(), std::invalid_argument);
   }
 
-  SECTION("Test correct while") {
+  SECTION("Test correct while with 2 statments") {
     std::vector<std::shared_ptr<Token>> tokens;
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("(")));
@@ -342,5 +342,107 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
     REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+  }
+
+  SECTION("Test correct while with 3 statements") {
+    std::vector<std::shared_ptr<Token>> tokens;
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("i")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("!=")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<IntegerToken>("0")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("{")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("read")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("i")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("variable")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("call")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("readPoint")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("}")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+
+    SpParser parser = SpParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+
+    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+  }
+
+  SECTION("Test 2 condExprs") {
+    std::vector<std::shared_ptr<Token>> tokens;
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("i")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("!=")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<IntegerToken>("0")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("&&")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("i")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("!=")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<IntegerToken>("0")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("{")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("read")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("i")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("print")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("variable")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("call")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("readPoint")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("}")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+
+    SpParser parser = SpParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+
+    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
   }
 }

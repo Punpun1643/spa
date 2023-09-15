@@ -3,6 +3,8 @@
 #include <queue>
 #include <stack>
 #include <stdexcept>
+#include <unordered_set>
+#include <iostream>
 
 namespace SpParserConstant {
 std::string const START_PROCEDURE = "{";
@@ -164,7 +166,7 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
     throw std::invalid_argument("Invalid while 1");
   }
 
-  nextToken();
+//  nextToken();
   condExpr = parseCondExpr();
 
   currToken = getCurrToken();
@@ -206,6 +208,9 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   std::queue<std::shared_ptr<std::string>> postFixQueue;
   std::stack<std::shared_ptr<std::string>> operatorStack;
+  std::unordered_set<std::string> variables;
+  std::unordered_set<int> constants;
+  bool isParseRelExpr = false;
 
   int parenCount = 0;
 
@@ -216,40 +221,69 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
         currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
       postFixQueue.push(
           std::make_shared<std::string>(currToken->getTokenVal()));
-    } else if (currToken->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN) {
-      // if token is (, push to stack
-      if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
-        ++parenCount;
-        operatorStack.push(
-            std::make_shared<std::string>(currToken->getTokenVal()));
-      } else if (currToken->getTokenVal() ==
-                 SpParserConstant::RIGHT_PARENTHESIS) {
-        if (parenCount <= 0) {
-          throw std::invalid_argument("No matching parenthesis");
-        }
-        // if token is ), pop from stack and push to queue until ( is popped
-        while (operatorStack.top()->compare(
-                   SpParserConstant::LEFT_PARENTHESIS) != 0) {
-          postFixQueue.push(operatorStack.top());
-          operatorStack.pop();
-        }
-        operatorStack.pop();
-        --parenCount;
-      } else if (isOperator(currToken->getTokenVal())) {
-        // if it's an operator, pop operators from the stack to the postFix
-        // until the stack top has an operator for lower precedence or the stack
-        // is empty
-        while (!operatorStack.empty() &&
-               precedence(operatorStack.top()->c_str()) <=
-                   precedence(currToken->getTokenVal())) {
-          postFixQueue.push(operatorStack.top());
-          operatorStack.pop();
-        }
-        operatorStack.push(
-            std::make_shared<std::string>(currToken->getTokenVal()));
+      if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
+        variables.insert(currToken->getTokenVal());
+      } else if (currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
+        constants.insert(std::stoi(currToken->getTokenVal()));
       }
+
+    } else if (isOperator(currToken->getTokenVal())) {
+      // if it's an operator, pop operators from the stack to the postFix
+      // until the stack top has an operator for lower precedence or the stack
+      // is empty
+      while (!operatorStack.empty() &&
+             precedence(operatorStack.top()->c_str()) >=
+                 precedence(currToken->getTokenVal())) {
+        postFixQueue.push(operatorStack.top());
+        operatorStack.pop();
+      }
+      operatorStack.push(
+          std::make_shared<std::string>(currToken->getTokenVal()));
+    } else if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
+      parenCount++;
+      operatorStack.push(
+          std::make_shared<std::string>(currToken->getTokenVal()));
+      std::cout << "parenCount left: " << parenCount << std::endl;
+    } else if (currToken->getTokenVal() ==
+               SpParserConstant::RIGHT_PARENTHESIS) {
+
+      if (parenCount <= 0) {
+
+        throw std::invalid_argument("No matching parenthesis");
+      }
+      // if token is ), pop from stack and push to queue until ( is popped
+      while (operatorStack.top()->compare(
+                 SpParserConstant::LEFT_PARENTHESIS) != 0) {
+        if (isComparisonOperator(operatorStack.top()->c_str())) {
+          isParseRelExpr = true;  // we are closing relExpr
+        }
+        postFixQueue.push(operatorStack.top());
+        operatorStack.pop();
+      }
+      operatorStack.pop();
+      --parenCount;
+      std::cout << "parenCount right: " << parenCount << std::endl;
+      // check valid relExpr
+      std::cout << "isParseRelExpr: " << isParseRelExpr << std::endl;
+      if (isParseRelExpr && !operatorStack.empty() &&
+          !isLogicalOperator(peekToken()->getTokenVal()) &&
+          operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) ==
+              0) {
+        throw std::invalid_argument("Invalid relExpr");
+      }
+      if (parenCount == 0) break;
+    } else {
+      throw std::invalid_argument("Invalid condExpr");
     }
+
+    nextToken();
   }
+
+  if (parenCount != 0) {
+    throw std::invalid_argument("Unmatched parentheses");
+  }
+//  nextToken();
+  return std::make_shared<CondExprNode>(variables, constants);
 }
 
 bool SpParser::isOperator(std::string const& tokenVal) {
@@ -269,7 +303,22 @@ bool SpParser::isOperator(std::string const& tokenVal) {
          tokenVal == SpRelationLogicalOperator::NOT;
 }
 
-// helper function to calculate precedence of operator
+bool SpParser::isComparisonOperator(std::string const& tokenVal) {
+  return tokenVal == SpParserComparisonOperator::EQUAL ||
+         tokenVal == SpParserComparisonOperator::NOT_EQUAL ||
+         tokenVal == SpParserComparisonOperator::LESS_THAN ||
+         tokenVal == SpParserComparisonOperator::LESS_THAN_EQUAL ||
+         tokenVal == SpParserComparisonOperator::GREATER_THAN ||
+         tokenVal == SpParserComparisonOperator::GREATER_THAN_EQUAL;
+}
+
+bool SpParser::isLogicalOperator(std::string const& tokenVal) {
+  return tokenVal == SpRelationLogicalOperator::AND ||
+         tokenVal == SpRelationLogicalOperator::OR ||
+         tokenVal == SpRelationLogicalOperator::NOT;
+}
+
+// helper function to calculate precedence of an operator
 int SpParser::precedence(std::string const& op) {
   if (op.compare(SpParserMathOperator::MULTIPLY) == 0 ||
       op.compare(SpParserMathOperator::DIVIDE) == 0 ||
