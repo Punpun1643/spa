@@ -43,7 +43,7 @@ void PKB::insertRelation(RelationType type, string input1, string input2) {
   // If first char is an int then it is a stmt_num and it needs to be placed in _S table
   // else it is a procedure and should be placed in _P table
   RelationType target = type;
-  char firstChar = str.at(0);
+  char firstChar = input1.at(0);
 
   if (target == RelationType::USES) {
     if (isdigit(firstChar)) { //Stmt Num
