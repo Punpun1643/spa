@@ -10,17 +10,17 @@
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
-#include "../source_processor/node/stmt_node/StmtNode.h"
-#include "tables/EntityTable.h"
 
 using namespace std;
 
 class EntityDatabase {
-  unordered_map<EntityType, unordered_set<string>> entities;
+  unordered_map<EntityType, shared_ptr<unordered_set<string>>> entities;
+  shared_ptr<unordered_set<string>> statement_numbers;
+  unordered_set<EntityType> statementTypes;
 
  public:
   EntityDatabase();
   ~EntityDatabase() = default;
-  bool insert(EntityType type, string value);
-  unordered_set<string> get(EntityType type);
+  void insert(EntityType type, string value);
+  shared_ptr<unordered_set<string>> get(EntityType type);
 };
