@@ -7,69 +7,6 @@
 #include "PkbStub.h"
 #include "catch.hpp"
 
-std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
-                                       "procedure3"};
-std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
-std::vector<std::string> VARIABLES = {"varX"};
-std::vector<std::string> STATEMENTS = {"1", "2", "3"};
-
-class PkbStub : public PkbApi {
-  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                     std::shared_ptr<StmtNode> stmt2) override {
-    return true;
-  }
-
-  std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
-      EntityType type) override {
-    std::unique_ptr<std::vector<std::string>> output =
-        std::make_unique<std::vector<std::string>>();
-
-    if (type == PROCEDURE) {
-      *output = PROCEDURES;
-    } else if (type == CONSTANT) {
-      *output = CONSTANTS;
-    } else if (type == VARIABLE) {
-      *output = VARIABLES;
-    } else {  // statement type
-      *output = STATEMENTS;
-    }
-    return output;
-  }
-
-  std::optional<std::pair<int, int>> getFollows(int s1_line_num,
-                                                EntityType s2_type) override {
-    if (s1_line_num == 1) {
-      return std::optional(std::make_pair(1, 2));
-    } else if (s1_line_num == 2) {
-      return std::nullopt;  // empty
-    }
-  }
-
-  std::optional<std::pair<int, int>> getFollows(EntityType s1_type,
-                                                int s2_line_num) override {
-    if (s2_line_num == 1) {
-      return std::optional(std::make_pair(3, 1));
-    } else if (s2_line_num == 2) {
-      return std::nullopt;  // empty
-    }
-  }
-
-  std::unique_ptr<std::vector<std::pair<int, int>>> getFollows(
-      EntityType s1_type, EntityType s2_type) override {
-    if (s1_type == STMT && s2_type == STMT) {
-      std::unique_ptr<std::vector<std::pair<int, int>>> result =
-          std::make_unique<std::vector<std::pair<int, int>>>();
-      result->push_back(std::make_pair(5, 10));
-      result->push_back(std::make_pair(9, 1));
-      result->push_back(std::make_pair(2, 2));
-      result->push_back(std::make_pair(2, 1));
-      return result;
-    } else {
-      return std::make_unique<std::vector<std::pair<int, int>>>();
-    }
-  }
-};
-
 class QeFactoryMethods {
  public:
   static std::shared_ptr<PqlDeclaration> getDeclaration(std::string name,
