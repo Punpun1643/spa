@@ -30,10 +30,11 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   // TODO
 }
 
-// void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-// usesActors.push_back(std::to_string(node->getStmtIndex()));}
-//
-// void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-// usesActors.push_back(std::to_string(node->getStmtIndex()));}
-//
-// void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+ void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+ usesActors.push_back(std::to_string(node->getStmtIndex()));}
+
+ void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+ usesActors.push_back(std::to_string(node->getStmtIndex()));}
+
+ // void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+

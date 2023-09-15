@@ -34,17 +34,15 @@ void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   }*/
 }
 
-  // void ModifiesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-  //   modifyActors.push_back(
-  //       std::to_string(node->getStmtIndex()));
-  // }
+void ModifiesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+  modifyActors.push_back(std::to_string(node->getStmtIndex()));
+}
 
-  // void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-  //   modifyActors.push_back(
-  //       std::to_string(node->getStmtIndex()));
-  // }
+void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+  modifyActors.push_back(std::to_string(node->getStmtIndex()));
+}
 
-  // void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node)
-  //{
+// void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node)
+//{
 
-  // }
+// }

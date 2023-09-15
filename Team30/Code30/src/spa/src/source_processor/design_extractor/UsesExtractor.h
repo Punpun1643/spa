@@ -6,8 +6,10 @@
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
 #include "../node/stmt_node/CallNode.h"
+#include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "../node/stmt_node/WhileNode.h"
 #include "IDesignExtractor.h"
 
 class UsesExtractor : public IDesignExtractor {
@@ -26,10 +28,10 @@ class UsesExtractor : public IDesignExtractor {
 
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
-  // void extractFromWhile(std::shared_ptr<WhileNode> node) override;
-  //
-  // void extractFromIf(std::shared_ptr<IfNode> node) override;
-  //
+  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+
+  void extractFromIf(std::shared_ptr<IfNode> node) override;
+
   // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
   ~UsesExtractor() = default;
