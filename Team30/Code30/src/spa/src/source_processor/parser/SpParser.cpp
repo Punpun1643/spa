@@ -210,7 +210,7 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
   currToken = getCurrToken();
 
   if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
+      currToken->getTokenVal() != SpParserConstant::START_THEN_STMTLST) {
     throw std::invalid_argument("Invalid if 4");
   }
 
@@ -219,7 +219,7 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 
   currToken = getCurrToken();
   if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_WHILE_STMTLST) {
+      currToken->getTokenVal() != SpParserConstant::END_THEN_STMTLST) {
     throw std::invalid_argument("Invalid if 5");
   }
 
@@ -235,7 +235,7 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
   currToken = getCurrToken();
 
   if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
+      currToken->getTokenVal() != SpParserConstant::START_ELSE_STMTLST) {
     throw std::invalid_argument("Invalid if 7");
   }
 
@@ -244,7 +244,7 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 
   currToken = getCurrToken();
   if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_WHILE_STMTLST) {
+      currToken->getTokenVal() != SpParserConstant::END_ELSE_STMTLST) {
     throw std::invalid_argument("Invalid if 8");
   }
 
