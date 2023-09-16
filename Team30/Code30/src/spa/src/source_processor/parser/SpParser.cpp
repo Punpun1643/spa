@@ -6,47 +6,68 @@
 #include <unordered_set>
 
 namespace SpParserConstant {
-std::string const START_PROCEDURE = "{";
-std::string const END_PROCEDURE = "}";
-std::string const START_WHILE_STMTLST = "{";
-std::string const END_WHILE_STMTLST = "}";
-std::string const START_COND_EXPR = "(";
-std::string const END_COND_EXPR = ")";
-std::string const LEFT_PARENTHESIS = "(";
-std::string const RIGHT_PARENTHESIS = ")";
-std::string const STMT_TERMINATOR = ";";
-std::string const PROCEDURE_KEYWORD = "procedure";
-std::string const PRINT_KEYWORD = "print";
-std::string const READ_KEYWORD = "read";
-std::string const CALL_KEYWORD = "call";
-std::string const WHILE_KEYWORD = "while";
-std::string const IF_KEYWORD = "if";
-std::string const THEN_KEYWORD = "then";
-std::string const ELSE_KEYWORD = "else";
+
+// Common symbols
+constexpr char LEFT_PARENTHESIS[] = "(";
+constexpr char RIGHT_PARENTHESIS[] = ")";
+constexpr char STMT_TERMINATOR[] = ";";
+
+// Procedure boundaries
+constexpr char START_PROCEDURE[] = "{";
+constexpr char END_PROCEDURE[] = "}";
+
+// While statement boundaries
+constexpr char START_WHILE_STMTLST[] = "{";
+constexpr char END_WHILE_STMTLST[] = "}";
+
+// Conditional statement boundaries
+constexpr char START_COND_EXPR[] = "(";
+constexpr char END_COND_EXPR[] = ")";
+
+// If statement boundaries
+constexpr char START_THEN_STMTLST[] = "{";
+constexpr char END_THEN_STMTLST[] = "}";
+constexpr char START_ELSE_STMTLST[] = "{";
+constexpr char END_ELSE_STMTLST[] = "}";
+
+// Keywords
+constexpr char PROCEDURE_KEYWORD[] = "procedure";
+constexpr char PRINT_KEYWORD[] = "print";
+constexpr char READ_KEYWORD[] = "read";
+constexpr char CALL_KEYWORD[] = "call";
+constexpr char WHILE_KEYWORD[] = "while";
+constexpr char IF_KEYWORD[] = "if";
+constexpr char THEN_KEYWORD[] = "then";
+constexpr char ELSE_KEYWORD[] = "else";
+
 }  // namespace SpParserConstant
 
 namespace SpParserMathOperator {
-std::string const PLUS = "+";
-std::string const MINUS = "-";
-std::string const MULTIPLY = "*";
-std::string const DIVIDE = "/";
-std::string const MODULO = "%";
+// Mathematical operators for expressions
+constexpr char PLUS[] = "+";
+constexpr char MINUS[] = "-";
+constexpr char MULTIPLY[] = "*";
+constexpr char DIVIDE[] = "/";
+constexpr char MODULO[] = "%";
 }  // namespace SpParserMathOperator
 
 namespace SpParserComparisonOperator {
-std::string const EQUAL = "==";
-std::string const NOT_EQUAL = "!=";
-std::string const LESS_THAN = "<";
-std::string const LESS_THAN_EQUAL = "<=";
-std::string const GREATER_THAN = ">";
-std::string const GREATER_THAN_EQUAL = ">=";
+// Comparison operators for conditional expressions
+constexpr char EQUAL[] = "==";
+constexpr char NOT_EQUAL[] = "!=";
+constexpr char LESS_THAN[] = "<";
+constexpr char LESS_THAN_EQUAL[] = "<=";
+constexpr char GREATER_THAN[] = ">";
+constexpr char GREATER_THAN_EQUAL[] = ">=";
 }  // namespace SpParserComparisonOperator
 
 namespace SpRelationLogicalOperator {
-std::string const AND = "&&";
-std::string const OR = "||";
-std::string const NOT = "!";
+// Logical operators for combining conditions
+constexpr char AND[] = "&&";
+constexpr char OR[] = "||";
+constexpr char NOT[] = "!";
 }  // namespace SpRelationLogicalOperator
+
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
