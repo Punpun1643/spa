@@ -98,16 +98,7 @@ bool PKB::isRelationTrueForAny(RelationType relation_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
       entData->get(EntityType::STMT);
   std::shared_ptr<BaseTable> table = relData->getTable(relation_type);
-
-  // TODO: Optimise
-  for (std::string ent1 : *ents) {
-    for (std::string ent2 : *ents) {
-      if (table->isRelated(ent1, ent2)) {
-        return true;
-      }
-    }
-  }
-  return false;
+  return ents->size() > 0;
 }
 
 // 1 Declarations
