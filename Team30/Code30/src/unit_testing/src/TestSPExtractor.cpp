@@ -28,7 +28,7 @@ class PkbApiStub : public PkbApi {
         insertUsesCallCount(0),
         insertModifiesCallCount(0) {}
 
-  void insertEntity(EntityType type, std::string entity) {
+  void insertEntity(EntityType type, std::string entity) override {
     ++insertEntityCallCount;
   }
 
@@ -54,26 +54,26 @@ class PkbApiStub : public PkbApi {
 
   // Relation (integer, integer)
   void insertRelation(RelationType rel_type, std::string s1_line_num,
-                      std::string s2_line_num) {
+                      std::string s2_line_num) override {
     insertRelationCommon(rel_type);
   }
 
   // Relation (integer, EntityType)
   void insertRelation(RelationType rel_type, std::string s_line_num,
-                      EntityType ent_type, std::string enity) {
+                      EntityType ent_type, std::string enity) override {
     insertRelationCommon(rel_type);
   }
 
   // Relation (EntityType, integer)
   void insertRelation(RelationType rel_type, EntityType ent_type,
-                      std::string entity, std::string s_line_num) {
+                      std::string entity, std::string s_line_num) override {
     insertRelationCommon(rel_type);
   }
 
   // Relation (EntityType, EntityType)
   void insertRelation(RelationType rel_type, EntityType ent_type1,
                       std::string entity1, EntityType ent_type2,
-                      std::string entity2) {
+                      std::string entity2) override {
     insertRelationCommon(rel_type);
   }
 
@@ -159,7 +159,7 @@ class ASTBuilder {
   std::shared_ptr<ProcedureNode> proc;
   std::shared_ptr<ProgramNode> prog;
 
-  ASTBuilder::ASTBuilder() {
+  ASTBuilder() {
     r = std::make_shared<ReadNode>(1, StmtType::READ_STMT, "varName");
     pr = std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "varName");
     c = std::make_shared<CallNode>(3, StmtType::CALL_STMT, "proc");
@@ -240,7 +240,7 @@ class ExtractorBuilder {
   std::shared_ptr<UsesExtractor> uExtractor;
 
   PkbApiStub pkb;
-  ExtractorBuilder::ExtractorBuilder(PkbApiStub& pkb) : pkb(pkb) {
+  ExtractorBuilder(PkbApiStub& pkb) : pkb(pkb) {
     eExtractor = std::make_shared<EntityExtractor>(pkb);
     fExtractor = std::make_shared<FollowsExtractor>(pkb);
     pExtractor = std::make_shared<ParentExtractor>(pkb);

@@ -64,7 +64,7 @@ void ExtractionController::executeStmtExtraction(
 void ExtractionController::handleContainerStmts(
     std::shared_ptr<StmtNode> node) {
   // Handle whileNodes
-  if (std::dynamic_pointer_cast<WhileNode>(node)) {
+  if (node->getStmtType() == StmtType::WHILE_STMT) {
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(node);
     std::shared_ptr<StmtLstNode> whileBody = asWhile->getStmtLst();
@@ -72,7 +72,7 @@ void ExtractionController::handleContainerStmts(
   }
 
   // Handle ifNodes
-  if (std::dynamic_pointer_cast<IfNode>(node)) {
+  if (node->getStmtType() == StmtType::IF_STMT) {
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
     std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLstNode();
     std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLstNode();
