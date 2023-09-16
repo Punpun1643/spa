@@ -37,6 +37,7 @@ void ExtractionController::executeProcedureExtraction(
     for (std::shared_ptr<StmtLstNode> child : children) {
       executeStmtLstExtraction(child);
     }
+    popActors();
   }
 }
 
@@ -69,6 +70,7 @@ void ExtractionController::handleContainerStmts(
         std::dynamic_pointer_cast<WhileNode>(node);
     std::shared_ptr<StmtLstNode> whileBody = asWhile->getStmtLst();
     executeStmtLstExtraction(whileBody);
+    popActors();
   }
 
   // Handle ifNodes
@@ -78,5 +80,11 @@ void ExtractionController::handleContainerStmts(
     std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLstNode();
     executeStmtLstExtraction(thenBody);
     executeStmtLstExtraction(elseBody);
+    popActors();
   }
+}
+
+void ExtractionController::popActors() {
+  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popUsesActors();
+  // std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->popModifiesActors();
 }

@@ -136,18 +136,18 @@ class PkbApiStub : public PkbApi {
 };
 
 // procedure proc {
-// 1.  read varName;           // r
-// 2.  print varName;          // pr
+// 1.  read var1;           // r
+// 2.  print var1;          // pr
 // 3.  call proc;              // c
-// 4.  while (varName < 3) {   // w
-// 5.      read varName;
-// 6.      print varName;}
-// 7.  if (varName < 3) then {      // if
-// 8.      read varName;
-// 9.      print varName;
+// 4.  while (var3 < 3) {   // w
+// 5.      read var2;
+// 6.      print var2;}
+// 7.  if (var3 < 3) then {      // if
+// 8.      read var4;
+// 9.      print var4;
 //     } else {
-// 10.     read varName;
-// 11.     print varName; }}
+// 10.     read var5;
+// 11.     print var5; }}
 class ASTBuilder {
  public:
   std::shared_ptr<ReadNode> r;
@@ -160,19 +160,19 @@ class ASTBuilder {
   std::shared_ptr<ProgramNode> prog;
 
   ASTBuilder() {
-    r = std::make_shared<ReadNode>(1, StmtType::READ_STMT, "varName");
-    pr = std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "varName");
+    r = std::make_shared<ReadNode>(1, StmtType::READ_STMT, "var1");
+    pr = std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "var1");
     c = std::make_shared<CallNode>(3, StmtType::CALL_STMT, "proc");
 
     // While block
     // While body
     std::shared_ptr<ReadNode> r2 =
-        std::make_shared<ReadNode>(5, StmtType::READ_STMT, "varName");
+        std::make_shared<ReadNode>(5, StmtType::READ_STMT, "var2");
     std::shared_ptr<PrintNode> pr2 =
-        std::make_shared<PrintNode>(6, StmtType::PRINT_STMT, "varName");
+        std::make_shared<PrintNode>(6, StmtType::PRINT_STMT, "var2");
     // While condition
     std::unordered_set<std::string> condVars;
-    condVars.insert("varName");
+    condVars.insert("var3");
     std::unordered_set<int> condConsts;
     condConsts.insert(3);
     std::shared_ptr<CondExprNode> cond =
@@ -186,18 +186,18 @@ class ASTBuilder {
     // If block
     // Then body
     std::shared_ptr<ReadNode> r3 =
-        std::make_shared<ReadNode>(8, StmtType::READ_STMT, "varName");
+        std::make_shared<ReadNode>(8, StmtType::READ_STMT, "var4");
     std::shared_ptr<PrintNode> pr3 =
-        std::make_shared<PrintNode>(9, StmtType::PRINT_STMT, "varName");
+        std::make_shared<PrintNode>(9, StmtType::PRINT_STMT, "var4");
     std::vector<std::shared_ptr<StmtNode>> stmts3;
     stmts3.push_back(r3);
     stmts3.push_back(pr3);
     std::shared_ptr<StmtLstNode> stl3 = std::make_shared<StmtLstNode>(stmts3);
     // Else body
     std::shared_ptr<ReadNode> r4 =
-        std::make_shared<ReadNode>(10, StmtType::READ_STMT, "varName");
+        std::make_shared<ReadNode>(10, StmtType::READ_STMT, "var5");
     std::shared_ptr<PrintNode> pr4 =
-        std::make_shared<PrintNode>(11, StmtType::PRINT_STMT, "varName");
+        std::make_shared<PrintNode>(11, StmtType::PRINT_STMT, "var5");
     std::vector<std::shared_ptr<StmtNode>> stmts4;
     stmts4.push_back(r4);
     stmts4.push_back(pr4);
@@ -273,5 +273,16 @@ TEST_CASE("Parent extraction") {
   SECTION("Full extraction") {
     ec.executeProgramExtraction(ast.getProgramNode());
     REQUIRE(pkb.insertParentCallCount== 6);
+  }
+}
+
+TEST_CASE("Uses extraction") {
+  PkbApiStub pkb = PkbApiStub();
+  ASTBuilder ast = ASTBuilder();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  SECTION("Full extraction") {
+    ec.executeProgramExtraction(ast.getProgramNode());
+    REQUIRE(pkb.insertUsesCallCount == 11);
   }
 }
