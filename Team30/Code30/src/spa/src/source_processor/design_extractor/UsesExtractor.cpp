@@ -22,12 +22,8 @@ void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
                      node->getVarName());
-  std::cout << "(" + std::to_string(node->getStmtIndex()) + ", " +
-                   node->getVarName() + ")\n";
   for (std::string usesActor : usesActors) {
     pkb.insertRelation(RelationType::USES, usesActor, node->getVarName());
-    std::cout << "(" + usesActor + ", " +
-                     node->getVarName() + ")\n";
   }
 }
 
@@ -36,10 +32,30 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
 }
 
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+  std::unordered_set<std::string> condVars = node->getCondExpr()-> getVariables();
+  
+  // Can potentially be extracted for while and if
+  for (std::string condVar : condVars) {
+    pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()), condVar);
+    for (std::string usesActor : usesActors) {
+      pkb.insertRelation(RelationType::USES, usesActor, condVar);
+    }
+  }
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+  std::unordered_set<std::string> condVars =
+      node->getCondExprNode()->getVariables();
+
+  // Can potentially be extracted for while and if
+  for (std::string condVar : condVars) {
+    pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
+                       condVar);
+    for (std::string usesActor : usesActors) {
+      pkb.insertRelation(RelationType::USES, usesActor, condVar);
+    }
+  }
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 

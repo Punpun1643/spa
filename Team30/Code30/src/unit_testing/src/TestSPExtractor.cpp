@@ -10,7 +10,6 @@
 #include "../../spa/src/program_knowledge_base/PkbApi.h"
 #include "catch.hpp"
 
-
 class PkbApiStub : public PkbApi {
  public:
   int insertEntityCallCount;
@@ -272,7 +271,7 @@ TEST_CASE("Parent extraction") {
   ExtractionController ec = ExtractionController(pkb);
   SECTION("Full extraction") {
     ec.executeProgramExtraction(ast.getProgramNode());
-    REQUIRE(pkb.insertParentCallCount== 6);
+    REQUIRE(pkb.insertParentCallCount == 6);
   }
 }
 
@@ -283,6 +282,8 @@ TEST_CASE("Uses extraction") {
   ExtractionController ec = ExtractionController(pkb);
   SECTION("Full extraction") {
     ec.executeProgramExtraction(ast.getProgramNode());
-    REQUIRE(pkb.insertUsesCallCount == 11);
+    REQUIRE(pkb.insertUsesCallCount == 15);
+    // NOTE: the expected value 15 includes all the duplicate calls 
+    // that may occur (handled by pkb)
   }
 }
