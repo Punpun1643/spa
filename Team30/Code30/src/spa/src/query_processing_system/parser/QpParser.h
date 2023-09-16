@@ -1,11 +1,5 @@
 #pragma once
 
-/* #include <queue> */
-
-/* #include "../common/SelectClause.h" */
-/* #include "../common/SuchThatClause.h" */
-/* #include "../expression/AExpression.h" */
-
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
 #include "../common/EntityType.h"
