@@ -8,11 +8,9 @@
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
 
-using namespace std;
-
 PKB::PKB() : PkbApi() {
-  entData = make_unique<EntityDatabase>(EntityDatabase());
-  relData = make_unique<RelDatabase>(RelDatabase());
+  entData = std::make_unique<EntityDatabase>(EntityDatabase());
+  relData = std::make_unique<RelDatabase>(RelDatabase());
 
   // TODO: Find a cleaner way to insert to multiple tables simultaneously
   relatedTables = {
@@ -29,6 +27,7 @@ PKB::PKB() : PkbApi() {
   };
 
   };
+
 
 // ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
@@ -65,20 +64,29 @@ void PKB::insertRelation(RelationType type, string input1, string input2) {
   for (RelationType rt : relatedTables[target]) {
     shared_ptr<BaseTable> table = relData->getTable(rt);
     table->insert(input1, input2);
+
   }
 };
 
+void PKB::insertRelation(RelationType rel_type, std::string s_line_num,
+                         EntityType ent_type, std::string enity){};
+void PKB::insertRelation(RelationType rel_type, EntityType ent_type,
+                         std::string entity, std::string s_line_num){};
+void PKB::insertRelation(RelationType rel_type, EntityType ent_type1,
+                         std::string entity1, EntityType ent_type2,
+                         std::string entity2){};
+
 // ---------- RETRIEVE ENTITIES ----------
-unique_ptr<vector<string>> PKB::getEntitiesWithType(EntityType type) {
-  shared_ptr<unordered_set<string>> e = entData->get(type);
-  vector<string> v(e->begin(), e->end());
-  return make_unique<vector<string>>(v);
+std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
+    EntityType type) {
+  std::shared_ptr<std::unordered_set<std::string>> e = entData->get(type);
+  return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
 // ---------- RETRIEVE RELATIONS ----------
 // 0 Declarations
 // example Follows(1, 3)
-bool PKB::isRelationTrue(string value_1, string value_2,
+bool PKB::isRelationTrue(std::string value_1, std::string value_2,
                          RelationType rel_type) {
   return relData->getTable(rel_type)->isRelated(value_1, value_2);
 };
@@ -86,11 +94,12 @@ bool PKB::isRelationTrue(string value_1, string value_2,
 // example Follows(1, _)
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
-  shared_ptr<unordered_set<string>> ents = entData->get(EntityType::STMT);
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  std::shared_ptr<std::unordered_set<std::string>> ents =
+      entData->get(EntityType::STMT);
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
-  for (string ent : *ents) {
+  for (std::string ent : *ents) {
     if (table->isRelated(value, ent)) {
       return true;
     }
@@ -101,11 +110,12 @@ bool PKB::isRelationTrueGivenFirstValue(std::string value,
 // example Follows(_, 1)
 bool PKB::isRelationTrueGivenSecondValue(std::string value,
                                          RelationType rel_type) {
-  shared_ptr<unordered_set<string>> ents = entData->get(EntityType::STMT);
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  std::shared_ptr<std::unordered_set<std::string>> ents =
+      entData->get(EntityType::STMT);
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
-  for (string ent : *ents) {
+  for (std::string ent : *ents) {
     if (table->isRelated(ent, value)) {
       return true;
     }
@@ -115,28 +125,21 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 
 // example Follows(_, _)
 bool PKB::isRelationTrueForAny(RelationType relation_type) {
-  shared_ptr<unordered_set<string>> ents = entData->get(EntityType::STMT);
-  shared_ptr<BaseTable> table = relData->getTable(relation_type);
-
-  // TODO: Optimise
-  for (string ent1 : *ents) {
-    for (string ent2 : *ents) {
-      if (table->isRelated(ent1, ent2)) {
-        return true;
-      }
-    }
-  }
-  return false;
+  std::shared_ptr<std::unordered_set<std::string>> ents =
+      entData->get(EntityType::STMT);
+  std::shared_ptr<BaseTable> table = relData->getTable(relation_type);
+  return ents->size() > 0;
 }
 
 // 1 Declarations
 // example Parent(s, _), ParentsStar(s, _)
-unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
+std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
     EntityType entity_type, RelationType rel_type) {
-  unordered_set<string> output;
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  shared_ptr<unordered_set<string>> ents1 = entData->get(entity_type);
-  shared_ptr<unordered_set<string>> ents2;
+  std::unordered_set<std::string> output;
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  std::shared_ptr<std::unordered_set<std::string>> ents1 =
+      entData->get(entity_type);
+  std::shared_ptr<std::unordered_set<std::string>> ents2;
 
   if (rel_type == RelationType::USES_S || rel_type == RelationType::USES_P ||
   rel_type == RelationType::MODIFIES_S || rel_type == RelationType::MODIFIES_P) {
@@ -144,124 +147,91 @@ unique_ptr<vector<string>> PKB::getRelationValuesGivenFirstType(
   } else {
     ents2 = entData->get(EntityType::STMT);
   }
-  
 
   // TODO: Optimise
-  for (string ent1 : *ents1) {
-    for (string ent2 : *ents2) {
+  for (std::string ent1 : *ents1) {
+    for (std::string ent2 : *ents2) {
       if (table->isRelated(ent1, ent2)) {
         output.insert(ent1);
       }
     }
   }
-
-  vector<string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return make_unique<vector<string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 }
 
 // example Follows(_, 3), FolowsStar(_, 3)
-unique_ptr<vector<string>> PKB::getRelationValuesGivenSecondType(
+std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
     EntityType entity_type, RelationType rel_type) {
-  unordered_set<string> output;
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  shared_ptr<unordered_set<string>> ents1 = entData->get(EntityType::STMT);
-  shared_ptr<unordered_set<string>> ents2 = entData->get(entity_type);
+  std::unordered_set<std::string> output;
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  std::shared_ptr<std::unordered_set<std::string>> ents1 =
+      entData->get(EntityType::STMT);
+  std::shared_ptr<std::unordered_set<std::string>> ents2 =
+      entData->get(entity_type);
 
   // TODO: Optimise
-  for (string ent1 : *ents1) {
-    for (string ent2 : *ents2) {
+  for (std::string ent1 : *ents1) {
+    for (std::string ent2 : *ents2) {
       if (table->isRelated(ent1, ent2)) {
         output.insert(ent2);
       }
     }
   }
-
-  vector<string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return make_unique<vector<string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 };
 
 // example Follows(s, 3), FolowsStar(s, 3)
-unique_ptr<vector<string>> PKB::getRelationValues(EntityType entity_type,
-                                                  string value,
-                                                  RelationType rel_type) {
-  unordered_set<string> output;
-  shared_ptr<unordered_set<string>> ents = entData->get(entity_type);
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (string ent : *ents) {
+std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
+    EntityType entity_type, std::string value, RelationType rel_type) {
+  std::unordered_set<std::string> output;
+  std::shared_ptr<std::unordered_set<std::string>> ents =
+      entData->get(entity_type);
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (std::string ent : *ents) {
     if (table->isRelated(ent, value)) {
       output.insert(ent);
     }
   }
-
-  vector<string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return make_unique<vector<string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 }
 
 // example Follows(3, s)
-unique_ptr<vector<string>> PKB::getRelationValues(string value,
-                                                  EntityType entity_type,
-                                                  RelationType rel_type) {
-  unordered_set<string> output;
-  shared_ptr<unordered_set<string>> ents = entData->get(entity_type);
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (string ent : *ents) {
+std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
+    std::string value, EntityType entity_type, RelationType rel_type) {
+  std::unordered_set<std::string> output;
+  std::shared_ptr<std::unordered_set<std::string>> ents =
+      entData->get(entity_type);
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (std::string ent : *ents) {
     if (table->isRelated(value, ent)) {
       output.insert(ent);
     }
   }
-
-  vector<string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return make_unique<vector<string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 }
 
 //// 2 Declarations
 // example Follows(s1, s2), FolowsStar(s1, s2)
-unique_ptr<vector<pair<string, string>>> PKB::getRelationValues(
-    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
-  vector<pair<string, string>> output;
-  shared_ptr<unordered_set<string>> ents1 = PKB::entData->get(entity_type_1);
-  shared_ptr<unordered_set<string>> ents2 = entData->get(entity_type_2);
-  shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (string ent1 : *ents1) {
-    for (string ent2 : *ents2) {
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+                       RelationType rel_type) {
+  std::vector<std::pair<std::string, std::string>> output;
+  std::shared_ptr<std::unordered_set<std::string>> ents1 =
+      PKB::entData->get(entity_type_1);
+  std::shared_ptr<std::unordered_set<std::string>> ents2 =
+      entData->get(entity_type_2);
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (std::string ent1 : *ents1) {
+    for (std::string ent2 : *ents2) {
       if (table->isRelated(ent1, ent2)) {
         output.push_back(make_pair(ent1, ent2));
       }
     }
   }
-  return make_unique<vector<pair<string, string>>>(output);
+  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
+      output);
 };
-
-// --------------------------------------- DELETE AFTER MIGRATION
-// -------------------------------------------------------
-std::optional<std::pair<int, int>> PKB::getFollows(int s1_line_num,
-                                                   EntityType s2_type) {
-  // Code logic to be implemented here
-  std::pair<int, int> matchingPair = std::make_pair(1, 2);
-  std::optional<std::pair<int, int>> returnPair = matchingPair;
-  return returnPair;
-}
-
-std::optional<std::pair<int, int>> PKB::getFollows(EntityType s1_type,
-                                                   int s2_line_num) {
-  // Database logic to be added here
-  std::pair<int, int> matchPair = std::make_pair(3, 4);
-  std::optional<std::pair<int, int>> returnPair = matchPair;
-  return returnPair;
-}
-
-std::unique_ptr<std::vector<std::pair<int, int>>> PKB::getFollows(
-    EntityType s1_type, EntityType s2_type) {
-  // Database logic to be added here
-  std::pair<int, int> matchPair = std::make_pair(5, 6);
-  std::vector<std::pair<int, int>> pairs = {matchPair};
-  return std::make_unique<std::vector<std::pair<int, int>>>(pairs);
-}
-
-// int PKB::setProcToAST(PROC p, TNode* r) { return 0; }
-
-// TNode* PKB::getRootAST(PROC p) { return nullptr; }

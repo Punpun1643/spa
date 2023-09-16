@@ -2,7 +2,7 @@
 
 DictionaryTable::DictionaryTable() : BaseTable() {}
 
-void DictionaryTable::insert(string i, string j) {
+void DictionaryTable::insert(std::string i, std::string j) {
   auto it = relations.find(i);
 
   if (it != relations.end()) {
@@ -12,17 +12,10 @@ void DictionaryTable::insert(string i, string j) {
   };
 };
 
-bool DictionaryTable::isRelated(string i, string j) {
+bool DictionaryTable::isRelated(std::string i, std::string j) {
   auto it = relations.find(i);
   if (it == relations.end()) {
     return false;
   }
   return relations[i].find(j) != relations[i].end();
 }
-
-//unique_ptr<vector<string>> DictionaryTable::isRelatedAll(
-//    unordered_set<string> ls) {
-//  for (string element : ls) {
-//
-//  }
-//}
