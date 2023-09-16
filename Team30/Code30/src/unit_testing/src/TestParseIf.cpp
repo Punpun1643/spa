@@ -715,8 +715,8 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     REQUIRE(thenStmtLstNode->getChildren().size() == 3);
     REQUIRE(elseStmtLstNode->getChildren().size() == 2);
 
-
-    std::shared_ptr<WhileNode> whileNode = std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->getChildren()[1]);
+    std::shared_ptr<WhileNode> whileNode =
+        std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->getChildren()[1]);
     REQUIRE(whileNode->getCondExpr()->getVariables().size() == 2);
     REQUIRE(whileNode->getCondExpr()->getConstants().size() == 0);
     REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
