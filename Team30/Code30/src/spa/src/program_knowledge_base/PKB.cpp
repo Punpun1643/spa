@@ -50,8 +50,7 @@ void PKB::insertRelation(RelationType rel_type, EntityType ent_type1,
 std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
     EntityType type) {
   std::shared_ptr<std::unordered_set<std::string>> e = entData->get(type);
-  std::vector<std::string> v(e->begin(), e->end());
-  return std::make_unique<std::vector<std::string>>(v);
+  return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
 // ---------- RETRIEVE RELATIONS ----------
@@ -135,10 +134,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
       }
     }
   }
-
-  std::vector<std::string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return std::make_unique<std::vector<std::string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 }
 
 // example Follows(_, 3), FolowsStar(_, 3)
@@ -159,10 +156,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
       }
     }
   }
-
-  std::vector<std::string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return std::make_unique<std::vector<std::string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 };
 
 // example Follows(s, 3), FolowsStar(s, 3)
@@ -177,10 +172,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
       output.insert(ent);
     }
   }
-
-  std::vector<std::string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return std::make_unique<std::vector<std::string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 }
 
 // example Follows(3, s)
@@ -195,10 +188,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
       output.insert(ent);
     }
   }
-
-  std::vector<std::string> output_vector;
-  output_vector.assign(output.begin(), output.end());
-  return std::make_unique<std::vector<std::string>>(output_vector);
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
 }
 
 //// 2 Declarations
