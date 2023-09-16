@@ -81,7 +81,7 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT));
   REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT_STAR));
 
-  vector<string> empty_vector;
+  std::vector<std::string> empty_vector;
 
   // Returns all s such that Relation(s, _)
   // there are no assignment statements that are followed by any other
@@ -89,7 +89,7 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   REQUIRE(*pkb.getRelationValuesGivenFirstType(
               EntityType::ASSIGN, RelationType::FOLLOWS) == empty_vector);
   // statement 4 is the only if statement that is a parent
-  vector<string> tmp = {"4"};
+  std::vector<std::string> tmp = {"4"};
   REQUIRE(*pkb.getRelationValuesGivenFirstType(
               EntityType::IF, RelationType::PARENT_STAR) == tmp);
   // there are no while statements
@@ -127,7 +127,7 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
           empty_vector);
 
   // Returns all s1, s2 such that Relation(s1, s2)
-  vector<pair<string, string>> tmp_pair;
+  std::vector<std::pair<std::string, std::string>> tmp_pair;
   tmp_pair = {{"4", "5"}, {"4", "6"}, {"6", "7"}};
   REQUIRE(
       *pkb.getRelationValues(EntityType::STMT, EntityType::STMT,

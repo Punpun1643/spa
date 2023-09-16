@@ -11,8 +11,6 @@
 #include "../query_processing_system/common/EntityType.h"
 #include "RelationType.h"
 
-using namespace std;
-
 class PkbApi {
  public:
   // Cast integers to strings

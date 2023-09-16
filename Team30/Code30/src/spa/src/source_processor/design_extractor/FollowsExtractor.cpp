@@ -26,8 +26,9 @@ void FollowsExtractor::extractFromProcedure(
 void FollowsExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();
   for (int i = 0; i < children.size() - 1; i++) {
-    pkb.insertRelation(RelationType::FOLLOWS, to_string(children[i]->getStmtIndex()),
-                       to_string(children[i + 1]->getStmtIndex()));
+    pkb.insertRelation(RelationType::FOLLOWS,
+                       std::to_string(children[i]->getStmtIndex()),
+                       std::to_string(children[i + 1]->getStmtIndex()));
   }
 }
 

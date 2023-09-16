@@ -8,33 +8,42 @@
 #include <unordered_set>
 #include <vector>
 
-using namespace std;
-
 EntityDatabase::EntityDatabase() {
-  entities[EntityType::PROCEDURE] = make_shared<unordered_set<string>>();
-  entities[EntityType::STMT] = make_shared<unordered_set<string>>();
-  entities[EntityType::READ] = make_shared<unordered_set<string>>();
-  entities[EntityType::PRINT] = make_shared<unordered_set<string>>();
-  entities[EntityType::ASSIGN] = make_shared<unordered_set<string>>();
-  entities[EntityType::CALL] = make_shared<unordered_set<string>>();
-  entities[EntityType::WHILE] = make_shared<unordered_set<string>>();
-  entities[EntityType::IF] = make_shared<unordered_set<string>>();
-  entities[EntityType::VARIABLE] = make_shared<unordered_set<string>>();
-  entities[EntityType::CONSTANT] = make_shared<unordered_set<string>>();
+  entities[EntityType::PROCEDURE] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::STMT] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::READ] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::PRINT] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::ASSIGN] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::CALL] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::WHILE] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::IF] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::VARIABLE] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::CONSTANT] =
+      std::make_shared<std::unordered_set<std::string>>();
 
   statementTypes = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
                     EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
                     EntityType::IF};
 };
 
-void EntityDatabase::insert(EntityType type, string value) {
+void EntityDatabase::insert(EntityType type, std::string value) {
   (entities[type])->insert(value);
   if (statementTypes.find(type) != statementTypes.end()) {
     (entities[EntityType::STMT])->insert(value);
   };
 };
 
-shared_ptr<unordered_set<string>> EntityDatabase::get(EntityType type) {
-  shared_ptr<unordered_set<string>> results = entities[type];
+std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::get(
+    EntityType type) {
+  std::shared_ptr<std::unordered_set<std::string>> results = entities[type];
   return results;
 };
