@@ -18,6 +18,8 @@ class IfNode : public StmtNode {
   std::shared_ptr<StmtLstNode> const getElseStmtLstNode() const;
   std::shared_ptr<CondExprNode> const getCondExprNode() const;
 
+  ~IfNode() = default;
+
  private:
   std::shared_ptr<StmtLstNode> const thenStmtLstNode;
   std::shared_ptr<StmtLstNode> const elseStmtLstNode;

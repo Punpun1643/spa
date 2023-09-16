@@ -186,7 +186,7 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
   }
 
   nextToken();
-  getCurrToken();
+  currToken = getCurrToken();
 
   if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
       currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
