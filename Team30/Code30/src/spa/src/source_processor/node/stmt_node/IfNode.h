@@ -14,9 +14,9 @@ class IfNode : public StmtNode {
 
   void accept(IDesignExtractor& extractor) override;
 
-  std::shared_ptr<StmtLstNode> const getThenStmtLstNode() const;
-  std::shared_ptr<StmtLstNode> const getElseStmtLstNode() const;
-  std::shared_ptr<CondExprNode> const getCondExprNode() const;
+  std::shared_ptr<StmtLstNode> const getThenStmtLst() const;
+  std::shared_ptr<StmtLstNode> const getElseStmtLst() const;
+  std::shared_ptr<CondExprNode> const getCondExpr() const;
 
   ~IfNode() = default;
 
