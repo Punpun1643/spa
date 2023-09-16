@@ -7,6 +7,7 @@
 
 class QueryExpression : public AExpression {
  public:
+  QueryExpression(std::unique_ptr<SelectExpression> select_expression);
   QueryExpression(
       std::unique_ptr<DeclarationListExpression> declaration_list_expression,
       std::unique_ptr<SelectExpression> select_expression);

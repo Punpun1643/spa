@@ -1,6 +1,10 @@
 #include "QueryExpression.h"
 
 QueryExpression::QueryExpression(
+    std::unique_ptr<SelectExpression> select_expression)
+    : select_expression(std::move(select_expression)) {}
+
+QueryExpression::QueryExpression(
     std::unique_ptr<DeclarationListExpression> declaration_list_expression,
     std::unique_ptr<SelectExpression> select_expression)
     : declaration_list_expression(std::move(declaration_list_expression)),

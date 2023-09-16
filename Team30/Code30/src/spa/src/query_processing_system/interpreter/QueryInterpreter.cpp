@@ -1,11 +1,16 @@
 #include "QueryInterpreter.h"
 
+#include <iostream>
+
 #include "../common/EntityType.h"
 #include "../common/SelectClause.h"
 #include "../expression/DeclarationExpression.h"
 #include "../expression/DeclarationListExpression.h"
 #include "../expression/QueryExpression.h"
 #include "../expression/SelectExpression.h"
+
+QueryInterpreter::QueryInterpreter()
+    : declarations(std::make_shared<DeclarationMap>()){};
 
 std::shared_ptr<DeclarationMap> QueryInterpreter::getDeclarations() {
   return this->declarations;
@@ -21,7 +26,9 @@ void QueryInterpreter::InterpretDeclarations(
   std::shared_ptr<PqlDeclaration> declaration =
       std::make_shared<PqlDeclaration>(std::make_shared<std::string>(synonym),
                                        entity_type);
-  this->declarations->insert(make_pair(synonym, declaration));
+  /* std::shared_ptr<std::map<std::string, std:;string>> test_map; */
+  this->declarations->insert(std::make_pair(synonym, declaration));
+  /* this->declarations->insert(std::pair(synonym, declaration)); */
 }
 
 void QueryInterpreter::Interpret(QueryExpression& query_expression) {

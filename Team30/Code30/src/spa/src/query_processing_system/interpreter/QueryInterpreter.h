@@ -15,6 +15,7 @@ class SelectExpression;
 
 class QueryInterpreter {
  public:
+  QueryInterpreter();
   std::shared_ptr<DeclarationMap> getDeclarations();
   ClauseList GetClauseList();
   void Interpret(QueryExpression& query_expression);

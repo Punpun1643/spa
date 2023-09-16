@@ -1,5 +1,6 @@
 #include "QpParser.h"
 
+#include <iostream>
 #include <map>
 #include <stdexcept>
 

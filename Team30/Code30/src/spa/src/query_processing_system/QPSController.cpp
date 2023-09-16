@@ -1,5 +1,7 @@
 #include "QPSController.h"
 
+#include <iostream>
+
 QPSController::QPSController(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(tokens){};
 
@@ -22,5 +24,6 @@ std::vector<std::shared_ptr<Clause>> QPSController::ParseAndGetClauses() {
   std::unique_ptr<QueryInterpreter> query_interpreter =
       std::make_unique<QueryInterpreter>();
   query_interpreter->Interpret(*query_expression);
+
   return query_interpreter->GetClauseList();
 }

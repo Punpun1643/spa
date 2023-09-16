@@ -1,5 +1,7 @@
 #include "ExpressionTreeBuilder.h"
 
+#include <iostream>
+
 #include "../expression/DeclarationExpression.h"
 #include "../expression/DeclarationListExpression.h"
 #include "../expression/SelectExpression.h"
@@ -13,15 +15,18 @@ std::unique_ptr<QueryExpression> ExpressionTreeBuilder::GetQueryExpression() {
 }
 
 void ExpressionTreeBuilder::parse() {
-  std::unique_ptr<QueryExpression> query_expression;
   if (getCurrToken()->getTokenVal() == "Select") {
     std::unique_ptr<SelectExpression> select_expression =
         CreateSelectExpression();
+    this->query_expression =
+        std::make_unique<QueryExpression>(std::move(select_expression));
   } else {
     std::unique_ptr<DeclarationListExpression> declaration_list_expression =
         CreateDeclarationListExpression();
     std::unique_ptr<SelectExpression> select_expression =
         CreateSelectExpression();
+    this->query_expression = std::make_unique<QueryExpression>(
+        std::move(declaration_list_expression), std::move(select_expression));
   }
 }
 
@@ -36,7 +41,7 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 std::unique_ptr<DeclarationListExpression>
 ExpressionTreeBuilder ::CreateDeclarationListExpression() {
   std::vector<std::shared_ptr<DeclarationExpression>> declaration_list;
-  while (getCurrToken()->getTokenVal() != "select") {
+  while (getCurrToken()->getTokenVal() != "Select") {
     EntityType entity_type = StringToEntityType(getCurrToken()->getTokenVal());
     nextToken();  // synonym
     std::string synonym = getCurrToken()->getTokenVal();
