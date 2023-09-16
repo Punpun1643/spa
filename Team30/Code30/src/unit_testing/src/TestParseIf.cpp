@@ -94,6 +94,77 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
+  SECTION(
+      "Test valid if stmt with valid nested while stmt should not throw any "
+      "error") {
+    /*
+      if (num1 > num2) then {
+        read num1;
+        read num2;
+        print temp;
+      } else {
+        call noSwap;
+        while (n1 == n2) {
+          read n1;
+          call readPoint;
+          print temp;
+        }
+      }
+   */
+
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("num1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(">"));
+    tokens.push_back(std::make_shared<WordToken>("num2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<WordToken>("then"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("{"));
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("num1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("num2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("print"));
+    tokens.push_back(std::make_shared<WordToken>("temp"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("}"));
+    tokens.push_back(std::make_shared<WordToken>("else"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("{"));
+
+    tokens.push_back(std::make_shared<WordToken>("call"));
+    tokens.push_back(std::make_shared<WordToken>("noSwap"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+
+    tokens.push_back(std::make_shared<WordToken>("while"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("n1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("=="));
+    tokens.push_back(std::make_shared<WordToken>("n2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("{"));
+
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("n1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+
+    tokens.push_back(std::make_shared<WordToken>("call"));
+    tokens.push_back(std::make_shared<WordToken>("readPoint"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("print"));
+    tokens.push_back(std::make_shared<WordToken>("temp"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("}"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("}"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser(tokens);
+    REQUIRE_NOTHROW(parser.parseIf());
+  }
+
   SECTION("Test other characters in place of open bracket should throw error") {
     /*
       if bracket num1 > num2) then {
@@ -426,7 +497,88 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<EofToken>());
 
     SpParser parser(tokens);
+    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+  }
+
+  SECTION("Test missing open else curly bracket should throw error") {
+    /*
+      if (num1 > num2) then {
+        read num1;
+        read num2;
+        print temp;
+      } else
+        call noSwap;
+      }
+   */
+
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("num1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(">"));
+    tokens.push_back(std::make_shared<WordToken>("num2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<WordToken>("then"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("{"));
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("num1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("num2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("print"));
+    tokens.push_back(std::make_shared<WordToken>("temp"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("}"));
+    tokens.push_back(std::make_shared<WordToken>("else"));
+    tokens.push_back(std::make_shared<WordToken>("call"));
+    tokens.push_back(std::make_shared<WordToken>("noSwap"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("}"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser(tokens);
+    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+  }
+
+  SECTION("Test missing close else curly bracket should throw error") {
+    /*
+      if (num1 > num2) then {
+        read num1;
+        read num2;
+        print temp;
+      } else {
+        call noSwap;
+   */
+
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("num1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(">"));
+    tokens.push_back(std::make_shared<WordToken>("num2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<WordToken>("then"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("{"));
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("num1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("read"));
+    tokens.push_back(std::make_shared<WordToken>("num2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<WordToken>("print"));
+    tokens.push_back(std::make_shared<WordToken>("temp"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("}"));
+    tokens.push_back(std::make_shared<WordToken>("else"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("{"));
+    tokens.push_back(std::make_shared<WordToken>("call"));
+    tokens.push_back(std::make_shared<WordToken>("noSwap"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(),
-                        Contains("Invalid if"));
+                        Contains("invalid"));  // will be invalid stmtLst
   }
 }
