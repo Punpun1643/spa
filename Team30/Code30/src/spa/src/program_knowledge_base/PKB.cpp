@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "../query_processing_system/common/EntityType.h"
 #include "PkbApi.h"
