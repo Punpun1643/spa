@@ -1,5 +1,4 @@
 #include "EntityExtractor.h"
-#include <iostream>
 
 EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
 
