@@ -47,8 +47,17 @@ ExpressionTreeBuilder ::CreateDeclarationListExpression() {
     std::string synonym = getCurrToken()->getTokenVal();
     declaration_list.push_back(
         std::make_shared<DeclarationExpression>(entity_type, synonym));
-    nextToken();  // ;
-    nextToken();
+    nextToken();  // ; OR ,
+    if (getCurrToken()->getTokenVal() == ",") {
+      while (getCurrToken()->getTokenVal() == ",") {
+        nextToken(); // synonym
+        synonym = getCurrToken()->getTokenVal();
+        declaration_list.push_back(
+            std::make_shared<DeclarationExpression>(entity_type, synonym));
+        nextToken(); // ; OR ,
+      }
+    }
+    nextToken(); // entity type OR Select
   }
   return std::make_unique<DeclarationListExpression>(declaration_list);
 }
