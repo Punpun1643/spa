@@ -42,4 +42,9 @@ class UsesExtractor : public IDesignExtractor {
   PkbApi& pkb;
 
   std::vector<std::string> usesActors;
+
+  void insertCondVars(std::unordered_set<std::string> condVars,
+                      std::string stmtIndex);
+
+  void insertVarWithActors(std::string var);
 };

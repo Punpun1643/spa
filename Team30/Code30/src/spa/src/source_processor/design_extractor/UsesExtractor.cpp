@@ -1,4 +1,5 @@
 #include "UsesExtractor.h"
+
 #include <iostream>
 
 UsesExtractor::UsesExtractor(PkbApi& pkb) : pkb(pkb) {}
@@ -22,9 +23,7 @@ void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
                      node->getVarName());
-  for (std::string usesActor : usesActors) {
-    pkb.insertRelation(RelationType::USES, usesActor, node->getVarName());
-  }
+  insertVarWithActors(node->getVarName());
 }
 
 void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
@@ -32,30 +31,16 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
 }
 
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-  std::unordered_set<std::string> condVars = node->getCondExpr()-> getVariables();
-  
-  // Can potentially be extracted for while and if
-  for (std::string condVar : condVars) {
-    pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()), condVar);
-    for (std::string usesActor : usesActors) {
-      pkb.insertRelation(RelationType::USES, usesActor, condVar);
-    }
-  }
+  std::unordered_set<std::string> condVars =
+      node->getCondExpr()->getVariables();
+  insertCondVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
       node->getCondExprNode()->getVariables();
-
-  // Can potentially be extracted for while and if
-  for (std::string condVar : condVars) {
-    pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
-                       condVar);
-    for (std::string usesActor : usesActors) {
-      pkb.insertRelation(RelationType::USES, usesActor, condVar);
-    }
-  }
+  insertCondVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
@@ -64,5 +49,19 @@ void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 void UsesExtractor::popUsesActors() {
   if (!usesActors.empty()) {
     usesActors.pop_back();
+  }
+}
+
+void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
+                                   std::string stmtIndex) {
+  for (std::string condVar : condVars) {
+    pkb.insertRelation(RelationType::USES, stmtIndex, condVar);
+    insertVarWithActors(condVar);
+  }
+}
+
+void UsesExtractor::insertVarWithActors(std::string var) {
+  for (std::string usesActor : usesActors) {
+    pkb.insertRelation(RelationType::USES, usesActor, var);
   }
 }
