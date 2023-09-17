@@ -8,10 +8,10 @@ class SuchThatClause : public Clause {
   RelationType const relation_type;
 
  protected:
-  std::unique_ptr<const PqlReference> arg1;
-  std::unique_ptr<const PqlReference> arg2;
-  SuchThatClause(std::unique_ptr<const PqlReference> arg1,
-                 std::unique_ptr<const PqlReference> arg2,
+  std::unique_ptr<PqlReference const> arg1;
+  std::unique_ptr<PqlReference const> arg2;
+  SuchThatClause(std::unique_ptr<PqlReference const> arg1,
+                 std::unique_ptr<PqlReference const> arg2,
                  RelationType relation_type);
 
   virtual std::unique_ptr<ClauseResult> evaluateWildWild(PkbApi& pkb);
@@ -22,7 +22,8 @@ class SuchThatClause : public Clause {
   virtual std::unique_ptr<ClauseResult> evaluateWildDeclaration(PkbApi& pkb);
   virtual std::unique_ptr<ClauseResult> evaluateDeclarationValue(PkbApi& pkb);
   virtual std::unique_ptr<ClauseResult> evaluateValueDeclaration(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateDeclarationDeclaration(PkbApi& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateDeclarationDeclaration(
+      PkbApi& pkb);
 
  public:
   std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) override;

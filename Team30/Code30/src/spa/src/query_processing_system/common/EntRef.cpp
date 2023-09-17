@@ -4,14 +4,14 @@
 
 #include "InvalidSemanticsException.h"
 
-EntRef::EntRef(): PqlReference() {}
+EntRef::EntRef() : PqlReference() {}
 
 EntRef::EntRef(std::string entity_value)
     : PqlReference(std::move(entity_value)) {
   // Assumes that entity_value is a valid identifier
 }
 
-EntRef::EntRef(std::shared_ptr<const PqlDeclaration> declaration)
+EntRef::EntRef(std::shared_ptr<PqlDeclaration const> declaration)
     : PqlReference(declaration) {
   EntityType declaration_type = declaration->getEntityType();
   if (std::find(VALID_ENT_TYPES.begin(), VALID_ENT_TYPES.end(),

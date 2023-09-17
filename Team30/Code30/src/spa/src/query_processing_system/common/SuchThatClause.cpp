@@ -1,10 +1,11 @@
 #include "SuchThatClause.h"
 SuchThatClause::~SuchThatClause() = default;
 
-SuchThatClause::SuchThatClause(std::unique_ptr<const PqlReference> arg1, 
-                               std::unique_ptr<const PqlReference> arg2,
+SuchThatClause::SuchThatClause(std::unique_ptr<PqlReference const> arg1,
+                               std::unique_ptr<PqlReference const> arg2,
                                RelationType relation_type)
-    : arg1(std::move(arg1)), arg2(std::move(arg2)),
+    : arg1(std::move(arg1)),
+      arg2(std::move(arg2)),
       relation_type(relation_type) {}
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildWild(PkbApi& pkb) {
@@ -34,7 +35,8 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueValue(PkbApi& pkb) {
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
+    PkbApi& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = *(arg1->getDeclaration());
   auto possible_values =
@@ -43,7 +45,8 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(PkbApi& pk
                                         std::move(possible_values));
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
+    PkbApi& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = *(arg2->getDeclaration());
   auto possible_values =
@@ -52,7 +55,8 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(PkbApi& pk
                                         std::move(possible_values));
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
+    PkbApi& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = *(arg1->getDeclaration());
   std::string second_value = arg2->getValue();
@@ -62,7 +66,8 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(PkbApi& p
                                         std::move(possible_values));
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
+    PkbApi& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = *(arg2->getDeclaration());
   std::string first_value = arg1->getValue();
@@ -72,7 +77,8 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(PkbApi& p
                                         std::move(possible_values));
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(
+    PkbApi& pkb) {
   EntityType entity_type_1 = arg1->getDeclarationType();
   EntityType entity_type_2 = arg2->getDeclarationType();
   PqlDeclaration declaration_1 = *(arg1->getDeclaration());
@@ -88,7 +94,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PkbApi& pkb) {
   // This method uses the template design pattern
   PqlRefType ref_type_1 = arg1->getRefType();
   PqlRefType ref_type_2 = arg2->getRefType();
-  
+
   if (ref_type_1 == PqlRefType::WILD && ref_type_2 == PqlRefType::WILD) {
     return evaluateWildWild(pkb);
   } else if (ref_type_1 == PqlRefType::VALUE &&
@@ -111,10 +117,10 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PkbApi& pkb) {
     return evaluateDeclarationValue(pkb);
   } else if (ref_type_1 == PqlRefType::VALUE &&
              ref_type_2 == PqlRefType::DECLARATION) {
-   return evaluateValueDeclaration(pkb);
+    return evaluateValueDeclaration(pkb);
   } else if (ref_type_1 == PqlRefType::DECLARATION &&
              ref_type_2 == PqlRefType::DECLARATION) {
-   return evaluateDeclarationDeclaration(pkb);
+    return evaluateDeclarationDeclaration(pkb);
   } else {
     throw std::runtime_error("Unknown combination of reference types");
   }

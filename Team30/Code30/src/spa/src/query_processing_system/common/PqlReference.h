@@ -9,16 +9,16 @@ enum PqlRefType { WILD, VALUE, DECLARATION };
 
 class PqlReference {
  private:
-  const PqlRefType ref_type;
-  const std::optional<std::string> ref_value;
-  const std::shared_ptr<const PqlDeclaration> ref_declaration; // can be null
+  PqlRefType const ref_type;
+  std::optional<std::string> const ref_value;
+  std::shared_ptr<PqlDeclaration const> const ref_declaration;  // can be null
 
  protected:
   PqlReference();
 
   explicit PqlReference(std::string ref_value);
 
-  explicit PqlReference(std::shared_ptr<const PqlDeclaration> declaration);
+  explicit PqlReference(std::shared_ptr<PqlDeclaration const> declaration);
 
  public:
   virtual ~PqlReference();
@@ -27,7 +27,7 @@ class PqlReference {
 
   std::string getValue() const;
 
-  std::shared_ptr<const PqlDeclaration> getDeclaration() const;
+  std::shared_ptr<PqlDeclaration const> getDeclaration() const;
 
   EntityType getDeclarationType() const;
 };
