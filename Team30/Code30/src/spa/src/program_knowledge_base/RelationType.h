@@ -5,6 +5,8 @@ enum class RelationType {
   FOLLOWS_STAR,
   PARENT,
   PARENT_STAR,
-  MODIFIES,
-  USES
+  MODIFIES_S,
+  MODIFIES_P,
+  USES_S,
+  USES_P
 };
