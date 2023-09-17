@@ -13,6 +13,8 @@ class DeclarationExpression : public AExpression {
   EntityType getEntityType();
   std::string getSynonym();
 
+  ~DeclarationExpression() = default;
+
  private:
   EntityType entity_type;
   std::string synonym;

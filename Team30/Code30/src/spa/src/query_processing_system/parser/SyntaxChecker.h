@@ -13,4 +13,6 @@ class SyntaxChecker : public QpParser {
   void CheckSuchThatOrPattern();
   void CheckSuchThat();
   void CheckEOF();
+
+  ~SyntaxChecker() = default;
 };

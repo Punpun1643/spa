@@ -56,4 +56,3 @@ EntityType QpParser::StringToEntityType(std::string entity_string) {
     throw std::runtime_error("Invalid design entity for declaration");
   }
 }
-

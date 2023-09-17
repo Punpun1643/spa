@@ -11,6 +11,8 @@ class DeclarationListExpression : public AExpression {
   GetDeclarations();
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
+  ~DeclarationListExpression() = default;
+
  private:
   std::vector<std::shared_ptr<DeclarationExpression>> declaration_list;
 };

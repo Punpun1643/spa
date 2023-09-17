@@ -8,6 +8,8 @@ class SelectExpression : public AExpression {
   std::string GetSynonym();
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
+  ~SelectExpression() = default;
+
  private:
   std::string synonym;
 };
