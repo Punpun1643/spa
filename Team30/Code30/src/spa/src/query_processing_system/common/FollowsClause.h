@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 
-#include "../../program_knowledge_base/RelationType.h"
 #include "StmtRef.h"
 #include "SuchThatClause.h"
 
