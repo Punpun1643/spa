@@ -8,8 +8,8 @@
 
 class ModifiesSClause : public SuchThatClause {
  private:
-  std::vector<EntityType> VALID_TYPES_FOR_ARG_1 = {ASSIGN, READ, IF, WHILE,
-                                                   CALL};
+  std::vector<EntityType> VALID_TYPES_FOR_ARG_1 = {STMT, ASSIGN, READ,
+                                                   IF,   WHILE,  CALL};
   EntityType VALID_TYPE_FOR_ARG_2 = VARIABLE;
 
  protected:

@@ -8,8 +8,8 @@
 
 class UsesSClause : public SuchThatClause {
  private:
-  std::vector<EntityType> VALID_TYPES_FOR_ARG_1 = {ASSIGN, PRINT, IF, WHILE,
-                                                   CALL};
+  std::vector<EntityType> VALID_TYPES_FOR_ARG_1 = {STMT, ASSIGN, PRINT,
+                                                   IF,   WHILE,  CALL};
   EntityType VALID_TYPE_FOR_ARG_2 = VARIABLE;
 
  protected:
