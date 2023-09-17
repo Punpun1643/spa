@@ -11,8 +11,8 @@ StmtRef::StmtRef(int stmt_num)
   }
 }
 
-StmtRef::StmtRef(std::shared_ptr<const PqlDeclaration> declaration):
-PqlReference(declaration) {
+StmtRef::StmtRef(std::shared_ptr<const PqlDeclaration> declaration)
+    :PqlReference(declaration) {
   EntityType declaration_type = declaration->getEntityType();
   if (std::find(VALID_STMT_TYPES.begin(), VALID_STMT_TYPES.end(),
                 declaration_type) == VALID_STMT_TYPES.end()) {
