@@ -1,11 +1,11 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 #include "../common/Clause.h"
 #include "../common/PqlDeclaration.h"
 
-typedef std::map<std::string, std::shared_ptr<PqlDeclaration>> DeclarationMap;
+typedef std::unordered_map<std::string, std::shared_ptr<PqlDeclaration>> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;
 
 class DeclarationExpression;
