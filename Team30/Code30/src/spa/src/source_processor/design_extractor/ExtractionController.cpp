@@ -58,4 +58,25 @@ void ExtractionController::executeStmtExtraction(
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->accept(*e);
   }
+  handleContainerStmts(node);
+}
+
+void ExtractionController::handleContainerStmts(
+    std::shared_ptr<StmtNode> node) {
+  // Handle whileNodes
+  if (node->getStmtType() == StmtType::WHILE_STMT) {
+    std::shared_ptr<WhileNode> asWhile =
+        std::dynamic_pointer_cast<WhileNode>(node);
+    std::shared_ptr<StmtLstNode> whileBody = asWhile->getStmtLst();
+    executeStmtLstExtraction(whileBody);
+  }
+
+  // Handle ifNodes
+  if (node->getStmtType() == StmtType::IF_STMT) {
+    std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
+    std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLstNode();
+    std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLstNode();
+    executeStmtLstExtraction(thenBody);
+    executeStmtLstExtraction(elseBody);
+  }
 }

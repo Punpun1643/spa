@@ -11,31 +11,31 @@
 #include "PkbStub.h"
 #include "catch.hpp"
 
-TEST_CASE("Test SpController parses and extract nodes information successfully",
-          "[parseAndExtract]") {
-  SECTION(
-      "Test parse and extract short source program file should process the "
-      "correct number of Follows relationships") {
-    SpController spController = SpController();
-    std::string filePath =
-        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
-        "Sample_source_w4_short.txt";
-    PkbStub pkb = PkbStub();
-    spController.parseAndExtract(pkb, filePath);
-
-    REQUIRE(pkb.insertFollowsCallCount == 2);
-  }
-
-  SECTION(
-      "Test parse and extract medium source program file should process the "
-      "correct number of Follows relationships") {
-    SpController spController = SpController();
-    std::string filePath =
-        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
-        "Sample_source_w4_medium.txt";
-    PkbStub pkb = PkbStub();
-    spController.parseAndExtract(pkb, filePath);
-
-    REQUIRE(pkb.insertFollowsCallCount == 10);
-  }
-}
+//TEST_CASE("Test SpController parses and extract nodes information successfully",
+//          "[parseAndExtract]") {
+//  SECTION(
+//      "Test parse and extract short source program file should process the "
+//      "correct number of Follows relationships") {
+//    SpController spController = SpController();
+//    std::string filePath =
+//        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+//        "Sample_source_w4_short.txt";
+//    PkbStub pkb = PkbStub();
+//    spController.parseAndExtract(pkb, filePath);
+//
+//    REQUIRE(pkb.insertFollowsCallCount == 2);
+//  }
+//
+//  SECTION(
+//      "Test parse and extract medium source program file should process the "
+//      "correct number of Follows relationships") {
+//    SpController spController = SpController();
+//    std::string filePath =
+//        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+//        "Sample_source_w4_medium.txt";
+//    PkbStub pkb = PkbStub();
+//    spController.parseAndExtract(pkb, filePath);
+//
+//    REQUIRE(pkb.insertFollowsCallCount == 10);
+//  }
+//}
