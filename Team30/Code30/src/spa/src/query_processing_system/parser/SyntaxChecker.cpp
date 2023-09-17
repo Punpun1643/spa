@@ -22,24 +22,31 @@ void SyntaxChecker::parse() {
 }
 
 void SyntaxChecker::CheckDeclaration() {
-  std::shared_ptr<Token> current_token = getCurrToken();
-  while (current_token->getTokenVal() != "Select") {
-    if (IsEOFToken(current_token)) {
+  while (getCurrToken()->getTokenVal() != "Select") {
+    if (IsEOFToken(getCurrToken())) {
       throw std::runtime_error("Query is missing a select clause!");
     }
     EntityType entity_type = StringToEntityType(
-        current_token
+        getCurrToken()
             ->getTokenVal());  // throws an error if not valid entity_type
     nextToken();               // synonym
     if (!IsSynonym(getCurrToken()->getTokenVal())) {
       throw std::runtime_error("Invalid synonym given in declaration");
     }
-    nextToken();  // ;
+    nextToken();  // , OR ;
+    if (getCurrToken()->getTokenVal() == ",") {
+      while (getCurrToken()->getTokenVal() == ",") {
+        nextToken(); // synonym
+        if (!IsSynonym(getCurrToken()->getTokenVal())) {
+          throw std::runtime_error("Invalid synonym given in declaration");
+        }
+        nextToken(); // , OR ;
+      }
+    }
     if (getCurrToken()->getTokenVal() != ";") {
       throw std::runtime_error("Invalid declaration format");
     }
-    nextToken();
-    current_token = getCurrToken();
+    nextToken(); // entity_type or Select
   }
 }
 
