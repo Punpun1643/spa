@@ -1,12 +1,15 @@
 #pragma once
+#include <source_processor/node/stmt_node/StmtNode.h>
+
 #include <memory>
 #include <optional>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
-#include "program_knowledge_base/RelationType.h"
+#include "RelationType.h"
 
 class PkbApi {
  public:
@@ -15,20 +18,20 @@ class PkbApi {
 
   // Relation (integer, integer)
   virtual void insertRelation(RelationType rel_type, std::string s1_line_num,
-                      std::string s2_line_num) = 0;
+                              std::string s2_line_num) = 0;
 
   // Relation (integer, EntityType)
   virtual void insertRelation(RelationType rel_type, std::string s_line_num,
-                      EntityType ent_type, std::string enity) = 0;
+                              EntityType ent_type, std::string enity) = 0;
 
   // Relation (EntityType, integer)
   virtual void insertRelation(RelationType rel_type, EntityType ent_type,
-                      std::string entity, std::string s_line_num) = 0;
+                              std::string entity, std::string s_line_num) = 0;
 
   // Relation (EntityType, EntityType)
   virtual void insertRelation(RelationType rel_type, EntityType ent_type1,
-                      std::string entity1, EntityType ent_type2,
-                      std::string entity2) = 0;
+                              std::string entity1, EntityType ent_type2,
+                              std::string entity2) = 0;
 
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;
