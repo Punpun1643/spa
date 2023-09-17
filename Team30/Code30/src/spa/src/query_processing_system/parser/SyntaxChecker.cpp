@@ -1,5 +1,7 @@
 #include "SyntaxChecker.h"
 
+#include <stdexcept>
+
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens){};
 
@@ -36,17 +38,17 @@ void SyntaxChecker::CheckDeclaration() {
     nextToken();  // , OR ;
     if (getCurrToken()->getTokenVal() == ",") {
       while (getCurrToken()->getTokenVal() == ",") {
-        nextToken(); // synonym
+        nextToken();  // synonym
         if (!IsSynonym(getCurrToken()->getTokenVal())) {
           throw std::runtime_error("Invalid synonym given in declaration");
         }
-        nextToken(); // , OR ;
+        nextToken();  // , OR ;
       }
     }
     if (getCurrToken()->getTokenVal() != ";") {
       throw std::runtime_error("Invalid declaration format");
     }
-    nextToken(); // entity_type or Select
+    nextToken();  // entity_type or Select
   }
 }
 

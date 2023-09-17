@@ -6,7 +6,7 @@ DeclarationListExpression::DeclarationListExpression(
 
 std::unique_ptr<std::vector<std::shared_ptr<DeclarationExpression>>>
 DeclarationListExpression::GetDeclarations() {
-  return make_unique<std::vector<std::shared_ptr<DeclarationExpression>>>(
+  return std::make_unique<std::vector<std::shared_ptr<DeclarationExpression>>>(
       this->declaration_list);
 }
 
