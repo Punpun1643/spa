@@ -12,29 +12,6 @@
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
 
-bool QpParser::IsTokenType(std::shared_ptr<Token> token, TokenType token_type) {
-  if (token->getTokenType() != token_type) {
-    return false;
-  }
-  return true;
-}
-
-bool QpParser::IsWordToken(std::shared_ptr<Token> token) {
-  return QpParser::IsTokenType(token, TokenType::WORD_TOKEN);
-}
-
-bool QpParser::IsIntegerToken(std::shared_ptr<Token> token) {
-  return QpParser::IsTokenType(token, TokenType::INTEGER_TOKEN);
-}
-
-bool QpParser::IsSpecialCharToken(std::shared_ptr<Token> token) {
-  return QpParser::IsTokenType(token, TokenType::SPECIAL_CHAR_TOKEN);
-}
-
-bool QpParser::IsEOFToken(std::shared_ptr<Token> token) {
-  return QpParser::IsTokenType(token, TokenType::EOF_TOKEN);
-}
-
 bool QpParser::IsSynonym(std::string name) {
   // dummy for now
   return true;

@@ -9,11 +9,6 @@ class QpParser : public AParser {
   QpParser(std::vector<std::shared_ptr<Token>> tokens);
 
  protected:
-  bool IsTokenType(std::shared_ptr<Token> token, TokenType token_type);
-  bool IsWordToken(std::shared_ptr<Token> token);
-  bool IsIntegerToken(std::shared_ptr<Token> token);
-  bool IsSpecialCharToken(std::shared_ptr<Token> token);
-  bool IsEOFToken(std::shared_ptr<Token> token);
   bool IsSynonym(std::string name);
   bool IsRelRef(std::string name);
   bool IsTransitiveRelRef(std::string name);
