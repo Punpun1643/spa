@@ -1,11 +1,15 @@
 #pragma once
 
-#include <stdio.h>
-
-#include <any>
-#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+#include <unordered_set>
 
 class BaseTable {
-  virtual bool insertData(std::any key, std::any value);
-  virtual std::any queryData(std::any key);
+ public:
+  BaseTable();
+  ~BaseTable() = default;
+
+  virtual void insert(std::string i, std::string j) = 0;
+  virtual bool isRelated(std::string i, std::string j) = 0;
 };

@@ -1,26 +1,23 @@
 #include "RelDatabase.h"
 
-#include <stdio.h>
-
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
-#include "tables/StmtStmtRelTable.h"
-
-// TODO: Replace RelType with correct names based on implementation
+#include "program_knowledge_base/tables/DictionaryTable.h"
+#include "program_knowledge_base/tables/UFDSTable.h"
 
 RelDatabase::RelDatabase() {
-  relationships = {{RelationType::FOLLOWS, new StmtStmtRelTable()}};  // stmtNum, stmtNums[]
-};
-
-std::vector<int> RelDatabase::get(RelationType type, int lineNum) {
-  relationships[type]->queryData(lineNum);
-  return {1};
+  relationships[RelationType::PARENT] =
+      std::make_shared<DictionaryTable>(DictionaryTable());
+  relationships[RelationType::FOLLOWS] =
+      std::make_shared<DictionaryTable>(DictionaryTable());
+  relationships[RelationType::FOLLOWS_STAR] =
+      std::make_shared<UFDSTable>(UFDSTable());
+  relationships[RelationType::PARENT_STAR] =
+      std::make_shared<UFDSTable>(UFDSTable());
+  relationships[RelationType::USES] =
+      std::make_shared<DictionaryTable>(DictionaryTable());
+  relationships[RelationType::MODIFIES] =
+      std::make_shared<DictionaryTable>(DictionaryTable());
 }
-// we can overload int, var for Uses/Modifies
-bool RelDatabase::insert(RelationType type, int lineNum1, int lineNum2) {
-  relationships[type]->insertData(lineNum1, lineNum2);
-  return true;
+
+std::shared_ptr<BaseTable> RelDatabase::getTable(RelationType type) {
+  return relationships[type];
 }
