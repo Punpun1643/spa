@@ -11,37 +11,37 @@ FollowsClause::FollowsClause(std::unique_ptr<StmtRef> arg1,
 }
 
 std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
-  StmtRefType stmt_type_1 = arg1->getStmtRefType();
-  StmtRefType stmt_type_2 = arg2->getStmtRefType();
+  PqlRefType stmt_type_1 = arg1->getRefType();
+  PqlRefType stmt_type_2 = arg2->getRefType();
 
-  if (stmt_type_1 == StmtRefType::WILD && stmt_type_2 == StmtRefType::WILD) {
+  if (stmt_type_1 == PqlRefType::WILD && stmt_type_2 == PqlRefType::WILD) {
     bool is_valid_rel = pkb.isRelationTrueForAny(RELATION_TYPE);
     return std::make_unique<ClauseResult>(is_valid_rel);
 
-  } else if (stmt_type_1 == StmtRefType::NUMBER &&
-             stmt_type_2 == StmtRefType::WILD) {
-    std::string first_value = std::to_string(arg1->getStmtNum());
+  } else if (stmt_type_1 == PqlRefType::VALUE &&
+             stmt_type_2 == PqlRefType::WILD) {
+    std::string first_value = arg1->getValue();
     bool is_valid_rel =
         pkb.isRelationTrueGivenFirstValue(first_value, RELATION_TYPE);
     return std::make_unique<ClauseResult>(is_valid_rel);
 
-  } else if (stmt_type_1 == StmtRefType::WILD &&
-             stmt_type_2 == StmtRefType::NUMBER) {
-    std::string second_value = std::to_string(arg2->getStmtNum());
+  } else if (stmt_type_1 == PqlRefType::WILD &&
+             stmt_type_2 == PqlRefType::VALUE) {
+    std::string second_value = arg2->getValue();
     bool is_valid_rel =
         pkb.isRelationTrueGivenSecondValue(second_value, RELATION_TYPE);
     return std::make_unique<ClauseResult>(is_valid_rel);
 
-  } else if (stmt_type_1 == StmtRefType::NUMBER &&
-             stmt_type_2 == StmtRefType::NUMBER) {
-    std::string first_value = std::to_string(arg1->getStmtNum());
-    std::string second_value = std::to_string(arg2->getStmtNum());
+  } else if (stmt_type_1 == PqlRefType::VALUE &&
+             stmt_type_2 == PqlRefType::VALUE) {
+    std::string first_value = arg1->getValue();
+    std::string second_value = arg2->getValue();
     bool is_valid_rel =
         pkb.isRelationTrue(first_value, second_value, RELATION_TYPE);
     return std::make_unique<ClauseResult>(is_valid_rel);
 
-  } else if (stmt_type_1 == StmtRefType::DECLARATION &&
-             stmt_type_2 == StmtRefType::WILD) {
+  } else if (stmt_type_1 == PqlRefType::DECLARATION &&
+             stmt_type_2 == PqlRefType::WILD) {
     EntityType entity_type = arg1->getDeclarationType();
     PqlDeclaration declaration = *(arg1->getDeclaration());
     auto possible_values =
@@ -49,8 +49,8 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
     return std::make_unique<ClauseResult>(declaration,
                                           std::move(possible_values));
 
-  } else if (stmt_type_1 == StmtRefType::WILD &&
-             stmt_type_2 == StmtRefType::DECLARATION) {
+  } else if (stmt_type_1 == PqlRefType::WILD &&
+             stmt_type_2 == PqlRefType::DECLARATION) {
     EntityType entity_type = arg2->getDeclarationType();
     PqlDeclaration declaration = *(arg2->getDeclaration());
     auto possible_values =
@@ -58,28 +58,28 @@ std::unique_ptr<ClauseResult> FollowsClause::evaluate(PkbApi& pkb) {
     return std::make_unique<ClauseResult>(declaration,
                                           std::move(possible_values));
 
-  } else if (stmt_type_1 == StmtRefType::DECLARATION &&
-             stmt_type_2 == StmtRefType::NUMBER) {
+  } else if (stmt_type_1 == PqlRefType::DECLARATION &&
+             stmt_type_2 == PqlRefType::VALUE) {
     EntityType entity_type = arg1->getDeclarationType();
     PqlDeclaration declaration = *(arg1->getDeclaration());
-    std::string second_value = std::to_string(arg2->getStmtNum());
+    std::string second_value = arg2->getValue();
     auto possible_values =
         pkb.getRelationValues(entity_type, second_value, RELATION_TYPE);
     return std::make_unique<ClauseResult>(declaration,
                                           std::move(possible_values));
 
-  } else if (stmt_type_1 == StmtRefType::NUMBER &&
-             stmt_type_2 == StmtRefType::DECLARATION) {
+  } else if (stmt_type_1 == PqlRefType::VALUE &&
+             stmt_type_2 == PqlRefType::DECLARATION) {
     EntityType entity_type = arg2->getDeclarationType();
     PqlDeclaration declaration = *(arg2->getDeclaration());
-    std::string first_value = std::to_string(arg1->getStmtNum());
+    std::string first_value = arg1->getValue();
     auto possible_values =
         pkb.getRelationValues(first_value, entity_type, RELATION_TYPE);
     return std::make_unique<ClauseResult>(declaration,
                                           std::move(possible_values));
 
-  } else if (stmt_type_1 == StmtRefType::DECLARATION &&
-             stmt_type_2 == StmtRefType::DECLARATION) {
+  } else if (stmt_type_1 == PqlRefType::DECLARATION &&
+             stmt_type_2 == PqlRefType::DECLARATION) {
     EntityType entity_type_1 = arg1->getDeclarationType();
     EntityType entity_type_2 = arg2->getDeclarationType();
     PqlDeclaration declaration_1 = *(arg1->getDeclaration());
