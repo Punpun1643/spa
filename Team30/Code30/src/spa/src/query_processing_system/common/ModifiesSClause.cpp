@@ -25,3 +25,16 @@ ModifiesSClause::ModifiesSClause(std::unique_ptr<StmtRef> arg1,
     throw InvalidSemanticsException("1st argument of Modifies cannot be a wildcard");
   }
 }
+
+std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildDeclaration(
+    PkbApi& pkb) {
+  throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
+}
+
+std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildWild(PkbApi& pkb) {
+  throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
+}
+
+std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildValue(PkbApi& pkb) {
+  throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
+}

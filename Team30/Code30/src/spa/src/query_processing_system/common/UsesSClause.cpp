@@ -25,3 +25,15 @@ UsesSClause::UsesSClause(std::unique_ptr<StmtRef> arg1,
     throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
   }
 }
+std::unique_ptr<ClauseResult> UsesSClause::evaluateWildDeclaration(
+    PkbApi& pkb) {
+  throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
+}
+
+std::unique_ptr<ClauseResult> UsesSClause::evaluateWildWild(PkbApi& pkb) {
+  throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
+}
+
+std::unique_ptr<ClauseResult> UsesSClause::evaluateWildValue(PkbApi& pkb) {
+  throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
+}
