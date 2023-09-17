@@ -1,20 +1,19 @@
 #pragma once
 
-#include <stdio.h>
-
-#include <iostream>
-#include <string>
+#include <memory>
 #include <unordered_map>
-#include <vector>
 
 #include "RelationType.h"
-#include "tables/StmtStmtRelTable.h"
+#include "tables/BaseTable.h"
+#include "tables/DictionaryTable.h"
+#include "tables/UFDSTable.h"
 
 class RelDatabase {
-  std::unordered_map<RelationType, StmtStmtRelTable*> relationships;
+  std::unordered_map<RelationType, std::shared_ptr<BaseTable>> relationships =
+      {};
 
  public:
   RelDatabase();
-  std::vector<int> get(RelationType type, int lineNum);
-  bool insert(RelationType type, int lineNum1, int lineNum2);
+  ~RelDatabase() = default;
+  std::shared_ptr<BaseTable> getTable(RelationType type);
 };
