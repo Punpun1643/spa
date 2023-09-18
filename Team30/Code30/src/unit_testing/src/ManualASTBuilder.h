@@ -27,7 +27,8 @@ static class ManualASTBuilder {
   // procedure proc{
   // 1.  while (var1 < 3) {
   // 2.    while (var2 < 3) {
-  // 3.      print var3;}}}
+  // 3.      read var3; 
+  // 4.      print var3;}}}
   static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2();
 
   // procedure proc {

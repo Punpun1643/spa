@@ -70,8 +70,10 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
 }
 
 std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2() {
+  std::shared_ptr<ReadNode> r =
+      std::make_shared<ReadNode>(3, StmtType::READ_STMT, "var3");
   std::shared_ptr<PrintNode> pr =
-      std::make_shared<PrintNode>(3, StmtType::PRINT_STMT, "var3");
+      std::make_shared<PrintNode>(4, StmtType::PRINT_STMT, "var3");
   std::unordered_set<std::string> condVars;
   condVars.insert("var2");
   std::unordered_set<int> condConsts;
@@ -79,6 +81,7 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2() {
   std::shared_ptr<CondExprNode> cond =
       std::make_shared<CondExprNode>(condVars, condConsts);
   std::vector<std::shared_ptr<StmtNode>> stmts;
+  stmts.push_back(r);
   stmts.push_back(pr);
   std::shared_ptr<StmtLstNode> stl = std::make_shared<StmtLstNode>(stmts);
   std::shared_ptr<WhileNode> w =
