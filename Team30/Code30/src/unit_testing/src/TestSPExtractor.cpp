@@ -44,8 +44,11 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   }
   SECTION("Uses extraction functionality") {
     REQUIRE(pkb.insertUsesCallCount == 15);
-    // NOTE: the expected value 15 includes all the duplicate calls
+    // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 11);
   }
 }
 

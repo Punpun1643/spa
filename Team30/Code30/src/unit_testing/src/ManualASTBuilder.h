@@ -10,13 +10,13 @@
 static class ManualASTBuilder {
  public:
   // procedure proc {
-  // 1.  read var1;           // r
-  // 2.  print var1;          // pr
-  // 3.  call proc;              // c
-  // 4.  while (var3 < 3) {   // w
+  // 1.  read var1;
+  // 2.  print var1;
+  // 3.  call proc;
+  // 4.  while (var3 < 3) {
   // 5.      read var2;
   // 6.      print var2;}
-  // 7.  if (var3 < 3) then {      // if
+  // 7.  if (var3 < 3) then {
   // 8.      read var4;
   // 9.      print var4;
   //     } else {

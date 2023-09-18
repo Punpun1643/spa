@@ -21,11 +21,8 @@ void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
 }
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
-                     node->getVarName());
+  insertIntoPkb(std::to_string(node->getStmtIndex()), node->getVarName());
   insertVarWithActors(node->getVarName());
-  // std::cout << "(" + std::to_string(node->getStmtIndex()) + ", " +
-  // node->getVarName() + ")\n";
 }
 
 void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
@@ -48,6 +45,16 @@ void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 
 // void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
 
+//////////////////////////////
+//
+// PRIVATE HELPER FUNCTIONS
+//
+//////////////////////////////
+
+void UsesExtractor::insertIntoPkb(std::string actor, std::string var) {
+  pkb.insertRelation(RelationType::USES, actor, var);
+}
+
 void UsesExtractor::popUsesActors() {
   if (!usesActors.empty()) {
     usesActors.pop_back();
@@ -57,15 +64,13 @@ void UsesExtractor::popUsesActors() {
 void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
                                    std::string stmtIndex) {
   for (std::string condVar : condVars) {
-    pkb.insertRelation(RelationType::USES, stmtIndex, condVar);
-    // std::cout << "(" + stmtIndex + ", " + condVar + ")\n";
+    insertIntoPkb(stmtIndex, condVar);
     insertVarWithActors(condVar);
   }
 }
 
 void UsesExtractor::insertVarWithActors(std::string var) {
   for (std::string usesActor : usesActors) {
-    pkb.insertRelation(RelationType::USES, usesActor, var);
-    // std::cout << "(" + usesActor + ", " + var + ")\n";
+    insertIntoPkb(usesActor, var);
   }
 }

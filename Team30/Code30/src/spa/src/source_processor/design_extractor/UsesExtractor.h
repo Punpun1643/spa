@@ -47,4 +47,6 @@ class UsesExtractor : public IDesignExtractor {
                       std::string stmtIndex);
 
   void insertVarWithActors(std::string var);
+
+  void insertIntoPkb(std::string actor, std::string var);
 };
