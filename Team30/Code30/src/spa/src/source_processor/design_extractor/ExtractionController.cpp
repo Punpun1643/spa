@@ -74,8 +74,8 @@ void ExtractionController::handleContainerStmts(
   // Handle ifNodes
   if (node->getStmtType() == StmtType::IF_STMT) {
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
-    std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLstNode();
-    std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLstNode();
+    std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLst();
+    std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLst();
     executeStmtLstExtraction(thenBody);
     executeStmtLstExtraction(elseBody);
   }

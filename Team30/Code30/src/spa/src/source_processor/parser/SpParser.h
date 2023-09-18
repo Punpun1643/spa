@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
@@ -10,6 +10,7 @@
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
 #include "../node/stmt_node/CallNode.h"
+#include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
@@ -31,6 +32,8 @@ class SpParser : public AParser {
 
   std::shared_ptr<CallNode> parseCall();
 
+  std::shared_ptr<IfNode> parseIf();
+
   std::shared_ptr<WhileNode> parseWhile();
 
   std::shared_ptr<CondExprNode> parseCondExpr();
@@ -44,13 +47,13 @@ class SpParser : public AParser {
  private:
   int currStmtIndex = 1;
 
-  int precedence(const std::string& op);
+  int precedence(std::string const& op);
 
-  bool isOperator(const std::string& tokenVal);
+  bool isOperator(std::string const& tokenVal);
 
-  bool isComparisonOperator(const std::string& tokenVal);
+  bool isComparisonOperator(std::string const& tokenVal);
 
-  bool isLogicalOperator(const std::string& tokenVal);
+  bool isLogicalOperator(std::string const& tokenVal);
 
   std::shared_ptr<ProgramNode> sourceProgramNode;
 };
