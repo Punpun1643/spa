@@ -16,7 +16,8 @@ std::shared_ptr<DeclarationMap> QueryInterpreter::getDeclarations() {
   return this->declarations;
 }
 
-ClauseList QueryInterpreter::GetClauseList() { return this->clause_list; }
+/* ClauseList QueryInterpreter::GetClauseList() { return this->clause_list; } */
+ClauseList QueryInterpreter::GetClauseList() { return std::move(this->clause_list); }
 
 void QueryInterpreter::InterpretDeclarations(
     DeclarationExpression& declaration_expression) {
@@ -61,5 +62,7 @@ void QueryInterpreter::Interpret(SelectExpression& select_expression) {
   std::shared_ptr<PqlDeclaration> selected_declaration =
       (this->declarations)->at(synonym);
   this->clause_list.push_back(
-      std::make_shared<SelectClause>(selected_declaration));
+      std::make_unique<SelectClause>(selected_declaration));
+  /* (this->clause_list).push_back(std::make_unique<SelectClause>(std::move(selected_declaration))); */
+
 }
