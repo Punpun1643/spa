@@ -16,8 +16,6 @@ class ModifiesExtractor : public IDesignExtractor {
  public:
   explicit ModifiesExtractor(PkbApi& pkb);
 
-  explicit ModifiesExtractor();
-
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
   void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
@@ -36,10 +34,17 @@ class ModifiesExtractor : public IDesignExtractor {
 
   // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
+  void popModifyActors();
+
   ~ModifiesExtractor() = default;
 
  private:
   PkbApi& pkb;
 
-  std::vector<std::string> modifyActors;
+  std::vector<std::string> modifiesActors;
+
+  void insertCondVars(std::unordered_set<std::string> condVars,
+                      std::string stmtIndex);
+
+  void insertVarWithActors(std::string var);
 };
