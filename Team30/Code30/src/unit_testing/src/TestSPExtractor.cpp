@@ -85,41 +85,41 @@ class PkbApiStub : public PkbApi {
   }
 
   bool isRelationTrue(std::string value_1, std::string value_2,
-                      RelationType rel_type) {
+                      RelationType rel_type) override {
     return true;
   }
-  bool isRelationTrueGivenFirstValue(std::string value, RelationType rel_type) {
+  bool isRelationTrueGivenFirstValue(std::string value, RelationType rel_type) override {
     return false;
   }
   bool isRelationTrueGivenSecondValue(std::string value,
-                                      RelationType rel_type) {
+                                      RelationType rel_type) override {
     return true;
   }
-  bool isRelationTrueForAny(RelationType relation_type) { return false; }
+  bool isRelationTrueForAny(RelationType relation_type) override { return false; }
 
   std::unique_ptr<std::vector<std::string>> getRelationValuesGivenFirstType(
-      EntityType entity_type, RelationType rel_type) {
+      EntityType entity_type, RelationType rel_type) override {
     return std::make_unique<std::vector<std::string>>();  // empty
   }
   std::unique_ptr<std::vector<std::string>> getRelationValuesGivenSecondType(
-      EntityType entity_type, RelationType rel_type) {
+      EntityType entity_type, RelationType rel_type) override {
     std::vector<std::string> vec = {"1", "3", "5", "7", "9"};
     return std::make_unique<std::vector<std::string>>(vec);
   }
 
   std::unique_ptr<std::vector<std::string>> getRelationValues(
-      EntityType entity_type, std::string value, RelationType rel_type) {
+      EntityType entity_type, std::string value, RelationType rel_type) override {
     std::vector<std::string> vec = {"2", "4", "6", "8", "10"};
     return std::make_unique<std::vector<std::string>>(vec);
   }
   std::unique_ptr<std::vector<std::string>> getRelationValues(
-      std::string value, EntityType entity_type, RelationType rel_type) {
+      std::string value, EntityType entity_type, RelationType rel_type) override {
     return std::make_unique<std::vector<std::string>>();  // empty
   }
 
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
-                    RelationType rel_type) {
+                    RelationType rel_type) override {
     if (entity_type_1 == STMT && entity_type_2 == STMT) {
       auto result =
           std::make_unique<std::vector<std::pair<std::string, std::string>>>();
@@ -133,6 +133,25 @@ class PkbApiStub : public PkbApi {
           std::vector<std::pair<std::string, std::string>>>();
     }
   }
+
+  // Pattern clause
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override {
+      return std::make_unique<std::vector<std::string>>();
+  };
+
+
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
+                                                                          MatchType expr_match_type) override {
+      return std::make_unique<std::vector<std::string>>();
+  };
+
+  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
+                                                                                                 std::string rhs_expr,
+                                                                                                 MatchType expr_match_type) override{
+      return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
+  };
+
 };
 
 // procedure proc {
