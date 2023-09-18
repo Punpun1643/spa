@@ -8,6 +8,7 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   pkb.insertEntity(EntityType::PROCEDURE, "sub");
   pkb.insertEntity(EntityType::CONSTANT, "3");
   pkb.insertEntity(EntityType::VARIABLE, "x");
+  pkb.insertEntity(EntityType::VARIABLE, "y");
 
   pkb.insertEntity(EntityType::CALL, "1");
   pkb.insertEntity(EntityType::CALL, "2");
@@ -25,6 +26,10 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   pkb.insertRelation(RelationType::PARENT, "4", "5");
   pkb.insertRelation(RelationType::PARENT, "4", "6");
   pkb.insertRelation(RelationType::PARENT, "6", "7");
+
+
+
+
 
   // added follows relation
   REQUIRE(pkb.isRelationTrue("2", "3", RelationType::FOLLOWS));
@@ -134,8 +139,90 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
                                  RelationType::PARENT) == tmp_pair);
 }
 
+
+
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
   PKB pkb = PKB();
   REQUIRE(pkb.isRelationTrueForAny(RelationType::FOLLOWS) == false);
   REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT_STAR) == false);
 }
+
+
+
+  //UsesS only holds Uses relations for Statements
+  //UsesP holds for Procedures
+  TEST_CASE("Uses and Modifies") {
+    PKB pkb = PKB();
+    pkb.insertEntity(EntityType::PROCEDURE, "main");
+    pkb.insertEntity(EntityType::PROCEDURE, "sub");
+    pkb.insertEntity(EntityType::VARIABLE, "x");
+    pkb.insertEntity(EntityType::VARIABLE, "y");
+
+    pkb.insertEntity(EntityType::CALL, "1");
+    pkb.insertEntity(EntityType::CALL, "2");
+    pkb.insertEntity(EntityType::PRINT, "3");
+    pkb.insertEntity(EntityType::IF, "4");
+    pkb.insertEntity(EntityType::READ, "5");
+    pkb.insertEntity(EntityType::CALL, "6");
+    pkb.insertEntity(EntityType::ASSIGN, "7");
+
+    pkb.insertRelation(RelationType::USES, "3", "x");
+    pkb.insertRelation(RelationType::USES, "4", "y");
+    pkb.insertRelation(RelationType::USES, "sub", "x");
+
+    pkb.insertRelation(RelationType::MODIFIES, "main", "x");
+    pkb.insertRelation(RelationType::MODIFIES, "5", "x");
+    pkb.insertRelation(RelationType::MODIFIES, "7", "y");
+
+    // added USES relation for statement
+    REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
+    // added USES relation for procedure
+    REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_P));
+
+    // USES relation for statement should not be in procedure table
+    REQUIRE(pkb.isRelationTrue("4", "y", RelationType::USES_P) == false);
+    // USES relation for procedure should not be in statement table
+    REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_S) == false);
+
+    // added MODIFIES relation for statement
+    REQUIRE(pkb.isRelationTrue("5", "x", RelationType::MODIFIES_S));
+    // added MODIFIES relation for procedure
+    REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_P));
+
+
+    // MODIFIES relation for statement should not be in procedure table
+    REQUIRE(pkb.isRelationTrue("7", "y", RelationType::MODIFIES_P) == false);
+    // MODIFIES relation for procedure should not be in statement table
+    REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_S) == false);
+
+    vector<string> empty_vector;
+
+    // Check APIs
+
+    vector<string> tmp = {"main"};
+    // Select p such that Modifies(p, _)
+    REQUIRE(*pkb.getRelationValuesGivenFirstType(
+            EntityType::PROCEDURE, RelationType::MODIFIES_P) == tmp);
+    tmp = {"5","7"};
+    // Select s such that Modifies(s, _)
+    REQUIRE(*pkb.getRelationValuesGivenFirstType(
+            EntityType::STMT, RelationType::MODIFIES_S) == tmp);
+    // Query from wrong table
+    REQUIRE(*pkb.getRelationValuesGivenFirstType(
+            EntityType::STMT, RelationType::USES_P) == empty_vector);
+
+    // Select Uses(pn, v)
+    // Statement 3 is a print statement that uses "x". Returns that pair.
+    vector<pair<string, string>> emptyPair = {};
+    vector<pair<string, string>> tmp1 = {make_pair("3", "x")};
+
+    REQUIRE(*pkb.getRelationValues(EntityType::PRINT, EntityType::VARIABLE,
+                                   RelationType::USES_S) == tmp1);
+
+    // Modifies(c, v)
+    // No procedure call that modifies a variable
+    REQUIRE(*pkb.getRelationValues(EntityType::CALL, EntityType::VARIABLE,
+                                   RelationType::MODIFIES_S) == emptyPair);
+
+
+  }
