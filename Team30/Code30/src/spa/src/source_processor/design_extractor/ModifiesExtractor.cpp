@@ -55,10 +55,10 @@ void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 
 void ModifiesExtractor::insertIntoPkb(std::string actor, std::string var) {
   pkb.insertRelation(RelationType::MODIFIES, actor, var);
-  // std::cout << "USES (" + actor + ", " + var + ")\n";
+  // std::cout << "MODS (" + actor + ", " + var + ")\n";
 }
 
-void ModifiesExtractor::popModifyActors() {
+void ModifiesExtractor::popModifiesActor() {
   if (!modifiesActors.empty()) {
     modifiesActors.pop_back();
   }

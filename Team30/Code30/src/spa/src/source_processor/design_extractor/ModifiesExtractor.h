@@ -34,7 +34,7 @@ class ModifiesExtractor : public IDesignExtractor {
 
   // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  void popModifyActors();
+  void popModifiesActor();
 
   ~ModifiesExtractor() = default;
 

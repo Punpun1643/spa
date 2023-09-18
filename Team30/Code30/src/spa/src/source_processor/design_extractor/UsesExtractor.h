@@ -34,7 +34,7 @@ class UsesExtractor : public IDesignExtractor {
 
   // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  void popUsesActors();
+  void popUsesActor();
 
   ~UsesExtractor() = default;
 

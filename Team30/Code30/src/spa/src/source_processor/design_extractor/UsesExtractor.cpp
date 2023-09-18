@@ -53,9 +53,10 @@ void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 
 void UsesExtractor::insertIntoPkb(std::string actor, std::string var) {
   pkb.insertRelation(RelationType::USES, actor, var);
+  // std::cout << "USES (" + actor + ", " + var + ")\n";
 }
 
-void UsesExtractor::popUsesActors() {
+void UsesExtractor::popUsesActor() {
   if (!usesActors.empty()) {
     usesActors.pop_back();
   }
