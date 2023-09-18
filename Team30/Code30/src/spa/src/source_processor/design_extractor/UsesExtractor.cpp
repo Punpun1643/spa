@@ -24,6 +24,8 @@ void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
                      node->getVarName());
   insertVarWithActors(node->getVarName());
+  // std::cout << "(" + std::to_string(node->getStmtIndex()) + ", " +
+  // node->getVarName() + ")\n";
 }
 
 void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
@@ -56,6 +58,7 @@ void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
                                    std::string stmtIndex) {
   for (std::string condVar : condVars) {
     pkb.insertRelation(RelationType::USES, stmtIndex, condVar);
+    // std::cout << "(" + stmtIndex + ", " + condVar + ")\n";
     insertVarWithActors(condVar);
   }
 }
@@ -63,5 +66,6 @@ void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
 void UsesExtractor::insertVarWithActors(std::string var) {
   for (std::string usesActor : usesActors) {
     pkb.insertRelation(RelationType::USES, usesActor, var);
+    // std::cout << "(" + usesActor + ", " + var + ")\n";
   }
 }

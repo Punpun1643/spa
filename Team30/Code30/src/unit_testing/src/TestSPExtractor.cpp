@@ -8,6 +8,7 @@
 #include <source_processor/design_extractor/ExtractionController.cpp>
 
 #include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "ManualASTBuilder.h"
 #include "catch.hpp"
 
 class PkbApiStub : public PkbApi {
@@ -134,102 +135,6 @@ class PkbApiStub : public PkbApi {
   }
 };
 
-// procedure proc {
-// 1.  read var1;           // r
-// 2.  print var1;          // pr
-// 3.  call proc;              // c
-// 4.  while (var3 < 3) {   // w
-// 5.      read var2;
-// 6.      print var2;}
-// 7.  if (var3 < 3) then {      // if
-// 8.      read var4;
-// 9.      print var4;
-//     } else {
-// 10.     read var5;
-// 11.     print var5; }}
-class ASTBuilder {
- public:
-  std::shared_ptr<ReadNode> r;
-  std::shared_ptr<PrintNode> pr;
-  std::shared_ptr<CallNode> c;
-  std::shared_ptr<WhileNode> w;
-  std::shared_ptr<IfNode> ifs;
-  std::shared_ptr<StmtLstNode> stl;
-  std::shared_ptr<ProcedureNode> proc;
-  std::shared_ptr<ProgramNode> prog;
-
-  ASTBuilder() {
-    r = std::make_shared<ReadNode>(1, StmtType::READ_STMT, "var1");
-    pr = std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "var1");
-    c = std::make_shared<CallNode>(3, StmtType::CALL_STMT, "proc");
-
-    // While block
-    // While body
-    std::shared_ptr<ReadNode> r2 =
-        std::make_shared<ReadNode>(5, StmtType::READ_STMT, "var2");
-    std::shared_ptr<PrintNode> pr2 =
-        std::make_shared<PrintNode>(6, StmtType::PRINT_STMT, "var2");
-    // While condition
-    std::unordered_set<std::string> condVars;
-    condVars.insert("var3");
-    std::unordered_set<int> condConsts;
-    condConsts.insert(3);
-    std::shared_ptr<CondExprNode> cond =
-        std::make_shared<CondExprNode>(condVars, condConsts);
-    std::vector<std::shared_ptr<StmtNode>> stmts2;
-    stmts2.push_back(r2);
-    stmts2.push_back(pr2);
-    std::shared_ptr<StmtLstNode> stl2 = std::make_shared<StmtLstNode>(stmts2);
-    w = std::make_shared<WhileNode>(4, StmtType::WHILE_STMT, cond, stl2);
-
-    // If block
-    // Then body
-    std::shared_ptr<ReadNode> r3 =
-        std::make_shared<ReadNode>(8, StmtType::READ_STMT, "var4");
-    std::shared_ptr<PrintNode> pr3 =
-        std::make_shared<PrintNode>(9, StmtType::PRINT_STMT, "var4");
-    std::vector<std::shared_ptr<StmtNode>> stmts3;
-    stmts3.push_back(r3);
-    stmts3.push_back(pr3);
-    std::shared_ptr<StmtLstNode> stl3 = std::make_shared<StmtLstNode>(stmts3);
-    // Else body
-    std::shared_ptr<ReadNode> r4 =
-        std::make_shared<ReadNode>(10, StmtType::READ_STMT, "var5");
-    std::shared_ptr<PrintNode> pr4 =
-        std::make_shared<PrintNode>(11, StmtType::PRINT_STMT, "var5");
-    std::vector<std::shared_ptr<StmtNode>> stmts4;
-    stmts4.push_back(r4);
-    stmts4.push_back(pr4);
-    std::shared_ptr<StmtLstNode> stl4 = std::make_shared<StmtLstNode>(stmts4);
-    // If condition
-    std::shared_ptr<CondExprNode> cond2 =
-        std::make_shared<CondExprNode>(condVars, condConsts);
-
-    ifs = std::make_shared<IfNode>(7, StmtType::IF_STMT, cond2, stl3, stl4);
-
-    std::vector<std::shared_ptr<StmtNode>> stmts;
-    stmts.push_back(r);
-    stmts.push_back(pr);
-    stmts.push_back(c);
-    stmts.push_back(w);
-    stmts.push_back(ifs);
-    stl = std::make_shared<StmtLstNode>(stmts);
-    proc = std::make_shared<ProcedureNode>("proc", stl);
-    std::vector<std::shared_ptr<ProcedureNode>> procs;
-    procs.push_back(proc);
-    prog = std::make_shared<ProgramNode>(procs);
-  }
-
-  std::shared_ptr<ReadNode> getReadNode() { return r; }
-  std::shared_ptr<PrintNode> getPrintNode() { return pr; }
-  std::shared_ptr<CallNode> getCallNode() { return c; }
-  std::shared_ptr<WhileNode> getWhileNode() { return w; }
-  std::shared_ptr<IfNode> getIfNode() { return ifs; }
-  std::shared_ptr<StmtLstNode> getStmtLstNode() { return stl; }
-  std::shared_ptr<ProcedureNode> getProcedureNode() { return proc; }
-  std::shared_ptr<ProgramNode> getProgramNode() { return prog; }
-};
-
 class ExtractorBuilder {
  public:
   std::shared_ptr<EntityExtractor> eExtractor;
@@ -248,42 +153,72 @@ class ExtractorBuilder {
   }
 };
 
-TEST_CASE("Follows extraction") {
+TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   PkbApiStub pkb = PkbApiStub();
-  ASTBuilder ast = ASTBuilder();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
   ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
-  SECTION("Full extraction") {
-    ec.executeProgramExtraction(ast.getProgramNode());
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 7);
   }
-  pkb.insertFollowsCallCount = 0;
-  SECTION("Follows extraction from StmtLst") {
-    eb.fExtractor->extractFromStmtLst(ast.getStmtLstNode());
-    REQUIRE(pkb.insertFollowsCallCount == 4);
-  }
-}
-
-TEST_CASE("Parent extraction") {
-  PkbApiStub pkb = PkbApiStub();
-  ASTBuilder ast = ASTBuilder();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
-  ExtractionController ec = ExtractionController(pkb);
-  SECTION("Full extraction") {
-    ec.executeProgramExtraction(ast.getProgramNode());
+  SECTION("Parent extraction functionality") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
-}
-
-TEST_CASE("Uses extraction") {
-  PkbApiStub pkb = PkbApiStub();
-  ASTBuilder ast = ASTBuilder();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
-  ExtractionController ec = ExtractionController(pkb);
-  SECTION("Full extraction") {
-    ec.executeProgramExtraction(ast.getProgramNode());
+  SECTION("Uses extraction functionality") {
     REQUIRE(pkb.insertUsesCallCount == 15);
-    // NOTE: the expected value 15 includes all the duplicate calls 
+    // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
 }
+
+TEST_CASE("AST 2: Basic SPA, doubly nested while") {
+  PkbApiStub pkb = PkbApiStub();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 0);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 2);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 9);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+}
+
+//TEST_CASE("Follows extraction") {
+//  PkbApiStub pkb = PkbApiStub();
+//  ExtractorBuilder eb = ExtractorBuilder(pkb);
+//  ExtractionController ec = ExtractionController(pkb);
+//  SECTION("Full extraction") {
+//    ec.executeProgramExtraction(ManualASTBuilder::getAST_1());
+//    REQUIRE(pkb.insertFollowsCallCount == 7);
+//  }
+//}
+//
+//TEST_CASE("Parent extraction") {
+//  PkbApiStub pkb = PkbApiStub();
+//  ExtractorBuilder eb = ExtractorBuilder(pkb);
+//  ExtractionController ec = ExtractionController(pkb);
+//  SECTION("Full extraction") {
+//    ec.executeProgramExtraction(ManualASTBuilder::getAST_1());
+//    REQUIRE(pkb.insertParentCallCount == 6);
+//  }
+//}
+//
+//TEST_CASE("Uses extraction") {
+//  PkbApiStub pkb = PkbApiStub();
+//  ExtractorBuilder eb = ExtractorBuilder(pkb);
+//  ExtractionController ec = ExtractionController(pkb);
+//  SECTION("Full extraction") {
+//    ec.executeProgramExtraction(ManualASTBuilder::getAST_1());
+//    REQUIRE(pkb.insertUsesCallCount == 15);
+//    // NOTE: the expected value 15 includes all the duplicate calls
+//    // that may occur (handled by pkb)
+//  }
+//}
