@@ -95,3 +95,27 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
     REQUIRE(pkb.insertModifiesCallCount == 4);
   }
 }
+
+TEST_CASE(
+    "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
+    "(if-if-while)") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 1);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 6);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 18);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 3);
+  }
+}

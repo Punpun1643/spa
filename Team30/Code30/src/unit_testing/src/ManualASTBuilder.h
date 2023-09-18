@@ -39,4 +39,16 @@ static class ManualASTBuilder {
   // 3.  read var2;
   // 4.  print var2;}
   static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_3();
+
+  // procedure proc {
+  // 1.  if (var1 < 3) then {
+  // 2.    read var2;
+  // 3.    if (var2 < 3) then {
+  // 4.      print var2;
+  //       } else {
+  // 5.      while (var2 < 3) {
+  // 6.        print var3;}
+  //     } else {
+  // 7.    call proc2;}}
+  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_4();
 };
