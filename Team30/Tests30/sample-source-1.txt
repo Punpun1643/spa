@@ -1,0 +1,9 @@
+procedure Procedure1 {
+  read a;
+  read b;
+}
+
+procedure Procedure2 {
+  call Procedure1;
+  print b;
+}
