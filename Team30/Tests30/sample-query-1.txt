@@ -1,0 +1,15 @@
+1 - positive, only select
+stmt s1;
+Select s1
+1, 2, 3, 4
+5000
+2 - positive, multiple declarations for same design entity
+stmt s1, s2;
+Select s1
+1, 2, 3, 4
+5000
+3 - positive, select as synonym
+stmt select;
+Select select
+1, 2, 3, 4
+5000

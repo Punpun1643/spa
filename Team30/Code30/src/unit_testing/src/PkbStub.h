@@ -2,9 +2,7 @@
 
 class PkbStub : public PkbApi {
  public:
-  int insertFollowsCallCount;
   PkbStub();
-  ~PkbStub() = default;
 
   std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
                                          "procedure3"};
@@ -12,7 +10,7 @@ class PkbStub : public PkbApi {
   std::vector<std::string> VARIABLES = {"varX"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
-
+  int insertFollowsCallCount;
 
   // ----- REMOVE AFTER SWITCHING -----
   bool insertFollows(std::shared_ptr<StmtNode> stmt1,

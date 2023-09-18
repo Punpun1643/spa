@@ -11,7 +11,8 @@ bool PkbStub::insertFollows(std::shared_ptr<StmtNode> stmt1,
 // ----------------------------------
 
 void PkbStub::insertEntity(EntityType type, std::string entity){};
-void PkbStub::insertRelation(RelationType type, string stmt1, string stmt2){};
+void PkbStub::insertRelation(RelationType type, std::string stmt1,
+                             std::string stmt2){};
 void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
                              EntityType ent_type, std::string enity){};
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,

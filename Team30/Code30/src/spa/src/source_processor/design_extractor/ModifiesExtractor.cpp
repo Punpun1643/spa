@@ -1,7 +1,7 @@
+#include "ModifiesExtractor.h"
+
 #include <iostream>
 #include <vector>
-
-#include "ModifiesExtractor.h"
 
 ModifiesExtractor::ModifiesExtractor(PkbApi& pkb) : pkb(pkb) {}
 
@@ -9,8 +9,9 @@ void ModifiesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO
 }
 
-void ModifiesExtractor::extractFromProcedure(std::shared_ptr<ProcedureNode> node) {
-  // TODO
+void ModifiesExtractor::extractFromProcedure(
+    std::shared_ptr<ProcedureNode> node) {
+  modifyActors.push_back(node->getProcedureName());
 }
 
 void ModifiesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
@@ -26,13 +27,22 @@ void ModifiesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
 }
 
 void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  // TODO
+  /*pkb.insertRelation(RelationType::MODIFIES,
+                     std::to_string(node->getStmtIndex()), node->getVarName());
+  for (std::string modifyActor : modifyActors) {
+    pkb.insertRelation(RelationType::MODIFIES, modifyActor, node->getVarName());
+  }*/
 }
 
 void ModifiesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-  // TODO
+  modifyActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-  // TODO
+  modifyActors.push_back(std::to_string(node->getStmtIndex()));
 }
+
+// void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node)
+//{
+
+// }

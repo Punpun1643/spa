@@ -6,15 +6,13 @@
 #include "../utils/UFDS.h"
 #include "BaseTable.h"
 
-using namespace std;
-
 class DictionaryTable : public BaseTable {
-  unordered_map<string, unordered_set<string>> relations = {};
+  std::unordered_map<std::string, std::unordered_set<std::string>> relations =
+      {};
 
  public:
   DictionaryTable();
   ~DictionaryTable() = default;
-  void insert(string i, string j);
-  bool isRelated(string i, string j);
-  //unique_ptr<vector<string>> isRelatedAll(unordered_set<string> ls);
+  void insert(std::string i, std::string j) override;
+  bool isRelated(std::string i, std::string j) override;
 };

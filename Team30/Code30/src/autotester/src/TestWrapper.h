@@ -7,6 +7,10 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
+#include "../../spa/src/program_knowledge_base/PKB.h"
+#include "../../spa/src/source_processor/SpController.h"
+#include "../../spa/src/query_processing_system/QPSController.h"
+#include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 
 class TestWrapper : public AbstractWrapper {
  public:
@@ -21,6 +25,12 @@ class TestWrapper : public AbstractWrapper {
 
   // method for evaluating a query
   virtual void evaluate(std::string query, std::list<std::string>& results);
+
+ private:
+  std::shared_ptr<PKB> pkb;
+  std::shared_ptr<SpController> sp_controller;
+  std::shared_ptr<QPSController> qps_controller;
+  std::shared_ptr<QueryEvaluator> query_evaluator;
 };
 
 #endif
