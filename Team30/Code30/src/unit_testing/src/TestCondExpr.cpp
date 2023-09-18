@@ -179,4 +179,22 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     SpParser parser = SpParser(tokens);
     REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
   }
+  
+  SECTION("Test invalid rel_expr i.e. y !=== 3") {
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("y")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("!===")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<IntegerToken>("3")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+
+    SpParser parser = SpParser(tokens);
+    REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
+  }
 }
