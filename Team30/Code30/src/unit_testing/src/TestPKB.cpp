@@ -195,11 +195,11 @@ TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
     // MODIFIES relation for procedure should not be in statement table
     REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_S) == false);
 
-    vector<string> empty_vector;
+    std::vector<std::string> empty_vector;
 
     // Check APIs
 
-    vector<string> tmp = {"main"};
+    std::vector<std::string> tmp = {"main"};
     // Select p such that Modifies(p, _)
     REQUIRE(*pkb.getRelationValuesGivenFirstType(
             EntityType::PROCEDURE, RelationType::MODIFIES_P) == tmp);
@@ -213,8 +213,9 @@ TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
 
     // Select Uses(pn, v)
     // Statement 3 is a print statement that uses "x". Returns that pair.
-    vector<pair<string, string>> emptyPair = {};
-    vector<pair<string, string>> tmp1 = {make_pair("3", "x")};
+    std::vector<std::pair<std::string, std::string>> emptyPair = {};
+    std::vector<std::pair<std::string, std::string>> tmp1 = {
+        std::make_pair("3", "x")};
 
     REQUIRE(*pkb.getRelationValues(EntityType::PRINT, EntityType::VARIABLE,
                                    RelationType::USES_S) == tmp1);
