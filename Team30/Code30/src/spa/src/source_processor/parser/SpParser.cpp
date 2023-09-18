@@ -220,7 +220,9 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       // if it's an operator, pop operators from the stack to the postFix
       // until the stack top has an operator for lower precedence or the stack
       // is empty
-      if (isLogicalOperator(currToken->getTokenVal()) && operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) != 0) {
+      if (isLogicalOperator(currToken->getTokenVal()) &&
+          operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
+              0) {
         throw std::invalid_argument("Invalid condExpr");
       }
       while (!operatorStack.empty() &&
