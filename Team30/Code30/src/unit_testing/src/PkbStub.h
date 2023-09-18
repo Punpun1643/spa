@@ -10,12 +10,13 @@ class PkbStub : public PkbApi {
   std::vector<std::string> VARIABLES = {"varX"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
+  int insertEntityCallCount;
+  int insertRelationCallCount;
   int insertFollowsCallCount;
+  int insertParentCallCount;
+  int insertUsesCallCount;
+  int insertModifiesCallCount;
 
-  // ----- REMOVE AFTER SWITCHING -----
-  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                     std::shared_ptr<StmtNode> stmt2);
-  // ----------------------------------
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
@@ -27,6 +28,7 @@ class PkbStub : public PkbApi {
   void insertRelation(RelationType rel_type, EntityType ent_type1,
                       std::string entity1, EntityType ent_type2,
                       std::string entity2) override;
+  void insertRelationCommon(RelationType type);
 
   // Select Clause
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
