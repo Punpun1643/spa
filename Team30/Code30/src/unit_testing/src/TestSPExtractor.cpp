@@ -68,6 +68,25 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   }
 }
 
+TEST_CASE("AST 3: Basic SPA, 2 procedures") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 2);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 0);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 4);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+}
+
 // TEST_CASE("Follows extraction") {
 //   PkbApiStub pkb = PkbApiStub();
 //   ExtractorBuilder eb = ExtractorBuilder(pkb);

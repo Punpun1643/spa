@@ -1,7 +1,8 @@
 #include "ManualASTBuilder.h"
 
 std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
-  std::shared_ptr<ReadNode> r = std::make_shared<ReadNode>(1, StmtType::READ_STMT, "var1");
+  std::shared_ptr<ReadNode> r =
+      std::make_shared<ReadNode>(1, StmtType::READ_STMT, "var1");
   std::shared_ptr<PrintNode> pr =
       std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "var1");
   std::shared_ptr<CallNode> c =
@@ -60,17 +61,13 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
   stmts.push_back(w);
   stmts.push_back(ifs);
   std::shared_ptr<StmtLstNode> stl = std::make_shared<StmtLstNode>(stmts);
-  std::shared_ptr<ProcedureNode> proc = std::make_shared<ProcedureNode>("proc", stl);
+  std::shared_ptr<ProcedureNode> proc =
+      std::make_shared<ProcedureNode>("proc", stl);
   std::vector<std::shared_ptr<ProcedureNode>> procs;
   procs.push_back(proc);
   std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
   return prog;
 }
-
-// procedure proc {
-// 1.  while (var1 < 3) {
-// 2.    while (var2 < 3) {
-// 3.      print var3;}}}
 
 std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2() {
   std::shared_ptr<PrintNode> pr =
@@ -106,6 +103,37 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2() {
       std::make_shared<ProcedureNode>("proc", stl3);
   std::vector<std::shared_ptr<ProcedureNode>> procs;
   procs.push_back(proc);
+  std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
+  return prog;
+}
+
+std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_3() {
+  std::shared_ptr<ReadNode> r =
+      std::make_shared<ReadNode>(1, StmtType::READ_STMT, "var1");
+  std::shared_ptr<PrintNode> pr =
+      std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "var1");
+  std::vector<std::shared_ptr<StmtNode>> stmts;
+  stmts.push_back(r);
+  stmts.push_back(pr);
+  std::shared_ptr<StmtLstNode> stl = std::make_shared<StmtLstNode>(stmts);
+  std::shared_ptr<ProcedureNode> proc =
+      std::make_shared<ProcedureNode>("proc", stl);
+
+  std::shared_ptr<ReadNode> r2 =
+      std::make_shared<ReadNode>(3, StmtType::READ_STMT, "var2");
+  std::shared_ptr<PrintNode> pr2 =
+      std::make_shared<PrintNode>(4, StmtType::PRINT_STMT, "var2");
+  std::vector<std::shared_ptr<StmtNode>> stmts2;
+  stmts2.push_back(r2);
+  stmts2.push_back(pr2);
+  std::shared_ptr<StmtLstNode> stl2 = std::make_shared<StmtLstNode>(stmts2);
+  std::shared_ptr<ProcedureNode> proc2 =
+      std::make_shared<ProcedureNode>("proc2", stl2);
+
+  std::vector<std::shared_ptr<ProcedureNode>> procs;
+  procs.push_back(proc);
+  procs.push_back(proc2);
+
   std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
   return prog;
 }
