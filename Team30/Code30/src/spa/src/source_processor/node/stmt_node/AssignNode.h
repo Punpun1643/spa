@@ -13,13 +13,13 @@ class AssignNode : public StmtNode {
   AssignNode(int stmtIndex, StmtType stmtType,
              std::unordered_set<std::string> variables,
              std::unordered_set<int> constants, std::string varName,
-             std::shared_ptr<TreeNode> root);
+             std::shared_ptr<TreeNode> exprTreeRoot);
 
   std::unordered_set<std::string> getVariables() const;
 
   std::unordered_set<int> getConstants() const;
 
-  std::string getVarName() const;
+  std::string const& getVarName() const;
 
   int getStmtIndex() const;
 
@@ -27,7 +27,7 @@ class AssignNode : public StmtNode {
 
   std::shared_ptr<TreeNode> getRootOfTree() const;
 
-  void accept(IDesignExtractor& extractor) override;
+  void accept(IDesignExtractor& designExtractor) override;
 
   ~AssignNode() = default;
 
@@ -35,7 +35,7 @@ class AssignNode : public StmtNode {
   std::unordered_set<std::string> variables;
   std::unordered_set<int> constants;
   std::string varName;
-  std::shared_ptr<TreeNode> root;
+  std::shared_ptr<TreeNode> exprTreeRoot;
   int stmtIndex;
   StmtType stmtType;
 };
