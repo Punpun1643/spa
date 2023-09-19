@@ -62,6 +62,7 @@ class PkbStub : public PkbApi {
 
 
   // Pattern clause
+  void insertPatternNode(std::shared_ptr<AssignNode> node);
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
 
 
