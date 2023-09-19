@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../../spa/src/shared/tokenizer/ATokenizer.h"
+#include "../../spa/src/shared/tokenizer/Tokenizer.h"
 #include "../../spa/src/shared/tokenizer/token/EofToken.h"
 #include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
 #include "../../spa/src/shared/tokenizer/token/SpecialCharToken.h"

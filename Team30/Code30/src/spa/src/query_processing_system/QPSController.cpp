@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <sstream>
-#include "../shared/tokenizer/ATokenizer.h"
+#include "../shared/tokenizer/Tokenizer.h"
 
 /* QPSController::QPSController(std::vector<std::shared_ptr<Token>> tokens) */
 /*     : tokens(tokens){}; */
@@ -11,7 +11,7 @@ QPSController::QPSController() {};
 
 std::vector<std::unique_ptr<Clause>> QPSController::ParseAndGetClauses(std::string query) {
   std::istringstream string_stream(query);
-  ATokenizer tokenizer = ATokenizer(string_stream);
+  Tokenizer tokenizer = Tokenizer(string_stream);
   std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
   return this->ParseAndGetClauses(tokens);
 }
