@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <unordered_set>
 
+#include <iostream>
+
 namespace SpParserConstant {
 
 // Common symbols
@@ -376,11 +378,76 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 }
 
 std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
-  std::unordered_set<std::string> variables;
-  std::unordered_set<int> constants;
 
+  std::cout << varName << std::endl;
+  std::unordered_set<std::string> variables = std::unordered_set<std::string>();
+  std::unordered_set<int> constants = std::unordered_set<int>();
 
-  return nullptr;
+  std::queue<std::shared_ptr<std::string>> postFixQueue;
+  std::stack<std::shared_ptr<std::string>> operatorStack;
+
+  int parenCount = 0;
+
+  while (getCurrToken()->getTokenVal() != SpParserConstant::STMT_TERMINATOR) {
+    std::shared_ptr<Token> currToken = getCurrToken();
+
+    // MS1: only extract variables and constants on RHS
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN ||
+        currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
+      postFixQueue.push(
+          std::make_shared<std::string>(currToken->getTokenVal()));
+
+      if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
+        variables.insert(currToken->getTokenVal());
+      } else if (currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
+        constants.insert(std::stoi(currToken->getTokenVal()));
+      }
+
+    } else if (isOperator(currToken->getTokenVal())) {
+
+      while (!operatorStack.empty() &&
+             precedence(operatorStack.top()->c_str()) >=
+                 precedence(currToken->getTokenVal())) {
+        postFixQueue.push(operatorStack.top());
+        operatorStack.pop();
+      }
+      operatorStack.push(
+          std::make_shared<std::string>(currToken->getTokenVal()));
+    } else if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
+      ++parenCount;
+      operatorStack.push(
+          std::make_shared<std::string>(currToken->getTokenVal()));
+    } else if (currToken->getTokenVal() ==
+               SpParserConstant::RIGHT_PARENTHESIS) {
+      if (parenCount <= 0) {
+        throw std::invalid_argument("No matching parenthesis");
+      }
+      while (operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
+             0) {
+        postFixQueue.push(operatorStack.top());
+        operatorStack.pop();
+      }
+      --parenCount;
+      operatorStack.pop();
+    } else {
+      throw std::invalid_argument("Invalid assign");
+    }
+
+    nextToken();
+  }
+
+  if (parenCount != 0) {
+    throw std::invalid_argument("Unmatched parentheses");
+  }
+
+  std::shared_ptr<TreeNode> exprTreeRoot =
+      std::make_shared<TreeNode>("0", nullptr, nullptr);
+
+  nextToken();
+
+  return std::make_shared<AssignNode> (currStmtIndex++, StmtType::ASSIGN_STMT,
+                                       variables, constants, varName,
+                                       exprTreeRoot);
 }
 
 bool SpParser::isOperator(std::string const& tokenVal) {
@@ -438,13 +505,14 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
 
   while (getCurrToken()->getTokenVal() != SpParserConstant::END_PROCEDURE) {
     std::shared_ptr<Token> currToken = getCurrToken();
-    if (currToken->getTokenType() == TokenType::WORD_TOKEN && peekToken()->getTokenVal() == SpParserConstant::ASSIGN_SYMBOL) {
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
+        peekToken()->getTokenVal() == SpParserConstant::ASSIGN_SYMBOL) {
       // parse assign
-      nextToken(); // move to assign symbol
+      nextToken();  // move to assign symbol
       nextToken();
       stmts.push_back(parseAssign(currToken->getTokenVal()));
     } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-        currToken->getTokenVal() == SpParserConstant::PRINT_KEYWORD) {
+               currToken->getTokenVal() == SpParserConstant::PRINT_KEYWORD) {
       nextToken();
       // parse print
       stmts.push_back(parsePrint());
