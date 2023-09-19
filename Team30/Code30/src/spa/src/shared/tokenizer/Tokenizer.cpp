@@ -38,11 +38,17 @@ std::shared_ptr<Token> Tokenizer::next() {
         input.get(c);
         number += c;
       }
+
+      if (std::isalpha(input.peek())) {
+        throw std::invalid_argument("Invalid Syntax, invalid integer or name");
+      }
+
       return std::make_shared<IntegerToken>(number);
     }
 
     else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
-             c == '-' || c == '/' || c == '*' || c == '%' || c == ';' || c == ',') {
+             c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
+             c == ',' || c == '\"') {
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
 
@@ -56,40 +62,43 @@ std::shared_ptr<Token> Tokenizer::next() {
     }
 
     else {
-      throw std::invalid_argument("Invalid Syntax");
+      throw std::invalid_argument("Invalid Syntax, unknown input");
     }
   }
 }
 
 std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
-  char next_c;
-  input.get(next_c);
+  char next_c = input.peek();
 
   if (c == '|' && next_c == '|') {
+    input.get(next_c);
     return std::make_shared<SpecialCharToken>("||");
   }
 
   else if (c == '&' && next_c == '&') {
+    input.get(next_c);
     return std::make_shared<SpecialCharToken>("&&");
   }
 
   else if (c == '!' || c == '=' || c == '>' || c == '<') {
     if (next_c == '=') {
+      input.get(next_c);
       return std::make_shared<SpecialCharToken>(std::string(1, c) +
                                                 std::string(1, next_c));
     }
-    return std::make_shared<SpecialCharToken>(std::string(1, c));
   }
 
-  else {
-    throw std::invalid_argument("Invalid Syntax");
+  if (c == '!') {
+    throw std::invalid_argument("Invalid Syntax, ! not a valid symbol.");
   }
+
+  return std::make_shared<SpecialCharToken>(std::string(1, c));
 }
 
-bool Tokenizer::hasNext() {
-  char c;
-  while (std::isspace(input.peek())) {
-    input.get(c);
+  bool Tokenizer::hasNext() {
+    char c;
+    while (std::isspace(input.peek())) {
+      input.get(c);
+    }
+    return input.peek() != EOF;
   }
-  return input.peek() != EOF;
-}
