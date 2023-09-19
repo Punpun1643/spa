@@ -7,7 +7,7 @@
 #include <source_processor/node/stmt_node/CallNode.h>
 #include <source_processor/node/stmt_node/IfNode.h>
 
-static class ManualASTBuilder {
+class ManualASTBuilder {
  public:
 
   // procedure proc {
@@ -23,12 +23,12 @@ static class ManualASTBuilder {
   //     } else {
   // 10.     read var5;
   // 11.     print var5; }}
-  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1();
+  static std::shared_ptr<ProgramNode> getAST_1();
 
   // procedure proc{
   // 1.  while (var1 < 3) {
   // 2.    while (var2 < 3) {
   // 3.      print var3;}}}
-  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2();
+  static std::shared_ptr<ProgramNode> getAST_2();
 
 };
