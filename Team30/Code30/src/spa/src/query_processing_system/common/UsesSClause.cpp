@@ -7,11 +7,11 @@
 UsesSClause::UsesSClause(std::unique_ptr<StmtRef> arg1,
                          std::unique_ptr<EntRef> arg2)
     : SuchThatClause(std::move(arg1), std::move(arg2), RelationType::USES_S) {
-  SuchThatClause::checkDeclarationArgEntityType(1, VALID_ENTITY_TYPES_FOR_ARG_1,
+  this->checkDeclarationArgEntityType(1, VALID_ENTITY_TYPES_FOR_ARG_1,
                                                 INVALID_ARG_1_ENTITY_TYPE_MSG);
-  SuchThatClause::checkDeclarationArgEntityType(2, VALID_ENTITY_TYPES_FOR_ARG_2,
+  this->checkDeclarationArgEntityType(2, VALID_ENTITY_TYPES_FOR_ARG_2,
                                                 INVALID_ARG_2_ENTITY_TYPE_MSG);
-  SuchThatClause::checkArgReferenceType(1, VALID_REF_TYPES_FOR_ARG_1,
+  this->checkArgReferenceType(1, VALID_REF_TYPES_FOR_ARG_1,
                                         INVALID_ARG_1_REF_TYPE_MSG);
 }
 
