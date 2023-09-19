@@ -23,4 +23,6 @@ class ExtractionController : public IExtractionController {
  private:
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
   PkbApi& pkb;
+
+  void handleContainerStmts(std::shared_ptr<StmtNode> node);
 };

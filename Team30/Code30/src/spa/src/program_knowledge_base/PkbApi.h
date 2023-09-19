@@ -2,37 +2,34 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
-#include "program_knowledge_base/RelationType.h"
-#include "source_processor/node/stmt_node/StmtNode.h"
+#include "RelationType.h"
 
 class PkbApi {
  public:
-  virtual bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                     std::shared_ptr<StmtNode> stmt2) = 0;
-
   // Cast integers to strings
   virtual void insertEntity(EntityType type, std::string entity) = 0;
 
   // Relation (integer, integer)
   virtual void insertRelation(RelationType rel_type, std::string s1_line_num,
-                      std::string s2_line_num) = 0;
+                              std::string s2_line_num) = 0;
 
   // Relation (integer, EntityType)
   virtual void insertRelation(RelationType rel_type, std::string s_line_num,
-                      EntityType ent_type, std::string entity) = 0;
+                              EntityType ent_type, std::string entity) = 0;
 
   // Relation (EntityType, integer)
   virtual void insertRelation(RelationType rel_type, EntityType ent_type,
-                      std::string entity, std::string s_line_num) = 0;
+                              std::string entity, std::string s_line_num) = 0;
 
   // Relation (EntityType, EntityType)
   virtual void insertRelation(RelationType rel_type, EntityType ent_type1,
-                      std::string entity1, EntityType ent_type2,
-                      std::string entity2) = 0;
+                              std::string entity1, EntityType ent_type2,
+                              std::string entity2) = 0;
 
   // Select clauses
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(

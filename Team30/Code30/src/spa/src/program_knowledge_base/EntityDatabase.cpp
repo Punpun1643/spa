@@ -8,32 +8,42 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../source_processor/node/stmt_node/StmtNode.h"
-#include "tables/EntityTable.h"
-
-// TODO: Replace EntityType and EntityNode with correct names based on
-// implementation
-using namespace std;
-
 EntityDatabase::EntityDatabase() {
-  entities[EntityType::PROCEDURE] = {};
-  entities[EntityType::STMT] = {};
-  entities[EntityType::READ] = {};
-  entities[EntityType::PRINT] = {};
-  entities[EntityType::ASSIGN] = {};
-  entities[EntityType::CALL] = {};
-  entities[EntityType::WHILE] = {};
-  entities[EntityType::IF] = {};
-  entities[EntityType::VARIABLE] = {};
-  entities[EntityType::CONSTANT] = {};
+  entities[EntityType::PROCEDURE] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::STMT] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::READ] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::PRINT] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::ASSIGN] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::CALL] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::WHILE] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::IF] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::VARIABLE] =
+      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::CONSTANT] =
+      std::make_shared<std::unordered_set<std::string>>();
+
+  statementTypes = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
+                    EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
+                    EntityType::IF};
 };
 
-bool EntityDatabase::insert(EntityType type, string value) {
-  entities[type].insert(value);
-  return true;
-}
+void EntityDatabase::insert(EntityType type, std::string value) {
+  (entities[type])->insert(value);
+  if (statementTypes.find(type) != statementTypes.end()) {
+    (entities[EntityType::STMT])->insert(value);
+  };
+};
 
-unordered_set<string> EntityDatabase::get(EntityType type) {
-  unordered_set<string> results = entities[type];
+std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::get(
+    EntityType type) {
+  std::shared_ptr<std::unordered_set<std::string>> results = entities[type];
   return results;
-}
+};

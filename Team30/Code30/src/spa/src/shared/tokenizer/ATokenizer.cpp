@@ -42,7 +42,7 @@ std::shared_ptr<Token> ATokenizer::next() {
     }
 
     else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
-             c == '-' || c == '/' || c == '*' || c == '%' || c == ';') {
+             c == '-' || c == '/' || c == '*' || c == '%' || c == ';' || c == ',') {
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
 

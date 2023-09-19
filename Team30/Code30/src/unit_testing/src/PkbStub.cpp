@@ -1,7 +1,8 @@
 #include "PkbStub.h"
 
-PkbStub::PkbStub() : insertFollowsCallCount(0) {}
+PkbStub::PkbStub() : insertFollowsCallCount(0){};
 
+// ----- REMOVE AFTER SWITCHING -----
 void PkbStub::insertEntity(EntityType type, std::string entity) {}
 void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
                              std::string s2_line_num) {}
@@ -14,7 +15,7 @@ void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
                              std::string entity2) {}
 
 bool PkbStub::insertFollows(std::shared_ptr<StmtNode> stmt1,
-                   std::shared_ptr<StmtNode> stmt2) {
+                            std::shared_ptr<StmtNode> stmt2) {
   ++insertFollowsCallCount;
   return true;
 }

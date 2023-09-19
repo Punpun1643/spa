@@ -1,5 +1,12 @@
 #include "TestWrapper.h"
 
+#include <iostream>
+#include <fstream>
+#include "../../spa/src/shared/tokenizer/ATokenizer.h"
+#include "../../spa/src/query_processing_system/common/SelectClause.h"
+#include "../../spa/src/query_processing_system/common/SuchThatClause.h"
+
+
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
 AbstractWrapper* WrapperFactory::createWrapper() {
@@ -13,19 +20,29 @@ volatile bool AbstractWrapper::GlobalStop = false;
 TestWrapper::TestWrapper() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
+  this->sp_controller = std::make_shared<SpController>();
+  this->pkb = std::make_shared<PKB>();
+  this->qps_controller = std::make_shared<QPSController>();
+  this->query_evaluator = std::make_shared<QueryEvaluator>(*(this->pkb));
 }
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
-        // call your parser to do the parsing
-  // ...rest of your code...
+  this->sp_controller->parseAndExtract(*(this->pkb), filename);
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
-// call your evaluator to evaluate the query here
-  // ...code to evaluate query...
+  // TODO: abstract away into one API call
+  std::vector<std::unique_ptr<Clause>> clauses = qps_controller->ParseAndGetClauses(query);
+  std::unique_ptr<std::vector<std::string>> query_results;
 
-  // store the answers to the query in the results list (it is initially empty)
-  // each result must be a string.
+  std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership
+  std::unique_ptr<SelectClause> selectClause(dynamic_cast<SelectClause*>(clause.release()));
+
+  // TODO: Come up with a better design for this
+  if (clauses.size() == 1) {
+    query_results = this->query_evaluator->evaluateQuery(std::move(selectClause));
+  }
+  std::copy(query_results->begin(), query_results->end(), std::back_inserter(results));
 }
