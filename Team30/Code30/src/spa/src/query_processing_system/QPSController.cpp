@@ -1,13 +1,22 @@
 #include "QPSController.h"
 
 #include <iostream>
+#include <sstream>
+#include "../shared/tokenizer/ATokenizer.h"
 
-QPSController::QPSController(std::vector<std::shared_ptr<Token>> tokens)
-    : tokens(tokens){};
+/* QPSController::QPSController(std::vector<std::shared_ptr<Token>> tokens) */
+/*     : tokens(tokens){}; */
 
-std::vector<std::shared_ptr<Clause>> QPSController::ParseAndGetClauses() {
-  std::vector<std::shared_ptr<Token>> tokens = this->tokens;
+QPSController::QPSController() {};
 
+std::vector<std::unique_ptr<Clause>> QPSController::ParseAndGetClauses(std::string query) {
+  std::istringstream string_stream(query);
+  ATokenizer tokenizer = ATokenizer(string_stream);
+  std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
+  return this->ParseAndGetClauses(tokens);
+}
+
+std::vector<std::unique_ptr<Clause>> QPSController::ParseAndGetClauses(std::vector<std::shared_ptr<Token>> tokens) {
   // Check syntax
   std::unique_ptr<SyntaxChecker> syntax_checker =
       std::make_unique<SyntaxChecker>(tokens);
