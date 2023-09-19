@@ -42,7 +42,6 @@ void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   modifyActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
-// void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node)
-//{
-
-// }
+void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+  // TODO
+}

@@ -55,4 +55,6 @@ void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   }
 }
 
-// void ParentExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void ParentExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+  // TODO
+}

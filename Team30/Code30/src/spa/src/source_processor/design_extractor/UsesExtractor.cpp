@@ -69,3 +69,5 @@ void UsesExtractor::insertVarWithActors(std::string var) {
     // std::cout << "(" + usesActor + ", " + var + ")\n";
   }
 }
+
+void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
