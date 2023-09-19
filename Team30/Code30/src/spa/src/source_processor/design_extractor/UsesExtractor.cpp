@@ -46,7 +46,7 @@ void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
-// void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
 
 void UsesExtractor::popUsesActors() {
   if (!usesActors.empty()) {
