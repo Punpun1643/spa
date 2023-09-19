@@ -19,8 +19,8 @@ PKB::PKB() : PkbApi() {
 
       {RelationType::PARENT, {RelationType::PARENT, RelationType::PARENT_STAR}},
 
-      {RelationType::USES, {RelationType::USES}},
-      {RelationType::MODIFIES, {RelationType::MODIFIES}}};
+      {RelationType::USES_S, {RelationType::USES_S}},
+      {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}}};
 };
 
 // ---------- INSERTIONS ----------
@@ -65,7 +65,7 @@ bool PKB::isRelationTrue(std::string value_1, std::string value_2,
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT);
+      entData->get(EntityType::STMT); // TODO: FIX THIS
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -96,7 +96,7 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 // example Follows(_, _)
 bool PKB::isRelationTrueForAny(RelationType relation_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT);
+      entData->get(EntityType::STMT); // TODO: FIX FOR USES/MODIFIES
   std::shared_ptr<BaseTable> table = relData->getTable(relation_type);
   return ents->size() > 0;
 }
@@ -110,11 +110,13 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       entData->get(entity_type);
   std::shared_ptr<std::unordered_set<std::string>> ents2;
-
-  if (rel_type == RelationType::USES || rel_type == RelationType::MODIFIES) {
+  if (rel_type == RelationType::USES_S ||
+      rel_type == RelationType::USES_P ||
+      rel_type == RelationType::MODIFIES_S ||
+      rel_type == RelationType::MODIFIES_P) { // TODO: CLEAN THIS UP
     ents2 = entData->get(EntityType::VARIABLE);
   } else {
-    ents2 = entData->get(EntityType::STMT);
+    ents2 = entData -> get(EntityType::STMT);
   }
 
   // TODO: Optimise
@@ -184,7 +186,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
 }
 
 //// 2 Declarations
-// example Follows(s1, s2), FolowsStar(s1, s2)
+// example Follows(s1, s2), FollowsStar(s1, s2)
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                        RelationType rel_type) {

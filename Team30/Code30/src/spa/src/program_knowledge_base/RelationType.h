@@ -8,5 +8,5 @@ enum class RelationType {
   MODIFIES_S,
   MODIFIES_P,
   USES_S,
-  USES_P
+  USES_P,
 };
