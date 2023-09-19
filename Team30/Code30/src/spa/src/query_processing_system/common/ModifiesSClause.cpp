@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "InvalidSemanticsException.h"
+#include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 ModifiesSClause::ModifiesSClause(std::unique_ptr<StmtRef> arg1,
                                  std::unique_ptr<EntRef> arg2)

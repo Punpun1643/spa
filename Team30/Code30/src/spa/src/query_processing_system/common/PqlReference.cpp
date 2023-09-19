@@ -3,7 +3,6 @@
 #include <utility>
 
 #include "EntityType.h"
-#include "InvalidSemanticsException.h"
 
 PqlReference::PqlReference() : ref_type(WILD), ref_value(std::nullopt) {}
 

@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "InvalidSemanticsException.h"
+#include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 EntRef::EntRef() : PqlReference() {}
 

@@ -1,6 +1,6 @@
 #include "StmtRef.h"
 
-#include "InvalidSemanticsException.h"
+#include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 StmtRef::StmtRef() : PqlReference() {}
 
