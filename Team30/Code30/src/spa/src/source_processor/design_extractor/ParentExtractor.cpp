@@ -43,9 +43,9 @@ void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
 void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   int parentIndex = node->getStmtIndex();
   std::vector<std::shared_ptr<StmtNode>> children =
-      node->getThenStmtLstNode()->getChildren();
+      node->getThenStmtLst()->getChildren();
   std::vector<std::shared_ptr<StmtNode>> elseChildren =
-      node->getElseStmtLstNode()->getChildren();
+      node->getElseStmtLst()->getChildren();
   children.insert(std::end(children), std::begin(elseChildren),
                   std::end(elseChildren));
   for (int i = 0; i < children.size(); i++) {

@@ -45,3 +45,4 @@ void FollowsExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 }
 
 // void FollowsExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+

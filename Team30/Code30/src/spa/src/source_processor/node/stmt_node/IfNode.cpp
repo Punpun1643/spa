@@ -16,14 +16,14 @@ void IfNode::accept(IDesignExtractor& designExtractor) {
   designExtractor.extractFromIf(thisIfNodePtr);
 }
 
-std::shared_ptr<StmtLstNode> const IfNode::getThenStmtLstNode() const {
+std::shared_ptr<StmtLstNode> const IfNode::getThenStmtLst() const {
   return thenStmtLstNode;
 }
 
-std::shared_ptr<StmtLstNode> const IfNode::getElseStmtLstNode() const {
+std::shared_ptr<StmtLstNode> const IfNode::getElseStmtLst() const {
   return elseStmtLstNode;
 }
 
-std::shared_ptr<CondExprNode> const IfNode::getCondExprNode() const {
+std::shared_ptr<CondExprNode> const IfNode::getCondExpr() const {
   return condExprNode;
 }
