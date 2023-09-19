@@ -34,10 +34,17 @@ class UsesExtractor : public IDesignExtractor {
 
   // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
+  void popUsesActors();
+
   ~UsesExtractor() = default;
 
  private:
   PkbApi& pkb;
 
   std::vector<std::string> usesActors;
+
+  void insertCondVars(std::unordered_set<std::string> condVars,
+                      std::string stmtIndex);
+
+  void insertVarWithActors(std::string var);
 };
