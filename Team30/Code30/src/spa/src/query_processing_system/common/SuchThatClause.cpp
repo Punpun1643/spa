@@ -10,12 +10,13 @@ SuchThatClause::SuchThatClause(std::unique_ptr<PqlReference const> arg1,
       arg2(std::move(arg2)),
       relation_type(relation_type) {}
 
-void SuchThatClause::checkDeclarationArgEntityType(int arg_num,
- const std::vector<EntityType>& allowed_types, const std::string &error_msg) {
+void SuchThatClause::checkDeclarationArgEntityType(
+    int arg_num, std::vector<EntityType> const& allowed_types,
+    std::string const& error_msg) {
   if (arg_num != 1 && arg_num != 2) {
     throw std::invalid_argument("arg_num must be either 1 or 2");
   }
-  PqlReference arg((arg_num == 1)? *arg1 : *arg2);
+  PqlReference arg((arg_num == 1) ? *arg1 : *arg2);
 
   if (arg.getRefType() == PqlRefType::DECLARATION &&
       std::find(allowed_types.begin(), allowed_types.end(),
@@ -24,15 +25,16 @@ void SuchThatClause::checkDeclarationArgEntityType(int arg_num,
   }
 }
 
-void SuchThatClause::checkArgReferenceType(int arg_num,
- const std::vector<PqlRefType>& allowed_types, const std::string &error_msg) {
+void SuchThatClause::checkArgReferenceType(
+    int arg_num, std::vector<PqlRefType> const& allowed_types,
+    std::string const& error_msg) {
   if (arg_num != 1 && arg_num != 2) {
     throw std::invalid_argument("arg_num must be either 1 or 2");
   }
-  PqlReference arg((arg_num == 1)? *arg1 : *arg2);
+  PqlReference arg((arg_num == 1) ? *arg1 : *arg2);
 
-  if (std::find(allowed_types.begin(), allowed_types.end(),
-                arg.getRefType()) == allowed_types.end()) {
+  if (std::find(allowed_types.begin(), allowed_types.end(), arg.getRefType()) ==
+      allowed_types.end()) {
     throw InvalidSemanticsException(error_msg);
   }
 }

@@ -1,7 +1,8 @@
 #pragma once
+#include <vector>
+
 #include "Clause.h"
 #include "PqlReference.h"
-#include <vector>
 
 class SuchThatClause : public Clause {
   // Template Method design pattern
@@ -32,8 +33,8 @@ class SuchThatClause : public Clause {
   void checkArgReferenceType(int arg_num,
                              std::vector<PqlRefType> const& allowed_types,
                              std::string const& error_msg);
+
  public:
   std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) override;
   virtual ~SuchThatClause();
-
 };

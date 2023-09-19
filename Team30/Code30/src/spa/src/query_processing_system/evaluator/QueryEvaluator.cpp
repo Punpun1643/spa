@@ -33,7 +33,8 @@ std::unique_ptr<std::vector<std::string>> QueryEvaluator::evaluateQuery(
     auto decl_values_1 = select_result->getValues(selected_declaration);
     auto decl_values_2 = such_that_result->getValues(selected_declaration);
     return getIntersectingValues(*decl_values_1, *decl_values_2);
-  } else { // other clause has valid declaration that doesn't overlap with this one
+  } else {  // other clause has valid declaration that doesn't overlap with this
+            // one
     return select_result->getValues(selected_declaration);
   }
 }
