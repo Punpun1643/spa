@@ -32,18 +32,21 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
       node->getCondExpr()->getVariables();
-  insertCondVars(condVars, std::to_string(node->getStmtIndex()));
+  insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
       node->getCondExpr()->getVariables();
-  insertCondVars(condVars, std::to_string(node->getStmtIndex()));
+  insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
-void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+  std::unordered_set<std::string> rhsVars = node->getVariables();
+  insertMultipleVars(rhsVars, std::to_string(node->getStmtIndex()));
+}
 
 //////////////////////////////
 //
@@ -62,11 +65,11 @@ void UsesExtractor::popUsesActor() {
   }
 }
 
-void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
-                                   std::string stmtIndex) {
-  for (std::string condVar : condVars) {
-    insertIntoPkb(stmtIndex, condVar);
-    insertVarWithActors(condVar);
+void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
+                                       std::string stmtIndex) {
+  for (std::string var : vars) {
+    insertIntoPkb(stmtIndex, var);
+    insertVarWithActors(var);
   }
 }
 
