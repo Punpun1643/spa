@@ -7,7 +7,7 @@
 
 #include <memory>
 
-static class ManualASTBuilder {
+class ManualASTBuilder {
  public:
   // procedure proc {
   // 1.  read var1;
@@ -22,14 +22,14 @@ static class ManualASTBuilder {
   //     } else {
   // 10.     read var5;
   // 11.     print var5; }}
-  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1();
+  static std::shared_ptr<ProgramNode> getAST_1();
 
   // procedure proc{
   // 1.  while (var1 < 3) {
   // 2.    while (var2 < 3) {
   // 3.      read var3; 
   // 4.      print var3;}}}
-  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2();
+  static std::shared_ptr<ProgramNode> getAST_2();
 
   // procedure proc {
   // 1.  read var1;
@@ -38,7 +38,7 @@ static class ManualASTBuilder {
   // procedure proc2 {
   // 3.  read var2;
   // 4.  print var2;}
-  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_3();
+  static std::shared_ptr<ProgramNode> getAST_3();
 
   // procedure proc {
   // 1.  if (var1 < 3) then {
@@ -50,5 +50,5 @@ static class ManualASTBuilder {
   // 6.        print var3;}
   //     } else {
   // 7.    call proc2;}}
-  static std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_4();
+  static std::shared_ptr<ProgramNode> getAST_4();
 };
