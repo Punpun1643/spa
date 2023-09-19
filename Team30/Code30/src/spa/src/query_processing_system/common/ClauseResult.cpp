@@ -8,15 +8,28 @@ ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
 ClauseResult::ClauseResult(PqlDeclaration d,
-                           std::unique_ptr<std::vector<std::string>> values)
-    : num_declarations(1) {
-  /* Create clause result with 1 declaration */
+                           std::unique_ptr<std::vector<std::string>> values) {
+  if (values->empty()) {
+    // Entire clause becomes false because no possible values
+    num_declarations = 0;
+    boolean_clause_value = false;
+    return;
+  }
+  // Create clause result with 1 declaration
+  num_declarations = 1;
   value_map[d] = *values;
 }
 
 ClauseResult::ClauseResult(
     PqlDeclaration d1, PqlDeclaration d2,
     std::unique_ptr<std::vector<std::pair<std::string, std::string>>> values) {
+  if (values->empty()) {
+    // Entire clause becomes false because no possible values
+    num_declarations = 0;
+    boolean_clause_value = false;
+    return;
+  }
+
   /* Create a clause result with paired declarations */
   if (d1 == d2) {
     num_declarations = 1;
