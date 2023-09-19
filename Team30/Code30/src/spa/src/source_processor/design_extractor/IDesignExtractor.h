@@ -5,6 +5,7 @@
 #include "../node/ProcedureNode.h"
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
+#include "../node/stmt_node/AssignNode.h"
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
@@ -30,7 +31,7 @@ class IDesignExtractor {
 
   virtual void extractFromIf(std::shared_ptr<IfNode> node) = 0;
 
-  // virtual void extractFromAssign(std::shared_ptr<AssignNode> node) = 0;
+  virtual void extractFromAssign(std::shared_ptr<AssignNode> node) = 0;
 
   virtual ~IDesignExtractor() = default;
 };

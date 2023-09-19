@@ -9,6 +9,7 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
+#include "../node/stmt_node/AssignNode.h"
 #include "IDesignExtractor.h"
 
 class ParentExtractor : public IDesignExtractor {
@@ -31,7 +32,7 @@ class ParentExtractor : public IDesignExtractor {
 
   void extractFromIf(std::shared_ptr<IfNode> node) override;
 
-  // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+  void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
   ~ParentExtractor() = default;
 
