@@ -9,6 +9,7 @@
 #include "../node/ProcedureNode.h"
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
+#include "../node/stmt_node/AssignNode.h"
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
@@ -37,6 +38,8 @@ class SpParser : public AParser {
   std::shared_ptr<WhileNode> parseWhile();
 
   std::shared_ptr<CondExprNode> parseCondExpr();
+
+  std::shared_ptr<AssignNode> parseAssign();
 
   std::shared_ptr<ProgramNode> getSourceProgramNode();
 

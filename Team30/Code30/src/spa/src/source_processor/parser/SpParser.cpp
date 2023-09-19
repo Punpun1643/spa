@@ -30,6 +30,9 @@ constexpr char END_THEN_STMTLST[] = "}";
 constexpr char START_ELSE_STMTLST[] = "{";
 constexpr char END_ELSE_STMTLST[] = "}";
 
+// Assignment symbol
+constexpr char ASSIGN_SYMBOL[] = "=";
+
 // Keywords
 constexpr char PROCEDURE_KEYWORD[] = "procedure";
 constexpr char PRINT_KEYWORD[] = "print";
@@ -67,7 +70,6 @@ constexpr char AND[] = "&&";
 constexpr char OR[] = "||";
 constexpr char NOT[] = "!";
 }  // namespace SpRelationLogicalOperator
-
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
@@ -253,7 +255,6 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
                                   thenStmtLst, elseStmtLst);
 }
 
-
 std::shared_ptr<WhileNode> SpParser::parseWhile() {
   std::shared_ptr<Token> currToken = getCurrToken();
   std::shared_ptr<CondExprNode> condExpr;
@@ -374,6 +375,10 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   return std::make_shared<CondExprNode>(variables, constants);
 }
 
+std::shared_ptr<AssignNode> SpParser::parseAssign() {
+  return nullptr;
+}
+
 bool SpParser::isOperator(std::string const& tokenVal) {
   return tokenVal == SpParserMathOperator::PLUS ||
          tokenVal == SpParserMathOperator::MINUS ||
@@ -429,7 +434,12 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
 
   while (getCurrToken()->getTokenVal() != SpParserConstant::END_PROCEDURE) {
     std::shared_ptr<Token> currToken = getCurrToken();
-    if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
+    if (currToken->getTokenType() == TokenType::WORD_TOKEN && peekToken()->getTokenVal() == SpParserConstant::ASSIGN_SYMBOL) {
+      // parse assign
+      nextToken(); // move to assign symbol
+      nextToken();
+      stmts.push_back(parseAssign());
+    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
         currToken->getTokenVal() == SpParserConstant::PRINT_KEYWORD) {
       nextToken();
       // parse print
