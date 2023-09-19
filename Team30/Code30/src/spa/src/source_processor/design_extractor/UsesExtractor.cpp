@@ -38,12 +38,12 @@ void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
-      node->getCondExprNode()->getVariables();
+      node->getCondExpr()->getVariables();
   insertCondVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
-// void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
 
 //////////////////////////////
 //

@@ -44,4 +44,6 @@ void FollowsExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   // TODO
 }
 
-// void FollowsExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void FollowsExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+  // TODO
+}
