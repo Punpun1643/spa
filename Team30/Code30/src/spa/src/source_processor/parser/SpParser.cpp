@@ -375,7 +375,11 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   return std::make_shared<CondExprNode>(variables, constants);
 }
 
-std::shared_ptr<AssignNode> SpParser::parseAssign() {
+std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
+  std::unordered_set<std::string> variables;
+  std::unordered_set<int> constants;
+
+
   return nullptr;
 }
 
@@ -438,7 +442,7 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
       // parse assign
       nextToken(); // move to assign symbol
       nextToken();
-      stmts.push_back(parseAssign());
+      stmts.push_back(parseAssign(currToken->getTokenVal()));
     } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
         currToken->getTokenVal() == SpParserConstant::PRINT_KEYWORD) {
       nextToken();

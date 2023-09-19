@@ -39,7 +39,7 @@ class SpParser : public AParser {
 
   std::shared_ptr<CondExprNode> parseCondExpr();
 
-  std::shared_ptr<AssignNode> parseAssign();
+  std::shared_ptr<AssignNode> parseAssign(std::string const& varName);
 
   std::shared_ptr<ProgramNode> getSourceProgramNode();
 
