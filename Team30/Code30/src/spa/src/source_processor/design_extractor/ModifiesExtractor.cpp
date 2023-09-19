@@ -39,13 +39,11 @@ void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   modifiesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
-// void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-//   pkb.insertRelation(RelationType::MODIFIES,
-//                      std::to_string(node->getStmtIndex()),
-//                      node->getRHSVarName());
-//   insertVarWithActors(node->getVarName());
-// }
-
+void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+  pkb.insertRelation(RelationType::MODIFIES,
+                     std::to_string(node->getStmtIndex()), node->getVarName());
+  insertVarWithActors(node->getVarName());
+}
 
 //////////////////////////////
 //
