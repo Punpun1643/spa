@@ -37,18 +37,18 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
-    REQUIRE(pkb.insertFollowsCallCount == 7);
+    REQUIRE(pkb.insertFollowsCallCount == 8);
   }
   SECTION("Parent extraction functionality") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 15);
+    REQUIRE(pkb.insertUsesCallCount == 17);
     // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 11);
+    REQUIRE(pkb.insertModifiesCallCount == 13);
   }
 }
 

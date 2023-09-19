@@ -8,12 +8,26 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
   std::shared_ptr<CallNode> c =
       std::make_shared<CallNode>(3, StmtType::CALL_STMT, "proc");
 
+  std::unordered_set<std::string> a_vars;
+  a_vars.insert("var1");
+  std::unordered_set<int> a_const;
+  a_const.insert(3);
+  std::shared_ptr<TreeNode> emptyTree;
+  std::shared_ptr<TreeNode> a_tree_lhs =
+      std::make_shared<TreeNode>("var1", emptyTree, emptyTree);
+  std::shared_ptr<TreeNode> a_tree_rhs =
+      std::make_shared<TreeNode>("3", emptyTree, emptyTree);
+  std::shared_ptr<TreeNode> a_tree =
+      std::make_shared<TreeNode>("+", a_tree_lhs, a_tree_rhs);
+  std::shared_ptr<AssignNode> a = std::make_shared<AssignNode>(
+      4, StmtType::ASSIGN_STMT, a_vars, a_const, "var1", a_tree);
+
   // While block
   // While body
   std::shared_ptr<ReadNode> r2 =
-      std::make_shared<ReadNode>(5, StmtType::READ_STMT, "var2");
+      std::make_shared<ReadNode>(6, StmtType::READ_STMT, "var2");
   std::shared_ptr<PrintNode> pr2 =
-      std::make_shared<PrintNode>(6, StmtType::PRINT_STMT, "var2");
+      std::make_shared<PrintNode>(7, StmtType::PRINT_STMT, "var2");
   // While condition
   std::unordered_set<std::string> condVars;
   condVars.insert("var3");
@@ -26,23 +40,23 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
   stmts2.push_back(pr2);
   std::shared_ptr<StmtLstNode> stl2 = std::make_shared<StmtLstNode>(stmts2);
   std::shared_ptr<WhileNode> w =
-      std::make_shared<WhileNode>(4, StmtType::WHILE_STMT, cond, stl2);
+      std::make_shared<WhileNode>(5, StmtType::WHILE_STMT, cond, stl2);
 
   // If block
   // Then body
   std::shared_ptr<ReadNode> r3 =
-      std::make_shared<ReadNode>(8, StmtType::READ_STMT, "var4");
+      std::make_shared<ReadNode>(9, StmtType::READ_STMT, "var4");
   std::shared_ptr<PrintNode> pr3 =
-      std::make_shared<PrintNode>(9, StmtType::PRINT_STMT, "var4");
+      std::make_shared<PrintNode>(10, StmtType::PRINT_STMT, "var4");
   std::vector<std::shared_ptr<StmtNode>> stmts3;
   stmts3.push_back(r3);
   stmts3.push_back(pr3);
   std::shared_ptr<StmtLstNode> stl3 = std::make_shared<StmtLstNode>(stmts3);
   // Else body
   std::shared_ptr<ReadNode> r4 =
-      std::make_shared<ReadNode>(10, StmtType::READ_STMT, "var5");
+      std::make_shared<ReadNode>(11, StmtType::READ_STMT, "var5");
   std::shared_ptr<PrintNode> pr4 =
-      std::make_shared<PrintNode>(11, StmtType::PRINT_STMT, "var5");
+      std::make_shared<PrintNode>(12, StmtType::PRINT_STMT, "var5");
   std::vector<std::shared_ptr<StmtNode>> stmts4;
   stmts4.push_back(r4);
   stmts4.push_back(pr4);
@@ -52,12 +66,13 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
       std::make_shared<CondExprNode>(condVars, condConsts);
 
   std::shared_ptr<IfNode> ifs =
-      std::make_shared<IfNode>(7, StmtType::IF_STMT, cond2, stl3, stl4);
+      std::make_shared<IfNode>(8, StmtType::IF_STMT, cond2, stl3, stl4);
 
   std::vector<std::shared_ptr<StmtNode>> stmts;
   stmts.push_back(r);
   stmts.push_back(pr);
   stmts.push_back(c);
+  stmts.push_back(a);
   stmts.push_back(w);
   stmts.push_back(ifs);
   std::shared_ptr<StmtLstNode> stl = std::make_shared<StmtLstNode>(stmts);
