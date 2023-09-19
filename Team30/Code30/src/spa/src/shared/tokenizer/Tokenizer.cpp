@@ -95,10 +95,10 @@ std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
   return std::make_shared<SpecialCharToken>(std::string(1, c));
 }
 
-  bool Tokenizer::hasNext() {
-    char c;
-    while (std::isspace(input.peek())) {
-      input.get(c);
-    }
-    return input.peek() != EOF;
+bool Tokenizer::hasNext() {
+  char c;
+  while (std::isspace(input.peek())) {
+    input.get(c);
   }
+  return input.peek() != EOF;
+}
