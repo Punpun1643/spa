@@ -1,5 +1,6 @@
 #include "ModifiesExtractor.h"
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -64,6 +65,14 @@ void ModifiesExtractor::popModifiesActor() {
 
 void ModifiesExtractor::insertVarWithActors(std::string var) {
   for (std::string modifiesActor : modifiesActors) {
-    insertIntoPkb(modifiesActor, var);
+    // insertIntoPkb(modifiesActor, var);
+    bool isStmtIndex =
+        !modifiesActor.empty() &&
+        std::all_of(modifiesActor.begin(), modifiesActor.end(), ::isdigit);
+    if (isStmtIndex) {
+      pkb.insertRelation(RelationType::MODIFIES, modifiesActor, var);
+    } else {
+      pkb.insertRelation(RelationType::MODIFIES, modifiesActor, var);
+    }
   }
 }
