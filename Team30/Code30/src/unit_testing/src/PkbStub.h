@@ -17,6 +17,7 @@ class PkbStub : public PkbApi {
   int insertParentCallCount;
   int insertUsesCallCount;
   int insertModifiesCallCount;
+  int insertPatternCallCount;
 
 
   void insertEntity(EntityType type, std::string entity) override;
