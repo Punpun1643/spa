@@ -137,7 +137,244 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     REQUIRE(assignNode->getVarName() == "x");
   }
 
-  SECTION("Test invalid assign stmt should throw an error") {
+  SECTION(
+      "Test valid assign with brackets should return the correct expression "
+      "tree") {
+    /*
+     * x = (1 + y) * z;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+
+    REQUIRE(exprTreeRoot->getVal() == "*");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+  }
+
+  SECTION(
+      "Test valid assign with 2 brackets should return correct constants and "
+      "variables") {
+    /*
+     * x = (1 + y) * (z + 2);
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<IntegerToken>("2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    REQUIRE(assignNode->getConstants().size() == 2);
+    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getVarName() == "x");
+  }
+
+  SECTION(
+      "Test valid assign with 2 brackets should return correct expression "
+      "tree") {
+    /*
+     * x = (1 + y) * (z + 2);
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<IntegerToken>("2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+
+    REQUIRE(exprTreeRoot->getVal() == "*");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "+");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getLeftSubTree()->getVal() == "z");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getRightSubTree()->getVal() ==
+            "2");
+  }
+
+  SECTION(
+      "Test valid assign stmt with division should return correct constants "
+      "and variables") {
+    /*
+     * x = 1 / y;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("/"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    REQUIRE(assignNode->getConstants().size() == 1);
+    REQUIRE(assignNode->getVariables().size() == 1);
+    REQUIRE(assignNode->getVarName() == "x");
+  }
+
+  SECTION(
+      "Test valid assign stmt with division should return correct expression "
+      "tree") {
+    /*
+     * x = 1 / y;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("/"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+
+    REQUIRE(exprTreeRoot->getVal() == "/");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "1");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "y");
+  }
+
+  SECTION(
+      "Test valid assign stmt with multiplication and division should return "
+      "the correct constants and variables") {
+    /*
+     * x = 1 / y * z;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("/"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    REQUIRE(assignNode->getConstants().size() == 1);
+    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getVarName() == "x");
+  }
+
+  SECTION(
+      "Test valid assign stmt with multiplication and division should return "
+      "the correct expression tree") {
+    /*
+     * x = 1 / y * z;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("/"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+
+    REQUIRE(exprTreeRoot->getVal() == "*");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "/");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+  }
+
+  SECTION(
+      "Test valid assign stmt with 3 operands should return the correct "
+      "constants and variables") {
+    /*
+     * x = 1 + y + z;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    REQUIRE(assignNode->getConstants().size() == 1);
+    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getVarName() == "x");
+  }
+
+  SECTION(
+      "Test valid assign stmt with 3 operands should return the correct "
+      "expression tree") {
+    /*
+     * x = 1 + y + z;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = parser.parseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+
+    REQUIRE(exprTreeRoot->getVal() == "+");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
+    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
+    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+  }
+
+  SECTION("Test invalid assign stmt with extra operand should throw an error") {
     /*
      * x = 2 + + y;
      */
@@ -147,6 +384,56 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("+"));
     tokens.push_back(std::make_shared<SpecialCharToken>("+"));
     tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    REQUIRE_THROWS(parser.parseAssign("x"));
+  }
+
+  SECTION("Test invalid assign stmt with extra bracket should throw an error") {
+    /*
+     * x = (1 + y) * (z + 2));
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<IntegerToken>("2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    REQUIRE_THROWS(parser.parseAssign("x"));
+  }
+
+  SECTION(
+      "Test invalid assign stmt with non closing bracket should throw an "
+      "error") {
+    /*
+     * x = (1 + y) * z + 2);
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<SpecialCharToken>("("));
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<WordToken>("z"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<IntegerToken>("2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(")"));
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
