@@ -34,26 +34,26 @@ void PkbStub::insertRelationCommon(RelationType type) {
 
 // Relation (integer, integer)
 void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
-                    std::string s2_line_num) {
+                             std::string s2_line_num) {
   insertRelationCommon(rel_type);
 }
 
 // Relation (integer, EntityType)
 void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
-                    EntityType ent_type, std::string enity) {
+                             EntityType ent_type, std::string enity) {
   insertRelationCommon(rel_type);
 }
 
 // Relation (EntityType, integer)
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,
-                    std::string entity, std::string s_line_num) {
+                             std::string entity, std::string s_line_num) {
   insertRelationCommon(rel_type);
 }
 
 // Relation (EntityType, EntityType)
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
-                    std::string entity1, EntityType ent_type2,
-                    std::string entity2) {
+                             std::string entity1, EntityType ent_type2,
+                             std::string entity2) {
   insertRelationCommon(rel_type);
 }
 
@@ -126,7 +126,6 @@ PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
   }
 }
 
-
 // Pattern clause
 void PkbStub::insertPattern(std::string statement_number, std::string lhs,
                             std::unordered_set<std::string> rhs){};
@@ -136,15 +135,17 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
   return std::make_unique<std::vector<std::string>>();
 };
 
-
-std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                             MatchType expr_match_type) {
+std::unique_ptr<std::vector<std::string>>
+PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
+                                       std::string rhs_expr,
+                                       MatchType expr_match_type) {
   return std::make_unique<std::vector<std::string>>();
 };
 
-// 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>> PkbStub::getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                                    std::string rhs_expr,
-                                                                                                    MatchType expr_match_type) {
+// 2 paired values - for the implicit assign declaration, and the values for the
+// given lhs_entity_type
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+PkbStub::getPatternMatchesWithLhsType(std::string rhs_expr,
+                                      MatchType expr_match_type) {
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 };

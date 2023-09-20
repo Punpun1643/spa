@@ -13,11 +13,13 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "PkbApi.h"
 #include "program_knowledge_base/EntityDatabase.h"
+#include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
 
 class PKB : public PkbApi {
   std::unique_ptr<EntityDatabase> entData;
   std::unique_ptr<RelDatabase> relData;
+  std::unique_ptr<PatternDatabase> patData;
   std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
 
  public:
@@ -55,27 +57,27 @@ class PKB : public PkbApi {
       EntityType entity_type, RelationType rel_type) override;
   std::unique_ptr<std::vector<std::string>> getRelationValues(
       EntityType entity_type, std::string value,
-                                               RelationType rel_type) override;
+      RelationType rel_type) override;
   std::unique_ptr<std::vector<std::string>> getRelationValues(
-      std::string value,
-                                               EntityType entity_type,
-                                               RelationType rel_type) override;
+      std::string value, EntityType entity_type,
+      RelationType rel_type) override;
 
   // 2 Declarations - SuchThatClauses
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationValues(
-      EntityType entity_type_1, EntityType entity_type_2,
-      RelationType rel_type) override;
+  getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+                    RelationType rel_type) override;
 
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                                  MatchType expr_match_type) override;
-  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                                         std::string rhs_expr,
-                                                                                                         MatchType expr_match_type) override;
-
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
+      std::string rhs_expr, MatchType expr_match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(
+      std::string lhs_value, std::string rhs_expr,
+      MatchType expr_match_type) override;
+  // 2 paired values - for the implicit assign declaration, and the values for
+  // the given lhs_entity_type
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesWithLhsType(std::string rhs_expr,
+                               MatchType expr_match_type) override;
 };

@@ -86,7 +86,7 @@ class PkbApi {
   // 2 paired values - for the implicit assign declaration, and the values for
   // the given lhs_entity_type
   virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithLhsType(EntityType lhs_entity_type, std::string rhs_expr,
+  getPatternMatchesWithLhsType(std::string rhs_expr,
                                MatchType expr_match_type) = 0;
 
   virtual ~PkbApi();  // so that the subclass destructors will be called

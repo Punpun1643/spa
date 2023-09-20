@@ -18,7 +18,6 @@ class PkbStub : public PkbApi {
   int insertUsesCallCount;
   int insertModifiesCallCount;
 
-
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
@@ -61,19 +60,19 @@ class PkbStub : public PkbApi {
   getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                     RelationType rel_type) override;
 
-
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
+      std::string rhs_expr, MatchType expr_match_type) override;
 
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(
+      std::string lhs_value, std::string rhs_expr,
+      MatchType expr_match_type) override;
 
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                          MatchType expr_match_type) override;
-
-  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                                 std::string rhs_expr,
-                                                                                                 MatchType expr_match_type) override;
-
+  // 2 paired values - for the implicit assign declaration, and the values for
+  // the given lhs_entity_type
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesWithLhsType(std::string rhs_expr,
+                               MatchType expr_match_type) override;
 };
