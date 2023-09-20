@@ -4,8 +4,11 @@
 
 #include "../expression/DeclarationExpression.h"
 #include "../expression/DeclarationListExpression.h"
-#include "../expression/SelectExpression.h"
 #include "../expression/FollowsExpression.h"
+#include "../expression/FollowsTExpression.h"
+#include "../expression/ParentExpression.h"
+#include "../expression/ParentTExpression.h"
+#include "../expression/SelectExpression.h"
 #include "../expression/SuchThatExpression.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
@@ -17,7 +20,8 @@ std::unique_ptr<QueryExpression> ExpressionTreeBuilder::GetQueryExpression() {
 }
 
 void ExpressionTreeBuilder::parse() {
-  std::unique_ptr<DeclarationListExpression> declaration_list_expression = nullptr;
+  std::unique_ptr<DeclarationListExpression> declaration_list_expression =
+      nullptr;
   std::unique_ptr<SelectExpression> select_expression = nullptr;
   std::unique_ptr<SuchThatListExpression> such_that_list_expression = nullptr;
   if (getCurrToken()->getTokenVal() == "Select") {
@@ -28,10 +32,8 @@ void ExpressionTreeBuilder::parse() {
   }
   such_that_list_expression = this->CreateSuchThatListExpression();
   this->query_expression = std::make_unique<QueryExpression>(
-      std::move(declaration_list_expression),
-      std::move(select_expression),
-      std::move(such_that_list_expression)
-      );
+      std::move(declaration_list_expression), std::move(select_expression),
+      std::move(such_that_list_expression));
 }
 
 std::unique_ptr<SelectExpression>
@@ -51,23 +53,26 @@ ExpressionTreeBuilder ::CreateDeclarationListExpression() {
   return std::make_unique<DeclarationListExpression>(declaration_list);
 }
 
-std::unique_ptr<SuchThatListExpression> ExpressionTreeBuilder::CreateSuchThatListExpression() {
+std::unique_ptr<SuchThatListExpression>
+ExpressionTreeBuilder::CreateSuchThatListExpression() {
   if (getCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
     return nullptr;
   }
   std::vector<std::shared_ptr<SuchThatExpression>> such_that_expression_list;
-  nextToken(); // that
-  nextToken(); // clause name
+  nextToken();  // that
+  nextToken();  // clause name
   this->AddSuchThatExpression(such_that_expression_list);
   while (getCurrToken()->getTokenVal() == "and") {
-    nextToken(); // such
-    nextToken(); // that
+    nextToken();  // such
+    nextToken();  // that
     this->AddSuchThatExpression(such_that_expression_list);
   }
   return std::make_unique<SuchThatListExpression>(such_that_expression_list);
 }
 
-void ExpressionTreeBuilder::AddDeclarationExpression(std::vector<std::shared_ptr<DeclarationExpression>>& declaration_expression_list) {
+void ExpressionTreeBuilder::AddDeclarationExpression(
+    std::vector<std::shared_ptr<DeclarationExpression>>&
+        declaration_expression_list) {
   EntityType entity_type = StringToEntityType(getCurrToken()->getTokenVal());
   std::string synonym = nextToken()->getTokenVal();
   declaration_expression_list.push_back(
@@ -78,22 +83,47 @@ void ExpressionTreeBuilder::AddDeclarationExpression(std::vector<std::shared_ptr
       synonym = nextToken()->getTokenVal();
       declaration_expression_list.push_back(
           std::make_shared<DeclarationExpression>(entity_type, synonym));
-      nextToken(); // ; OR ,
+      nextToken();  // ; OR ,
     }
   }
-  nextToken(); // entity type OR Select
+  nextToken();  // entity type OR Select
 }
 
-void ExpressionTreeBuilder::AddSuchThatExpression(std::vector<std::shared_ptr<SuchThatExpression>>& such_that_expression_list) {
+void ExpressionTreeBuilder::AddSuchThatExpression(
+    std::vector<std::shared_ptr<SuchThatExpression>>&
+        such_that_expression_list) {
+  bool is_transitive = false;
   std::string such_that_clause_name = getCurrToken()->getTokenVal();
-  nextToken(); // (
+  if ((peekToken()->getTokenVal()) == "*") {
+    nextToken();  // *
+    is_transitive = true;
+  }
+
+  nextToken();  // (
   std::string arg1 = nextToken()->getTokenVal();
-  nextToken(); // ,
+  nextToken();  // ,
   std::string arg2 = nextToken()->getTokenVal();
-  nextToken(); // )
+  nextToken();  // )
+
   if (such_that_clause_name == "Follows") {
-    std::shared_ptr<SuchThatExpression> such_that_expression = std::make_shared<FollowsExpression>(arg1, arg2);
-    /* such_that_expression_list.push_back(std::static_pointer_cast<SuchThatExpression>(such_that_expression)); */
-    such_that_expression_list.push_back(such_that_expression);
+    if (peekToken()->getTokenVal() == "*") {
+      std::shared_ptr<SuchThatExpression> such_that_expression =
+          std::make_shared<FollowsTExpression>(arg1, arg2);
+      such_that_expression_list.push_back(such_that_expression);
+    } else {
+      std::shared_ptr<SuchThatExpression> such_that_expression =
+          std::make_shared<FollowsExpression>(arg1, arg2);
+      such_that_expression_list.push_back(such_that_expression);
+    }
+  } else if (such_that_clause_name == "Parent") {
+    if (peekToken()->getTokenVal() == "*") {
+      std::shared_ptr<SuchThatExpression> such_that_expression =
+          std::make_shared<ParentTExpression>(arg1, arg2);
+      such_that_expression_list.push_back(such_that_expression);
+    } else {
+      std::shared_ptr<SuchThatExpression> such_that_expression =
+          std::make_shared<ParentExpression>(arg1, arg2);
+      such_that_expression_list.push_back(such_that_expression);
+    }
   }
 }

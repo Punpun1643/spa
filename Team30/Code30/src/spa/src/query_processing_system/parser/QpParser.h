@@ -9,6 +9,7 @@ class QpParser : public AParser {
   QpParser(std::vector<std::shared_ptr<Token>> tokens);
 
   virtual ~QpParser() = default;
+
  protected:
   bool IsSynonym(std::string name);
   bool IsRelRef(std::string name);

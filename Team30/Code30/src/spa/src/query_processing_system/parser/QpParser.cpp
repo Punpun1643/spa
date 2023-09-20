@@ -13,7 +13,14 @@ QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
 
 bool QpParser::IsSynonym(std::string name) {
-  // dummy for now
+  if (!std::isalpha(name[0])) {
+    return false;
+  }
+  for (size_t i = 1; i < name.length(); i++) {
+    if (!std::isalnum(name[i])) {
+      return false;
+    }
+  }
   return true;
 }
 
@@ -52,6 +59,24 @@ bool QpParser::IsStmtRef(std::string name) {
 EntityType QpParser::StringToEntityType(std::string entity_string) {
   if (entity_string == "stmt") {
     return EntityType::STMT;
+  } else if (entity_string == "read") {
+    return EntityType::READ;
+  } else if (entity_string == "print") {
+    return EntityType::PRINT;
+  } else if (entity_string == "call") {
+    return EntityType::CALL;
+  } else if (entity_string == "while") {
+    return EntityType::WHILE;
+  } else if (entity_string == "if") {
+    return EntityType::IF;
+  } else if (entity_string == "assign") {
+    return EntityType::ASSIGN;
+  } else if (entity_string == "variable") {
+    return EntityType::VARIABLE;
+  } else if (entity_string == "constant") {
+    return EntityType::CONSTANT;
+  } else if (entity_string == "procedure") {
+    return EntityType::PROCEDURE;
   } else {
     throw std::runtime_error("Invalid design entity for declaration");
   }

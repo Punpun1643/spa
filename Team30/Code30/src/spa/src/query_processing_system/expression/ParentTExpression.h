@@ -3,13 +3,13 @@
 #include "../interpreter/QueryInterpreter.h"
 #include "SuchThatExpression.h"
 
-class FollowsExpression : public SuchThatExpression {
+class ParentTExpression : public SuchThatExpression {
  public:
-  FollowsExpression(std::string arg1, std::string arg2);
+  ParentTExpression(std::string arg1, std::string arg2);
 
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
-  ~FollowsExpression() = default;
+  ~ParentTExpression() = default;
 
  private:
   std::string arg1;

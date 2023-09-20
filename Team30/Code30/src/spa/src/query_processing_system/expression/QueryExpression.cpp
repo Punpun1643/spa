@@ -27,7 +27,8 @@ std::unique_ptr<SelectExpression> QueryExpression::GetSelectExpression() {
   return std::move(this->select_expression);
 }
 
-std::unique_ptr<SuchThatListExpression> QueryExpression::GetSuchThatListExpression() {
+std::unique_ptr<SuchThatListExpression>
+QueryExpression::GetSuchThatListExpression() {
   return std::move(this->such_that_list_expression);
 }
 

@@ -41,5 +41,3 @@ bool AParser::IsSpecialCharToken(std::shared_ptr<Token> token) {
 bool AParser::IsEOFToken(std::shared_ptr<Token> token) {
   return AParser::IsTokenType(token, TokenType::EOF_TOKEN);
 }
-
-

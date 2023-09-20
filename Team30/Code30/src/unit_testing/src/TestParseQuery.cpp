@@ -7,17 +7,37 @@
 #include "ParserHelperFunctions.h"
 #include "catch.hpp"
 
-static void AddDeclaration(std::vector<std::shared_ptr<Token>>& tokens, std::string design_entity, std::vector<std::string> synonyms) {
+static void AddDeclaration(std::vector<std::shared_ptr<Token>>& tokens,
+                           std::string design_entity,
+                           std::vector<std::string> synonyms) {
   AddWordVector(tokens, {design_entity});
   AddWordVector(tokens, {synonyms[0]});
   if (synonyms.size() > 1) {
-    std::vector<std::string> sliced_synonyms(synonyms.begin() + 1, synonyms.end());
-    for (const std::string& synonym : sliced_synonyms) {
+    std::vector<std::string> sliced_synonyms(synonyms.begin() + 1,
+                                             synonyms.end());
+    for (std::string const& synonym : sliced_synonyms) {
       AddSpecialCharVector(tokens, {","});
       AddWordVector(tokens, {synonym});
     }
   }
   AddSpecialCharVector(tokens, {";"});
+}
+
+static void AddWordWord(std::vector<std::shared_ptr<Token>>& tokens,
+                        std::string arg1, std::string arg2) {
+  AddSpecialCharVector(tokens, {"("});
+  AddWordVector(tokens, {arg1});
+  AddSpecialCharVector(tokens, {","});
+  AddWordVector(tokens, {arg2});
+  AddSpecialCharVector(tokens, {")"});
+}
+
+static void AddWildWord(std::vector<std::shared_ptr<Token>>& tokens,
+                        std::string arg) {
+  AddSpecialCharVector(tokens, {"("});
+  AddSpecialCharVector(tokens, {"_", ","});
+  AddWordVector(tokens, {arg});
+  AddSpecialCharVector(tokens, {")"});
 }
 
 TEST_CASE("Parse select query") {
@@ -30,12 +50,158 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses = controller.ParseAndGetClauses(tokens);
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership
-    std::unique_ptr<SelectClause> select_clause(dynamic_cast<SelectClause*>(clause.release()));
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s");
+  }
+  SECTION("1 read declaration; Select Clause") {
+    AddDeclaration(tokens, "read", {"r"});
+    AddWordVector(tokens, {"Select", "r"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "r");
+  }
+  SECTION("1 print declaration; Select Clause") {
+    AddDeclaration(tokens, "print", {"p"});
+    AddWordVector(tokens, {"Select", "p"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "p");
+  }
+  SECTION("1 call declaration; Select Clause") {
+    AddDeclaration(tokens, "call", {"c"});
+    AddWordVector(tokens, {"Select", "c"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "c");
+  }
+  SECTION("1 while declaration; Select Clause") {
+    AddDeclaration(tokens, "while", {"wh"});
+    AddWordVector(tokens, {"Select", "wh"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "wh");
+  }
+  SECTION("1 if declaration; Select Clause") {
+    AddDeclaration(tokens, "if", {"if"});
+    AddWordVector(tokens, {"Select", "if"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "if");
+  }
+  SECTION("1 assign declaration; Select Clause") {
+    AddDeclaration(tokens, "assign", {"as"});
+    AddWordVector(tokens, {"Select", "as"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "as");
+  }
+  SECTION("1 variable declaration; Select Clause") {
+    AddDeclaration(tokens, "variable", {"v"});
+    AddWordVector(tokens, {"Select", "v"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "v");
+  }
+  SECTION("1 constant declaration; Select Clause") {
+    AddDeclaration(tokens, "constant", {"c"});
+    AddWordVector(tokens, {"Select", "c"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "c");
+  }
+  SECTION("1 procedure declaration; Select Clause") {
+    AddDeclaration(tokens, "procedure", {"pr"});
+    AddWordVector(tokens, {"Select", "pr"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "pr");
   }
 
   SECTION("Multiple declarations for stmt; Select Clause") {
@@ -44,9 +210,11 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses = controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership
-    std::unique_ptr<SelectClause> select_clause(dynamic_cast<SelectClause*>(clause.release()));
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clause.release()));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
@@ -66,10 +234,117 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses = controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
+  }
+  SECTION("1 stmt; 1 print; 3 read declaration; Select + Follows(read, print") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddDeclaration(tokens, "print", {"pr1"});
+    AddDeclaration(tokens, "read", {"r1", "r2", "r3"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Follows"});
+    AddWordWord(tokens, "r1", "pr1");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+  }
+  SECTION("2 variable; 1 constant, 1 stmt; Select + Follows(_, variable") {
+    AddDeclaration(tokens, "variable", {"v1", "v2"});
+    AddDeclaration(tokens, "constant", {"c"});
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "v1", "such", "that", "Follows"});
+    AddWildWord(tokens, "s1");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "v1");
+  }
+}
+
+TEST_CASE("Parse Select + Follows* query") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("1 stmt; Select + Follows*(_, stmt)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Follows"});
+    AddSpecialCharVector(tokens, {"*"});
+    AddWildWord(tokens, "s1");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+  }
+}
+
+TEST_CASE("Parse Select + Parent query") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("1 stmt declaration; Select + Parent") {
+    AddDeclaration(tokens, "stmt", {"s123"});
+    AddWordVector(tokens, {"Select", "s123", "such", "that", "Parent"});
+    AddSpecialCharVector(tokens, {"("});
+    AddInteger(tokens, "1");
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"s123"});
+    AddSpecialCharVector(tokens, {")"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
+  }
+}
+
+TEST_CASE("Parse Select + Parent* query") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("1 stmt; Select + Parent*(_, stmt)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Parent"});
+    AddWildWord(tokens, "s1");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
 }

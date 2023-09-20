@@ -18,7 +18,6 @@ class AParser {
   // get the current token
   std::shared_ptr<Token> getCurrToken();
 
-
   virtual void parse() = 0;
 
   virtual ~AParser() = default;
