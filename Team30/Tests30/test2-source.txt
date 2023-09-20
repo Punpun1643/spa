@@ -1,0 +1,31 @@
+procedure Takehome {
+    print sasha;
+    gloria = b * 8;
+    c = 2;
+    a = 4 - gloria;
+    
+    while (sasha < c) {
+        sasha = b + c * a;
+        if (sasha > 1) then {
+           read a; 
+           gloria = gloria + b + c; }
+          else {
+           b = a % b + c * a;
+        }
+       b = a - b; 
+    }
+   read sasha; 
+   gloria = b / c * a; 
+
+    if (gloria > sasha) then {
+	     sasha = a - 4; 
+    }
+      else {
+	     gloria = 2; 
+    }
+
+   while (16 != (b + c)){
+       read c; 
+   }
+
+}
