@@ -1,52 +1,20 @@
 #include "StmtRef.h"
 
-#include "EntityType.h"
-#include "InvalidSemanticsException.h"
+#include <cassert>
 
-StmtRef::StmtRef() : ref_type(WILD) {}
+#include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-StmtRef::StmtRef(std::shared_ptr<PqlDeclaration> declaration) {
+StmtRef::StmtRef() : PqlReference() {}
+
+StmtRef::StmtRef(int stmt_num) : PqlReference(std::to_string(stmt_num)) {
+  assert(stmt_num >= 1);  // should have been caught at syntax checker stage
+}
+
+StmtRef::StmtRef(std::shared_ptr<PqlDeclaration const> declaration)
+    : PqlReference(declaration) {
   EntityType declaration_type = declaration->getEntityType();
   if (std::find(VALID_STMT_TYPES.begin(), VALID_STMT_TYPES.end(),
                 declaration_type) == VALID_STMT_TYPES.end()) {
-    throw InvalidSemanticsException("Not a statement type");
-  }
-
-  ref_type = DECLARATION;
-  this->declaration = declaration;
-}
-
-StmtRef::StmtRef(int stmt_num) {
-  if (stmt_num <= 0) {
-    throw InvalidSemanticsException("Statement number cannot be less than 1.");
-  }
-
-  ref_type = NUMBER;
-  this->stmt_num = stmt_num;
-}
-
-StmtRefType StmtRef::getStmtRefType() const { return ref_type; }
-
-int StmtRef::getStmtNum() const {
-  if (ref_type == NUMBER) {
-    return stmt_num;
-  } else {
-    throw std::runtime_error("StmtRef does not contain a statement number.");
-  }
-}
-
-std::shared_ptr<PqlDeclaration> StmtRef::getDeclaration() const {
-  if (ref_type == DECLARATION) {
-    return declaration;
-  } else {
-    throw std::runtime_error("StmtRef does not contain a PQL declaration.");
-  }
-}
-
-EntityType StmtRef::getDeclarationType() const {
-  if (ref_type == DECLARATION) {
-    return declaration->getEntityType();
-  } else {
-    throw std::runtime_error("StmtRef does not contain a PQL declaration.");
+    throw InvalidSemanticsException("Declaration is not a statement type");
   }
 }
