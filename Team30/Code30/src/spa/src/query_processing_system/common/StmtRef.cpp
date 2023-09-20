@@ -5,9 +5,7 @@
 StmtRef::StmtRef() : PqlReference() {}
 
 StmtRef::StmtRef(int stmt_num) : PqlReference(std::to_string(stmt_num)) {
-  if (stmt_num <= 0) {
-    throw std::runtime_error("Statement number cannot be less than 1.");
-  }
+  assert(stmt_num >= 1); // should have been caught at syntax checker stage
 }
 
 StmtRef::StmtRef(std::shared_ptr<PqlDeclaration const> declaration)

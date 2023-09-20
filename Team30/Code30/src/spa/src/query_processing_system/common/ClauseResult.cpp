@@ -61,11 +61,8 @@ int ClauseResult::getNumDeclarations() const { return num_declarations; }
 bool ClauseResult::isBooleanResult() const { return num_declarations == 0; }
 
 bool ClauseResult::getBooleanClauseValue() const {
-  if (!isBooleanResult()) {
-    throw std::runtime_error("ClauseResult obj has no boolean value.");
-  } else {
-    return boolean_clause_value;
-  }
+  assert(isBooleanResult());
+  return boolean_clause_value;
 }
 
 bool ClauseResult::contains(PqlDeclaration const& d) const {
@@ -75,7 +72,7 @@ bool ClauseResult::contains(PqlDeclaration const& d) const {
 std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
     PqlDeclaration const& declaration) const {
   if (value_map.count(declaration) == 0) {
-    throw std::runtime_error("Given declaration does not exist.");
+    throw std::invalid_argument("Given declaration does not exist.");
   }
   return std::make_unique<std::vector<std::string>>(value_map.at(declaration));
 }

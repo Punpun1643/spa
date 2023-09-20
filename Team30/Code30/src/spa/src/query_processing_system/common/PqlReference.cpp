@@ -17,29 +17,18 @@ PqlReference::PqlReference(std::string ref_value)
 PqlRefType PqlReference::getRefType() const { return ref_type; }
 
 std::string PqlReference::getValue() const {
-  if (ref_type == VALUE) {
-    return ref_value.value();
-  } else {
-    throw std::runtime_error("PqlReference does not contain a value.");
-  }
+  assert(ref_type == VALUE);
+  return ref_value.value();
 }
 
 std::shared_ptr<PqlDeclaration const> PqlReference::getDeclaration() const {
-  if (ref_type == DECLARATION) {
-    return ref_declaration;
-  } else {
-    throw std::runtime_error(
-        "PqlReference does not contain a PQL declaration.");
-  }
+  assert(ref_type == DECLARATION);
+  return ref_declaration;
 }
 
 EntityType PqlReference::getDeclarationType() const {
-  if (ref_type == DECLARATION) {
-    return ref_declaration->getEntityType();
-  } else {
-    throw std::runtime_error(
-        "PqlReference does not contain a PQL declaration.");
-  }
+  assert(ref_type == DECLARATION);
+  return ref_declaration->getEntityType();
 }
 
 PqlReference::~PqlReference() = default;
