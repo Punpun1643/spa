@@ -1,5 +1,8 @@
 #include "EntityExtractor.h"
 
+#include <algorithm>
+#include <iterator>
+
 EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
 
 void EntityExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
@@ -36,5 +39,15 @@ void EntityExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 }
 
 void EntityExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  // TODO
+  pkb.insertEntity(EntityType::ASSIGN, std::to_string(node->getStmtIndex()));
+
+  // Pattern insertion
+  std::unordered_set<std::string> vars = node->getVariables();
+  std::unordered_set<int> consts = node->getConstants();
+  std::unordered_set<std::string> rhs;
+  std::set_union(vars.begin(), vars.end(), consts.begin(), consts.end(),
+                 std::inserter(rhs, rhs.end()));
+
+  pkb.insertPattern(std::to_string(node->getStmtIndex()), node->getVarName(),
+                    rhs);
 }
