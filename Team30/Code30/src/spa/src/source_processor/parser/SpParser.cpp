@@ -1,11 +1,10 @@
 #include "SpParser.h"
 
+#include <iostream>
 #include <queue>
 #include <stack>
 #include <stdexcept>
 #include <unordered_set>
-
-#include <iostream>
 
 namespace SpParserConstant {
 
@@ -377,9 +376,46 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   return std::make_shared<CondExprNode>(variables, constants);
 }
 
-std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
+std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
+  // print out element in postfix queue
+  std::queue<std::shared_ptr<std::string>> temp = postFixQueue;
+  while (!temp.empty()) {
+    std::cout << *temp.front() << " " << std::endl;
+    temp.pop();
+  }
+  std::stack<std::shared_ptr<TreeNode>> treeStack;
 
-  std::cout << varName << std::endl;
+  while (!postFixQueue.empty()) {
+    auto element = postFixQueue.front();
+    postFixQueue.pop();
+
+    if (isOperator(element->c_str())) {
+      if (treeStack.size() < 2) {
+        throw std::invalid_argument(
+            "Invalid expression: insufficient operands for operator");
+      }
+
+      auto right = treeStack.top();
+      treeStack.pop();
+      auto left = treeStack.top();
+      treeStack.pop();
+
+      treeStack.push(std::make_shared<TreeNode>(*element, left, right));
+    } else {
+      treeStack.push(std::make_shared<TreeNode>(*element, nullptr, nullptr));
+    }
+  }
+
+  if (treeStack.size() != 1) {
+    throw std::invalid_argument(
+        "Invalid expression: mismatched operators and operands");
+  }
+
+  return treeStack.top();
+}
+
+std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   std::unordered_set<std::string> variables = std::unordered_set<std::string>();
   std::unordered_set<int> constants = std::unordered_set<int>();
 
@@ -404,7 +440,6 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
       }
 
     } else if (isOperator(currToken->getTokenVal())) {
-
       while (!operatorStack.empty() &&
              precedence(operatorStack.top()->c_str()) >=
                  precedence(currToken->getTokenVal())) {
@@ -444,10 +479,17 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
       std::make_shared<TreeNode>("0", nullptr, nullptr);
 
   nextToken();
+// note: looks like not all elemenet is passed to queue/stack
+//  try {
+//    exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
+//
+//  } catch (std::invalid_argument& e) {
+//    throw std::invalid_argument("Invalid expression");
+//  }
 
-  return std::make_shared<AssignNode> (currStmtIndex++, StmtType::ASSIGN_STMT,
-                                       variables, constants, varName,
-                                       exprTreeRoot);
+  return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
+                                      variables, constants, varName,
+                                      exprTreeRoot);
 }
 
 bool SpParser::isOperator(std::string const& tokenVal) {

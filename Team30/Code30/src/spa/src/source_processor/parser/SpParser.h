@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <queue>
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
@@ -16,6 +17,7 @@
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
 #include "../node/util_node/CondExprNode.h"
+#include "../node/util_node/TreeNode.h"
 
 class SpParser : public AParser {
  public:
@@ -43,6 +45,8 @@ class SpParser : public AParser {
 
   std::shared_ptr<ProgramNode> getSourceProgramNode();
 
+  static std::shared_ptr<TreeNode> buildExprTreeAndValidate(std::queue<std::shared_ptr<std::string>>& postFixQueue);
+
   void parse() override;
 
   ~SpParser() = default;
@@ -52,7 +56,7 @@ class SpParser : public AParser {
 
   int precedence(std::string const& op);
 
-  bool isOperator(std::string const& tokenVal);
+  static bool isOperator(std::string const& tokenVal);
 
   bool isComparisonOperator(std::string const& tokenVal);
 

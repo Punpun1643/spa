@@ -1,8 +1,8 @@
 #include "../../spa/src/shared/tokenizer/token/EofToken.h"
+#include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
 #include "../../spa/src/shared/tokenizer/token/SpecialCharToken.h"
 #include "../../spa/src/shared/tokenizer/token/Token.h"
 #include "../../spa/src/shared/tokenizer/token/WordToken.h"
-#include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
 #include "../../spa/src/source_processor/node/stmt_node/StmtType.h"
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
@@ -438,7 +438,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
   }
 
   SECTION(
-      "Test valid assign stmt is able to return the correct varName, constants, and variables") {
+      "Test valid assign stmt is able to return the correct varName, "
+      "constants, and variables") {
     /*
      * x = 1 + y;
      */
@@ -455,9 +456,40 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     tokens.push_back(std::make_shared<EofToken>());
 
     SpParser parser = SpParser(tokens);
-    auto assignNode = std::dynamic_pointer_cast<AssignNode>(parser.parseStmtLst()->getChildren().at(0));
-        REQUIRE(assignNode->getVarName() == "x");
-        REQUIRE(assignNode->getConstants().size() == 1);
-        REQUIRE(assignNode->getVariables().size() == 1);
+    auto assignNode = std::dynamic_pointer_cast<AssignNode>(
+        parser.parseStmtLst()->getChildren().at(0));
+    REQUIRE(assignNode->getVarName() == "x");
+    REQUIRE(assignNode->getConstants().size() == 1);
+    REQUIRE(assignNode->getVariables().size() == 1);
+  }
+
+  SECTION(
+      "Test valid assign stmt with many variables and operators return the "
+      "correct constants and variables") {
+    /*
+     * normSq = cenX * cenX + cenY * cenY;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<WordToken>("normSq"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("="));
+    tokens.push_back(std::make_shared<WordToken>("cenX"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<WordToken>("cenX"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("cenY"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("*"));
+    tokens.push_back(std::make_shared<WordToken>("cenY"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("}")));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    auto assignNode = std::dynamic_pointer_cast<AssignNode>(
+        parser.parseStmtLst()->getChildren().at(0));
+    REQUIRE(assignNode->getConstants().size() == 0);
+    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getVarName() == "normSq");
   }
 }
