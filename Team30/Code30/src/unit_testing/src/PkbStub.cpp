@@ -128,9 +128,11 @@ PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 
 
 // Pattern clause
-void PkbStub::insertPatternNode(std::shared_ptr<AssignNode> node){};
+void PkbStub::insertPattern(std::string statement_number, std::string lhs,
+                            std::unordered_set<std::string> rhs){};
 
-std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) {
+std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
+    std::string rhs_expr, MatchType expr_match_type) {
   return std::make_unique<std::vector<std::string>>();
 };
 
