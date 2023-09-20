@@ -162,9 +162,60 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(assignNode1->getVarName() == "x");
     REQUIRE(assignNode1->getVariables().size() == 0);
     REQUIRE(assignNode1->getConstants().size() == 1);
-    auto variables = assignNode1->getVariables();
-    auto constants = assignNode1->getConstants();
-    REQUIRE(constants.find(2) != constants.end());
+    auto constants1 = assignNode1->getConstants();
+    REQUIRE(constants1.find(2) != constants1.end());
+
+    REQUIRE(assignNode2->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(assignNode2->getStmtIndex() == 2);
+    REQUIRE(assignNode2->getVarName() == "z");
+    REQUIRE(assignNode2->getVariables().size() == 0);
+    REQUIRE(assignNode2->getConstants().size() == 1);
+    auto constants2 = assignNode2->getConstants();
+    REQUIRE(constants2.find(3) != constants2.end());
+
+    REQUIRE(assignNode3->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(assignNode3->getStmtIndex() == 3);
+    REQUIRE(assignNode3->getVarName() == "i");
+    REQUIRE(assignNode3->getVariables().size() == 0);
+    REQUIRE(assignNode3->getConstants().size() == 1);
+    auto constants3 = assignNode3->getConstants();
+    REQUIRE(constants3.find(5) != constants3.end());
+
+    REQUIRE(whileNode->getStmtType() == StmtType::WHILE_STMT);
+    REQUIRE(whileNode->getStmtIndex() == 4);
+
+    auto whileCondExpr = whileNode->getCondExpr();
+    auto whileStmtLst = whileNode->getStmtLst();
+    auto whileCondExprVariables = whileCondExpr->getVariables();
+    auto whileCondExprConstants = whileCondExpr->getConstants();
+    REQUIRE(whileCondExprVariables.size() == 1);
+    REQUIRE(whileCondExprConstants.size() == 1);
+
+    auto whileStmtAssign1 = std::dynamic_pointer_cast<AssignNode>(
+        whileStmtLst->getChildren().at(0));
+    auto whileIfStmt =
+        std::dynamic_pointer_cast<IfNode>(whileStmtLst->getChildren().at(1));
+    auto whileStmtAssign2 = std::dynamic_pointer_cast<AssignNode>(
+        whileStmtLst->getChildren().at(2));
+    auto whileCallStmt =
+        std::dynamic_pointer_cast<CallNode>(whileStmtLst->getChildren().at(3));
+    auto whileStmtAssign3 = std::dynamic_pointer_cast<AssignNode>(
+        whileStmtLst->getChildren().at(4));
+
+    REQUIRE(whileCondExprVariables.find("i") != whileCondExprVariables.end());
+    REQUIRE(whileCondExprConstants.find(0) != whileCondExprConstants.end());
+
+    REQUIRE(whileStmtAssign1->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(whileStmtAssign1->getStmtIndex() == 5);
+    REQUIRE(whileStmtAssign1->getVarName() == "x");
+    REQUIRE(whileStmtAssign1->getVariables().size() == 1);
+    REQUIRE(whileStmtAssign1->getConstants().size() == 1);
+
+    auto whileStmtAssign1ExprTreeRoot = whileStmtAssign1->getRootOfTree();
+    REQUIRE(whileStmtAssign1ExprTreeRoot->getVal() == "-");
+    REQUIRE(whileStmtAssign1ExprTreeRoot->getLeftSubTree()->getVal() == "x");
+    REQUIRE(whileStmtAssign1ExprTreeRoot->getRightSubTree()->getVal() == "1");
+    // continue from line 6
 
     // stmt: procedure p
     REQUIRE(stmtLstNode2->getChildren().size() == 2);

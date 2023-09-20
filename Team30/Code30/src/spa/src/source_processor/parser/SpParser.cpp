@@ -256,6 +256,8 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 }
 
 std::shared_ptr<WhileNode> SpParser::parseWhile() {
+  int whileStmtIndex = currStmtIndex++;
+
   std::shared_ptr<Token> currToken = getCurrToken();
   std::shared_ptr<CondExprNode> condExpr;
   std::shared_ptr<StmtLstNode> stmtLst;
@@ -290,7 +292,7 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
   }
 
   nextToken();
-  return std::make_shared<WhileNode>(currStmtIndex++, StmtType::WHILE_STMT,
+  return std::make_shared<WhileNode>(whileStmtIndex, StmtType::WHILE_STMT,
                                      condExpr, stmtLst);
 }
 
