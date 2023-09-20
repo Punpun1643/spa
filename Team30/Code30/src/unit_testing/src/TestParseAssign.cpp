@@ -440,4 +440,23 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     SpParser parser = SpParser(tokens);
     REQUIRE_THROWS(parser.parseAssign("x"));
   }
+
+  SECTION(
+      "Test invalid assign stmt with invalid operand should throw an error") {
+    /*
+     * x = 1 + y && 2;
+     */
+    std::vector<std::shared_ptr<Token>> tokens;
+
+    tokens.push_back(std::make_shared<IntegerToken>("1"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("+"));
+    tokens.push_back(std::make_shared<WordToken>("y"));
+    tokens.push_back(std::make_shared<SpecialCharToken>("&&"));
+    tokens.push_back(std::make_shared<IntegerToken>("2"));
+    tokens.push_back(std::make_shared<SpecialCharToken>(";"));
+    tokens.push_back(std::make_shared<EofToken>());
+
+    SpParser parser = SpParser(tokens);
+    REQUIRE_THROWS(parser.parseAssign("x"));
+  }
 }

@@ -439,7 +439,7 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
         constants.insert(std::stoi(currToken->getTokenVal()));
       }
 
-    } else if (isOperator(currToken->getTokenVal())) {
+    } else if (isMathematicalOperator(currToken->getTokenVal())) {
       while (!operatorStack.empty() &&
              precedence(operatorStack.top()->c_str()) >=
                  precedence(currToken->getTokenVal())) {
@@ -526,6 +526,14 @@ bool SpParser::isLogicalOperator(std::string const& tokenVal) {
   return tokenVal == SpRelationLogicalOperator::AND ||
          tokenVal == SpRelationLogicalOperator::OR ||
          tokenVal == SpRelationLogicalOperator::NOT;
+}
+
+bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
+  return tokenVal == SpParserMathOperator::PLUS ||
+         tokenVal == SpParserMathOperator::MINUS ||
+         tokenVal == SpParserMathOperator::MULTIPLY ||
+         tokenVal == SpParserMathOperator::DIVIDE ||
+         tokenVal == SpParserMathOperator::MODULO;
 }
 
 // helper function to calculate precedence of an operator

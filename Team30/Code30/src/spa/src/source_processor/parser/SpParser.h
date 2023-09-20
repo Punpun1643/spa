@@ -54,13 +54,15 @@ class SpParser : public AParser {
  private:
   int currStmtIndex = 1;
 
-  int precedence(std::string const& op);
+  static int precedence(std::string const& op);
 
   static bool isOperator(std::string const& tokenVal);
 
-  bool isComparisonOperator(std::string const& tokenVal);
+  static bool isComparisonOperator(std::string const& tokenVal);
 
-  bool isLogicalOperator(std::string const& tokenVal);
+  static bool isLogicalOperator(std::string const& tokenVal);
+
+  static bool isMathematicalOperator(std::string const& tokenVal);
 
   std::shared_ptr<ProgramNode> sourceProgramNode;
 };
