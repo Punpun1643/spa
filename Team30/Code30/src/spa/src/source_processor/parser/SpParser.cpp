@@ -475,17 +475,22 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
     throw std::invalid_argument("Unmatched parentheses");
   }
 
+  while (!operatorStack.empty()) {
+      postFixQueue.push(operatorStack.top());
+      operatorStack.pop();
+  }
+
   std::shared_ptr<TreeNode> exprTreeRoot =
       std::make_shared<TreeNode>("0", nullptr, nullptr);
 
   nextToken();
-// note: looks like not all elemenet is passed to queue/stack
-//  try {
-//    exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
-//
-//  } catch (std::invalid_argument& e) {
-//    throw std::invalid_argument("Invalid expression");
-//  }
+
+  try {
+    exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
+
+  } catch (std::invalid_argument& e) {
+    throw std::invalid_argument("Invalid expression");
+  }
 
   return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
                                       variables, constants, varName,
