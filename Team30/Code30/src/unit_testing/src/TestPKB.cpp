@@ -158,13 +158,13 @@ TEST_CASE("Uses and Modifies") {
   pkb.insertEntity(EntityType::CALL, "6");
   pkb.insertEntity(EntityType::ASSIGN, "7");
 
-  pkb.insertRelation(RelationType::USES, "3", "x");
-  pkb.insertRelation(RelationType::USES, "4", "y");
-  pkb.insertRelation(RelationType::USES, "sub", "x");
+  pkb.insertRelation(RelationType::USES_S, "3", "x");
+  pkb.insertRelation(RelationType::USES_S, "4", "y");
+  pkb.insertRelation(RelationType::USES_P, "sub", "x");
 
-  pkb.insertRelation(RelationType::MODIFIES, "main", "x");
-  pkb.insertRelation(RelationType::MODIFIES, "5", "x");
-  pkb.insertRelation(RelationType::MODIFIES, "7", "y");
+  pkb.insertRelation(RelationType::MODIFIES_P, "main", "x");
+  pkb.insertRelation(RelationType::MODIFIES_S, "5", "x");
+  pkb.insertRelation(RelationType::MODIFIES_S, "7", "y");
 
   // added USES relation for statement
   REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
