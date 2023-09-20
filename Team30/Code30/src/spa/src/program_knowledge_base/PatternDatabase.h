@@ -9,9 +9,12 @@
 #include "tables/UFDSTable.h"
 
 class PatternDatabase {
+  // stores {statement_number : assigned variable}
   std::unordered_map<std::string, std::string> lhs = {};
+  // stores {assigned variable : statement_number}
   std::unordered_map<std::string, std::unordered_set<std::string>> inverse_lhs =
       {};
+  // stores {RHS variable/constant : statement_number}
   std::unordered_map<std::string, std::unordered_set<std::string>> inverse_rhs =
       {};
 

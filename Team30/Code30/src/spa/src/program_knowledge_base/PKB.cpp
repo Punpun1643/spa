@@ -286,11 +286,15 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PKB::getPatternMatchesWithLhsType(std::string rhs_expr,
                                   MatchType expr_match_type) {
-  std::unordered_set<std::string> rhs_statements =
-      patData->getStatementNumbersGivenRHS(rhs_expr);
+  std::unordered_set<std::string> statements;
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    statements = *entData->get(EntityType::ASSIGN);
+  } else {
+    statements = patData->getStatementNumbersGivenRHS(rhs_expr);
+  }
 
   std::vector<std::pair<std::string, std::string>> output;
-  for (std::string st_num : rhs_statements) {
+  for (std::string st_num : statements) {
     output.push_back(
         make_pair(st_num, patData->getVarGivenStatementNum(st_num)));
   }

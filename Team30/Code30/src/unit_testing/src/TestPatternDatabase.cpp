@@ -30,4 +30,8 @@ TEST_CASE("Pattern Database insertion and retrieval") {
           std::unordered_set<std::string>({"5"}));
   REQUIRE(db.getStatementNumbersGivenRHS("1") ==
           std::unordered_set<std::string>({"3"}));
+
+  REQUIRE(db.getVarGivenStatementNum("3") == "x");
+  REQUIRE(db.getVarGivenStatementNum("4") == "y");
+  REQUIRE(db.getVarGivenStatementNum("5") == "x");
 }
