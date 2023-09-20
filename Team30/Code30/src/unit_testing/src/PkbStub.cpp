@@ -1,4 +1,5 @@
 #include "PkbStub.h"
+#include <iostream>
 
 PkbStub::PkbStub()
     : insertEntityCallCount(0),
@@ -11,6 +12,7 @@ PkbStub::PkbStub()
 
 void PkbStub::insertEntity(EntityType type, std::string entity) {
   insertEntityCallCount++;
+  // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
 void PkbStub::insertRelationCommon(RelationType type) {
@@ -67,7 +69,7 @@ void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
 // Pattern clause
 void PkbStub::insertPattern(std::string statement_number, std::string lhs,
                             std::unordered_set<std::string> rhs) {
-  insertEntityCallCount++;
+  insertPatternCallCount++;
 };
 
 std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
