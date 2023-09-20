@@ -63,7 +63,7 @@ class PkbStub : public PkbApi {
 
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
-                     std::unordered_set<std::string> rhs);
+                     std::unordered_set<std::string> rhs) override;
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
 
 
