@@ -240,6 +240,9 @@ PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 
 
 // Pattern clause
+void PKB::insertPattern(std::string statement_number, std::string lhs,
+                        std::unordered_set<std::string> rhs){};
+
 std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) {
     return std::make_unique<std::vector<std::string>>();
 };

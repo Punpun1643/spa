@@ -1,4 +1,7 @@
 #pragma once
+#include <source_processor/node/stmt_node/AssignNode.h>
+#include <source_processor/node/stmt_node/StmtNode.h>
+
 #include <memory>
 #include <optional>
 #include <string>
@@ -72,16 +75,19 @@ class PkbApi {
                     RelationType rel_type) = 0;
 
   // Pattern Clauses
-  virtual std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) = 0;
-
-
-  virtual std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                                        MatchType expr_match_type) = 0;
-
-  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-  virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                                         std::string rhs_expr,
-                                                                                                         MatchType expr_match_type) = 0;
+  virtual void insertPattern(std::string statement_number, std::string lhs,
+                             std::unordered_set<std::string> rhs) = 0;
+  virtual std::unique_ptr<std::vector<std::string>>
+  getPatternMatchesWithWildLhs(std::string rhs_expr,
+                               MatchType expr_match_type) = 0;
+  virtual std::unique_ptr<std::vector<std::string>>
+  getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
+                                MatchType expr_match_type) = 0;
+  // 2 paired values - for the implicit assign declaration, and the values for
+  // the given lhs_entity_type
+  virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesWithLhsType(EntityType lhs_entity_type, std::string rhs_expr,
+                               MatchType expr_match_type) = 0;
 
   virtual ~PkbApi();  // so that the subclass destructors will be called
 };
