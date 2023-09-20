@@ -47,6 +47,9 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 12);
+  }
 }
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
@@ -65,6 +68,9 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
     REQUIRE(pkb.insertUsesCallCount == 9);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 4);
   }
 }
 
