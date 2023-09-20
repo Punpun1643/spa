@@ -1,6 +1,9 @@
 #include "SyntaxChecker.h"
 
+#include <iostream>
 #include <stdexcept>
+
+#include "../exceptions/InvalidSyntaxException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens){};
@@ -117,10 +120,11 @@ void SyntaxChecker::CheckSuchThat() {
       throw std::runtime_error("Invalid such that clause structure");
     }
   }
+  nextToken();
 }
 
 void SyntaxChecker::CheckEOF() {
   if (!IsEOFToken(getCurrToken())) {
-    throw std::runtime_error("Invalid query syntax");
+    throw InvalidSyntaxException("Invalid query syntax: EOF Token expected");
   }
 }

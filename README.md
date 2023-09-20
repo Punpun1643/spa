@@ -42,7 +42,7 @@ No additional instructions required.
 
 Name | Mobile | Email                   | Development OS/Toolchain
 -:|:-:|:------------------------|-|
-Lee Kang Wei | 99887766 | john@doe.com            |
+Lee Kang Wei | 99887766 | leekangwei@u.nus.edu             | **OS:** macOS Ventura 13.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
 Lim Wei Liang | 99887766 | john@doe.com            |
 Papattarada Apithanangsiri | 99887766 | papattarada.a@u.nus.edu | **OS:** macOS Ventura 13.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
 Ryan Ong Ren-An | 99887766 | john@doe.com            |

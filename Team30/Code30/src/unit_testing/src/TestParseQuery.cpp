@@ -4,88 +4,72 @@
 
 #include "../../spa/src/query_processing_system/QPSController.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
-#include "../../spa/src/shared/tokenizer/token/EofToken.h"
-#include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
-#include "../../spa/src/shared/tokenizer/token/SpecialCharToken.h"
-#include "../../spa/src/shared/tokenizer/token/Token.h"
-#include "../../spa/src/shared/tokenizer/token/WordToken.h"
+#include "ParserHelperFunctions.h"
 #include "catch.hpp"
 
-/* // TODO: Isolate test cases away from token implementation */
-/* TEST_CASE("Parse select query") { */
-/*   std::vector<std::shared_ptr<Token>> tokens; */
+static void AddDeclaration(std::vector<std::shared_ptr<Token>>& tokens, std::string design_entity, std::vector<std::string> synonyms) {
+  AddWordVector(tokens, {design_entity});
+  AddWordVector(tokens, {synonyms[0]});
+  if (synonyms.size() > 1) {
+    std::vector<std::string> sliced_synonyms(synonyms.begin() + 1, synonyms.end());
+    for (const std::string& synonym : sliced_synonyms) {
+      AddSpecialCharVector(tokens, {","});
+      AddWordVector(tokens, {synonym});
+    }
+  }
+  AddSpecialCharVector(tokens, {";"});
+}
 
-/*   SECTION("Valid Select") { */
-/*     tokens.push_back( */
-/*         std::static_pointer_cast<Token>(std::make_shared<WordToken>("stmt"))); */
-/*     tokens.push_back( */
-/*         std::static_pointer_cast<Token>(std::make_shared<WordToken>("s"))); */
-/*     tokens.push_back(std::static_pointer_cast<Token>( */
-/*         std::make_shared<SpecialCharToken>(";"))); */
-/*     tokens.push_back( */
-/*         std::static_pointer_cast<Token>(std::make_shared<WordToken>("Select"))); */
-/*     tokens.push_back( */
-/*         std::static_pointer_cast<Token>(std::make_shared<WordToken>("s"))); */
-/*     tokens.push_back( */
-/*         std::static_pointer_cast<Token>(std::make_shared<EofToken>())); */
+TEST_CASE("Parse select query") {
+  std::vector<std::shared_ptr<Token>> tokens;
 
-/*     QPSController controller = QPSController(); */
-/*     std::vector<std::shared_ptr<Clause>> clause_list = */
-/*         controller.ParseAndGetClauses(tokens); */
+  SECTION("1 stmt declaration; Select Clause") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s"});
+    AddEOF(tokens);
 
-/*     std::shared_ptr<SelectClause> select_clause = */
-/*         std::static_pointer_cast<SelectClause>(clause_list[0]); */
-/*   /1* std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership *1/ */
-/*   /1* std::unique_ptr<SelectClause> selectClause(dynamic_cast<SelectClause*>(clause.release())); *1/ */
+    QPSController controller = QPSController();
 
-/*     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s"); */
-/*     /1* std::cout << "test4 " << *(select_clause->getDeclaration()->getName()) << */
-/*      * "\n"; *1/ */
-/*     /1* std::cout << "test5 " << select_clause->getDeclaration()->getEntityType() */
-/*      * << "\n"; *1/ */
-/*   } */
+    std::vector<std::unique_ptr<Clause>> clauses = controller.ParseAndGetClauses(tokens);
 
-  /* SECTION("Valid Select and Follows") { */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("stmt")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("s")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(";")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("Select")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("s")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("such")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("that")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<WordToken>("Follows")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>("(")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<IntegerToken>("2")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(",")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<IntegerToken>("3")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<SpecialCharToken>(")")));
-   */
-  /*   tokens.push_back( */
-  /*       std::static_pointer_cast<Token>(std::make_shared<EofToken>())); */
-  /* } */
-/* } */
+    std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership
+    std::unique_ptr<SelectClause> select_clause(dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s");
+  }
+
+  SECTION("Multiple declarations for stmt; Select Clause") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2", "Select"});
+    AddWordVector(tokens, {"Select", "s1"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses = controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership
+    std::unique_ptr<SelectClause> select_clause(dynamic_cast<SelectClause*>(clause.release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+  }
+}
+
+TEST_CASE("Parse Select + Follows query") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("1 stmt declaration; Select + Follows") {
+    AddDeclaration(tokens, "stmt", {"s123"});
+    AddWordVector(tokens, {"Select", "s123", "such", "that", "Follows"});
+    AddSpecialCharVector(tokens, {"("});
+    AddInteger(tokens, "1");
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"s123"});
+    AddSpecialCharVector(tokens, {")"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses = controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
+  }
+}
