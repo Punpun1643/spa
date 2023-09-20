@@ -8,6 +8,7 @@
 
 #include "../query_processing_system/common/EntityType.h"
 #include "RelationType.h"
+#include "query_processing_system/common/MatchType.h"
 
 class PkbApi {
  public:
@@ -69,6 +70,18 @@ class PkbApi {
   virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                     RelationType rel_type) = 0;
+
+  // Pattern Clauses
+  virtual std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) = 0;
+
+
+  virtual std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
+                                                                                        MatchType expr_match_type) = 0;
+
+  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
+  virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
+                                                                                                         std::string rhs_expr,
+                                                                                                         MatchType expr_match_type) = 0;
 
   virtual ~PkbApi();  // so that the subclass destructors will be called
 };

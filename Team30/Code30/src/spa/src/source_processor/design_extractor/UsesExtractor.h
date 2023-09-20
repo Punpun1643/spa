@@ -5,6 +5,7 @@
 #include "../node/ProcedureNode.h"
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
+#include "../node/stmt_node/AssignNode.h"
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
@@ -32,7 +33,9 @@ class UsesExtractor : public IDesignExtractor {
 
   void extractFromIf(std::shared_ptr<IfNode> node) override;
 
-  // void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+  void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+
+  void popUsesActors();
 
   ~UsesExtractor() = default;
 
@@ -40,4 +43,9 @@ class UsesExtractor : public IDesignExtractor {
   PkbApi& pkb;
 
   std::vector<std::string> usesActors;
+
+  void insertCondVars(std::unordered_set<std::string> condVars,
+                      std::string stmtIndex);
+
+  void insertVarWithActors(std::string var);
 };

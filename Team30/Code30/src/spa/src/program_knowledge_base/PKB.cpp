@@ -20,21 +20,52 @@ PKB::PKB() : PkbApi() {
       {RelationType::PARENT, {RelationType::PARENT, RelationType::PARENT_STAR}},
 
       {RelationType::USES_S, {RelationType::USES_S}},
-      {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}}};
-};
+      {RelationType::USES_P, {RelationType::USES_P}},
+
+      {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}},
+      {RelationType::MODIFIES_P, {RelationType::MODIFIES_P}}
+  };
+
+  };
+
 
 // ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
   entData->insert(type, entity);
 };
 
-void PKB::insertRelation(RelationType type, std::string stmt1,
-                         std::string stmt2) {
+void PKB::insertRelation(RelationType type, std::string input1,
+                         std::string input2) {
   // Inserts into more than 1 table simultaneously
   // Add all related tables to relatedTables
-  for (RelationType rt : relatedTables[type]) {
+
+  // For MODIFIES and USES, Check the type of the first string input1
+  // If first char is an int then it is a stmt_num and it needs to be placed in _S table
+  // else it is a procedure and should be placed in _P table
+  RelationType target = type;
+  char firstChar = input1.at(0);
+
+  if (target == RelationType::USES) {
+    if (isdigit(firstChar)) { //Stmt Num
+      target = RelationType::USES_S;
+    } else { //procedure
+      target = RelationType::USES_P;
+    }
+  }
+
+  if (target == RelationType::MODIFIES) {
+    if (isdigit(firstChar)) {  // Stmt Num
+      target = RelationType::MODIFIES_S;
+    } else { //procedure
+      target = RelationType::MODIFIES_P;
+    }
+  }
+
+
+  for (RelationType rt : relatedTables[target]) {
     std::shared_ptr<BaseTable> table = relData->getTable(rt);
-    table->insert(stmt1, stmt2);
+    table->insert(input1, input2);
+
   }
 };
 
@@ -116,7 +147,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
       rel_type == RelationType::MODIFIES_P) { // TODO: CLEAN THIS UP
     ents2 = entData->get(EntityType::VARIABLE);
   } else {
-    ents2 = entData -> get(EntityType::STMT);
+    ents2 = entData->get(EntityType::STMT);
   }
 
   // TODO: Optimise
@@ -205,4 +236,23 @@ PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
   }
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       output);
+};
+
+
+// Pattern clause
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) {
+    return std::make_unique<std::vector<std::string>>();
+};
+
+
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
+                                                                        MatchType expr_match_type) {
+    return std::make_unique<std::vector<std::string>>();
+};
+
+// 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>> PKB::getPatternMatchesWithLhsType(EntityType lhs_entity_type,
+                                                                                               std::string rhs_expr,
+                                                                                               MatchType expr_match_type) {
+    return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 };

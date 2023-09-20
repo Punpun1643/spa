@@ -25,4 +25,5 @@ class ExtractionController : public IExtractionController {
   PkbApi& pkb;
 
   void handleContainerStmts(std::shared_ptr<StmtNode> node);
+  void popActors();
 };
