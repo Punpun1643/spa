@@ -1,4 +1,5 @@
 #include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "source_processor/node/stmt_node/StmtNode.h"
 
 class PkbStub : public PkbApi {
  public:
@@ -22,7 +23,7 @@ class PkbStub : public PkbApi {
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void insertRelation(RelationType rel_type, std::string s_line_num,
-                      EntityType ent_type, std::string enity) override;
+                      EntityType ent_type, std::string entity) override;
   void insertRelation(RelationType rel_type, EntityType ent_type,
                       std::string entity, std::string s_line_num) override;
   void insertRelation(RelationType rel_type, EntityType ent_type1,
@@ -62,6 +63,8 @@ class PkbStub : public PkbApi {
 
 
   // Pattern clause
+  void insertPattern(std::string statement_number, std::string lhs,
+                     std::unordered_set<std::string> rhs) override;
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
 
 

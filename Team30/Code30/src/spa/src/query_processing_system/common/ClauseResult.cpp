@@ -1,6 +1,7 @@
 #include "ClauseResult.h"
 
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 #include <stdexcept>
 
@@ -8,15 +9,28 @@ ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
 ClauseResult::ClauseResult(PqlDeclaration d,
-                           std::unique_ptr<std::vector<std::string>> values)
-    : num_declarations(1) {
-  /* Create clause result with 1 declaration */
+                           std::unique_ptr<std::vector<std::string>> values) {
+  if (values->empty()) {
+    // Entire clause becomes false because no possible values
+    num_declarations = 0;
+    boolean_clause_value = false;
+    return;
+  }
+  // Create clause result with 1 declaration
+  num_declarations = 1;
   value_map[d] = *values;
 }
 
 ClauseResult::ClauseResult(
     PqlDeclaration d1, PqlDeclaration d2,
     std::unique_ptr<std::vector<std::pair<std::string, std::string>>> values) {
+  if (values->empty()) {
+    // Entire clause becomes false because no possible values
+    num_declarations = 0;
+    boolean_clause_value = false;
+    return;
+  }
+
   /* Create a clause result with paired declarations */
   if (d1 == d2) {
     num_declarations = 1;
@@ -48,11 +62,8 @@ int ClauseResult::getNumDeclarations() const { return num_declarations; }
 bool ClauseResult::isBooleanResult() const { return num_declarations == 0; }
 
 bool ClauseResult::getBooleanClauseValue() const {
-  if (!isBooleanResult()) {
-    throw std::runtime_error("ClauseResult obj has no boolean value.");
-  } else {
-    return boolean_clause_value;
-  }
+  assert(isBooleanResult());
+  return boolean_clause_value;
 }
 
 bool ClauseResult::contains(PqlDeclaration const& d) const {
@@ -62,7 +73,7 @@ bool ClauseResult::contains(PqlDeclaration const& d) const {
 std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
     PqlDeclaration const& declaration) const {
   if (value_map.count(declaration) == 0) {
-    throw std::runtime_error("Given declaration does not exist.");
+    throw std::invalid_argument("Given declaration does not exist.");
   }
   return std::make_unique<std::vector<std::string>>(value_map.at(declaration));
 }
