@@ -476,8 +476,8 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   }
 
   while (!operatorStack.empty()) {
-      postFixQueue.push(operatorStack.top());
-      operatorStack.pop();
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
   }
 
   std::shared_ptr<TreeNode> exprTreeRoot =
@@ -487,7 +487,6 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
 
   try {
     exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
-
   } catch (std::invalid_argument& e) {
     throw std::invalid_argument("Invalid expression");
   }
