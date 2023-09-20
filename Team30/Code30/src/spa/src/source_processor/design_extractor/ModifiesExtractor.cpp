@@ -28,7 +28,8 @@ void ModifiesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
 }
 
 void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  insertIntoPkb(std::to_string(node->getStmtIndex()), node->getVarName());
+  pkb.insertRelation(RelationType::MODIFIES_S,
+                     std::to_string(node->getStmtIndex()), node->getVarName());
   insertVarWithActors(node->getVarName());
 }
 
@@ -41,7 +42,7 @@ void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 }
 
 void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  pkb.insertRelation(RelationType::MODIFIES,
+  pkb.insertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->getStmtIndex()), node->getVarName());
   insertVarWithActors(node->getVarName());
 }
@@ -51,11 +52,6 @@ void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
 // PRIVATE HELPER FUNCTIONS
 //
 //////////////////////////////
-
-void ModifiesExtractor::insertIntoPkb(std::string actor, std::string var) {
-  pkb.insertRelation(RelationType::MODIFIES, actor, var);
-  // std::cout << "MODS (" + actor + ", " + var + ")\n";
-}
 
 void ModifiesExtractor::popModifiesActor() {
   if (!modifiesActors.empty()) {
@@ -70,9 +66,9 @@ void ModifiesExtractor::insertVarWithActors(std::string var) {
         !modifiesActor.empty() &&
         std::all_of(modifiesActor.begin(), modifiesActor.end(), ::isdigit);
     if (isStmtIndex) {
-      pkb.insertRelation(RelationType::MODIFIES, modifiesActor, var);
+      pkb.insertRelation(RelationType::MODIFIES_S, modifiesActor, var);
     } else {
-      pkb.insertRelation(RelationType::MODIFIES, modifiesActor, var);
+      pkb.insertRelation(RelationType::MODIFIES_P, modifiesActor, var);
     }
   }
 }
