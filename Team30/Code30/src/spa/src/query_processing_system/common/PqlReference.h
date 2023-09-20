@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <optional>
 
 #include "EntityType.h"
 #include "PqlDeclaration.h"

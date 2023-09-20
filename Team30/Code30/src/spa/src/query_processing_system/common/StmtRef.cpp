@@ -1,11 +1,13 @@
 #include "StmtRef.h"
 
+#include <cassert>
+
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 StmtRef::StmtRef() : PqlReference() {}
 
 StmtRef::StmtRef(int stmt_num) : PqlReference(std::to_string(stmt_num)) {
-  assert(stmt_num >= 1); // should have been caught at syntax checker stage
+  assert(stmt_num >= 1);  // should have been caught at syntax checker stage
 }
 
 StmtRef::StmtRef(std::shared_ptr<PqlDeclaration const> declaration)

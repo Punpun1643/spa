@@ -1,5 +1,6 @@
 #include "PqlReference.h"
 
+#include <cassert>
 #include <utility>
 
 #include "EntityType.h"

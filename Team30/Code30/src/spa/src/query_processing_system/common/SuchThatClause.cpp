@@ -1,5 +1,7 @@
 #include "SuchThatClause.h"
 
+#include <cassert>
+
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 SuchThatClause::~SuchThatClause() = default;
 
