@@ -93,6 +93,6 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
         tokens.push_back(std::make_shared<EofToken>());
 
         SpParser parser = SpParser(tokens);
-//        REQUIRE_THROWS(parser.parseAssign("x"));
+        REQUIRE_THROWS(parser.parseAssign("x"));
   }
 }
