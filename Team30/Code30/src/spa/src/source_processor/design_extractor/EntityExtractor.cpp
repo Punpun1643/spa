@@ -1,6 +1,7 @@
 #include "EntityExtractor.h"
 
 #include <algorithm>
+#include <unordered_set>
 #include <iterator>
 
 EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
@@ -43,7 +44,11 @@ void EntityExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
 
   // Pattern insertion
   std::unordered_set<std::string> vars = node->getVariables();
-  std::unordered_set<int> consts = node->getConstants();
+  std::unordered_set<int> constsAsInt = node->getConstants();
+  std::unordered_set<std::string> consts;
+  std::transform(constsAsInt.begin(), constsAsInt.end(),
+                 std::inserter(consts, consts.end()),
+                 [](int num) { return std::to_string(num); });
   std::unordered_set<std::string> rhs;
   std::set_union(vars.begin(), vars.end(), consts.begin(), consts.end(),
                  std::inserter(rhs, rhs.end()));
