@@ -1,84 +1,39 @@
 #include "IntermediateResultsTable.h"
+#include "ArrayUtility.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 
 void IntermediateResultsTable::addBooleanClauseResult(bool result) {
   if (!result) {
     has_no_results = true;
-  }
+  } // otherwise, do nothing
 }
 
 void IntermediateResultsTable::addSingleDeclaration(const PqlDeclaration & d, std::unique_ptr<std::vector<std::string>> values) {
+  // Declaration doesn't exist
   if (value_map.count(d) == 0) {
     value_map[d] = *values; // easy case
   }
   // Declaration already exists
-  if (linked_declarations.count(d) == 0) {
-    auto existing_values = value_map[d];
-    auto combined_values = intersectLists(existing_values, *values);
-    if (combined_values->empty()) {
-      has_no_results = true;
-      return;
-    } else {
-      value_map[d] = *combined_values;
-    }
-  } else {
-
+  auto existing_values = value_map[d];
+  auto indices_to_keep = ArrayUtility::getIndicesToKeep(existing_values, *values);
+  if (indices_to_keep->empty()) {
+    has_no_results = true;
+    return;
   }
-}
-
-std::unique_ptr<std::unordered_map<std::string, int>> IntermediateResultsTable::getValueCounts(const std::vector<std::string>& arr) {
-  auto value_counts = std::make_unique<std::unordered_map<std::string, int>>();
-  for (const std::string &value: arr) {
-    if (value_counts->count(value) == 0) {
-      (*value_counts)[value] = 1;
-    } else {
-      (*value_counts)[value] += 1;
+  // filter this declaration
+  value_map[d] = *(ArrayUtility::getArrSubsetByIndices(value_map[d], *indices_to_keep));
+  // filter all connected declarations, if any
+  if (linked_declarations.count(d) == 1) {
+    for (const auto& linked_d: linked_declarations[d]) {
+      value_map[linked_d] = *(ArrayUtility::getArrSubsetByIndices(value_map[linked_d], *indices_to_keep));
     }
   }
-  return value_counts;
 }
 
-std::unique_ptr<std::vector<int>> IntermediateResultsTable::getIndicesToKeep(std::vector<std::string> arr,
-                                                                                   std::vector<std::string> overlap_arr) {
-  /**
-   * Given an arr and an overlap_arr, returns the list of indices in arr that should be kept
-   * for all values in arr to also be present in overlap_arr. Takes into account duplicate
-   * values.
-   * Example: (['4','2','2','1'], ['2','2','4']) -> [0,1,2]
-   */
-  auto idx_to_keep = std::make_unique<std::vector<int>>();
+void IntermediateResultsTable::addPairedDeclarations(const PqlDeclaration & d1, const PqlDeclaration & d2, std::unique_ptr<std::vector<std::string>> d1_values, std::unique_ptr<std::vector<std::string>> d2_values) {
 
-  if (arr.empty() || overlap_arr.empty()) {
-    return idx_to_keep; // empty
-  }
-
-  auto overlap_arr_value_counts = IntermediateResultsTable::getValueCounts(overlap_arr);
-
-  for (int i = 0; i < arr.size(); i++) {
-    if (overlap_arr_value_counts->count(arr[i]) == 0 ||
-        (*overlap_arr_value_counts)[arr[i]] <= 0) {
-      continue;
-    } else {
-      (*overlap_arr_value_counts)[arr[i]] -= 1;
-      idx_to_keep->push_back(i);
-    }
-  }
-  return idx_to_keep;
 }
-
-
-std::unique_ptr<std::vector<std::string>> IntermediateResultsTable::intersectLists(std::vector<std::string> arr_1, std::vector<std::string> arr_2) {
-  // Sort the vectors to use std::set_intersection
-  std::sort(arr_1.begin(), arr_1.end());
-  std::sort(arr_2.begin(), arr_2.end());
-
-  std::vector<std::string> intersecting_values;
-  std::set_intersection(arr_1.begin(), arr_1.end(), arr_2.begin(), arr_2.end(),
-                        std::back_inserter(intersecting_values));
-  return std::make_unique<std::vector<std::string>>(intersecting_values);
-}
-
 
 void IntermediateResultsTable::addClauseResult(const ClauseResult& clause_result) {
   if (has_no_results) {

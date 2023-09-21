@@ -21,18 +21,16 @@ class IntermediateResultsTable {
   void addBooleanClauseResult(bool result);
   void addSingleDeclaration(const PqlDeclaration& d,
                             std::unique_ptr<std::vector<std::string>> values);
-
-  static std::unique_ptr<std::vector<std::string>> intersectLists(
-      std::vector<std::string> arr_1, std::vector<std::string> arr_2);
+  void addPairedDeclarations(const PqlDeclaration& d1, const PqlDeclaration& d2,
+                             std::unique_ptr<std::vector<std::string>> d1_values,
+                             std::unique_ptr<std::vector<std::string>> d2_values);
 
  public:
   IntermediateResultsTable();
 
-  static std::unique_ptr<std::unordered_map<std::string, int>> getValueCounts(const std::vector<std::string>& arr);
 
   void addClauseResult(const ClauseResult& clause_result);
 
-  static std::unique_ptr<std::vector<int>> getIndicesToKeep(std::vector<std::string> arr, std::vector<std::string> overlap_arr);
 
   std::unique_ptr<std::vector<std::string>> getValuesGivenDeclaration(const PqlDeclaration &declaration);
 };
