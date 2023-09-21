@@ -12,10 +12,10 @@ procedure Takehome {
           else {
            b = a % b + c * a;
         }
-       b = a - b; 
+        b = a - b; 
     }
-   read sasha; 
-   gloria = b / c * a; 
+    read sasha; 
+    gloria = b / c * a; 
 
     if (gloria > sasha) then {
 	     sasha = a - 4; 
@@ -24,8 +24,8 @@ procedure Takehome {
 	     gloria = 2; 
     }
 
-   while (16 != (b + c)){
+    while (16 != (b + c)){
        read c; 
-   }
+    }
 
 }

@@ -1,46 +1,93 @@
 1 - Follows stmt syn LHS and stmt syn RHS
-
+stmt s; while w;
+Select s such that Follows (s, w)
+4, 14
+5000
 2 - Follows line num LHS and stmt syn RHS
-
+stmt s; 
+Select s such that Follows (4, s)
+5
+5000
 3 - Follows wildcard LHS and stmt syn RHS
-
+assign a; 
+Select a such that Follows (_, a)
+2, 3, 4, 9, 10, 11, 13, 16
+5000
 4 - Follows stmt syn LHS and line num RHS
-
+stmt s;
+Select s such that Follows (s, 7)
+6
+5000
 5 - Follows line num LHS and line num RHS
-
+read r;
+Select r such that Follows (7, 8)
+none
+5000
 6 - Follows wildcard LHS and line num RHS
-
+print pn;
+Select pn such that Follows (_, 7)
+1
+5000
 7 - Follows stmt syn LHS and wildcard RHS
-
+while w;
+Select w such that Follows (w, _)
+5
+5000
 8 - Follows line num LHS and wildcard RHS
-
+constant c;
+Select c such that Follows (1, _)
+8, 2, 4, 1, 16
+5000
 9 - Follows wildcard LHS, wildcard RHS
-
-
-
+variable v;
+Select v such that Follows (_, _)
+sasha, gloria, b, c, a
+5000
 10 - Follows* stmt syn LHS and stmt syn RHS
-
+while w; assign a;
+Select a such that Follows* (w, a)
+13
+5000
 11 - Follows* line num LHS and stmt syn RHS
-
+stmt s;
+Select s such that Follows* (6, s)
+7, 11
+5000
 12 - Follows* wildcard LHS and stmt syn RHS
-
+read r;
+Select r such that Follows* (_, r)
+1, 2, 3, 4, 5
+5000
 13 - Follows* stmt syn LHS and line num RHS
-
+while w;
+Select w such that Follows* (w, 9)
+none
+5000
 14 - Follows* line num LHS and line num RHS
-
+while w;
+Select w such that Follows* (15, 16)
+5, 17
+5000
 15 - Follows* wildcard LHS and line num RHS
-
+if i;
+Select i such that Follows* (_, 2)
+5, 17
+5000
 16 - Follows* stmt syn LHS and wildcard RHS
-
+print pn;
+Select pn such that Follows* (pn, _)
+1
+5000
 17 - Follows* line num LHS and wildcard RHS
-
+constant c;
+Select c such that Follows* (11, _)
+none
+5000
 18 - Follows* wildcard LHS, wildcard RHS
-
-
-
-
-
-
+variable v;
+Select v such that Follows* (_, _)
+sasha, gloria, b, c, a
+5000
 19 - Invalid cannot have var/constant as 1st param of Follows
 read r;
 Select r such that Follows ("r", _) 
@@ -48,7 +95,7 @@ SemanticError
 5000
 20 - Invalid cannot have var/constant as 2nd param of Follows
 assign a;
-Select a such that Follows (13, "1") 
+Select a such that Follows (13, "x") 
 SemanticError
 5000
 21 - Invalid cannot have var/constant as 1st param of Follows*
