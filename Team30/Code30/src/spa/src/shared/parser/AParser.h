@@ -80,4 +80,18 @@ class AParser {
    */
   bool isCurrTokenTypeAndValue(TokenType tokenType,
                                std::string const& tokenValue);
+
+  /**
+   * @brief Asserts that the current token is of the given token type.
+   *
+   * @param expectedType
+   * @param expectedValue
+   * @param errorMessage
+   *
+   * @throw std::runtime_error if the current token is not of the given token
+   * type.
+   */
+  void assertCurrTokenTypeAndValue(TokenType expectedType,
+                               std::string const& expectedValue,
+                               std::string const& errorMessage);
 };

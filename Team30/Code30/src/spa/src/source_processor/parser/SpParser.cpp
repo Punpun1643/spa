@@ -78,7 +78,8 @@ std::shared_ptr<ProgramNode> SpParser::parseProgram() {
   std::vector<std::shared_ptr<ProcedureNode>> procedures;
 
   while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
-    if (!isCurrTokenTypeAndValue(TokenType::WORD_TOKEN, SpParserConstant::PROCEDURE_KEYWORD)) {
+    if (!isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                 SpParserConstant::PROCEDURE_KEYWORD)) {
       throw std::invalid_argument("Invalid procedure");
     }
 
@@ -113,133 +114,99 @@ std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
 }
 
 std::shared_ptr<PrintNode> SpParser::parsePrint() {
-  std::shared_ptr<Token> currToken = getCurrToken();
+  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
+    throw std::invalid_argument("Invalid print 1");
+  }
 
-  if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
-    std::string varName = currToken->getTokenVal();
+  std::string varName = getCurrTokenValue();
+  nextToken();
 
-    nextToken();
-
-    // check if valid print
-    if (getCurrToken()->getTokenVal() == SpParserConstant::STMT_TERMINATOR) {
-      nextToken();
-
-      return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT,
-                                         varName);
-    } else {
-      throw std::invalid_argument("Invalid print 1");
-    }
-  } else {
+  if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
     throw std::invalid_argument("Invalid print 2");
   }
+
+  nextToken();
+  return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT,
+                                     varName);
 }
 
 std::shared_ptr<ReadNode> SpParser::parseRead() {
-  std::shared_ptr<Token> currToken = getCurrToken();
+  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
+    throw std::invalid_argument("Invalid read 1");
+  }
 
-  if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
-    std::string varName = currToken->getTokenVal();
-    nextToken();
-    if (getCurrToken()->getTokenVal() == SpParserConstant::STMT_TERMINATOR) {
-      nextToken();
-      return std::make_shared<ReadNode>(currStmtIndex++, StmtType::READ_STMT,
-                                        varName);
-    } else {
-      throw std::invalid_argument("Invalid read 1");
-    }
-  } else {
+  std::string varName = getCurrTokenValue();
+  nextToken();
+
+  if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
     throw std::invalid_argument("Invalid read 2");
   }
+
+  nextToken();
+  return std::make_shared<ReadNode>(currStmtIndex++, StmtType::READ_STMT,
+                                    varName);
 }
 
 std::shared_ptr<CallNode> SpParser::parseCall() {
-  std::shared_ptr<Token> currToken = getCurrToken();
-
-  if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
-    std::string procedureName = currToken->getTokenVal();
-    nextToken();
-    if (getCurrToken()->getTokenVal() == SpParserConstant::STMT_TERMINATOR) {
-      nextToken();
-      return std::make_shared<CallNode>(currStmtIndex++, StmtType::CALL_STMT,
-                                        procedureName);
-    } else {
-      throw std::invalid_argument("Invalid call 1");
-    }
-  } else {
+  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
     throw std::invalid_argument("Invalid call 2");
   }
+
+  std::string procedureName = getCurrTokenValue();
+  nextToken();
+
+  if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
+    throw std::invalid_argument("Invalid call 1");
+  }
+
+  nextToken();
+  return std::make_shared<CallNode>(currStmtIndex++, StmtType::CALL_STMT,
+                                    procedureName);
 }
 
 std::shared_ptr<IfNode> SpParser::parseIf() {
   int ifStmtIndex = currStmtIndex++;
 
-  std::shared_ptr<Token> currToken = getCurrToken();
-  std::shared_ptr<CondExprNode> condExpr;
-  std::shared_ptr<StmtLstNode> thenStmtLst;
-  std::shared_ptr<StmtLstNode> elseStmtLst;
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::START_COND_EXPR,
+                              "Invalid if 1");
 
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_COND_EXPR) {
-    throw std::invalid_argument("Invalid if 1");
-  }
+  std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
-  condExpr = parseCondExpr();
-
-  currToken = getCurrToken();
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_COND_EXPR) {
-    throw std::invalid_argument("Invalid if 2");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::END_COND_EXPR, "Invalid if 2");
 
   nextToken();
-  currToken = getCurrToken();
-
-  if (currToken->getTokenType() != TokenType::WORD_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::THEN_KEYWORD) {
-    throw std::invalid_argument("Invalid if 3");
-  }
+  assertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                              SpParserConstant::THEN_KEYWORD, "Invalid if 3");
 
   nextToken();
-  currToken = getCurrToken();
-
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_THEN_STMTLST) {
-    throw std::invalid_argument("Invalid if 4");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::START_THEN_STMTLST,
+                              "Invalid if 4");
 
   nextToken();
-  thenStmtLst = parseStmtLst();
+  std::shared_ptr<StmtLstNode> thenStmtLst = parseStmtLst();
 
-  currToken = getCurrToken();
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_THEN_STMTLST) {
-    throw std::invalid_argument("Invalid if 5");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::END_THEN_STMTLST,
+                              "Invalid if 5");
 
   nextToken();
-  currToken = getCurrToken();
-
-  if (currToken->getTokenType() != TokenType::WORD_TOKEN &&
-      currToken->getTokenVal() != SpParserConstant::ELSE_KEYWORD) {
-    throw std::invalid_argument("Invalid if 6");
-  }
+  assertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                              SpParserConstant::ELSE_KEYWORD, "Invalid if 6");
 
   nextToken();
-  currToken = getCurrToken();
-
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_ELSE_STMTLST) {
-    throw std::invalid_argument("Invalid if 7");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::START_ELSE_STMTLST,
+                              "Invalid if 7");
 
   nextToken();
-  elseStmtLst = parseStmtLst();
+  std::shared_ptr<StmtLstNode> elseStmtLst = parseStmtLst();
 
-  currToken = getCurrToken();
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_ELSE_STMTLST) {
-    throw std::invalid_argument("Invalid if 8");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::END_ELSE_STMTLST,
+                              "Invalid if 8");
 
   nextToken();
   return std::make_shared<IfNode>(ifStmtIndex, StmtType::IF_STMT, condExpr,

@@ -63,3 +63,9 @@ bool AParser::isCurrTokenTypeAndValue(TokenType tokenType,
   return IsTokenType(getCurrToken(), tokenType) &&
          tokenValue == getCurrToken()->getTokenVal();
 }
+
+void AParser::assertCurrTokenTypeAndValue(TokenType expectedType, const std::string& expectedValue, const std::string& errorMessage) {
+  if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
+    throw std::invalid_argument(errorMessage);
+  }
+}
