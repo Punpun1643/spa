@@ -21,17 +21,11 @@ void PkbStub::insertRelationCommon(RelationType type) {
     case (RelationType::PARENT):
       ++insertParentCallCount;
       break;
-    case (RelationType::USES):
-      ++insertUsesCallCount;
-      break;
     case (RelationType::USES_S):
       ++insertUsesCallCount;
       break;
     case (RelationType::USES_P):
       ++insertUsesCallCount;
-      break;
-    case (RelationType::MODIFIES):
-      ++insertModifiesCallCount;
       break;
     case (RelationType::MODIFIES_S):
       ++insertModifiesCallCount;
