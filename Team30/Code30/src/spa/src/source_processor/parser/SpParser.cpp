@@ -1,9 +1,6 @@
-#include "SpParser.h"
-
-#include <iostream>
-#include <stack>
 #include <stdexcept>
-#include <unordered_set>
+
+#include "SpParser.h"
 
 namespace SpParserConstant {
 
