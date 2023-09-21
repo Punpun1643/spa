@@ -94,7 +94,7 @@ TEST_CASE("Select and Follows Clause with 0 common declarations") {
       StmtRef());
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == pkb.CONSTANTS);
+  REQUIRE(result.empty());
 
   select_clause = QeFactoryMethods::getSelectClause("a", EntityType::PROCEDURE);
   follows_clause = QeFactoryMethods::getFollowsClause(
@@ -102,7 +102,7 @@ TEST_CASE("Select and Follows Clause with 0 common declarations") {
       StmtRef(QeFactoryMethods::getDeclaration("b", EntityType::PRINT)));
   result =
       *qe.evaluateQuery(std::move(select_clause), std::move(follows_clause));
-  REQUIRE(result == pkb.PROCEDURES);
+  REQUIRE(result.empty());
 
   // Case where follows clause has declarations that are different from select
   // clause

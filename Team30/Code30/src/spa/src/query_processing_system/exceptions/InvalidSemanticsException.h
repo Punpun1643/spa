@@ -3,7 +3,7 @@
 
 class InvalidSemanticsException : public std::invalid_argument {
   /**
-   * Thrown when a Clause is given arguments that make it semantically invalid.
+   * Thrown when a query is semantically invalid.
    */
  public:
   explicit InvalidSemanticsException(std::string const& what_arg);

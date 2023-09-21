@@ -85,6 +85,6 @@ void ExtractionController::handleContainerStmts(
 }
 
 void ExtractionController::popActors() {
-  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popUsesActors();
-  // std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->popModifiesActors();
+  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popUsesActor();
+  std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->popModifiesActor();
 }

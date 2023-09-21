@@ -21,10 +21,16 @@ void PkbStub::insertRelationCommon(RelationType type) {
     case (RelationType::PARENT):
       ++insertParentCallCount;
       break;
-    case (RelationType::USES):
+    case (RelationType::USES_S):
       ++insertUsesCallCount;
       break;
-    case (RelationType::MODIFIES):
+    case (RelationType::USES_P):
+      ++insertUsesCallCount;
+      break;
+    case (RelationType::MODIFIES_S):
+      ++insertModifiesCallCount;
+      break;
+    case (RelationType::MODIFIES_P):
       ++insertModifiesCallCount;
       break;
     default:
@@ -128,7 +134,11 @@ PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 
 
 // Pattern clause
-std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) {
+void PkbStub::insertPattern(std::string statement_number, std::string lhs,
+                            std::unordered_set<std::string> rhs){};
+
+std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
+    std::string rhs_expr, MatchType expr_match_type) {
   return std::make_unique<std::vector<std::string>>();
 };
 

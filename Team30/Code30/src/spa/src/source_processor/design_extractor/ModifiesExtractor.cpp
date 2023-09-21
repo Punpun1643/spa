@@ -1,5 +1,6 @@
 #include "ModifiesExtractor.h"
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -11,7 +12,7 @@ void ModifiesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
 
 void ModifiesExtractor::extractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {
-  modifyActors.push_back(node->getProcedureName());
+  modifiesActors.push_back(node->getProcedureName());
 }
 
 void ModifiesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
@@ -27,21 +28,47 @@ void ModifiesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
 }
 
 void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  /*pkb.insertRelation(RelationType::MODIFIES,
+  pkb.insertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->getStmtIndex()), node->getVarName());
-  for (std::string modifyActor : modifyActors) {
-    pkb.insertRelation(RelationType::MODIFIES, modifyActor, node->getVarName());
-  }*/
+  insertVarWithActors(node->getVarName());
 }
 
 void ModifiesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-  modifyActors.push_back(std::to_string(node->getStmtIndex()));
+  modifiesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-  modifyActors.push_back(std::to_string(node->getStmtIndex()));
+  modifiesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  // TODO
+  pkb.insertRelation(RelationType::MODIFIES_S,
+                     std::to_string(node->getStmtIndex()), node->getVarName());
+  insertVarWithActors(node->getVarName());
+}
+
+//////////////////////////////
+//
+// PRIVATE HELPER FUNCTIONS
+//
+//////////////////////////////
+
+void ModifiesExtractor::popModifiesActor() {
+  if (!modifiesActors.empty()) {
+    modifiesActors.pop_back();
+  }
+}
+
+void ModifiesExtractor::insertVarWithActors(std::string var) {
+  for (std::string modifiesActor : modifiesActors) {
+    // insertIntoPkb(modifiesActor, var);
+    bool isStmtIndex =
+        !modifiesActor.empty() &&
+        std::all_of(modifiesActor.begin(), modifiesActor.end(), ::isdigit);
+    if (isStmtIndex) {
+      pkb.insertRelation(RelationType::MODIFIES_S, modifiesActor, var);
+    } else {
+      pkb.insertRelation(RelationType::MODIFIES_P, modifiesActor, var);
+    }
+  }
 }

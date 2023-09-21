@@ -19,22 +19,30 @@ PKB::PKB() : PkbApi() {
 
       {RelationType::PARENT, {RelationType::PARENT, RelationType::PARENT_STAR}},
 
-      {RelationType::USES, {RelationType::USES}},
-      {RelationType::MODIFIES, {RelationType::MODIFIES}}};
-};
+      {RelationType::USES_S, {RelationType::USES_S}},
+      {RelationType::USES_P, {RelationType::USES_P}},
+
+      {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}},
+      {RelationType::MODIFIES_P, {RelationType::MODIFIES_P}}
+  };
+
+  };
+
 
 // ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
   entData->insert(type, entity);
 };
 
-void PKB::insertRelation(RelationType type, std::string stmt1,
-                         std::string stmt2) {
+void PKB::insertRelation(RelationType type, std::string input1,
+                         std::string input2) {
   // Inserts into more than 1 table simultaneously
   // Add all related tables to relatedTables
+
   for (RelationType rt : relatedTables[type]) {
     std::shared_ptr<BaseTable> table = relData->getTable(rt);
-    table->insert(stmt1, stmt2);
+    table->insert(input1, input2);
+
   }
 };
 
@@ -65,7 +73,7 @@ bool PKB::isRelationTrue(std::string value_1, std::string value_2,
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT);
+      entData->get(EntityType::STMT); // TODO: FIX THIS
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -96,7 +104,7 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 // example Follows(_, _)
 bool PKB::isRelationTrueForAny(RelationType relation_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT);
+      entData->get(EntityType::STMT); // TODO: FIX FOR USES/MODIFIES
   std::shared_ptr<BaseTable> table = relData->getTable(relation_type);
   return ents->size() > 0;
 }
@@ -110,8 +118,10 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       entData->get(entity_type);
   std::shared_ptr<std::unordered_set<std::string>> ents2;
-
-  if (rel_type == RelationType::USES || rel_type == RelationType::MODIFIES) {
+  if (rel_type == RelationType::USES_S ||
+      rel_type == RelationType::USES_P ||
+      rel_type == RelationType::MODIFIES_S ||
+      rel_type == RelationType::MODIFIES_P) { // TODO: CLEAN THIS UP
     ents2 = entData->get(EntityType::VARIABLE);
   } else {
     ents2 = entData->get(EntityType::STMT);
@@ -184,7 +194,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
 }
 
 //// 2 Declarations
-// example Follows(s1, s2), FolowsStar(s1, s2)
+// example Follows(s1, s2), FollowsStar(s1, s2)
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                        RelationType rel_type) {
@@ -207,6 +217,9 @@ PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 
 
 // Pattern clause
+void PKB::insertPattern(std::string statement_number, std::string lhs,
+                        std::unordered_set<std::string> rhs){};
+
 std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) {
     return std::make_unique<std::vector<std::string>>();
 };
