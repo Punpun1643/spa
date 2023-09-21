@@ -182,6 +182,8 @@ std::shared_ptr<CallNode> SpParser::parseCall() {
 }
 
 std::shared_ptr<IfNode> SpParser::parseIf() {
+  int ifStmtIndex = currStmtIndex++;
+
   std::shared_ptr<Token> currToken = getCurrToken();
   std::shared_ptr<CondExprNode> condExpr;
   std::shared_ptr<StmtLstNode> thenStmtLst;
@@ -251,7 +253,7 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
   }
 
   nextToken();
-  return std::make_shared<IfNode>(currStmtIndex++, StmtType::IF_STMT, condExpr,
+  return std::make_shared<IfNode>(ifStmtIndex, StmtType::IF_STMT, condExpr,
                                   thenStmtLst, elseStmtLst);
 }
 

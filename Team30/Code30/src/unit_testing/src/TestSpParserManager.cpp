@@ -215,7 +215,79 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(whileStmtAssign1ExprTreeRoot->getVal() == "-");
     REQUIRE(whileStmtAssign1ExprTreeRoot->getLeftSubTree()->getVal() == "x");
     REQUIRE(whileStmtAssign1ExprTreeRoot->getRightSubTree()->getVal() == "1");
-    // continue from line 6
+
+    REQUIRE(whileIfStmt->getStmtType() == StmtType::IF_STMT);
+    REQUIRE(whileIfStmt->getStmtIndex() == 6);
+
+    auto whileIfStmtCondExpr = whileIfStmt->getCondExpr();
+
+    REQUIRE(whileIfStmtCondExpr->getVariables().size() == 1);
+    REQUIRE(whileIfStmtCondExpr->getConstants().size() == 1);
+    REQUIRE(whileIfStmtCondExpr->getVariables().find("x") !=
+            whileIfStmtCondExpr->getVariables().end());
+    REQUIRE(whileIfStmtCondExpr->getConstants().find(1) !=
+            whileIfStmtCondExpr->getConstants().end());
+
+    auto whileIfStmtThenStmtLst = whileIfStmt->getThenStmtLst();
+    auto whileIfStmtElseStmtLst = whileIfStmt->getElseStmtLst();
+
+    REQUIRE(whileIfStmtThenStmtLst->getChildren().size() == 1);
+    REQUIRE(whileIfStmtElseStmtLst->getChildren().size() == 1);
+
+    auto whileIfStmtThenStmtAssign = std::dynamic_pointer_cast<AssignNode>(
+        whileIfStmtThenStmtLst->getChildren().at(0));
+    auto whileIfStmtElseStmtAssign = std::dynamic_pointer_cast<AssignNode>(
+        whileIfStmtElseStmtLst->getChildren().at(0));
+
+    REQUIRE(whileIfStmtThenStmtAssign->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(whileIfStmtThenStmtAssign->getStmtIndex() == 7);
+    REQUIRE(whileIfStmtThenStmtAssign->getVarName() == "z");
+    REQUIRE(whileIfStmtThenStmtAssign->getVariables().size() == 1);
+    REQUIRE(whileIfStmtThenStmtAssign->getConstants().size() == 1);
+    REQUIRE(whileIfStmtThenStmtAssign->getVariables().find("x") !=
+            whileIfStmtThenStmtAssign->getVariables().end());
+    REQUIRE(whileIfStmtThenStmtAssign->getConstants().find(1) !=
+            whileIfStmtThenStmtAssign->getConstants().end());
+
+    REQUIRE(whileIfStmtElseStmtAssign->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(whileIfStmtElseStmtAssign->getStmtIndex() == 8);
+    REQUIRE(whileIfStmtElseStmtAssign->getVarName() == "y");
+    REQUIRE(whileIfStmtElseStmtAssign->getVariables().size() == 2);
+    REQUIRE(whileIfStmtElseStmtAssign->getConstants().size() == 0);
+    REQUIRE(whileIfStmtElseStmtAssign->getVariables().find("z") !=
+            whileIfStmtElseStmtAssign->getVariables().end());
+    REQUIRE(whileIfStmtElseStmtAssign->getVariables().find("x") !=
+            whileIfStmtElseStmtAssign->getVariables().end());
+
+    REQUIRE(whileStmtAssign2->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(whileStmtAssign2->getStmtIndex() == 9);
+    REQUIRE(whileStmtAssign2->getVarName() == "z");
+    REQUIRE(whileStmtAssign2->getVariables().size() == 3);
+    REQUIRE(whileStmtAssign2->getConstants().size() == 0);
+    REQUIRE(whileStmtAssign2->getVariables().find("z") !=
+            whileStmtAssign2->getVariables().end());
+    REQUIRE(whileStmtAssign2->getVariables().find("x") !=
+            whileStmtAssign2->getVariables().end());
+    REQUIRE(whileStmtAssign2->getVariables().find("i") !=
+            whileStmtAssign2->getVariables().end());
+
+    REQUIRE(whileCallStmt->getStmtType() == StmtType::CALL_STMT);
+    REQUIRE(whileCallStmt->getStmtIndex() == 10);
+    REQUIRE(whileCallStmt->getProcName() == "q");
+
+    REQUIRE(whileStmtAssign3->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(whileStmtAssign3->getStmtIndex() == 11);
+    REQUIRE(whileStmtAssign3->getVarName() == "i");
+    REQUIRE(whileStmtAssign3->getVariables().size() == 1);
+    REQUIRE(whileStmtAssign3->getConstants().size() == 1);
+    REQUIRE(whileStmtAssign3->getVariables().find("i") !=
+            whileStmtAssign3->getVariables().end());
+    REQUIRE(whileStmtAssign3->getConstants().find(1) !=
+            whileStmtAssign3->getConstants().end());
+
+    REQUIRE(callNode->getStmtType() == StmtType::CALL_STMT);
+    REQUIRE(callNode->getStmtIndex() == 12);
+    REQUIRE(callNode->getProcName() == "p");
 
     // stmt: procedure p
     REQUIRE(stmtLstNode2->getChildren().size() == 2);
