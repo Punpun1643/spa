@@ -72,8 +72,7 @@ class PkbStub : public PkbApi {
                                                                           MatchType expr_match_type) override;
 
   // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                                 std::string rhs_expr,
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                                                                                  MatchType expr_match_type) override;
 
 };

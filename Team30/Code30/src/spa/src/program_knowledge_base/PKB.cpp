@@ -254,8 +254,6 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(std
 };
 
 // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>> PKB::getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                               std::string rhs_expr,
-                                                                                               MatchType expr_match_type) {
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>> PKB::getPatternMatchesWithDeclarationLhs(std::string rhs_expr, MatchType expr_match_type) {
     return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 };
