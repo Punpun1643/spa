@@ -348,3 +348,48 @@ TEST_CASE("Parse Select + Parent* query") {
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
 }
+
+TEST_CASE("Parse Select + Modifies query") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("2 assign, 1 var; Select + Modifies(assign, var)") {
+    AddDeclaration(tokens, "assign", {"a1", "a2"});
+    AddDeclaration(tokens, "variable", {"v"});
+    AddWordVector(tokens, {"Select", "a1", "such", "that", "Modifies"});
+    AddWordWord(tokens, "a1", "v");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
+  }
+}
+
+TEST_CASE("Parse Select + Uses query") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("2 assign, 1 var; Select + Uses(assign, var)") {
+    AddDeclaration(tokens, "assign", {"a1", "a2"});
+    AddDeclaration(tokens, "variable", {"v"});
+    AddWordVector(tokens, {"Select", "a1", "such", "that", "Uses"});
+    AddWordWord(tokens, "a1", "v");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
+  }
+
+}

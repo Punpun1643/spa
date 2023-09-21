@@ -6,10 +6,12 @@
 #include "../expression/DeclarationListExpression.h"
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
+#include "../expression/ModifiesExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/SuchThatExpression.h"
+#include "../expression/UsesExpression.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens)
@@ -73,7 +75,8 @@ ExpressionTreeBuilder::CreateSuchThatListExpression() {
 void ExpressionTreeBuilder::AddDeclarationExpression(
     std::vector<std::shared_ptr<DeclarationExpression>>&
         declaration_expression_list) {
-  EntityType entity_type = StringToEntityType(getCurrToken()->getTokenVal());
+  EntityType entity_type =
+      QpParser::StringToEntityType(getCurrToken()->getTokenVal());
   std::string synonym = nextToken()->getTokenVal();
   declaration_expression_list.push_back(
       std::make_shared<DeclarationExpression>(entity_type, synonym));
@@ -105,25 +108,23 @@ void ExpressionTreeBuilder::AddSuchThatExpression(
   std::string arg2 = nextToken()->getTokenVal();
   nextToken();  // )
 
+  std::shared_ptr<SuchThatExpression> such_that_expression;
   if (such_that_clause_name == "Follows") {
     if (peekToken()->getTokenVal() == "*") {
-      std::shared_ptr<SuchThatExpression> such_that_expression =
-          std::make_shared<FollowsTExpression>(arg1, arg2);
-      such_that_expression_list.push_back(such_that_expression);
+      such_that_expression = std::make_shared<FollowsTExpression>(arg1, arg2);
     } else {
-      std::shared_ptr<SuchThatExpression> such_that_expression =
-          std::make_shared<FollowsExpression>(arg1, arg2);
-      such_that_expression_list.push_back(such_that_expression);
+      such_that_expression = std::make_shared<FollowsExpression>(arg1, arg2);
     }
   } else if (such_that_clause_name == "Parent") {
     if (peekToken()->getTokenVal() == "*") {
-      std::shared_ptr<SuchThatExpression> such_that_expression =
-          std::make_shared<ParentTExpression>(arg1, arg2);
-      such_that_expression_list.push_back(such_that_expression);
+      such_that_expression = std::make_shared<ParentTExpression>(arg1, arg2);
     } else {
-      std::shared_ptr<SuchThatExpression> such_that_expression =
-          std::make_shared<ParentExpression>(arg1, arg2);
-      such_that_expression_list.push_back(such_that_expression);
+      such_that_expression = std::make_shared<ParentExpression>(arg1, arg2);
     }
+  } else if (such_that_clause_name == "Uses") {
+    such_that_expression = std::make_shared<UsesExpression>(arg1, arg2);
+  } else if (such_that_clause_name == "Modifies") {
+    such_that_expression = std::make_shared<ModifiesExpression>(arg1, arg2);
   }
+  such_that_expression_list.push_back(such_that_expression);
 }
