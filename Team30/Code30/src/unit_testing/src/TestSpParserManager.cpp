@@ -271,6 +271,17 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(whileStmtAssign2->getVariables().find("i") !=
             whileStmtAssign2->getVariables().end());
 
+    auto whileStmtAssign2ExprTreeRoot = whileStmtAssign2->getRootOfTree();
+    REQUIRE(whileStmtAssign2ExprTreeRoot->getVal() == "+");
+    REQUIRE(whileStmtAssign2ExprTreeRoot->getLeftSubTree()->getVal() == "+");
+    REQUIRE(whileStmtAssign2ExprTreeRoot->getRightSubTree()->getVal() == "i");
+    REQUIRE(whileStmtAssign2ExprTreeRoot->getLeftSubTree()
+                ->getLeftSubTree()
+                ->getVal() == "z");
+    REQUIRE(whileStmtAssign2ExprTreeRoot->getLeftSubTree()
+                ->getRightSubTree()
+                ->getVal() == "x");
+
     REQUIRE(whileCallStmt->getStmtType() == StmtType::CALL_STMT);
     REQUIRE(whileCallStmt->getStmtIndex() == 10);
     REQUIRE(whileCallStmt->getProcName() == "q");
@@ -310,7 +321,204 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(pIfNode1CondExpr->getConstants().find(0) !=
             pIfNode1CondExpr->getConstants().end());
 
-    // stmt: procedure q
-    REQUIRE(stmtLstNode3->getChildren().size() == 1);
+    REQUIRE(pIfNode1ThenStmtLst->getChildren().size() == 3);
+
+    auto pIfNodeThenStmtLstWhileNode = std::dynamic_pointer_cast<WhileNode>(
+        pIfNode1ThenStmtLst->getChildren().at(0));
+    auto pIfNodeThenStmtLstAssignNode1 = std::dynamic_pointer_cast<AssignNode>(
+        pIfNode1ThenStmtLst->getChildren().at(1));
+    auto pIfNodeThenStmtLstAssignNode2 = std::dynamic_pointer_cast<AssignNode>(
+        pIfNode1ThenStmtLst->getChildren().at(2));
+
+    REQUIRE(pIfNodeThenStmtLstWhileNode->getStmtType() == StmtType::WHILE_STMT);
+    REQUIRE(pIfNodeThenStmtLstWhileNode->getStmtIndex() == 14);
+    auto pIfNodeThenStmtLstWhileNodeCondExpr =
+        pIfNodeThenStmtLstWhileNode->getCondExpr();
+    auto pIfNodeThenStmtLstWhileNodeStmtLst =
+        pIfNodeThenStmtLstWhileNode->getStmtLst();
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getVariables().size() == 1);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getConstants().size() == 1);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getVariables().find("i") !=
+            pIfNodeThenStmtLstWhileNodeCondExpr->getVariables().end());
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getConstants().find(0) !=
+            pIfNodeThenStmtLstWhileNodeCondExpr->getConstants().end());
+
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLst->getChildren().size() == 3);
+    auto pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1 =
+        std::dynamic_pointer_cast<AssignNode>(
+            pIfNodeThenStmtLstWhileNodeStmtLst->getChildren().at(0));
+    auto pIfNodeThenStmtLstWhileNodeStmtLstCallNode =
+        std::dynamic_pointer_cast<CallNode>(
+            pIfNodeThenStmtLstWhileNodeStmtLst->getChildren().at(1));
+    auto pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2 =
+        std::dynamic_pointer_cast<AssignNode>(
+            pIfNodeThenStmtLstWhileNodeStmtLst->getChildren().at(2));
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getStmtIndex() ==
+            15);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVarName() == "x");
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().size() ==
+        2);
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().size() ==
+        2);
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().find(
+            "y") !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().end());
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().find(
+            "z") !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().end());
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().find(3) !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().end());
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().find(2) !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().end());
+
+    // check expression tree structure (i.e. z * 3 + 2 * y)
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getVal() == "+");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getLeftSubTree()
+                ->getVal() == "*");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getRightSubTree()
+                ->getVal() == "*");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getLeftSubTree()
+                ->getLeftSubTree()
+                ->getVal() == "z");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getLeftSubTree()
+                ->getRightSubTree()
+                ->getVal() == "3");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getRightSubTree()
+                ->getLeftSubTree()
+                ->getVal() == "2");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
+                ->getRightSubTree()
+                ->getRightSubTree()
+                ->getVal() == "y");
+
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstCallNode->getStmtType() ==
+            StmtType::CALL_STMT);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstCallNode->getStmtIndex() == 16);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstCallNode->getProcName() == "q");
+
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getStmtIndex() ==
+            17);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVarName() == "i");
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables().size() ==
+        1);
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants().size() ==
+        1);
+
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables().find(
+            "i") !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables().end());
+    REQUIRE(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants().find(1) !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants().end());
+
+    // check expression tree structure (i.e. i - 1)
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getRootOfTree()
+                ->getVal() == "-");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getRootOfTree()
+                ->getLeftSubTree()
+                ->getVal() == "i");
+    REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getRootOfTree()
+                ->getRightSubTree()
+                ->getVal() == "1");
+
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getStmtIndex() == 18);
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVarName() == "x");
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVariables().size() == 1);
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getConstants().size() == 1);
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVariables().find("x") !=
+            pIfNodeThenStmtLstAssignNode1->getVariables().end());
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getConstants().find(1) !=
+            pIfNodeThenStmtLstAssignNode1->getConstants().end());
+
+    // check expression tree structure (i.e. x + 1)
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getRootOfTree()->getVal() == "+");
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getRootOfTree()
+                ->getLeftSubTree()
+                ->getVal() == "x");
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getRootOfTree()
+                ->getRightSubTree()
+                ->getVal() == "1");
+
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getStmtIndex() == 19);
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVarName() == "z");
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables().size() == 2);
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getConstants().size() == 0);
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables().find("x") !=
+            pIfNodeThenStmtLstAssignNode2->getVariables().end());
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables().find("z") !=
+            pIfNodeThenStmtLstAssignNode2->getVariables().end());
+
+    // check expression tree structure (i.e. x + z)
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getRootOfTree()->getVal() == "+");
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getRootOfTree()
+                ->getLeftSubTree()
+                ->getVal() == "x");
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getRootOfTree()
+                ->getRightSubTree()
+                ->getVal() == "z");
+
+    REQUIRE(pIfNode1ElseStmtLst->getChildren().size() == 1);
+    auto pIfNodeElseStmtLstAssignNode1 = std::dynamic_pointer_cast<AssignNode>(
+        pIfNode1ElseStmtLst->getChildren().at(0));
+
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getStmtIndex() == 20);
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getVarName() == "z");
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getVariables().size() == 0);
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getConstants().size() == 1);
+
+    // check expression tree structure (i.e. 1)
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getRootOfTree()->getVal() == "1");
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getRootOfTree()->getLeftSubTree() ==
+            nullptr);
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getRootOfTree()->getRightSubTree() ==
+            nullptr);
+
+    REQUIRE(pAssignNode2->getStmtType() == StmtType::ASSIGN_STMT);
+    REQUIRE(pAssignNode2->getStmtIndex() == 21);
+    REQUIRE(pAssignNode2->getVarName() == "z");
+    REQUIRE(pAssignNode2->getVariables().size() == 3);
+    REQUIRE(pAssignNode2->getConstants().size() == 0);
+
+    // check expression tree structure (i.e. z + x + i)
+    REQUIRE(pAssignNode2->getRootOfTree()->getVal() == "+");
+    REQUIRE(pAssignNode2->getRootOfTree()->getLeftSubTree()->getVal() == "+");
+    REQUIRE(pAssignNode2->getRootOfTree()->getRightSubTree()->getVal() == "i");
+    REQUIRE(pAssignNode2->getRootOfTree()
+                ->getLeftSubTree()
+                ->getLeftSubTree()
+                ->getVal() == "z");
+    REQUIRE(pAssignNode2->getRootOfTree()
+                ->getLeftSubTree()
+                ->getRightSubTree()
+                ->getVal() == "x");
+
+    //    // stmt: procedure q
+    //    REQUIRE(stmtLstNode3->getChildren().size() == 1);
+    //  }
   }
 }
