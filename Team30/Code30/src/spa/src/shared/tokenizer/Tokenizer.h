@@ -5,7 +5,7 @@
 
 #include "token/Token.h"
 
-class ATokenizer {
+class Tokenizer {
  private:
   std::istream& input;
   std::shared_ptr<Token> handleSpecialChar(char c);
@@ -13,8 +13,8 @@ class ATokenizer {
   bool hasNext();
 
  public:
-  explicit ATokenizer(std::istream& input);
-  ~ATokenizer() = default;
+  explicit Tokenizer(std::istream& input);
+  ~Tokenizer() = default;
 
   std::vector<std::shared_ptr<Token>> tokenize();
 };

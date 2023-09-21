@@ -1,13 +1,13 @@
-#include "ATokenizer.h"
+#include "Tokenizer.h"
 
 #include "token/EofToken.h"
 #include "token/IntegerToken.h"
 #include "token/SpecialCharToken.h"
 #include "token/WordToken.h"
 
-ATokenizer::ATokenizer(std::istream& input) : input(input) {}
+Tokenizer::Tokenizer(std::istream& input) : input(input) {}
 
-std::vector<std::shared_ptr<Token>> ATokenizer::tokenize() {
+std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
   std::vector<std::shared_ptr<Token>> tokens;
   while (hasNext()) {
     std::shared_ptr<Token> token = next();
@@ -17,7 +17,7 @@ std::vector<std::shared_ptr<Token>> ATokenizer::tokenize() {
   return tokens;
 }
 
-std::shared_ptr<Token> ATokenizer::next() {
+std::shared_ptr<Token> Tokenizer::next() {
   char c;
 
   while (input.get(c)) {
@@ -38,11 +38,17 @@ std::shared_ptr<Token> ATokenizer::next() {
         input.get(c);
         number += c;
       }
+
+      if (std::isalpha(input.peek())) {
+        throw std::invalid_argument("Invalid Syntax, invalid integer or name");
+      }
+
       return std::make_shared<IntegerToken>(number);
     }
 
     else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
-             c == '-' || c == '/' || c == '*' || c == '%' || c == ';' || c == ',') {
+             c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
+             c == ',' || c == '\"') {
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
 
@@ -56,37 +62,40 @@ std::shared_ptr<Token> ATokenizer::next() {
     }
 
     else {
-      throw std::invalid_argument("Invalid Syntax");
+      throw std::invalid_argument("Invalid Syntax, unknown input");
     }
   }
 }
 
-std::shared_ptr<Token> ATokenizer::handleSpecialChar(char c) {
-  char next_c;
-  input.get(next_c);
+std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
+  char next_c = input.peek();
 
   if (c == '|' && next_c == '|') {
+    input.get(next_c);
     return std::make_shared<SpecialCharToken>("||");
   }
 
   else if (c == '&' && next_c == '&') {
+    input.get(next_c);
     return std::make_shared<SpecialCharToken>("&&");
   }
 
   else if (c == '!' || c == '=' || c == '>' || c == '<') {
     if (next_c == '=') {
+      input.get(next_c);
       return std::make_shared<SpecialCharToken>(std::string(1, c) +
                                                 std::string(1, next_c));
     }
-    return std::make_shared<SpecialCharToken>(std::string(1, c));
   }
 
-  else {
-    throw std::invalid_argument("Invalid Syntax");
+  if (c == '!') {
+    throw std::invalid_argument("Invalid Syntax, ! not a valid symbol.");
   }
+
+  return std::make_shared<SpecialCharToken>(std::string(1, c));
 }
 
-bool ATokenizer::hasNext() {
+bool Tokenizer::hasNext() {
   char c;
   while (std::isspace(input.peek())) {
     input.get(c);

@@ -10,12 +10,13 @@ class PkbStub : public PkbApi {
   std::vector<std::string> VARIABLES = {"varX"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
+  int insertEntityCallCount;
+  int insertRelationCallCount;
   int insertFollowsCallCount;
+  int insertParentCallCount;
+  int insertUsesCallCount;
+  int insertModifiesCallCount;
 
-  // ----- REMOVE AFTER SWITCHING -----
-  bool insertFollows(std::shared_ptr<StmtNode> stmt1,
-                     std::shared_ptr<StmtNode> stmt2);
-  // ----------------------------------
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
@@ -27,6 +28,7 @@ class PkbStub : public PkbApi {
   void insertRelation(RelationType rel_type, EntityType ent_type1,
                       std::string entity1, EntityType ent_type2,
                       std::string entity2) override;
+  void insertRelationCommon(RelationType type);
 
   // Select Clause
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
@@ -57,4 +59,18 @@ class PkbStub : public PkbApi {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                     RelationType rel_type) override;
+
+
+  // Pattern clause
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
+
+
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
+                                                                          MatchType expr_match_type) override;
+
+  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithLhsType(EntityType lhs_entity_type,
+                                                                                                 std::string rhs_expr,
+                                                                                                 MatchType expr_match_type) override;
+
 };

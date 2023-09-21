@@ -1,3 +1,3 @@
 #pragma once
 
-enum MatchType { EXACT, PARTIAL, WILD };
+enum class MatchType { EXACT_MATCH, PARTIAL_MATCH, WILD_MATCH };
