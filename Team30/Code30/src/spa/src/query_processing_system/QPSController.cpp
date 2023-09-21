@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "../shared/tokenizer/ATokenizer.h"
+#include "../shared/tokenizer/Tokenizer.h"
 #include "common/SelectClause.h"
 #include "common/SuchThatClause.h"
 
