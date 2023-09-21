@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
-#include <string>
-#include <vector>
 #include <queue>
+#include <stack>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
@@ -45,7 +47,8 @@ class SpParser : public AParser {
 
   std::shared_ptr<ProgramNode> getSourceProgramNode();
 
-  static std::shared_ptr<TreeNode> buildExprTreeAndValidate(std::queue<std::shared_ptr<std::string>>& postFixQueue);
+  static std::shared_ptr<TreeNode> buildExprTreeAndValidate(
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
   void parse() override;
 
@@ -63,6 +66,22 @@ class SpParser : public AParser {
   static bool isLogicalOperator(std::string const& tokenVal);
 
   static bool isMathematicalOperator(std::string const& tokenVal);
+
+  void handleWordOrIntegerToken(
+      std::queue<std::shared_ptr<std::string>>& postFixQueue,
+      std::unordered_set<std::string>& variables,
+      std::unordered_set<int>& constants);
+
+  void handleOperatorToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
+
+  void handleLeftParenthesisToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
+
+  void handleRightParenthesisToken(std::stack<std::shared_ptr<std::string>>& operatorStack,
+                                            std::queue<std::shared_ptr<std::string>>& postFixQueue,
+                                            int& parenCount, bool& isParseRelExpr);
 
   std::shared_ptr<ProgramNode> sourceProgramNode;
 };

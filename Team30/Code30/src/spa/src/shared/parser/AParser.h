@@ -25,6 +25,13 @@ class AParser {
    */
   std::string getCurrTokenValue();
 
+/**
+   * @brief Parses the tokens.
+   *
+   * @throw std::runtime_error if the tokens are not valid.
+   */
+  std::string getPeekTokenValue();
+
   virtual void parse() = 0;
 
   virtual ~AParser() = default;

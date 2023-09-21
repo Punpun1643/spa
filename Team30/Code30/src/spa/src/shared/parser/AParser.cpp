@@ -23,6 +23,10 @@ std::string AParser::getCurrTokenValue() {
   return getCurrToken()->getTokenVal();
 }
 
+std::string AParser::getPeekTokenValue() {
+  return peekToken()->getTokenVal();
+}
+
 bool AParser::IsTokenType(std::shared_ptr<Token> token, TokenType token_type) {
   if (token->getTokenType() != token_type) {
     return false;
