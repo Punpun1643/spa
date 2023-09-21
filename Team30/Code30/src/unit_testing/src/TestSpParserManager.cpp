@@ -517,8 +517,62 @@ TEST_CASE("Test SpManager parses complete source file successfully",
                 ->getRightSubTree()
                 ->getVal() == "x");
 
-    //    // stmt: procedure q
-    //    REQUIRE(stmtLstNode3->getChildren().size() == 1);
-    //  }
+    // stmt: procedure q
+    REQUIRE(stmtLstNode3->getChildren().size() == 1);
+    auto qIfNode =
+        std::dynamic_pointer_cast<IfNode>(stmtLstNode3->getChildren().at(0));
+
+    REQUIRE(qIfNode->getStmtType() == StmtType::IF_STMT);
+    REQUIRE(qIfNode->getStmtIndex() == 22);
+
+    auto qIfNodeCondExpr = qIfNode->getCondExpr();
+    auto qIfNodeThenStmtLst = qIfNode->getThenStmtLst();
+    auto qIfNodeElseStmtLst = qIfNode->getElseStmtLst();
+
+    REQUIRE(qIfNodeCondExpr->getVariables().size() == 1);
+    REQUIRE(qIfNodeCondExpr->getConstants().size() == 1);
+    REQUIRE(qIfNodeCondExpr->getVariables().find("x") !=
+            qIfNodeCondExpr->getVariables().end());
+    REQUIRE(qIfNodeCondExpr->getConstants().find(1) !=
+            qIfNodeCondExpr->getConstants().end());
+
+    REQUIRE(qIfNodeThenStmtLst->getChildren().size() == 1);
+    auto qIfNodeThenStmtLstAssignNode = std::dynamic_pointer_cast<AssignNode>(
+        qIfNodeThenStmtLst->getChildren().at(0));
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getStmtIndex() == 23);
+
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getVarName() == "z");
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getVariables().size() == 1);
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getConstants().size() == 1);
+
+    // check expression tree structure (i.e. x + 1)
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getRootOfTree()->getVal() == "+");
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getRootOfTree()
+                ->getLeftSubTree()
+                ->getVal() == "x");
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getRootOfTree()
+                ->getRightSubTree()
+                ->getVal() == "1");
+
+    REQUIRE(qIfNodeElseStmtLst->getChildren().size() == 1);
+    auto qIfNodeElseStmtLstAssignNode = std::dynamic_pointer_cast<AssignNode>(
+        qIfNodeElseStmtLst->getChildren().at(0));
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getStmtType() ==
+            StmtType::ASSIGN_STMT);
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getStmtIndex() == 24);
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getVarName() == "x");
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getVariables().size() == 2);
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getConstants().size() == 0);
+
+    // check expression tree structure (i.e. z + x)
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getRootOfTree()->getVal() == "+");
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getRootOfTree()
+                ->getLeftSubTree()
+                ->getVal() == "z");
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getRootOfTree()
+                ->getRightSubTree()
+                ->getVal() == "x");
   }
 }
