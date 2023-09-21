@@ -27,28 +27,41 @@ void IntermediateResultsTable::addSingleDeclaration(const PqlDeclaration & d, st
   }
 }
 
+std::unique_ptr<std::unordered_map<std::string, int>> IntermediateResultsTable::getValueCounts(const std::vector<std::string>& arr) {
+  auto value_counts = std::make_unique<std::unordered_map<std::string, int>>();
+  for (const std::string &value: arr) {
+    if (value_counts->count(value) == 0) {
+      (*value_counts)[value] = 1;
+    } else {
+      (*value_counts)[value] += 1;
+    }
+  }
+  return value_counts;
+}
+
 std::unique_ptr<std::vector<int>> IntermediateResultsTable::getIndicesToKeep(std::vector<std::string> arr,
                                                                                    std::vector<std::string> overlap_arr) {
+  /**
+   * Given an arr and an overlap_arr, returns the list of indices in arr that should be kept
+   * for all values in arr to also be present in overlap_arr. Takes into account duplicate
+   * values.
+   * Example: (['4','2','2','1'], ['2','2','4']) -> [0,1,2]
+   */
+  auto idx_to_keep = std::make_unique<std::vector<int>>();
+
   if (arr.empty() || overlap_arr.empty()) {
-    return std::make_unique<std::vector<int>>();
+    return idx_to_keep; // empty
   }
 
-  std::sort(arr.begin(), arr.end());
-  std::sort(overlap_arr.begin(), overlap_arr.end());
+  auto overlap_arr_value_counts = IntermediateResultsTable::getValueCounts(overlap_arr);
 
-  auto idx_to_keep = std::make_unique<std::vector<int>>();
-  int arr_idx = 0;
-  int overlap_arr_idx = 0;
-
-  while (arr_idx < arr.size() && overlap_arr_idx < overlap_arr.size()) {
-    if (arr[arr_idx] == overlap_arr[overlap_arr_idx]) {
-      idx_to_keep->push_back(arr_idx);
-      arr_idx++;
-      overlap_arr_idx++;
-    } else if (arr[arr_idx] > overlap_arr[overlap_arr_idx]) {
-      overlap_arr_idx++;
+  for (int i = 0; i < arr.size(); i++) {
+    if (overlap_arr_value_counts->count(arr[i]) == 0 ||
+        (*overlap_arr_value_counts)[arr[i]] <= 0) {
+      continue;
     } else {
-      arr_idx++;
+      (*overlap_arr_value_counts)[arr[i]] -= 1;
+      idx_to_keep->push_back(i);
     }
   }
   return idx_to_keep;
@@ -73,28 +86,27 @@ void IntermediateResultsTable::addClauseResult(const ClauseResult& clause_result
   }
 
   switch(clause_result.getNumDeclarations()) {
-    case 0: {
+    case (0): {
       bool result = clause_result.getBooleanClauseValue();
       addBooleanClauseResult(result);
       break;
     }
-    case 1: {
-      auto declaration = clause_result.getDeclarations()->front();
-      auto values = clause_result.getValues(declaration);
-      addSingleDeclaration(declaration, std::move(values));
+    case (1): {
+//      auto declaration = clause_result.getDeclarations()->front();
+//      auto values = clause_result.getValues(declaration);
+//      addSingleDeclaration(declaration, std::move(values));
       break;
     }
-    case 2: {
+    case (2): {
       break;
     }
     default: {
       break;
     }
   }
-
 }
 
-std::unique_ptr<std::vector<std::string>> IntermediateResultsTable::getValuesGivenDeclaration(const PqlDeclaration & declaration) const{
+std::unique_ptr<std::vector<std::string>> IntermediateResultsTable::getValuesGivenDeclaration(const PqlDeclaration& declaration){
   assert(value_map.count(declaration) == 1); // must have been in select stmt
 
   if (has_no_results) {

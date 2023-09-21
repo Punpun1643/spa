@@ -18,9 +18,6 @@ class IntermediateResultsTable {
                      PqlDeclarationHash>
       linked_declarations;
 
-  static std::unique_ptr<std::vector<int>> getIndicesToKeep(std::vector<std::string> arr, std::vector<std::string> overlap_arr);
-
-
   void addBooleanClauseResult(bool result);
   void addSingleDeclaration(const PqlDeclaration& d,
                             std::unique_ptr<std::vector<std::string>> values);
@@ -31,7 +28,11 @@ class IntermediateResultsTable {
  public:
   IntermediateResultsTable();
 
+  static std::unique_ptr<std::unordered_map<std::string, int>> getValueCounts(const std::vector<std::string>& arr);
+
   void addClauseResult(const ClauseResult& clause_result);
 
-  std::unique_ptr<std::vector<std::string>> getValuesGivenDeclaration(const PqlDeclaration& declaration) const;
+  static std::unique_ptr<std::vector<int>> getIndicesToKeep(std::vector<std::string> arr, std::vector<std::string> overlap_arr);
+
+  std::unique_ptr<std::vector<std::string>> getValuesGivenDeclaration(const PqlDeclaration &declaration);
 };
