@@ -77,50 +77,39 @@ SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
 std::shared_ptr<ProgramNode> SpParser::parseProgram() {
   std::vector<std::shared_ptr<ProcedureNode>> procedures;
 
-  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
-    // current token
-    std::shared_ptr<Token> currToken = getCurrToken();
-    if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-        currToken->getTokenVal() == SpParserConstant::PROCEDURE_KEYWORD) {
-      // increment index token to get next token
-      nextToken();
-      // parse procedure
-      procedures.push_back(parseProcedure());
-    } else {
+  while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
+    if (!isCurrTokenTypeAndValue(TokenType::WORD_TOKEN, SpParserConstant::PROCEDURE_KEYWORD)) {
       throw std::invalid_argument("Invalid procedure");
     }
+
+    nextToken();
+    procedures.push_back(parseProcedure());
   }
 
   return std::make_shared<ProgramNode>(procedures);
 }
 
 std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
-  // check if valid procedureName
-  std::shared_ptr<Token> currToken = getCurrToken();
-
-  if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
-    std::string procedureName = currToken->getTokenVal();
-
-    nextToken();
-    // check if valid procedure
-    if (getCurrToken()->getTokenVal() == SpParserConstant::START_PROCEDURE) {
-      // increment index token to get next token
-      nextToken();
-      // parse stmtLst
-      std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
-
-      if (getCurrToken()->getTokenVal() == SpParserConstant::END_PROCEDURE) {
-        nextToken();
-        return std::make_shared<ProcedureNode>(procedureName, stmtLst);
-      } else {
-        throw std::invalid_argument("Invalid procedure 1");
-      }
-    } else {
-      throw std::invalid_argument("Invalid procedure 2");
-    }
-  } else {
-    throw std::invalid_argument("Invalid procedure 4");
+  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
+    throw std::invalid_argument("Invalid procedure 1");
   }
+
+  std::string procedureName = getCurrTokenValue();
+  nextToken();
+
+  if (!isCurrTokenValue(SpParserConstant::START_PROCEDURE)) {
+    throw std::invalid_argument("Invalid procedure 2");
+  }
+
+  nextToken();
+  std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
+
+  if (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
+    throw std::invalid_argument("Invalid procedure 3");
+  }
+
+  nextToken();
+  return std::make_shared<ProcedureNode>(procedureName, stmtLst);
 }
 
 std::shared_ptr<PrintNode> SpParser::parsePrint() {
@@ -307,23 +296,20 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 
   int parenCount = 0;
 
-  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+  while (!AParser::IsEOFToken(getCurrToken())) {
     std::shared_ptr<Token> currToken = getCurrToken();
 
-    if (currToken->getTokenType() == TokenType::WORD_TOKEN ||
-        currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
+    if (AParser::IsWordOrIntegerToken(currToken)) {
       postFixQueue.push(
           std::make_shared<std::string>(currToken->getTokenVal()));
-      if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
+
+      if (AParser::IsWordToken(currToken)) {
         variables.insert(currToken->getTokenVal());
-      } else if (currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
+      } else if (AParser::IsIntegerToken(currToken)) {
         constants.insert(std::stoi(currToken->getTokenVal()));
       }
 
     } else if (isOperator(currToken->getTokenVal())) {
-      // if it's an operator, pop operators from the stack to the postFix
-      // until the stack top has an operator for lower precedence or the stack
-      // is empty
       if (isLogicalOperator(currToken->getTokenVal()) &&
           operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
               0) {
