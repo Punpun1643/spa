@@ -277,9 +277,10 @@ void SpParser::handleLeftParenthesisToken(
   operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
 }
 
-void SpParser::handleRightParenthesisToken(std::stack<std::shared_ptr<std::string>>& operatorStack,
-                                          std::queue<std::shared_ptr<std::string>>& postFixQueue,
-                                          int& parenCount, bool& isParseRelExpr) {
+void SpParser::condExprHandleRightParenthesisToken(
+    std::stack<std::shared_ptr<std::string>>& operatorStack,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount,
+    bool& isParseRelExpr) {
   if (parenCount <= 0) {
     throw std::invalid_argument("No matching parenthesis");
   }
@@ -297,10 +298,24 @@ void SpParser::handleRightParenthesisToken(std::stack<std::shared_ptr<std::strin
   // check valid relExpr
   if (isParseRelExpr && !operatorStack.empty() &&
       !isLogicalOperator(getPeekTokenValue()) &&
-      operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) ==
-          0) {
+      operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) == 0) {
     throw std::invalid_argument("Invalid relExpr");
   }
+}
+
+void SpParser::assignHandleRightParenthesisToken(
+    std::stack<std::shared_ptr<std::string>>& operatorStack,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount) {
+  if (parenCount <= 0) {
+    throw std::invalid_argument("No matching parenthesis");
+  }
+  while (operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
+         0) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+  --parenCount;
+  operatorStack.pop();
 }
 
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
@@ -322,7 +337,8 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
     } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
       handleLeftParenthesisToken(operatorStack, parenCount);
     } else if (isCurrTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
-      handleRightParenthesisToken(operatorStack, postFixQueue, parenCount, isParseRelExpr);
+      condExprHandleRightParenthesisToken(operatorStack, postFixQueue,
+                                          parenCount, isParseRelExpr);
       if (parenCount == 0) break;
     } else {
       throw std::invalid_argument("Invalid condExpr");
@@ -380,46 +396,19 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
 
   int parenCount = 0;
 
-  while (getCurrToken()->getTokenVal() != SpParserConstant::STMT_TERMINATOR) {
+  while (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
     std::shared_ptr<Token> currToken = getCurrToken();
 
-    // MS1: only extract variables and constants on RHS
-    if (currToken->getTokenType() == TokenType::WORD_TOKEN ||
-        currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
-      postFixQueue.push(
-          std::make_shared<std::string>(currToken->getTokenVal()));
-
-      if (currToken->getTokenType() == TokenType::WORD_TOKEN) {
-        variables.insert(currToken->getTokenVal());
-      } else if (currToken->getTokenType() == TokenType::INTEGER_TOKEN) {
-        constants.insert(std::stoi(currToken->getTokenVal()));
-      }
-
-    } else if (isMathematicalOperator(currToken->getTokenVal())) {
-      while (!operatorStack.empty() &&
-             precedence(operatorStack.top()->c_str()) >=
-                 precedence(currToken->getTokenVal())) {
-        postFixQueue.push(operatorStack.top());
-        operatorStack.pop();
-      }
-      operatorStack.push(
-          std::make_shared<std::string>(currToken->getTokenVal()));
+    if (AParser::IsWordOrIntegerToken(getCurrToken())) {
+      handleWordOrIntegerToken(postFixQueue, variables, constants);
+    } else if (isMathematicalOperator(getCurrTokenValue())) {
+      handleOperatorToken(operatorStack, postFixQueue);
     } else if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
-      ++parenCount;
-      operatorStack.push(
-          std::make_shared<std::string>(currToken->getTokenVal()));
+      handleLeftParenthesisToken(operatorStack, parenCount);
     } else if (currToken->getTokenVal() ==
                SpParserConstant::RIGHT_PARENTHESIS) {
-      if (parenCount <= 0) {
-        throw std::invalid_argument("No matching parenthesis");
-      }
-      while (operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
-             0) {
-        postFixQueue.push(operatorStack.top());
-        operatorStack.pop();
-      }
-      --parenCount;
-      operatorStack.pop();
+      assignHandleRightParenthesisToken(operatorStack, postFixQueue,
+                                        parenCount);
     } else {
       throw std::invalid_argument("Invalid assign");
     }
@@ -436,20 +425,16 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
     operatorStack.pop();
   }
 
-  std::shared_ptr<TreeNode> exprTreeRoot =
-      std::make_shared<TreeNode>("0", nullptr, nullptr);
-
   nextToken();
 
   try {
-    exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
+    std::shared_ptr<TreeNode> exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
+    return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
+                                        variables, constants, varName,
+                                        exprTreeRoot);
   } catch (std::invalid_argument& e) {
     throw std::invalid_argument("Invalid expression");
   }
-
-  return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
-                                      variables, constants, varName,
-                                      exprTreeRoot);
 }
 
 bool SpParser::isOperator(std::string const& tokenVal) {
