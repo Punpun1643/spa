@@ -37,4 +37,17 @@ TEST_CASE("Test parse call", "[parseCall]") {
 
         REQUIRE(callNode->getProcName() == "variable");
   }
+
+  SECTION("Test invalid call stmt should throw error (i.e. call variable)") {
+        std::vector<std::shared_ptr<Token>> tokens;
+
+        tokens.push_back(std::static_pointer_cast<Token>(
+            std::make_shared<WordToken>("variable")));
+
+        tokens.push_back(
+            std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+
+        SpParser parser = SpParser(tokens);
+        REQUIRE_THROWS(parser.parseCall());
+  }
 }

@@ -7,8 +7,8 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
-TEST_CASE("Test parse print", "[parsePrint]") {
-  SECTION("Test valid print stmt should not throw error (i.e. print variable;)") {
+TEST_CASE("Test parse read", "[parseRead]") {
+  SECTION("Test valid read stmt should not throw error (i.e. read variable;)") {
     std::vector<std::shared_ptr<Token>> tokens;
 
     tokens.push_back(std::static_pointer_cast<Token>(
@@ -19,10 +19,10 @@ TEST_CASE("Test parse print", "[parsePrint]") {
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
-    REQUIRE_NOTHROW(parser.parsePrint());
+    REQUIRE_NOTHROW(parser.parseRead());
   }
 
-  SECTION("Test valid print stmt should have the correct variable name (i.e. print variable;)") {
+  SECTION("Test valid read stmt should have the correct procedure name (i.e. read variable;)") {
     std::vector<std::shared_ptr<Token>> tokens;
 
     tokens.push_back(std::static_pointer_cast<Token>(
@@ -33,12 +33,12 @@ TEST_CASE("Test parse print", "[parsePrint]") {
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
-    std::shared_ptr<PrintNode> printNode = parser.parsePrint();
+    std::shared_ptr<ReadNode> readNode = parser.parseRead();
 
-    REQUIRE(printNode->getVarName() == "variable");
+    REQUIRE(readNode->getVarName() == "variable");
   }
 
-  SECTION("Test invalid print stmt should throw error (i.e. print variable)") {
+  SECTION("Test invalid read stmt should throw error (i.e. read variable)") {
     std::vector<std::shared_ptr<Token>> tokens;
 
     tokens.push_back(std::static_pointer_cast<Token>(
@@ -47,6 +47,6 @@ TEST_CASE("Test parse print", "[parsePrint]") {
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parsePrint());
+    REQUIRE_THROWS(parser.parseRead());
   }
 }
