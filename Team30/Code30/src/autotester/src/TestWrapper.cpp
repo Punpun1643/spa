@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "../../spa/src/shared/tokenizer/ATokenizer.h"
+#include "../../spa/src/shared/tokenizer/Tokenizer.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/common/SuchThatClause.h"
 
