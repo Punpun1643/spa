@@ -18,8 +18,8 @@
 
 Item | Version
 -|-
-OS |
-Toolchain |
+OS | Mac, macOS
+Toolchain | cmake 3.27.6
 C++ Standard | C++17
 
 ### Additional Build Instructions
@@ -42,9 +42,9 @@ No additional instructions required.
 
 Name | Mobile | Email                   | Development OS/Toolchain
 -:|:-:|:------------------------|-|
-Lee Kang Wei | 99887766 | john@doe.com            |
-Lim Wei Liang | 99887766 | john@doe.com            |
+Lee Kang Wei | 83387981 | leekangwei@u.nus.edu            | **OS:** macOS Ventura 13.2.1 <br/> **IDE:** NA <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+Lim Wei Liang | 91551321 | lim.weiliang@u.nus.edu            | **OS:** macOS Ventura 13.5.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
 Papattarada Apithanangsiri | 99887766 | papattarada.a@u.nus.edu | **OS:** macOS Ventura 13.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
-Ryan Ong Ren-An | 99887766 | john@doe.com            |
+Ryan Ong Ren-An | 90495351 | ryanongra@u.nus.edu            | **OS**: Windows 11 <br/> **IDE:** Microsoft Visual Studio 2022 <br/> **Toolchain:** C++ Clang tools for Windows (16.0.5 - x64/x86)
 Tang Swen Yi | 99887766 | john@doe.com            |
-Tay Yan Han | 99887766 | john@doe.com            | 
+Tay Yan Han | 96559670 | tayyanhan@u.nus.edu            | **OS**: Windows 11 <br/> **IDE:** Microsoft Visual Studio 2022 <br/> **Toolchain:** C++ Clang tools for Windows (16.0.5 - x64/x86)
