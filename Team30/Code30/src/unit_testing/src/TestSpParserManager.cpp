@@ -291,6 +291,24 @@ TEST_CASE("Test SpManager parses complete source file successfully",
 
     // stmt: procedure p
     REQUIRE(stmtLstNode2->getChildren().size() == 2);
+    auto pIfNode1 =
+        std::dynamic_pointer_cast<IfNode>(stmtLstNode2->getChildren().at(0));
+    auto pAssignNode2 = std::dynamic_pointer_cast<AssignNode>(
+        stmtLstNode2->getChildren().at(1));
+
+    REQUIRE(pIfNode1->getStmtType() == StmtType::IF_STMT);
+    REQUIRE(pIfNode1->getStmtIndex() == 13);
+
+    auto pIfNode1CondExpr = pIfNode1->getCondExpr();
+    auto pIfNode1ThenStmtLst = pIfNode1->getThenStmtLst();
+    auto pIfNode1ElseStmtLst = pIfNode1->getElseStmtLst();
+
+    REQUIRE(pIfNode1CondExpr->getVariables().size() == 1);
+    REQUIRE(pIfNode1CondExpr->getConstants().size() == 1);
+    REQUIRE(pIfNode1CondExpr->getVariables().find("x") !=
+            pIfNode1CondExpr->getVariables().end());
+    REQUIRE(pIfNode1CondExpr->getConstants().find(0) !=
+            pIfNode1CondExpr->getConstants().end());
 
     // stmt: procedure q
     REQUIRE(stmtLstNode3->getChildren().size() == 1);
