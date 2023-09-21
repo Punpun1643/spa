@@ -1,7 +1,6 @@
 #include "UsesExtractor.h"
 
 #include <iostream>
-#include <algorithm>
 
 UsesExtractor::UsesExtractor(PkbApi& pkb) : pkb(pkb) {}
 
@@ -22,7 +21,7 @@ void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
 }
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertRelation(RelationType::USES_S, std::to_string(node->getStmtIndex()),
+  pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
                      node->getVarName());
   insertVarWithActors(node->getVarName());
   // std::cout << "(" + std::to_string(node->getStmtIndex()) + ", " +
@@ -58,7 +57,7 @@ void UsesExtractor::popUsesActors() {
 void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
                                    std::string stmtIndex) {
   for (std::string condVar : condVars) {
-    pkb.insertRelation(RelationType::USES_S, stmtIndex, condVar);
+    pkb.insertRelation(RelationType::USES, stmtIndex, condVar);
     // std::cout << "(" + stmtIndex + ", " + condVar + ")\n";
     insertVarWithActors(condVar);
   }
@@ -66,12 +65,7 @@ void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
 
 void UsesExtractor::insertVarWithActors(std::string var) {
   for (std::string usesActor : usesActors) {
-    bool isStmtIndex = !usesActor.empty() && std::all_of(usesActor.begin(), usesActor.end(), ::isdigit);
-    if (isStmtIndex) {
-      pkb.insertRelation(RelationType::USES_S, usesActor, var);
-    } else {
-      pkb.insertRelation(RelationType::USES_P, usesActor, var);
-    }
+    pkb.insertRelation(RelationType::USES, usesActor, var);
     // std::cout << "(" + usesActor + ", " + var + ")\n";
   }
 }
