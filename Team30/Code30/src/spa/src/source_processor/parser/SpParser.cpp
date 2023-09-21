@@ -216,38 +216,27 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 std::shared_ptr<WhileNode> SpParser::parseWhile() {
   int whileStmtIndex = currStmtIndex++;
 
-  std::shared_ptr<Token> currToken = getCurrToken();
-  std::shared_ptr<CondExprNode> condExpr;
-  std::shared_ptr<StmtLstNode> stmtLst;
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::START_COND_EXPR,
+                              "Invalid while 1");
 
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_COND_EXPR) {
-    throw std::invalid_argument("Invalid while 1");
-  }
+  std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
-  condExpr = parseCondExpr();
-
-  currToken = getCurrToken();
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_COND_EXPR) {
-    throw std::invalid_argument("Invalid while 2");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::END_COND_EXPR,
+                              "Invalid while 2");
 
   nextToken();
-  currToken = getCurrToken();
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::START_WHILE_STMTLST) {
-    throw std::invalid_argument("Invalid while 3");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::START_WHILE_STMTLST,
+                              "Invalid while 3");
 
   nextToken();
-  stmtLst = parseStmtLst();
+  std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
-  currToken = getCurrToken();
-  if (currToken->getTokenType() != TokenType::SPECIAL_CHAR_TOKEN ||
-      currToken->getTokenVal() != SpParserConstant::END_WHILE_STMTLST) {
-    throw std::invalid_argument("Invalid while 4");
-  }
+  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+                              SpParserConstant::END_WHILE_STMTLST,
+                              "Invalid while 4");
 
   nextToken();
   return std::make_shared<WhileNode>(whileStmtIndex, StmtType::WHILE_STMT,
