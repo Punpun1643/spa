@@ -381,12 +381,6 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 
 std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  // print out element in postfix queue
-  std::queue<std::shared_ptr<std::string>> temp = postFixQueue;
-  while (!temp.empty()) {
-    std::cout << *temp.front() << " " << std::endl;
-    temp.pop();
-  }
   std::stack<std::shared_ptr<TreeNode>> treeStack;
 
   while (!postFixQueue.empty()) {
