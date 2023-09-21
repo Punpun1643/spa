@@ -25,7 +25,7 @@ class AParser {
    */
   std::string getCurrTokenValue();
 
-/**
+  /**
    * @brief Parses the tokens.
    *
    * @throw std::runtime_error if the tokens are not valid.
@@ -74,6 +74,16 @@ class AParser {
   bool isCurrTokenValue(std::string const& tokenValue);
 
   /**
+   * @brief Checks if the peek token is of the given token value.
+   *
+   * @param tokenValue The token value to check against.
+   *
+   * @return True if the current token is of the given token value,
+   * false otherwise.
+   */
+  bool isPeekTokenValue(std::string const& tokenValue);
+
+  /**
    * @brief Checks if the current token and type value is equal to the given
    * token value.
    *
@@ -99,6 +109,6 @@ class AParser {
    * type.
    */
   void assertCurrTokenTypeAndValue(TokenType expectedType,
-                               std::string const& expectedValue,
-                               std::string const& errorMessage);
+                                   std::string const& expectedValue,
+                                   std::string const& errorMessage);
 };

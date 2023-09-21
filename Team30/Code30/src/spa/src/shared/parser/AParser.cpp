@@ -23,9 +23,7 @@ std::string AParser::getCurrTokenValue() {
   return getCurrToken()->getTokenVal();
 }
 
-std::string AParser::getPeekTokenValue() {
-  return peekToken()->getTokenVal();
-}
+std::string AParser::getPeekTokenValue() { return peekToken()->getTokenVal(); }
 
 bool AParser::IsTokenType(std::shared_ptr<Token> token, TokenType token_type) {
   if (token->getTokenType() != token_type) {
@@ -62,13 +60,19 @@ bool AParser::isCurrTokenValue(std::string const& tokenValue) {
   return tokenValue == getCurrToken()->getTokenVal();
 }
 
+bool AParser::isPeekTokenValue(std::string const& tokenValue) {
+  return tokenValue == peekToken()->getTokenVal();
+}
+
 bool AParser::isCurrTokenTypeAndValue(TokenType tokenType,
                                       std::string const& tokenValue) {
   return IsTokenType(getCurrToken(), tokenType) &&
          tokenValue == getCurrToken()->getTokenVal();
 }
 
-void AParser::assertCurrTokenTypeAndValue(TokenType expectedType, const std::string& expectedValue, const std::string& errorMessage) {
+void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
+                                          std::string const& expectedValue,
+                                          std::string const& errorMessage) {
   if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
     throw std::invalid_argument(errorMessage);
   }

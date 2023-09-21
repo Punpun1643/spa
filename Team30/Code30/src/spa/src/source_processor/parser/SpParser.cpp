@@ -397,16 +397,13 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   int parenCount = 0;
 
   while (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
-    std::shared_ptr<Token> currToken = getCurrToken();
-
     if (AParser::IsWordOrIntegerToken(getCurrToken())) {
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isMathematicalOperator(getCurrTokenValue())) {
       handleOperatorToken(operatorStack, postFixQueue);
-    } else if (currToken->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
+    } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
       handleLeftParenthesisToken(operatorStack, parenCount);
-    } else if (currToken->getTokenVal() ==
-               SpParserConstant::RIGHT_PARENTHESIS) {
+    } else if (isCurrTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
       assignHandleRightParenthesisToken(operatorStack, postFixQueue,
                                         parenCount);
     } else {
@@ -428,7 +425,8 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   nextToken();
 
   try {
-    std::shared_ptr<TreeNode> exprTreeRoot = buildExprTreeAndValidate(postFixQueue);
+    std::shared_ptr<TreeNode> exprTreeRoot =
+        buildExprTreeAndValidate(postFixQueue);
     return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
                                         variables, constants, varName,
                                         exprTreeRoot);
@@ -498,43 +496,35 @@ int SpParser::precedence(std::string const& op) {
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
-  while (getCurrToken()->getTokenVal() != SpParserConstant::END_PROCEDURE) {
+  while (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
     std::shared_ptr<Token> currToken = getCurrToken();
-    if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-        peekToken()->getTokenVal() == SpParserConstant::ASSIGN_SYMBOL) {
-      // parse assign
+    if (isCurrTokenType(TokenType::WORD_TOKEN) &&
+        isPeekTokenValue(SpParserConstant::ASSIGN_SYMBOL)) {
       nextToken();  // move to assign symbol
       nextToken();
       stmts.push_back(parseAssign(currToken->getTokenVal()));
-    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == SpParserConstant::PRINT_KEYWORD) {
+    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                       SpParserConstant::PRINT_KEYWORD)) {
       nextToken();
-      // parse print
       stmts.push_back(parsePrint());
-    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == SpParserConstant::READ_KEYWORD) {
+    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                       SpParserConstant::READ_KEYWORD)) {
       nextToken();
-      // parse read
       stmts.push_back(parseRead());
-    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == SpParserConstant::CALL_KEYWORD) {
+    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                       SpParserConstant::CALL_KEYWORD)) {
       nextToken();
-      // parse call
       stmts.push_back(parseCall());
-    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == SpParserConstant::WHILE_KEYWORD) {
+    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                       SpParserConstant::WHILE_KEYWORD)) {
       nextToken();
-      // parse while
       stmts.push_back(parseWhile());
-    } else if (currToken->getTokenType() == TokenType::WORD_TOKEN &&
-               currToken->getTokenVal() == SpParserConstant::IF_KEYWORD) {
+    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                       SpParserConstant::IF_KEYWORD)) {
       nextToken();
-      // parse if
       stmts.push_back(parseIf());
     } else {
-      throw std::invalid_argument(
-          "The stmtLst is invalid as there are stmts that are not print, read, "
-          "call or while");
+      throw std::invalid_argument("The stmtLst is invalid");
     }
   }
 

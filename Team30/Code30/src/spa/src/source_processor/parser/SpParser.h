@@ -57,6 +57,8 @@ class SpParser : public AParser {
  private:
   int currStmtIndex = 1;
 
+  std::shared_ptr<ProgramNode> sourceProgramNode;
+
   static int precedence(std::string const& op);
 
   static bool isOperator(std::string const& tokenVal);
@@ -87,5 +89,4 @@ class SpParser : public AParser {
   void assignHandleRightParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount);
-  std::shared_ptr<ProgramNode> sourceProgramNode;
 };
