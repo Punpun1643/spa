@@ -36,5 +36,6 @@ void EntityExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
 }
 
 void EntityExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  // TODO
+  pkb.insertEntity(EntityType::ASSIGN, std::to_string(node->getStmtIndex()));
+  // pkb.insertPatternNode(node);
 }

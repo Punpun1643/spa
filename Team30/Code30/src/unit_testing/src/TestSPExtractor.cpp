@@ -37,15 +37,18 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
-    REQUIRE(pkb.insertFollowsCallCount == 7);
+    REQUIRE(pkb.insertFollowsCallCount == 8);
   }
   SECTION("Parent extraction functionality") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 15);
-    // NOTE: the expected value 15 includes all the duplicate calls
+    REQUIRE(pkb.insertUsesCallCount == 17);
+    // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 13);
   }
 }
 
@@ -56,46 +59,63 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
-    REQUIRE(pkb.insertFollowsCallCount == 0);
+    REQUIRE(pkb.insertFollowsCallCount == 1);
   }
   SECTION("Parent extraction functionality") {
-    REQUIRE(pkb.insertParentCallCount == 2);
+    REQUIRE(pkb.insertParentCallCount == 3);
   }
   SECTION("Uses extraction functionality") {
     REQUIRE(pkb.insertUsesCallCount == 9);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 4);
+  }
 }
 
-// TEST_CASE("Follows extraction") {
-//   PkbApiStub pkb = PkbApiStub();
-//   ExtractorBuilder eb = ExtractorBuilder(pkb);
-//   ExtractionController ec = ExtractionController(pkb);
-//   SECTION("Full extraction") {
-//     ec.executeProgramExtraction(ManualASTBuilder::getAST_1());
-//     REQUIRE(pkb.insertFollowsCallCount == 7);
-//   }
-// }
-//
-// TEST_CASE("Parent extraction") {
-//   PkbApiStub pkb = PkbApiStub();
-//   ExtractorBuilder eb = ExtractorBuilder(pkb);
-//   ExtractionController ec = ExtractionController(pkb);
-//   SECTION("Full extraction") {
-//     ec.executeProgramExtraction(ManualASTBuilder::getAST_1());
-//     REQUIRE(pkb.insertParentCallCount == 6);
-//   }
-// }
-//
-// TEST_CASE("Uses extraction") {
-//   PkbApiStub pkb = PkbApiStub();
-//   ExtractorBuilder eb = ExtractorBuilder(pkb);
-//   ExtractionController ec = ExtractionController(pkb);
-//   SECTION("Full extraction") {
-//     ec.executeProgramExtraction(ManualASTBuilder::getAST_1());
-//     REQUIRE(pkb.insertUsesCallCount == 15);
-//     // NOTE: the expected value 15 includes all the duplicate calls
-//     // that may occur (handled by pkb)
-//   }
-// }
+TEST_CASE("AST 3: Basic SPA, 2 procedures") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 2);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 0);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 4);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 4);
+  }
+}
+
+TEST_CASE(
+    "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
+    "(if-if-while)") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
+  ExtractorBuilder eb = ExtractorBuilder(pkb);
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 1);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 6);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 18);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 3);
+  }
+}
