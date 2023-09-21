@@ -53,7 +53,7 @@ read r;
 Select r such that Uses (r, _) 
 SemanticError
 5000
-12 - Invalid cannot have constant as 2nd param of Usesassign a;
+12 - Invalid cannot have constant as 2nd param of Uses
 assign a;
 Select a such that Uses (13, "1") 
 SemanticError
