@@ -18,7 +18,7 @@ TEST_CASE(
   SECTION("Test file with valid path and valid source code") {
     SpParserManager spParserManager = SpParserManager();
     std::string filePath =
-        "C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/"
+        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_short.txt";
     std::shared_ptr<ProgramNode> programNode =
         spParserManager.parseInputFile(filePath);
@@ -51,7 +51,7 @@ TEST_CASE(
       "Test file with valid path and valid source code for Example 1 and 2") {
     SpParserManager spParserManager = SpParserManager();
     std::string filePath =
-        "C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/"
+        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_medium.txt";
     auto programNode = spParserManager.parseInputFile(filePath);
 
@@ -123,7 +123,7 @@ TEST_CASE("Test SpManager parses complete source file successfully",
   SECTION("Test file with valid path and valid source code") {
     SpParserManager spParserManager = SpParserManager();
     std::string filePath =
-        "C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/"
+        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source.txt";
     auto programNode = spParserManager.parseInputFile(filePath);
 
