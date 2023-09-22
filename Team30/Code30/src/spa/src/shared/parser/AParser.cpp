@@ -1,4 +1,5 @@
 #include "AParser.h"
+#include <stdexcept>
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}

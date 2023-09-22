@@ -33,20 +33,20 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
 
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
-      node->getCondExpr()->getVariables();
+      *node->getCondExpr()->getVariables();
   insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
-      node->getCondExpr()->getVariables();
+      *node->getCondExpr()->getVariables();
   insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  std::unordered_set<std::string> rhsVars = node->getVariables();
+  std::unordered_set<std::string> rhsVars = *node->getVariables();
   insertMultipleVars(rhsVars, std::to_string(node->getStmtIndex()));
 }
 

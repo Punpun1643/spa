@@ -459,8 +459,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
         parser.parseStmtLst()->getChildren().at(0));
     REQUIRE(assignNode->getVarName() == "x");
-    REQUIRE(assignNode->getConstants().size() == 1);
-    REQUIRE(assignNode->getVariables().size() == 1);
+    REQUIRE(assignNode->getConstants()->size() == 1);
+    REQUIRE(assignNode->getVariables()->size() == 1);
   }
 
   SECTION(
@@ -488,8 +488,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     SpParser parser = SpParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
         parser.parseStmtLst()->getChildren().at(0));
-    REQUIRE(assignNode->getConstants().size() == 0);
-    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getConstants()->size() == 0);
+    REQUIRE(assignNode->getVariables()->size() == 2);
     REQUIRE(assignNode->getVarName() == "normSq");
   }
 }
