@@ -73,8 +73,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     SpParser parser = SpParser(tokens);
     auto assignNode = parser.parseAssign("normSq");
-    REQUIRE(assignNode->getConstants().size() == 0);
-    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getConstants()->size() == 0);
+    REQUIRE(assignNode->getVariables()->size() == 2);
     REQUIRE(assignNode->getVarName() == "normSq");
   }
 
@@ -132,8 +132,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     SpParser parser = SpParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants().size() == 1);
-    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getConstants()->size() == 1);
+    REQUIRE(assignNode->getVariables()->size() == 2);
     REQUIRE(assignNode->getVarName() == "x");
   }
 
@@ -189,8 +189,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     SpParser parser = SpParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants().size() == 2);
-    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getConstants()->size() == 2);
+    REQUIRE(assignNode->getVariables()->size() == 2);
     REQUIRE(assignNode->getVarName() == "x");
   }
 
@@ -246,8 +246,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     SpParser parser = SpParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants().size() == 1);
-    REQUIRE(assignNode->getVariables().size() == 1);
+    REQUIRE(assignNode->getConstants()->size() == 1);
+    REQUIRE(assignNode->getVariables()->size() == 1);
     REQUIRE(assignNode->getVarName() == "x");
   }
 
@@ -292,8 +292,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     SpParser parser = SpParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants().size() == 1);
-    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getConstants()->size() == 1);
+    REQUIRE(assignNode->getVariables()->size() == 2);
     REQUIRE(assignNode->getVarName() == "x");
   }
 
@@ -342,8 +342,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     SpParser parser = SpParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants().size() == 1);
-    REQUIRE(assignNode->getVariables().size() == 2);
+    REQUIRE(assignNode->getConstants()->size() == 1);
+    REQUIRE(assignNode->getVariables()->size() == 2);
     REQUIRE(assignNode->getVarName() == "x");
   }
 

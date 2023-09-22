@@ -18,7 +18,7 @@ TEST_CASE(
   SECTION("Test file with valid path and valid source code") {
     SpParserManager spParserManager = SpParserManager();
     std::string filePath =
-        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+        "C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_short.txt";
     std::shared_ptr<ProgramNode> programNode =
         spParserManager.parseInputFile(filePath);
@@ -51,7 +51,7 @@ TEST_CASE(
       "Test file with valid path and valid source code for Example 1 and 2") {
     SpParserManager spParserManager = SpParserManager();
     std::string filePath =
-        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+        "C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_medium.txt";
     auto programNode = spParserManager.parseInputFile(filePath);
 
@@ -123,7 +123,7 @@ TEST_CASE("Test SpManager parses complete source file successfully",
   SECTION("Test file with valid path and valid source code") {
     SpParserManager spParserManager = SpParserManager();
     std::string filePath =
-        "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
+        "C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source.txt";
     auto programNode = spParserManager.parseInputFile(filePath);
 
@@ -160,26 +160,26 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(assignNode1->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(assignNode1->getStmtIndex() == 1);
     REQUIRE(assignNode1->getVarName() == "x");
-    REQUIRE(assignNode1->getVariables().size() == 0);
-    REQUIRE(assignNode1->getConstants().size() == 1);
+    REQUIRE(assignNode1->getVariables()->size() == 0);
+    REQUIRE(assignNode1->getConstants()->size() == 1);
     auto constants1 = assignNode1->getConstants();
-    REQUIRE(constants1.find(2) != constants1.end());
+    REQUIRE(constants1->find(2) != constants1->end());
 
     REQUIRE(assignNode2->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(assignNode2->getStmtIndex() == 2);
     REQUIRE(assignNode2->getVarName() == "z");
-    REQUIRE(assignNode2->getVariables().size() == 0);
-    REQUIRE(assignNode2->getConstants().size() == 1);
+    REQUIRE(assignNode2->getVariables()->size() == 0);
+    REQUIRE(assignNode2->getConstants()->size() == 1);
     auto constants2 = assignNode2->getConstants();
-    REQUIRE(constants2.find(3) != constants2.end());
+    REQUIRE(constants2->find(3) != constants2->end());
 
     REQUIRE(assignNode3->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(assignNode3->getStmtIndex() == 3);
     REQUIRE(assignNode3->getVarName() == "i");
-    REQUIRE(assignNode3->getVariables().size() == 0);
-    REQUIRE(assignNode3->getConstants().size() == 1);
+    REQUIRE(assignNode3->getVariables()->size() == 0);
+    REQUIRE(assignNode3->getConstants()->size() == 1);
     auto constants3 = assignNode3->getConstants();
-    REQUIRE(constants3.find(5) != constants3.end());
+    REQUIRE(constants3->find(5) != constants3->end());
 
     REQUIRE(whileNode->getStmtType() == StmtType::WHILE_STMT);
     REQUIRE(whileNode->getStmtIndex() == 4);
@@ -188,8 +188,8 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     auto whileStmtLst = whileNode->getStmtLst();
     auto whileCondExprVariables = whileCondExpr->getVariables();
     auto whileCondExprConstants = whileCondExpr->getConstants();
-    REQUIRE(whileCondExprVariables.size() == 1);
-    REQUIRE(whileCondExprConstants.size() == 1);
+    REQUIRE(whileCondExprVariables->size() == 1);
+    REQUIRE(whileCondExprConstants->size() == 1);
 
     auto whileStmtAssign1 = std::dynamic_pointer_cast<AssignNode>(
         whileStmtLst->getChildren().at(0));
@@ -202,14 +202,14 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     auto whileStmtAssign3 = std::dynamic_pointer_cast<AssignNode>(
         whileStmtLst->getChildren().at(4));
 
-    REQUIRE(whileCondExprVariables.find("i") != whileCondExprVariables.end());
-    REQUIRE(whileCondExprConstants.find(0) != whileCondExprConstants.end());
+    REQUIRE(whileCondExprVariables->find("i") != whileCondExprVariables->end());
+    REQUIRE(whileCondExprConstants->find(0) != whileCondExprConstants->end());
 
     REQUIRE(whileStmtAssign1->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(whileStmtAssign1->getStmtIndex() == 5);
     REQUIRE(whileStmtAssign1->getVarName() == "x");
-    REQUIRE(whileStmtAssign1->getVariables().size() == 1);
-    REQUIRE(whileStmtAssign1->getConstants().size() == 1);
+    REQUIRE(whileStmtAssign1->getVariables()->size() == 1);
+    REQUIRE(whileStmtAssign1->getConstants()->size() == 1);
 
     auto whileStmtAssign1ExprTreeRoot = whileStmtAssign1->getRootOfTree();
     REQUIRE(whileStmtAssign1ExprTreeRoot->getVal() == "-");
@@ -221,12 +221,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
 
     auto whileIfStmtCondExpr = whileIfStmt->getCondExpr();
 
-    REQUIRE(whileIfStmtCondExpr->getVariables().size() == 1);
-    REQUIRE(whileIfStmtCondExpr->getConstants().size() == 1);
-    REQUIRE(whileIfStmtCondExpr->getVariables().find("x") !=
-            whileIfStmtCondExpr->getVariables().end());
-    REQUIRE(whileIfStmtCondExpr->getConstants().find(1) !=
-            whileIfStmtCondExpr->getConstants().end());
+    REQUIRE(whileIfStmtCondExpr->getVariables()->size() == 1);
+    REQUIRE(whileIfStmtCondExpr->getConstants()->size() == 1);
+    REQUIRE(whileIfStmtCondExpr->getVariables()->find("x") !=
+            whileIfStmtCondExpr->getVariables()->end());
+    REQUIRE(whileIfStmtCondExpr->getConstants()->find(1) !=
+            whileIfStmtCondExpr->getConstants()->end());
 
     auto whileIfStmtThenStmtLst = whileIfStmt->getThenStmtLst();
     auto whileIfStmtElseStmtLst = whileIfStmt->getElseStmtLst();
@@ -242,34 +242,34 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(whileIfStmtThenStmtAssign->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(whileIfStmtThenStmtAssign->getStmtIndex() == 7);
     REQUIRE(whileIfStmtThenStmtAssign->getVarName() == "z");
-    REQUIRE(whileIfStmtThenStmtAssign->getVariables().size() == 1);
-    REQUIRE(whileIfStmtThenStmtAssign->getConstants().size() == 1);
-    REQUIRE(whileIfStmtThenStmtAssign->getVariables().find("x") !=
-            whileIfStmtThenStmtAssign->getVariables().end());
-    REQUIRE(whileIfStmtThenStmtAssign->getConstants().find(1) !=
-            whileIfStmtThenStmtAssign->getConstants().end());
+    REQUIRE(whileIfStmtThenStmtAssign->getVariables()->size() == 1);
+    REQUIRE(whileIfStmtThenStmtAssign->getConstants()->size() == 1);
+    REQUIRE(whileIfStmtThenStmtAssign->getVariables()->find("x") !=
+            whileIfStmtThenStmtAssign->getVariables()->end());
+    REQUIRE(whileIfStmtThenStmtAssign->getConstants()->find(1) !=
+            whileIfStmtThenStmtAssign->getConstants()->end());
 
     REQUIRE(whileIfStmtElseStmtAssign->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(whileIfStmtElseStmtAssign->getStmtIndex() == 8);
     REQUIRE(whileIfStmtElseStmtAssign->getVarName() == "y");
-    REQUIRE(whileIfStmtElseStmtAssign->getVariables().size() == 2);
-    REQUIRE(whileIfStmtElseStmtAssign->getConstants().size() == 0);
-    REQUIRE(whileIfStmtElseStmtAssign->getVariables().find("z") !=
-            whileIfStmtElseStmtAssign->getVariables().end());
-    REQUIRE(whileIfStmtElseStmtAssign->getVariables().find("x") !=
-            whileIfStmtElseStmtAssign->getVariables().end());
+    REQUIRE(whileIfStmtElseStmtAssign->getVariables()->size() == 2);
+    REQUIRE(whileIfStmtElseStmtAssign->getConstants()->size() == 0);
+    REQUIRE(whileIfStmtElseStmtAssign->getVariables()->find("z") !=
+            whileIfStmtElseStmtAssign->getVariables()->end());
+    REQUIRE(whileIfStmtElseStmtAssign->getVariables()->find("x") !=
+            whileIfStmtElseStmtAssign->getVariables()->end());
 
     REQUIRE(whileStmtAssign2->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(whileStmtAssign2->getStmtIndex() == 9);
     REQUIRE(whileStmtAssign2->getVarName() == "z");
-    REQUIRE(whileStmtAssign2->getVariables().size() == 3);
-    REQUIRE(whileStmtAssign2->getConstants().size() == 0);
-    REQUIRE(whileStmtAssign2->getVariables().find("z") !=
-            whileStmtAssign2->getVariables().end());
-    REQUIRE(whileStmtAssign2->getVariables().find("x") !=
-            whileStmtAssign2->getVariables().end());
-    REQUIRE(whileStmtAssign2->getVariables().find("i") !=
-            whileStmtAssign2->getVariables().end());
+    REQUIRE(whileStmtAssign2->getVariables()->size() == 3);
+    REQUIRE(whileStmtAssign2->getConstants()->size() == 0);
+    REQUIRE(whileStmtAssign2->getVariables()->find("z") !=
+            whileStmtAssign2->getVariables()->end());
+    REQUIRE(whileStmtAssign2->getVariables()->find("x") !=
+            whileStmtAssign2->getVariables()->end());
+    REQUIRE(whileStmtAssign2->getVariables()->find("i") !=
+            whileStmtAssign2->getVariables()->end());
 
     auto whileStmtAssign2ExprTreeRoot = whileStmtAssign2->getRootOfTree();
     REQUIRE(whileStmtAssign2ExprTreeRoot->getVal() == "+");
@@ -289,12 +289,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(whileStmtAssign3->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(whileStmtAssign3->getStmtIndex() == 11);
     REQUIRE(whileStmtAssign3->getVarName() == "i");
-    REQUIRE(whileStmtAssign3->getVariables().size() == 1);
-    REQUIRE(whileStmtAssign3->getConstants().size() == 1);
-    REQUIRE(whileStmtAssign3->getVariables().find("i") !=
-            whileStmtAssign3->getVariables().end());
-    REQUIRE(whileStmtAssign3->getConstants().find(1) !=
-            whileStmtAssign3->getConstants().end());
+    REQUIRE(whileStmtAssign3->getVariables()->size() == 1);
+    REQUIRE(whileStmtAssign3->getConstants()->size() == 1);
+    REQUIRE(whileStmtAssign3->getVariables()->find("i") !=
+            whileStmtAssign3->getVariables()->end());
+    REQUIRE(whileStmtAssign3->getConstants()->find(1) !=
+            whileStmtAssign3->getConstants()->end());
 
     REQUIRE(callNode->getStmtType() == StmtType::CALL_STMT);
     REQUIRE(callNode->getStmtIndex() == 12);
@@ -314,12 +314,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     auto pIfNode1ThenStmtLst = pIfNode1->getThenStmtLst();
     auto pIfNode1ElseStmtLst = pIfNode1->getElseStmtLst();
 
-    REQUIRE(pIfNode1CondExpr->getVariables().size() == 1);
-    REQUIRE(pIfNode1CondExpr->getConstants().size() == 1);
-    REQUIRE(pIfNode1CondExpr->getVariables().find("x") !=
-            pIfNode1CondExpr->getVariables().end());
-    REQUIRE(pIfNode1CondExpr->getConstants().find(0) !=
-            pIfNode1CondExpr->getConstants().end());
+    REQUIRE(pIfNode1CondExpr->getVariables()->size() == 1);
+    REQUIRE(pIfNode1CondExpr->getConstants()->size() == 1);
+    REQUIRE(pIfNode1CondExpr->getVariables()->find("x") !=
+            pIfNode1CondExpr->getVariables()->end());
+    REQUIRE(pIfNode1CondExpr->getConstants()->find(0) !=
+            pIfNode1CondExpr->getConstants()->end());
 
     REQUIRE(pIfNode1ThenStmtLst->getChildren().size() == 3);
 
@@ -336,12 +336,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
         pIfNodeThenStmtLstWhileNode->getCondExpr();
     auto pIfNodeThenStmtLstWhileNodeStmtLst =
         pIfNodeThenStmtLstWhileNode->getStmtLst();
-    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getVariables().size() == 1);
-    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getConstants().size() == 1);
-    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getVariables().find("i") !=
-            pIfNodeThenStmtLstWhileNodeCondExpr->getVariables().end());
-    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getConstants().find(0) !=
-            pIfNodeThenStmtLstWhileNodeCondExpr->getConstants().end());
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getVariables()->size() == 1);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getConstants()->size() == 1);
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getVariables()->find("i") !=
+            pIfNodeThenStmtLstWhileNodeCondExpr->getVariables()->end());
+    REQUIRE(pIfNodeThenStmtLstWhileNodeCondExpr->getConstants()->find(0) !=
+            pIfNodeThenStmtLstWhileNodeCondExpr->getConstants()->end());
 
     REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLst->getChildren().size() == 3);
     auto pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1 =
@@ -359,25 +359,27 @@ TEST_CASE("Test SpManager parses complete source file successfully",
             15);
     REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVarName() == "x");
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().size() ==
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables()->size() ==
         2);
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().size() ==
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants()->size() ==
         2);
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().find(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables()->find(
             "y") !=
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().end());
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables()->end());
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().find(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables()->find(
             "z") !=
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables().end());
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getVariables()->end());
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().find(3) !=
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().end());
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants()->find(
+            3) !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants()->end());
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().find(2) !=
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants().end());
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants()->find(
+            2) !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getConstants()->end());
 
     // check expression tree structure (i.e. z * 3 + 2 * y)
     REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode1->getRootOfTree()
@@ -416,19 +418,20 @@ TEST_CASE("Test SpManager parses complete source file successfully",
             17);
     REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVarName() == "i");
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables().size() ==
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables()->size() ==
         1);
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants().size() ==
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants()->size() ==
         1);
 
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables().find(
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables()->find(
             "i") !=
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables().end());
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getVariables()->end());
     REQUIRE(
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants().find(1) !=
-        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants().end());
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants()->find(
+            1) !=
+        pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getConstants()->end());
 
     // check expression tree structure (i.e. i - 1)
     REQUIRE(pIfNodeThenStmtLstWhileNodeStmtLstAssignNode2->getRootOfTree()
@@ -444,12 +447,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
             StmtType::ASSIGN_STMT);
     REQUIRE(pIfNodeThenStmtLstAssignNode1->getStmtIndex() == 18);
     REQUIRE(pIfNodeThenStmtLstAssignNode1->getVarName() == "x");
-    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVariables().size() == 1);
-    REQUIRE(pIfNodeThenStmtLstAssignNode1->getConstants().size() == 1);
-    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVariables().find("x") !=
-            pIfNodeThenStmtLstAssignNode1->getVariables().end());
-    REQUIRE(pIfNodeThenStmtLstAssignNode1->getConstants().find(1) !=
-            pIfNodeThenStmtLstAssignNode1->getConstants().end());
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVariables()->size() == 1);
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getConstants()->size() == 1);
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getVariables()->find("x") !=
+            pIfNodeThenStmtLstAssignNode1->getVariables()->end());
+    REQUIRE(pIfNodeThenStmtLstAssignNode1->getConstants()->find(1) !=
+            pIfNodeThenStmtLstAssignNode1->getConstants()->end());
 
     // check expression tree structure (i.e. x + 1)
     REQUIRE(pIfNodeThenStmtLstAssignNode1->getRootOfTree()->getVal() == "+");
@@ -464,12 +467,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
             StmtType::ASSIGN_STMT);
     REQUIRE(pIfNodeThenStmtLstAssignNode2->getStmtIndex() == 19);
     REQUIRE(pIfNodeThenStmtLstAssignNode2->getVarName() == "z");
-    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables().size() == 2);
-    REQUIRE(pIfNodeThenStmtLstAssignNode2->getConstants().size() == 0);
-    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables().find("x") !=
-            pIfNodeThenStmtLstAssignNode2->getVariables().end());
-    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables().find("z") !=
-            pIfNodeThenStmtLstAssignNode2->getVariables().end());
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables()->size() == 2);
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getConstants()->size() == 0);
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables()->find("x") !=
+            pIfNodeThenStmtLstAssignNode2->getVariables()->end());
+    REQUIRE(pIfNodeThenStmtLstAssignNode2->getVariables()->find("z") !=
+            pIfNodeThenStmtLstAssignNode2->getVariables()->end());
 
     // check expression tree structure (i.e. x + z)
     REQUIRE(pIfNodeThenStmtLstAssignNode2->getRootOfTree()->getVal() == "+");
@@ -488,8 +491,8 @@ TEST_CASE("Test SpManager parses complete source file successfully",
             StmtType::ASSIGN_STMT);
     REQUIRE(pIfNodeElseStmtLstAssignNode1->getStmtIndex() == 20);
     REQUIRE(pIfNodeElseStmtLstAssignNode1->getVarName() == "z");
-    REQUIRE(pIfNodeElseStmtLstAssignNode1->getVariables().size() == 0);
-    REQUIRE(pIfNodeElseStmtLstAssignNode1->getConstants().size() == 1);
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getVariables()->size() == 0);
+    REQUIRE(pIfNodeElseStmtLstAssignNode1->getConstants()->size() == 1);
 
     // check expression tree structure (i.e. 1)
     REQUIRE(pIfNodeElseStmtLstAssignNode1->getRootOfTree()->getVal() == "1");
@@ -501,8 +504,8 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(pAssignNode2->getStmtType() == StmtType::ASSIGN_STMT);
     REQUIRE(pAssignNode2->getStmtIndex() == 21);
     REQUIRE(pAssignNode2->getVarName() == "z");
-    REQUIRE(pAssignNode2->getVariables().size() == 3);
-    REQUIRE(pAssignNode2->getConstants().size() == 0);
+    REQUIRE(pAssignNode2->getVariables()->size() == 3);
+    REQUIRE(pAssignNode2->getConstants()->size() == 0);
 
     // check expression tree structure (i.e. z + x + i)
     REQUIRE(pAssignNode2->getRootOfTree()->getVal() == "+");
@@ -529,12 +532,12 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     auto qIfNodeThenStmtLst = qIfNode->getThenStmtLst();
     auto qIfNodeElseStmtLst = qIfNode->getElseStmtLst();
 
-    REQUIRE(qIfNodeCondExpr->getVariables().size() == 1);
-    REQUIRE(qIfNodeCondExpr->getConstants().size() == 1);
-    REQUIRE(qIfNodeCondExpr->getVariables().find("x") !=
-            qIfNodeCondExpr->getVariables().end());
-    REQUIRE(qIfNodeCondExpr->getConstants().find(1) !=
-            qIfNodeCondExpr->getConstants().end());
+    REQUIRE(qIfNodeCondExpr->getVariables()->size() == 1);
+    REQUIRE(qIfNodeCondExpr->getConstants()->size() == 1);
+    REQUIRE(qIfNodeCondExpr->getVariables()->find("x") !=
+            qIfNodeCondExpr->getVariables()->end());
+    REQUIRE(qIfNodeCondExpr->getConstants()->find(1) !=
+            qIfNodeCondExpr->getConstants()->end());
 
     REQUIRE(qIfNodeThenStmtLst->getChildren().size() == 1);
     auto qIfNodeThenStmtLstAssignNode = std::dynamic_pointer_cast<AssignNode>(
@@ -544,8 +547,8 @@ TEST_CASE("Test SpManager parses complete source file successfully",
     REQUIRE(qIfNodeThenStmtLstAssignNode->getStmtIndex() == 23);
 
     REQUIRE(qIfNodeThenStmtLstAssignNode->getVarName() == "z");
-    REQUIRE(qIfNodeThenStmtLstAssignNode->getVariables().size() == 1);
-    REQUIRE(qIfNodeThenStmtLstAssignNode->getConstants().size() == 1);
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getVariables()->size() == 1);
+    REQUIRE(qIfNodeThenStmtLstAssignNode->getConstants()->size() == 1);
 
     // check expression tree structure (i.e. x + 1)
     REQUIRE(qIfNodeThenStmtLstAssignNode->getRootOfTree()->getVal() == "+");
@@ -563,8 +566,8 @@ TEST_CASE("Test SpManager parses complete source file successfully",
             StmtType::ASSIGN_STMT);
     REQUIRE(qIfNodeElseStmtLstAssignNode->getStmtIndex() == 24);
     REQUIRE(qIfNodeElseStmtLstAssignNode->getVarName() == "x");
-    REQUIRE(qIfNodeElseStmtLstAssignNode->getVariables().size() == 2);
-    REQUIRE(qIfNodeElseStmtLstAssignNode->getConstants().size() == 0);
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getVariables()->size() == 2);
+    REQUIRE(qIfNodeElseStmtLstAssignNode->getConstants()->size() == 0);
 
     // check expression tree structure (i.e. z + x)
     REQUIRE(qIfNodeElseStmtLstAssignNode->getRootOfTree()->getVal() == "+");
