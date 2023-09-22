@@ -29,17 +29,17 @@ void ConstVarExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
 
 void ConstVarExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::shared_ptr<CondExprNode> cond = node->getCondExpr();
-  insertConstsVars(cond->getConstants(), cond->getVariables());
+  insertConstsVars(*cond->getConstants(), *cond->getVariables());
 }
 
 void ConstVarExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::shared_ptr<CondExprNode> cond = node->getCondExpr();
-  insertConstsVars(cond->getConstants(), cond->getVariables());
+  insertConstsVars(*cond->getConstants(), *cond->getVariables());
 }
 
 void ConstVarExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
-  insertConstsVars(node->getConstants(), node->getVariables());
+  insertConstsVars(*node->getConstants(), *node->getVariables());
 }
 
 void ConstVarExtractor::insertConstsVars(std::unordered_set<int> consts,
