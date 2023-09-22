@@ -70,8 +70,7 @@ bool ClauseResult::contains(PqlDeclaration const& d) const {
 
 std::vector<PqlDeclaration> ClauseResult::getDeclarations() const {
   std::vector<PqlDeclaration> output = {};
-  for (const auto& [key, value] : value_map)
-    output.push_back(key);
+  for (auto const& [key, value] : value_map) output.push_back(key);
   return output;
 }
 

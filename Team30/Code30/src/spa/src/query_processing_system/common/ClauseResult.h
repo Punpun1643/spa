@@ -12,7 +12,8 @@ class ClauseResult {
   int num_declarations;
   bool boolean_clause_value;
   std::unordered_map<PqlDeclaration, std::vector<std::string>,
-                     PqlDeclarationHash> value_map;
+                     PqlDeclarationHash>
+      value_map;
 
  public:
   // Constructor for zero declaration clauses

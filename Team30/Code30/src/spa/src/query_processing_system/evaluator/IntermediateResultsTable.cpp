@@ -111,7 +111,7 @@ void IntermediateResultsTable::addPairedDeclarations(
       tables[d1_table_idx].join(new_table);
       tables[d1_table_idx].join(tables[d2_table_idx]);
       // Update table_mappings lazily (without removing old table)
-      for (const auto& name: tables[d2_table_idx].getTableColNames()) {
+      for (auto const& name : tables[d2_table_idx].getTableColNames()) {
         table_mapping[name] = d1_table_idx;
       }
     }
