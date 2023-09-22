@@ -1,8 +1,9 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "RelationalTable.h"
 #include "query_processing_system/common/ClauseResult.h"
-#include <unordered_map>
 class IntermediateResultsTable {
   /**
    * Encapsulates the values that different declarations
@@ -14,18 +15,19 @@ class IntermediateResultsTable {
   std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> table_mapping;
 
   void addBooleanClauseResult(bool result);
-  void addSingleDeclaration(const PqlDeclaration& d,
-                            const std::vector<std::string> &values);
-  void addPairedDeclarations(const PqlDeclaration& d1, const PqlDeclaration& d2,
-                             const std::vector<std::string> & new_d1_values,
-                             const std::vector<std::string> & new_d2_values);
+  void addSingleDeclaration(PqlDeclaration const& d,
+                            std::vector<std::string> const& values);
+  void addPairedDeclarations(PqlDeclaration const& d1, PqlDeclaration const& d2,
+                             std::vector<std::string> const& new_d1_values,
+                             std::vector<std::string> const& new_d2_values);
 
  public:
   IntermediateResultsTable();
 
-  void addClauseResult(const ClauseResult& clause_result);
+  void addClauseResult(ClauseResult const& clause_result);
 
   bool hasNoResults() const;
 
-  std::vector<std::string> getValuesGivenDeclaration(const PqlDeclaration &declaration);
+  std::vector<std::string> getValuesGivenDeclaration(
+      PqlDeclaration const& declaration);
 };

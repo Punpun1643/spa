@@ -1,14 +1,16 @@
 #include "IntermediateResultsTable.h"
+
 #include "ArrayUtility.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 
-void IntermediateResultsTable::addClauseResult(const ClauseResult& clause_result) {
+void IntermediateResultsTable::addClauseResult(
+    ClauseResult const& clause_result) {
   if (has_no_results) {
-    return; // don't bother, stuck at false already
+    return;  // don't bother, stuck at false already
   }
 
-  switch(clause_result.getNumDeclarations()) {
+  switch (clause_result.getNumDeclarations()) {
     case (0): {
       bool result = clause_result.getBooleanClauseValue();
       addBooleanClauseResult(result);
@@ -36,11 +38,10 @@ void IntermediateResultsTable::addClauseResult(const ClauseResult& clause_result
   }
 }
 
-bool IntermediateResultsTable::hasNoResults() const {
-  return has_no_results;
-}
+bool IntermediateResultsTable::hasNoResults() const { return has_no_results; }
 
-std::vector<std::string> IntermediateResultsTable::getValuesGivenDeclaration(const PqlDeclaration& declaration) {
+std::vector<std::string> IntermediateResultsTable::getValuesGivenDeclaration(
+    PqlDeclaration const& declaration) {
   if (has_no_results) {
     return {};  // empty values
   } else {
@@ -55,15 +56,16 @@ std::vector<std::string> IntermediateResultsTable::getValuesGivenDeclaration(con
 void IntermediateResultsTable::addBooleanClauseResult(bool result) {
   if (!result) {
     has_no_results = true;
-  } // otherwise, do nothing
+  }  // otherwise, do nothing
 }
 
-void IntermediateResultsTable::addSingleDeclaration(const PqlDeclaration& d, const std::vector<std::string> &values) {
+void IntermediateResultsTable::addSingleDeclaration(
+    PqlDeclaration const& d, std::vector<std::string> const& values) {
   auto new_table = RelationalTable(d, values);
   // Declaration doesn't exist
   if (table_mapping.count(d) == 0) {
     tables.push_back(new_table);
-    table_mapping[d] = (int) tables.size() - 1;
+    table_mapping[d] = (int)tables.size() - 1;
   } else {
     int table_idx = table_mapping[d];
     tables[table_idx].join(new_table);
@@ -76,10 +78,9 @@ void IntermediateResultsTable::addSingleDeclaration(const PqlDeclaration& d, con
 
 //
 void IntermediateResultsTable::addPairedDeclarations(
-const PqlDeclaration & d1,
-const PqlDeclaration & d2,
-    const std::vector<std::string> & new_d1_values,
-    const std::vector<std::string> & new_d2_values) {
+    PqlDeclaration const& d1, PqlDeclaration const& d2,
+    std::vector<std::string> const& new_d1_values,
+    std::vector<std::string> const& new_d2_values) {
   RelationalTable new_table =
       RelationalTable(d1, d2, new_d1_values, new_d2_values);
 
@@ -104,7 +105,8 @@ const PqlDeclaration & d2,
       int table_idx = table_mapping[d1];
       tables[table_idx].join(new_table);
     } else {
-      // case 2: d1 and d2 are in different tables (impossible for now? just do select clause last)
+      // case 2: d1 and d2 are in different tables (impossible for now? just do
+      // select clause last)
       assert(false);
     }
   }

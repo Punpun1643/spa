@@ -1,10 +1,10 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 #include "query_processing_system/common/PqlDeclaration.h"
-#include <iostream>
 
 class RelationalTable {
   /**
@@ -17,32 +17,32 @@ class RelationalTable {
   std::vector<PqlDeclaration> getSharedColumns(RelationalTable& other_table);
   // void filterTableRows(const PqlDeclaration& sort_col);
   // void sortTableRows(const PqlDeclaration& sort_col);
-  std::vector<std::pair<PqlDeclaration, int>>
-      getRenumberedColsAfterRemoval(const std::vector<PqlDeclaration>& to_remove);
+  std::vector<std::pair<PqlDeclaration, int>> getRenumberedColsAfterRemoval(
+      std::vector<PqlDeclaration> const& to_remove);
 
  public:
   // Constructor with 1 value, or two values
-  RelationalTable(const PqlDeclaration& d,
-                            const std::vector<std::string>& values);
-  RelationalTable(const PqlDeclaration& d1, const PqlDeclaration& d2,
-                  const std::vector<std::string> &d1_values,
-                  const std::vector<std::string> &d2_values);
+  RelationalTable(PqlDeclaration const& d,
+                  std::vector<std::string> const& values);
+  RelationalTable(PqlDeclaration const& d1, PqlDeclaration const& d2,
+                  std::vector<std::string> const& d1_values,
+                  std::vector<std::string> const& d2_values);
 
-  std::vector<std::string> getTableCol(const PqlDeclaration &d);
+  std::vector<std::string> getTableCol(PqlDeclaration const& d);
 
   int getNumCols();
-//
-//  void filter(const PqlDeclaration& d,
-//              const std::vector<std::string>& values);
-//
+  //
+  //  void filter(const PqlDeclaration& d,
+  //              const std::vector<std::string>& values);
+  //
   void join(RelationalTable& other_table);
 
   bool hasNoResults();
 
   void printTable() {
-    for (auto row: table) {
+    for (auto row : table) {
       std::cout << "Row:";
-      for (auto elem: row) {
+      for (auto elem : row) {
         std::cout << elem << "    ";
       }
       std::cout << "\n";
