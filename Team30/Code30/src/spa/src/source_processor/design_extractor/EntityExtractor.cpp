@@ -43,8 +43,8 @@ void EntityExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertEntity(EntityType::ASSIGN, std::to_string(node->getStmtIndex()));
 
   // Pattern insertion
-  std::unordered_set<std::string> vars = node->getVariables();
-  std::unordered_set<int> constsAsInt = node->getConstants();
+  std::unordered_set<std::string> vars = *node->getVariables();
+  std::unordered_set<int> constsAsInt = *node->getConstants();
   std::unordered_set<std::string> consts;
   for (int num : constsAsInt) {
     consts.insert(std::to_string(num));
