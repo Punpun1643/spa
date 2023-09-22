@@ -39,30 +39,7 @@ void PKB::insertRelation(RelationType type, std::string input1,
   // Inserts into more than 1 table simultaneously
   // Add all related tables to relatedTables
 
-  // For MODIFIES and USES, Check the type of the first string input1
-  // If first char is an int then it is a stmt_num and it needs to be placed in _S table
-  // else it is a procedure and should be placed in _P table
-  RelationType target = type;
-  char firstChar = input1.at(0);
-
-  if (target == RelationType::USES) {
-    if (isdigit(firstChar)) { //Stmt Num
-      target = RelationType::USES_S;
-    } else { //procedure
-      target = RelationType::USES_P;
-    }
-  }
-
-  if (target == RelationType::MODIFIES) {
-    if (isdigit(firstChar)) {  // Stmt Num
-      target = RelationType::MODIFIES_S;
-    } else { //procedure
-      target = RelationType::MODIFIES_P;
-    }
-  }
-
-
-  for (RelationType rt : relatedTables[target]) {
+  for (RelationType rt : relatedTables[type]) {
     std::shared_ptr<BaseTable> table = relData->getTable(rt);
     table->insert(input1, input2);
 

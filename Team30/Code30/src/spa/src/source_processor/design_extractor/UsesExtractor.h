@@ -35,7 +35,7 @@ class UsesExtractor : public IDesignExtractor {
 
   void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  void popUsesActors();
+  void popUsesActor();
 
   ~UsesExtractor() = default;
 
@@ -44,7 +44,7 @@ class UsesExtractor : public IDesignExtractor {
 
   std::vector<std::string> usesActors;
 
-  void insertCondVars(std::unordered_set<std::string> condVars,
+  void insertMultipleVars(std::unordered_set<std::string> vars,
                       std::string stmtIndex);
 
   void insertVarWithActors(std::string var);

@@ -1,5 +1,6 @@
 #include "UsesExtractor.h"
 
+#include <algorithm>
 #include <iostream>
 
 UsesExtractor::UsesExtractor(PkbApi& pkb) : pkb(pkb) {}
@@ -21,11 +22,9 @@ void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
 }
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertRelation(RelationType::USES, std::to_string(node->getStmtIndex()),
+  pkb.insertRelation(RelationType::USES_S, std::to_string(node->getStmtIndex()),
                      node->getVarName());
   insertVarWithActors(node->getVarName());
-  // std::cout << "(" + std::to_string(node->getStmtIndex()) + ", " +
-  // node->getVarName() + ")\n";
 }
 
 void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
@@ -34,38 +33,53 @@ void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
 
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
-      node->getCondExpr()->getVariables();
-  insertCondVars(condVars, std::to_string(node->getStmtIndex()));
+      *node->getCondExpr()->getVariables();
+  insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
-      node->getCondExpr()->getVariables();
-  insertCondVars(condVars, std::to_string(node->getStmtIndex()));
+      *node->getCondExpr()->getVariables();
+  insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
   usesActors.push_back(std::to_string(node->getStmtIndex()));
 }
 
-void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+  std::unordered_set<std::string> rhsVars = *node->getVariables();
+  insertMultipleVars(rhsVars, std::to_string(node->getStmtIndex()));
+}
 
-void UsesExtractor::popUsesActors() {
+//////////////////////////////
+//
+// PRIVATE HELPER FUNCTIONS
+//
+//////////////////////////////
+
+void UsesExtractor::popUsesActor() {
   if (!usesActors.empty()) {
     usesActors.pop_back();
   }
 }
 
-void UsesExtractor::insertCondVars(std::unordered_set<std::string> condVars,
-                                   std::string stmtIndex) {
-  for (std::string condVar : condVars) {
-    pkb.insertRelation(RelationType::USES, stmtIndex, condVar);
-    // std::cout << "(" + stmtIndex + ", " + condVar + ")\n";
-    insertVarWithActors(condVar);
+void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
+                                       std::string stmtIndex) {
+  for (std::string var : vars) {
+    pkb.insertRelation(RelationType::USES_S, stmtIndex, var);
+    insertVarWithActors(var);
   }
 }
 
 void UsesExtractor::insertVarWithActors(std::string var) {
   for (std::string usesActor : usesActors) {
-    pkb.insertRelation(RelationType::USES, usesActor, var);
+    bool isStmtIndex =
+        !usesActor.empty() &&
+        std::all_of(usesActor.begin(), usesActor.end(), ::isdigit);
+    if (isStmtIndex) {
+      pkb.insertRelation(RelationType::USES_S, usesActor, var);
+    } else {
+      pkb.insertRelation(RelationType::USES_P, usesActor, var);
+    }
     // std::cout << "(" + usesActor + ", " + var + ")\n";
   }
 }

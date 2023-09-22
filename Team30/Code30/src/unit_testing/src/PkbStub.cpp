@@ -1,4 +1,5 @@
 #include "PkbStub.h"
+#include <iostream>
 
 PkbStub::PkbStub()
     : insertEntityCallCount(0),
@@ -6,10 +7,12 @@ PkbStub::PkbStub()
       insertFollowsCallCount(0),
       insertParentCallCount(0),
       insertUsesCallCount(0),
-      insertModifiesCallCount(0){};
+      insertModifiesCallCount(0),
+      insertPatternCallCount(0){};
 
 void PkbStub::insertEntity(EntityType type, std::string entity) {
   insertEntityCallCount++;
+  // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
 void PkbStub::insertRelationCommon(RelationType type) {
@@ -21,10 +24,16 @@ void PkbStub::insertRelationCommon(RelationType type) {
     case (RelationType::PARENT):
       ++insertParentCallCount;
       break;
-    case (RelationType::USES):
+    case (RelationType::USES_S):
       ++insertUsesCallCount;
       break;
-    case (RelationType::MODIFIES):
+    case (RelationType::USES_P):
+      ++insertUsesCallCount;
+      break;
+    case (RelationType::MODIFIES_S):
+      ++insertModifiesCallCount;
+      break;
+    case (RelationType::MODIFIES_P):
       ++insertModifiesCallCount;
       break;
     default:
@@ -34,28 +43,34 @@ void PkbStub::insertRelationCommon(RelationType type) {
 
 // Relation (integer, integer)
 void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
-                    std::string s2_line_num) {
+                             std::string s2_line_num) {
   insertRelationCommon(rel_type);
 }
 
 // Relation (integer, EntityType)
 void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
-                    EntityType ent_type, std::string enity) {
+                             EntityType ent_type, std::string enity) {
   insertRelationCommon(rel_type);
 }
 
 // Relation (EntityType, integer)
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,
-                    std::string entity, std::string s_line_num) {
+                             std::string entity, std::string s_line_num) {
   insertRelationCommon(rel_type);
 }
 
 // Relation (EntityType, EntityType)
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
-                    std::string entity1, EntityType ent_type2,
-                    std::string entity2) {
+                             std::string entity1, EntityType ent_type2,
+                             std::string entity2) {
   insertRelationCommon(rel_type);
 }
+
+// Pattern clause
+void PkbStub::insertPattern(std::string statement_number, std::string lhs,
+                            std::unordered_set<std::string> rhs) {
+  insertPatternCallCount++;
+};
 
 std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
     EntityType type) {
@@ -126,19 +141,15 @@ PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
   }
 }
 
-
-// Pattern clause
-void PkbStub::insertPattern(std::string statement_number, std::string lhs,
-                            std::unordered_set<std::string> rhs){};
-
 std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
     std::string rhs_expr, MatchType expr_match_type) {
   return std::make_unique<std::vector<std::string>>();
 };
 
-
-std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                             MatchType expr_match_type) {
+std::unique_ptr<std::vector<std::string>>
+PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
+                                       std::string rhs_expr,
+                                       MatchType expr_match_type) {
   return std::make_unique<std::vector<std::string>>();
 };
 
