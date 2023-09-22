@@ -3,6 +3,7 @@
 #include "../interpreter/QueryInterpreter.h"
 #include "AExpression.h"
 #include "DeclarationListExpression.h"
+#include "PatternExpression.h"
 #include "SelectExpression.h"
 #include "SuchThatListExpression.h"
 
@@ -17,10 +18,17 @@ class QueryExpression : public AExpression {
       std::unique_ptr<DeclarationListExpression> declaration_list_expression,
       std::unique_ptr<SelectExpression> select_expression,
       std::unique_ptr<SuchThatListExpression> such_that_list_expression);
+  QueryExpression(
+      std::unique_ptr<DeclarationListExpression> declaration_list_expression,
+      std::unique_ptr<SelectExpression> select_expression,
+      std::unique_ptr<SuchThatListExpression> such_that_list_expression,
+      std::unique_ptr<PatternExpression> pattern_expression);
   std::unique_ptr<DeclarationListExpression> GetDeclarationListExpression();
+  std::unique_ptr<PatternExpression> GetPatternExpression();
   std::unique_ptr<SelectExpression> GetSelectExpression();
   std::unique_ptr<SuchThatListExpression> GetSuchThatListExpression();
   bool HasDeclarationListExpression();
+  bool HasPatternExpression();
   bool HasSelectExpression();
   bool HasSuchThatListExpression();
   void acceptInterpreter(QueryInterpreter& interpreter) override;
@@ -29,6 +37,7 @@ class QueryExpression : public AExpression {
 
  private:
   std::unique_ptr<DeclarationListExpression> declaration_list_expression;
+  std::unique_ptr<PatternExpression> pattern_expression;
   std::unique_ptr<SelectExpression> select_expression;
   std::unique_ptr<SuchThatListExpression> such_that_list_expression;
 };

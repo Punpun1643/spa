@@ -18,6 +18,7 @@
 #include "../expression/ModifiesExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
+#include "../expression/PatternExpression.h"
 #include "../expression/QueryExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/SuchThatExpression.h"
@@ -106,6 +107,10 @@ void QueryInterpreter::Interpret(FollowsTExpression& follows_t_expression) {
       StringToStmtRef(arg1), StringToStmtRef(arg2)));
 }
 
+void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
+  return;
+}
+
 void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
   std::string arg1 = parent_expression.GetArg1();
   std::string arg2 = parent_expression.GetArg2();
@@ -160,6 +165,7 @@ void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
     throw InvalidSyntaxException(
         "First argument for Uses Clause has the wrong syntax.");
   } else if (!IsValidRelArg(arg2)) {
+    std::cout << "qi1: " << arg2;
     throw InvalidSyntaxException(
         "Second argument for Uses Clause has the wrong syntax.");
   }
@@ -206,8 +212,8 @@ std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
         QueryInterpreter::GetMappedDeclaration(string));
   } else if (IsWildcard(string)) {
     return std::make_unique<EntRef>();
-  } else if (IsSynonym(string)) {
-    return std::make_unique<EntRef>(string);
+  } else if (IsIdentifier(string)) {
+    return std::make_unique<EntRef>(string.substr(1, string.size() - 2));
   } else {
     throw std::runtime_error("Invalid string to be converted into Entref");
   }
@@ -247,11 +253,10 @@ bool QueryInterpreter::IsInteger(std::string const& argument) {
 }
 
 bool QueryInterpreter::IsValidRelArg(std::string const& argument) {
-  if (IsSynonym(argument) || IsWildcard(argument) || IsInteger(argument)) {
+  if (IsStmtRef(argument) || IsEntRef(argument)) {
     return true;
-  } else {
-    return false;
   }
+  return false;
 }
 
 bool QueryInterpreter::IsStmtRef(std::string const& argument) {
@@ -277,8 +282,17 @@ bool QueryInterpreter::IsEntRef(std::string const& argument) {
         entity_type == EntityType::CONSTANT) {
       return true;
     }
-  } else if (IsWildcard(argument) || IsSynonym(argument)) {
+  } else if (IsWildcard(argument) || IsIdentifier(argument)) {
     return true;
+  }
+  return false;
+}
+
+bool QueryInterpreter::IsIdentifier(std::string const& argument) {
+  if (argument.size() >= 3) {
+    return (argument.substr(0, 1) == "\"" &&
+            IsSynonym(argument.substr(1, argument.size() - 2)) &&
+            argument.substr(argument.size() - 1, 1) == "\"");
   }
   return false;
 }

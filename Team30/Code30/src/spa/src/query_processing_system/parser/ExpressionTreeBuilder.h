@@ -14,9 +14,12 @@ class ExpressionTreeBuilder : public QpParser {
 
  private:
   std::unique_ptr<QueryExpression> query_expression;
-  std::unique_ptr<SelectExpression> CreateSelectExpression();
+
   std::unique_ptr<DeclarationListExpression> CreateDeclarationListExpression();
+  std::unique_ptr<PatternExpression> CreatePatternExpression();
+  std::unique_ptr<SelectExpression> CreateSelectExpression();
   std::unique_ptr<SuchThatListExpression> CreateSuchThatListExpression();
+
   void AddSuchThatExpression(std::vector<std::shared_ptr<SuchThatExpression>>&
                                  such_that_expression_list);
   void AddDeclarationExpression(

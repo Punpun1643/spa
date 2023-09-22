@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "../shared/tokenizer/ATokenizer.h"
 #include "../shared/tokenizer/Tokenizer.h"
 #include "common/SelectClause.h"
 #include "common/SuchThatClause.h"
@@ -39,7 +38,7 @@ void QPSController::HandleQuery(
 std::vector<std::shared_ptr<Token>> QPSController::TokenizeQuery(
     std::string& query) {
   std::istringstream string_stream(query);
-  ATokenizer tokenizer = ATokenizer(string_stream);
+  Tokenizer tokenizer = Tokenizer(string_stream);
   return tokenizer.tokenize();
 }
 

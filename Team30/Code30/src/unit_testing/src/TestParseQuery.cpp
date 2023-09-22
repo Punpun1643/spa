@@ -32,6 +32,15 @@ static void AddWordWord(std::vector<std::shared_ptr<Token>>& tokens,
   AddSpecialCharVector(tokens, {")"});
 }
 
+static void AddWordIdent(std::vector<std::shared_ptr<Token>>& tokens,
+    std::string arg1, std::string arg2) {
+  AddSpecialCharVector(tokens, {"("});
+  AddWordVector(tokens, {arg1});
+  AddSpecialCharVector(tokens, {",", "\""});
+  AddWordVector(tokens, {arg2});
+  AddSpecialCharVector(tokens, {"\"", ")"});
+}
+
 static void AddWildWord(std::vector<std::shared_ptr<Token>>& tokens,
                         std::string arg) {
   AddSpecialCharVector(tokens, {"("});
@@ -390,6 +399,28 @@ TEST_CASE("Parse Select + Uses query") {
         dynamic_cast<SuchThatClause*>(clauses[1].release()));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
+  }
+
+}
+
+TEST_CASE("Parse Select + Uses(stmtref, entref)") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("1 stmt; Select + Uses(stmt, \"x\")") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Uses"});
+    AddWordIdent(tokens, "s1", "x");
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+
+    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
 
 }

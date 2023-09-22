@@ -9,6 +9,7 @@
 #include "../expression/ModifiesExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
+#include "../expression/PatternExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/SuchThatExpression.h"
 #include "../expression/UsesExpression.h"
@@ -26,6 +27,7 @@ void ExpressionTreeBuilder::parse() {
       nullptr;
   std::unique_ptr<SelectExpression> select_expression = nullptr;
   std::unique_ptr<SuchThatListExpression> such_that_list_expression = nullptr;
+  std::unique_ptr<PatternExpression> pattern_expression = nullptr;
   if (getCurrToken()->getTokenVal() == "Select") {
     select_expression = this->CreateSelectExpression();
   } else {
@@ -33,17 +35,10 @@ void ExpressionTreeBuilder::parse() {
     select_expression = this->CreateSelectExpression();
   }
   such_that_list_expression = this->CreateSuchThatListExpression();
+  pattern_expression = this->CreatePatternExpression();
   this->query_expression = std::make_unique<QueryExpression>(
       std::move(declaration_list_expression), std::move(select_expression),
-      std::move(such_that_list_expression));
-}
-
-std::unique_ptr<SelectExpression>
-ExpressionTreeBuilder ::CreateSelectExpression() {
-  nextToken();  // synonym
-  std::string synonym = getCurrToken()->getTokenVal();
-  nextToken();
-  return std::make_unique<SelectExpression>(synonym);
+      std::move(such_that_list_expression), std::move(pattern_expression));
 }
 
 std::unique_ptr<DeclarationListExpression>
@@ -53,6 +48,35 @@ ExpressionTreeBuilder ::CreateDeclarationListExpression() {
     this->AddDeclarationExpression(declaration_list);
   }
   return std::make_unique<DeclarationListExpression>(declaration_list);
+}
+
+std::unique_ptr<PatternExpression>
+ExpressionTreeBuilder ::CreatePatternExpression() {
+  if (getCurrToken()->getTokenVal() == "pattern") {
+    std::string syn_assign = nextToken()->getTokenVal();
+    nextToken();  // (
+    nextToken();  // _
+    nextToken();  // ,
+    std::string pattern = "_";
+    if (nextToken()->getTokenVal() != ")") {
+      pattern += "\"";
+      pattern += (nextToken()->getTokenVal());
+      pattern += "\"";
+      pattern += "_";
+    }
+    nextToken();  // )
+    return std::make_unique<PatternExpression>(syn_assign, pattern);
+  } else {
+    return nullptr;
+  }
+}
+
+std::unique_ptr<SelectExpression>
+ExpressionTreeBuilder ::CreateSelectExpression() {
+  nextToken();  // synonym
+  std::string synonym = getCurrToken()->getTokenVal();
+  nextToken();
+  return std::make_unique<SelectExpression>(synonym);
 }
 
 std::unique_ptr<SuchThatListExpression>
@@ -105,7 +129,14 @@ void ExpressionTreeBuilder::AddSuchThatExpression(
   nextToken();  // (
   std::string arg1 = nextToken()->getTokenVal();
   nextToken();  // ,
-  std::string arg2 = nextToken()->getTokenVal();
+  nextToken();  // stmtref or entref
+  std::string arg2;
+  if (getCurrToken()->getTokenVal() == "\"") {
+    arg2 = "\"" + nextToken()->getTokenVal() + "\"";
+    nextToken();  // "
+  } else {
+    arg2 = getCurrToken()->getTokenVal();
+  }
   nextToken();  // )
 
   std::shared_ptr<SuchThatExpression> such_that_expression;
