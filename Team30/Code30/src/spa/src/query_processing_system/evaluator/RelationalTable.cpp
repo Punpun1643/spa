@@ -1,5 +1,7 @@
 #include "RelationalTable.h"
 
+#include "ArrayUtility.h"
+
 RelationalTable::RelationalTable(const PqlDeclaration & d,
   const std::vector<std::string> & values) {
   column_mapping[d] = 0;
@@ -54,6 +56,10 @@ void RelationalTable::sortTableRows(const PqlDeclaration & sort_col) {
         return row_a[col_idx] < row_b[col_idx];});
 }
 
+int RelationalTable::getNumCols() {
+  return (int) column_mapping.size();
+}
+
 void RelationalTable::join(RelationalTable& other_table, const PqlDeclaration & join_col) {
   /**
    * Joins this table with the given table by the specified column.
@@ -62,30 +68,36 @@ void RelationalTable::join(RelationalTable& other_table, const PqlDeclaration & 
   auto shared_cols = getSharedColumns(other_table);
   assert(shared_cols.size() == 1 && shared_cols.front() == join_col);
 
-  // sort each table by the given join_column.
-  sortTableRows(join_col);
-  other_table.sortTableRows(join_col);
+  int table_join_col_idx = column_mapping[join_col];
+  int other_table_join_col_idx = other_table.column_mapping[join_col];
 
-  // filter the tables by the join_col
-  auto this_table_join_col = getTableCol(join_col);
-  auto other_table_join_col = other_table.getTableCol(join_col);
-  ArrayUtility::getIndicesToKeep(existing_values, values);
-
-  filter
-
-  // join the tables by the given column
   std::vector<std::vector<std::string>> new_table;
-
-
-  int this_idx = 0;
-  int other_idx = 0;
-  while (this_idx < table.size() && other_idx < other_table.table.size()) {
-    if (this_table_join_col[this_idx] == other_table_join_col[other_idx]) {
-
-    } else if (this_table_join_col[this_idx] < other_table_join_col[other_idx]) {
-
-    } else {
-
+  for (auto this_row : table) {
+    for (auto other_row : other_table.table) {
+      if (this_row[table_join_col_idx] == other_row[other_table_join_col_idx]) {
+        // Create new joined row
+        std::vector<std::string> new_row = {};
+        // Add values from existing row
+        new_row.insert(new_row.begin(), this_row.begin(), this_row.end());
+        // Add values from other table's row
+        for (auto i = 0; i < other_row.size(); i++) {
+          if (i == other_table_join_col_idx) {
+            continue;
+          }
+          new_row.push_back(other_row[i]);
+        }
+        new_table.push_back(new_row);
+      }
+    }
+  }
+  // Update column mappings
+  for (auto& [key, index] : other_table.column_mapping) {
+    if (key == join_col) {
+      continue;
+    } else if (index > other_table_join_col_idx) {
+      column_mapping[key] = getNumCols() + index - 1;
+    } else {  // index < other_table_join_col_idx
+      column_mapping[key] = getNumCols() + index;
     }
   }
 }
@@ -96,5 +108,5 @@ void RelationalTable::join(RelationalTable& other_table, const PqlDeclaration & 
 }
 
 bool RelationalTable::hasNoResults() {
-
+  return table.empty();
 }

@@ -26,6 +26,8 @@ class RelationalTable {
                   const std::vector<std::string> &d2_values);
 
   std::vector<std::string> getTableCol(const PqlDeclaration &d);
+
+  int getNumCols();
 //
 //  void filter(const PqlDeclaration& d,
 //              const std::vector<std::string>& values);
