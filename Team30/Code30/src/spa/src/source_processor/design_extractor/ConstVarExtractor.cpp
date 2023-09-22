@@ -24,7 +24,7 @@ void ConstVarExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
 }
 
 void ConstVarExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.insertEntity(EntityType::READ, node->getVarName());
+  pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
 }
 
 void ConstVarExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {

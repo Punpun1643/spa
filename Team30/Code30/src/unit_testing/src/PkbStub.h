@@ -12,6 +12,8 @@ class PkbStub : public PkbApi {
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
   int insertEntityCallCount;
+  int insertVariableCallCount;
+  int insertConstantCallCount;
   int insertRelationCallCount;
   int insertFollowsCallCount;
   int insertParentCallCount;

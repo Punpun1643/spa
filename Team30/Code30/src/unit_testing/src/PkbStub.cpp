@@ -1,8 +1,11 @@
 #include "PkbStub.h"
+
 #include <iostream>
 
 PkbStub::PkbStub()
     : insertEntityCallCount(0),
+      insertVariableCallCount(0),
+      insertConstantCallCount(0),
       insertRelationCallCount(0),
       insertFollowsCallCount(0),
       insertParentCallCount(0),
@@ -11,7 +14,13 @@ PkbStub::PkbStub()
       insertPatternCallCount(0){};
 
 void PkbStub::insertEntity(EntityType type, std::string entity) {
-  insertEntityCallCount++;
+  if (type == EntityType::CONSTANT) {
+    insertConstantCallCount++;
+  } else if (type == EntityType::VARIABLE) {
+    insertVariableCallCount++;
+  } else {
+    insertEntityCallCount++;
+  }
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
