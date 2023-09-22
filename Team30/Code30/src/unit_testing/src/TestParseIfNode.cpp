@@ -631,8 +631,8 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();
     std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->getElseStmtLst();
 
-    REQUIRE(condExprNode->getVariables().size() == 2);
-    REQUIRE(condExprNode->getConstants().size() == 0);
+    REQUIRE(condExprNode->getVariables()->size() == 2);
+    REQUIRE(condExprNode->getConstants()->size() == 0);
     REQUIRE(thenStmtLstNode->getChildren().size() == 3);
     REQUIRE(elseStmtLstNode->getChildren().size() == 1);
   }
@@ -710,15 +710,15 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();
     std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->getElseStmtLst();
 
-    REQUIRE(condExprNode->getVariables().size() == 1);
-    REQUIRE(condExprNode->getConstants().size() == 1);
+    REQUIRE(condExprNode->getVariables()->size() == 1);
+    REQUIRE(condExprNode->getConstants()->size() == 1);
     REQUIRE(thenStmtLstNode->getChildren().size() == 3);
     REQUIRE(elseStmtLstNode->getChildren().size() == 2);
 
     std::shared_ptr<WhileNode> whileNode =
         std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->getChildren()[1]);
-    REQUIRE(whileNode->getCondExpr()->getVariables().size() == 2);
-    REQUIRE(whileNode->getCondExpr()->getConstants().size() == 0);
+    REQUIRE(whileNode->getCondExpr()->getVariables()->size() == 2);
+    REQUIRE(whileNode->getCondExpr()->getConstants()->size() == 0);
     REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
   }
 }
