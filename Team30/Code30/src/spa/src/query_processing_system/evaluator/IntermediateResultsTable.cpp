@@ -105,15 +105,19 @@ void IntermediateResultsTable::addPairedDeclarations(
       int table_idx = table_mapping[d1];
       tables[table_idx].join(new_table);
     } else {
-      // case 2: d1 and d2 are in different tables (impossible for now? just do
-      // select clause last)
-      assert(false);
+      // case 2: d1 and d2 are in different tables
+      int d1_table_idx = table_mapping[d1];
+      int d2_table_idx = table_mapping[d2];
+      tables[d1_table_idx].join(new_table);
+      tables[d1_table_idx].join(tables[d2_table_idx]);
+      // Update table_mappings lazily (without removing old table)
+      for (const auto& name: tables[d2_table_idx].getTableColNames()) {
+        table_mapping[name] = d1_table_idx;
+      }
     }
   }
   if (tables[table_mapping[d1]].hasNoResults()) {
     has_no_results = true;
     return;
   }
-
-  // ADD IN HAS NO RESULTS?
 }

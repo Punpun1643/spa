@@ -31,5 +31,7 @@ class RelationalTable {
 
   bool hasNoResults();
 
+  std::vector<PqlDeclaration> getTableColNames();
+
   void join(RelationalTable& other_table);
 };

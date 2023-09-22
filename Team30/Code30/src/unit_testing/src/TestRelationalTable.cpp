@@ -25,6 +25,7 @@ TEST_CASE("Test basic functionality") {
   REQUIRE(table.getNumCols() == 1);
   REQUIRE_FALSE(table.hasNoResults());
   REQUIRE(table.getTableCol(a) == NUM_VEC);
+  REQUIRE(table.getTableColNames() == std::vector<PqlDeclaration>({a}));
   
   // two decl constructor
   table = RelationalTable(a, s ,NUM_VEC, WORD_VEC);
@@ -32,6 +33,8 @@ TEST_CASE("Test basic functionality") {
   REQUIRE_FALSE(table.hasNoResults());
   REQUIRE(table.getTableCol(a) == NUM_VEC);
   REQUIRE(table.getTableCol(s) == WORD_VEC);
+  REQUIRE((table.getTableColNames() == std::vector<PqlDeclaration>({a, s}) ||
+          table.getTableColNames() == std::vector<PqlDeclaration>({s, a})));
 
   // empty lists
   table = RelationalTable(a, v , EMPTY_VEC, EMPTY_VEC);

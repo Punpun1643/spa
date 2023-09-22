@@ -131,3 +131,11 @@ RelationalTable::getRenumberedColsAfterRemoval(
 }
 
 bool RelationalTable::hasNoResults() { return table.empty(); }
+
+std::vector<PqlDeclaration> RelationalTable::getTableColNames() {
+  std::vector<PqlDeclaration> table_col_names;
+  for (auto& [key, value]:column_mapping) {
+    table_col_names.push_back(key);
+  }
+  return table_col_names;
+}
