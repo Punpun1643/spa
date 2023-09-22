@@ -16,6 +16,7 @@ RelationalTable::RelationalTable(PqlDeclaration const& d1,
                                  PqlDeclaration const& d2,
                                  std::vector<std::string> const& d1_values,
                                  std::vector<std::string> const& d2_values) {
+  assert(!(d1 == d2));
   assert(d1_values.size() == d2_values.size());
 
   column_mapping[d1] = 0;
@@ -81,7 +82,7 @@ void RelationalTable::join(RelationalTable& other_table) {
       // Add values from other table's row that don't overlap with this row's
       std::unordered_set<int> rows_to_avoid;
       for (auto& shared_col : shared_cols) {
-        rows_to_avoid.insert(column_mapping[shared_col]);
+        rows_to_avoid.insert(other_table.column_mapping[shared_col]);
       }
       for (auto i = 0; i < other_row.size(); i++) {
         if (rows_to_avoid.count(i) == 1) {
