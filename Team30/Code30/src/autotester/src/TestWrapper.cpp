@@ -43,7 +43,4 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
     results.clear();
     results.push_back("SyntaxError");
   }
-  if (results.size() == 0) {
-    results.push_back("None");
-  }
 }
