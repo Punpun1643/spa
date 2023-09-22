@@ -45,18 +45,6 @@ std::vector<PqlDeclaration> RelationalTable::getSharedColumns(RelationalTable& o
   return shared_cols;
 }
 
-void RelationalTable::sortTableRows(const PqlDeclaration & sort_col) {
-  /**
-   * Sorts the table in place by the specified column.
-   */
-  assert(column_mapping.count(sort_col) == 1);
-  int col_idx = column_mapping[sort_col];
-
-  std::sort(table.begin(), table.end(),
-            [&](std::vector<std::string> row_a, std::vector<std::string> row_b) {
-        return row_a[col_idx] < row_b[col_idx];});
-}
-
 int RelationalTable::getNumCols() {
   return (int) column_mapping.size();
 }
@@ -104,6 +92,7 @@ void RelationalTable::join(RelationalTable& other_table) {
       new_table.push_back(new_row);
     }
   }
+  table = new_table;
 
   // Update column mappings
   auto renumbered_cols = other_table.getRenumberedColsAfterRemoval(shared_cols);

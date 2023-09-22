@@ -2,6 +2,7 @@
 
 #include "RelationalTable.h"
 #include "query_processing_system/common/ClauseResult.h"
+#include <unordered_map>
 class IntermediateResultsTable {
   /**
    * Encapsulates the values that different declarations

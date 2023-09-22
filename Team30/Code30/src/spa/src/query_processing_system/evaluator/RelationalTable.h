@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "query_processing_system/common/PqlDeclaration.h"
+#include <iostream>
 
 class RelationalTable {
   /**
@@ -37,4 +38,14 @@ class RelationalTable {
   void join(RelationalTable& other_table);
 
   bool hasNoResults();
+
+  void printTable() {
+    for (auto row: table) {
+      std::cout << "Row:";
+      for (auto elem: row) {
+        std::cout << elem << "    ";
+      }
+      std::cout << "\n";
+    }
+  }
 };

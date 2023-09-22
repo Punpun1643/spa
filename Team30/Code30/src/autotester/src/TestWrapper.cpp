@@ -35,14 +35,14 @@ void TestWrapper::parse(std::string filename) {
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
   // TODO: abstract away into one API call
   std::vector<std::unique_ptr<Clause>> clauses = qps_controller->ParseAndGetClauses(query);
-  std::unique_ptr<std::vector<std::string>> query_results;
+  std::vector<std::string> query_results;
 
   std::unique_ptr<Clause> clause = std::move(clauses[0]); // Move ownership
   std::unique_ptr<SelectClause> selectClause(dynamic_cast<SelectClause*>(clause.release()));
 
   // TODO: Come up with a better design for this
   if (clauses.size() == 1) {
-    query_results = this->query_evaluator->evaluateQuery(std::move(selectClause));
+    query_results = this->query_evaluator->evaluateQuery(std::move(selectClause), {});
   }
-  std::copy(query_results->begin(), query_results->end(), std::back_inserter(results));
+  std::copy(query_results.begin(), query_results.end(), std::back_inserter(results));
 }

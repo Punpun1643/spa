@@ -9,7 +9,7 @@ QueryEvaluator::QueryEvaluator(PkbApi& pkb) : pkb(pkb) {}
 
 
 std::vector<std::string> QueryEvaluator::evaluateQuery(std::unique_ptr<SelectClause> select_clause,
-                                                       std::vector<Clause> other_clauses) {
+                                                       std::vector<std::shared_ptr<Clause>> other_clauses) {
   assert(select_clause != nullptr);
 
   auto target_declaration = select_clause->getDeclaration();
@@ -19,7 +19,7 @@ std::vector<std::string> QueryEvaluator::evaluateQuery(std::unique_ptr<SelectCla
   table.addClauseResult(*select_clause_result);
 
   for (auto & other_clause : other_clauses) {
-    auto clause_result = other_clause.evaluate(pkb);
+    auto clause_result = other_clause->evaluate(pkb);
     table.addClauseResult(*clause_result);
     if (table.hasNoResults()) { // shortcut
       return {};

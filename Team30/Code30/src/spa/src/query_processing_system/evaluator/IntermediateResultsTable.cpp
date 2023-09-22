@@ -46,7 +46,9 @@ std::vector<std::string> IntermediateResultsTable::getValuesGivenDeclaration(con
   } else {
     assert(table_mapping.count(declaration) == 1);
     RelationalTable relevant_table = tables[table_mapping[declaration]];
-    return relevant_table.getTableCol(declaration); // TODO: FILTER OUT DUPLICATES
+    auto table_values = relevant_table.getTableCol(declaration);
+    ArrayUtility::removeDuplicates(table_values);
+    return table_values;
   }
 }
 
@@ -78,35 +80,38 @@ const PqlDeclaration & d1,
 const PqlDeclaration & d2,
     const std::vector<std::string> & new_d1_values,
     const std::vector<std::string> & new_d2_values) {
-  RelationalTable new_table = RelationalTable(d1, d2, new_d1_values, new_d2_values);
+  RelationalTable new_table =
+      RelationalTable(d1, d2, new_d1_values, new_d2_values);
 
   // Both declarations not in table
   if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 0) {
     tables.push_back(new_table);
-    table_mapping[d1] = (int) tables.size() - 1;
-    table_mapping[d2] = (int) tables.size() - 1;
+    table_mapping[d1] = (int)tables.size() - 1;
+    table_mapping[d2] = (int)tables.size() - 1;
 
   } else if (table_mapping.count(d1) == 1 && table_mapping.count(d2) == 0) {
     int d1_table_idx = table_mapping[d1];
     tables[d1_table_idx].join(new_table);
+    table_mapping[d2] = d1_table_idx;
 
   } else if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 1) {
     int d2_table_idx = table_mapping[d2];
     tables[d2_table_idx].join(new_table);
+    table_mapping[d1] = d2_table_idx;
   } else {
     // case 1: d1 and d2 in same table already
     if (table_mapping[d1] == table_mapping[d2]) {
       int table_idx = table_mapping[d1];
       tables[table_idx].join(new_table);
     } else {
-    // case 2: d1 and d2 are in different tables (impossible for now? just do select clause last)
-    assert(false);
+      // case 2: d1 and d2 are in different tables (impossible for now? just do select clause last)
+      assert(false);
     }
   }
   if (tables[table_mapping[d1]].hasNoResults()) {
     has_no_results = true;
     return;
+  }
+
+  // ADD IN HAS NO RESULTS?
 }
-
-// ADD IN HAS NO RESULTS?
-
