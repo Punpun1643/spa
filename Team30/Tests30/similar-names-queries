@@ -18,3 +18,8 @@ procedure
 Select  a    Pattern a(v,_"a"_  ) 
 stmt
 5000
+5 - select stmts that Uses the variable (not procedure) "main"
+stms s;
+Select s such that Uses (s, "main")
+1
+5000

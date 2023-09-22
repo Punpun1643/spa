@@ -14,7 +14,12 @@ Select s such that Modifies (s, "y")
 SyntaxError
 5000
 4 - Incorrect Bracket
-while w
+while w;
 Select w such that Parent [w, _]
+SyntaxError
+5000
+5 - Incorrect Case
+read r;
+select r such that modifies (r, "a")
 SyntaxError
 5000
