@@ -44,7 +44,9 @@ std::vector<std::string> IntermediateResultsTable::getValuesGivenDeclaration(con
   if (has_no_results) {
     return {};  // empty values
   } else {
-    return getTableCol(declaration); // TODO
+    assert(table_mapping.count(declaration) == 1);
+    RelationalTable relevant_table = tables[table_mapping[declaration]];
+    return relevant_table.getTableCol(declaration); // TODO: FILTER OUT DUPLICATES
   }
 }
 
@@ -54,36 +56,21 @@ void IntermediateResultsTable::addBooleanClauseResult(bool result) {
   } // otherwise, do nothing
 }
 
-void IntermediateResultsTable::addSingleDeclaration(const PqlDeclaration & d, const std::vector<std::string> &values) {
+void IntermediateResultsTable::addSingleDeclaration(const PqlDeclaration& d, const std::vector<std::string> &values) {
+  auto new_table = RelationalTable(d, values);
   // Declaration doesn't exist
   if (table_mapping.count(d) == 0) {
-    addNewTable(d, values);
+    tables.push_back(new_table);
+    table_mapping[d] = (int) tables.size() - 1;
   } else {
     int table_idx = table_mapping[d];
-    tables[table_idx].filter(d, values);
-    if (tables[table_idx].is_empty()) {
+    tables[table_idx].join(new_table);
+    if (tables[table_idx].hasNoResults()) {
       has_no_results = true;
       return;
     }
   }
 }
-//  // Declaration already exists
-//  auto existing_values = value_map[d];
-//  auto indices_to_keep = ArrayUtility::getIndicesToKeep(existing_values, values);
-//  if (indices_to_keep->empty()) {
-//    has_no_results = true;
-//    return;
-//  }
-//  // filter this declaration
-//  value_map[d] = *(ArrayUtility::getArrSubsetByIndices(value_map[d], *indices_to_keep));
-//  // filter all connected declarations, if any
-//  if (linked_declarations.count(d) == 1) {
-//    for (const auto& linked_d: linked_declarations[d]) {
-//      value_map[linked_d] = *(ArrayUtility::getArrSubsetByIndices(value_map[linked_d], *indices_to_keep));
-//    }
-//  }
-
-
 
 //
 void IntermediateResultsTable::addPairedDeclarations(
@@ -91,48 +78,35 @@ const PqlDeclaration & d1,
 const PqlDeclaration & d2,
     const std::vector<std::string> & new_d1_values,
     const std::vector<std::string> & new_d2_values) {
+  RelationalTable new_table = RelationalTable(d1, d2, new_d1_values, new_d2_values);
+
   // Both declarations not in table
   if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 0) {
-    addNewTable(d1, d2, new_d1_values, new_d2_values);
+    tables.push_back(new_table);
+    table_mapping[d1] = (int) tables.size() - 1;
+    table_mapping[d2] = (int) tables.size() - 1;
 
   } else if (table_mapping.count(d1) == 1 && table_mapping.count(d2) == 0) {
-    RelationalTable new_table = RelationalTable({d1, d2}, {new_d1_values, new_d2_values});
     int d1_table_idx = table_mapping[d1];
-    tables[d1_table_idx] = tables[d1_table_idx].join(new_table, d1);
-
-//    auto existing_d1_values = value_map[d1];
-//    // Mirrored
-//    auto new_d1_indices_to_keep = ArrayUtility::getIndicesToKeep(*new_d1_values, value_map[d1]);
-//    addSingleDeclaration(d1, std::move(new_d1_values));
-//    auto filtered_new_d2 = ArrayUtility::getArrSubsetByIndices(*new_d2_values, *new_d1_indices_to_keep);
-//    value_map[d2] = *filtered_new_d2;
-//    linked_declarations[]
+    tables[d1_table_idx].join(new_table);
 
   } else if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 1) {
-    RelationalTable new_table = RelationalTable({d1, d2}, {new_d1_values, new_d2_values});
     int d2_table_idx = table_mapping[d2];
-    tables[d2_table_idx] = tables[d2_table_idx].join(new_table, d2);
+    tables[d2_table_idx].join(new_table);
   } else {
     // case 1: d1 and d2 in same table already
     if (table_mapping[d1] == table_mapping[d2]) {
-      RelationalTable new_table = RelationalTable({d1, d2}, {new_d1_values, new_d2_values});
       int table_idx = table_mapping[d1];
-      tables[table_idx] = tables[table_idx].join(new_table, d1, d2);
+      tables[table_idx].join(new_table);
     } else {
-      // case 2: d1 and d2 are in different tables (impossible for now? just do select clause last)
-      assert(false);
+    // case 2: d1 and d2 are in different tables (impossible for now? just do select clause last)
+    assert(false);
     }
   }
+  if (tables[table_mapping[d1]].hasNoResults()) {
+    has_no_results = true;
+    return;
 }
 
+// ADD IN HAS NO RESULTS?
 
-std::vector<std::string> IntermediateResultsTable::getTableCol(const PqlDeclaration& d) {
-  assert(column_mapping.count(d) == 1);
-  int col_idx = column_mapping[d];
-
-  std::vector<std::string> output = {};
-  for (auto& row: table) {
-    output.push_back(row[col_idx]);
-  }
-  return output;
-}
