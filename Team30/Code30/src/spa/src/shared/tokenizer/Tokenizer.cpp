@@ -1,5 +1,7 @@
 #include "Tokenizer.h"
 
+#include <iostream>
+
 #include "token/EofToken.h"
 #include "token/IntegerToken.h"
 #include "token/SpecialCharToken.h"
@@ -48,7 +50,8 @@ std::shared_ptr<Token> Tokenizer::next() {
 
     else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
              c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
-             c == ',' || c == '\"') {
+             c == ',' || c == '\"'|| c == '_') {
+      /* std::cout << "\ntokenizer1: " << c << "\n"; */
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
 
