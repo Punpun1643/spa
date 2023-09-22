@@ -52,8 +52,6 @@ ClauseResult::ClauseResult(
     }
     value_map[d1] = v1;
     value_map[d2] = v2;
-    linked_declarations[d1] = {d2};
-    linked_declarations[d2] = {d1};
   }
 }
 
@@ -70,6 +68,13 @@ bool ClauseResult::contains(PqlDeclaration const& d) const {
   return value_map.count(d) == 1;
 }
 
+std::vector<PqlDeclaration> ClauseResult::getDeclarations() const {
+  std::vector<PqlDeclaration> output = {};
+  for (const auto& [key, value] : value_map)
+    output.push_back(key);
+  return output;
+}
+
 std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
     PqlDeclaration const& declaration) const {
   if (value_map.count(declaration) == 0) {
@@ -77,59 +82,3 @@ std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
   }
   return std::make_unique<std::vector<std::string>>(value_map.at(declaration));
 }
-
-//
-// std::unique_ptr<ClauseResult> ClauseResult::combineResults(const
-// ClauseResult& other) const{
-//  if (num_declarations == 0) {
-//    if (boolean_clause_value) {
-//      return std::make_unique<ClauseResult>(other);
-//    } else {
-//      return std::make_unique<ClauseResult>(false);
-//    }
-//  } else if (other.num_declarations == 0) {
-//    if (other.boolean_clause_value) {
-//      return std::make_unique<ClauseResult>(this);
-//    } else {
-//      return std::make_unique<ClauseResult>(false);
-//    }
-//  }
-//
-//  /* For now, assume that at most 1 overlap. Can ignore linkages.*/
-//  std::unique_ptr<std::vector<PqlDeclaration>> common_declarations =
-//      getCommonDeclarations(other);
-//  ClauseResult empty = ClauseResult();
-//  auto output = std::make_unique<ClauseResult>(empty);
-//
-//  if (common_declarations->empty()) {
-//    for (auto const& [key, value] : value_map) {
-//      output->value_map[key] = value;
-//    }
-//    for (auto const& [key, value] : other.value_map) {
-//      output->value_map[key] = value;
-//    }
-//    for (auto const& [key, value] : linked_declarations) {
-//      output->linked_declarations[key] = value;
-//    }
-//    for (auto const& [key, value] : other.linked_declarations) {
-//      output->linked_declarations[key] = value;
-//    }
-//  } else if (common_declarations->size() == 1) {
-//    PqlDeclaration shared_d = (*common_declarations)[0];
-//    output->value_map[shared_d] =
-//        getIntersectingValues(value_map[shared_d], other.value_map[shared_d]);
-//    // We ought to copy the rest, but for now it doesn't matter.
-//  }
-//}
-//
-// std::unique_ptr<std::vector<PqlDeclaration>>
-// ClauseResult::getCommonDeclarations(const ClauseResult& other) const {
-//  auto common_declarations =
-//      std::make_unique<std::vector<PqlDeclaration>>();
-//  for (auto& it : value_map) {
-//    if (other.value_map.count(it.first) == 1) {
-//      common_declarations->push_back(it.first);
-//    }
-//  }
-//  return common_declarations;
-//}
