@@ -20,10 +20,6 @@ std::unordered_set<std::string> AssignNode::getVariables() const {
 
 std::unordered_set<int> AssignNode::getConstants() const { return constants; }
 
-int AssignNode::getStmtIndex() const { return stmtIndex; }
-
-StmtType AssignNode::getStmtType() const { return stmtType; }
-
 std::shared_ptr<TreeNode> AssignNode::getRootOfTree() const {
   return exprTreeRoot;
 }
