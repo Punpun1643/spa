@@ -14,8 +14,10 @@ class RelationalTable {
   std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> column_mapping;
 
   std::vector<PqlDeclaration> getSharedColumns(RelationalTable& other_table);
-  void filterTableRows(const PqlDeclaration& sort_col);
-  void sortTableRows(const PqlDeclaration& sort_col);
+  // void filterTableRows(const PqlDeclaration& sort_col);
+  // void sortTableRows(const PqlDeclaration& sort_col);
+  std::vector<std::pair<PqlDeclaration, int>>
+      getRenumberedColsAfterRemoval(const std::vector<PqlDeclaration>& to_remove);
 
  public:
   // Constructor with 1 value, or two values
@@ -32,14 +34,7 @@ class RelationalTable {
 //  void filter(const PqlDeclaration& d,
 //              const std::vector<std::string>& values);
 //
-  void join(RelationalTable& other_table, const PqlDeclaration& join_col);
-
-  void join(RelationalTable& other_table, const PqlDeclaration& join_col_1,
-            const PqlDeclaration& join_col_2);
+  void join(RelationalTable& other_table);
 
   bool hasNoResults();
-
-
-
-
 };

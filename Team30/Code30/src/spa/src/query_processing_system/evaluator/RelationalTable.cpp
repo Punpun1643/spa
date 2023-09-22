@@ -1,6 +1,7 @@
 #include "RelationalTable.h"
 
 #include "ArrayUtility.h"
+#include <unordered_set>
 
 RelationalTable::RelationalTable(const PqlDeclaration & d,
   const std::vector<std::string> & values) {
@@ -60,51 +61,80 @@ int RelationalTable::getNumCols() {
   return (int) column_mapping.size();
 }
 
-void RelationalTable::join(RelationalTable& other_table, const PqlDeclaration & join_col) {
-  /**
-   * Joins this table with the given table by the specified column.
-   */
-  // verify that the given col is the only shared column
-  auto shared_cols = getSharedColumns(other_table);
-  assert(shared_cols.size() == 1 && shared_cols.front() == join_col);
 
-  int table_join_col_idx = column_mapping[join_col];
-  int other_table_join_col_idx = other_table.column_mapping[join_col];
+void RelationalTable::join(RelationalTable& other_table) {
+  /**
+   * Joins this table with the given table by all shared columns
+   */
+  // get shared columns
+  auto shared_cols = getSharedColumns(other_table);
+  assert(!shared_cols.empty());  // block doing a cross-product
 
   std::vector<std::vector<std::string>> new_table;
   for (auto this_row : table) {
     for (auto other_row : other_table.table) {
-      if (this_row[table_join_col_idx] == other_row[other_table_join_col_idx]) {
-        // Create new joined row
-        std::vector<std::string> new_row = {};
-        // Add values from existing row
-        new_row.insert(new_row.begin(), this_row.begin(), this_row.end());
-        // Add values from other table's row
-        for (auto i = 0; i < other_row.size(); i++) {
-          if (i == other_table_join_col_idx) {
-            continue;
-          }
-          new_row.push_back(other_row[i]);
+      // check that all the shared_cols match
+      bool all_shared_cols_match = true;
+      for (auto& shared_col : shared_cols) {
+        auto this_table_col_idx = column_mapping[shared_col];
+        auto other_table_col_idx = other_table.column_mapping[shared_col];
+        if (this_row[this_table_col_idx] != other_row[other_table_col_idx]) {
+          all_shared_cols_match = false;
+          break;
         }
-        new_table.push_back(new_row);
       }
+      if (!all_shared_cols_match) {
+        continue;
+      }
+      // Create new joined row
+      std::vector<std::string> new_row = {};
+      // Add all values from existing row
+      new_row.insert(new_row.begin(), this_row.begin(), this_row.end());
+      // Add values from other table's row that don't overlap with this row's
+      std::unordered_set<int> rows_to_avoid;
+      for (auto& shared_col : shared_cols) {
+        rows_to_avoid.insert(column_mapping[shared_col]);
+      }
+      for (auto i = 0; i < other_row.size(); i++) {
+        if (rows_to_avoid.count(i) == 1) {
+          continue;
+        }
+        new_row.push_back(other_row[i]);
+      }
+      new_table.push_back(new_row);
     }
   }
+
   // Update column mappings
-  for (auto& [key, index] : other_table.column_mapping) {
-    if (key == join_col) {
-      continue;
-    } else if (index > other_table_join_col_idx) {
-      column_mapping[key] = getNumCols() + index - 1;
-    } else {  // index < other_table_join_col_idx
-      column_mapping[key] = getNumCols() + index;
-    }
+  auto renumbered_cols = other_table.getRenumberedColsAfterRemoval(shared_cols);
+  int original_num_cols = getNumCols();
+  for (auto& pair : renumbered_cols) {
+    PqlDeclaration decl = pair.first;
+    int idx = pair.second;
+    column_mapping[decl] = original_num_cols + idx;
   }
 }
 
-void RelationalTable::join(RelationalTable& other_table, const PqlDeclaration & join_col_1,
-                           const PqlDeclaration& join_col_2) {
+std::vector<std::pair<PqlDeclaration, int>>
+    RelationalTable::getRenumberedColsAfterRemoval(const std::vector<PqlDeclaration>& to_remove) {
+  std::vector<std::pair<PqlDeclaration, int>> table_mapping_vector;
+  for (auto& [key, index]: column_mapping) {
+    if (std::find(to_remove.begin(), to_remove.end(), key) == to_remove.end()) {
+      table_mapping_vector.push_back(std::make_pair(key, index));
+    }
+  }
+  // sort table_mapping_vector by idx
+  std::sort(table_mapping_vector.begin(), table_mapping_vector.end(),
+            [&](std::pair<PqlDeclaration, int> a, std::pair<PqlDeclaration, int> b)
+            {return a.second < b.second;});
 
+  // renumber in order
+  int i = 0;
+  for (auto &pair: table_mapping_vector) {
+    pair.second = i;
+    i++;
+  }
+  return table_mapping_vector;
 }
 
 bool RelationalTable::hasNoResults() {
