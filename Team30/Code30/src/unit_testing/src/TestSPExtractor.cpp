@@ -50,6 +50,12 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 13);
   }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 13);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 1);
+  }
 }
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
@@ -72,6 +78,12 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 4);
   }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 5);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 0);
+  }
 }
 
 TEST_CASE("AST 3: Basic SPA, 2 procedures") {
@@ -93,6 +105,12 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   }
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 4);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 6);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 0);
   }
 }
 
@@ -117,5 +135,11 @@ TEST_CASE(
   }
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 3);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 8);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 0);
   }
 }
