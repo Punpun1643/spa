@@ -1,24 +1,17 @@
 #include "ArrayUtility.h"
+#include <unordered_set>
 
-std::unique_ptr<std::unordered_map<std::string, int>> ArrayUtility::getValueCounts(const std::vector<std::string>& arr) {
-  auto value_counts = std::make_unique<std::unordered_map<std::string, int>>();
-  for (const std::string &value: arr) {
-    if (value_counts->count(value) == 0) {
-      (*value_counts)[value] = 1;
-    } else {
-      (*value_counts)[value] += 1;
-    }
-  }
-  return value_counts;
+void ArrayUtility::removeDuplicates(std::vector<std::string> &vec) {
+  std::sort(vec.begin(), vec.end());
+  vec.erase( std::unique( vec.begin(), vec.end() ), vec.end() );
 }
 
 std::unique_ptr<std::vector<int>> ArrayUtility::getIndicesToKeep(const std::vector<std::string> &arr,
                                                                              const std::vector<std::string>& overlap_arr) {
   /**
    * Given an arr and an overlap_arr, returns the list of indices in arr that should be kept
-   * for all values in arr to also be present in overlap_arr. Takes into account duplicate
-   * values.
-   * Example: (['4','2','2','1'], ['2','2','4']) -> [0,1,2]
+   * such that all values in arr are also present in overlap_arr.
+   * Example: (['4','2','2','1'], ['2','4']) -> [0,1,2]
    */
   auto idx_to_keep = std::make_unique<std::vector<int>>();
 
@@ -26,14 +19,10 @@ std::unique_ptr<std::vector<int>> ArrayUtility::getIndicesToKeep(const std::vect
     return idx_to_keep; // empty
   }
 
-  auto overlap_arr_value_counts = ArrayUtility::getValueCounts(overlap_arr);
+  auto overlap_set = std::unordered_set<std::string>(overlap_arr.begin(), overlap_arr.end());
 
-  for (int i = 0; i < arr.size(); i++) {
-    if (overlap_arr_value_counts->count(arr[i]) == 0 ||
-        (*overlap_arr_value_counts)[arr[i]] <= 0) {
-      continue;
-    } else {
-      (*overlap_arr_value_counts)[arr[i]] -= 1;
+  for (auto i = 0; i < arr.size(); i++) {
+    if (overlap_set.count(arr[i]) == 1) {
       idx_to_keep->push_back(i);
     }
   }
@@ -53,7 +42,7 @@ std::unique_ptr<std::vector<std::string>> ArrayUtility::intersectLists(std::vect
 
 std::unique_ptr<std::vector<std::string>> ArrayUtility::getArrSubsetByIndices(const std::vector<std::string> & arr, const std::vector<int> & indices) {
   auto result = std::make_unique<std::vector<std::string>>();
-  for (int idx: indices) {
+  for (auto idx: indices) {
     assert(0 <= idx && idx < arr.size());
     result->push_back(arr[idx]);
   }

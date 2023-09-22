@@ -5,7 +5,8 @@
 #include <string>
 
 namespace ArrayUtility {
-  std::unique_ptr<std::unordered_map<std::string, int>> getValueCounts(const std::vector<std::string>& arr);
+  void removeDuplicates(std::vector<std::string> &vec);
+
   std::unique_ptr<std::vector<int>> getIndicesToKeep(const std::vector<std::string>& arr, const std::vector<std::string>& overlap_arr);
   std::unique_ptr<std::vector<std::string>> intersectLists(
     std::vector<std::string> arr_1, std::vector<std::string> arr_2);
