@@ -1,0 +1,27 @@
+procedure main {
+  main = 1;
+  assign = 2;
+  if = 3;
+  while = 4;
+  read = 5;
+  print = 6;
+  stmt = 7;
+  procedure = 8;
+  a = 9;
+  A = 9;
+
+  while (if < 20) {
+    assign = assign + 3;
+    if = assign + if;
+  } 
+  
+  if (while == 4) then {
+    print read;
+  } else {
+    read print;
+  } 
+  
+  stmt = a + 1;
+  procedure = A + 1;
+
+}
