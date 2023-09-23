@@ -8,9 +8,9 @@
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
-ClauseResult::ClauseResult(PqlDeclaration d,
-                           std::unique_ptr<std::vector<std::string>> values) {
-  if (values->empty()) {
+ClauseResult::ClauseResult(const PqlDeclaration& d,
+                           const std::vector<std::string>& values) {
+  if (values.empty()) {
     // Entire clause becomes false because no possible values
     num_declarations = 0;
     boolean_clause_value = false;
@@ -18,13 +18,13 @@ ClauseResult::ClauseResult(PqlDeclaration d,
   }
   // Create clause result with 1 declaration
   num_declarations = 1;
-  value_map[d] = *values;
+  value_map[d] = values;
 }
 
 ClauseResult::ClauseResult(
-    PqlDeclaration d1, PqlDeclaration d2,
-    std::unique_ptr<std::vector<std::pair<std::string, std::string>>> values) {
-  if (values->empty()) {
+    const PqlDeclaration& d1, const PqlDeclaration& d2,
+    const std::vector<std::pair<std::string, std::string>>& values) {
+  if (values.empty()) {
     // Entire clause becomes false because no possible values
     num_declarations = 0;
     boolean_clause_value = false;
@@ -35,7 +35,7 @@ ClauseResult::ClauseResult(
   if (d1 == d2) {
     num_declarations = 1;
     std::vector<std::string> intersecting;
-    for (auto& pair : *values) {
+    for (auto& pair : values) {
       if (pair.first == pair.second) {
         intersecting.push_back(pair.first);
       }
@@ -46,7 +46,7 @@ ClauseResult::ClauseResult(
     // separate out the paired vectors
     std::vector<std::string> v1;
     std::vector<std::string> v2;
-    for (auto& pair : *values) {
+    for (auto& pair : values) {
       v1.push_back(pair.first);
       v2.push_back(pair.second);
     }

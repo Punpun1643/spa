@@ -71,7 +71,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
   auto possible_values =
       pkb.getRelationValuesGivenFirstType(entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration,
-                                        std::move(possible_values));
+                                        *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
@@ -81,7 +81,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
   auto possible_values =
       pkb.getRelationValuesGivenSecondType(entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration,
-                                        std::move(possible_values));
+                                        *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
@@ -92,7 +92,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
   auto possible_values =
       pkb.getRelationValues(entity_type, second_value, relation_type);
   return std::make_unique<ClauseResult>(declaration,
-                                        std::move(possible_values));
+                                        *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
@@ -103,7 +103,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
   auto possible_values =
       pkb.getRelationValues(first_value, entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration,
-                                        std::move(possible_values));
+                                        *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(
@@ -116,7 +116,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(
   auto possible_values =
       pkb.getRelationValues(entity_type_1, entity_type_2, relation_type);
   return std::make_unique<ClauseResult>(declaration_1, declaration_2,
-                                        std::move(possible_values));
+                                        *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PkbApi& pkb) {
