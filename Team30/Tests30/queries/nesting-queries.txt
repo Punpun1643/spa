@@ -1,0 +1,40 @@
+1 - positive, select all while loops
+while w;
+Select w
+4, 9, 12, 15
+5000
+2 - positive, select all if containers
+if i;
+Select i
+5, 18, 20
+5000
+3 - positive, select if containers that directly follow a while loop.
+if i; while w;
+Select i such that Follows (w, i)
+18
+5000
+4 - negative, select while loops that directly or indirectly follow an if container.
+if i; while w;
+Select w such that Follows* (i, w)
+none
+5000
+5 - positive, select if containers that are a direct parent of another if container
+if i, i1;
+Select i1 such that Parent (i, i1)
+20
+5000
+6 - positive, select read statements that are a direct or indirect child of an if container
+if i; read r;
+Select r such that Parent* (i, r)
+11, 19
+5000
+7 - positive, select while loops that are a direct child of another while loop
+while w, w1;
+Select w1 such that Parent (w, w1)
+9, 12, 15
+5000
+8 - negative, select statements which directly precede an if container
+stmt s, if i;
+Select s such that Follows(s, i)
+none
+5000

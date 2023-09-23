@@ -87,11 +87,7 @@ std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
                                                 std::string(1, next_c));
     }
   }
-
-  if (c == '!') {
-    throw std::invalid_argument("Invalid Syntax, ! not a valid symbol.");
-  }
-
+  
   return std::make_shared<SpecialCharToken>(std::string(1, c));
 }
 

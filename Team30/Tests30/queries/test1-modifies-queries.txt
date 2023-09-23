@@ -1,0 +1,60 @@
+1 - Modifes stmt syn LHS and var syn RHS
+stmt s; variable v;
+Select v such that Modifies (s, v)
+x, y, z, p, q, i, j, a
+5000
+2 - Modifies container syn LHS and var syn RHS
+while w; variable v;
+Select w such that Modifies (w, v)
+8, 15
+5000
+3 - Modifies specific stmt num LHS and var syn RHS
+variable v;
+Select v such that Modifies (7, v)
+z
+5000
+4 - Modifies stmt syn LHS and specific var string RHS
+read r;
+Select r such that Modifies (r, "x")
+1, 28
+5000
+5 - Modifies container syn LHS and specific var string RHS
+if i;
+Select i such that Parent (i, "a")
+21, 25
+5000
+6 - Modifies specific stmt num LHS and specific var string RHS
+print pn;
+Select pn such that Modifies (11, "q")
+none
+5000
+7 - Modifies stmt syn LHS and wildcard RHS
+assign a;
+Select a such that Modifies (a, _)
+2, 3, 5, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 22, 23, 25, 26, 27
+5000
+8 - Modifies container syn LHS and wildcard RHS
+stmt w, w1;
+Select w such that Modifies (w1, _)
+7, 14
+5000
+9 - Modifies specific stmt num LHS and wildcard RHS
+read r;
+Select r such that Modifies (7, _)
+1, 21, 28
+5000
+10 - negative case, cannot have wildcard in first param of Modifies
+read r; variable v;
+Select r such that Modifies (_, v)
+SemanticError
+5000
+11 - negative case, cannot have print syn in first param of Modifies
+print pn;
+Select pn such that Follows(pn, _)
+SemanticError
+5000
+12 - negative case, cannot have constant as the 2nd param of modifies
+assign a;
+Select a such that Modifies (a, "1")
+SemanticError
+5000
