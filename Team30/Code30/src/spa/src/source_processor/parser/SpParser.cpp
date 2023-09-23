@@ -493,6 +493,10 @@ int SpParser::precedence(std::string const& op) {
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
+  if (getCurrTokenValue() == "}") {
+    throw std::invalid_argument("The stmtLst is empty");
+  }
+
   while (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
     std::shared_ptr<Token> currToken = getCurrToken();
     if (isCurrTokenType(TokenType::WORD_TOKEN) &&
