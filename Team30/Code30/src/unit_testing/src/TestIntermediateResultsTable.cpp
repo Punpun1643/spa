@@ -38,6 +38,7 @@ TEST_CASE("Intermediate Results Table Tests") {
   auto PAIRED_CLAUSE_A_C = ClauseResult(a, c, IrtTestHelperMethods::makePairedVector(LIST_A, LIST_C));
   auto PAIRED_CLAUSE_B_C = ClauseResult(b, c, IrtTestHelperMethods::makePairedVector(LIST_B, LIST_C));
   auto PAIRED_CLAUSE_V_S = ClauseResult(v, s, IrtTestHelperMethods::makePairedVector(LIST_V, LIST_S));
+  auto CONTRADICTING_CLAUSE_A_B = ClauseResult(a, b, IrtTestHelperMethods::makePairedVector(LIST_V, LIST_V));
 
   auto irt = IntermediateResultsTable();
 
@@ -112,8 +113,7 @@ TEST_CASE("Intermediate Results Table Tests") {
   SECTION("Clauses have 1 synonym in common + no results") {
     irt.addClauseResult(SINGLE_CLAUSE_A);
     irt.addClauseResult(PAIRED_CLAUSE_A_C);
-    auto CONTRADICTING_CLAUSE = ClauseResult(a, b, IrtTestHelperMethods::makePairedVector(LIST_V, LIST_V));
-    irt.addClauseResult(CONTRADICTING_CLAUSE);
+    irt.addClauseResult(CONTRADICTING_CLAUSE_A_B);
     REQUIRE(irt.hasNoResults());
     REQUIRE(irt.getValuesGivenDeclaration(a).empty());
     REQUIRE(irt.getValuesGivenDeclaration(b).empty());
@@ -127,6 +127,15 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE_FALSE(irt.hasNoResults());
     REQUIRE(irt.getValuesGivenDeclaration(a) == LIST_A);
     REQUIRE(irt.getValuesGivenDeclaration(b) == LIST_B);
+  }
+
+  SECTION("2 common synonyms + no results") {
+    irt.addClauseResult(SINGLE_CLAUSE_A);
+    irt.addClauseResult(PAIRED_CLAUSE_A_B);
+    irt.addClauseResult(CONTRADICTING_CLAUSE_A_B);
+    REQUIRE(irt.hasNoResults());
+    REQUIRE(irt.getValuesGivenDeclaration(a).empty());
+    REQUIRE(irt.getValuesGivenDeclaration(b).empty());
   }
 
   SECTION("Chained synonyms") {
