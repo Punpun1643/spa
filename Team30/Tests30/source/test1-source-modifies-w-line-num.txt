@@ -1,0 +1,51 @@
+procedure Advanced {
+
+1  read x;
+2  y = 2 * z;
+3  z = p - y;
+4  if (q != 1) then {
+5      z = x + 24;
+6      print p;
+  } else {
+7    while (z > 0) {
+8      y = x * q - 5;
+9      z = z - 1;
+    }
+10    y = x + y * z + p * q;
+  }
+11  i = x + j + z;
+
+12  p = x * 10;
+13  q = y + y * 10;
+14  while (t == 0) {
+15    a = 5 * p - 5;
+16    print y;
+  }
+17  q = p * 5;
+
+18  i = x * 10;
+19  j = x + y * 10;
+20  if (i > j) then {
+21    read y;
+22    x = 1;
+  } else {
+23    y = i + x + y * z;
+24    if (i != 2) then {
+25        x = a + 1;
+    } else {
+26        a = b;
+    }
+  }
+
+27  a = x;
+28  read x;
+29  print b;
+30  while ((t == 0) && (!(i > j))) {
+31    print y;
+  }
+32  if (a >= b) then {
+33    print c;
+  } else {
+34    print b;
+  }
+}
