@@ -1,0 +1,25 @@
+1 - Undeclared synonym
+assign a;
+Select s such that Follows (s, 7)
+SyntaxError
+5000
+2 - Double declaration of synonym
+assign a, a; 
+Select a such that Uses (a, "x")
+SyntaxError
+5000
+3 - Missing semicolon
+stmt s
+Select s such that Modifies (s, "y")
+SyntaxError
+5000
+4 - Incorrect Bracket
+while w;
+Select w such that Parent [w, _]
+SyntaxError
+5000
+5 - Incorrect Case
+read r;
+select r such that modifies (r, "a")
+SyntaxError
+5000

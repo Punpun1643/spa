@@ -9,10 +9,11 @@ class SyntaxChecker : public QpParser {
 
   void parse() override;
   void CheckDeclaration();
-  void CheckSelect();
-  void CheckSuchThatOrPattern();
-  void CheckSuchThat();
   void CheckEOF();
+  void CheckPattern();
+  void CheckSelect();
+  void CheckSuchThat();
+  void CheckSuchThatOrPattern();
 
   ~SyntaxChecker() = default;
 };
