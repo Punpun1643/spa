@@ -20,18 +20,17 @@ void QPSController::HandleQuery(
       this->InterpretQueryExpression(std::move(query_expression));
   // TODO: After milestone 1, need to change way of checking clause contents.
   // cant assume only 1 clause for each type
-  std::unique_ptr<std::vector<std::string>> query_results;
+  std::vector<std::string> query_results;
   std::unique_ptr<SelectClause> select_clause(
       dynamic_cast<SelectClause*>(clause_list[0].release()));
   if (clause_list.size() == 1) {
-    query_results = query_evaluator->evaluateQuery(std::move(select_clause));
+    query_results = query_evaluator->evaluateQuery(std::move(select_clause), {});
   } else if (clause_list.size() == 2) {
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clause_list[1].release()));
+    std::shared_ptr<Clause> such_that_clause = std::move(clause_list[1]);
     query_results = query_evaluator->evaluateQuery(std::move(select_clause),
-                                                   std::move(such_that_clause));
+                                                   {such_that_clause});
   }
-  std::copy(query_results->begin(), query_results->end(),
+  std::copy(query_results.begin(), query_results.end(),
             std::back_inserter(results));
 }
 

@@ -1,13 +1,13 @@
 #include "PKB.h"
 
 #include <algorithm>
+#include <cassert>
 #include <string>
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
 #include "PkbApi.h"
 #include "program_knowledge_base/EntityDatabase.h"
-#include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
 
 PKB::PKB() : PkbApi() {
@@ -259,8 +259,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
 
 // return possible values of the LHS synonym
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PKB::getPatternMatchesWithLhsType(std::string rhs_expr,
-                                  MatchType expr_match_type) {
+PKB::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
+                                         MatchType expr_match_type) {
   std::unordered_set<std::string> statements;
   if (expr_match_type == MatchType::WILD_MATCH) {
     statements = *entData->get(EntityType::ASSIGN);

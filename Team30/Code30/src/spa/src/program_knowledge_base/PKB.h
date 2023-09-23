@@ -78,6 +78,6 @@ class PKB : public PkbApi {
   // 2 paired values - for the implicit assign declaration, and the values for
   // the given lhs_entity_type
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithLhsType(std::string rhs_expr,
+  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                MatchType expr_match_type) override;
 };
