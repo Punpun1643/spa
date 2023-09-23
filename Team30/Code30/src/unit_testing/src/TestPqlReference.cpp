@@ -7,7 +7,7 @@
 TEST_CASE("Tests on PqlReferences") {
   // Declarations
   auto a = PqlDeclaration(std::make_shared<std::string>("a"), EntityType::ASSIGN);
-  auto b = PqlDeclaration(std::make_shared<std::string>("b"), EntityType::PRINT);
+  auto print = PqlDeclaration(std::make_shared<std::string>("print"), EntityType::PRINT);
   auto c = PqlDeclaration(std::make_shared<std::string>("constant"), EntityType::CONSTANT);
   auto v = PqlDeclaration(std::make_shared<std::string>("variable"), EntityType::VARIABLE);
   auto proc = PqlDeclaration(std::make_shared<std::string>("procedure"), EntityType::PROCEDURE);
@@ -37,5 +37,31 @@ TEST_CASE("Tests on PqlReferences") {
     REQUIRE_THROWS_AS(StmtRef(std::make_shared<PqlDeclaration>(c)), InvalidSemanticsException);
     REQUIRE_THROWS_AS(StmtRef(std::make_shared<PqlDeclaration>(v)), InvalidSemanticsException);
     REQUIRE_THROWS_AS(StmtRef(std::make_shared<PqlDeclaration>(proc)), InvalidSemanticsException);
+  }
+
+  SECTION ("EntRef") {
+    auto wild_ent_ref = std::make_shared<PqlReference>(EntRef());
+    auto value_ent_ref = std::make_shared<PqlReference>(EntRef("variable"));
+    auto decl_ent_ref = std::make_shared<PqlReference>(EntRef(std::make_shared<PqlDeclaration>(v)));
+
+    REQUIRE(wild_ent_ref->getRefType() == WILD);
+    REQUIRE(value_ent_ref->getRefType() == VALUE);
+    REQUIRE(decl_ent_ref->getRefType() == DECLARATION);
+
+    REQUIRE(value_ent_ref->getValue() == "variable");
+    REQUIRE(decl_ent_ref->getDeclarationType() == v.getEntityType());
+    REQUIRE(*(decl_ent_ref->getDeclaration()) == v);
+
+    // Copying works
+    auto ref = *value_ent_ref;
+    auto copied_ref = ref;
+
+    auto ref_2 = *decl_ent_ref;
+    auto copied_ref_2 = ref_2;
+
+    // Invalid input declaration types
+    REQUIRE_THROWS_AS(EntRef(std::make_shared<PqlDeclaration>(a)), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(EntRef(std::make_shared<PqlDeclaration>(s)), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(EntRef(std::make_shared<PqlDeclaration>(print)), InvalidSemanticsException);
   }
 }
