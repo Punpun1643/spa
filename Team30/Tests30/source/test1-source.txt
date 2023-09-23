@@ -30,7 +30,7 @@ procedure Advanced {
     x = 1;
   } else {
     y = i + x + y * z;
-    if (i != 2) {
+    if (i != 2) then {
         x = a + 1;
     } else {
         a = b;
