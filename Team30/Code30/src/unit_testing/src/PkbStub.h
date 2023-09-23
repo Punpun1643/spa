@@ -21,6 +21,8 @@ class PkbStub : public PkbApi {
   int insertModifiesCallCount;
   int insertPatternCallCount;
 
+
+
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
