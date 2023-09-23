@@ -40,4 +40,12 @@ procedure Advanced {
 27  a = x;
 28  read x;
 29  print b;
+30  while ((t == 0) && (!(i > j))) {
+31    print y;
+  }
+32  if (a >= b) then {
+33    print c;
+  } else {
+34    print b;
+  }
 }
