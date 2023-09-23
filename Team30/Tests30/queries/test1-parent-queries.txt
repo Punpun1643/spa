@@ -74,7 +74,7 @@ Select pn such that Parent* (_, pn)
 6, 16
 5000
 16 - Parent* container syn LHS and container syn RHS
-while w, w1
+while w, w1;
 Select w such that Parent* (w, w1)
 none
 5000
