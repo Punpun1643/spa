@@ -273,10 +273,10 @@ TEST_CASE("Assignment Pattern PKB") {
   // pattern a(var, "_b_")
   std::vector<std::pair<std::string, std::string>> expected_pairs = {
       {"3", "x"}, {"4", "y"}};
-  REQUIRE(*pkb.getPatternMatchesWithLhsType("b", MatchType::PARTIAL_MATCH) == expected_pairs);
+  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs("b", MatchType::PARTIAL_MATCH) == expected_pairs);
 
   // pattern a(var, "_")
   expected_pairs = {{"3", "x"}, {"4", "y"}, {"5", "x"}};
-  REQUIRE(*pkb.getPatternMatchesWithLhsType("", MatchType::WILD_MATCH) ==
+  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH) ==
           expected_pairs);
 }
