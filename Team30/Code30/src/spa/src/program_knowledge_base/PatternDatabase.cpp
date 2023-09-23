@@ -2,11 +2,11 @@
 
 PatternDatabase::PatternDatabase() {}
 
-void PatternDatabase::insert(std::string i, std::string var,
-                             std::unordered_set<std::string> vars_and_consts) {
-  lhs[i] = var;
-  inverse_lhs[var].insert(i);
-  for (std::string v : vars_and_consts) {
+void PatternDatabase::insert(std::string i, std::string lhs_var,
+                             std::unordered_set<std::string> rhs_vars_consts) {
+  lhs[i] = lhs_var;
+  inverse_lhs[lhs_var].insert(i);
+  for (std::string v : rhs_vars_consts) {
     inverse_rhs[v].insert(i);
   };
 };

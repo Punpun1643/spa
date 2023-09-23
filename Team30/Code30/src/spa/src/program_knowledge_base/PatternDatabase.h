@@ -21,8 +21,8 @@ class PatternDatabase {
  public:
   PatternDatabase();
   ~PatternDatabase() = default;
-  void insert(std::string i, std::string var,
-              std::unordered_set<std::string> vars_and_consts);
+  void insert(std::string i, std::string lhs_var,
+              std::unordered_set<std::string> rhs_vars_consts);
 
   std::unordered_set<std::string> getStatementNumbersGivenLHS(std::string v);
   std::unordered_set<std::string> getStatementNumbersGivenRHS(std::string v);
