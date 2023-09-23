@@ -73,11 +73,18 @@ bool PKB::isRelationTrue(std::string value_1, std::string value_2,
   return relData->getTable(rel_type)->isRelated(value_1, value_2);
 };
 
+
 // example Follows(1, _)
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
       entData->get(EntityType::STMT);  // TODO: FIX THIS
+  if (rel_type == RelationType::USES_P || rel_type == RelationType::USES_S ||
+      rel_type == RelationType::MODIFIES_P ||
+      rel_type == RelationType::MODIFIES_S) {
+    ents = entData->get(EntityType::VARIABLE);
+  }
+
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
