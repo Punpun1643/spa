@@ -316,6 +316,11 @@ void SpParser::assignHandleRightParenthesisToken(
 }
 
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
+
+  if (getPeekTokenValue() == ")") {
+    throw std::invalid_argument("Empty condExpr");
+  }
+
   std::queue<std::shared_ptr<std::string>> postFixQueue;
   std::stack<std::shared_ptr<std::string>> operatorStack;
   std::unordered_set<std::string> variables;
@@ -492,6 +497,10 @@ int SpParser::precedence(std::string const& op) {
 
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
+
+  if (getCurrTokenValue() == "}") {
+    throw std::invalid_argument("The stmtLst is empty");
+  }
 
   while (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
     std::shared_ptr<Token> currToken = getCurrToken();
