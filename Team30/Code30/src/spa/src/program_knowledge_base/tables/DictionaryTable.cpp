@@ -19,3 +19,5 @@ bool DictionaryTable::isRelated(std::string i, std::string j) {
   }
   return relations[i].find(j) != relations[i].end();
 }
+
+bool DictionaryTable::isEmpty() { return relations.size() == 0; }

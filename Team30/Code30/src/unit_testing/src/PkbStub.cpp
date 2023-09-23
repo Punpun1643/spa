@@ -1,8 +1,11 @@
 #include "PkbStub.h"
+
 #include <iostream>
 
 PkbStub::PkbStub()
     : insertEntityCallCount(0),
+      insertVariableCallCount(0),
+      insertConstantCallCount(0),
       insertRelationCallCount(0),
       insertFollowsCallCount(0),
       insertParentCallCount(0),
@@ -11,7 +14,13 @@ PkbStub::PkbStub()
       insertPatternCallCount(0){};
 
 void PkbStub::insertEntity(EntityType type, std::string entity) {
-  insertEntityCallCount++;
+  if (type == EntityType::CONSTANT) {
+    insertConstantCallCount++;
+  } else if (type == EntityType::VARIABLE) {
+    insertVariableCallCount++;
+  } else {
+    insertEntityCallCount++;
+  }
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
@@ -144,7 +153,7 @@ PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
     std::string rhs_expr, MatchType expr_match_type) {
   return std::make_unique<std::vector<std::string>>();
-};
+}
 
 std::unique_ptr<std::vector<std::string>>
 PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
@@ -156,8 +165,7 @@ PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
 // 2 paired values - for the implicit assign declaration, and the values for the
 // given lhs_entity_type
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbStub::getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                      std::string rhs_expr,
+PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                       MatchType expr_match_type) {
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 };

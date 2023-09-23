@@ -105,7 +105,7 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2() {
   std::unordered_set<std::string> condVars2;
   condVars2.insert("var1");
   std::unordered_set<int> condConsts2;
-  condConsts.insert(3);
+  condConsts2.insert(3);
   std::shared_ptr<CondExprNode> cond2 =
       std::make_shared<CondExprNode>(condVars2, condConsts2);
   std::vector<std::shared_ptr<StmtNode>> stmts2;

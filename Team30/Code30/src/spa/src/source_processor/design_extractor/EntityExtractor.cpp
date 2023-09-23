@@ -1,8 +1,8 @@
 #include "EntityExtractor.h"
 
 #include <algorithm>
-#include <unordered_set>
 #include <iterator>
+#include <unordered_set>
 
 EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
 

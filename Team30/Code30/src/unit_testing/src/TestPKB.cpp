@@ -27,10 +27,6 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   pkb.insertRelation(RelationType::PARENT, "4", "6");
   pkb.insertRelation(RelationType::PARENT, "6", "7");
 
-
-
-
-
   // added follows relation
   REQUIRE(pkb.isRelationTrue("2", "3", RelationType::FOLLOWS));
   // unadded follows relation
@@ -125,8 +121,8 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
                                  RelationType::FOLLOWS_STAR) == tmp);
   // 4 is a parent of 5, 6, 7
   tmp = {"5", "6", "7"};
-//  REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
-//                                 RelationType::PARENT_STAR) == tmp);
+  //  REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
+  //                                 RelationType::PARENT_STAR) == tmp);
   //// 3 is not a parent
   REQUIRE(*pkb.getRelationValues("3", EntityType::STMT, RelationType::PARENT) ==
           empty_vector);
@@ -134,12 +130,10 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // Returns all s1, s2 such that Relation(s1, s2)
   std::vector<std::pair<std::string, std::string>> tmp_pair;
   tmp_pair = {{"4", "5"}, {"4", "6"}, {"6", "7"}};
-//  REQUIRE(
-//      *pkb.getRelationValues(EntityType::STMT, EntityType::STMT,
-//                                 RelationType::PARENT) == tmp_pair);
+  //  REQUIRE(
+  //      *pkb.getRelationValues(EntityType::STMT, EntityType::STMT,
+  //                                 RelationType::PARENT) == tmp_pair);
 }
-
-
 
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
   PKB pkb = PKB();
@@ -147,83 +141,142 @@ TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
   REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT_STAR) == false);
 }
 
+// UsesS only holds Uses relations for Statements
+// UsesP holds for Procedures
+TEST_CASE("Uses and Modifies") {
+  PKB pkb = PKB();
+  pkb.insertEntity(EntityType::PROCEDURE, "main");
+  pkb.insertEntity(EntityType::PROCEDURE, "sub");
+  pkb.insertEntity(EntityType::VARIABLE, "x");
+  pkb.insertEntity(EntityType::VARIABLE, "y");
+
+  pkb.insertEntity(EntityType::CALL, "1");
+  pkb.insertEntity(EntityType::CALL, "2");
+  pkb.insertEntity(EntityType::PRINT, "3");
+  pkb.insertEntity(EntityType::IF, "4");
+  pkb.insertEntity(EntityType::READ, "5");
+  pkb.insertEntity(EntityType::CALL, "6");
+  pkb.insertEntity(EntityType::ASSIGN, "7");
+
+  pkb.insertRelation(RelationType::USES_S, "3", "x");
+  pkb.insertRelation(RelationType::USES_S, "4", "y");
+  pkb.insertRelation(RelationType::USES_P, "sub", "x");
+
+  pkb.insertRelation(RelationType::MODIFIES_P, "main", "x");
+  pkb.insertRelation(RelationType::MODIFIES_S, "5", "x");
+  pkb.insertRelation(RelationType::MODIFIES_S, "7", "y");
 
 
-  //UsesS only holds Uses relations for Statements
-  //UsesP holds for Procedures
-  TEST_CASE("Uses and Modifies") {
-    PKB pkb = PKB();
-    pkb.insertEntity(EntityType::PROCEDURE, "main");
-    pkb.insertEntity(EntityType::PROCEDURE, "sub");
-    pkb.insertEntity(EntityType::VARIABLE, "x");
-    pkb.insertEntity(EntityType::VARIABLE, "y");
+  // added USES relation for statement
+  REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
+  // added USES relation for procedure
+  REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_P));
 
-    pkb.insertEntity(EntityType::CALL, "1");
-    pkb.insertEntity(EntityType::CALL, "2");
-    pkb.insertEntity(EntityType::PRINT, "3");
-    pkb.insertEntity(EntityType::IF, "4");
-    pkb.insertEntity(EntityType::READ, "5");
-    pkb.insertEntity(EntityType::CALL, "6");
-    pkb.insertEntity(EntityType::ASSIGN, "7");
+  // USES relation for statement should not be in procedure table
+  REQUIRE(pkb.isRelationTrue("4", "y", RelationType::USES_P) == false);
+  // USES relation for procedure should not be in statement table
+  REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_S) == false);
 
-    pkb.insertRelation(RelationType::USES_S, "3", "x");
-    pkb.insertRelation(RelationType::USES_S, "4", "y");
-    pkb.insertRelation(RelationType::USES_P, "sub", "x");
+  // added MODIFIES relation for statement
+  REQUIRE(pkb.isRelationTrue("5", "x", RelationType::MODIFIES_S));
+  // added MODIFIES relation for procedure
+  REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_P));
 
-    pkb.insertRelation(RelationType::MODIFIES_P, "main", "x");
-    pkb.insertRelation(RelationType::MODIFIES_S, "5", "x");
-    pkb.insertRelation(RelationType::MODIFIES_S, "7", "y");
+  // MODIFIES relation for statement should not be in procedure table
+  REQUIRE(pkb.isRelationTrue("7", "y", RelationType::MODIFIES_P) == false);
+  // MODIFIES relation for procedure should not be in statement table
+  REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_S) == false);
 
-    // added USES relation for statement
-    REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
-    // added USES relation for procedure
-    REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_P));
+  std::vector<std::string> empty_vector;
 
-    // USES relation for statement should not be in procedure table
-    REQUIRE(pkb.isRelationTrue("4", "y", RelationType::USES_P) == false);
-    // USES relation for procedure should not be in statement table
-    REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_S) == false);
+  // Check APIs
 
-    // added MODIFIES relation for statement
-    REQUIRE(pkb.isRelationTrue("5", "x", RelationType::MODIFIES_S));
-    // added MODIFIES relation for procedure
-    REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_P));
+  std::vector<std::string> tmp = {"main"};
+  // Select p such that Modifies(p, _)
+  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+              EntityType::PROCEDURE, RelationType::MODIFIES_P) == tmp);
+  tmp = {"5", "7"};
+  // Select s such that Modifies(s, _)
+  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+              EntityType::STMT, RelationType::MODIFIES_S) == tmp);
+  // Query from wrong table
+  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+              EntityType::STMT, RelationType::USES_P) == empty_vector);
 
+  // Select Uses(pn, v)
+  // Statement 3 is a print statement that uses "x". Returns that pair.
+  std::vector<std::pair<std::string, std::string>> emptyPair = {};
+  std::vector<std::pair<std::string, std::string>> tmp1 = {
+      std::make_pair("3", "x")};
 
-    // MODIFIES relation for statement should not be in procedure table
-    REQUIRE(pkb.isRelationTrue("7", "y", RelationType::MODIFIES_P) == false);
-    // MODIFIES relation for procedure should not be in statement table
-    REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_S) == false);
+  REQUIRE(*pkb.getRelationValues(EntityType::PRINT, EntityType::VARIABLE,
+                                 RelationType::USES_S) == tmp1);
 
-    std::vector<std::string> empty_vector;
+  // Modifies(c, v)
+  // No procedure call that modifies a variable
+  REQUIRE(*pkb.getRelationValues(EntityType::CALL, EntityType::VARIABLE,
+                                 RelationType::MODIFIES_S) == emptyPair);
+}
 
-    // Check APIs
+TEST_CASE("Assignment Pattern PKB") {
+  PKB pkb = PKB();
+  /*
+ Line 3: x = a + b + 1;
+ Line 4: y = b + c;
+ Line 5: x = y + x;
+*/
+  pkb.insertEntity(EntityType::VARIABLE, "a");
+  pkb.insertEntity(EntityType::VARIABLE, "b");
+  pkb.insertEntity(EntityType::VARIABLE, "c");
+  pkb.insertEntity(EntityType::VARIABLE, "x");
+  pkb.insertEntity(EntityType::VARIABLE, "y");
+  pkb.insertEntity(EntityType::CONSTANT, "1");
+  pkb.insertEntity(EntityType::ASSIGN, "3");
+  pkb.insertEntity(EntityType::ASSIGN, "4");
+  pkb.insertEntity(EntityType::ASSIGN, "5");
 
-    std::vector<std::string> tmp = {"main"};
-    // Select p such that Modifies(p, _)
-    REQUIRE(*pkb.getRelationValuesGivenFirstType(
-            EntityType::PROCEDURE, RelationType::MODIFIES_P) == tmp);
-    tmp = {"5","7"};
-    // Select s such that Modifies(s, _)
-    REQUIRE(*pkb.getRelationValuesGivenFirstType(
-            EntityType::STMT, RelationType::MODIFIES_S) == tmp);
-    // Query from wrong table
-    REQUIRE(*pkb.getRelationValuesGivenFirstType(
-            EntityType::STMT, RelationType::USES_P) == empty_vector);
+  pkb.insertPattern("3", "x", std::unordered_set<std::string>({"a", "b", "1"}));
+  pkb.insertPattern("4", "y", std::unordered_set<std::string>({"b", "c"}));
+  pkb.insertPattern("5", "x", std::unordered_set<std::string>({"y", "x"}));
 
-    // Select Uses(pn, v)
-    // Statement 3 is a print statement that uses "x". Returns that pair.
-    std::vector<std::pair<std::string, std::string>> emptyPair = {};
-    std::vector<std::pair<std::string, std::string>> tmp1 = {
-        std::make_pair("3", "x")};
+  std::vector<std::string> empty_vector = {};
 
-    REQUIRE(*pkb.getRelationValues(EntityType::PRINT, EntityType::VARIABLE,
-                                   RelationType::USES_S) == tmp1);
+  // pattern a("x", "_a_")
+  std::vector<std::string> expected_result = {"3"};
+  REQUIRE(*pkb.getPatternMatchesWithLhsValue(
+              "x", "a", MatchType::PARTIAL_MATCH) == expected_result);
 
-    // Modifies(c, v)
-    // No procedure call that modifies a variable
-    REQUIRE(*pkb.getRelationValues(EntityType::CALL, EntityType::VARIABLE,
-                                   RelationType::MODIFIES_S) == emptyPair);
+  // pattern a("x", _)
+  expected_result = {"3", "5"};
+  REQUIRE(*pkb.getPatternMatchesWithLhsValue("x", "", MatchType::WILD_MATCH) ==
+          expected_result);
 
+  // pattern a("y", "_a_")
+  REQUIRE(*pkb.getPatternMatchesWithLhsValue(
+              "y", "a", MatchType::PARTIAL_MATCH) == empty_vector);
 
-  }
+  // pattern a(_, "_b_")
+  expected_result = {"3", "4"};
+  REQUIRE(*pkb.getPatternMatchesWithWildLhs("b", MatchType::PARTIAL_MATCH) ==
+          expected_result);
+
+  // pattern a(_, "_x_")
+  expected_result = {"5"};
+  REQUIRE(*pkb.getPatternMatchesWithWildLhs("x", MatchType::PARTIAL_MATCH) ==
+          expected_result);
+
+  // pattern a(_, _)
+  expected_result = {"3", "4", "5"};
+  REQUIRE(*pkb.getPatternMatchesWithWildLhs("", MatchType::WILD_MATCH) ==
+          expected_result);
+
+  // pattern a(var, "_b_")
+  std::vector<std::pair<std::string, std::string>> expected_pairs = {
+      {"3", "x"}, {"4", "y"}};
+  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs("b", MatchType::PARTIAL_MATCH) == expected_pairs);
+
+  // pattern a(var, "_")
+  expected_pairs = {{"3", "x"}, {"4", "y"}, {"5", "x"}};
+  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH) ==
+          expected_pairs);
+}
