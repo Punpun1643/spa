@@ -1,5 +1,7 @@
 #include "IntermediateResultsTable.h"
 
+#include <cassert>
+
 #include "ArrayUtility.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;

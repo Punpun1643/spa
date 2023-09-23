@@ -1,5 +1,7 @@
 #include "PatternClause.h"
 
+#include <cassert>
+
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 PatternClause::PatternClause(std::shared_ptr<PqlDeclaration> assign_decl,
