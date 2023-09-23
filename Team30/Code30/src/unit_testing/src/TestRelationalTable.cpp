@@ -3,6 +3,8 @@
 #include "../../spa/src/query_processing_system/evaluator/RelationalTable.h"
 #include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 
+// TODO, replace arrayUtility with REQUIRE_THAT
+
 TEST_CASE("RelationalTable Tests") {
   // Declarations
   auto a = PqlDeclaration(std::make_shared<std::string>("a"), EntityType::ASSIGN);
@@ -30,8 +32,7 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE_FALSE(table.hasNoResults());
     REQUIRE(table.getTableCol(a) == NUM_VEC);
     REQUIRE(table.getTableCol(s) == WORD_VEC);
-    REQUIRE((table.getTableColNames() == std::vector<PqlDeclaration>({a, s}) ||
-             table.getTableColNames() == std::vector<PqlDeclaration>({s, a})));
+    REQUIRE_THAT(table.getTableColNames(), Catch::UnorderedEquals(std::vector<PqlDeclaration>({a, s})));
 
     // empty lists
     table = RelationalTable(a, v , EMPTY_VEC, EMPTY_VEC);
