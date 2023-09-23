@@ -316,6 +316,11 @@ void SpParser::assignHandleRightParenthesisToken(
 }
 
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
+
+  if (getPeekTokenValue() == ")") {
+    throw std::invalid_argument("Empty condExpr");
+  }
+
   std::queue<std::shared_ptr<std::string>> postFixQueue;
   std::stack<std::shared_ptr<std::string>> operatorStack;
   std::unordered_set<std::string> variables;
