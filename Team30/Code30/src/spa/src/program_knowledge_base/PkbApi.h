@@ -86,7 +86,7 @@ class PkbApi {
   // 2 paired values - one for the implicit assign declaration, paired with
   // the variable declaration on the LHS of the assign stmt
   virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
+  getPatternMatchesWithLhsType(std::string rhs_expr,
                                MatchType expr_match_type) = 0;
 
   virtual ~PkbApi();  // so that the subclass destructors will be called

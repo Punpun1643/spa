@@ -1,35 +1,49 @@
 #include "UFDS.h"
 
-UFDS::UFDS(int n) {
-  numSets = n;
-  rank = std::vector<int>(n, 0);
-  sizes = std::vector<int>(n, 1);
-  p = std::vector<int>();
-
-  for (int i = 0; i < n; i++) {
-    p.push_back(i);
-  };
+UFDS::UFDS() {
+  n = 0;
+  rank = std::vector<int>();
+  sizes = std::vector<int>();
+  parent = std::vector<int>();
 }
 
-int UFDS::findSet(int i) { return (p[i] == i) ? i : p[i] = findSet(p[i]); }
+void UFDS::expandToSize(int i) {
+  if (i <= n) {
+    return;
+  }
 
-bool UFDS::isSameSet(int i, int j) { return findSet(i) == findSet(j); }
+  for (int curr_size = n; curr_size < i; curr_size++) {
+    rank.push_back(0);
+    sizes.push_back(1);
+    parent.push_back(curr_size);
+  }
+
+  n = i;
+}
+
+int UFDS::findSet(int i) {
+  expandToSize(i + 1);
+  return (parent[i] == i) ? i : parent[i] = findSet(parent[i]);
+}
+
+bool UFDS::isSameSet(int i, int j) {
+  return findSet(i) == findSet(j);
+}
 
 void UFDS::unionSets(int i, int j) {
   if (!isSameSet(i, j)) {
     int x = findSet(i), y = findSet(j);
     if (rank[x] > rank[y]) {
       sizes[findSet(x)] += sizes[findSet(y)];
-      p[y] = x;
+      parent[y] = x;
     } else {
       sizes[findSet(y)] += sizes[findSet(x)];
-      p[x] = y;
+      parent[x] = y;
       if (rank[x] == rank[y]) rank[y]++;
     }
-    numSets--;
   }
 }
 
-int UFDS::sizeOf(int i) { return sizes[findSet(i)]; }
-
-int UFDS::numDisjointSets() { return numSets; }
+int UFDS::sizeOf(int i) {
+  return sizes[findSet(i)];
+}

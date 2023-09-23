@@ -12,6 +12,8 @@ class PkbStub : public PkbApi {
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
   int insertEntityCallCount;
+  int insertVariableCallCount;
+  int insertConstantCallCount;
   int insertRelationCallCount;
   int insertFollowsCallCount;
   int insertParentCallCount;
@@ -61,18 +63,20 @@ class PkbStub : public PkbApi {
   getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                     RelationType rel_type) override;
 
-
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) override;
 
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
+      std::string rhs_expr, MatchType expr_match_type) override;
 
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                          MatchType expr_match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(
+      std::string lhs_value, std::string rhs_expr,
+      MatchType expr_match_type) override;
 
-  // 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>> getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                                                                                 MatchType expr_match_type) override;
-
+  // 2 paired values - for the implicit assign declaration, and the values for
+  // the given lhs_entity_type
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
+                               MatchType expr_match_type) override;
 };

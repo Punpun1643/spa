@@ -12,4 +12,5 @@ class BaseTable {
 
   virtual void insert(std::string i, std::string j) = 0;
   virtual bool isRelated(std::string i, std::string j) = 0;
+  virtual bool isEmpty() = 0;
 };
