@@ -56,7 +56,7 @@ Select s such that Follows* (6, s)
 12 - Follows* wildcard LHS and stmt syn RHS
 read r;
 Select r such that Follows* (_, r)
-1, 2, 3, 4, 5
+12
 5000
 13 - Follows* stmt syn LHS and line num RHS
 while w;
