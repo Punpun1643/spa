@@ -6,11 +6,11 @@ x, y, z, p, q, i, j, a
 2 - Modifies container syn LHS and var syn RHS
 while w; variable v;
 Select w such that Modifies (w, v)
-8, 15
+7, 14
 5000
 3 - Modifies specific stmt num LHS and var syn RHS
 variable v;
-Select v such that Modifies (7, v)
+Select v such that Modifies (9, v)
 z
 5000
 4 - Modifies stmt syn LHS and specific var string RHS
@@ -20,8 +20,8 @@ Select r such that Modifies (r, "x")
 5000
 5 - Modifies container syn LHS and specific var string RHS
 if i;
-Select i such that Parent (i, "a")
-21, 25
+Select i such that Modifies (i, "a")
+20, 24
 5000
 6 - Modifies specific stmt num LHS and specific var string RHS
 print pn;
@@ -50,11 +50,26 @@ SemanticError
 5000
 11 - negative case, cannot have print syn in first param of Modifies
 print pn;
-Select pn such that Follows(pn, _)
+Select pn such that Modifies (pn, _)
 SemanticError
 5000
-12 - negative case, cannot have constant as the 2nd param of modifies
+12 - Syntax Error, IDENT must start with a letter
 assign a;
 Select a such that Modifies (a, "1")
+SyntaxError
+5000
+13 - Syntax Error, cannot have stmt number in second param of Modifies
+read r; variable v;
+Select r such that Modifies (10, 15)
+SyntaxError
+5000
+14 - Semantic Error, cannot have Stmt Declaration in second param of Modifies
+read r; stmt s;
+Select r such that Modifies (10, s)
+SemanticError
+5000
+15 - Semantic Error, cannot have Constant Declaration in second param of Modifies
+read r; constant con;
+Select r such that Modifies (10, con)
 SemanticError
 5000
