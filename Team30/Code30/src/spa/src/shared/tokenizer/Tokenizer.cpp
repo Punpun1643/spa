@@ -1,5 +1,7 @@
 #include "Tokenizer.h"
 
+#include <iostream>
+
 #include "token/EofToken.h"
 #include "token/IntegerToken.h"
 #include "token/SpecialCharToken.h"
