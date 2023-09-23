@@ -1,7 +1,7 @@
 1 - Uses stmt syn LHS and var syn RHS
 stmt s; variable v;
 Select v such that Uses (s, v)
-x, y, z, p, q, i, j, a, t
+x, y, z, p, q, i, j, a, t, b
 5000
 2 - Uses container syn LHS and var syn RHS
 while w; variable v;
@@ -21,7 +21,7 @@ Select pn such that Uses (pn, "p")
 5 - Uses stmt syn LHS and specific var string RHS
 stmt s; variable v;
 Select s such that Uses (s, "y")
-3, 13, 14, 16, 19, 23
+3, 13, 14, 16, 19, 20, 23
 5000
 6 - Uses container syn LHS and specific var string RHS
 if i;
@@ -61,7 +61,7 @@ Select w such that Uses (s, _)
 13 - Uses stmt syn LHS and wildcard RHS
 while w, w1; stmt s;
 Select s such that Uses (s, _)
-2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 29
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 29
 5000
 14 - read statements do not Uses anything
 read re;
