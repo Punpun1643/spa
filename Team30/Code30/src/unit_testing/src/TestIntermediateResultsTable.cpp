@@ -121,11 +121,34 @@ TEST_CASE("Intermediate Results Table Tests") {
   }
 
   SECTION("2 common synonyms") {
-
+    irt.addClauseResult(SINGLE_CLAUSE_A);
+    irt.addClauseResult(PAIRED_CLAUSE_A_B);
+    irt.addClauseResult(PAIRED_CLAUSE_A_B);
+    REQUIRE_FALSE(irt.hasNoResults());
+    REQUIRE(irt.getValuesGivenDeclaration(a) == LIST_A);
+    REQUIRE(irt.getValuesGivenDeclaration(b) == LIST_B);
   }
-    // 2 common synonyms (A, (A B), (A B))
 
-    // chained synonyms (A, (A B), (B C))
+  SECTION("Chained synonyms") {
+    irt.addClauseResult(SINGLE_CLAUSE_V);
+    irt.addClauseResult(SINGLE_CLAUSE_A);
+    irt.addClauseResult(PAIRED_CLAUSE_A_B);
+    irt.addClauseResult(PAIRED_CLAUSE_B_C);
+    REQUIRE_FALSE(irt.hasNoResults());
+    REQUIRE(irt.getValuesGivenDeclaration(a) == LIST_A);
+    REQUIRE(irt.getValuesGivenDeclaration(b) == LIST_B);
+    REQUIRE(irt.getValuesGivenDeclaration(c) == LIST_C);
+  }
+
+  SECTION("Separate tables that get later merged") {
+    irt.addClauseResult(SINGLE_CLAUSE_A);
+    irt.addClauseResult(PAIRED_CLAUSE_B_C);
+    irt.addClauseResult(PAIRED_CLAUSE_A_B);
+    REQUIRE_FALSE(irt.hasNoResults());
+    REQUIRE(irt.getValuesGivenDeclaration(a) == LIST_A);
+    REQUIRE(irt.getValuesGivenDeclaration(b) == LIST_B);
+    REQUIRE(irt.getValuesGivenDeclaration(c) == LIST_C);
+  }
 
     // (A, (B C), (A, B) - separate tables later get merged
 
