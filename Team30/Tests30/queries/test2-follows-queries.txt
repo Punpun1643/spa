@@ -96,17 +96,17 @@ SyntaxError
 20 - Invalid cannot have var/constant as 2nd param of Follows
 assign a;
 Select a such that Follows (13, "x") 
-SemanticError
+SyntaxError
 5000
 21 - Invalid cannot have var/constant as 1st param of Follows*
 read r;
 Select r such that Follows* ("x", _) 
-SemanticError
+SyntaxError
 5000
 22 - Invalid cannot have var/constant as 2nd param of Follows*
 assign a;
 Select a such that Follows* (13, "4") 
-SemanticError
+SyntaxError
 5000
 
 
