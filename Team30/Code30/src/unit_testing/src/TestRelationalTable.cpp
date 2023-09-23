@@ -1,50 +1,47 @@
 #include "catch.hpp"
 #include "../../spa/src/query_processing_system/common/PqlDeclaration.h"
 #include "../../spa/src/query_processing_system/evaluator/RelationalTable.h"
+#include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 
-auto a = PqlDeclaration(std::make_shared<std::string>("a"), EntityType::ASSIGN);
-auto b = PqlDeclaration(std::make_shared<std::string>("b"), EntityType::PRINT);
-auto c = PqlDeclaration(std::make_shared<std::string>("constant"), EntityType::CONSTANT);
-auto v = PqlDeclaration(std::make_shared<std::string>("variable"), EntityType::VARIABLE);
-auto s = PqlDeclaration(std::make_shared<std::string>("stmt"), EntityType::STMT);
-std::vector<std::string> EMPTY_VEC = {};
+TEST_CASE("RelationalTable Tests") {
+  // Declarations
+  auto a = PqlDeclaration(std::make_shared<std::string>("a"), EntityType::ASSIGN);
+  auto b = PqlDeclaration(std::make_shared<std::string>("b"), EntityType::PRINT);
+  auto c = PqlDeclaration(std::make_shared<std::string>("constant"), EntityType::CONSTANT);
+  auto v = PqlDeclaration(std::make_shared<std::string>("variable"), EntityType::VARIABLE);
+  auto s = PqlDeclaration(std::make_shared<std::string>("stmt"), EntityType::STMT);
+  std::vector<std::string> EMPTY_VEC = {};
 
-bool isContentsEquals(std::vector<std::string> v1, std::vector<std::string> v2) {
-  std::sort(v1.begin(), v1.end());
-  std::sort(v2.begin(), v2.end());
-  return (v1==v2);
-}
+  SECTION("Test basic functionality") {
+    std::vector<std::string> NUM_VEC = {"1","2","6","7","8","9"};
+    std::vector<std::string> WORD_VEC = {"cat","dog","fox","elephant","tiger","owl"};
+    assert(NUM_VEC.size() == WORD_VEC.size());
 
-TEST_CASE("Test basic functionality") {
-  std::vector<std::string> NUM_VEC = {"1","2","6","7","8","9"};
-  std::vector<std::string> WORD_VEC = {"cat","dog","fox","elephant","tiger","owl"};
-  assert(NUM_VEC.size() == WORD_VEC.size());
+    // one decl constructor
+    auto table = RelationalTable(a ,NUM_VEC);
+    REQUIRE(table.getNumCols() == 1);
+    REQUIRE_FALSE(table.hasNoResults());
+    REQUIRE(table.getTableCol(a) == NUM_VEC);
+    REQUIRE(table.getTableColNames() == std::vector<PqlDeclaration>({a}));
 
-  // one decl constructor
-  auto table = RelationalTable(a ,NUM_VEC);
-  REQUIRE(table.getNumCols() == 1);
-  REQUIRE_FALSE(table.hasNoResults());
-  REQUIRE(table.getTableCol(a) == NUM_VEC);
-  REQUIRE(table.getTableColNames() == std::vector<PqlDeclaration>({a}));
-  
-  // two decl constructor
-  table = RelationalTable(a, s ,NUM_VEC, WORD_VEC);
-  REQUIRE(table.getNumCols() == 2);
-  REQUIRE_FALSE(table.hasNoResults());
-  REQUIRE(table.getTableCol(a) == NUM_VEC);
-  REQUIRE(table.getTableCol(s) == WORD_VEC);
-  REQUIRE((table.getTableColNames() == std::vector<PqlDeclaration>({a, s}) ||
-          table.getTableColNames() == std::vector<PqlDeclaration>({s, a})));
+    // two decl constructor
+    table = RelationalTable(a, s ,NUM_VEC, WORD_VEC);
+    REQUIRE(table.getNumCols() == 2);
+    REQUIRE_FALSE(table.hasNoResults());
+    REQUIRE(table.getTableCol(a) == NUM_VEC);
+    REQUIRE(table.getTableCol(s) == WORD_VEC);
+    REQUIRE((table.getTableColNames() == std::vector<PqlDeclaration>({a, s}) ||
+             table.getTableColNames() == std::vector<PqlDeclaration>({s, a})));
 
-  // empty lists
-  table = RelationalTable(a, v , EMPTY_VEC, EMPTY_VEC);
-  REQUIRE(table.getNumCols() == 2);
-  REQUIRE(table.hasNoResults());
-  REQUIRE(table.getTableCol(a) == EMPTY_VEC);
-  REQUIRE(table.getTableCol(v) == EMPTY_VEC);
-}
+    // empty lists
+    table = RelationalTable(a, v , EMPTY_VEC, EMPTY_VEC);
+    REQUIRE(table.getNumCols() == 2);
+    REQUIRE(table.hasNoResults());
+    REQUIRE(table.getTableCol(a) == EMPTY_VEC);
+    REQUIRE(table.getTableCol(v) == EMPTY_VEC);
+  }
 
-TEST_CASE("Test join functionality") {
+  SECTION("Test join functionality") {
   // TABLE 1
   std::vector<std::string> C_VEC_1 = {"1","1","2","2","2","6","1"};
   std::vector<std::string> S_VEC_1 = {"10","12","14","14","18","20","10"};
@@ -69,7 +66,7 @@ TEST_CASE("Test join functionality") {
 
   REQUIRE(table_1.getNumCols() == 3);
   REQUIRE_FALSE(table_1.hasNoResults());
-  REQUIRE(isContentsEquals(table_1.getTableCol(s), S_VEC_1));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(s), S_VEC_1));
 
   auto table_2 = RelationalTable(a, b, A_VEC_2, B_VEC_2);
   auto table_2b = RelationalTable(a, c, A_VEC_2, C_VEC_2);
@@ -80,17 +77,17 @@ TEST_CASE("Test join functionality") {
 
   REQUIRE(table_2.getNumCols() == 4);
   REQUIRE_FALSE(table_2.hasNoResults());
-  REQUIRE(isContentsEquals(table_2.getTableCol(b), B_VEC_2));
+  REQUIRE(ArrayUtility::isContentEqual(table_2.getTableCol(b), B_VEC_2));
 
   table_1.join(table_2);
 
   REQUIRE(table_1.getNumCols() == 5);
   REQUIRE_FALSE(table_1.hasNoResults());
-  REQUIRE(isContentsEquals(table_1.getTableCol(a), A_VEC_OUT));
-  REQUIRE(isContentsEquals(table_1.getTableCol(b), B_VEC_OUT));
-  REQUIRE(isContentsEquals(table_1.getTableCol(c), C_VEC_OUT));
-  REQUIRE(isContentsEquals(table_1.getTableCol(v), V_VEC_OUT));
-  REQUIRE(isContentsEquals(table_1.getTableCol(s), S_VEC_OUT));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(a), A_VEC_OUT));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(b), B_VEC_OUT));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(c), C_VEC_OUT));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(v), V_VEC_OUT));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(s), S_VEC_OUT));
 
   // test join when result is empty table
   table_1 = RelationalTable(c, v, C_VEC_1, V_VEC_1);
@@ -99,7 +96,8 @@ TEST_CASE("Test join functionality") {
   table_1.join(table_1b);
   REQUIRE(table_1.getNumCols() == 3);
   REQUIRE(table_1.hasNoResults());
-  REQUIRE(isContentsEquals(table_1.getTableCol(c), EMPTY_VEC));
-  REQUIRE(isContentsEquals(table_1.getTableCol(v), EMPTY_VEC));
-  REQUIRE(isContentsEquals(table_1.getTableCol(s), EMPTY_VEC));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(c), EMPTY_VEC));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(v), EMPTY_VEC));
+  REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(s), EMPTY_VEC));
+  }
 }
