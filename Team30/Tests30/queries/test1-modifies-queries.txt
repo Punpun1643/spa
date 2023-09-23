@@ -11,7 +11,7 @@ Select w such that Modifies (w, v)
 3 - Modifies container syn LHS and var syn RHS
 if i; variable v; while extra;
 Select i such that Modifies (i, v)
-4, 20
+4, 20, 24
 5000
 3 - Modifies specific stmt num LHS and var syn RHS
 variable v;
@@ -25,8 +25,8 @@ Select r such that Modifies (r, "x")
 5000
 1 - Modifies stmt syn LHS and specific var string RHS
 stmt s; variable v;
-Select v such that Modifies (s, "y")
-2, 8, 10, 21, 23
+Select s such that Modifies (s, "y")
+2, 8, 10, 21, 23, 4, 7, 20
 5000
 5 - Modifies container syn LHS and specific var string RHS
 if i;
@@ -35,13 +35,13 @@ Select i such that Modifies (i, "a")
 5000
 5 - Modifies container syn LHS and specific var string RHS
 while w;
-Select i such that Modifies (w, "t")
+Select w such that Modifies (w, "t")
 none
 5000
 5 - Modifies container syn LHS and specific var string RHS
 while w;
-Select i such that Modifies (w, "a")
-15
+Select w such that Modifies (w, "a")
+14
 5000
 6 - Modifies specific stmt num LHS and specific var string RHS
 print pn;
@@ -117,4 +117,9 @@ SyntaxError
 read r; constant con;
 Select r such that Modifies (10, " ")
 SyntaxError
+5000
+18 - Semantic Error, non-existent declaration
+while w;
+Select i such that Modifies (i, "a")
+15
 5000
