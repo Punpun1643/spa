@@ -13,9 +13,9 @@
 #include "../node/stmt_node/WhileNode.h"
 #include "IDesignExtractor.h"
 
-class UsesExtractor : public IDesignExtractor {
+class ConstVarExtractor : public IDesignExtractor {
  public:
-  explicit UsesExtractor(PkbApi& pkb);
+  explicit ConstVarExtractor(PkbApi& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -35,17 +35,11 @@ class UsesExtractor : public IDesignExtractor {
 
   void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  void popUsesActor();
-
-  ~UsesExtractor() = default;
+  ~ConstVarExtractor() = default;
 
  private:
   PkbApi& pkb;
 
-  std::vector<std::string> usesActors;
-
-  void insertMultipleVars(std::unordered_set<std::string> vars,
-                      std::string stmtIndex);
-
-  void insertVarWithActors(std::string var);
+  void insertConstsVars(std::unordered_set<int> consts,
+                        std::unordered_set<std::string> vars);
 };

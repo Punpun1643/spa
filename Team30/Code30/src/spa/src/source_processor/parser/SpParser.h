@@ -1,7 +1,10 @@
 #pragma once
 
 #include <memory>
+#include <queue>
+#include <stack>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "../../shared/parser/AParser.h"
@@ -9,12 +12,14 @@
 #include "../node/ProcedureNode.h"
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
+#include "../node/stmt_node/AssignNode.h"
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
 #include "../node/util_node/CondExprNode.h"
+#include "../node/util_node/TreeNode.h"
 
 class SpParser : public AParser {
  public:
@@ -38,7 +43,12 @@ class SpParser : public AParser {
 
   std::shared_ptr<CondExprNode> parseCondExpr();
 
+  std::shared_ptr<AssignNode> parseAssign(std::string const& varName);
+
   std::shared_ptr<ProgramNode> getSourceProgramNode();
+
+  static std::shared_ptr<TreeNode> buildExprTreeAndValidate(
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
   void parse() override;
 
@@ -47,13 +57,36 @@ class SpParser : public AParser {
  private:
   int currStmtIndex = 1;
 
-  int precedence(std::string const& op);
-
-  bool isOperator(std::string const& tokenVal);
-
-  bool isComparisonOperator(std::string const& tokenVal);
-
-  bool isLogicalOperator(std::string const& tokenVal);
-
   std::shared_ptr<ProgramNode> sourceProgramNode;
+
+  static int precedence(std::string const& op);
+
+  static bool isOperator(std::string const& tokenVal);
+
+  static bool isComparisonOperator(std::string const& tokenVal);
+
+  static bool isLogicalOperator(std::string const& tokenVal);
+
+  static bool isMathematicalOperator(std::string const& tokenVal);
+
+  void handleWordOrIntegerToken(
+      std::queue<std::shared_ptr<std::string>>& postFixQueue,
+      std::unordered_set<std::string>& variables,
+      std::unordered_set<int>& constants);
+
+  void handleOperatorToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
+
+  void handleLeftParenthesisToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
+
+  void condExprHandleRightParenthesisToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount,
+      bool& isParseRelExpr);
+
+  void assignHandleRightParenthesisToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount);
 };

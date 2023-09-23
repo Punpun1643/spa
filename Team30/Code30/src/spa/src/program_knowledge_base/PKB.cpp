@@ -37,6 +37,8 @@ void PKB::insertEntity(EntityType type, std::string entity) {
 void PKB::insertRelation(RelationType type, std::string input1,
                          std::string input2) {
   // Inserts into more than 1 table simultaneously
+  // Add all related tables to relatedTables
+
   for (RelationType rt : relatedTables[type]) {
     std::shared_ptr<BaseTable> table = relData->getTable(rt);
     table->insert(input1, input2);

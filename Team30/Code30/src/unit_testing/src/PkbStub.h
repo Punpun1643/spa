@@ -12,11 +12,14 @@ class PkbStub : public PkbApi {
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
   int insertEntityCallCount;
+  int insertVariableCallCount;
+  int insertConstantCallCount;
   int insertRelationCallCount;
   int insertFollowsCallCount;
   int insertParentCallCount;
   int insertUsesCallCount;
   int insertModifiesCallCount;
+  int insertPatternCallCount;
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
@@ -63,6 +66,7 @@ class PkbStub : public PkbApi {
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
+
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
       std::string rhs_expr, MatchType expr_match_type) override;
 

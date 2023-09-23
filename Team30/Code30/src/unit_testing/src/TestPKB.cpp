@@ -166,6 +166,7 @@ TEST_CASE("Uses and Modifies") {
   pkb.insertRelation(RelationType::MODIFIES_S, "5", "x");
   pkb.insertRelation(RelationType::MODIFIES_S, "7", "y");
 
+
   // added USES relation for statement
   REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
   // added USES relation for procedure

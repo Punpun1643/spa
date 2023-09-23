@@ -3,7 +3,7 @@
 #include <fstream>
 #include <memory>
 
-#include "../../shared/tokenizer/ATokenizer.h"
+#include "../../shared/tokenizer/Tokenizer.h"
 #include "SpParser.h"
 
 SpParserManager::SpParserManager() {}
@@ -12,7 +12,7 @@ std::shared_ptr<ProgramNode> SpParserManager::parseInputFile(
     std::string filePath) {
   std::ifstream inputFileStream(filePath);
 
-  ATokenizer tokenizer = ATokenizer(inputFileStream);
+  Tokenizer tokenizer = Tokenizer(inputFileStream);
 
   std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
 

@@ -1,5 +1,6 @@
 #include "ExtractionController.h"
 
+#include "ConstVarExtractor.h"
 #include "EntityExtractor.h"
 #include "FollowsExtractor.h"
 #include "ModifiesExtractor.h"
@@ -12,6 +13,7 @@ ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
   extractors.push_back(std::make_shared<UsesExtractor>(pkb));
   extractors.push_back(std::make_shared<ModifiesExtractor>(pkb));
   extractors.push_back(std::make_shared<EntityExtractor>(pkb));
+  extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }
 
 void ExtractionController::executeProgramExtraction(
@@ -85,6 +87,7 @@ void ExtractionController::handleContainerStmts(
 }
 
 void ExtractionController::popActors() {
-  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popUsesActors();
-  // std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->popModifiesActors();
+  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popUsesActor();
+  std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))
+      ->popModifiesActor();
 }
