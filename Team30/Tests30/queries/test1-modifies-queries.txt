@@ -1,9 +1,4 @@
 1 - Modifies stmt syn LHS and var syn RHS
-while w; variable v;
-Select w such that Modifies (30, v)
-none
-5000
-1 - Modifies stmt syn LHS and var syn RHS
 stmt s; variable v;
 Select v such that Modifies (s, v)
 x, y, z, p, q, i, j, a
@@ -78,87 +73,97 @@ variable v;
 Select v such that Modifies (4, v)
 y, z
 5000
-16 - Modifies specific stmt num LHS and var syn RHS
+16 - Modifies specific container num LHS and var syn RHS
+while w; variable v;
+Select w such that Modifies (30, v)
+none
+5000
+17 - Modifies specific stmt num LHS and var syn RHS
 variable v;
 Select v such that Modifies (29, v)
 none
 5000
-17 - Modifies specific stmt num LHS and specific var string RHS
+18 - Modifies specific stmt num LHS and specific var string RHS
 print pn;
 Select pn such that Modifies (11, "q")
 none
 5000
-18 - Modifies specific stmt num LHS and specific var string RHS
+19 - Modifies specific stmt num LHS and specific var string RHS
 print pn;
 Select pn such that Modifies (11, "i")
-6, 16, 29
+6, 16, 29, 31, 33, 34
 5000
-19 - Modifies specific stmt num LHS and specific var string RHS
+20 - Modifies specific stmt num LHS and specific var string RHS
 print pn;
 Select pn such that Modifies (20, "i")
 none
 5000
-20 - Modifies specific stmt num LHS and specific var string RHS
+21 - Modifies specific stmt num LHS and specific var string RHS
 read re;
 Select re such that Modifies (20, "a")
 1, 21, 28
 5000
-21 - Modifies specific stmt num LHS and wildcard RHS
+22 - Modifies specific stmt num LHS and wildcard RHS
 read r;
 Select r such that Modifies (7, _)
 1, 21, 28
 5000
-22 - Modifies specific stmt num LHS and wildcard RHS
+23 - Modifies specific stmt num LHS and wildcard RHS
 while w;
 Select w such that Modifies (6, _)
 none
 5000
-23 - Semantic Error, cannot have wildcard in first param of Modifies
+24 - Semantic Error, cannot have wildcard in first param of Modifies
 read r; variable v;
 Select r such that Modifies (_, v)
 SemanticError
 5000
-24 - Semantic Error, cannot have variable syn in first param of Modifies
+25 - Semantic Error, cannot have variable syn in first param of Modifies
 variable v1, v2;
 Select v1 such that Modifies (v1, v2)
 SemanticError
 5000
-25 - Syntax Error, cannot have identifier in first param of Modifies
+26 - Semantic Error, cannot have constant syn in first param of Modifies
+constant c;
+Select c such that Modifies (c, v2)
+SemanticError
+5000
+27 - Syntax Error, cannot have identifier in first param of Modifies
 variable v1, v2;
 Select v1 such that Modifies ("abc", v2)
 SyntaxError
 5000
-25 - Syntax Error, IDENT must start with a letter
+28 - Syntax Error, IDENT must start with a letter
 assign a;
 Select a such that Modifies (a, "1")
 SyntaxError
 5000
-26 - Syntax Error, cannot have stmt number in second param of Modifies
+29 - Syntax Error, cannot have stmt number in second param of Modifies
 read r; variable v;
 Select r such that Modifies (10, 15)
 SyntaxError
 5000
-27 - Semantic Error, cannot have Stmt Declaration in second param of Modifies
+30 - Semantic Error, cannot have Stmt Declaration in second param of Modifies
 read r; stmt s;
 Select r such that Modifies (10, s)
 SemanticError
 5000
-28 - Semantic Error, cannot have Constant Declaration in second param of Modifies
+31 - Semantic Error, cannot have Constant Declaration in second param of Modifies
 read r; constant con;
 Select r such that Modifies (10, con)
 SemanticError
 5000
-29 - Syntax Error, spell Modifies wrongly
+32 - Syntax Error, spell Modifies wrongly
 read r; constant con;
 Select r such that Modfies (10, con)
 SyntaxError
 5000
-30 - Syntax Error, IDENTIFIER cannot be empty
+33 - Syntax Error, IDENTIFIER cannot be empty
 read r; constant con;
 Select r such that Modifies (10, " ")
 SyntaxError
 5000
-31 - Semantic Error, non-existent declaration
+34 - Semantic Error, non-existent declaration
 while w;
 Select i such that Modifies (i, "a")
 15
