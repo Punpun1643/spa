@@ -1,5 +1,7 @@
 #include "RelationalTable.h"
 
+#include <algorithm>
+#include <cassert>
 #include <unordered_set>
 
 #include "ArrayUtility.h"
