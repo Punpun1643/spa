@@ -1,5 +1,7 @@
 #include "PKB.h"
 
+#include <algorithm>
+#include <cassert>
 #include <string>
 #include <vector>
 
@@ -258,7 +260,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
 // return possible values of the LHS synonym
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PKB::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                  MatchType expr_match_type) {
+                                         MatchType expr_match_type) {
   std::unordered_set<std::string> statements;
   if (expr_match_type == MatchType::WILD_MATCH) {
     statements = *entData->get(EntityType::ASSIGN);

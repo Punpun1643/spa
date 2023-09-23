@@ -1,6 +1,7 @@
 #include "QueryEvaluator.h"
 
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 
 #include "IntermediateResultsTable.h"
