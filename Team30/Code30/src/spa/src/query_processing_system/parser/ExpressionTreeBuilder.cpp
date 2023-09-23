@@ -141,13 +141,13 @@ void ExpressionTreeBuilder::AddSuchThatExpression(
 
   std::shared_ptr<SuchThatExpression> such_that_expression;
   if (such_that_clause_name == "Follows") {
-    if (peekToken()->getTokenVal() == "*") {
+    if (is_transitive) {
       such_that_expression = std::make_shared<FollowsTExpression>(arg1, arg2);
     } else {
       such_that_expression = std::make_shared<FollowsExpression>(arg1, arg2);
     }
   } else if (such_that_clause_name == "Parent") {
-    if (peekToken()->getTokenVal() == "*") {
+    if (is_transitive) {
       such_that_expression = std::make_shared<ParentTExpression>(arg1, arg2);
     } else {
       such_that_expression = std::make_shared<ParentExpression>(arg1, arg2);
