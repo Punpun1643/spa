@@ -1,16 +1,19 @@
 #include "PKB.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
 #include "PkbApi.h"
 #include "program_knowledge_base/EntityDatabase.h"
+#include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
 
 PKB::PKB() : PkbApi() {
-  entData = std::make_unique<EntityDatabase>(EntityDatabase());
-  relData = std::make_unique<RelDatabase>(RelDatabase());
+  entData = std::make_unique<EntityDatabase>();
+  relData = std::make_unique<RelDatabase>();
+  patData = std::make_unique<PatternDatabase>();
 
   // TODO: Find a cleaner way to insert to multiple tables simultaneously
   relatedTables = {
@@ -23,11 +26,8 @@ PKB::PKB() : PkbApi() {
       {RelationType::USES_P, {RelationType::USES_P}},
 
       {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}},
-      {RelationType::MODIFIES_P, {RelationType::MODIFIES_P}}
-  };
-
-  };
-
+      {RelationType::MODIFIES_P, {RelationType::MODIFIES_P}}};
+};
 
 // ---------- INSERTIONS ----------
 void PKB::insertEntity(EntityType type, std::string entity) {
@@ -42,7 +42,6 @@ void PKB::insertRelation(RelationType type, std::string input1,
   for (RelationType rt : relatedTables[type]) {
     std::shared_ptr<BaseTable> table = relData->getTable(rt);
     table->insert(input1, input2);
-
   }
 };
 
@@ -53,6 +52,11 @@ void PKB::insertRelation(RelationType rel_type, EntityType ent_type,
 void PKB::insertRelation(RelationType rel_type, EntityType ent_type1,
                          std::string entity1, EntityType ent_type2,
                          std::string entity2){};
+
+void PKB::insertPattern(std::string statement_number, std::string lhs,
+                        std::unordered_set<std::string> rhs) {
+  patData->insert(statement_number, lhs, rhs);
+};
 
 // ---------- RETRIEVE ENTITIES ----------
 std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
@@ -73,7 +77,7 @@ bool PKB::isRelationTrue(std::string value_1, std::string value_2,
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT); // TODO: FIX THIS
+      entData->get(EntityType::STMT);  // TODO: FIX THIS
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -103,10 +107,7 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 
 // example Follows(_, _)
 bool PKB::isRelationTrueForAny(RelationType relation_type) {
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT); // TODO: FIX FOR USES/MODIFIES
-  std::shared_ptr<BaseTable> table = relData->getTable(relation_type);
-  return ents->size() > 0;
+  return !relData->getTable(relation_type)->isEmpty();
 }
 
 // 1 Declarations
@@ -118,10 +119,9 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       entData->get(entity_type);
   std::shared_ptr<std::unordered_set<std::string>> ents2;
-  if (rel_type == RelationType::USES_S ||
-      rel_type == RelationType::USES_P ||
+  if (rel_type == RelationType::USES_S || rel_type == RelationType::USES_P ||
       rel_type == RelationType::MODIFIES_S ||
-      rel_type == RelationType::MODIFIES_P) { // TODO: CLEAN THIS UP
+      rel_type == RelationType::MODIFIES_P) {  // TODO: CLEAN THIS UP
     ents2 = entData->get(EntityType::VARIABLE);
   } else {
     ents2 = entData->get(EntityType::STMT);
@@ -215,24 +215,65 @@ PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
       output);
 };
 
-
 // Pattern clause
-void PKB::insertPattern(std::string statement_number, std::string lhs,
-                        std::unordered_set<std::string> rhs){};
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(
+    std::string rhs_expr, MatchType expr_match_type) {
+  // Wild match: pattern a(_, _), i.e. all statement numbers
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    std::unordered_set<std::string> assignment_statements =
+        *entData->get(EntityType::ASSIGN);
+    return std::make_unique<std::vector<std::string>>(
+        assignment_statements.begin(), assignment_statements.end());
+  }
 
-std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(std::string rhs_expr, MatchType expr_match_type) {
-    return std::make_unique<std::vector<std::string>>();
+  // Partial match: pattern a(_, "x")
+  // only works for single variables or constants
+  std::unordered_set<std::string> rhs_statements =
+      patData->getStatementNumbersGivenRHS(rhs_expr);
+  return std::make_unique<std::vector<std::string>>(rhs_statements.begin(),
+                                                    rhs_statements.end());
 };
 
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
+    std::string lhs_value, std::string rhs_expr, MatchType expr_match_type) {
+  std::unordered_set<std::string> lhs_statements =
+      patData->getStatementNumbersGivenLHS(lhs_value);
 
-std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
-                                                                        MatchType expr_match_type) {
-    return std::make_unique<std::vector<std::string>>();
+  // Wild match: pattern a("x", _)
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    return std::make_unique<std::vector<std::string>>(lhs_statements.begin(),
+                                                      lhs_statements.end());
+  };
+
+  // Partial match: pattern a("x", "_y_")
+  // only works for single variables or constants
+  std::unordered_set<std::string> rhs_statements =
+      patData->getStatementNumbersGivenRHS(rhs_expr);
+  std::unordered_set<std::string> intersection;
+  std::set_intersection(lhs_statements.begin(), lhs_statements.end(),
+                        rhs_statements.begin(), rhs_statements.end(),
+                        std::inserter(intersection, intersection.begin()));
+  return std::make_unique<std::vector<std::string>>(intersection.begin(),
+                                                    intersection.end());
 };
 
-// 2 paired values - for the implicit assign declaration, and the values for the given lhs_entity_type
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>> PKB::getPatternMatchesWithLhsType(EntityType lhs_entity_type,
-                                                                                               std::string rhs_expr,
-                                                                                               MatchType expr_match_type) {
-    return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
+// return possible values of the LHS synonym
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+PKB::getPatternMatchesWithLhsType(std::string rhs_expr,
+                                  MatchType expr_match_type) {
+  std::unordered_set<std::string> statements;
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    statements = *entData->get(EntityType::ASSIGN);
+  } else {
+    statements = patData->getStatementNumbersGivenRHS(rhs_expr);
+  }
+
+  std::vector<std::pair<std::string, std::string>> output;
+  for (std::string st_num : statements) {
+    output.push_back(
+        make_pair(st_num, patData->getVarGivenStatementNum(st_num)));
+  }
+
+  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
+      output.begin(), output.end());
 };

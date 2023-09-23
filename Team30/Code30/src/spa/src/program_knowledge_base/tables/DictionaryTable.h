@@ -15,4 +15,5 @@ class DictionaryTable : public BaseTable {
   ~DictionaryTable() = default;
   void insert(std::string i, std::string j) override;
   bool isRelated(std::string i, std::string j) override;
+  bool isEmpty() override;
 };
