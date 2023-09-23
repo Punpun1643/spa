@@ -16,6 +16,12 @@ std::shared_ptr<Token> AParser::peekToken() {
   }
 }
 
+std::shared_ptr<Token> AParser::peekBackToken() {
+  if (currTokenIndex - 1 >= 0) {
+    return tokens[currTokenIndex - 1];
+  }
+}
+
 std::shared_ptr<Token> AParser::getCurrToken() {
   return tokens[currTokenIndex];
 }
@@ -25,6 +31,10 @@ std::string AParser::getCurrTokenValue() {
 }
 
 std::string AParser::getPeekTokenValue() { return peekToken()->getTokenVal(); }
+
+std::string AParser::getPeekBackTokenValue() {
+  return peekBackToken()->getTokenVal();
+}
 
 bool AParser::IsTokenType(std::shared_ptr<Token> token, TokenType token_type) {
   if (token->getTokenType() != token_type) {
@@ -63,6 +73,10 @@ bool AParser::isCurrTokenValue(std::string const& tokenValue) {
 
 bool AParser::isPeekTokenValue(std::string const& tokenValue) {
   return tokenValue == peekToken()->getTokenVal();
+}
+
+bool AParser::isPeekBackTokenValue(std::string const& tokenValue) {
+  return tokenValue == peekBackToken()->getTokenVal();
 }
 
 bool AParser::isCurrTokenTypeAndValue(TokenType tokenType,
