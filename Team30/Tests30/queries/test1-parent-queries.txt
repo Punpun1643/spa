@@ -126,7 +126,7 @@ SyntaxError
 26 - Invalid cannot have constant/variable as 2nd param of Parent
 assign a;
 Select a such that Parent (13, "1") 
-SemanticError
+SyntaxError
 5000
 27 - Invalid cannot have constant/variable as 1st param of Parent*
 read r;
