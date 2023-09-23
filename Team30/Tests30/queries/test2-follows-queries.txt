@@ -71,7 +71,7 @@ Select w such that Follows* (15, 16)
 15 - Follows* wildcard LHS and line num RHS
 if i;
 Select i such that Follows* (_, 2)
-5, 17
+7, 14
 5000
 16 - Follows* stmt syn LHS and wildcard RHS
 print pn;
