@@ -91,7 +91,7 @@ sasha, gloria, b, c, a
 19 - Invalid cannot have var/constant as 1st param of Follows
 read r;
 Select r such that Follows ("r", _) 
-SemanticError
+SyntaxError
 5000
 20 - Invalid cannot have var/constant as 2nd param of Follows
 assign a;
