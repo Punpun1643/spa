@@ -12,12 +12,17 @@ QPSController::QPSController(){};
 void QPSController::HandleQuery(
     std::string& query, std::list<std::string>& results,
     std::shared_ptr<QueryEvaluator> query_evaluator) {
+  /* std::cout << "\nqpsc0\n"; */
   std::vector<std::shared_ptr<Token>> tokens = this->TokenizeQuery(query);
+  /* std::cout << "\nqpsc1\n"; */
   this->CheckSyntax(tokens);
+  /* std::cout << "\nqpsc2\n"; */
   std::unique_ptr<QueryExpression> query_expression =
       this->FormQueryExpression(tokens);
+  /* std::cout << "\nqpsc3\n"; */
   std::vector<std::unique_ptr<Clause>> clause_list =
       this->InterpretQueryExpression(std::move(query_expression));
+  /* std::cout << "\nqpsc4\n"; */
   // TODO: After milestone 1, need to change way of checking clause contents.
   // cant assume only 1 clause for each type
   std::unique_ptr<std::vector<std::string>> query_results;
@@ -31,6 +36,7 @@ void QPSController::HandleQuery(
     query_results = query_evaluator->evaluateQuery(std::move(select_clause),
                                                    std::move(such_that_clause));
   }
+  /* std::cout << "\nqpsc5\n"; */
   std::copy(query_results->begin(), query_results->end(),
             std::back_inserter(results));
 }

@@ -51,7 +51,6 @@ std::shared_ptr<Token> Tokenizer::next() {
     else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
              c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
              c == ',' || c == '\"'|| c == '_') {
-      /* std::cout << "\ntokenizer1: " << c << "\n"; */
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
 
