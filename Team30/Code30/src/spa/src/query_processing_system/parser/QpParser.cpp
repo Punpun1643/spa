@@ -8,6 +8,7 @@
 #include "../common/FollowsClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
+#include <query_processing_system/exceptions/InvalidSyntaxException.h>
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};
@@ -93,6 +94,6 @@ EntityType QpParser::StringToEntityType(std::string const& entity_string) {
   } else if (entity_string == "procedure") {
     return EntityType::PROCEDURE;
   } else {
-    throw std::runtime_error("Invalid design entity for declaration");
+    throw InvalidSyntaxException("Invalid design entity for declaration");
   }
 }
