@@ -136,5 +136,5 @@ SyntaxError
 28 - Invalid cannot have constant/variable as 2nd param of Parent*
 assign a;
 Select a such that Parent* (10, "x") 
-SemanticError
+SyntaxError
 5000
