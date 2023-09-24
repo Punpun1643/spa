@@ -17,7 +17,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
-    REQUIRE(parser.parseStmtLst()->getChildren().empty());
+    REQUIRE_THROWS(parser.parseStmtLst());
   }
 
   SECTION("StmtLst with one statement return one statement node") {

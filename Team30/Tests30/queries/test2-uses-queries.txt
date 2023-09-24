@@ -56,5 +56,5 @@ SemanticError
 12 - Invalid cannot have constant as 2nd param of Uses
 assign a;
 Select a such that Uses (13, "1") 
-SemanticError
+SyntaxError
 5000

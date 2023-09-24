@@ -6,7 +6,7 @@
 #include "RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
-#include "tables/UFDSTable.h"
+#include "tables/LinkedListTable.h"
 
 class RelDatabase {
   std::unordered_map<RelationType, std::shared_ptr<BaseTable>> relationships =
