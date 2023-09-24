@@ -48,11 +48,11 @@ std::shared_ptr<Token> Tokenizer::next() {
       return std::make_shared<IntegerToken>(number);
     }
 
-    else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
-             c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
-             c == ',' || c == '\"'|| c == '_') {
-      return std::make_shared<SpecialCharToken>(std::string(1, c));
-    }
+    // else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
+    //          c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
+    //          c == ',' || c == '\"'|| c == '_') {
+    //   return std::make_shared<SpecialCharToken>(std::string(1, c));
+    // }
 
     else if (c == '&' || c == '|' || c == '!' || c == '=' || c == '>' ||
              c == '<') {
@@ -64,7 +64,7 @@ std::shared_ptr<Token> Tokenizer::next() {
     }
 
     else {
-      throw std::invalid_argument("Invalid Syntax, unknown input");
+      return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
   }
 }
@@ -89,7 +89,7 @@ std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
                                                 std::string(1, next_c));
     }
   }
-  
+
   return std::make_shared<SpecialCharToken>(std::string(1, c));
 }
 
