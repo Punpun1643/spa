@@ -202,6 +202,10 @@ void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
     throw InvalidSyntaxException(
         "First argument for Uses Clause should be a StmtRef.");
   } else if (!IsEntRef(arg2)) {
+    if (IsSynonym(arg2)) {
+      throw InvalidSemanticsException(
+          "Second argument for Uses Clause should be declared as EntRef.");
+    }
     throw InvalidSyntaxException(
         "Second argument for Uses Clause should be an EntRef.");
   }
