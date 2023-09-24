@@ -166,7 +166,6 @@ TEST_CASE("Uses and Modifies") {
   pkb.insertRelation(RelationType::MODIFIES_S, "5", "x");
   pkb.insertRelation(RelationType::MODIFIES_S, "7", "y");
 
-
   // added USES relation for statement
   REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
   // added USES relation for procedure
@@ -273,10 +272,35 @@ TEST_CASE("Assignment Pattern PKB") {
   // pattern a(var, "_b_")
   std::vector<std::pair<std::string, std::string>> expected_pairs = {
       {"3", "x"}, {"4", "y"}};
-  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs("b", MatchType::PARTIAL_MATCH) == expected_pairs);
+  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs(
+              "b", MatchType::PARTIAL_MATCH) == expected_pairs);
 
   // pattern a(var, "_")
   expected_pairs = {{"3", "x"}, {"4", "y"}, {"5", "x"}};
-  REQUIRE_THAT(*pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH),
-               Catch::UnorderedEquals(expected_pairs));
+  REQUIRE_THAT(
+      *pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH),
+      Catch::UnorderedEquals(expected_pairs));
+}
+
+TEST_CASE("PKB test1-source Parent*") {
+  PKB pkb = PKB();
+  pkb.insertRelation(RelationType::PARENT, "4", "5");
+  pkb.insertRelation(RelationType::PARENT, "4", "6");
+  pkb.insertRelation(RelationType::PARENT, "4", "7");
+  pkb.insertRelation(RelationType::PARENT, "7", "8");
+  pkb.insertRelation(RelationType::PARENT, "4", "10");
+  pkb.insertRelation(RelationType::PARENT, "14", "15");
+  pkb.insertRelation(RelationType::PARENT, "14", "16");
+  pkb.insertRelation(RelationType::PARENT, "20", "21");
+  pkb.insertRelation(RelationType::PARENT, "20", "22");
+  pkb.insertRelation(RelationType::PARENT, "20", "23");
+  pkb.insertRelation(RelationType::PARENT, "20", "24");
+  pkb.insertRelation(RelationType::PARENT, "24", "25");
+  pkb.insertRelation(RelationType::PARENT, "24", "26");
+
+  for (int i = 1; i < 27; i++) {
+    REQUIRE(!pkb.isRelationTrue("22", std::to_string(i),
+                                RelationType::PARENT_STAR));
+    REQUIRE(!pkb.isRelationTrue("22", std::to_string(i), RelationType::PARENT));
+  }
 }
