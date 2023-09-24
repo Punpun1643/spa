@@ -1,5 +1,7 @@
 #include "QueryExpression.h"
 
+#include <iostream>
+
 QueryExpression::QueryExpression(
     std::unique_ptr<SelectExpression> select_expression)
     : select_expression(std::move(select_expression)),

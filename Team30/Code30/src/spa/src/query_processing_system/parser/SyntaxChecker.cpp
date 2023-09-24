@@ -71,7 +71,7 @@ void SyntaxChecker::CheckPattern() {
   }
   nextToken();  // " OR EntRef
   if (getCurrToken()->getTokenVal() == "\"") {
-    if (!(QpParser::IsIdentifier(nextToken()->getTokenVal()))) {
+    if (!QpParser::IsSynonym(nextToken()->getTokenVal())) {
       throw InvalidSyntaxException(
           "Invalid pattern syntax: Expected identifier for first argument");
     }
@@ -80,14 +80,10 @@ void SyntaxChecker::CheckPattern() {
           "Invalid pattern syntax: Invalid identifier syntax for first "
           "argument");
     }
-  } else if (QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
-    if (!(QpParser::IsIdentifier(getCurrToken()->getTokenVal()))) {
-      throw InvalidSyntaxException(
-          "Invalid pattern syntax: Expected identifier for first argument");
-    }
   } else {
-    throw InvalidSyntaxException(
-        "Invalid pattern syntax: Expected EntRef for first argument");
+    if (!QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
+      throw InvalidSyntaxException("Invalid pattern first arg: Expected EntRef");
+    }
   }
   if (nextToken()->getTokenVal() != ",") {
     throw InvalidSyntaxException("Invalid pattern syntax: Expected ','");
@@ -110,16 +106,13 @@ void SyntaxChecker::CheckPattern() {
     }
     if (nextToken()->getTokenVal() != "_") {
       throw InvalidSyntaxException(
-          "Invalid patten syntax for second arg: Expected '_'");
+         "Invalid patten syntax for second arg: Expected '_'");
     }
-    if (nextToken()->getTokenVal() != ")") {
-      throw InvalidSyntaxException(
-          "Invalid pattern syntax after second arg: Expected ')'");
-    }
-  } else if (getCurrToken()->getTokenVal() == ")") {
-  } else {
+    nextToken();
+  }
+  if (getCurrToken()->getTokenVal() != ")") {
     throw InvalidSyntaxException(
-        "Invalid pattern syntax: Invalid syntax for second arg");
+        "Invalid pattern syntax after second arg: Expected ')'");
   }
   nextToken();  // pattern end
 }

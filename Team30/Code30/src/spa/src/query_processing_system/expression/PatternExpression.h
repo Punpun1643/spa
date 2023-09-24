@@ -5,12 +5,14 @@
 
 class PatternExpression : public AExpression {
  public:
-  PatternExpression(std::string syn_assign, std::string pattern);
+  PatternExpression(std::string syn_assign, std::string arg1, std::string arg2);
   void acceptInterpreter(QueryInterpreter& interpreter) override;
-  std::string GetPattern();
+  std::string GetArg1();
+  std::string GetArg2();
   std::string GetSynAssign();
 
  private:
-  std::string pattern;
+  std::string arg1;
+  std::string arg2;
   std::string syn_assign;
 };
