@@ -1,14 +1,15 @@
 #include "QueryInterpreter.h"
 
+#include <cassert>
 #include <iostream>
 
 #include "../common/EntityType.h"
 #include "../common/FollowsClause.h"
 #include "../common/FollowsStarClause.h"
 #include "../common/ModifiesSClause.h"
-#include "../common/PatternClause.h"
 #include "../common/ParentClause.h"
 #include "../common/ParentStarClause.h"
+#include "../common/PatternClause.h"
 #include "../common/SelectClause.h"
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -115,7 +116,8 @@ void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
   std::string syn_assign = pattern_expression.GetSynAssign();
   std::string arg1 = pattern_expression.GetArg1();
   std::string arg2 = pattern_expression.GetArg2();
-  std::shared_ptr<PqlDeclaration> assign_decl = this->GetMappedDeclaration(syn_assign);
+  std::shared_ptr<PqlDeclaration> assign_decl =
+      this->GetMappedDeclaration(syn_assign);
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {
     lhs_expr = std::make_shared<EntRef>();
@@ -124,7 +126,8 @@ void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
   } else if (this->IsSynonym(arg1)) {
     lhs_expr = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
   } else {
-    throw InvalidSyntaxException("First argument for pattern clause not EntRef");
+    throw InvalidSyntaxException(
+        "First argument for pattern clause not EntRef");
   }
   MatchType match_type;
   std::string rhs_expr;
@@ -133,9 +136,10 @@ void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
     rhs_expr = "_";
   } else {
     match_type = MatchType::PARTIAL_MATCH;
-    rhs_expr = arg2.substr(2, arg2.size()-4);
+    rhs_expr = arg2.substr(2, arg2.size() - 4);
   }
-  this->clause_list.push_back(std::make_unique<PatternClause>(assign_decl, *lhs_expr, match_type, rhs_expr));
+  this->clause_list.push_back(std::make_unique<PatternClause>(
+      assign_decl, *lhs_expr, match_type, rhs_expr));
 }
 
 void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
