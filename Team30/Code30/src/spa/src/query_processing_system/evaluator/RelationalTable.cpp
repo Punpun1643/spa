@@ -90,6 +90,35 @@ std::vector<std::string> RelationalTable::getCombinedRows(
   return new_row;
 }
 
+std::vector<std::pair<PqlDeclaration, int>>
+RelationalTable::getRenumberedColsAfterRemoval(
+    std::vector<PqlDeclaration> const& to_remove) {
+  /**
+   * Removes the given columns from the table, and returns the newly renumbered
+   * column indices
+   */
+  std::vector<std::pair<PqlDeclaration, int>> table_mapping_vector;
+  for (auto& [key, index] : column_mapping) {
+    if (std::find(to_remove.begin(), to_remove.end(), key) == to_remove.end()) {
+      table_mapping_vector.push_back(std::make_pair(key, index));
+    }
+  }
+  // sort table_mapping_vector by idx
+  std::sort(
+      table_mapping_vector.begin(), table_mapping_vector.end(),
+      [&](std::pair<PqlDeclaration, int> a, std::pair<PqlDeclaration, int> b) {
+        return a.second < b.second;
+      });
+
+  // renumber in order
+  int i = 0;
+  for (auto& pair : table_mapping_vector) {
+    pair.second = i;
+    i++;
+  }
+  return table_mapping_vector;
+}
+
 void RelationalTable::join(RelationalTable& other_table) {
   /**
    * Joins this table with the given table by all shared columns
@@ -124,35 +153,6 @@ void RelationalTable::join(RelationalTable& other_table) {
   for (auto& [decl, idx] : renumbered_cols) {
     column_mapping[decl] = original_num_cols + idx;
   }
-}
-
-std::vector<std::pair<PqlDeclaration, int>>
-RelationalTable::getRenumberedColsAfterRemoval(
-    std::vector<PqlDeclaration> const& to_remove) {
-  /**
-   * Removes the given columns from the table, and returns the newly renumbered
-   * column indices
-   */
-  std::vector<std::pair<PqlDeclaration, int>> table_mapping_vector;
-  for (auto& [key, index] : column_mapping) {
-    if (std::find(to_remove.begin(), to_remove.end(), key) == to_remove.end()) {
-      table_mapping_vector.push_back(std::make_pair(key, index));
-    }
-  }
-  // sort table_mapping_vector by idx
-  std::sort(
-      table_mapping_vector.begin(), table_mapping_vector.end(),
-      [&](std::pair<PqlDeclaration, int> a, std::pair<PqlDeclaration, int> b) {
-        return a.second < b.second;
-      });
-
-  // renumber in order
-  int i = 0;
-  for (auto& pair : table_mapping_vector) {
-    pair.second = i;
-    i++;
-  }
-  return table_mapping_vector;
 }
 
 bool RelationalTable::hasNoResults() { return table.empty(); }
