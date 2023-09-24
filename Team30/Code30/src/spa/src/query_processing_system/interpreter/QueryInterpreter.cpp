@@ -67,13 +67,14 @@ void QueryInterpreter::Interpret(
 void QueryInterpreter::Interpret(FollowsExpression& follows_expression) {
   std::string arg1 = follows_expression.GetArg1();
   std::string arg2 = follows_expression.GetArg2();
-  if (!IsValidRelArg(arg1)) {
+  if (!IsStmtRef(arg1)) {
     throw InvalidSyntaxException(
         "First argument for Follows Clause has the wrong syntax.");
-  } else if (!IsValidRelArg(arg2)) {
+  } else if (!IsStmtRef(arg2)) {
     throw InvalidSyntaxException(
         "Second argument for Follows Clause has the wrong syntax.");
   }
+
   this->clause_list.push_back(std::make_unique<FollowsClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2)));
 }
@@ -84,7 +85,7 @@ void QueryInterpreter::Interpret(ModifiesExpression& modifies_expression) {
   if (!IsValidRelArg(arg1)) {
     throw InvalidSyntaxException(
         "First argument for Modifies Clause has the wrong syntax.");
-  } else if (!IsValidRelArg(arg2)) {
+  } else if (!IsEntRef(arg2)) {
     throw InvalidSyntaxException(
         "Second argument for Modifies Clause has the wrong syntax.");
   }
@@ -102,10 +103,10 @@ void QueryInterpreter::Interpret(ModifiesExpression& modifies_expression) {
 void QueryInterpreter::Interpret(FollowsTExpression& follows_t_expression) {
   std::string arg1 = follows_t_expression.GetArg1();
   std::string arg2 = follows_t_expression.GetArg2();
-  if (!IsValidRelArg(arg1)) {
+  if (!IsStmtRef(arg1)) {
     throw InvalidSyntaxException(
         "First argument for FollowsT Clause has the wrong syntax.");
-  } else if (!IsValidRelArg(arg2)) {
+  } else if (!IsStmtRef(arg2)) {
     throw InvalidSyntaxException(
         "Second argument for FollowsT Clause has the wrong syntax.");
   }
@@ -146,10 +147,10 @@ void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
 void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
   std::string arg1 = parent_expression.GetArg1();
   std::string arg2 = parent_expression.GetArg2();
-  if (!IsValidRelArg(arg1)) {
+  if (!IsStmtRef(arg1)) {
     throw InvalidSyntaxException(
         "First argument for Parent Clause has the wrong syntax.");
-  } else if (!IsValidRelArg(arg2)) {
+  } else if (!IsStmtRef(arg2)) {
     throw InvalidSyntaxException(
         "Second argument for Parent Clause has the wrong syntax.");
   }
@@ -160,10 +161,10 @@ void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
 void QueryInterpreter::Interpret(ParentTExpression& parent_t_expression) {
   std::string arg1 = parent_t_expression.GetArg1();
   std::string arg2 = parent_t_expression.GetArg2();
-  if (!IsValidRelArg(arg1)) {
+  if (!IsStmtRef(arg1)) {
     throw InvalidSyntaxException(
         "First argument for ParentT Clause has the wrong syntax.");
-  } else if (!IsValidRelArg(arg2)) {
+  } else if (!IsStmtRef(arg2)) {
     throw InvalidSyntaxException(
         "Second argument for ParentT Clause has the wrong syntax.");
   }
@@ -196,7 +197,7 @@ void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
   if (!IsValidRelArg(arg1)) {
     throw InvalidSyntaxException(
         "First argument for Uses Clause has the wrong syntax.");
-  } else if (!IsValidRelArg(arg2)) {
+  } else if (!IsEntRef(arg2)) {
     throw InvalidSyntaxException(
         "Second argument for Uses Clause has the wrong syntax.");
   }
