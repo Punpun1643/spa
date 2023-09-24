@@ -1,10 +1,10 @@
+#include "../../spa/src/query_processing_system/common/ClauseResult.h"
 #include "catch.hpp"
 #include "query_processing_system/evaluator/IntermediateResultsTable.h"
-#include "../../spa/src/query_processing_system/common/ClauseResult.h"
 
 namespace IrtTestHelperMethods {
-std::vector<std::pair<std::string, std::string>> makePairedVector(std::vector<std::string> v1,
-                                                                  std::vector<std::string> v2) {
+std::vector<std::pair<std::string, std::string>> makePairedVector(
+    std::vector<std::string> v1, std::vector<std::string> v2) {
   assert(v1.size() == v2.size());
   auto list_of_pairs = std::vector<std::pair<std::string, std::string>>();
   for (auto i = 0; i < v1.size(); i++) {
@@ -12,7 +12,7 @@ std::vector<std::pair<std::string, std::string>> makePairedVector(std::vector<st
   }
   return list_of_pairs;
 }
-}
+}  // namespace IrtTestHelperMethods
 
 TEST_CASE("Intermediate Results Table Tests") {
   // Declarations
@@ -125,7 +125,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.getValuesGivenDeclaration(v).empty());
   }
 
-  // Full tests with at least 1 x single and 2 x paired clauses (for milestone 1)
+  // Full tests with at least 1 x single and 2 x paired clauses (for milestone
+  // 1)
   SECTION("All synonyms different") {
     irt.addClauseResult(SINGLE_CLAUSE_A);
     irt.addClauseResult(PAIRED_CLAUSE_B_C);
