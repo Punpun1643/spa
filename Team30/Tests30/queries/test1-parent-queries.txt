@@ -106,7 +106,7 @@ none
 22 - Parent* container syn and wildcard RHS
 variable v;
 Select v such that Parent* (w, _)
-
+SemanticError
 5000
 23 - Parent* line num LHS and wildcard RHS
 variable v;

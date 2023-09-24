@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "../exceptions/InvalidSyntaxException.h"
+#include "../exceptions/InvalidSemanticsException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens){};
@@ -178,7 +179,7 @@ void SyntaxChecker::CheckSuchThat() {
 
   if (IsSynonym(getCurrToken()->getTokenVal()) &&
       declarations.find(getCurrToken()->getTokenVal()) == declarations.end()) {
-    throw InvalidSyntaxException("Undeclared synonym");
+    throw InvalidSemanticsException("Undeclared synonym");
   }
 
   nextToken();  // ,
