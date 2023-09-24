@@ -39,14 +39,12 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
     }
     nextToken();  // , OR ;
-    if (getCurrToken()->getTokenVal() == ",") {
-      while (getCurrToken()->getTokenVal() == ",") {
-        nextToken();  // synonym
-        if (!IsSynonym(getCurrToken()->getTokenVal())) {
-          throw InvalidSyntaxException("Invalid synonym given in declaration");
-        }
-        nextToken();  // , OR ;
+    while (getCurrToken()->getTokenVal() == ",") {
+      nextToken();  // synonym
+      if (!IsSynonym(getCurrToken()->getTokenVal())) {
+        throw InvalidSyntaxException("Invalid synonym given in declaration");
       }
+      nextToken();  // , OR ;
     }
     if (getCurrToken()->getTokenVal() != ";") {
       throw InvalidSyntaxException("Invalid declaration format");
@@ -82,7 +80,8 @@ void SyntaxChecker::CheckPattern() {
     }
   } else {
     if (!QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
-      throw InvalidSyntaxException("Invalid pattern first arg: Expected EntRef");
+      throw InvalidSyntaxException(
+          "Invalid pattern first arg: Expected EntRef");
     }
   }
   if (nextToken()->getTokenVal() != ",") {
@@ -106,7 +105,7 @@ void SyntaxChecker::CheckPattern() {
     }
     if (nextToken()->getTokenVal() != "_") {
       throw InvalidSyntaxException(
-         "Invalid patten syntax for second arg: Expected '_'");
+          "Invalid patten syntax for second arg: Expected '_'");
     }
     nextToken();
   }
