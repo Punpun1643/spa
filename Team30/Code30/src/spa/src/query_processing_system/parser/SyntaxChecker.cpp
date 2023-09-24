@@ -38,12 +38,6 @@ void SyntaxChecker::CheckDeclaration() {
     nextToken();               // synonym
     if (!IsSynonym(getCurrToken()->getTokenVal())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
-    } else {
-      if (declarations.find(getCurrToken()->getTokenVal()) !=
-          declarations.end()) {
-        throw InvalidSyntaxException("Synonym cannot be declared twice");
-      }
-      declarations.insert(getCurrToken()->getTokenVal());
     }
     nextToken();  // , OR ;
     while (getCurrToken()->getTokenVal() == ",") {
@@ -81,7 +75,8 @@ void SyntaxChecker::CheckPattern() {
       getCurrToken()->getTokenVal() != "_" &&
       getCurrToken()->getTokenType() != TokenType::WORD_TOKEN) {
     throw InvalidSyntaxException(
-        "Invalid pattern syntax: First arg should be synonym, variable or wildcard");
+        "Invalid pattern syntax: First arg should be synonym, variable or "
+        "wildcard");
   }
 
   // check valid variable
@@ -178,11 +173,6 @@ void SyntaxChecker::CheckSuchThat() {
       throw InvalidSyntaxException(
           "First arg in such that clause not valid stmtref/entref");
     }
-  }
-
-  if (IsSynonym(getCurrToken()->getTokenVal()) &&
-      declarations.find(getCurrToken()->getTokenVal()) == declarations.end()) {
-    throw InvalidSemanticsException("Undeclared synonym");
   }
 
   nextToken();  // ,
