@@ -6,6 +6,7 @@
 #include "../common/FollowsClause.h"
 #include "../common/FollowsStarClause.h"
 #include "../common/ModifiesSClause.h"
+#include "../common/PatternClause.h"
 #include "../common/ParentClause.h"
 #include "../common/ParentStarClause.h"
 #include "../common/SelectClause.h"
@@ -45,6 +46,9 @@ void QueryInterpreter::Interpret(QueryExpression& query_expression) {
   }
   if (query_expression.HasSuchThatListExpression()) {
     query_expression.GetSuchThatListExpression()->acceptInterpreter(*this);
+  }
+  if (query_expression.HasPatternExpression()) {
+    query_expression.GetPatternExpression()->acceptInterpreter(*this);
   }
 }
 
@@ -108,7 +112,30 @@ void QueryInterpreter::Interpret(FollowsTExpression& follows_t_expression) {
 }
 
 void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
-  return;
+  std::string syn_assign = pattern_expression.GetSynAssign();
+  std::string arg1 = pattern_expression.GetArg1();
+  std::string arg2 = pattern_expression.GetArg2();
+  std::shared_ptr<PqlDeclaration> assign_decl = this->GetMappedDeclaration(syn_assign);
+  std::shared_ptr<EntRef> lhs_expr;
+  if (arg1 == "_") {
+    lhs_expr = std::make_shared<EntRef>();
+  } else if (this->IsIdentifier(arg1)) {
+    lhs_expr = std::make_shared<EntRef>(arg1.substr(1, arg1.size() - 2));
+  } else if (this->IsSynonym(arg1)) {
+    lhs_expr = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
+  } else {
+    throw InvalidSyntaxException("First argument for pattern clause not EntRef");
+  }
+  MatchType match_type;
+  std::string rhs_expr;
+  if (arg2 == "_") {
+    match_type = MatchType::WILD_MATCH;
+    rhs_expr = "_";
+  } else {
+    match_type = MatchType::PARTIAL_MATCH;
+    rhs_expr = arg2.substr(2, arg2.size()-4);
+  }
+  this->clause_list.push_back(std::make_unique<PatternClause>(assign_decl, *lhs_expr, match_type, rhs_expr));
 }
 
 void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
@@ -165,7 +192,6 @@ void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
     throw InvalidSyntaxException(
         "First argument for Uses Clause has the wrong syntax.");
   } else if (!IsValidRelArg(arg2)) {
-    std::cout << "qi1: " << arg2;
     throw InvalidSyntaxException(
         "Second argument for Uses Clause has the wrong syntax.");
   }
@@ -222,7 +248,7 @@ std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
 std::shared_ptr<PqlDeclaration> QueryInterpreter::GetMappedDeclaration(
     std::string const& synonym) {
   if (!(this->declarations->count(synonym))) {
-    throw std::runtime_error("Synonym has not been declared");
+    throw InvalidSyntaxException("Synonym has not been declared");
   }
   return (this->declarations)->at(synonym);
 }
