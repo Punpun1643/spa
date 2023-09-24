@@ -14,7 +14,7 @@ class QPSController {
 
   void HandleQuery(std::string& query, std::list<std::string>& results,
                    std::shared_ptr<QueryEvaluator> query_evaluator);
-  std::vector<std::unique_ptr<Clause>> ParseAndGetClauses(
+  std::vector<std::shared_ptr<Clause>> ParseAndGetClauses(
       std::vector<std::shared_ptr<Token>>& tokens);
 
  private:
@@ -22,6 +22,6 @@ class QPSController {
   void CheckSyntax(std::vector<std::shared_ptr<Token>> tokens);
   std::unique_ptr<QueryExpression> FormQueryExpression(
       std::vector<std::shared_ptr<Token>> tokens);
-  std::vector<std::unique_ptr<Clause>> InterpretQueryExpression(
+  std::vector<std::shared_ptr<Clause>> InterpretQueryExpression(
       std::unique_ptr<QueryExpression> query_expression);
 };

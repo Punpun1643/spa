@@ -36,7 +36,7 @@ std::shared_ptr<DeclarationMap> QueryInterpreter::getDeclarations() {
 }
 
 ClauseList QueryInterpreter::GetClauseList() {
-  return std::move(this->clause_list);
+  return this->clause_list;
 }
 
 void QueryInterpreter::Interpret(QueryExpression& query_expression) {
@@ -75,7 +75,7 @@ void QueryInterpreter::Interpret(FollowsExpression& follows_expression) {
         "Second argument for Follows Clause should be a StmtRef.");
   }
 
-  this->clause_list.push_back(std::make_unique<FollowsClause>(
+  this->clause_list.push_back(std::make_shared<FollowsClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2)));
 }
 
@@ -94,7 +94,7 @@ void QueryInterpreter::Interpret(ModifiesExpression& modifies_expression) {
         "Second argument for Modifies Clause should be an EntRef.");
   }
   if (IsStmtRef(arg1)) {
-    this->clause_list.push_back(std::make_unique<ModifiesSClause>(
+    this->clause_list.push_back(std::make_shared<ModifiesSClause>(
         StringToStmtRef(arg1), StringToEntRef(arg2)));
     /* } else if (IsEntRef(arg1)) { */
     /*   this->clause_list.push_back(std::make_unique<ModifiesSClause>(StringToEntRef(arg1),
@@ -114,7 +114,7 @@ void QueryInterpreter::Interpret(FollowsTExpression& follows_t_expression) {
     throw InvalidSyntaxException(
         "Second argument for FollowsT Clause should be a StmtRef.");
   }
-  this->clause_list.push_back(std::make_unique<FollowsStarClause>(
+  this->clause_list.push_back(std::make_shared<FollowsStarClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2)));
 }
 
@@ -144,7 +144,7 @@ void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
     match_type = MatchType::PARTIAL_MATCH;
     rhs_expr = arg2.substr(2, arg2.size() - 4);
   }
-  this->clause_list.push_back(std::make_unique<PatternClause>(
+  this->clause_list.push_back(std::make_shared<PatternClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr));
 }
 
@@ -158,7 +158,7 @@ void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
     throw InvalidSyntaxException(
         "Second argument for Parent Clause should be a StmtRef.");
   }
-  this->clause_list.push_back(std::make_unique<ParentClause>(
+  this->clause_list.push_back(std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2)));
 }
 
@@ -172,7 +172,7 @@ void QueryInterpreter::Interpret(ParentTExpression& parent_t_expression) {
     throw InvalidSyntaxException(
         "Second argument for ParentT Clause should be a StmtRef.");
   }
-  this->clause_list.push_back(std::make_unique<ParentStarClause>(
+  this->clause_list.push_back(std::make_shared<ParentStarClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2)));
 }
 
@@ -181,7 +181,7 @@ void QueryInterpreter::Interpret(SelectExpression& select_expression) {
   std::shared_ptr<PqlDeclaration> selected_declaration =
       QueryInterpreter::GetMappedDeclaration(synonym);
   this->clause_list.push_back(
-      std::make_unique<SelectClause>(selected_declaration));
+      std::make_shared<SelectClause>(selected_declaration));
 }
 
 void QueryInterpreter::Interpret(
@@ -210,7 +210,7 @@ void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
         "Second argument for Uses Clause should be an EntRef.");
   }
   if (IsStmtRef(arg1)) {
-    this->clause_list.push_back(std::make_unique<UsesSClause>(
+    this->clause_list.push_back(std::make_shared<UsesSClause>(
         StringToStmtRef(arg1), StringToEntRef(arg2)));
     /* } else if (IsEntRef(arg1)) { */
     /*   this->clause_list.push_back(std::make_unique<UsesSClause>(StringToEntRef(arg1),

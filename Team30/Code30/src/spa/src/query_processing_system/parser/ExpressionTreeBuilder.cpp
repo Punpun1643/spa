@@ -98,11 +98,12 @@ ExpressionTreeBuilder::CreateSuchThatListExpression() {
   nextToken();  // that
   nextToken();  // clause name
   this->AddSuchThatExpression(such_that_expression_list);
-  while (getCurrToken()->getTokenVal() == "and") {
-    nextToken();  // such
-    nextToken();  // that
-    this->AddSuchThatExpression(such_that_expression_list);
-  }
+//  while (getCurrToken()->getTokenVal() == "and") {
+//    nextToken();  // such
+//    nextToken();  // that
+//    this->AddSuchThatExpression(such_that_expression_list);
+//  }
+  nextToken();
   return std::make_unique<SuchThatListExpression>(such_that_expression_list);
 }
 
