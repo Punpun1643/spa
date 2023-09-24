@@ -1,9 +1,6 @@
 #include "../../spa/src/query_processing_system/common/PqlDeclaration.h"
-#include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../spa/src/query_processing_system/evaluator/RelationalTable.h"
 #include "catch.hpp"
-
-// TODO, replace arrayUtility with REQUIRE_THAT
 
 TEST_CASE("RelationalTable Tests") {
   // Declarations
@@ -45,8 +42,8 @@ TEST_CASE("RelationalTable Tests") {
     table = RelationalTable(a, v, EMPTY_VEC, EMPTY_VEC);
     REQUIRE(table.getNumCols() == 2);
     REQUIRE(table.hasNoResults());
-    REQUIRE(table.getTableCol(a) == EMPTY_VEC);
-    REQUIRE(table.getTableCol(v) == EMPTY_VEC);
+    REQUIRE(table.getTableCol(a).empty());
+    REQUIRE(table.getTableCol(v).empty());
   }
 
   SECTION("Test join functionality") {
@@ -75,7 +72,7 @@ TEST_CASE("RelationalTable Tests") {
 
     REQUIRE(table_1.getNumCols() == 3);
     REQUIRE_FALSE(table_1.hasNoResults());
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(s), S_VEC_1));
+    REQUIRE_THAT(table_1.getTableCol(s), Catch::UnorderedEquals(S_VEC_1));
 
     auto table_2 = RelationalTable(a, b, A_VEC_2, B_VEC_2);
     auto table_2b = RelationalTable(a, c, A_VEC_2, C_VEC_2);
@@ -86,17 +83,17 @@ TEST_CASE("RelationalTable Tests") {
 
     REQUIRE(table_2.getNumCols() == 4);
     REQUIRE_FALSE(table_2.hasNoResults());
-    REQUIRE(ArrayUtility::isContentEqual(table_2.getTableCol(b), B_VEC_2));
+    REQUIRE_THAT(table_2.getTableCol(b), Catch::UnorderedEquals(B_VEC_2));
 
     table_1.join(table_2);
 
     REQUIRE(table_1.getNumCols() == 5);
     REQUIRE_FALSE(table_1.hasNoResults());
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(a), A_VEC_OUT));
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(b), B_VEC_OUT));
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(c), C_VEC_OUT));
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(v), V_VEC_OUT));
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(s), S_VEC_OUT));
+    REQUIRE_THAT(table_1.getTableCol(a), Catch::UnorderedEquals(A_VEC_OUT));
+    REQUIRE_THAT(table_1.getTableCol(b), Catch::UnorderedEquals(B_VEC_OUT));
+    REQUIRE_THAT(table_1.getTableCol(c), Catch::UnorderedEquals(C_VEC_OUT));
+    REQUIRE_THAT(table_1.getTableCol(v), Catch::UnorderedEquals(V_VEC_OUT));
+    REQUIRE_THAT(table_1.getTableCol(s), Catch::UnorderedEquals(S_VEC_OUT));
 
     // test join when result is empty table
     table_1 = RelationalTable(c, v, C_VEC_1, V_VEC_1);
@@ -105,8 +102,8 @@ TEST_CASE("RelationalTable Tests") {
     table_1.join(table_1b);
     REQUIRE(table_1.getNumCols() == 3);
     REQUIRE(table_1.hasNoResults());
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(c), EMPTY_VEC));
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(v), EMPTY_VEC));
-    REQUIRE(ArrayUtility::isContentEqual(table_1.getTableCol(s), EMPTY_VEC));
+    REQUIRE(table_1.getTableCol(c).empty());
+    REQUIRE(table_1.getTableCol(v).empty());
+    REQUIRE(table_1.getTableCol(s).empty());
   }
 }
