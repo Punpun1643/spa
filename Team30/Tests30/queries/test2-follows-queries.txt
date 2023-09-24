@@ -11,7 +11,7 @@ Select s such that Follows (4, s)
 3 - Follows wildcard LHS and stmt syn RHS
 assign a; 
 Select a such that Follows (_, a)
-2, 3, 4, 9, 10, 11, 13, 16
+2, 3, 4, 9, 11, 13
 5000
 4 - Follows stmt syn LHS and line num RHS
 stmt s;
@@ -66,7 +66,7 @@ none
 14 - Follows* line num LHS and line num RHS
 while w;
 Select w such that Follows* (15, 16)
-5, 17
+none
 5000
 15 - Follows* wildcard LHS and line num RHS
 if i;

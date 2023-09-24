@@ -54,8 +54,9 @@ std::unique_ptr<PatternExpression>
 ExpressionTreeBuilder ::CreatePatternExpression() {
   if (getCurrToken()->getTokenVal() == "pattern") {
     std::string syn_assign = nextToken()->getTokenVal();
-    nextToken();  // (
+    nextToken();    // (
     nextToken();
+
     std::string arg1 = "";
     if (getCurrToken()->getTokenVal() == "\"") {
       arg1 += "\"";
@@ -66,6 +67,7 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
     }
     nextToken();  // ,
     nextToken(); // _
+
     /* std::string pattern = "_"; */
     std::string arg2 = "_";
     if (nextToken()->getTokenVal() == "\"") {
