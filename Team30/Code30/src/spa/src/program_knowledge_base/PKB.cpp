@@ -73,7 +73,6 @@ bool PKB::isRelationTrue(std::string value_1, std::string value_2,
   return relData->getTable(rel_type)->isRelated(value_1, value_2);
 };
 
-
 // example Follows(1, _)
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
@@ -257,9 +256,12 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
   std::unordered_set<std::string> rhs_statements =
       patData->getStatementNumbersGivenRHS(rhs_expr);
   std::unordered_set<std::string> intersection;
-  std::set_intersection(lhs_statements.begin(), lhs_statements.end(),
-                        rhs_statements.begin(), rhs_statements.end(),
-                        std::inserter(intersection, intersection.begin()));
+  for (std::string val : rhs_statements) {
+    if (lhs_statements.find(val) != lhs_statements.end()) {
+      intersection.insert(val);
+    }
+  }
+
   return std::make_unique<std::vector<std::string>>(intersection.begin(),
                                                     intersection.end());
 };

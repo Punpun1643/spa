@@ -304,3 +304,53 @@ TEST_CASE("PKB test1-source Parent*") {
     REQUIRE(!pkb.isRelationTrue("22", std::to_string(i), RelationType::PARENT));
   }
 }
+
+
+TEST_CASE("Test1-Source PKB") {
+  PKB pkb = PKB();
+  pkb.insertEntity(EntityType::PROCEDURE, "Advanced");
+  pkb.insertEntity(EntityType::VARIABLE, "y");
+  pkb.insertEntity(EntityType::VARIABLE, "z");
+  pkb.insertEntity(EntityType::VARIABLE, "p");
+  pkb.insertEntity(EntityType::VARIABLE, "q");
+  pkb.insertEntity(EntityType::VARIABLE, "i");
+  pkb.insertEntity(EntityType::VARIABLE, "j");
+  pkb.insertEntity(EntityType::VARIABLE, "x");
+  pkb.insertEntity(EntityType::VARIABLE, "t");
+  pkb.insertEntity(EntityType::VARIABLE, "a");
+  pkb.insertEntity(EntityType::VARIABLE, "b");
+  pkb.insertEntity(EntityType::CONSTANT, "2");
+  pkb.insertEntity(EntityType::CONSTANT, "1");
+  pkb.insertEntity(EntityType::CONSTANT, "24");
+  pkb.insertEntity(EntityType::CONSTANT, "0");
+  pkb.insertEntity(EntityType::CONSTANT, "5");
+  pkb.insertEntity(EntityType::VARIABLE, "10");
+  pkb.insertEntity(EntityType::VARIABLE, "100");
+
+  pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2", "z"}));
+  pkb.insertPattern("3", "z", std::unordered_set<std::string>({"p", "y"}));
+  pkb.insertPattern("5", "z", std::unordered_set<std::string>({"x", "24"}));
+  pkb.insertPattern("8", "y", std::unordered_set<std::string>({"x", "q", "5"}));
+  pkb.insertPattern("9", "z", std::unordered_set<std::string>({"z", "1"}));
+  pkb.insertPattern("10", "y",
+                    std::unordered_set<std::string>({"x", "z", "p", "q"}));
+  pkb.insertPattern("11", "i",
+                    std::unordered_set<std::string>({"x", "j", "z"}));
+  pkb.insertPattern("12", "p", std::unordered_set<std::string>({"x", "10"}));
+  pkb.insertPattern("13", "q", std::unordered_set<std::string>({"y", "10"}));
+  pkb.insertPattern("15", "a", std::unordered_set<std::string>({"5", "p"}));
+  pkb.insertPattern("17", "q", std::unordered_set<std::string>({"p", "5"}));
+  pkb.insertPattern("18", "i", std::unordered_set<std::string>({"x", "10"}));
+  pkb.insertPattern("19", "j",
+                    std::unordered_set<std::string>({"x", "y", "10"}));
+  pkb.insertPattern("22", "x", std::unordered_set<std::string>({"1"}));
+  pkb.insertPattern("23", "y",
+                    std::unordered_set<std::string>({"i", "x", "y", "z"}));
+  pkb.insertPattern("25", "x", std::unordered_set<std::string>({"a", "1"}));
+  pkb.insertPattern("26", "a", std::unordered_set<std::string>({"b"}));
+  pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2", "z"}));
+
+  std::vector<std::string> expected_res = {"22", "25"};
+  REQUIRE(*pkb.getPatternMatchesWithLhsValue(
+              "x", "1", MatchType::PARTIAL_MATCH) == expected_res);
+}
