@@ -47,6 +47,9 @@ void QueryInterpreter::Interpret(QueryExpression& query_expression) {
   if (query_expression.HasSuchThatListExpression()) {
     query_expression.GetSuchThatListExpression()->acceptInterpreter(*this);
   }
+  if (query_expression.HasPatternExpression()) {
+    query_expression.GetPatternExpression()->acceptInterpreter(*this);
+  }
 }
 
 void QueryInterpreter::Interpret(
@@ -189,7 +192,6 @@ void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
     throw InvalidSyntaxException(
         "First argument for Uses Clause has the wrong syntax.");
   } else if (!IsValidRelArg(arg2)) {
-    std::cout << "qi1: " << arg2;
     throw InvalidSyntaxException(
         "Second argument for Uses Clause has the wrong syntax.");
   }

@@ -62,7 +62,7 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
       arg1 += nextToken()->getTokenVal();
       arg1 += "\"";
     } else {
-      arg1 = nextToken()->getTokenVal(); // synonym or _
+      arg1 = getCurrToken()->getTokenVal(); // synonym or _
     }
     nextToken();  // ,
     nextToken(); // _
@@ -91,7 +91,7 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 
 std::unique_ptr<SuchThatListExpression>
 ExpressionTreeBuilder::CreateSuchThatListExpression() {
-  if (getCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+  if (getCurrToken()->getTokenVal() != "such") {
     return nullptr;
   }
   std::vector<std::shared_ptr<SuchThatExpression>> such_that_expression_list;
