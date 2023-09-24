@@ -67,6 +67,9 @@ void SyntaxChecker::CheckEOF() {
 }
 
 void SyntaxChecker::CheckPattern() {
+  if (getCurrToken()->getTokenVal() != "pattern") {
+    return;
+  }
   if (!(QpParser::IsSynonym(nextToken()->getTokenVal()))) {
     throw InvalidSyntaxException(
         "Invalid pattern syntax: Expected 'syn-assign' after 'pattern'");
@@ -139,6 +142,9 @@ void SyntaxChecker::CheckSelect() {
 }
 
 void SyntaxChecker::CheckSuchThat() {
+  if (getCurrToken()->getTokenVal() != "such") {
+    return;
+  }
   nextToken();  // that
   nextToken();  // relRef
   if (!QpParser::IsRelRef(getCurrToken()->getTokenVal())) {
@@ -219,16 +225,8 @@ void SyntaxChecker::CheckSuchThat() {
 }
 
 void SyntaxChecker::CheckSuchThatOrPattern() {
-  while (getCurrToken()->getTokenVal() == "such" ||
-         getCurrToken()->getTokenVal() == "pattern") {
-    if ((getCurrToken()->getTokenVal() == "such") &&
-        (peekToken()->getTokenVal() == "that")) {
-      CheckSuchThat();
-    }
-
-    if (getCurrToken()->getTokenVal() == "pattern") {
-      CheckPattern();
-    }
+  for (int i = 0; i < 2; i++) {
+    CheckSuchThat();
+    CheckPattern();
   }
-  CheckEOF();
 }
