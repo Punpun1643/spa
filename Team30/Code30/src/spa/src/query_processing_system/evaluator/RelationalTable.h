@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "query_processing_system/common/PqlDeclaration.h"
@@ -17,6 +18,18 @@ class RelationalTable {
   std::vector<PqlDeclaration> getSharedColumns(RelationalTable& other_table);
   std::vector<std::pair<PqlDeclaration, int>> getRenumberedColsAfterRemoval(
       std::vector<PqlDeclaration> const& to_remove);
+
+  bool checkIfRowsMatch(
+      std::vector<std::string> const& row,
+      std::vector<std::string> const& other_row,
+      std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> const&
+          other_row_idx_mappings,
+      std::vector<PqlDeclaration> const& values_to_compare);
+
+  static std::vector<std::string> getCombinedRows(
+      std::vector<std::string> const& row_1,
+      std::vector<std::string> const& row_2,
+      std::unordered_set<int> const& skipped_idx_in_row_2);
 
  public:
   RelationalTable(PqlDeclaration const& d,

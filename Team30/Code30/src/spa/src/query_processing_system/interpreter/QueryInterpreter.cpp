@@ -26,6 +26,7 @@
 #include "../expression/SuchThatExpression.h"
 #include "../expression/SuchThatListExpression.h"
 #include "../expression/UsesExpression.h"
+#include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 QueryInterpreter::QueryInterpreter()
     : declarations(std::make_shared<DeclarationMap>()){};
@@ -252,7 +253,7 @@ std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
 std::shared_ptr<PqlDeclaration> QueryInterpreter::GetMappedDeclaration(
     std::string const& synonym) {
   if (!(this->declarations->count(synonym))) {
-    throw InvalidSyntaxException("Synonym has not been declared");
+    throw InvalidSemanticsException("Synonym has not been declared");
   }
   return (this->declarations)->at(synonym);
 }

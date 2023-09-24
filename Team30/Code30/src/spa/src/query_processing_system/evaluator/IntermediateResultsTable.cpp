@@ -101,6 +101,7 @@ void IntermediateResultsTable::addPairedDeclarations(
     int d2_table_idx = table_mapping[d2];
     tables[d2_table_idx].join(new_table);
     table_mapping[d1] = d2_table_idx;
+
   } else {
     // case 1: d1 and d2 in same table already
     if (table_mapping[d1] == table_mapping[d2]) {
@@ -118,6 +119,7 @@ void IntermediateResultsTable::addPairedDeclarations(
       }
     }
   }
+  assert(table_mapping.count(d1) == 1); // otherwise, doing [] will insert a default key-value pair.
   if (tables[table_mapping[d1]].hasNoResults()) {
     has_no_results = true;
     return;

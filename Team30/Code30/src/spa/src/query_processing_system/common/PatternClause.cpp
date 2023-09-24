@@ -32,19 +32,19 @@ std::unique_ptr<ClauseResult> PatternClause::evaluate(PkbApi& pkb) {
       auto values = pkb.getPatternMatchesWithDeclarationLhs(
           rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
-          *assign_decl, *(lhs_ent_ref.getDeclaration()), std::move(values));
+          *assign_decl, *(lhs_ent_ref.getDeclaration()), *values);
       break;
     }
     case (PqlRefType::VALUE): {
       auto values = pkb.getPatternMatchesWithLhsValue(
           lhs_ent_ref.getValue(), rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(*assign_decl, std::move(values));
+      return std::make_unique<ClauseResult>(*assign_decl, *values);
       break;
     }
     case (PqlRefType::WILD): {
       auto values =
           pkb.getPatternMatchesWithWildLhs(rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(*assign_decl, std::move(values));
+      return std::make_unique<ClauseResult>(*assign_decl, *values);
       break;
     }
     default:

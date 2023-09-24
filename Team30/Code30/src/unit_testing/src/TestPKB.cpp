@@ -277,6 +277,6 @@ TEST_CASE("Assignment Pattern PKB") {
 
   // pattern a(var, "_")
   expected_pairs = {{"3", "x"}, {"4", "y"}, {"5", "x"}};
-  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH) ==
-          expected_pairs);
+  REQUIRE_THAT(*pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH),
+               Catch::UnorderedEquals(expected_pairs));
 }
