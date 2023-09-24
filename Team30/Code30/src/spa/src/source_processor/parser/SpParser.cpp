@@ -336,9 +336,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
     std::shared_ptr<Token> currToken = getCurrToken();
 
     if (AParser::IsWordOrIntegerToken(currToken)) {
-      if (isPeekTokenValue(")") && isPeekBackTokenValue("(")) {
-        throw std::invalid_argument("Invalid condExpr");
-      } else if (IsWordOrIntegerToken(peekToken())) {
+      if (IsWordOrIntegerToken(peekToken())) {
         throw std::invalid_argument("Invalid condExpr");
       }
       handleWordOrIntegerToken(postFixQueue, variables, constants);
