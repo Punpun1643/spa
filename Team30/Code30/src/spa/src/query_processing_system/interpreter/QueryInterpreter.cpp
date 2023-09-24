@@ -86,6 +86,10 @@ void QueryInterpreter::Interpret(ModifiesExpression& modifies_expression) {
     throw InvalidSyntaxException(
         "First argument for Modifies Clause should be a StmtRef.");
   } else if (!IsEntRef(arg2)) {
+    if (IsSynonym(arg2)) {
+      throw InvalidSemanticsException(
+          "Second argument for Modifies Clause should be declared as EntRef.");
+    }
     throw InvalidSyntaxException(
         "Second argument for Modifies Clause should be an EntRef.");
   }
@@ -292,7 +296,7 @@ bool QueryInterpreter::IsValidRelArg(std::string const& argument) {
 }
 
 bool QueryInterpreter::IsStmtRef(std::string const& argument) {
-  if (IsWildcard(argument) || IsInteger(argument)) {
+  if (IsWildcard(argument) || IsInteger(argument) || IsSynonym(argument)) {
     return true;
   } else if (IsADeclaration(argument)) {
     EntityType entity_type = GetEntityTypeAsDeclaration(argument);
