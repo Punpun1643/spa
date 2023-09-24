@@ -34,8 +34,13 @@ void ExpressionTreeBuilder::parse() {
     declaration_list_expression = this->CreateDeclarationListExpression();
     select_expression = this->CreateSelectExpression();
   }
-  such_that_list_expression = this->CreateSuchThatListExpression();
-  pattern_expression = this->CreatePatternExpression();
+  for (int i = 0; i < 2; i++) {
+    if (getCurrToken()->getTokenVal() == "such") {
+      such_that_list_expression = this->CreateSuchThatListExpression();
+    } else if (getCurrToken()->getTokenVal() == "pattern") {
+      pattern_expression = this->CreatePatternExpression();
+    }
+  }
   this->query_expression = std::make_unique<QueryExpression>(
       std::move(declaration_list_expression), std::move(select_expression),
       std::move(such_that_list_expression), std::move(pattern_expression));
