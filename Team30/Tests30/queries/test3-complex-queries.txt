@@ -1,0 +1,30 @@
+1 - Find while loops with assignment to variable count
+assign a; while w;
+Select w such that Parent* (w, a) pattern a ("count", _)
+5
+5000
+2 - Find assignments that use and modify the same variable
+assign a; variable v;
+Select a such that Uses (a, v) pattern a (v, _)
+6, 7, 8, 12, 13
+5000
+3 - Find assignments that use and modify the variable x
+assign a;
+Select a pattern a ("x", _) such that Uses (a, "x")
+none
+5000
+4 - Find assignments that use and modify the variable x
+assign a;
+Select a such that Uses (a, "x") pattern a ("x", _)
+none
+5000
+5 - Find assignments that are nested directly
+assign a; while w;
+Select a such that Parent* (w, a) pattern a ("count", _)
+6
+5000
+6 - Find assignments that are nested
+assign a; while w;
+Select a pattern a ("count", _) such that Parent* (w, a)
+6
+5000
