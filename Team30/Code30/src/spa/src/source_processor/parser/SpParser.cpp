@@ -334,7 +334,6 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 
   while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
     std::shared_ptr<Token> currToken = getCurrToken();
-
     if (AParser::IsWordOrIntegerToken(currToken)) {
       if (IsWordOrIntegerToken(peekToken())) {
         throw std::invalid_argument("Invalid condExpr");
@@ -367,6 +366,11 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 
   if (parenCount != 0) {
     throw std::invalid_argument("Unmatched parentheses");
+  }
+
+  if (constants.size() == 1 && variables.size() == 0 ||
+      constants.size() == 0 && variables.size() == 1) {
+    throw std::invalid_argument("Invalid condExpr");
   }
 
   return std::make_shared<CondExprNode>(variables, constants);
@@ -496,7 +500,7 @@ bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
 bool SpParser::isPossibleRelFactor(std::shared_ptr<Token> token) {
   return AParser::IsWordOrIntegerToken(token) ||
          AParser::IsTokenValue(token, SpParserConstant::LEFT_PARENTHESIS) ||
-             AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
+         AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
 }
 
 // helper function to calculate precedence of an operator
