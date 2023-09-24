@@ -8,7 +8,7 @@ class PkbStub : public PkbApi {
   std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
                                          "procedure3"};
   std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
-  std::vector<std::string> VARIABLES = {"varX"};
+  std::vector<std::string> VARIABLES = {"varX", "varY"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
   int insertEntityCallCount;
@@ -20,6 +20,8 @@ class PkbStub : public PkbApi {
   int insertUsesCallCount;
   int insertModifiesCallCount;
   int insertPatternCallCount;
+
+
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
