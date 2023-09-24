@@ -1,4 +1,5 @@
 #include "AParser.h"
+
 #include <stdexcept>
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
@@ -61,6 +62,11 @@ bool AParser::IsSpecialCharToken(std::shared_ptr<Token> token) {
 
 bool AParser::IsEOFToken(std::shared_ptr<Token> token) {
   return AParser::IsTokenType(token, TokenType::EOF_TOKEN);
+}
+
+bool AParser::IsTokenValue(std::shared_ptr<Token> token,
+                           std::string const& tokenValue) {
+  return tokenValue == token->getTokenVal();
 }
 
 bool AParser::isCurrTokenType(TokenType tokenType) {

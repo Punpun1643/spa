@@ -1,6 +1,6 @@
-#include <stdexcept>
-
 #include "SpParser.h"
+
+#include <stdexcept>
 
 namespace SpParserConstant {
 
@@ -316,9 +316,12 @@ void SpParser::assignHandleRightParenthesisToken(
 }
 
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
-
   if (getPeekTokenValue() == ")") {
     throw std::invalid_argument("Empty condExpr");
+  }
+
+  if (!isPossibleRelFactor(peekToken())) {
+    throw std::invalid_argument("Invalid condExpr");
   }
 
   std::queue<std::shared_ptr<std::string>> postFixQueue;
@@ -340,16 +343,16 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       }
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isOperator(getCurrTokenValue())) {
-        if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
-            !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
-          throw std::invalid_argument("Invalid condExpr");
-        }
-        if ((isCurrTokenValue(SpRelationLogicalOperator::AND) ||
-                  isCurrTokenValue(SpRelationLogicalOperator::OR)) &&
-                 (!isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS) ||
-                 !isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS))) {
-          throw std::invalid_argument("Invalid condExpr");
-        }
+      if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
+          !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
+        throw std::invalid_argument("Invalid condExpr");
+      }
+      if ((isCurrTokenValue(SpRelationLogicalOperator::AND) ||
+           isCurrTokenValue(SpRelationLogicalOperator::OR)) &&
+          (!isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS) ||
+           !isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS))) {
+        throw std::invalid_argument("Invalid condExpr");
+      }
       handleOperatorToken(operatorStack, postFixQueue);
     } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
       handleLeftParenthesisToken(operatorStack, parenCount);
@@ -490,6 +493,12 @@ bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
          tokenVal == SpParserMathOperator::MULTIPLY ||
          tokenVal == SpParserMathOperator::DIVIDE ||
          tokenVal == SpParserMathOperator::MODULO;
+}
+
+bool SpParser::isPossibleRelFactor(std::shared_ptr<Token> token) {
+  return AParser::IsWordOrIntegerToken(token) ||
+         AParser::IsTokenValue(token, SpParserConstant::LEFT_PARENTHESIS) ||
+             AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
 }
 
 // helper function to calculate precedence of an operator

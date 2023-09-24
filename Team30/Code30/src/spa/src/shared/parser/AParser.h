@@ -57,6 +57,9 @@ class AParser {
 
   static bool IsEOFToken(std::shared_ptr<Token> token);
 
+  static bool IsTokenValue(std::shared_ptr<Token> token,
+                           std::string const& tokenValue);
+
   /**
    * @brief Checks if the current token is of the given token type.
    *
