@@ -241,7 +241,7 @@ std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
   } else if (IsInteger(string)) {
     return std::make_unique<StmtRef>(stoi(string));
   } else {
-    throw std::runtime_error("Invalid string to be converted into StmtRef");
+    throw InvalidSyntaxException("Invalid string to be converted into StmtRef");
   }
 }
 

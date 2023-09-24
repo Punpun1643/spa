@@ -6,7 +6,7 @@
 #include "QpParser.h"
 
 class SyntaxChecker : public QpParser {
-  std::unordered_set<std::string> declarations;
+  std::unordered_set<std::string> dec;
 
  public:
   SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens);
