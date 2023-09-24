@@ -3,8 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "../exceptions/InvalidSyntaxException.h"
 #include "../exceptions/InvalidSemanticsException.h"
+#include "../exceptions/InvalidSyntaxException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens){};
@@ -62,7 +62,7 @@ void SyntaxChecker::CheckDeclaration() {
 
 void SyntaxChecker::CheckEOF() {
   if (!IsEOFToken(getCurrToken())) {
-    throw InvalidSyntaxException("Invalid query syntax: EOF Token expected");
+    throw InvalidSyntaxException("EOF Token Expected");
   }
 }
 
@@ -74,48 +74,51 @@ void SyntaxChecker::CheckPattern() {
   if (nextToken()->getTokenVal() != "(") {
     throw InvalidSyntaxException("Invalid pattern syntax: Expected '('");
   }
-  nextToken();  // " OR EntRef
-  if (getCurrToken()->getTokenVal() == "\"") {
-    if (!QpParser::IsSynonym(nextToken()->getTokenVal())) {
-      throw InvalidSyntaxException(
-          "Invalid pattern syntax: Expected identifier for first argument");
-    }
-    if (nextToken()->getTokenVal() != "\"") {
-      throw InvalidSyntaxException(
-          "Invalid pattern syntax: Invalid identifier syntax for first "
-          "argument");
-    }
-  } else {
-    if (!QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
-      throw InvalidSyntaxException(
-          "Invalid pattern first arg: Expected EntRef");
-    }
-  }
-  if (nextToken()->getTokenVal() != ",") {
-    throw InvalidSyntaxException("Invalid pattern syntax: Expected ','");
-  }
-  if (nextToken()->getTokenVal() != "_") {
+
+  nextToken();  // synonym or "
+
+  if (getCurrToken()->getTokenVal() != "\"" &&
+      getCurrToken()->getTokenVal() != "_" &&
+      getCurrToken()->getTokenType() != TokenType::WORD_TOKEN) {
     throw InvalidSyntaxException(
-        "Invalid pattern syntax: Expected '_' for second arg");
+        "Invalid pattern syntax: First arg should be synonym, variable or wildcard");
   }
-  nextToken();  // " OR )
+
+  // check valid variable
   if (getCurrToken()->getTokenVal() == "\"") {
-    nextToken();  // factor
-    if (!(QpParser::IsSynonym(getCurrToken()->getTokenVal())) &&
-        !(AParser::IsIntegerToken(getCurrToken()))) {
+    if ((nextToken()->getTokenType() != TokenType::WORD_TOKEN) ||
+        nextToken()->getTokenVal() != "\"") {
       throw InvalidSyntaxException(
-          "Invalid pattern syntax: Invalid syntax for <factor> of second arg");
+          "Invalid pattern syntax: Variable name is not valid");
     }
-    if (nextToken()->getTokenVal() != "\"") {
-      throw InvalidSyntaxException(
-          "Invalid pattern syntax for second arg: Expected '\"'");
-    }
-    if (nextToken()->getTokenVal() != "_") {
-      throw InvalidSyntaxException(
-          "Invalid patten syntax for second arg: Expected '_'");
-    }
-    nextToken();
   }
+
+  if (nextToken()->getTokenVal() != ",") {
+    throw InvalidSyntaxException("Invalid pattern syntax: expected ,");
+  }
+
+  if (nextToken()->getTokenVal() != "_" &&
+      getCurrToken()->getTokenType() != TokenType::WORD_TOKEN) {
+    throw InvalidSyntaxException(
+        "Invalid pattern syntax: Second arg should be synonym, wild card or "
+        "partial "
+        "match");
+  }
+
+  // check for partial match
+  if (getCurrToken()->getTokenVal() == "_") {
+    if (peekToken()->getTokenVal() == "\"") {
+      nextToken();
+      if (!(nextToken()->getTokenType() == TokenType::INTEGER_TOKEN ||
+            getCurrToken()->getTokenType() == TokenType::WORD_TOKEN) ||
+          nextToken()->getTokenVal() != "\"" ||
+          nextToken()->getTokenVal() != "_") {
+        throw InvalidSyntaxException(getCurrToken()->getTokenVal());
+      }
+    }
+  }
+
+  nextToken();  // )
   if (getCurrToken()->getTokenVal() != ")") {
     throw InvalidSyntaxException(
         "Invalid pattern syntax after second arg: Expected ')'");
@@ -128,7 +131,7 @@ void SyntaxChecker::CheckSelect() {
     throw InvalidSyntaxException("Select clause missing or invalid");
   }
   // Current token is already "Select"
-  nextToken();
+  nextToken();  // synonym
   if (!IsSynonym(getCurrToken()->getTokenVal())) {
     throw InvalidSyntaxException("Invalid synonym gyven for Select clause");
   }
@@ -158,10 +161,10 @@ void SyntaxChecker::CheckSuchThat() {
   }
   nextToken();  // stmtRef
   if (!IsStmtRef(getCurrToken()->getTokenVal()) &&
-      !QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
+      !IsEntRef(getCurrToken()->getTokenVal())) {
     /* std::cout << "\nsc4\n"; */
     if (getCurrToken()->getTokenVal() == "\"") {
-      if (!(QpParser::IsSynonym(nextToken()->getTokenVal()))) {
+      if (!(IsSynonym(nextToken()->getTokenVal()))) {
         /* std::cout << "\nsc6: " << getCurrToken()->getTokenVal() << "\n"; */
         throw InvalidSyntaxException(
             "Invalid first arg: Expected synonym within identifier quotes");
