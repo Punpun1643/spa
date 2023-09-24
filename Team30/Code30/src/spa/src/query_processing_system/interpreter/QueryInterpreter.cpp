@@ -198,7 +198,7 @@ void QueryInterpreter::Interpret(
 void QueryInterpreter::Interpret(UsesExpression& uses_expression) {
   std::string arg1 = uses_expression.GetArg1();
   std::string arg2 = uses_expression.GetArg2();
-  if (!IsValidRelArg(arg1)) {
+  if (!IsStmtRef(arg1)) {
     throw InvalidSyntaxException(
         "First argument for Uses Clause should be a StmtRef.");
   } else if (!IsEntRef(arg2)) {
