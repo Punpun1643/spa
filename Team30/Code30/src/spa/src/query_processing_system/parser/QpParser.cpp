@@ -17,13 +17,6 @@ bool QpParser::IsEntRef(std::string const& name) {
 }
 
 bool QpParser::IsIdentifier(std::string const& name) {
-  /* std::cout << "qpp1: " << ((name.substr(0, 1) == "\"") ? "11" : "10") <<
-   * "\n"; */
-  /* std::cout << "qpp2: " << ((IsSynonym(name.substr(1, name.size() - 2))) ?
-   * "21" : "20") << "\n"; */
-  /* std::cout << "qpp3: " << ((name.substr(name.size()-1, 1) == "\"") ? "21" :
-   * "20") << "\n"; */
-  /* std::cout << "qpp4: " << (name.substr(name.size()-1, 1)) << "\n"; */
   if (name.size() >= 3) {
     return (name.substr(0, 1) == "\"" &&
             IsSynonym(name.substr(1, name.size() - 2)) &&

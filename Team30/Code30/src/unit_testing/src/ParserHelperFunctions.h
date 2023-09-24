@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "../../spa/src/shared/tokenizer/token/EofToken.h"
 #include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
 #include "../../spa/src/shared/tokenizer/token/SpecialCharToken.h"

@@ -20,13 +20,13 @@ class ClauseResult {
   explicit ClauseResult(bool is_valid);
 
   // Constructor for single declaration clauses
-  ClauseResult(PqlDeclaration declaration,
-               std::unique_ptr<std::vector<std::string>> values);
+  ClauseResult(const PqlDeclaration& declaration,
+               const std::vector<std::string>& values);
 
   // Constructor for 2 declaration clauses
   ClauseResult(
-      PqlDeclaration d1, PqlDeclaration d2,
-      std::unique_ptr<std::vector<std::pair<std::string, std::string>>> values);
+      const PqlDeclaration& d1, const PqlDeclaration& d2,
+      const std::vector<std::pair<std::string, std::string>>& values);
 
   int getNumDeclarations() const;
 

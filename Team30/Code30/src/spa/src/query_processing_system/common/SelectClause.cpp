@@ -16,5 +16,5 @@ std::unique_ptr<ClauseResult> SelectClause::evaluate(PkbApi& pkb) {
 
   auto values = pkb.getEntitiesWithType(entity_type);
 
-  return std::make_unique<ClauseResult>(*declaration, std::move(values));
+  return std::make_unique<ClauseResult>(*declaration, *values);
 }

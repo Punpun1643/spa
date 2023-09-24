@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "../../spa/src/query_processing_system/QPSController.h"
-#include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "ParserHelperFunctions.h"
 #include "catch.hpp"
 
@@ -449,4 +448,73 @@ TEST_CASE("Parse Select + Uses(stmtref, entref)") {
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
 
+}
+
+TEST_CASE("Pattern") {
+  std::vector<std::shared_ptr<Token>> tokens;
+
+  SECTION("Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (\"count\", _)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Uses"});
+    AddWordIdent(tokens, "s1", "count");
+    AddWordVector(tokens, {"pattern", "a"});
+    AddSpecialCharVector(tokens, {"(", "\""});
+    AddWordVector(tokens, {"count"});
+    AddSpecialCharVector(tokens, {"\"", ",", "_", ")"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    /* std::unique_ptr<PatternClause*> pattern_clause( */
+    /*     dynamic_cast<PatternClause*>(clauses[2].release())); */
+  }
+
+  SECTION("Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (_, _\"x\"_)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Uses"});
+    AddWordIdent(tokens, "s1", "count");
+    AddWordVector(tokens, {"pattern", "a"});
+    AddSpecialCharVector(tokens, {"(", "_", ",", "_", "\""});
+    AddWordVector(tokens, {"x"});
+    AddSpecialCharVector(tokens, {"\"", "_", ")"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+  }
+
+  SECTION("Positive. variable v, stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (v, _\"x\"_)") {
+    AddDeclaration(tokens, "variable", {"v"});
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Uses"});
+    AddWordIdent(tokens, "s1", "count");
+    AddWordVector(tokens, {"pattern", "a"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"v"});
+    AddSpecialCharVector(tokens, {",", "_", "\""});
+    AddWordVector(tokens, {"x"});
+    AddSpecialCharVector(tokens, {"\"", "_", ")"});
+    AddEOF(tokens);
+
+    QPSController controller = QPSController();
+    std::vector<std::unique_ptr<Clause>> clauses =
+        controller.ParseAndGetClauses(tokens);
+    std::unique_ptr<SelectClause> select_clause(
+        dynamic_cast<SelectClause*>(clauses[0].release()));
+    std::unique_ptr<SuchThatClause> such_that_clause(
+        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+  }
 }
