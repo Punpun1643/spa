@@ -1,0 +1,19 @@
+procedure computeCentroid {
+01      count = 0;
+02      cenX = 0;
+03      cenY = 0;
+04      print z;
+05      while ((x != 0) && (y != 0)) {
+06          count = count + 1;
+07          cenX = cenX + x;
+08          cenY = cenY + y;
+09          print z;
+        }
+10      if (count == 0) then {
+11          flag = 1;
+        } else {
+12          cenX = cenX / count;
+13          cenY = cenY / count;
+        }
+14      normSq = cenX * cenX + cenY * cenY;
+    }

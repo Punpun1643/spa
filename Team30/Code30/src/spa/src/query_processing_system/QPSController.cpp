@@ -16,20 +16,17 @@ void QPSController::HandleQuery(
   this->CheckSyntax(tokens);
   std::unique_ptr<QueryExpression> query_expression =
       this->FormQueryExpression(tokens);
-  std::vector<std::unique_ptr<Clause>> clause_list =
+  std::vector<std::shared_ptr<Clause>> clause_list =
       this->InterpretQueryExpression(std::move(query_expression));
   // TODO: After milestone 1, need to change way of checking clause contents.
   // cant assume only 1 clause for each type
   std::vector<std::string> query_results;
-  std::unique_ptr<SelectClause> select_clause(
-      dynamic_cast<SelectClause*>(clause_list[0].release()));
-  if (clause_list.size() == 1) {
-    query_results = query_evaluator->evaluateQuery(std::move(select_clause), {});
-  } else if (clause_list.size() == 2) {
-    std::shared_ptr<Clause> such_that_clause = std::move(clause_list[1]);
-    query_results = query_evaluator->evaluateQuery(std::move(select_clause),
-                                                   {such_that_clause});
-  }
+
+  auto select_clause_shared_ptr = std::dynamic_pointer_cast<SelectClause>(clause_list[0]);
+  auto select_clause = std::make_unique<SelectClause>(*select_clause_shared_ptr);
+
+  clause_list.erase(clause_list.begin());
+  query_results = query_evaluator->evaluateQuery(std::move(select_clause), clause_list);
   std::copy(query_results.begin(), query_results.end(),
             std::back_inserter(results));
 }
@@ -55,7 +52,7 @@ std::unique_ptr<QueryExpression> QPSController::FormQueryExpression(
   return expression_tree_builder->GetQueryExpression();
 }
 
-std::vector<std::unique_ptr<Clause>> QPSController::InterpretQueryExpression(
+std::vector<std::shared_ptr<Clause>> QPSController::InterpretQueryExpression(
     std::unique_ptr<QueryExpression> query_expression) {
   std::unique_ptr<QueryInterpreter> query_interpreter =
       std::make_unique<QueryInterpreter>();
@@ -63,12 +60,12 @@ std::vector<std::unique_ptr<Clause>> QPSController::InterpretQueryExpression(
   return query_interpreter->GetClauseList();
 }
 
-std::vector<std::unique_ptr<Clause>> QPSController::ParseAndGetClauses(
+std::vector<std::shared_ptr<Clause>> QPSController::ParseAndGetClauses(
     std::vector<std::shared_ptr<Token>>& tokens) {
   this->CheckSyntax(tokens);
   std::unique_ptr<QueryExpression> query_expression =
       this->FormQueryExpression(tokens);
-  std::vector<std::unique_ptr<Clause>> clause_list =
+  std::vector<std::shared_ptr<Clause>> clause_list =
       this->InterpretQueryExpression(std::move(query_expression));
   return clause_list;
 }

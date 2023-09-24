@@ -9,7 +9,7 @@
 
 typedef std::unordered_map<std::string, std::shared_ptr<PqlDeclaration>>
     DeclarationMap;
-typedef std::vector<std::unique_ptr<Clause>> ClauseList;
+typedef std::vector<std::shared_ptr<Clause>> ClauseList;
 
 class DeclarationListExpression;
 class DeclarationExpression;

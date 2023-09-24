@@ -54,19 +54,19 @@ std::unique_ptr<PatternExpression>
 ExpressionTreeBuilder ::CreatePatternExpression() {
   if (getCurrToken()->getTokenVal() == "pattern") {
     std::string syn_assign = nextToken()->getTokenVal();
-    nextToken();  // (
+    nextToken();    // (
     nextToken();
+
     std::string arg1 = "";
     if (getCurrToken()->getTokenVal() == "\"") {
       arg1 += "\"";
-      arg1 += nextToken()->getTokenVal();
-      arg1 += "\"";
+      arg1 += nextToken()->getTokenVal(); // identifier
+      arg1 += nextToken()->getTokenVal(); // "
     } else {
       arg1 = getCurrToken()->getTokenVal(); // synonym or _
     }
     nextToken();  // ,
     nextToken(); // _
-    /* std::string pattern = "_"; */
     std::string arg2 = "_";
     if (nextToken()->getTokenVal() == "\"") {
       arg2 += "\"";
@@ -98,11 +98,12 @@ ExpressionTreeBuilder::CreateSuchThatListExpression() {
   nextToken();  // that
   nextToken();  // clause name
   this->AddSuchThatExpression(such_that_expression_list);
-  while (getCurrToken()->getTokenVal() == "and") {
-    nextToken();  // such
-    nextToken();  // that
-    this->AddSuchThatExpression(such_that_expression_list);
-  }
+//  while (getCurrToken()->getTokenVal() == "and") {
+//    nextToken();  // such
+//    nextToken();  // that
+//    this->AddSuchThatExpression(such_that_expression_list);
+//  }
+  nextToken();
   return std::make_unique<SuchThatListExpression>(such_that_expression_list);
 }
 

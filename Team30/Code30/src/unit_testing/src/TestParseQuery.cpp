@@ -67,12 +67,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s");
   }
@@ -83,12 +83,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "r");
   }
@@ -99,12 +99,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "p");
   }
@@ -115,12 +115,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "c");
   }
@@ -131,12 +131,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "wh");
   }
@@ -147,12 +147,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "if");
   }
@@ -163,12 +163,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "as");
   }
@@ -179,12 +179,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "v");
   }
@@ -195,12 +195,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "c");
   }
@@ -211,12 +211,12 @@ TEST_CASE("Parse select query") {
 
     QPSController controller = QPSController();
 
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
 
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "pr");
   }
@@ -227,11 +227,11 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<Clause> clause = std::move(clauses[0]);  // Move ownership
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clause.release()));
+    std::shared_ptr<Clause> clause = clauses[0];
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clause));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
@@ -251,12 +251,12 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
   }
@@ -269,12 +269,12 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
@@ -287,12 +287,12 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "v1");
   }
@@ -309,12 +309,12 @@ TEST_CASE("Parse Select + Follows* query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
@@ -334,12 +334,12 @@ TEST_CASE("Parse Select + Parent query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
   }
@@ -351,12 +351,12 @@ TEST_CASE("Parse Select + Parent query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "a");
   }
@@ -372,12 +372,12 @@ TEST_CASE("Parse Select + Parent* query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
@@ -394,12 +394,12 @@ TEST_CASE("Parse Select + Modifies query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
   }
@@ -416,12 +416,12 @@ TEST_CASE("Parse Select + Uses query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
   }
@@ -438,12 +438,12 @@ TEST_CASE("Parse Select + Uses(stmtref, entref)") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
     REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
   }
@@ -465,12 +465,12 @@ TEST_CASE("Pattern") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
     /* std::unique_ptr<PatternClause*> pattern_clause( */
     /*     dynamic_cast<PatternClause*>(clauses[2].release())); */
   }
@@ -487,12 +487,12 @@ TEST_CASE("Pattern") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
   }
 
   SECTION("Positive. variable v, stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (v, _\"x\"_)") {
@@ -510,11 +510,11 @@ TEST_CASE("Pattern") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    std::vector<std::unique_ptr<Clause>> clauses =
+    std::vector<std::shared_ptr<Clause>> clauses =
         controller.ParseAndGetClauses(tokens);
-    std::unique_ptr<SelectClause> select_clause(
-        dynamic_cast<SelectClause*>(clauses[0].release()));
-    std::unique_ptr<SuchThatClause> such_that_clause(
-        dynamic_cast<SuchThatClause*>(clauses[1].release()));
+    std::shared_ptr<SelectClause> select_clause(
+        std::dynamic_pointer_cast<SelectClause>(clauses[0]));
+    std::shared_ptr<SuchThatClause> such_that_clause(
+        std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
   }
 }
