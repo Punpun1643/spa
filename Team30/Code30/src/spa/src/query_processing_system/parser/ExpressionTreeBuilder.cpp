@@ -55,17 +55,27 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
   if (getCurrToken()->getTokenVal() == "pattern") {
     std::string syn_assign = nextToken()->getTokenVal();
     nextToken();  // (
-    nextToken();  // _
-    nextToken();  // ,
-    std::string pattern = "_";
-    if (nextToken()->getTokenVal() != ")") {
-      pattern += "\"";
-      pattern += (nextToken()->getTokenVal());
-      pattern += "\"";
-      pattern += "_";
+    nextToken();
+    std::string arg1 = "";
+    if (getCurrToken()->getTokenVal() == "\"") {
+      arg1 += "\"";
+      arg1 += nextToken()->getTokenVal();
+      arg1 += "\"";
+    } else {
+      arg1 = nextToken()->getTokenVal(); // synonym or _
     }
-    nextToken();  // )
-    return std::make_unique<PatternExpression>(syn_assign, pattern);
+    nextToken();  // ,
+    nextToken(); // _
+    /* std::string pattern = "_"; */
+    std::string arg2 = "_";
+    if (nextToken()->getTokenVal() == "\"") {
+      arg2 += "\"";
+      arg2 += nextToken()->getTokenVal(); // factor
+      arg2 += nextToken()->getTokenVal(); // "
+      arg2 += nextToken()->getTokenVal(); // _
+    }
+    nextToken(); // )
+    return std::make_unique<PatternExpression>(syn_assign, arg1, arg2);
   } else {
     return nullptr;
   }
