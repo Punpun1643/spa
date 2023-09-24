@@ -53,6 +53,43 @@ std::vector<PqlDeclaration> RelationalTable::getSharedColumns(
 
 int RelationalTable::getNumCols() { return (int)column_mapping.size(); }
 
+bool RelationalTable::checkIfRowsMatch(
+    std::vector<std::string> const& row,
+    std::vector<std::string> const& other_row,
+    std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> const&
+        other_table_idx_mappings,
+    std::vector<PqlDeclaration> const& cols_to_compare) {
+  bool all_match = true;
+  for (auto& value : cols_to_compare) {
+    auto row_idx = column_mapping.at(value);
+    auto other_row_idx = other_table_idx_mappings.at(value);
+    all_match = all_match && (row[row_idx] == other_row[other_row_idx]);
+  }
+  return all_match;
+}
+
+std::vector<std::string> RelationalTable::getCombinedRows(
+    std::vector<std::string> const& row_1,
+    std::vector<std::string> const& row_2,
+    std::unordered_set<int> const& skipped_idx_in_row_2) {
+  /**
+   * Returns a row combining the values from two rows, with the given indices
+   * in row_2 being skipped. The combined row will maintain the ordering of the
+   * original rows, and contain the values from row_1 before the values in
+   * row_2.
+   */
+  std::vector<std::string> new_row = {};
+  // Add all values from row 1
+  new_row.insert(new_row.begin(), row_1.begin(), row_1.end());
+  // Add selected values from row 2
+  for (auto i = 0; i < row_2.size(); i++) {
+    if (skipped_idx_in_row_2.count(i) == 0) {
+      new_row.push_back(row_2[i]);
+    }
+  }
+  return new_row;
+}
+
 void RelationalTable::join(RelationalTable& other_table) {
   /**
    * Joins this table with the given table by all shared columns
@@ -62,36 +99,20 @@ void RelationalTable::join(RelationalTable& other_table) {
   assert(!shared_cols.empty());  // block doing a cross-product
 
   std::vector<std::vector<std::string>> new_table;
-  for (auto this_row : table) {
-    for (auto other_row : other_table.table) {
-      // check that all the shared_cols match
-      bool all_shared_cols_match = true;
-      for (auto& shared_col : shared_cols) {
-        auto this_table_col_idx = column_mapping[shared_col];
-        auto other_table_col_idx = other_table.column_mapping[shared_col];
-        if (this_row[this_table_col_idx] != other_row[other_table_col_idx]) {
-          all_shared_cols_match = false;
-          break;
-        }
+  // For every pair of rows
+  for (const auto& this_row : table) {
+    for (const auto& other_row : other_table.table) {
+      bool all_match = checkIfRowsMatch(
+          this_row, other_row, other_table.column_mapping, shared_cols);
+      if (!all_match) {
+        continue;  // skip this one
       }
-      if (!all_shared_cols_match) {
-        continue;
-      }
-      // Create new joined row
-      std::vector<std::string> new_row = {};
-      // Add all values from existing row
-      new_row.insert(new_row.begin(), this_row.begin(), this_row.end());
       // Add values from other table's row that don't overlap with this row's
-      std::unordered_set<int> rows_to_avoid;
+      std::unordered_set<int> row_idx_to_avoid;
       for (auto& shared_col : shared_cols) {
-        rows_to_avoid.insert(other_table.column_mapping[shared_col]);
+        row_idx_to_avoid.insert(other_table.column_mapping[shared_col]);
       }
-      for (auto i = 0; i < other_row.size(); i++) {
-        if (rows_to_avoid.count(i) == 1) {
-          continue;
-        }
-        new_row.push_back(other_row[i]);
-      }
+      auto new_row = getCombinedRows(this_row, other_row, row_idx_to_avoid);
       new_table.push_back(new_row);
     }
   }
@@ -100,9 +121,7 @@ void RelationalTable::join(RelationalTable& other_table) {
   // Update column mappings
   auto renumbered_cols = other_table.getRenumberedColsAfterRemoval(shared_cols);
   int original_num_cols = getNumCols();
-  for (auto& pair : renumbered_cols) {
-    PqlDeclaration decl = pair.first;
-    int idx = pair.second;
+  for (auto& [decl, idx] : renumbered_cols) {
     column_mapping[decl] = original_num_cols + idx;
   }
 }
@@ -110,6 +129,10 @@ void RelationalTable::join(RelationalTable& other_table) {
 std::vector<std::pair<PqlDeclaration, int>>
 RelationalTable::getRenumberedColsAfterRemoval(
     std::vector<PqlDeclaration> const& to_remove) {
+  /**
+   * Removes the given columns from the table, and returns the newly renumbered
+   * column indices
+   */
   std::vector<std::pair<PqlDeclaration, int>> table_mapping_vector;
   for (auto& [key, index] : column_mapping) {
     if (std::find(to_remove.begin(), to_remove.end(), key) == to_remove.end()) {
