@@ -4,6 +4,7 @@
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
+#include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "PkbStub.h"
 #include "catch.hpp"
 
@@ -195,6 +196,56 @@ TEST_CASE("Select and Follows Clause with 2 common declarations") {
   result =
       qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
   REQUIRE(result == std::vector<std::string>({"2"}));
+}
+
+TEST_CASE("Pattern clauses") {
+  PkbStub pkb = PkbStub();
+  auto qe = QueryEvaluator(pkb);
+  // decl, partial
+  auto a = std::make_shared<PqlDeclaration>(std::make_shared<std::string>("a"), ASSIGN);
+  auto v = std::make_shared<PqlDeclaration>(std::make_shared<std::string>("v"), VARIABLE);
+  auto SELECT_A = std::make_unique<SelectClause>(a);
+  auto SELECT_V = std::make_unique<SelectClause>(v);
+  SECTION("decl, wild") {
+    auto pattern_clause = std::make_shared<PatternClause>(a, EntRef(v), MatchType::WILD_MATCH, "");
+    auto result = qe.evaluateQuery(std::move(SELECT_V), {pattern_clause});
+    REQUIRE(result == std::vector<std::string>({"varX"}));
+  }
+
+  SECTION("decl, partial") {
+    auto pattern_clause = std::make_shared<PatternClause>(a, EntRef(v), MatchType::PARTIAL_MATCH, "a");
+    auto result = qe.evaluateQuery(std::move(SELECT_V), {pattern_clause});
+    REQUIRE(result == std::vector<std::string>({"varY"}));
+  }
+
+  SECTION("value, wild") {
+    auto pattern_clause = std::make_shared<PatternClause>(a, EntRef("varName"), MatchType::WILD_MATCH, "");
+    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
+    REQUIRE(result == std::vector<std::string>({"3"}));
+  }
+
+  SECTION("value, partial") {
+    auto pattern_clause = std::make_shared<PatternClause>(a, EntRef("varName"), MatchType::PARTIAL_MATCH, "a");
+    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
+    REQUIRE(result.empty());
+  }
+
+  SECTION("wild, wild") {
+    auto pattern_clause = std::make_shared<PatternClause>(a, EntRef(), MatchType::WILD_MATCH, "");
+    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
+    REQUIRE(result == std::vector<std::string>({"1"}));
+  }
+
+  SECTION("wild, partial") {
+    auto pattern_clause = std::make_shared<PatternClause>(a, EntRef(), MatchType::PARTIAL_MATCH, "blah");
+    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
+    REQUIRE(result == std::vector<std::string>({"2"}));
+  }
+
+  SECTION("semantic errors") {
+    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(a, EntRef(a), MatchType::PARTIAL_MATCH, "a"), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(v, EntRef(v), MatchType::PARTIAL_MATCH, "a"), InvalidSemanticsException);
+  }
 }
 
 // TODO: Future, separate clause tests from query evaluator tests.

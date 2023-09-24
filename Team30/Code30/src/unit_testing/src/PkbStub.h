@@ -8,7 +8,7 @@ class PkbStub : public PkbApi {
   std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
                                          "procedure3"};
   std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
-  std::vector<std::string> VARIABLES = {"varX"};
+  std::vector<std::string> VARIABLES = {"varX", "varY"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
   int insertEntityCallCount;

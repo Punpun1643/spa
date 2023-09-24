@@ -152,14 +152,30 @@ PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
 
 std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
     std::string rhs_expr, MatchType expr_match_type) {
-  return std::make_unique<std::vector<std::string>>();
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    auto return_vec = std::vector<std::string>({"1"});
+    return std::make_unique<std::vector<std::string>>(return_vec);
+  } else if (expr_match_type == MatchType:: PARTIAL_MATCH) {
+    auto return_vec = std::vector<std::string>({"2"});
+    return std::make_unique<std::vector<std::string>>(return_vec);
+  } else { // exact
+    return std::make_unique<std::vector<std::string>>();
+  }
 }
 
 std::unique_ptr<std::vector<std::string>>
 PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
                                        std::string rhs_expr,
                                        MatchType expr_match_type) {
-  return std::make_unique<std::vector<std::string>>();
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    auto return_vec = std::vector<std::string>({"3"});
+    return std::make_unique<std::vector<std::string>>(return_vec);
+  } else if (expr_match_type == MatchType::PARTIAL_MATCH) {
+    auto return_vec = std::vector<std::string>({"4"});
+    return std::make_unique<std::vector<std::string>>(return_vec);
+  } else {
+    return std::make_unique<std::vector<std::string>>();
+  }
 };
 
 // 2 paired values - for the implicit assign declaration, and the values for the
@@ -167,5 +183,13 @@ PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                       MatchType expr_match_type) {
-  return std::make_unique<std::vector<std::pair<std::string, std::string>>>();
+  auto output = std::make_unique<std::vector<std::pair<std::string, std::string>>>();
+
+  if (expr_match_type == MatchType::WILD_MATCH) {
+    output->push_back(std::make_pair("1","varX"));
+
+  } else if (expr_match_type == MatchType::PARTIAL_MATCH) {
+    output->push_back(std::make_pair("2","varY"));
+  }
+  return output;
 };
