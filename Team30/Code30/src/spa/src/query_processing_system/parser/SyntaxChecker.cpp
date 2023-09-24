@@ -38,12 +38,24 @@ void SyntaxChecker::CheckDeclaration() {
     nextToken();               // synonym
     if (!IsSynonym(getCurrToken()->getTokenVal())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
+    } else {
+      if (dec.find(getCurrToken()->getTokenVal()) !=
+          dec.end()) {
+        throw InvalidSyntaxException("Synonym cannot be declared twice");
+      }
+      dec.insert(getCurrToken()->getTokenVal());
     }
     nextToken();  // , OR ;
     while (getCurrToken()->getTokenVal() == ",") {
       nextToken();  // synonym
       if (!IsSynonym(getCurrToken()->getTokenVal())) {
         throw InvalidSyntaxException("Invalid synonym given in declaration");
+      } else {
+        if (dec.find(getCurrToken()->getTokenVal()) !=
+            dec.end()) {
+          throw InvalidSyntaxException("Synonym cannot be declared twice");
+        }
+        dec.insert(getCurrToken()->getTokenVal());
       }
       nextToken();  // , OR ;
     }
