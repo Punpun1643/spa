@@ -171,5 +171,5 @@ SyntaxError
 35 - Semantic Error, non-existent declaration
 while w;
 Select i such that Modifies (i, "a")
-15
+SemanticError
 5000

@@ -1,9 +1,13 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "../../shared/tokenizer/token/Token.h"
 #include "QpParser.h"
 
 class SyntaxChecker : public QpParser {
+  std::unordered_set<std::string> declarations;
+
  public:
   SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens);
 

@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "../exceptions/InvalidSyntaxException.h"
+#include "../exceptions/InvalidSemanticsException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens){};
@@ -37,16 +38,20 @@ void SyntaxChecker::CheckDeclaration() {
     nextToken();               // synonym
     if (!IsSynonym(getCurrToken()->getTokenVal())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
+    } else {
+      if (declarations.find(getCurrToken()->getTokenVal()) !=
+          declarations.end()) {
+        throw InvalidSyntaxException("Synonym cannot be declared twice");
+      }
+      declarations.insert(getCurrToken()->getTokenVal());
     }
     nextToken();  // , OR ;
-    if (getCurrToken()->getTokenVal() == ",") {
-      while (getCurrToken()->getTokenVal() == ",") {
-        nextToken();  // synonym
-        if (!IsSynonym(getCurrToken()->getTokenVal())) {
-          throw InvalidSyntaxException("Invalid synonym given in declaration");
-        }
-        nextToken();  // , OR ;
+    while (getCurrToken()->getTokenVal() == ",") {
+      nextToken();  // synonym
+      if (!IsSynonym(getCurrToken()->getTokenVal())) {
+        throw InvalidSyntaxException("Invalid synonym given in declaration");
       }
+      nextToken();  // , OR ;
     }
     if (getCurrToken()->getTokenVal() != ";") {
       throw InvalidSyntaxException("Invalid declaration format");
@@ -82,7 +87,8 @@ void SyntaxChecker::CheckPattern() {
     }
   } else {
     if (!QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
-      throw InvalidSyntaxException("Invalid pattern first arg: Expected EntRef");
+      throw InvalidSyntaxException(
+          "Invalid pattern first arg: Expected EntRef");
     }
   }
   if (nextToken()->getTokenVal() != ",") {
@@ -106,7 +112,7 @@ void SyntaxChecker::CheckPattern() {
     }
     if (nextToken()->getTokenVal() != "_") {
       throw InvalidSyntaxException(
-         "Invalid patten syntax for second arg: Expected '_'");
+          "Invalid patten syntax for second arg: Expected '_'");
     }
     nextToken();
   }
@@ -130,77 +136,96 @@ void SyntaxChecker::CheckSelect() {
 }
 
 void SyntaxChecker::CheckSuchThat() {
-  while ((getCurrToken()->getTokenVal() == "such") &&
-         (peekToken()->getTokenVal() == "that")) {
-    nextToken();  // that
-    nextToken();  // relRef
-    if (!QpParser::IsRelRef(getCurrToken()->getTokenVal())) {
-      /* std::cout << "\nsc1\n"; */
-      throw InvalidSyntaxException("Invalid relref for such that clause");
+  nextToken();  // that
+  nextToken();  // relRef
+  if (!QpParser::IsRelRef(getCurrToken()->getTokenVal())) {
+    /* std::cout << "\nsc1\n"; */
+    throw InvalidSyntaxException("Invalid relref for such that clause");
+  }
+  if (peekToken()->getTokenVal() == "*") {
+    if (!QpParser::IsTransitiveRelRef(getCurrToken()->getTokenVal())) {
+      /* std::cout << "\nsc2\n"; */
+      throw InvalidSyntaxException(
+          "Invalid transitive relref for such that clause");
+    } else {
+      nextToken();  // *
     }
-    if (peekToken()->getTokenVal() == "*") {
-      if (!QpParser::IsTransitiveRelRef(getCurrToken()->getTokenVal())) {
-        /* std::cout << "\nsc2\n"; */
+  }
+  nextToken();  // (
+  if (getCurrToken()->getTokenVal() != "(") {
+    /* std::cout << "\nsc3\n"; */
+    throw InvalidSyntaxException("Invalid such that clause syntax");
+  }
+  nextToken();  // stmtRef
+  if (!IsStmtRef(getCurrToken()->getTokenVal()) &&
+      !QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
+    /* std::cout << "\nsc4\n"; */
+    if (getCurrToken()->getTokenVal() == "\"") {
+      if (!(QpParser::IsSynonym(nextToken()->getTokenVal()))) {
+        /* std::cout << "\nsc6: " << getCurrToken()->getTokenVal() << "\n"; */
         throw InvalidSyntaxException(
-            "Invalid transitive relref for such that clause");
-      } else {
-        nextToken();  // *
+            "Invalid first arg: Expected synonym within identifier quotes");
       }
-    }
-    nextToken();  // (
-    if (getCurrToken()->getTokenVal() != "(") {
-      /* std::cout << "\nsc3\n"; */
-      throw InvalidSyntaxException("Invalid such that clause syntax");
-    }
-    nextToken();  // stmtRef
-    if (!IsStmtRef(getCurrToken()->getTokenVal()) &&
-        !QpParser::IsEntRef(getCurrToken()->getTokenVal())) {
-      /* std::cout << "\nsc4\n"; */
+      if (nextToken()->getTokenVal() != "\"") {
+        /* std::cout << "\nsc7: " << getCurrToken()->getTokenVal() << "\n"; */
+        throw InvalidSyntaxException("Invalid first arg: Expected closing \"");
+      }
+    } else {
+      /* std::cout << "\nsc8: " << getCurrToken()->getTokenVal() << "\n"; */
       throw InvalidSyntaxException(
           "First arg in such that clause not valid stmtref/entref");
     }
-    nextToken();  // ,
-    if (getCurrToken()->getTokenVal() != ",") {
-      /* std::cout << "\nsc5\n"; */
-      throw InvalidSyntaxException("Invalid such that clause syntax");
-    }
-    /* std::cout << "\nsccheck1: " << getCurrToken()->getTokenVal() << "\n"; */
-    nextToken();  // stmtRef
-    if (!(IsStmtRef(getCurrToken()->getTokenVal())) &&
-        !(QpParser::IsEntRef(getCurrToken()->getTokenVal()))) {
-      if (getCurrToken()->getTokenVal() == "\"") {
-        if (!(QpParser::IsSynonym(nextToken()->getTokenVal()))) {
-          /* std::cout << "\nsc6: " << getCurrToken()->getTokenVal() << "\n"; */
-          throw InvalidSyntaxException(
-              "Invalid second arg: Expected synonym within identifier quotes");
-        }
-        if (nextToken()->getTokenVal() != "\"") {
-          /* std::cout << "\nsc7: " << getCurrToken()->getTokenVal() << "\n"; */
-          throw InvalidSyntaxException(
-              "Invalid second arg: Expected closing \"");
-        }
-      } else {
-        /* std::cout << "\nsc8: " << getCurrToken()->getTokenVal() << "\n"; */
+  }
+
+  if (IsSynonym(getCurrToken()->getTokenVal()) &&
+      declarations.find(getCurrToken()->getTokenVal()) == declarations.end()) {
+    throw InvalidSemanticsException("Undeclared synonym");
+  }
+
+  nextToken();  // ,
+  if (getCurrToken()->getTokenVal() != ",") {
+    /* std::cout << "\nsc5\n"; */
+    throw InvalidSyntaxException("Invalid such that clause syntax");
+  }
+  /* std::cout << "\nsccheck1: " << getCurrToken()->getTokenVal() << "\n"; */
+  nextToken();  // stmtRef
+  if (!(IsStmtRef(getCurrToken()->getTokenVal())) &&
+      !(QpParser::IsEntRef(getCurrToken()->getTokenVal()))) {
+    if (getCurrToken()->getTokenVal() == "\"") {
+      if (!(QpParser::IsSynonym(nextToken()->getTokenVal()))) {
+        /* std::cout << "\nsc6: " << getCurrToken()->getTokenVal() << "\n"; */
         throw InvalidSyntaxException(
-            "Second arg in such that clause not valid stmtref/entref");
+            "Invalid second arg: Expected synonym within identifier quotes");
       }
+      if (nextToken()->getTokenVal() != "\"") {
+        /* std::cout << "\nsc7: " << getCurrToken()->getTokenVal() << "\n"; */
+        throw InvalidSyntaxException("Invalid second arg: Expected closing \"");
+      }
+    } else {
+      /* std::cout << "\nsc8: " << getCurrToken()->getTokenVal() << "\n"; */
+      throw InvalidSyntaxException(
+          "Second arg in such that clause not valid stmtref/entref");
     }
-    nextToken();  // )
-    if (getCurrToken()->getTokenVal() != ")") {
-      /* std::cout << "\nsc9\n"; */
-      throw InvalidSyntaxException("Invalid such that clause structure");
-    }
+  }
+  nextToken();  // )
+  if (getCurrToken()->getTokenVal() != ")") {
+    /* std::cout << "\nsc9\n"; */
+    throw InvalidSyntaxException("Invalid such that clause structure");
   }
   nextToken();
 }
 
 void SyntaxChecker::CheckSuchThatOrPattern() {
-  if ((getCurrToken()->getTokenVal() == "such") &&
-      (peekToken()->getTokenVal() == "that")) {
-    CheckSuchThat();
-  }
-  if (getCurrToken()->getTokenVal() == "pattern") {
-    this->CheckPattern();
+  while (getCurrToken()->getTokenVal() == "such" ||
+         getCurrToken()->getTokenVal() == "pattern") {
+    if ((getCurrToken()->getTokenVal() == "such") &&
+        (peekToken()->getTokenVal() == "that")) {
+      CheckSuchThat();
+    }
+
+    if (getCurrToken()->getTokenVal() == "pattern") {
+      CheckPattern();
+    }
   }
   CheckEOF();
 }
