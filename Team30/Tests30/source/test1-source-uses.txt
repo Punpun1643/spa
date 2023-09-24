@@ -11,13 +11,13 @@ procedure Advanced {
       y = x * q - 5;
       z = z - 1;
     }
-    y = x + y * z + p * q;
+    y = x * z + p * q;
   }
   i = x + j + z;
 
   p = x * 10;
   q = y + y * 10;
-  while (t == 0) {
+  while ((t == 0) && (!(i > j))) {
     a = 5 * p - 5;
     print y; 
   }
@@ -40,4 +40,12 @@ procedure Advanced {
   a = x;
   read x;
   print b;
+  while (2 - 5 == 0 / 5) {
+    read y;
+  }
+  if (0 >= 100) then {
+    read c;
+  } else {
+    read notUsed;
+  }
 }
