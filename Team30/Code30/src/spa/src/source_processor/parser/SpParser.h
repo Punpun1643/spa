@@ -69,6 +69,8 @@ class SpParser : public AParser {
 
   static bool isMathematicalOperator(std::string const& tokenVal);
 
+  static bool isPossibleRelFactor(std::shared_ptr<Token> token);
+
   void handleWordOrIntegerToken(
       std::queue<std::shared_ptr<std::string>>& postFixQueue,
       std::unordered_set<std::string>& variables,
