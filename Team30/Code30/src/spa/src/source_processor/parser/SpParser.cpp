@@ -318,6 +318,16 @@ void SpParser::assignHandleRightParenthesisToken(
   operatorStack.pop();
 }
 
+void SpParser::trackOperatorAndOperand(
+    std::vector<int>& constAppearances,
+    std::vector<std::string>& varAppearances) {
+  if (AParser::IsWordToken(getCurrToken())) {
+    varAppearances.push_back(getCurrTokenValue());
+  } else {
+    constAppearances.push_back(std::stoi(getCurrTokenValue()));
+  }
+}
+
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   if (getPeekTokenValue() == ")") {
     throw std::invalid_argument("Empty condExpr");
@@ -344,11 +354,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       if (IsWordOrIntegerToken(peekToken())) {
         throw std::invalid_argument("Invalid condExpr 1");
       }
-      if (AParser::IsWordToken(currToken)) {
-        varAppearances.push_back(getCurrTokenValue());
-      } else {
-        constAppearances.push_back(std::stoi(getCurrTokenValue()));
-      }
+      trackOperatorAndOperand(constAppearances, varAppearances);
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isOperator(getCurrTokenValue())) {
       if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
