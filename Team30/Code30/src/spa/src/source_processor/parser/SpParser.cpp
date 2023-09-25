@@ -352,20 +352,20 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
     std::shared_ptr<Token> currToken = getCurrToken();
     if (AParser::IsWordOrIntegerToken(currToken)) {
       if (IsWordOrIntegerToken(peekToken())) {
-        throw std::invalid_argument("Invalid condExpr 1");
+        throw std::invalid_argument("Invalid condExpr");
       }
       trackOperatorAndOperand(constAppearances, varAppearances);
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isOperator(getCurrTokenValue())) {
       if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
           !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
-        throw std::invalid_argument("Invalid condExpr 2");
+        throw std::invalid_argument("Invalid condExpr");
       }
       if ((isCurrTokenValue(SpRelationLogicalOperator::AND) ||
            isCurrTokenValue(SpRelationLogicalOperator::OR)) &&
           (!isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS) ||
            !isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS))) {
-        throw std::invalid_argument("Invalid condExpr 3");
+        throw std::invalid_argument("Invalid condExpr");
       }
       handleOperatorToken(operatorStack, postFixQueue);
     } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
@@ -375,7 +375,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
                                           parenCount, isParseRelExpr);
       if (parenCount == 0) break;
     } else {
-      throw std::invalid_argument("Invalid condExpr 4");
+      throw std::invalid_argument("Invalid condExpr");
     }
 
     nextToken();
@@ -387,7 +387,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 
   if (constAppearances.size() == 1 && varAppearances.size() == 0 ||
       constAppearances.size() == 0 && varAppearances.size() == 1) {
-    throw std::invalid_argument("Invalid condExpr 5");
+    throw std::invalid_argument("Invalid condExpr");
   }
 
   return std::make_shared<CondExprNode>(variables, constants);
