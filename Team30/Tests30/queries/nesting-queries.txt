@@ -13,10 +13,10 @@ if i; while w;
 Select i such that Follows (w, i)
 18
 5000
-4 - negative, select while loops that directly or indirectly follow an if container.
+4 - positive, select while loops that directly or indirectly follow an if container.
 if i; while w;
 Select w such that Follows* (i, w)
-none
+15
 5000
 5 - positive, select if containers that are a direct parent of another if container
 if i, i1;
@@ -31,7 +31,7 @@ Select r such that Parent* (i, r)
 7 - positive, select while loops that are a direct child of another while loop
 while w, w1;
 Select w1 such that Parent (w, w1)
-9, 12, 15
+12, 15
 5000
 8 - negative, select statements which directly precede an if container
 stmt s, if i;
