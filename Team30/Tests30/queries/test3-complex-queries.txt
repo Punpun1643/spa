@@ -28,3 +28,8 @@ assign a; while w;
 Select a pattern a ("count", _) such that Parent* (w, a)
 6
 5000
+7 - Find all assignments nested in if loops that use and change cenX
+if i; assign a;
+Select i such that Parent* (i, a) pattern a ("cenX", _"cenX"_)
+10
+5000

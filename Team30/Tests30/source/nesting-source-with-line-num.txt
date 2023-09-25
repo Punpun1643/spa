@@ -1,0 +1,36 @@
+    procedure nesting {
+01      a = 5;
+02      b = 1;
+03      c = 7;
+04      while (b < 8) {
+05        if (c <= 10) then {
+06          a = b - 1;
+07          b = b + 2;
+          } else {
+08          c = a - b + 1;
+09          while (d == 4) {
+10            d = d * 2;
+11            read a;
+12            while (b == 0) {
+13              print b;
+              }
+            }
+          }
+14        d = b + c;
+15        while (c == 1) {
+16          print b;
+17          c = c + 1;
+          }
+        }
+18      if (c > 5) then {
+19          read c;
+        } else {
+20          if (e == 1) then {
+21             c = c + 1;
+22             b = c + 2; 
+            } else {
+23             c = c + 1;
+            }
+        }
+24      print b;
+    }
