@@ -36,5 +36,5 @@ Select w1 such that Parent (w, w1)
 8 - negative, select statements which directly precede an if container
 stmt s, if i;
 Select s such that Follows(s, i)
-none
+SyntaxError
 5000
