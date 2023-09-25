@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 #include "EntityType.h"
 #include "PqlDeclaration.h"
@@ -7,8 +8,8 @@
 
 class EntRef : public PqlReference {
  private:
-  std::vector<EntityType> const VALID_ENT_TYPES = {VARIABLE, PROCEDURE,
-                                                   CONSTANT};
+  std::vector<EntityType> const VALID_ENT_TYPES = {EntityType::VARIABLE, EntityType::PROCEDURE,
+                                                   EntityType::CONSTANT};
 
  public:
   EntRef();
