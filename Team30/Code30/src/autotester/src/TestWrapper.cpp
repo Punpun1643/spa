@@ -38,11 +38,9 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
     qps_controller->HandleQuery(query, results, query_evaluator);
   } catch (InvalidSemanticsException e) {
     results.clear();
-    //results.push_back(e.what());
     results.push_back("SemanticError");
   } catch (InvalidSyntaxException e) {
     results.clear();
-    //results.push_back(e.what());
     results.push_back("SyntaxError");
   }
 }

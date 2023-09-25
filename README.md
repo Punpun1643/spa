@@ -24,6 +24,26 @@ No additional instructions required.
 - To format all files: `find . -name '*.cpp' -o -name '*.h' | xargs clang-format -i`
 - To format specific file: `clang-format -i File_To_Format.cpp`
 
+# Testing
+
+The following are the system test cases in the following format:     
+- `<TEST-DESCRIPTION>_source.txt`, the SIMPLE program
+- `<TEST-DESCRIPTION>_queries.txt`, its corresponding query file
+
+| Source File                 | Query File                        | Purpose                                         | Results    |
+|-----------------------------|-----------------------------------|-------------------------------------------------|------------|
+| test1-modifies-source.txt   | test1-modifies-queries.txt        | Modifies                                        | All passed |
+| test1-uses-source.txt         | test1-uses-queries.txt            | Uses                                            | All passed |
+| test1-source.txt            | test1-parent-queries.txt          | Parent/*                                        | All passed |
+| test1-source.txt            | test1-pattern-queries.txt         | Pattern                                         | All passed |
+| test2-source.txt            | test2-follows-queries.txt         | Follows/*                                       | All passed |
+| test2-source.txt            | test2-uses-queries.txt            | Uses                                            | All passed |
+| test2-source.txt            | test2-syntax-invalid-queries      | Invalid Syntax<br>Invalid Semantics             | All passed |
+| nesting-source.txt          | nesting-queries.txt               | Deep nesting                                    | All passed |
+| multiconditional-source.txt | multiconditional-queries.txt      | condExpr with more than one condition           | All passed |
+| test-3-source.txt           | test-3-complex-queries.txt        | 3 clause queries                                | All passed |
+
+
 # Team Members
 
 Name | Mobile | Email                   | Development OS/Toolchain
