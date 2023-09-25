@@ -270,6 +270,9 @@ void SpParser::handleOperatorToken(
 
 void SpParser::handleLeftParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
+  if (AParser::isPeekTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+    throw std::invalid_argument("Empty parentheses");
+  }
   ++parenCount;
   operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
 }
@@ -328,6 +331,9 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   std::stack<std::shared_ptr<std::string>> operatorStack;
   std::unordered_set<std::string> variables;
   std::unordered_set<int> constants;
+  std::vector<int> constAppearances;
+  std::vector<std::string> varAppearances;
+
   bool isParseRelExpr = false;
 
   int parenCount = 0;
@@ -336,19 +342,24 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
     std::shared_ptr<Token> currToken = getCurrToken();
     if (AParser::IsWordOrIntegerToken(currToken)) {
       if (IsWordOrIntegerToken(peekToken())) {
-        throw std::invalid_argument("Invalid condExpr");
+        throw std::invalid_argument("Invalid condExpr 1");
+      }
+      if (AParser::IsWordToken(currToken)) {
+        varAppearances.push_back(getCurrTokenValue());
+      } else {
+        constAppearances.push_back(std::stoi(getCurrTokenValue()));
       }
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isOperator(getCurrTokenValue())) {
       if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
           !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
-        throw std::invalid_argument("Invalid condExpr");
+        throw std::invalid_argument("Invalid condExpr 2");
       }
       if ((isCurrTokenValue(SpRelationLogicalOperator::AND) ||
            isCurrTokenValue(SpRelationLogicalOperator::OR)) &&
           (!isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS) ||
            !isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS))) {
-        throw std::invalid_argument("Invalid condExpr");
+        throw std::invalid_argument("Invalid condExpr 3");
       }
       handleOperatorToken(operatorStack, postFixQueue);
     } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
@@ -358,7 +369,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
                                           parenCount, isParseRelExpr);
       if (parenCount == 0) break;
     } else {
-      throw std::invalid_argument("Invalid condExpr");
+      throw std::invalid_argument("Invalid condExpr 4");
     }
 
     nextToken();
@@ -368,9 +379,9 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
     throw std::invalid_argument("Unmatched parentheses");
   }
 
-  if (constants.size() == 1 && variables.size() == 0 ||
-      constants.size() == 0 && variables.size() == 1) {
-    throw std::invalid_argument("Invalid condExpr");
+  if (constAppearances.size() == 1 && varAppearances.size() == 0 ||
+      constAppearances.size() == 0 && varAppearances.size() == 1) {
+    throw std::invalid_argument("Invalid condExpr 5");
   }
 
   return std::make_shared<CondExprNode>(variables, constants);
