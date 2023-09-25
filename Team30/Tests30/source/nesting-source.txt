@@ -32,6 +32,8 @@ procedure nesting {
         if (e == 1) then {
            c = c + 1;
            b = c + 2; 
+        } else {
+           c = c + 1;
         }
     }
     
