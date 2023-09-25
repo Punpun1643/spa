@@ -15,6 +15,8 @@ class AParser {
   // explore the next token without moving the pointer
   std::shared_ptr<Token> peekToken();
 
+  std::shared_ptr<Token> peekBackToken();
+
   // get the current token
   std::shared_ptr<Token> getCurrToken();
 
@@ -31,6 +33,8 @@ class AParser {
    * @throw std::runtime_error if the tokens are not valid.
    */
   std::string getPeekTokenValue();
+
+  std::string getPeekBackTokenValue();
 
   virtual void parse() = 0;
 
@@ -52,6 +56,9 @@ class AParser {
   static bool IsSpecialCharToken(std::shared_ptr<Token> token);
 
   static bool IsEOFToken(std::shared_ptr<Token> token);
+
+  static bool IsTokenValue(std::shared_ptr<Token> token,
+                           std::string const& tokenValue);
 
   /**
    * @brief Checks if the current token is of the given token type.
@@ -83,6 +90,7 @@ class AParser {
    */
   bool isPeekTokenValue(std::string const& tokenValue);
 
+  bool isPeekBackTokenValue(std::string const& tokenValue);
   /**
    * @brief Checks if the current token and type value is equal to the given
    * token value.
