@@ -1,0 +1,18 @@
+procedure multiconditional {
+
+  x = (x + 1);
+
+  if ((x == 8) && (y > 9)) then {
+    y = y + (a * b);
+  } else {
+    read b;
+  }
+
+  while ((z < 10) || (!(d == 12))) {
+    z = (2 + b) * (c / d);
+  }
+
+  a = c % 3;
+  y = (y);
+
+}

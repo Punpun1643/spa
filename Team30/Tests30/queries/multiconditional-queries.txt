@@ -1,0 +1,25 @@
+1 - check variable used in multiconditional stmt
+stmt s;
+Select s such that Uses (s, "d")
+5, 6
+5000
+2 - check variable used in multiconditional stmt
+variable v, v1; while w;
+Select v such that Uses (w, v1)
+a, b, c, d, x, y, z
+5000
+3 - check if pattern matches for multiconditional asssign
+assign a;
+Select a pattern a (_, _"b"_)
+3, 6
+5000
+4 - Multiclause query
+assign a;
+Select a such that Modifies (a, "z") pattern a (_, "c")
+SyntaxError
+5000
+5 - Invalid, cannot have brackets for pattern matching
+assign a;
+Select a pattern a (_, _"(y)"_)
+SyntaxError
+5000
