@@ -281,10 +281,10 @@ void SpParser::condExprHandleRightParenthesisToken(
     std::stack<std::shared_ptr<Token>>& operatorStack,
     std::queue<std::shared_ptr<Token>>& postFixQueue, int& parenCount,
     bool& isParseRelExpr) {
-
   bool isParseRelExprNew = false;
 
-  while (!(operatorStack.top()->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS)) {
+  while (!(operatorStack.top()->getTokenVal() ==
+           SpParserConstant::LEFT_PARENTHESIS)) {
     if (isComparisonOperator(operatorStack.top()->getTokenVal())) {
       isParseRelExprNew = true;  // closing relExpr
     }
@@ -298,13 +298,12 @@ void SpParser::condExprHandleRightParenthesisToken(
     throw std::invalid_argument("Invalid relExpr");
   }
 
-//  operatorStack.pop();
-//  --parenCount;
-
   // check valid relExpr
   if (isParseRelExprNew && !operatorStack.empty() &&
-      !(isPeekTokenValue(SpRelationLogicalOperator::AND) || isPeekTokenValue(SpRelationLogicalOperator::OR)) &&
-      operatorStack.top()->getTokenVal() == SpParserConstant::LEFT_PARENTHESIS) {
+      !(isPeekTokenValue(SpRelationLogicalOperator::AND) ||
+        isPeekTokenValue(SpRelationLogicalOperator::OR)) &&
+      operatorStack.top()->getTokenVal() ==
+          SpParserConstant::LEFT_PARENTHESIS) {
     throw std::invalid_argument("Invalid relExpr");
   }
 }
@@ -334,71 +333,6 @@ void SpParser::trackOperatorAndOperand(
   }
 }
 
-//std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
-//  if (getPeekTokenValue() == ")") {
-//    throw std::invalid_argument("Empty condExpr");
-//  }
-//
-//  if (!isPossibleRelFactor(peekToken())) {
-//    throw std::invalid_argument("Invalid condExpr");
-//  }
-//
-//  std::queue<std::shared_ptr<std::string>> postFixQueue;
-//  std::stack<std::shared_ptr<std::string>> operatorStack;
-//  std::unordered_set<std::string> variables;
-//  std::unordered_set<int> constants;
-//  std::vector<int> constAppearances;
-//  std::vector<std::string> varAppearances;
-//
-//  bool isParseRelExpr = false;
-//
-//  int parenCount = 0;
-//
-//  while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
-//    std::shared_ptr<Token> currToken = getCurrToken();
-//    if (AParser::IsWordOrIntegerToken(currToken)) {
-//      if (IsWordOrIntegerToken(peekToken())) {
-//        throw std::invalid_argument("Invalid condExpr");
-//      }
-//      trackOperatorAndOperand(constAppearances, varAppearances);
-//      handleWordOrIntegerToken(postFixQueue, variables, constants);
-//    } else if (isOperator(getCurrTokenValue())) {
-//      if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
-//          !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
-//        throw std::invalid_argument("Invalid condExpr");
-//      }
-//      if ((isCurrTokenValue(SpRelationLogicalOperator::AND) ||
-//           isCurrTokenValue(SpRelationLogicalOperator::OR)) &&
-//          (!isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS) ||
-//           !isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS))) {
-//        throw std::invalid_argument("Invalid condExpr");
-//      }
-//      handleOperatorToken(operatorStack, postFixQueue);
-//    } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
-//      handleLeftParenthesisToken(operatorStack, parenCount);
-//    } else if (isCurrTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
-//      condExprHandleRightParenthesisToken(operatorStack, postFixQueue,
-//                                          parenCount, isParseRelExpr);
-//      if (parenCount == 0) break;
-//    } else {
-//      throw std::invalid_argument("Invalid condExpr");
-//    }
-//
-//    nextToken();
-//  }
-//
-//  if (parenCount != 0) {
-//    throw std::invalid_argument("Unmatched parentheses");
-//  }
-//
-//  if (constAppearances.size() == 1 && varAppearances.size() == 0 ||
-//      constAppearances.size() == 0 && varAppearances.size() == 1) {
-//    throw std::invalid_argument("Invalid condExpr");
-//  }
-//
-//  return std::make_shared<CondExprNode>(variables, constants);
-//}
-
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   std::queue<std::shared_ptr<Token>> postFixQueue;
   std::stack<std::shared_ptr<Token>> operatorStack;
@@ -412,7 +346,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
     std::shared_ptr<Token> currToken = getCurrToken();
     if (AParser::IsWordOrIntegerToken(currToken)) {
-      postFixQueue.push( getCurrToken());
+      postFixQueue.push(getCurrToken());
     } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
       operatorStack.push(getCurrToken());
       ++parenCount;
@@ -422,8 +356,16 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
                                           parenCount, isParseRelExpr);
       if (parenCount == 0) break;
     } else if (isOperator(getCurrTokenValue())) {
-      while (!operatorStack.empty() && precedence(operatorStack.top()->getTokenVal()) >=
-                                       precedence(getCurrTokenValue())) {
+      if (AParser::isCurrTokenValue(SpRelationLogicalOperator::AND) ||
+          AParser::isCurrTokenValue(SpRelationLogicalOperator::OR)) {
+        if (!isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS) ||
+            !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
+          throw std::invalid_argument("Invalid condExpr 100");
+        }
+      }
+      while (!operatorStack.empty() &&
+             precedence(operatorStack.top()->getTokenVal()) >=
+                 precedence(getCurrTokenValue())) {
         postFixQueue.push(operatorStack.top());
         operatorStack.pop();
       }
@@ -464,7 +406,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       }
 
       if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
-         tokenStack.pop();
+        tokenStack.pop();
       } else {
         throw std::invalid_argument(
             "Invalid expression: mismatched operators and operands 2");
@@ -479,7 +421,8 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
         throw std::invalid_argument(
             "Invalid expression: mismatched operators and operands 4");
       }
-    } else if (currToken->getTokenVal() == SpRelationLogicalOperator::AND || currToken->getTokenVal() == SpRelationLogicalOperator::OR) {
+    } else if (currToken->getTokenVal() == SpRelationLogicalOperator::AND ||
+               currToken->getTokenVal() == SpRelationLogicalOperator::OR) {
       if (tokenStack.size() < 2) {
         throw std::invalid_argument(
             "Invalid expression: insufficient operands for operator 5");
@@ -494,6 +437,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
 
       if (isComparisonOperator(tokenStack.top()->getTokenVal())) {
         continue;
+
       } else {
         throw std::invalid_argument(
             "Invalid expression: mismatched operators and operands 6");
@@ -525,6 +469,8 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       throw std::invalid_argument("Invalid condExpr 9");
     }
   }
+
+  // no operator in stack, handle (x) case
   if (tokenStack.empty() || AParser::IsWordOrIntegerToken(tokenStack.top())) {
     throw std::invalid_argument(
         "Invalid expression: mismatched operators and operands 11");
