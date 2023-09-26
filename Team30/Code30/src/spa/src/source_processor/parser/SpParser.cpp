@@ -270,6 +270,9 @@ void SpParser::handleOperatorToken(
 
 void SpParser::handleLeftParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
+  if (AParser::isPeekTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+    throw std::invalid_argument("Empty parentheses");
+  }
   ++parenCount;
   operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
 }
