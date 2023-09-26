@@ -71,6 +71,14 @@ class SpParser : public AParser {
 
   static bool isPossibleRelFactor(std::shared_ptr<Token> token);
 
+  static bool isAndOrOrToken(std::shared_ptr<Token> token);
+
+  static bool isLeftParenthesisToken(std::shared_ptr<Token> token);
+
+  static bool isRightParenthesisToken(std::shared_ptr<Token> token);
+
+  static bool isNotToken(std::shared_ptr<Token> token);
+
   void handleWordOrIntegerToken(
       std::queue<std::shared_ptr<std::string>>& postFixQueue,
       std::unordered_set<std::string>& variables,
@@ -83,10 +91,22 @@ class SpParser : public AParser {
   void handleLeftParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
+  void handleCondExprLeftParenthesisToken(
+      std::shared_ptr<Token> const& currToken,
+      std::stack<std::shared_ptr<Token>>& operatorStack, int& parenCount);
+
   void condExprHandleRightParenthesisToken(
-      std::stack<std::shared_ptr<std::string>>& operatorStack,
-      std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount,
-      bool& isParseRelExpr);
+      std::stack<std::shared_ptr<Token>>& operatorStack,
+      std::queue<std::shared_ptr<Token>>& postFixQueue);
+
+  void handleCondExprWordToken(std::shared_ptr<Token> const& currToken,
+                               std::unordered_set<std::string>& variables,
+                               std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void handleCondExprIntegerToken(
+      std::shared_ptr<Token> const& currToken,
+      std::unordered_set<int>& constants,
+      std::stack<std::shared_ptr<Token>>& tokenStack);
 
   void assignHandleRightParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
@@ -94,4 +114,26 @@ class SpParser : public AParser {
 
   void trackOperatorAndOperand(std::vector<int>& constAppearances,
                                std::vector<std::string>& varAppearances);
+
+  void buildCondExprPostFix(std::queue<std::shared_ptr<Token>>& postFixQueue);
+
+  void validateTokenStack(std::queue<std::shared_ptr<Token>>& postFixQueue,
+                          std::stack<std::shared_ptr<Token>>& tokenStack,
+                          std::unordered_set<std::string>& variables,
+                          std::unordered_set<int>& constants);
+
+  void validateTokenStackSize(std::stack<std::shared_ptr<Token>>& tokenStack,
+                              int size);
+
+  void validateWordOrIntegerToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void isTopStackNotWordOrIntegerToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void validateComparisonOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void isTopStackNotComparisonOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
 };
