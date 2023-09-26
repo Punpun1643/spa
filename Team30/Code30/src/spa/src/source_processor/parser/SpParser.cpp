@@ -279,8 +279,7 @@ void SpParser::handleLeftParenthesisToken(
 
 void SpParser::condExprHandleRightParenthesisToken(
     std::stack<std::shared_ptr<Token>>& operatorStack,
-    std::queue<std::shared_ptr<Token>>& postFixQueue, int& parenCount,
-    bool& isParseRelExpr) {
+    std::queue<std::shared_ptr<Token>>& postFixQueue) {
   bool isParseRelExprNew = false;
 
   while (!(operatorStack.top()->getTokenVal() ==
@@ -339,27 +338,23 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   std::unordered_set<std::string> variables;
   std::unordered_set<int> constants;
 
-  bool isParseRelExpr = false;
-
   int parenCount = 0;
 
   while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
     std::shared_ptr<Token> currToken = getCurrToken();
     if (AParser::IsWordOrIntegerToken(currToken)) {
       postFixQueue.push(getCurrToken());
-    } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
+    } else if (isLeftParenthesisToken(getCurrToken())) {
       operatorStack.push(getCurrToken());
       ++parenCount;
-    } else if (isCurrTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+    } else if (isRightParenthesisToken(getCurrToken())) {
       --parenCount;
-      condExprHandleRightParenthesisToken(operatorStack, postFixQueue,
-                                          parenCount, isParseRelExpr);
+      condExprHandleRightParenthesisToken(operatorStack, postFixQueue);
       if (parenCount == 0) break;
     } else if (isOperator(getCurrTokenValue())) {
-      if (AParser::isCurrTokenValue(SpRelationLogicalOperator::AND) ||
-          AParser::isCurrTokenValue(SpRelationLogicalOperator::OR)) {
-        if (!isPeekBackTokenValue(SpParserConstant::RIGHT_PARENTHESIS) ||
-            !isPeekTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
+      if (isAndOrOrToken(getCurrToken())) {
+        if (!isRightParenthesisToken(peekBackToken()) ||
+            !isLeftParenthesisToken(peekToken())) {
           throw std::invalid_argument("Invalid condExpr 100");
         }
       }
@@ -604,6 +599,19 @@ bool SpParser::isPossibleRelFactor(std::shared_ptr<Token> token) {
   return AParser::IsWordOrIntegerToken(token) ||
          AParser::IsTokenValue(token, SpParserConstant::LEFT_PARENTHESIS) ||
          AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
+}
+
+bool SpParser::isAndOrOrToken(std::shared_ptr<Token> token) {
+  return AParser::IsTokenValue(token, SpRelationLogicalOperator::AND) ||
+         AParser::IsTokenValue(token, SpRelationLogicalOperator::OR);
+}
+
+bool SpParser::isLeftParenthesisToken(std::shared_ptr<Token> token) {
+  return AParser::IsTokenValue(token, SpParserConstant::LEFT_PARENTHESIS);
+}
+
+bool SpParser::isRightParenthesisToken(std::shared_ptr<Token> token) {
+  return AParser::IsTokenValue(token, SpParserConstant::RIGHT_PARENTHESIS);
 }
 
 // helper function to calculate precedence of an operator

@@ -71,6 +71,12 @@ class SpParser : public AParser {
 
   static bool isPossibleRelFactor(std::shared_ptr<Token> token);
 
+  static bool isAndOrOrToken(std::shared_ptr<Token> token);
+
+  static bool isLeftParenthesisToken(std::shared_ptr<Token> token);
+
+  static bool isRightParenthesisToken(std::shared_ptr<Token> token);
+
   void handleWordOrIntegerToken(
       std::queue<std::shared_ptr<std::string>>& postFixQueue,
       std::unordered_set<std::string>& variables,
@@ -85,8 +91,7 @@ class SpParser : public AParser {
 
   void condExprHandleRightParenthesisToken(
       std::stack<std::shared_ptr<Token>>& operatorStack,
-      std::queue<std::shared_ptr<Token>>& postFixQueue, int& parenCount,
-      bool& isParseRelExpr);
+      std::queue<std::shared_ptr<Token>>& postFixQueue);
 
   void assignHandleRightParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
