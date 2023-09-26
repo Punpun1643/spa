@@ -84,8 +84,8 @@ class SpParser : public AParser {
       std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
   void condExprHandleRightParenthesisToken(
-      std::stack<std::shared_ptr<std::string>>& operatorStack,
-      std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount,
+      std::stack<std::shared_ptr<Token>>& operatorStack,
+      std::queue<std::shared_ptr<Token>>& postFixQueue, int& parenCount,
       bool& isParseRelExpr);
 
   void assignHandleRightParenthesisToken(
