@@ -270,6 +270,9 @@ void SpParser::handleOperatorToken(
 
 void SpParser::handleLeftParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
+  if (AParser::isPeekTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+    throw std::invalid_argument("Empty parentheses");
+  }
   ++parenCount;
   operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
 }
@@ -315,6 +318,16 @@ void SpParser::assignHandleRightParenthesisToken(
   operatorStack.pop();
 }
 
+void SpParser::trackOperatorAndOperand(
+    std::vector<int>& constAppearances,
+    std::vector<std::string>& varAppearances) {
+  if (AParser::IsWordToken(getCurrToken())) {
+    varAppearances.push_back(getCurrTokenValue());
+  } else {
+    constAppearances.push_back(std::stoi(getCurrTokenValue()));
+  }
+}
+
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   if (getPeekTokenValue() == ")") {
     throw std::invalid_argument("Empty condExpr");
@@ -328,6 +341,9 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   std::stack<std::shared_ptr<std::string>> operatorStack;
   std::unordered_set<std::string> variables;
   std::unordered_set<int> constants;
+  std::vector<int> constAppearances;
+  std::vector<std::string> varAppearances;
+
   bool isParseRelExpr = false;
 
   int parenCount = 0;
@@ -338,6 +354,7 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
       if (IsWordOrIntegerToken(peekToken())) {
         throw std::invalid_argument("Invalid condExpr");
       }
+      trackOperatorAndOperand(constAppearances, varAppearances);
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isOperator(getCurrTokenValue())) {
       if (isCurrTokenValue(SpRelationLogicalOperator::NOT) &&
@@ -368,8 +385,8 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
     throw std::invalid_argument("Unmatched parentheses");
   }
 
-  if (constants.size() == 1 && variables.size() == 0 ||
-      constants.size() == 0 && variables.size() == 1) {
+  if (constAppearances.size() == 1 && varAppearances.size() == 0 ||
+      constAppearances.size() == 0 && varAppearances.size() == 1) {
     throw std::invalid_argument("Invalid condExpr");
   }
 

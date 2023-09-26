@@ -91,4 +91,7 @@ class SpParser : public AParser {
   void assignHandleRightParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount);
+
+  void trackOperatorAndOperand(std::vector<int>& constAppearances,
+                               std::vector<std::string>& varAppearances);
 };
