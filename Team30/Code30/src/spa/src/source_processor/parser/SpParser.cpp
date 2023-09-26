@@ -401,15 +401,42 @@ void SpParser::handleCondExprIntegerToken(
 }
 
 void SpParser::validateTokenStackSize(
-    std::stack<std::shared_ptr<Token>>& tokenStack, int size,
-    std::string const& errorMessage) {
+    std::stack<std::shared_ptr<Token>>& tokenStack, int size) {
   if (tokenStack.size() < size) {
-    throw std::invalid_argument(errorMessage);
+    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
   }
 }
 
-void SpParser::validateWordOrIntegerToken(std::stack<std::shared_ptr<Token>>& tokenStack, std::string const& errorMessage) {
+void SpParser::validateWordOrIntegerToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
+    tokenStack.pop();
+  } else {
+    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+  }
+}
 
+void SpParser::isTopStackNotWordOrIntegerToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (!AParser::IsWordOrIntegerToken(tokenStack.top())) {
+    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+  }
+}
+
+void SpParser::validateComparisonOperatorToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (isComparisonOperator(tokenStack.top()->getTokenVal())) {
+    return;
+  } else {
+    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+  }
+}
+
+void SpParser::isTopStackNotComparisonOperatorToken(std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (!isComparisonOperator(tokenStack.top()->getTokenVal())) {
+    throw std::invalid_argument(
+        "Invalid expression: mismatched operators and operands");
+  }
 }
 
 void SpParser::validateTokenStack(
@@ -428,73 +455,39 @@ void SpParser::validateTokenStack(
       handleCondExprIntegerToken(currToken, constants, tokenStack);
     } else if (isMathematicalOperator(currToken->getTokenVal())) {
       validateTokenStackSize(
-          tokenStack, 2,
-          "Invalid expression: insufficient operands for operator 1");
-
-      if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
-        tokenStack.pop();
-      } else {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 2");
-      }
-
-      if (!AParser::IsWordOrIntegerToken(tokenStack.top())) {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 3");
-      }
+          tokenStack, 2);
+      validateWordOrIntegerToken(
+          tokenStack);
+      isTopStackNotWordOrIntegerToken(
+          tokenStack);
     } else if (isNotToken(currToken)) {
-      if (!isComparisonOperator(tokenStack.top()->getTokenVal())) {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 4");
-      }
+      isTopStackNotComparisonOperatorToken(
+          tokenStack);
     } else if (isAndOrOrToken(currToken)) {
       validateTokenStackSize(
-          tokenStack, 2,
-          "Invalid expression: insufficient operands for operator 1");
-
-      if (isComparisonOperator(tokenStack.top()->getTokenVal())) {
-        tokenStack.pop();
-      } else {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 6");
-      }
-
-      if (isComparisonOperator(tokenStack.top()->getTokenVal())) {
-        continue;
-      } else {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 6");
-      }
+          tokenStack, 2);
+      validateComparisonOperatorToken(
+          tokenStack);
+      validateComparisonOperatorToken(
+          tokenStack);
 
     } else if (isComparisonOperator(currToken->getTokenVal())) {
       validateTokenStackSize(
-          tokenStack, 2,
-          "Invalid expression: insufficient operands for operator 1");
-
-      if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
-        tokenStack.pop();
-      } else {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 9");
-      }
-
-      if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
-        tokenStack.pop();
-      } else {
-        throw std::invalid_argument(
-            "Invalid expression: mismatched operators and operands 10");
-      }
-
+          tokenStack, 2);
+      validateWordOrIntegerToken(
+          tokenStack);
+      validateWordOrIntegerToken(
+          tokenStack);
       tokenStack.push(currToken);
 
     } else {
-      throw std::invalid_argument("Invalid condExpr 9");
+      throw std::invalid_argument("Invalid condExpr");
     }
   }
   // no operator in stack, handle (x) case
   if (tokenStack.empty() || AParser::IsWordOrIntegerToken(tokenStack.top())) {
     throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands 11");
+        "Invalid expression: mismatched operators and operands");
   }
 }
 
