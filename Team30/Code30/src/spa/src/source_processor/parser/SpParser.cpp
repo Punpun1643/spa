@@ -403,7 +403,8 @@ void SpParser::handleCondExprIntegerToken(
 void SpParser::validateTokenStackSize(
     std::stack<std::shared_ptr<Token>>& tokenStack, int size) {
   if (tokenStack.size() < size) {
-    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+    throw std::invalid_argument(
+        "Invalid expression: mismatched operators and operands");
   }
 }
 
@@ -412,14 +413,16 @@ void SpParser::validateWordOrIntegerToken(
   if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
     tokenStack.pop();
   } else {
-    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+    throw std::invalid_argument(
+        "Invalid expression: mismatched operators and operands");
   }
 }
 
 void SpParser::isTopStackNotWordOrIntegerToken(
     std::stack<std::shared_ptr<Token>>& tokenStack) {
   if (!AParser::IsWordOrIntegerToken(tokenStack.top())) {
-    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+    throw std::invalid_argument(
+        "Invalid expression: mismatched operators and operands");
   }
 }
 
@@ -428,11 +431,13 @@ void SpParser::validateComparisonOperatorToken(
   if (isComparisonOperator(tokenStack.top()->getTokenVal())) {
     return;
   } else {
-    throw std::invalid_argument("Invalid expression: mismatched operators and operands");
+    throw std::invalid_argument(
+        "Invalid expression: mismatched operators and operands");
   }
 }
 
-void SpParser::isTopStackNotComparisonOperatorToken(std::stack<std::shared_ptr<Token>>& tokenStack) {
+void SpParser::isTopStackNotComparisonOperatorToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
   if (!isComparisonOperator(tokenStack.top()->getTokenVal())) {
     throw std::invalid_argument(
         "Invalid expression: mismatched operators and operands");
@@ -454,30 +459,20 @@ void SpParser::validateTokenStack(
     } else if (AParser::IsIntegerToken(currToken)) {
       handleCondExprIntegerToken(currToken, constants, tokenStack);
     } else if (isMathematicalOperator(currToken->getTokenVal())) {
-      validateTokenStackSize(
-          tokenStack, 2);
-      validateWordOrIntegerToken(
-          tokenStack);
-      isTopStackNotWordOrIntegerToken(
-          tokenStack);
+      validateTokenStackSize(tokenStack, 2);
+      validateWordOrIntegerToken(tokenStack);
+      isTopStackNotWordOrIntegerToken(tokenStack);
     } else if (isNotToken(currToken)) {
-      isTopStackNotComparisonOperatorToken(
-          tokenStack);
+      isTopStackNotComparisonOperatorToken(tokenStack);
     } else if (isAndOrOrToken(currToken)) {
-      validateTokenStackSize(
-          tokenStack, 2);
-      validateComparisonOperatorToken(
-          tokenStack);
-      validateComparisonOperatorToken(
-          tokenStack);
+      validateTokenStackSize(tokenStack, 2);
+      validateComparisonOperatorToken(tokenStack);
+      validateComparisonOperatorToken(tokenStack);
 
     } else if (isComparisonOperator(currToken->getTokenVal())) {
-      validateTokenStackSize(
-          tokenStack, 2);
-      validateWordOrIntegerToken(
-          tokenStack);
-      validateWordOrIntegerToken(
-          tokenStack);
+      validateTokenStackSize(tokenStack, 2);
+      validateWordOrIntegerToken(tokenStack);
+      validateWordOrIntegerToken(tokenStack);
       tokenStack.push(currToken);
 
     } else {
