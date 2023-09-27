@@ -8,6 +8,7 @@
 #include "../node/ANode.h"
 #include "IDesignExtractor.h"
 #include "IExtractionController.h"
+#include "CallStmtCacheObject.h"
 
 class ExtractionController : public IExtractionController {
  public:
@@ -25,5 +26,9 @@ class ExtractionController : public IExtractionController {
   PkbApi& pkb;
 
   void handleContainerStmts(std::shared_ptr<StmtNode> node);
+  void handleCallStmts();
+  void handleCallStmtsHelper(
+      std::vector<std::shared_ptr<CallStmtCacheObject>> cache,
+      RelationType rel);
   void popActors();
 };

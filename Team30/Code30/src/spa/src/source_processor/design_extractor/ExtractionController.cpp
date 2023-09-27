@@ -27,6 +27,9 @@ void ExtractionController::executeProgramExtraction(
       executeProcedureExtraction(child);
     }
   }
+
+  // handle call stmts here
+  handleCallStmts();
 }
 
 void ExtractionController::executeProcedureExtraction(
@@ -83,6 +86,38 @@ void ExtractionController::handleContainerStmts(
     executeStmtLstExtraction(thenBody);
     executeStmtLstExtraction(elseBody);
     popActors();
+  }
+}
+
+void ExtractionController::handleCallStmts() {
+  std::vector<std::shared_ptr<CallStmtCacheObject>> usesCache =
+      std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))
+          ->getCallStmtCache();
+  handleCallStmtsHelper(usesCache, RelationType::USES_S);
+
+  std::vector<std::shared_ptr<CallStmtCacheObject>> modifiesCache =
+      std::dynamic_pointer_cast<UsesExtractor>(extractors.at(3))
+          ->getCallStmtCache();
+  handleCallStmtsHelper(modifiesCache, RelationType::MODIFIES_S);
+}
+
+void ExtractionController::handleCallStmtsHelper(
+    std::vector<std::shared_ptr<CallStmtCacheObject>> cache, RelationType rel) {
+  bool updated = true;
+  // need something to check if the vars is getting updates, if no update brteak.
+
+
+  for (std::shared_ptr<CallStmtCacheObject> callStmt : cache) {
+    std::vector<std::string> varsFromProc = *pkb.getRelationValues(
+        callStmt->getCallNode()->getProcName(), EntityType::VARIABLE, rel);
+
+    // callStmt->updateVars(varsFromProc);
+
+    for (std::string var : varsFromProc) {
+      for (std::string actor : callStmt->getActors()) {
+        pkb.insertRelation(rel, actor, var);
+      }
+    }
   }
 }
 

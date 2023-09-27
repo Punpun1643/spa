@@ -11,6 +11,7 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
+#include "CallStmtCacheObject.h"
 #include "IDesignExtractor.h"
 
 class UsesExtractor : public IDesignExtractor {
@@ -37,6 +38,8 @@ class UsesExtractor : public IDesignExtractor {
 
   void popUsesActor();
 
+  std::vector<std::shared_ptr<CallStmtCacheObject>> getCallStmtCache();
+
   ~UsesExtractor() = default;
 
  private:
@@ -44,8 +47,10 @@ class UsesExtractor : public IDesignExtractor {
 
   std::vector<std::string> usesActors;
 
+  std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
+
   void insertMultipleVars(std::unordered_set<std::string> vars,
-                      std::string stmtIndex);
+                          std::string stmtIndex);
 
   void insertVarWithActors(std::string var);
 };

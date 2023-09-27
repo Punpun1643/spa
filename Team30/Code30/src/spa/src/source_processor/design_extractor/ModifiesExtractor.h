@@ -11,6 +11,7 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
+#include "CallStmtCacheObject.h"
 #include "IDesignExtractor.h"
 
 class ModifiesExtractor : public IDesignExtractor {
@@ -37,12 +38,16 @@ class ModifiesExtractor : public IDesignExtractor {
 
   void popModifiesActor();
 
+  std::vector<std::shared_ptr<CallStmtCacheObject>> getCallStmtCache();
+
   ~ModifiesExtractor() = default;
 
  private:
   PkbApi& pkb;
 
   std::vector<std::string> modifiesActors;
+
+  std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
 
   void insertCondVars(std::unordered_set<std::string> condVars,
                       std::string stmtIndex);

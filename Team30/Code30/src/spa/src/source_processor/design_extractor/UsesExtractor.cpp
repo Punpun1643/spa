@@ -18,7 +18,8 @@ void UsesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
 }
 
 void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  // TODO
+  CallStmtCacheObject newCallStmt = CallStmtCacheObject(usesActors, node);
+  callStmtCache.push_back(std::make_shared<CallStmtCacheObject>(newCallStmt));
 }
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
@@ -50,17 +51,21 @@ void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
   insertMultipleVars(rhsVars, std::to_string(node->getStmtIndex()));
 }
 
-//////////////////////////////
-//
-// PRIVATE HELPER FUNCTIONS
-//
-//////////////////////////////
-
 void UsesExtractor::popUsesActor() {
   if (!usesActors.empty()) {
     usesActors.pop_back();
   }
 }
+
+std::vector<std::shared_ptr<CallStmtCacheObject>> UsesExtractor::getCallStmtCache() {
+  return callStmtCache;
+}
+
+//////////////////////////////
+//
+// PRIVATE HELPER FUNCTIONS
+//
+//////////////////////////////
 
 void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
                                        std::string stmtIndex) {

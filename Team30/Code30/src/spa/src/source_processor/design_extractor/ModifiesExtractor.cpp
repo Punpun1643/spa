@@ -20,7 +20,8 @@ void ModifiesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
 }
 
 void ModifiesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  // TODO
+  CallStmtCacheObject newCallStmt = CallStmtCacheObject(modifiesActors, node);
+  callStmtCache.push_back(std::make_shared<CallStmtCacheObject>(newCallStmt));
 }
 
 void ModifiesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
@@ -47,17 +48,21 @@ void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
   insertVarWithActors(node->getVarName());
 }
 
-//////////////////////////////
-//
-// PRIVATE HELPER FUNCTIONS
-//
-//////////////////////////////
-
 void ModifiesExtractor::popModifiesActor() {
   if (!modifiesActors.empty()) {
     modifiesActors.pop_back();
   }
 }
+
+std::vector<std::shared_ptr<CallStmtCacheObject>> ModifiesExtractor::getCallStmtCache() {
+  return callStmtCache;
+}
+
+//////////////////////////////
+//
+// PRIVATE HELPER FUNCTIONS
+//
+//////////////////////////////
 
 void ModifiesExtractor::insertVarWithActors(std::string var) {
   for (std::string modifiesActor : modifiesActors) {
