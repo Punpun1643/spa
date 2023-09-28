@@ -103,21 +103,23 @@ void ExtractionController::handleCallStmts() {
 
 void ExtractionController::handleCallStmtsHelper(
     std::vector<std::shared_ptr<CallStmtCacheObject>> cache, RelationType rel) {
-  bool updated = true;
-  // need something to check if the vars is getting updates, if no update brteak.
+  bool isGettingUpdated = true;
+  while (isGettingUpdated) {
+    bool hasUpdateThisIteration = false;
+    for (std::shared_ptr<CallStmtCacheObject> callStmt : cache) {
+      std::vector<std::string> varsFromProc = *pkb.getRelationValues(
+          callStmt->getCallNode()->getProcName(), EntityType::VARIABLE, rel);
 
+      bool hasUpdate = callStmt->updateVars(varsFromProc);
+      bool hasUpdateThisIteration = hasUpdateThisIteration || hasUpdate;
 
-  for (std::shared_ptr<CallStmtCacheObject> callStmt : cache) {
-    std::vector<std::string> varsFromProc = *pkb.getRelationValues(
-        callStmt->getCallNode()->getProcName(), EntityType::VARIABLE, rel);
-
-    // callStmt->updateVars(varsFromProc);
-
-    for (std::string var : varsFromProc) {
-      for (std::string actor : callStmt->getActors()) {
-        pkb.insertRelation(rel, actor, var);
+      for (std::string var : varsFromProc) {
+        for (std::string actor : callStmt->getActors()) {
+          pkb.insertRelation(rel, actor, var);
+        }
       }
     }
+    isGettingUpdated = hasUpdateThisIteration;
   }
 }
 

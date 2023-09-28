@@ -11,7 +11,7 @@ class CallStmtCacheObject {
                       std::shared_ptr<CallNode> callNode);
   std::vector<std::string> getActors();
   std::shared_ptr<CallNode> getCallNode();
-  bool updateVars(std::vector<std::string>> newVars);
+  bool updateVars(std::vector<std::string> newVars);
 
   ~CallStmtCacheObject() = default;
 
