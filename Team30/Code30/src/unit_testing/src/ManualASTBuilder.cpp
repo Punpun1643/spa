@@ -236,3 +236,57 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_4() {
   std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
   return prog;
 }
+
+std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_5() {
+  std::shared_ptr<CallNode> c1 =
+      std::make_shared<CallNode>(1, StmtType::CALL_STMT, "procB");
+  std::shared_ptr<CallNode> c3 =
+      std::make_shared<CallNode>(1, StmtType::CALL_STMT, "procC");
+
+  std::unordered_set<std::string> a4_vars;
+  a4_vars.insert("x");
+  a4_vars.insert("y");
+  std::unordered_set<int> a4_const;
+  std::shared_ptr<TreeNode> emptyTree;
+  std::shared_ptr<TreeNode> a4_tree =
+      std::make_shared<TreeNode>("y", emptyTree, emptyTree);
+  std::shared_ptr<AssignNode> a4 = std::make_shared<AssignNode>(
+      4, StmtType::ASSIGN_STMT, a4_vars, a4_const, "x", a4_tree);
+
+  std::unordered_set<std::string> w2_condVars;
+  w2_condVars.insert("var1");
+  std::unordered_set<int> w2_condConsts;
+  w2_condConsts.insert(3);
+  std::shared_ptr<CondExprNode> w2_cond =
+      std::make_shared<CondExprNode>(w2_condVars, w2_condConsts);
+  std::vector<std::shared_ptr<StmtNode>> w2_stmts;
+  w2_stmts.push_back(c3);
+  std::shared_ptr<StmtLstNode> w2_stl = std::make_shared<StmtLstNode>(w2_stmts);
+  std::shared_ptr<WhileNode> w2 =
+      std::make_shared<WhileNode>(2, StmtType::WHILE_STMT, w2_cond, w2_stl);
+
+  std::vector<std::shared_ptr<StmtNode>> stmtsA;
+  stmtsA.push_back(c1);
+  std::shared_ptr<StmtLstNode> stlA = std::make_shared<StmtLstNode>(stmtsA);
+  std::shared_ptr<ProcedureNode> procA =
+      std::make_shared<ProcedureNode>("procA", stlA);
+
+  std::vector<std::shared_ptr<StmtNode>> stmtsB;
+  stmtsA.push_back(w2);
+  std::shared_ptr<StmtLstNode> stlB = std::make_shared<StmtLstNode>(stmtsB);
+  std::shared_ptr<ProcedureNode> procB =
+      std::make_shared<ProcedureNode>("procB", stlB);
+
+  std::vector<std::shared_ptr<StmtNode>> stmtsC;
+  stmtsA.push_back(a4);
+  std::shared_ptr<StmtLstNode> stlC = std::make_shared<StmtLstNode>(stmtsC);
+  std::shared_ptr<ProcedureNode> procC =
+      std::make_shared<ProcedureNode>("procC", stlC);
+
+  std::vector<std::shared_ptr<ProcedureNode>> procs;
+  procs.push_back(procA);
+  procs.push_back(procB);
+  procs.push_back(procC);
+  std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
+  return prog;
+}
