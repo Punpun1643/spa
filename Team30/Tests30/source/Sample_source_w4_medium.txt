@@ -1,0 +1,20 @@
+procedure Example1 {
+    call Function1;
+    read userInput1;
+    print output1; }
+
+procedure Example2 {
+    call ExternalProc;
+    read configValue;
+    print statusMessage;
+    call Cleanup;
+}
+
+procedure Example3 {
+    call Initialize;
+    call Configure;
+    read configA;
+    read configB;
+    print reportA;
+    print reportB;
+}

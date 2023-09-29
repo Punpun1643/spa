@@ -1,0 +1,175 @@
+1 - Uses stmt syn LHS and var syn RHS
+stmt s; variable v;
+Select v such that Uses (s, v)
+x, y, z, p, q, i, j, a, t, b
+5000
+2 - Uses container syn LHS and var syn RHS
+while w; variable v;
+Select w such that Uses (w, v)
+7, 14
+5000
+3 - Uses container syn LHS and var syn RHS
+if i; variable v; while extra;
+Select i such that Uses (i, v)
+4, 20, 24
+5000
+4 - Uses stmt syn LHS and specific var string RHS
+print pn;
+Select pn such that Uses (pn, "p")
+6
+5000
+5 - Uses stmt syn LHS and specific var string RHS
+stmt s; variable v;
+Select s such that Uses (s, "y")
+3, 13, 14, 16, 19, 20, 23
+5000
+6 - Uses container syn LHS and specific var string RHS
+if i;
+Select i such that Uses (i, "a")
+20, 24
+5000
+7 - Uses container syn LHS and specific var string RHS
+while w;
+Select w such that Uses (w, "t")
+14
+5000
+8 - Uses container syn LHS and specific var string RHS
+while w;
+Select w such that Uses (w, "a")
+none
+5000
+9 - Uses stmt syn LHS and nonexistent var string RHS
+stmt s;
+Select s such that Uses (s, "wowThisIsAReallyLongVariableNameICantBelieveHowLongThisIsHereAreSomeNumbers910239122")
+none
+5000
+10 - Uses stmt syn LHS and wildcard RHS
+assign a;
+Select a such that Uses (a, _)
+2, 3, 5, 8, 9, 10, 11, 12, 13, 15, 17, 18, 19, 23, 25, 26, 27
+5000
+11 - Uses container syn LHS and wildcard RHS
+while w, w1;
+Select w such that Uses (w, _)
+7, 14
+5000
+12 - Uses stmt syn LHS and wildcard RHS
+while w, w1; stmt s;
+Select w such that Uses (s, _)
+7, 14, 30
+5000
+13 - Uses stmt syn LHS and wildcard RHS
+while w, w1; stmt s;
+Select s such that Uses (s, _)
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 29
+5000
+14 - read statements do not Uses anything
+read re;
+Select re such that Uses (re, _)
+none
+5000
+15 - Uses specific stmt num LHS and var syn RHS
+variable v;
+Select v such that Uses (8, v)
+x, q
+5000
+16 - Uses specific stmt num LHS and var syn RHS
+variable v;
+Select v such that Uses (4, v)
+z, q, x, p
+5000
+17 - Uses specific container num LHS and var syn RHS
+while w; variable v;
+Select w such that Uses (30, v)
+none
+5000
+18 - Uses specific stmt num LHS and var syn RHS
+variable v;
+Select v such that Uses (28, v)
+none
+5000
+19 - Uses specific stmt num LHS and specific var string RHS
+print pn;
+Select pn such that Uses (11, "q")
+none
+5000
+20 - Uses specific stmt num LHS and specific var string RHS
+print pn;
+Select pn such that Uses (11, "x")
+6, 16, 29
+5000
+21 - Uses specific stmt num LHS and specific var string RHS
+print pn;
+Select pn such that Uses (20, "i")
+6, 16, 29
+5000
+22 - Uses specific stmt num LHS and specific var string RHS
+read re;
+Select re such that Uses (20, "a")
+1, 21, 28, 31, 33, 34
+5000
+23 - Uses specific stmt num LHS and wildcard RHS
+read r;
+Select r such that Uses (7, _)
+1, 21, 28, 31, 33, 34
+5000
+24 - Uses specific stmt num LHS and wildcard RHS
+while w;
+Select w such that Uses (1, _)
+none
+5000
+25 - Semantic Error, cannot have wildcard in first param of Uses
+read r; variable v;
+Select r such that Uses (_, v)
+SemanticError
+5000
+26 - Semantic Error, cannot have variable syn in first param of Uses
+variable v1, v2;
+Select v1 such that Uses (v1, v2)
+SemanticError
+5000
+27 - Semantic Error, cannot have constant syn in first param of Uses
+constant c;
+Select c such that Uses (c, v2)
+SemanticError
+5000
+28 - Syntax Error, cannot have identifier in first param of Uses
+variable v1, v2;
+Select v1 such that Uses ("abc", v2)
+SyntaxError
+5000
+29 - Syntax Error, IDENT must start with a letter
+assign a;
+Select a such that Uses (a, "1")
+SyntaxError
+5000
+30 - Syntax Error, cannot have stmt number in second param of Uses
+read r; variable v;
+Select r such that Uses (10, 15)
+SyntaxError
+5000
+31 - Semantic Error, cannot have Stmt Declaration in second param of Uses
+read r; stmt s;
+Select r such that Uses (10, s)
+SemanticError
+5000
+32 - Semantic Error, cannot have Constant Declaration in second param of Uses
+read r; constant con;
+Select r such that Uses (10, con)
+SemanticError
+5000
+33 - Syntax Error, spell Uses wrongly
+read r; constant con;
+Select r such that Use (10, con)
+SyntaxError
+5000
+34 - Syntax Error, IDENTIFIER cannot be empty
+read r; constant con;
+Select r such that Uses (10, " ")
+SyntaxError
+5000
+35 - Semantic Error, non-existent declaration
+while w;
+Select i such that Uses (i, "a")
+SemanticError
+5000
