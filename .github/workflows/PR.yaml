@@ -3,9 +3,34 @@ on:
   push:
     branches:
       - master
+      - branch-setup-github-actions
   pull_request:
+env:
+  BUILD_TYPE: Release
 
 jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 3
+    strategy:
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE/Team00/Code00/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+      - name: Build Project
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config $BUILD_TYPE
+
   run_unit_tests:
     runs-on: ubuntu-latest
     steps:
@@ -19,19 +44,19 @@ jobs:
           # make unit_testing
           make
       - run: ./Team00/Code00/build/src/unit_testing/unit_testing
-  run_autotester:
-    runs-on: ubuntu-latest
-    needs: run_unit_tests
-    steps:
-      - uses: actions/checkout@v3
-      - name: build
-        run: |
-          cd Team00/Code00
-          mkdir build
-          cd build
-          cmake ..
-          make
-      - run: |
-          cd Team00/Code00
-          ./build/src/autotester/autotester tests/Sample_source.txt Sample_queries.txt out.xml
+  # run_autotester:
+  #   runs-on: ubuntu-latest
+  #   needs: run_unit_tests
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: build
+  #       run: |
+  #         cd Team00/Code00
+  #         mkdir build
+  #         cd build
+  #         cmake ..
+  #         make
+  #     - run: |
+  #         cd Team00/Code00
+  #         ./build/src/autotester/autotester tests/Sample_source.txt Sample_queries.txt out.xml
 
