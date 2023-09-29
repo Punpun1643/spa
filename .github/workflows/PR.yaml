@@ -9,7 +9,7 @@ env:
 
 jobs:
   ubuntu-build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 5
     strategy:
       fail-fast: true
