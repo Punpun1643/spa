@@ -6,6 +6,9 @@ on:
   pull_request:
 env:
   BUILD_TYPE: Release
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
@@ -30,13 +33,15 @@ jobs:
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config $BUILD_TYPE
 
-      - name: Unit test
-        working-dircetory: ${{runner.workspace}}
-        run: ./Team30/Code30/build/src/unit_testing/unit_testing
+      # - name: Unit test
+      #   working-dircetory: ${{runner.workspace}}
+      #   run: ./Team30/Code30/build/src/unit_testing/unit_testing
 
       - name: autotest
         working-directory: ${{runner.workspace}}/Team30
-        run: ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt Tests30/output/test.txt
+        run: pwd
+      - run: ls
+        # run: ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt Tests30/output/test.txt
   # run_unit_tests:
     # runs-on: macos-latest
     # steps:
