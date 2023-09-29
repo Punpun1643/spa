@@ -1,12 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Documentation</title>
+    <title>My GitHub Pages</title>
 </head>
 <body>
     <h1>Welcome to My GitHub Pages</h1>
-    <p>Click below to view the XML file:</p>
-    <a href="autotester-output/test1-modifies.xml">View XML</a>
+    <p>Click below to view XML files:</p>
+    <ul id="xml-list"></ul>
+
+    <script>
+        // Get the current URL
+        var currentURL = window.location.href;
+
+        // Split the URL by '/' to get the last part (the directory name)
+        var parts = currentURL.split('/');
+        var directoryName = parts[parts.length - 2]; // The second-to-last part is the directory name
+
+        // Fetch the list of files in the 'docs/autotester-output' directory
+        fetch(`docs/autotester-output/${directoryName}`)
+            .then(response => response.text())
+            .then(data => {
+                var xmlList = document.getElementById('xml-list');
+                var lines = data.split('\n');
+                for (var i = 0; i < lines.length; i++) {
+                    var fileName = lines[i].trim();
+                    if (fileName.endsWith('.xml')) {
+                        var listItem = document.createElement('li');
+                        var link = document.createElement('a');
+                        link.href = `docs/autotester-output/${directoryName}/${fileName}`;
+                        link.textContent = 'View ' + fileName;
+                        listItem.appendChild(link);
+                        xmlList.appendChild(listItem);
+                    }
+                }
+            })
+            .catch(error => console.error(error));
+    </script>
 </body>
 </html>
 
