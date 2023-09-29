@@ -34,16 +34,12 @@ jobs:
         run: cmake --build . --config $BUILD_TYPE
 
       # - name: Unit test
-      #   working-dircetory: ${{runner.workspace}}
+      #   working-dircetory: ${{runner.workspace}
       #   run: ./Team30/Code30/build/src/unit_testing/unit_testing
 
       - name: autotest
-        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30
-        # run: ls
-        # run: ls Team30
-        # run: ls Team30/Code30
-        # run: ls Team30/Code30/build
-        run: ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt output/test.txt
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30
+        run: ../build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test.txt
   # run_unit_tests:
     # runs-on: macos-latest
     # steps:
