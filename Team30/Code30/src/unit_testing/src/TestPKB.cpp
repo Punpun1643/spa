@@ -247,7 +247,7 @@ TEST_CASE("Assignment Pattern PKB") {
 
   // pattern a("x", _)
   expected_result = {"3", "5"};
-  expected_result2 = {"5", "3"};
+  std::vector<std::string> expected_result2 = {"5", "3"};
   REQUIRE((*pkb.getPatternMatchesWithLhsValue("x", "", MatchType::WILD_MATCH) ==
           expected_result || *pkb.getPatternMatchesWithLhsValue("x", "") == expected_result2));
 
