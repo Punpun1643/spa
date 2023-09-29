@@ -8,28 +8,20 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build-and-autotest:
+  build-and-test:
     runs-on: macos-latest
     timeout-minutes: 5
     strategy:
       fail-fast: true
-
     steps:
       - uses: actions/checkout@v3
 
       - name: Create Build Environment
-        # Some projects don't allow in-source building, so create a separate build directory
-        # We'll use this as our working directory for all subsequent commands
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure CMake
-        # Use a bash shell so we can use the same syntax for environment variable
-        # access regardless of the host operating system
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        # Note the current convention is to use the -S and -B options here to specify source
-        # and build directories, but this is only available with CMake 3.13 and higher.
-        # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
         run: cmake $GITHUB_WORKSPACE/Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
       - name: Build
@@ -38,39 +30,25 @@ jobs:
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config $BUILD_TYPE
 
+      - name: Unit test
+        working-dircetory: ${{runner.workspace}}
+        run: ./Team30/Code30/build/src/unit_testing/unit_testing
+
       - name: autotest
         working-directory: ${{runner.workspace}}/Team30
-        run: |
-          ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt Tests30/output/test.txt
+        run: ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt Tests30/output/test.txt
+  # run_unit_tests:
+    # runs-on: macos-latest
+    # steps:
+    #   - uses: actions/checkout@v3
 
+    #   - name: build
+    #     run: |
+    #       cd Team30/Code30
+    #       mkdir build
+    #       cd build
+    #       cmake ..
+    #       # make unit_testing
+    #       make unit_testing
 
-
-  run_unit_tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: build
-        run: |
-          cd Team30/Code30
-          mkdir build
-          cd build
-          cmake ..
-          # make unit_testing
-          make unit_testing
-      - run: ./Team30/Code30/build/src/unit_testing/unit_testing
-  # run_autotester:
-  #   runs-on: ubuntu-latest
-  #   needs: run_unit_tests
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: build
-  #       run: |
-  #         cd Team00/Code00
-  #         mkdir build
-  #         cd build
-  #         cmake ..
-  #         make
-  #     - run: |
-  #         cd Team00/Code00
-  #         ./build/src/autotester/autotester tests/Sample_source.txt Sample_queries.txt out.xml
-
+    #   - run: ./Team30/Code30/build/src/unit_testing/unit_testing
