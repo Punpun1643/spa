@@ -8,7 +8,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  ubuntu-build:
+  build-and-autotest:
     runs-on: macos-latest
     timeout-minutes: 5
     strategy:
@@ -37,6 +37,13 @@ jobs:
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config $BUILD_TYPE
+
+      - name: autotest
+        working-directory: ${{runner.workspace}}/Team30
+        run: |
+          ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt Tests30/output/test.txt
+
+
 
   run_unit_tests:
     runs-on: ubuntu-latest
