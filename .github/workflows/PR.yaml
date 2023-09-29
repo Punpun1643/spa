@@ -33,9 +33,9 @@ jobs:
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config $BUILD_TYPE
 
-      # - name: Unit test
-      #   working-dircetory: ${{runner.workspace}
-      #   run: ./Team30/Code30/build/src/unit_testing/unit_testing
+      - name: Unit test
+        working-dircetory: ${{runner.workspace}/build
+        run: ./src/unit_testing/unit_testing
 
       - name: autotest
         working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30
