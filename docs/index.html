@@ -27,7 +27,7 @@
                     if (fileName.endsWith('.xml')) {
                         var listItem = document.createElement('li');
                         var link = document.createElement('a');
-                        link.href = `docs/autotester-output/${directoryName}/${fileName}`;
+                        link.href = `autotester-output/${directoryName}/${fileName}`;
                         link.textContent = 'View ' + fileName;
                         listItem.appendChild(link);
                         xmlList.appendChild(listItem);
