@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - branch-setup-github-actions
   pull_request:
 env:
   BUILD_TYPE: Release
@@ -50,7 +49,7 @@ jobs:
           cd build
           cmake ..
           # make unit_testing
-          make
+          make unit_testing
       - run: ./Team00/Code00/build/src/unit_testing/unit_testing
   # run_autotester:
   #   runs-on: ubuntu-latest

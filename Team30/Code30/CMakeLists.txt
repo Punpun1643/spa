@@ -23,13 +23,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 set(AUTOTESTER_ROOT "${CMAKE_CURRENT_LIST_DIR}/lib/autotester/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}")
 
-add_subdirectory(src/autotester)
 list(APPEND CMAKE_PREFIX_PATH "${AUTOTESTER_ROOT}")
 find_package(autotester REQUIRED)
-target_compile_options(autotester PRIVATE -fPIE)
 include_directories("${CMAKE_CURRENT_LIST_DIR}/lib")#include catch.hpp
 
 add_subdirectory(src/spa)
+add_subdirectory(src/autotester)
 #add_subdirectory(src/autotester_gui)
 add_subdirectory(src/unit_testing)
 add_subdirectory(src/integration_testing)
