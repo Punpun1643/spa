@@ -38,7 +38,7 @@ jobs:
       #   run: ./Team30/Code30/build/src/unit_testing/unit_testing
 
       - name: autotest
-        working-directory: ${{runner.workspace}}
+        working-directory: ${{runner.workspace}}/Team30
         run: pwd
       - run: ls
         # run: ./Code30/build/src/autotester/autotester Tests30/source/test1-source.txt Tests30/queries/test1-parent-queries.txt Tests30/output/test.txt
