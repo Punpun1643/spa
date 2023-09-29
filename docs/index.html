@@ -17,7 +17,7 @@
         var directoryName = parts[parts.length - 2]; // The second-to-last part is the directory name
 
         // Fetch the list of files in the 'docs/autotester-output' directory
-        fetch(`docs/autotester-output/${directoryName}`)
+        fetch(`docs/autotester-output/`)
             .then(response => response.text())
             .then(data => {
                 var xmlList = document.getElementById('xml-list');
