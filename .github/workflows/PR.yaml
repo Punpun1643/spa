@@ -24,7 +24,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE/Team00/Code00/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+        run: cmake $GITHUB_WORKSPACE/Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
       - name: Build Project
         working-directory: ${{runner.workspace}}/build
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: build
         run: |
-          cd Team00/Code00
+          cd Team30/Code30
           mkdir build
           cd build
           cmake ..
