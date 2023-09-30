@@ -261,8 +261,8 @@ void SpParser::handleOperatorToken(
   //      {
   //    throw std::invalid_argument("Invalid condExpr");
   //  }
-  while (!operatorStack.empty() && precedence(operatorStack.top()->c_str()) >=
-                                       precedence(getCurrTokenValue())) {
+  while (!operatorStack.empty() && Precedence(operatorStack.top()->c_str()) >=
+                                       Precedence(getCurrTokenValue())) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
@@ -363,8 +363,8 @@ void SpParser::buildCondExprPostFix(
         }
       }
       while (!operatorStack.empty() &&
-             precedence(operatorStack.top()->getTokenVal()) >=
-                 precedence(getCurrTokenValue())) {
+             Precedence(operatorStack.top()->getTokenVal()) >=
+                 Precedence(getCurrTokenValue())) {
         postFixQueue.push(operatorStack.top());
         operatorStack.pop();
       }
@@ -644,7 +644,7 @@ bool SpParser::isNotToken(std::shared_ptr<Token> token) {
 }
 
 // helper function to calculate precedence of an operator
-int SpParser::precedence(std::string const& op) {
+int SpParser::Precedence(std::string const& op) {
   if (op.compare(SpParserMathOperator::MULTIPLY) == 0 ||
       op.compare(SpParserMathOperator::DIVIDE) == 0 ||
       op.compare(SpParserMathOperator::MODULO) == 0) {
