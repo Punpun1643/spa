@@ -24,11 +24,14 @@ runs:
 
     - name: Unit test
       shell: bash
-      run: ./build/src/unit_testing/unit_testing
+      run: |
+        pwd
+        ./build/src/unit_testing/unit_testing
 
     - name: autotest
       shell: bash
       working-directory: ./23s1-cp-spa-team-30
       run: |
+        pwd
         ./build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test1-parent-queries.xml
 
