@@ -3,8 +3,8 @@ description: Build code, then run unit tests and autotester
 env:
   BUILD_TYPE: Release
 
-jobs:
-  build-and-test:
+runs:
+  using: composite
     runs-on: macos-latest
     steps:
       - name: Create Build Environment
