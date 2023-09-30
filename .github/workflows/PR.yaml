@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - uses: actions/build-and-test
+      - uses: ./actions/build-and-test
 
 #       - name: Create Build Environment
 #         run: cmake -E make_directory ${{runner.workspace}}/build
