@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../tokenizer/token/Token.h"
+#include "node/TreeNode.h"
 
 class AParser {
  public:
@@ -65,6 +66,9 @@ class AParser {
 
   static bool IsMathematicalOperator(std::string const& tokenValue);
 
+  static std::shared_ptr<TreeNode> BuildExprTreeAndValidate(
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
+
   std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
       std::vector<std::shared_ptr<Token>> infixTokens);
 
@@ -88,6 +92,7 @@ class AParser {
 
   bool IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
                            std::string const& operatorValue2);
+
   /**
    * @brief Checks if the current token is of the given token type.
    *
