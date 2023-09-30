@@ -14,7 +14,7 @@ runs:
       shell: bash
       run: |
         cd build
-        cmake Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+        cmake ../Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
     - name: Build
       shell: bash
