@@ -5,7 +5,6 @@ env:
 
 runs:
   using: composite
-    runs-on: macos-latest
     steps:
       - name: Create Build Environment
         run: cmake -E make_directory build
