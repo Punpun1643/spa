@@ -164,13 +164,27 @@ void AParser::HandleLeftParenthesisToken(std::shared_ptr<Token> token, std::stac
   operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
 }
 
+void AParser::HandleRightParenthesisToken(std::stack<std::shared_ptr<std::string>>& operatorStack, std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount) {
+  if (parenCount <= 0) {
+    throw std::invalid_argument("Parenthesis mismatch");
+  }
+
+  while (operatorStack.top()->c_str() != a_parser_constant::LEFT_PARENTHESIS) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+
+  --parenCount;
+  operatorStack.pop();
+}
+
 // convert infix to postfix
 std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
     std::vector<std::shared_ptr<Token>> infixTokens) {
   std::queue<std::shared_ptr<std::string>> postFixQueue;
   std::stack<std::shared_ptr<std::string>> operatorStack;
 
-  int parentCount = 0;
+  int parenCount = 0;
 
   for (auto const& token : infixTokens) {
     if (IsWordOrIntegerToken(token)) {
@@ -178,8 +192,22 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
     } else if (IsMathematicalOperator(token->getTokenVal())) {
       HandleInfixOperatorToken(token, operatorStack, postFixQueue);
     } else if (isCurrTokenValue(a_parser_constant::LEFT_PARENTHESIS)) {
-      // TODO: handle left paren
-      HandleLeftParenthesisToken(token, operatorStack, parentCount);
+      HandleLeftParenthesisToken(token, operatorStack, parenCount);
+    } else if (isCurrTokenValue(a_parser_constant::RIGHT_PARENTHESIS)) {
+      HandleRightParenthesisToken(operatorStack, postFixQueue, parenCount);
+    } else {
+      throw std::invalid_argument("Invalid assign");
     }
   }
+
+  if (parenCount != 0) {
+    throw std::invalid_argument("Parenthesis mismatch");
+  }
+
+  while (!operatorStack.empty()) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+
+  return postFixQueue;
 }
