@@ -8,7 +8,6 @@ runs:
   steps:
     - name: test
       run: pwd
-      shell: bash
     # - name: Create Build Environment
     #   run: cmake -E make_directory build
     #   shell: bash
