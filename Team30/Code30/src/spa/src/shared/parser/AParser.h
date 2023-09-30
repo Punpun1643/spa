@@ -80,6 +80,10 @@ class AParser {
       std::shared_ptr<Token> token,
       std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
+  void HandleRightParenthesisToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount);
+
   virtual int Precedence(std::string const& operatorValue);
 
   bool IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
