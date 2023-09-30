@@ -26,6 +26,7 @@ runs:
       shell: bash
       run: |
         pwd
+        ls
         ./build/src/unit_testing/unit_testing
 
     - name: autotest
