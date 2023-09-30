@@ -120,9 +120,8 @@ void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
   }
 }
 
-void AParser::HandleInfixWordOrIntegerToken(
-    std::queue<std::shared_ptr<std::string>>& postFixQueue,
-    std::shared_ptr<Token> token) {
+void AParser::HandleInfixWordOrIntegerToken(std::shared_ptr<Token> token,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
   postFixQueue.push(std::make_shared<std::string>(token->getTokenVal()));
 }
 
@@ -157,6 +156,14 @@ void AParser::HandleInfixOperatorToken(std::shared_ptr<Token> token,
   operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
 }
 
+void AParser::HandleLeftParenthesisToken(std::shared_ptr<Token> token, std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
+  if (AParser::isPeekTokenValue(a_parser_constant::RIGHT_PARENTHESIS)) {
+    throw std::invalid_argument("Empty parenthesis");
+  }
+  ++parenCount;
+  operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
+}
+
 // convert infix to postfix
 std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
     std::vector<std::shared_ptr<Token>> infixTokens) {
@@ -167,10 +174,12 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
 
   for (auto const& token : infixTokens) {
     if (IsWordOrIntegerToken(token)) {
-      HandleInfixWordOrIntegerToken(postFixQueue, token);
+      HandleInfixWordOrIntegerToken(token, postFixQueue);
     } else if (IsMathematicalOperator(token->getTokenVal())) {
-      // TODO: handle operator token
       HandleInfixOperatorToken(token, operatorStack, postFixQueue);
+    } else if (isCurrTokenValue(a_parser_constant::LEFT_PARENTHESIS)) {
+      // TODO: handle left paren
+      HandleLeftParenthesisToken(token, operatorStack, parentCount);
     }
   }
 }
