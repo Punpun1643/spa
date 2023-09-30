@@ -256,11 +256,6 @@ void SpParser::handleWordOrIntegerToken(
 void SpParser::handleOperatorToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  //  if (isLogicalOperator(getCurrTokenValue()) &&
-  //      operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) != 0)
-  //      {
-  //    throw std::invalid_argument("Invalid condExpr");
-  //  }
   while (!operatorStack.empty() && Precedence(operatorStack.top()->c_str()) >=
                                        Precedence(getCurrTokenValue())) {
     postFixQueue.push(operatorStack.top());
