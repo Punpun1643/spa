@@ -507,7 +507,7 @@ std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
     auto element = postFixQueue.front();
     postFixQueue.pop();
 
-    if (isOperator(element->c_str())) {
+    if (isMathematicalOperator(element->c_str())) {
       if (treeStack.size() < 2) {
         throw std::invalid_argument(
             "Invalid expression: insufficient operands for operator");

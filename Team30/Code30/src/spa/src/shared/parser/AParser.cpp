@@ -178,7 +178,6 @@ void AParser::HandleRightParenthesisToken(std::stack<std::shared_ptr<std::string
   operatorStack.pop();
 }
 
-// convert infix to postfix
 std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
     std::vector<std::shared_ptr<Token>> infixTokens) {
   std::queue<std::shared_ptr<std::string>> postFixQueue;
