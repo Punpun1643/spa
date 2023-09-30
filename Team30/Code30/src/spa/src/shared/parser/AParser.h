@@ -66,13 +66,17 @@ class AParser {
 
   static bool IsMathematicalOperator(std::string const& tokenValue);
 
+  static void ValidateTreeStackSize(
+      std::stack<std::shared_ptr<TreeNode>>& treeStack, int size);
+
   static std::shared_ptr<TreeNode> BuildExprTreeAndValidate(
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
   std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
       std::vector<std::shared_ptr<Token>> infixTokens);
 
-  void HandleInfixWordOrIntegerToken(std::shared_ptr<Token> token,
+  void HandleInfixWordOrIntegerToken(
+      std::shared_ptr<Token> token,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
   void HandleInfixOperatorToken(
@@ -91,7 +95,7 @@ class AParser {
   virtual int Precedence(std::string const& operatorValue);
 
   bool IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
-                           std::string const& operatorValue2);
+                                  std::string const& operatorValue2);
 
   /**
    * @brief Checks if the current token is of the given token type.
