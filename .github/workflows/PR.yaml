@@ -17,6 +17,7 @@ jobs:
     strategy:
       fail-fast: true
     steps:
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/build-and-test
 
 #       - name: Create Build Environment
