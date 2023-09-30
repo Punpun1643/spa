@@ -6,29 +6,29 @@ env:
 runs:
   using: composite
   steps:
-    - name: test
-      run: pwd
+    - name: Create Build Environment
+      run: cmake -E make_directory build
       shell: bash
-    # - name: Create Build Environment
-    #   run: cmake -E make_directory build
-    #   shell: bash
 
-    # - name: Configure CMake
-    #   shell: bash
-    #   run: |
-    #     cmake ~/Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+    - name: Configure CMake
+      shell: bash
+      run: |
+        cd build
+        cmake Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
-    # - name: Build
-    #   shell: bash
-    #   run: cmake --build ~/build --config $BUILD_TYPE
+    - name: Build
+      shell: bash
+      run: |
+        cd build
+        cmake --build . --config $BUILD_TYPE
 
-    # - name: Unit test
-    #   shell: bash
-    #   run: ~/build/src/unit_testing/unit_testing
+    - name: Unit test
+      shell: bash
+      run: build/src/unit_testing/unit_testing
 
-    # - name: autotest
-    #   shell: bash
-    #   working-directory: ./23s1-cp-spa-team-30
-    #   run: |
-    #     ~/build/src/autotester/autotester ~/23s1-cp-spa-team-30/Team30/Tests30/source/test1-source.txt ~/23s1-cp-spa-team-30/Team30/Tests30/queries/test1-parent-queries.txt ~/23s1-cp-spa-team-30/Team30/Tests30/output/test1-parent-queries.xml
+    - name: autotest
+      shell: bash
+      working-directory: ./23s1-cp-spa-team-30
+      run: |
+        build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test1-parent-queries.xml
 

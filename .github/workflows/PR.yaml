@@ -18,7 +18,6 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
-      - run: pwd
       - uses: ./.github/actions/build-and-test
 
 #       - name: Create Build Environment
