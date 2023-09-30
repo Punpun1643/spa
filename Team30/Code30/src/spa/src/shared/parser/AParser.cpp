@@ -126,7 +126,7 @@ void AParser::HandleInfixWordOrIntegerToken(
   postFixQueue.push(std::make_shared<std::string>(token->getTokenVal()));
 }
 
-int AParser::precedence(std::string const& operatorValue) {
+int AParser::Precedence(std::string const& operatorValue) {
   if (operatorValue == a_parser_mathematical_operator::MULTIPLY ||
       operatorValue == a_parser_mathematical_operator::DIVIDE ||
       operatorValue == a_parser_mathematical_operator::MODULO) {
@@ -139,9 +139,16 @@ int AParser::precedence(std::string const& operatorValue) {
   }
 }
 
+bool AParser::IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
+                                  std::string const& operatorValue2) {
+  return Precedence(operatorValue1) >= Precedence(operatorValue2);
+}
+
 void AParser::HandleInfixOperatorToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
-    std::queue<std::shared_ptr<std::string>>& postFixQueue) {}
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
+
+}
 
 // convert infix to postfix
 std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(

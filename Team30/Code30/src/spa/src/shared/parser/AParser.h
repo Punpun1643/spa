@@ -76,8 +76,10 @@ class AParser {
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
-  virtual int precedence(std::string const& operatorValue);
+  virtual int Precedence(std::string const& operatorValue);
 
+  bool IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
+                           std::string const& operatorValue2);
   /**
    * @brief Checks if the current token is of the given token type.
    *
