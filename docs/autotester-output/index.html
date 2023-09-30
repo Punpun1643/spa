@@ -11,7 +11,7 @@
 
     <script>
         // Fetch the list of XML files in the "autotester-output" directory
-        fetch('autotester-output/')
+        fetch('./')
             .then(response => response.text())
             .then(data => {
                 var xmlList = document.getElementById('xml-list');
