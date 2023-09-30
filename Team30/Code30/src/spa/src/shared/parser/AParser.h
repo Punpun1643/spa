@@ -68,14 +68,17 @@ class AParser {
   std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
       std::vector<std::shared_ptr<Token>> infixTokens);
 
-  void HandleInfixWordOrIntegerToken(
-      std::queue<std::shared_ptr<std::string>>& postFixQueue,
-      std::shared_ptr<Token> token);
+  void HandleInfixWordOrIntegerToken(std::shared_ptr<Token> token,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
   void HandleInfixOperatorToken(
       std::shared_ptr<Token> token,
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
+
+  void HandleLeftParenthesisToken(
+      std::shared_ptr<Token> token,
+      std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
   virtual int Precedence(std::string const& operatorValue);
 
