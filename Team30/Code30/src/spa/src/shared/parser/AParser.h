@@ -65,14 +65,15 @@ class AParser {
 
   static bool IsMathematicalOperator(std::string const& tokenValue);
 
-  static std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
+  std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
       std::vector<std::shared_ptr<Token>> infixTokens);
 
-  static void HandleInfixWordOrIntegerToken(
+  void HandleInfixWordOrIntegerToken(
       std::queue<std::shared_ptr<std::string>>& postFixQueue,
       std::shared_ptr<Token> token);
 
-  static void HandleInfixOperatorToken(
+  void HandleInfixOperatorToken(
+      std::shared_ptr<Token> token,
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
