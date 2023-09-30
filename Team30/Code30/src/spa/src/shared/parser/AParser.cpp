@@ -2,6 +2,19 @@
 
 #include <stdexcept>
 
+namespace a_parser_constant {
+constexpr char LEFT_PARENTHESIS[] = "(";
+constexpr char RIGHT_PARENTHESIS[] = ")";
+}  // namespace a_parser_constant
+
+namespace a_parser_mathematical_operator {
+constexpr char PLUS[] = "+";
+constexpr char MINUS[] = "-";
+constexpr char MULTIPLY[] = "*";
+constexpr char DIVIDE[] = "/";
+constexpr char MODULO[] = "%";
+}  // namespace a_parser_mathematical_operator
+
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
 
@@ -69,6 +82,14 @@ bool AParser::IsTokenValue(std::shared_ptr<Token> token,
   return tokenValue == token->getTokenVal();
 }
 
+bool AParser::IsMathematicalOperator(std::string const& tokenValue) {
+  return tokenValue == a_parser_mathematical_operator::PLUS ||
+         tokenValue == a_parser_mathematical_operator::MINUS ||
+         tokenValue == a_parser_mathematical_operator::MULTIPLY ||
+         tokenValue == a_parser_mathematical_operator::DIVIDE ||
+         tokenValue == a_parser_mathematical_operator::MODULO;
+}
+
 bool AParser::isCurrTokenType(TokenType tokenType) {
   return IsTokenType(getCurrToken(), tokenType);
 }
@@ -96,5 +117,46 @@ void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
                                           std::string const& errorMessage) {
   if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
     throw std::invalid_argument(errorMessage);
+  }
+}
+
+void AParser::HandleInfixWordOrIntegerToken(
+    std::queue<std::shared_ptr<std::string>>& postFixQueue,
+    std::shared_ptr<Token> token) {
+  postFixQueue.push(std::make_shared<std::string>(token->getTokenVal()));
+}
+
+int AParser::precedence(std::string const& operatorValue) {
+  if (operatorValue == a_parser_mathematical_operator::MULTIPLY ||
+      operatorValue == a_parser_mathematical_operator::DIVIDE ||
+      operatorValue == a_parser_mathematical_operator::MODULO) {
+    return 2;
+  } else if (operatorValue == a_parser_mathematical_operator::PLUS ||
+             operatorValue == a_parser_mathematical_operator::MINUS) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+
+void AParser::HandleInfixOperatorToken(
+    std::stack<std::shared_ptr<std::string>>& operatorStack,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {}
+
+// convert infix to postfix
+std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
+    std::vector<std::shared_ptr<Token>> infixTokens) {
+  std::queue<std::shared_ptr<std::string>> postFixQueue;
+  std::stack<std::shared_ptr<std::string>> operatorStack;
+
+  int parentCount = 0;
+
+  for (auto const& token : infixTokens) {
+    if (IsWordOrIntegerToken(token)) {
+      HandleInfixWordOrIntegerToken(postFixQueue, token);
+    } else if (IsMathematicalOperator(token->getTokenVal())) {
+      // TODO: handle operator token
+      HandleInfixOperatorToken(operatorStack, postFixQueue);
+    }
   }
 }
