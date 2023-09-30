@@ -1,6 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <queue>
+#include <stack>
+#include <string>
 #include <vector>
 
 #include "../tokenizer/token/Token.h"
@@ -59,6 +62,21 @@ class AParser {
 
   static bool IsTokenValue(std::shared_ptr<Token> token,
                            std::string const& tokenValue);
+
+  static bool IsMathematicalOperator(std::string const& tokenValue);
+
+  static std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
+      std::vector<std::shared_ptr<Token>> infixTokens);
+
+  static void HandleInfixWordOrIntegerToken(
+      std::queue<std::shared_ptr<std::string>>& postFixQueue,
+      std::shared_ptr<Token> token);
+
+  static void HandleInfixOperatorToken(
+      std::stack<std::shared_ptr<std::string>>& operatorStack,
+      std::queue<std::shared_ptr<std::string>>& postFixQueue);
+
+  virtual int precedence(std::string const& operatorValue);
 
   /**
    * @brief Checks if the current token is of the given token type.
