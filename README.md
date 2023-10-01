@@ -14,6 +14,23 @@ No additional instructions required.
 
 ## Continuous Integration
 
+### Testing
+
+Unit tests and autotester are ran for each PR, and for each push to master. Additionally, you can view the up-to-date detailed xml autotester output for the master branch [here](https://nus-cs3203.github.io/23s1-cp-spa-team-30/).
+
+#### Editing autotester workflwo and/or output
+To edit the autotester workflow and/or the displayed autotester output for the master branch, go to the .github/actions/autotest/action.yml file.
+
+To edit the autotester workflow, edit the part under this comment:
+```html
+# For developers: Edit autotester output here
+```
+
+To edit the displayed autotester output for the master branch, edit the part under this comment:
+```html
+# For developers: Edit autotester output to be displayed on Github Pages, here
+```
+
 ### clang-format
 #### Requirements
 - Requirement: `clang-format` installed on your local environment ([macs](https://formulae.brew.sh/formula/clang-format), [windows](https://clang.llvm.org/docs/ClangFormat.html) - apparently there's a VS plugin)
