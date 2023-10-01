@@ -25,7 +25,8 @@ jobs:
         # with:
         #   branch-name: ${{ github.head_ref }}
         #   git-pat: ${{ secrets.GIT_PAT }}
-      - run: |
+      - name: push
+        run: |
         git add ./index.html
         git commit -m 'test push'
         git push
