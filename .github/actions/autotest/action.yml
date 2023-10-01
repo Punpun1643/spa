@@ -6,6 +6,7 @@ runs:
     - name: autotest
       shell: bash
       run: |
+        rm -f Team30/Tests30/output/*.xml
         ./build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test1-parent.xml
     - name: start-index-file
       shell: bash

@@ -21,6 +21,7 @@ runs:
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
+        git add Team30/Tests30/output/*
         git commit -m 'test push from actions'
-        git push --set-upstream origin ${{ inputs.branch-name }}
+        git push --set-upstream --force origin ${{ inputs.branch-name }}
         # git push --set-upstream origin HEAD:${{ github.head_ref }}
