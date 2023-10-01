@@ -8,8 +8,8 @@
 
 class EntRef : public PqlReference {
  private:
-  std::vector<EntityType> const VALID_ENT_TYPES = {EntityType::VARIABLE, EntityType::PROCEDURE,
-                                                   EntityType::CONSTANT};
+  std::vector<EntityType> const VALID_ENT_TYPES = {
+      EntityType::VARIABLE, EntityType::PROCEDURE, EntityType::CONSTANT};
 
  public:
   EntRef();

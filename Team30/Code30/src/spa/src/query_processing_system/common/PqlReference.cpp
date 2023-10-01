@@ -5,7 +5,8 @@
 
 #include "EntityType.h"
 
-PqlReference::PqlReference() : ref_type(PqlRefType::WILD), ref_value(std::nullopt) {}
+PqlReference::PqlReference()
+    : ref_type(PqlRefType::WILD), ref_value(std::nullopt) {}
 
 PqlReference::PqlReference(std::shared_ptr<PqlDeclaration const> declaration)
     : ref_type(PqlRefType::DECLARATION),

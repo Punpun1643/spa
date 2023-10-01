@@ -10,7 +10,7 @@ QueryEvaluator::QueryEvaluator(PkbApi& pkb) : pkb(pkb) {}
 
 std::vector<std::string> QueryEvaluator::evaluateQuery(
     std::unique_ptr<SelectClause> select_clause,
-    const std::vector<std::shared_ptr<Clause>>& other_clauses) {
+    std::vector<std::shared_ptr<Clause>> const& other_clauses) {
   assert(select_clause != nullptr);
 
   auto target_declaration = select_clause->getDeclaration();
