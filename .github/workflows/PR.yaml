@@ -31,8 +31,8 @@ jobs:
         run: |
           git config --global user.name 'lkwlkww'
           git config --global user.email 'lkwlkwlkww@gmail.com'
-          git fetch origin
-          # git pull origin ${{ github.head_ref }}
+          # git fetch origin
+          git pull origin ${{ github.head_ref }}
           git add ./index.html
           git commit -m 'test push'
           git push origin HEAD:${{ github.head_ref }}
