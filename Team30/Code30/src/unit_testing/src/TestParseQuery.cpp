@@ -74,7 +74,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s");
   }
   SECTION("1 read declaration; Select Clause") {
     AddDeclaration(tokens, "read", {"r"});
@@ -90,7 +90,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "r");
+    REQUIRE(select_clause->getDeclaration()->getName() == "r");
   }
   SECTION("1 print declaration; Select Clause") {
     AddDeclaration(tokens, "print", {"p"});
@@ -106,7 +106,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "p");
+    REQUIRE(select_clause->getDeclaration()->getName() == "p");
   }
   SECTION("1 call declaration; Select Clause") {
     AddDeclaration(tokens, "call", {"c"});
@@ -122,7 +122,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "c");
+    REQUIRE(select_clause->getDeclaration()->getName() == "c");
   }
   SECTION("1 while declaration; Select Clause") {
     AddDeclaration(tokens, "while", {"wh"});
@@ -138,7 +138,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "wh");
+    REQUIRE(select_clause->getDeclaration()->getName() == "wh");
   }
   SECTION("1 if declaration; Select Clause") {
     AddDeclaration(tokens, "if", {"if"});
@@ -154,7 +154,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "if");
+    REQUIRE(select_clause->getDeclaration()->getName() == "if");
   }
   SECTION("1 assign declaration; Select Clause") {
     AddDeclaration(tokens, "assign", {"as"});
@@ -170,7 +170,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "as");
+    REQUIRE(select_clause->getDeclaration()->getName() == "as");
   }
   SECTION("1 variable declaration; Select Clause") {
     AddDeclaration(tokens, "variable", {"v"});
@@ -186,7 +186,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "v");
+    REQUIRE(select_clause->getDeclaration()->getName() == "v");
   }
   SECTION("1 constant declaration; Select Clause") {
     AddDeclaration(tokens, "constant", {"c"});
@@ -202,7 +202,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "c");
+    REQUIRE(select_clause->getDeclaration()->getName() == "c");
   }
   SECTION("1 procedure declaration; Select Clause") {
     AddDeclaration(tokens, "procedure", {"pr"});
@@ -218,7 +218,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "pr");
+    REQUIRE(select_clause->getDeclaration()->getName() == "pr");
   }
 
   SECTION("Multiple declarations for stmt; Select Clause") {
@@ -233,7 +233,7 @@ TEST_CASE("Parse select query") {
     std::shared_ptr<SelectClause> select_clause(
         std::dynamic_pointer_cast<SelectClause>(clause));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s1");
   }
 }
 
@@ -258,7 +258,7 @@ TEST_CASE("Parse Select + Follows query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s123");
   }
   SECTION("1 stmt; 1 print; 3 read declaration; Select + Follows(read, print") {
     AddDeclaration(tokens, "stmt", {"s1"});
@@ -276,7 +276,7 @@ TEST_CASE("Parse Select + Follows query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s1");
   }
   SECTION("2 variable; 1 constant, 1 stmt; Select + Follows(_, variable") {
     AddDeclaration(tokens, "variable", {"v1", "v2"});
@@ -294,7 +294,7 @@ TEST_CASE("Parse Select + Follows query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "v1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "v1");
   }
 }
 
@@ -316,7 +316,7 @@ TEST_CASE("Parse Select + Follows* query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s1");
   }
 }
 
@@ -341,7 +341,7 @@ TEST_CASE("Parse Select + Parent query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s123");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s123");
   }
 
   SECTION("assign a; Select a such that parent (_, a)") {
@@ -358,7 +358,7 @@ TEST_CASE("Parse Select + Parent query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "a");
+    REQUIRE(select_clause->getDeclaration()->getName() == "a");
   }
 }
 
@@ -379,7 +379,7 @@ TEST_CASE("Parse Select + Parent* query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s1");
   }
 }
 
@@ -401,7 +401,7 @@ TEST_CASE("Parse Select + Modifies query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "a1");
   }
 }
 
@@ -423,7 +423,7 @@ TEST_CASE("Parse Select + Uses query") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "a1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "a1");
   }
 
 }
@@ -445,7 +445,7 @@ TEST_CASE("Parse Select + Uses(stmtref, entref)") {
     std::shared_ptr<SuchThatClause> such_that_clause(
         std::dynamic_pointer_cast<SuchThatClause>(clauses[1]));
 
-    REQUIRE(*(select_clause->getDeclaration()->getName()) == "s1");
+    REQUIRE(select_clause->getDeclaration()->getName() == "s1");
   }
 
 }

@@ -12,8 +12,7 @@ class QeFactoryMethods {
  public:
   static std::shared_ptr<PqlDeclaration> getDeclaration(std::string name,
                                                         EntityType type) {
-    return std::make_shared<PqlDeclaration>(std::make_shared<std::string>(name),
-                                            type);
+    return std::make_shared<PqlDeclaration>(name, type);
   }
 
   static std::unique_ptr<SelectClause> getSelectClause(std::string name,
@@ -202,10 +201,8 @@ TEST_CASE("Pattern clauses") {
   PkbStub pkb = PkbStub();
   auto qe = QueryEvaluator(pkb);
   // decl, partial
-  auto a = std::make_shared<PqlDeclaration>(std::make_shared<std::string>("a"),
-                                            EntityType::ASSIGN);
-  auto v = std::make_shared<PqlDeclaration>(std::make_shared<std::string>("v"),
-                                            EntityType::VARIABLE);
+  auto a = std::make_shared<PqlDeclaration>("a", EntityType::ASSIGN);
+  auto v = std::make_shared<PqlDeclaration>("v", EntityType::VARIABLE);
   auto SELECT_A = std::make_unique<SelectClause>(a);
   auto SELECT_V = std::make_unique<SelectClause>(v);
   SECTION("decl, wild") {

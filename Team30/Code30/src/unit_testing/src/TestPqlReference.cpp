@@ -6,18 +6,12 @@
 
 TEST_CASE("Tests on PqlReferences") {
   // Declarations
-  auto a =
-      PqlDeclaration(std::make_shared<std::string>("a"), EntityType::ASSIGN);
-  auto print =
-      PqlDeclaration(std::make_shared<std::string>("print"), EntityType::PRINT);
-  auto c = PqlDeclaration(std::make_shared<std::string>("constant"),
-                          EntityType::CONSTANT);
-  auto v = PqlDeclaration(std::make_shared<std::string>("variable"),
-                          EntityType::VARIABLE);
-  auto proc = PqlDeclaration(std::make_shared<std::string>("procedure"),
-                             EntityType::PROCEDURE);
-  auto s =
-      PqlDeclaration(std::make_shared<std::string>("stmt"), EntityType::STMT);
+  auto a = PqlDeclaration("a", EntityType::ASSIGN);
+  auto print = PqlDeclaration("print", EntityType::PRINT);
+  auto c = PqlDeclaration("constant", EntityType::CONSTANT);
+  auto v = PqlDeclaration("variable", EntityType::VARIABLE);
+  auto proc = PqlDeclaration("procedure", EntityType::PROCEDURE);
+  auto s = PqlDeclaration("stmt", EntityType::STMT);
 
   SECTION("StmtRef") {
     auto wild_stmt_ref = std::make_shared<PqlReference>(StmtRef());

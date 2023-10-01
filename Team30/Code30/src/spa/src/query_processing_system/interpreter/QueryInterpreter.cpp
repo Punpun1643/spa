@@ -226,8 +226,7 @@ void QueryInterpreter::InterpretDeclarations(
   std::string synonym = declaration_expression.getSynonym();
 
   std::shared_ptr<PqlDeclaration> declaration =
-      std::make_shared<PqlDeclaration>(std::make_shared<std::string>(synonym),
-                                       entity_type);
+      std::make_shared<PqlDeclaration>(synonym, entity_type);
   this->declarations->insert(std::make_pair(synonym, declaration));
 }
 
