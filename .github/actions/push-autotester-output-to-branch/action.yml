@@ -18,9 +18,10 @@ runs:
         git config --global user.name 'lkwlkww'
         git config --global user.email 'lkwlkwlkww@gmail.com'
 
-        git fetch origin
-        git checkout origin/${{ inputs.branch-name }}
+        # git fetch origin
+        # git checkout origin/${{ inputs.branch-name }}
 
         git add ./index.html
         git commit -m 'Github actions workflow: Add html file for viewing autotester output'
-        git push origin ${{ inputs.branch-name }}
+        git push
+        # git push origin ${{ inputs.branch-name }}
