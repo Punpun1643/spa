@@ -1,0 +1,22 @@
+name: Build
+env:
+  BUILD_TYPE: Release
+
+runs:
+  using: composite
+  steps:
+    - name: Create Build Environment
+      run: cmake -E make_directory build
+      shell: bash
+
+    - name: Configure CMake
+      shell: bash
+      run: |
+        cd build
+        cmake ../Team30/Code30/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+    - name: Build
+      shell: bash
+      run: |
+        cd build
+        cmake --build . --config $BUILD_TYPE

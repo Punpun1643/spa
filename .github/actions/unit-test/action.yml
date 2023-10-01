@@ -1,0 +1,8 @@
+name: Unit test
+
+runs:
+  using: composite
+  steps:
+    - name: Unit test
+      shell: bash
+      run: ./build/src/unit_testing/unit_testing
