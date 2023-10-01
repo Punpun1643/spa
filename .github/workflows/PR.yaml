@@ -18,8 +18,8 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
-      # - uses: ./.github/actions/build - uses: ./.github/actions/unit-test
-      # - uses: ./.github/actions/autotest
+      - uses: ./.github/actions/build - uses: ./.github/actions/unit-test
+      - uses: ./.github/actions/autotest
       - uses: ./.github/actions/push-autotester-output-to-branch
         with:
           branch-name: ${{ github.head_ref }}
