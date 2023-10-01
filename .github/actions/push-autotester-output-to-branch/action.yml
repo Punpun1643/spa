@@ -13,8 +13,6 @@ runs:
       shell: bash
       env:
         GIT_PAT: ${{ inputs.git-pat }}
-      run:
-        echo ${{ inputs.branch-name }}
       run: |
         git config --global user.name 'lkwlkww'
         git config --global user.email 'lkwlkwlkww@gmail.com'
