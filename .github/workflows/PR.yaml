@@ -27,9 +27,9 @@ jobs:
         #   git-pat: ${{ secrets.GIT_PAT }}
       - name: push
         run: |
-        git add ./index.html
-        git commit -m 'test push'
-        git push
+          git add ./index.html
+          git commit -m 'test push'
+          git push
 
 #       - name: Create Build Environment
 #         run: cmake -E make_directory ${{runner.workspace}}/build
