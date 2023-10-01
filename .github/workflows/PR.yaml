@@ -21,26 +21,24 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/build
-      - uses: ./.github/actions/unit-test
-      - uses: ./.github/actions/autotest
+      - run: git branch
+      # - uses: ./.github/actions/build
+      # - uses: ./.github/actions/unit-test
+      # - uses: ./.github/actions/autotest
       # - uses: ./.github/actions/push-autotester-output-to-branch
         # with:
         #   branch-name: ${{ github.head_ref }}
         #   git-pat: ${{ secrets.GIT_PAT }}
-      - name: push
-        # with:
-        #   repo-token: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name 'lkwlkww'
-          git config user.email 'lkwlkwlkww@gmail.com'
-          git config pull.rebase false
-          # git fetch origin
-          git pull origin ${{ github.head_ref }}
-          git add ./index.html
-          git commit -m 'test push'
-          git push --set-upstream origin HEAD:${{ github.head_ref }}
-          # git push
+      # - name: push
+      #   run: |
+      #     git config user.name 'lkwlkww'
+      #     git config user.email 'lkwlkwlkww@gmail.com'
+      #     git config pull.rebase false
+      #     # git fetch origin
+      #     git pull origin ${{ github.head_ref }}
+      #     git add ./index.html
+      #     git commit -m 'test push'
+      #     git push --set-upstream origin HEAD:${{ github.head_ref }}
 
 #       - name: Create Build Environment
 #         run: cmake -E make_directory ${{runner.workspace}}/build
