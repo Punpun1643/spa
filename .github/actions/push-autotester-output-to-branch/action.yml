@@ -15,6 +15,7 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
       # run: git branch
       run: |
+        git checkout -b ${{ inputs.branch-name }}
         git config user.name lkwlkww
         git config user.email lkwlkwlkww@gmail.com
         git config pull.rebase false
