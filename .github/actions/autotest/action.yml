@@ -7,7 +7,17 @@ runs:
       shell: bash
       run: |
         rm -f Team30/Tests30/output/*.xml
-        ./build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test1-parent.xml
+        # For developers: Edit autotester output here
+        ./build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test1-parent-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-pattern-queries.txt Team30/Tests30/output/test1-pattern-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test1-modifies-source.txt Team30/Tests30/queries/test1-modifies-queries.txt Team30/Tests30/output/test1-modifies-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test1-uses-source.txt Team30/Tests30/queries/test1-uses-queries.txt Team30/Tests30/output/test1-uses-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test2-source.txt Team30/Tests30/queries/test2-follows-queries.txt Team30/Tests30/output/test2-follows-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test2-source.txt Team30/Tests30/queries/test2-uses-queries.txt Team30/Tests30/output/test2-uses-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test2-source.txt Team30/Tests30/queries/test2-syntax-invalid-queries.txt Team30/Tests30/output/test2-syntax-invalid-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/nesting-source.txt Team30/Tests30/queries/nesting-queries.txt Team30/Tests30/output/nesting-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/multiconditional-source.txt Team30/Tests30/queries/multiconditional-queries.txt Team30/Tests30/output/multiconditional-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test3-source.txt Team30/Tests30/queries/test3-complex-queries.txt Team30/Tests30/output/test3-complex-output.xml
     - name: start-index-file
       shell: bash
       run: |
@@ -21,8 +31,18 @@ runs:
     - name: Add-autotester-output
       shell: bash
       run: |
+        # For developers: Edit autotester output to be displayed on Github Pages, here
         echo '
-          <a href="Team30/Tests30/output/test1-parent.xml">Test1-parent</a>
+          <a href="Team30/Tests30/output/test1-parent-output.xml">Test1-parent</a>
+          <a href="Team30/Tests30/output/test1-modifies-output.xml">Test1-modifies</a>
+          <a href="Team30/Tests30/output/test1-uses-output.xml">Test1-uses</a>
+          <a href="Team30/Tests30/output/test1-pattern-output.xml">Test1-pattern</a>
+          <a href="Team30/Tests30/output/test2-follows-output.xml">Test2-follows</a>
+          <a href="Team30/Tests30/output/test2-uses-output.xml">Test2-uses</a>
+          <a href="Team30/Tests30/output/test2-syntax-invalid-output.xml">Test2-syntax-invalid</a>
+          <a href="Team30/Tests30/output/nesting-output.xml">nesting</a>
+          <a href="Team30/Tests30/output/multiconditional-output.xml">multiconditional</a>
+          <a href="Team30/Tests30/output/test3-complex-output.xml">Test3-complex</a>
           ' >> index.html
     - name: end-index-file
       shell: bash
