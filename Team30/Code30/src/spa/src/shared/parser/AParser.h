@@ -69,9 +69,21 @@ class AParser {
   static void ValidateTreeStackSize(
       std::stack<std::shared_ptr<TreeNode>>& treeStack, int size);
 
+  /**
+   * @brief Builds an expression tree from the given postfix queue.
+   *
+   * @param postFixQueue The postfix queue from an infix expression.
+   * @return
+   */
   static std::shared_ptr<TreeNode> BuildExprTreeAndValidate(
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
+  /**
+   * @brief Converts the given infix tokens to postfix.
+   *
+   * @param infixTokens The infix tokens from given expression.
+   * @return
+   */
   std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
       std::vector<std::shared_ptr<Token>> infixTokens);
 
