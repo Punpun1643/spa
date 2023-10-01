@@ -15,13 +15,11 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
       # run: git branch
       run: |
-        git config --global user.name 'lkwlkww'
-        git config --global user.email 'lkwlkwlkww@gmail.com'
-
-        git fetch origin
-        # git checkout -b origin/${{ inputs.branch-name }}
-
+        git config user.name lkwlkww
+        git config user.email lkwlkwlkww@gmail.com
+        git config pull.rebase false
+        git pull origin ${{ inputs.branch-name }}
         git add ./index.html
-        git commit -m 'Github actions workflow: Add html file for viewing autotester output'
-        # git push
-        git push origin HEAD:${{ inputs.branch-name }}
+        git commit -m 'test push from actions'
+        git push --set-upstream origin ${{ inputs.branch-name }}
+        # git push --set-upstream origin HEAD:${{ github.head_ref }}

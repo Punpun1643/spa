@@ -10,28 +10,24 @@ runs:
     - name: start-index-file
       shell: bash
       run: |
-        echo '
-        <!DOCTYPE html>
+        echo '<!DOCTYPE html>
         <html>
         <head>
           <title>Autotester Output</title>
         </head>
         <body>
-          <h1>Autotester Output</h1>
-        ' > index.html
+          <h1>Autotester Output</h1>' > index.html
     - name: Add-autotester-output
       shell: bash
       run: |
         echo '
-          <a href="Team30/Tests30/output/test1-parent-queries.xml">Test1-parent</a>
+          <a href="Team30/Tests30/output/test1-parent.xml">Test1-parent</a>
           ' >> index.html
     - name: end-index-file
       shell: bash
       run: |
-        echo '
-        </body>
-        </html>
-        ' >> index.html
+        echo '</body>
+        </html>' >> index.html
 
 
 
