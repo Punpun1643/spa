@@ -1,0 +1,35 @@
+name: Autotest
+
+runs:
+  using: composite
+  steps:
+    - name: autotest
+      shell: bash
+      run: |
+        rm -f Team30/Tests30/output/*.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test1-source.txt Team30/Tests30/queries/test1-parent-queries.txt Team30/Tests30/output/test1-parent.xml
+    - name: start-index-file
+      shell: bash
+      run: |
+        echo '<!DOCTYPE html>
+        <html>
+        <head>
+          <title>Autotester Output</title>
+        </head>
+        <body>
+          <h1>Autotester Output</h1>' > index.html
+    - name: Add-autotester-output
+      shell: bash
+      run: |
+        echo '
+          <a href="Team30/Tests30/output/test1-parent.xml">Test1-parent</a>
+          ' >> index.html
+    - name: end-index-file
+      shell: bash
+      run: |
+        echo '</body>
+        </html>' >> index.html
+
+
+
+
