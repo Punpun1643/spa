@@ -8,15 +8,16 @@
 #include "catch.hpp"
 
 namespace TestConvertInfixToPostfix {
-  class TestableParser : public AParser {
-   public:
-    TestableParser(std::vector<std::shared_ptr<Token>> tokens)
-        : AParser(tokens) {}
-    using AParser::ConvertInfixToPostfix;
+class TestableParser : public AParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : AParser(tokens) {}
 
-    void parse() override {}
-  };
-}
+  using AParser::ConvertInfixToPostfix;
+
+  void parse() override {}
+};
+}  // namespace TestConvertInfixToPostfix
 
 TEST_CASE("Test Convert infix expression to postfix expression",
           "[ConvertInfixToPostfix]") {
@@ -29,7 +30,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("v")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -53,7 +55,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("y")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -87,7 +90,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("y")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -131,7 +135,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("t")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -181,7 +186,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("t")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -231,7 +237,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("t")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -287,7 +294,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::make_shared<SpecialCharToken>("+")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     std::queue<std::shared_ptr<std::string>> postFixQueue =
         parser->ConvertInfixToPostfix(infixTokens);
@@ -338,7 +346,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("z")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     REQUIRE_THROWS_AS(parser->ConvertInfixToPostfix(infixTokens),
                       std::invalid_argument);
@@ -368,7 +377,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("z")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
-        std::make_shared<TestConvertInfixToPostfix::TestableParser>(infixTokens);
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
 
     REQUIRE_THROWS_AS(parser->ConvertInfixToPostfix(infixTokens),
                       std::invalid_argument);
