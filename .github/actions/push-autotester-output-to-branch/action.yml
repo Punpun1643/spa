@@ -18,7 +18,7 @@ runs:
         git config --global user.name 'lkwlkww'
         git config --global user.email 'lkwlkwlkww@gmail.com'
 
-        # git fetch origin
+        git fetch origin
         # git checkout -b origin/${{ inputs.branch-name }}
 
         git add ./index.html
