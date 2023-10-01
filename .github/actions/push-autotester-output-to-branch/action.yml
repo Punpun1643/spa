@@ -12,11 +12,11 @@ runs:
     - name: push-to-branch
       shell: bash
       env:
-        GIT_PAT: ${{ git-pat }}
+        GIT_PAT: ${{ inputs.git-pat }}
       run: |
         git config --global user.name 'lkwlkww'
         git config --global user.email 'lkwlkwlkww@gmail.com'
 
         git add ./index.html
         git commit -m 'Github actions workflow: Add html file for viewing autotester output'
-        git push origin ${{ branch-name }}
+        git push origin ${{ inputs.branch-name }}
