@@ -13,13 +13,13 @@ PatternClause::PatternClause(std::shared_ptr<PqlDeclaration> assign_decl,
       rhs_expr(std::move(rhs_expr)) {
   assert(rhs_expr_match_type != MatchType::EXACT_MATCH);  // not supported yet
 
-  if (assign_decl->getEntityType() != ASSIGN) {
+  if (assign_decl->getEntityType() != EntityType::ASSIGN) {
     throw InvalidSemanticsException(
         "Pattern Clause only accepts assign declarations");
   }
 
-  if (lhs_ent_ref.getRefType() == DECLARATION &&
-      lhs_ent_ref.getDeclarationType() != VARIABLE) {
+  if (lhs_ent_ref.getRefType() == PqlRefType::DECLARATION &&
+      lhs_ent_ref.getDeclarationType() != EntityType::VARIABLE) {
     throw InvalidSemanticsException(
         "If the entRef of the pattern clause is a declaration, it must be of "
         "type variable.");

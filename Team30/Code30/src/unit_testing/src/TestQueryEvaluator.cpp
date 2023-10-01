@@ -203,9 +203,9 @@ TEST_CASE("Pattern clauses") {
   auto qe = QueryEvaluator(pkb);
   // decl, partial
   auto a = std::make_shared<PqlDeclaration>(std::make_shared<std::string>("a"),
-                                            ASSIGN);
+                                            EntityType::ASSIGN);
   auto v = std::make_shared<PqlDeclaration>(std::make_shared<std::string>("v"),
-                                            VARIABLE);
+                                            EntityType::VARIABLE);
   auto SELECT_A = std::make_unique<SelectClause>(a);
   auto SELECT_V = std::make_unique<SelectClause>(v);
   SECTION("decl, wild") {

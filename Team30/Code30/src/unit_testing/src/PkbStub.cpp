@@ -86,11 +86,11 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
   std::unique_ptr<std::vector<std::string>> output =
       std::make_unique<std::vector<std::string>>();
 
-  if (type == PROCEDURE) {
+  if (type == EntityType::PROCEDURE) {
     *output = PROCEDURES;
-  } else if (type == CONSTANT) {
+  } else if (type ==  EntityType::CONSTANT) {
     *output = CONSTANTS;
-  } else if (type == VARIABLE) {
+  } else if (type == EntityType::VARIABLE) {
     *output = VARIABLES;
   } else {  // statement type
     *output = STATEMENTS;
@@ -137,7 +137,7 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                            RelationType rel_type) {
-  if (entity_type_1 == STMT && entity_type_2 == STMT) {
+  if (entity_type_1 == EntityType::STMT && entity_type_2 == EntityType::STMT) {
     auto result =
         std::make_unique<std::vector<std::pair<std::string, std::string>>>();
     result->push_back(std::make_pair("5", "10"));
