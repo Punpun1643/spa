@@ -1,6 +1,4 @@
 name: Autotest
-env:
-  BUILD_TYPE: Release
 
 runs:
   using: composite
