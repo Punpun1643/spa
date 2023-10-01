@@ -27,6 +27,8 @@ jobs:
         #   git-pat: ${{ secrets.GIT_PAT }}
       - name: push
         run: |
+          git fetch origin
+          # git merge
           git add ./index.html
           git commit -m 'test push'
           git push origin HEAD:${{ github.head_ref }}
