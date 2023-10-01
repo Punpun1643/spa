@@ -9,7 +9,7 @@ class Token {
 
  public:
   explicit Token(std::string val = "");
-  ~Token() = default;
+  virtual ~Token() = default;
 
   std::string getTokenVal();
   virtual TokenType getTokenType() = 0;
