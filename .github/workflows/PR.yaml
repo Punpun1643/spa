@@ -35,8 +35,8 @@ jobs:
           # git pull origin ${{ github.head_ref }}
           git add ./index.html
           git commit -m 'test push'
-          # git push origin HEAD:${{ github.head_ref }}
-          git push
+          git push origin HEAD:${{ github.head_ref }}
+          # git push
 
 #       - name: Create Build Environment
 #         run: cmake -E make_directory ${{runner.workspace}}/build
