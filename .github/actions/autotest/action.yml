@@ -49,7 +49,3 @@ runs:
       run: |
         echo '</body>
         </html>' >> index.html
-
-
-
-
