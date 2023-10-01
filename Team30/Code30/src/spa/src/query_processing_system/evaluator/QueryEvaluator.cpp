@@ -13,7 +13,7 @@ std::vector<std::string> QueryEvaluator::evaluateQuery(
     std::vector<std::shared_ptr<Clause>> const& other_clauses) {
   assert(select_clause != nullptr);
 
-  auto const& target_declaration = select_clause->getDeclaration();
+  auto target_declaration = select_clause->getDeclaration();
   auto select_clause_result = select_clause->evaluate(pkb);
 
   IntermediateResultsTable table = IntermediateResultsTable();

@@ -1,9 +1,7 @@
 #include "QueryInterpreter.h"
 
 #include <cassert>
-#include <iostream>
 
-#include "../common/EntityType.h"
 #include "../common/FollowsClause.h"
 #include "../common/FollowsStarClause.h"
 #include "../common/ModifiesSClause.h"
@@ -22,9 +20,6 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/QueryExpression.h"
-#include "../expression/SelectExpression.h"
-#include "../expression/SuchThatExpression.h"
-#include "../expression/SuchThatListExpression.h"
 #include "../expression/UsesExpression.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
@@ -122,8 +117,7 @@ void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
   std::string syn_assign = pattern_expression.GetSynAssign();
   std::string arg1 = pattern_expression.GetArg1();
   std::string arg2 = pattern_expression.GetArg2();
-  std::shared_ptr<PqlDeclaration> assign_decl =
-      this->GetMappedDeclaration(syn_assign);
+  PqlDeclaration assign_decl = this->GetMappedDeclaration(syn_assign);
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {
     lhs_expr = std::make_shared<EntRef>();
@@ -178,7 +172,7 @@ void QueryInterpreter::Interpret(ParentTExpression& parent_t_expression) {
 
 void QueryInterpreter::Interpret(SelectExpression& select_expression) {
   std::string synonym = select_expression.GetSynonym();
-  std::shared_ptr<PqlDeclaration> selected_declaration =
+  PqlDeclaration selected_declaration =
       QueryInterpreter::GetMappedDeclaration(synonym);
   this->clause_list.push_back(
       std::make_shared<SelectClause>(selected_declaration));
@@ -225,8 +219,7 @@ void QueryInterpreter::InterpretDeclarations(
   EntityType entity_type = declaration_expression.getEntityType();
   std::string synonym = declaration_expression.getSynonym();
 
-  std::shared_ptr<PqlDeclaration> declaration =
-      std::make_shared<PqlDeclaration>(synonym, entity_type);
+  PqlDeclaration declaration = PqlDeclaration(synonym, entity_type);
   this->declarations->insert(std::make_pair(synonym, declaration));
 }
 
@@ -258,7 +251,7 @@ std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
   }
 }
 
-std::shared_ptr<PqlDeclaration> QueryInterpreter::GetMappedDeclaration(
+PqlDeclaration QueryInterpreter::GetMappedDeclaration(
     std::string const& synonym) {
   if (!(this->declarations->count(synonym))) {
     throw InvalidSemanticsException("Synonym has not been declared");
@@ -339,7 +332,7 @@ bool QueryInterpreter::IsIdentifier(std::string const& argument) {
 EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
     std::string const& argument) {
   assert(this->declarations->count(argument) > 0);
-  return this->declarations->at(argument)->getEntityType();
+  return this->declarations->at(argument).getEntityType();
 }
 
 bool QueryInterpreter::IsADeclaration(std::string const& argument) {
