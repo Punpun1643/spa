@@ -18,13 +18,14 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/build
-      - uses: ./.github/actions/unit-test
-      - uses: ./.github/actions/autotest
-      - uses: ./.github/actions/push-autotester-output-to-branch
-        with:
-          branch-name: ${{ github.ref }}
-          git-pat: ${{ secrets.GIT_PAT }}
+      - run: echo ${{ github.head_ref }}
+      # - uses: ./.github/actions/build
+      # - uses: ./.github/actions/unit-test
+      # - uses: ./.github/actions/autotest
+      # - uses: ./.github/actions/push-autotester-output-to-branch
+      #   with:
+      #     branch-name: ${{ github.head_ref }}
+      #     git-pat: ${{ secrets.GIT_PAT }}
 
 #       - name: Create Build Environment
 #         run: cmake -E make_directory ${{runner.workspace}}/build
