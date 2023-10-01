@@ -17,5 +17,5 @@ class StmtRef : public PqlReference {
 
   explicit StmtRef(int stmt_num);
 
-  explicit StmtRef(std::shared_ptr<PqlDeclaration const> declaration);
+  explicit StmtRef(const PqlDeclaration& declaration);
 };
