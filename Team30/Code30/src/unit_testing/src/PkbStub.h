@@ -21,8 +21,6 @@ class PkbStub : public PkbApi {
   int insertModifiesCallCount;
   int insertPatternCallCount;
 
-
-
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
@@ -80,5 +78,5 @@ class PkbStub : public PkbApi {
   // the given lhs_entity_type
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                               MatchType expr_match_type) override;
+                                      MatchType expr_match_type) override;
 };

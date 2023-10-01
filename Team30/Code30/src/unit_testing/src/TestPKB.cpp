@@ -305,7 +305,6 @@ TEST_CASE("PKB test1-source Parent*") {
   }
 }
 
-
 TEST_CASE("Test1-Source PKB") {
   PKB pkb = PKB();
   pkb.insertEntity(EntityType::PROCEDURE, "Advanced");
@@ -351,7 +350,7 @@ TEST_CASE("Test1-Source PKB") {
   pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2", "z"}));
 
   std::vector<std::string> expected_res = {"22", "25"};
-  REQUIRE_THAT(*pkb.getPatternMatchesWithLhsValue(
-              "x", "1", MatchType::PARTIAL_MATCH),
-               Catch::UnorderedEquals(expected_res));
+  REQUIRE_THAT(
+      *pkb.getPatternMatchesWithLhsValue("x", "1", MatchType::PARTIAL_MATCH),
+      Catch::UnorderedEquals(expected_res));
 }
