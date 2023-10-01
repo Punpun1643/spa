@@ -21,10 +21,14 @@ jobs:
       - uses: ./.github/actions/build
       - uses: ./.github/actions/unit-test
       - uses: ./.github/actions/autotest
-      - uses: ./.github/actions/push-autotester-output-to-branch
-        with:
-          branch-name: ${{ github.head_ref }}
-          git-pat: ${{ secrets.GIT_PAT }}
+      # - uses: ./.github/actions/push-autotester-output-to-branch
+        # with:
+        #   branch-name: ${{ github.head_ref }}
+        #   git-pat: ${{ secrets.GIT_PAT }}
+      - run: |
+        git add ./index.html
+        git commit -m 'test push'
+        git push
 
 #       - name: Create Build Environment
 #         run: cmake -E make_directory ${{runner.workspace}}/build
