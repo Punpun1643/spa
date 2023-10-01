@@ -351,6 +351,7 @@ TEST_CASE("Test1-Source PKB") {
   pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2", "z"}));
 
   std::vector<std::string> expected_res = {"22", "25"};
-  REQUIRE(*pkb.getPatternMatchesWithLhsValue(
-              "x", "1", MatchType::PARTIAL_MATCH) == expected_res);
+  REQUIRE_THAT(*pkb.getPatternMatchesWithLhsValue(
+              "x", "1", MatchType::PARTIAL_MATCH),
+               Catch::UnorderedEquals(expected_res));
 }
