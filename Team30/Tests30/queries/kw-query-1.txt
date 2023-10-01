@@ -1,0 +1,5 @@
+1 - positive, select all while loops
+while w;
+Select w
+4, 9, 12, 15
+5000

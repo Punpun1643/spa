@@ -15,10 +15,12 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
       run:
         echo ${{ inputs.branch-name }}
-      # run: |
-      #   git config --global user.name 'lkwlkww'
-      #   git config --global user.email 'lkwlkwlkww@gmail.com'
+      run: |
+        git config --global user.name 'lkwlkww'
+        git config --global user.email 'lkwlkwlkww@gmail.com'
 
-      #   git add ./index.html
-      #   git commit -m 'Github actions workflow: Add html file for viewing autotester output'
-      #   git push origin ${{ inputs.branch-name }}
+        git checkout ${{ inputs.branch-name }}
+
+        # git add ./index.html
+        # git commit -m 'Github actions workflow: Add html file for viewing autotester output'
+        # git push origin ${{ inputs.branch-name }}
