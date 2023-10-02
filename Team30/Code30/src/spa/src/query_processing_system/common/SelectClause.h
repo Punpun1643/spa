@@ -6,10 +6,10 @@
 
 class SelectClause : public Clause {
  private:
-  std::shared_ptr<PqlDeclaration> declaration;
+  PqlDeclaration const declaration;
 
  public:
-  explicit SelectClause(std::shared_ptr<PqlDeclaration> declaration);
-  std::shared_ptr<PqlDeclaration> getDeclaration();
+  explicit SelectClause(PqlDeclaration declaration);
+  PqlDeclaration getDeclaration() const;
   std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) override;
 };

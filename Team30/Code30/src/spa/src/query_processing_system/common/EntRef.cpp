@@ -11,9 +11,9 @@ EntRef::EntRef(std::string entity_value)
   // Assumes that entity_value is a valid identifier
 }
 
-EntRef::EntRef(std::shared_ptr<PqlDeclaration const> declaration)
+EntRef::EntRef(const PqlDeclaration& declaration)
     : PqlReference(declaration) {
-  EntityType declaration_type = declaration->getEntityType();
+  EntityType declaration_type = declaration.getEntityType();
   if (std::find(VALID_ENT_TYPES.begin(), VALID_ENT_TYPES.end(),
                 declaration_type) == VALID_ENT_TYPES.end()) {
     throw InvalidSemanticsException("Declaration is not an entity type");
