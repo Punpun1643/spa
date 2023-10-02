@@ -31,4 +31,6 @@ jobs:
           branch-name: master
           git-pat: ${{ secrets.GIT_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ github.actor }}
+          email: ${{ github.actor }}@users.noreply.github.com
 
