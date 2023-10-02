@@ -22,8 +22,6 @@ runs:
         else
           git checkout -b ${{ inputs.branch-name }}
         fi
-        git config user.name lkwlkww
-        git config email lkwlkwlkww@gmail.com
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
