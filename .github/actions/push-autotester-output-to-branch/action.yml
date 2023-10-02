@@ -15,7 +15,7 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
       run: |
         if [ ${{ inputs.branch-name }} == 'master' ]; then
-          git checkout inputs.branch-name
+          git checkout ${{ inputs.branch-name }}
         else
           git checkout -b ${{ inputs.branch-name }}
         fi
