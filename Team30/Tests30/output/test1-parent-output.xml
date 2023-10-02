@@ -1,203 +1,203 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.617000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.571000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent container syn LHS and stmt syn RHS">1</id><querystr><![CDATA[while w; stmt s; Select s such that Parent (w, s)]]></querystr>
 <stuans>15,16,8,9</stuans>
 <correct>8,9,15,16</correct>
-<time_taken>1.579000</time_taken>
+<time_taken>1.971000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent line num LHS and stmt syn RHS">2</id><querystr><![CDATA[assign a; Select a such that Parent (4, a)]]></querystr>
 <stuans>10,5</stuans>
 <correct>5,10</correct>
-<time_taken>1.323000</time_taken>
+<time_taken>1.297000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent wildcard LHS and stmt syn RHS">3</id><querystr><![CDATA[assign a; Select a such that Parent (_, a)]]></querystr>
 <stuans>10,15,22,23,25,26,5,8,9</stuans>
 <correct>5,8,9,10,15,22,23,25,26</correct>
-<time_taken>1.272000</time_taken>
+<time_taken>1.563000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent container syn LHS and container syn RHS">4</id><querystr><![CDATA[if i, i1; Select i such that Parent (i, i1)]]></querystr>
 <stuans>20</stuans>
 <correct>20</correct>
-<time_taken>1.238000</time_taken>
+<time_taken>1.200000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent line num LHS and container syn RHS">5</id><querystr><![CDATA[while w; Select w such that Parent (20, w)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.151000</time_taken>
+<time_taken>1.223000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent wildcard LHS and container syn RHS">6</id><querystr><![CDATA[while w; Select w such that Parent (_, w)]]></querystr>
 <stuans>7</stuans>
 <correct>7</correct>
-<time_taken>1.193000</time_taken>
+<time_taken>1.294000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent container syn LHS and line num RHS">7</id><querystr><![CDATA[while w; Select w such that Parent (w, 7)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.276000</time_taken>
+<time_taken>1.433000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent line num LHS and line num RHS">8</id><querystr><![CDATA[print pn; Select pn such that Parent (4, 8)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.118000</time_taken>
+<time_taken>1.077000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent wildcard LHS and line num RHS">9</id><querystr><![CDATA[read r; Select r such that Parent (_, 24)]]></querystr>
 <stuans>1,21,28</stuans>
 <correct>1,21,28</correct>
-<time_taken>1.252000</time_taken>
+<time_taken>1.274000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent container syn and wildcard RHS">10</id><querystr><![CDATA[while w; Select w such that Parent (w, _)]]></querystr>
 <stuans>14,7</stuans>
 <correct>7,14</correct>
-<time_taken>1.144000</time_taken>
+<time_taken>1.095000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent line num LHS and wildcard RHS">11</id><querystr><![CDATA[stmt s; Select s such that Parent (10, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.210000</time_taken>
+<time_taken>1.053000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="Parent wildcard LHS, wildcard RHS">12</id><querystr><![CDATA[read r; Select r such that Parent (_, _)]]></querystr>
 <stuans>1,21,28</stuans>
 <correct>1,21,28</correct>
-<time_taken>1.198000</time_taken>
+<time_taken>1.392000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* container syn LHS and stmt syn RHS">13</id><querystr><![CDATA[if i; stmt s; Select s such that Parent* (i, s)]]></querystr>
 <stuans>10,21,22,23,24,25,26,5,6,7,8,9</stuans>
 <correct>5,6,7,8,9,10,21,22,23,24,25,26</correct>
-<time_taken>1.436000</time_taken>
+<time_taken>1.384000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* line num LHS and stmt syn RHS">14</id><querystr><![CDATA[if i; assign a; Select a such that Parent* (4, a)]]></querystr>
 <stuans>10,5,8,9</stuans>
 <correct>5,8,9,10</correct>
-<time_taken>1.307000</time_taken>
+<time_taken>1.233000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent* wildcard LHS and stmt syn RHS">15</id><querystr><![CDATA[print pn; Select pn such that Parent* (_, pn)]]></querystr>
 <stuans>16,6</stuans>
 <correct>6,16</correct>
-<time_taken>1.278000</time_taken>
+<time_taken>1.142000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* container syn LHS and container syn RHS">16</id><querystr><![CDATA[while w, w1; Select w such that Parent* (w, w1)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.210000</time_taken>
+<time_taken>1.213000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* line num LHS and container syn RHS">17</id><querystr><![CDATA[if i; Select i such that Parent* (20, i)]]></querystr>
 <stuans>24</stuans>
 <correct>24</correct>
-<time_taken>1.146000</time_taken>
+<time_taken>1.489000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent* wildcard LHS and container syn RHS">18</id><querystr><![CDATA[while w; Select w such that Parent* (_, w)]]></querystr>
 <stuans>7</stuans>
 <correct>7</correct>
-<time_taken>1.241000</time_taken>
+<time_taken>1.252000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* container syn LHS and line num RHS">19</id><querystr><![CDATA[if i; Select i such that Parent* (i, 25)]]></querystr>
 <stuans>20,24</stuans>
 <correct>20,24</correct>
-<time_taken>1.206000</time_taken>
+<time_taken>1.208000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* line num LHS and line num RHS">20</id><querystr><![CDATA[print pn; Select pn such that Parent* (4, 8)]]></querystr>
 <stuans>16,29,6</stuans>
 <correct>6,16,29</correct>
-<time_taken>1.219000</time_taken>
+<time_taken>1.039000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent* wildcard LHS and line num RHS">21</id><querystr><![CDATA[variable v; Select v such that Parent* (_, 2) ]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.248000</time_taken>
+<time_taken>1.168000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent* container syn and wildcard RHS">22</id><querystr><![CDATA[variable v; Select v such that Parent* (w, _)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.224000</time_taken>
+<time_taken>1.068000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Parent* line num LHS and wildcard RHS">23</id><querystr><![CDATA[variable v; Select v such that Parent* (22, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.214000</time_taken>
+<time_taken>1.224000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="Parent* wildcard LHS, wildcard RHS">24</id><querystr><![CDATA[read r; Select r such that Parent* (_, _)]]></querystr>
 <stuans>1,21,28</stuans>
 <correct>1,21,28</correct>
-<time_taken>1.185000</time_taken>
+<time_taken>1.208000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Invalid cannot have constant/variable as 1st param of Parent">25</id><querystr><![CDATA[stmt s; Select s such that Parent ("r", _) ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.225000</time_taken>
+<time_taken>1.139000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid cannot have constant/variable as 2nd param of Parent">26</id><querystr><![CDATA[assign a; Select a such that Parent (13, "1") ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.230000</time_taken>
+<time_taken>1.041000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Invalid cannot have constant/variable as 1st param of Parent*">27</id><querystr><![CDATA[read r; Select r such that Parent* ("2", _) ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.164000</time_taken>
+<time_taken>1.011000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid cannot have constant/variable as 2nd param of Parent*">28</id><querystr><![CDATA[assign a; Select a such that Parent* (10, "x") ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.172000</time_taken>
+<time_taken>1.088000</time_taken>
 <passed/>
 </query>
 </queries>
