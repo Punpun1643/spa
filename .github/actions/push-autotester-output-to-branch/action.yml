@@ -18,6 +18,7 @@ runs:
           git checkout inputs.branch-name
         else
           git checkout -b ${{ inputs.branch-name }}
+        fi
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
