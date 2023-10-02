@@ -7,10 +7,6 @@ inputs:
     require: true
   GITHUB_TOKEN:
     require: true
-  name:
-    require: true
-  email:
-    require: true
 
 runs:
   using: composite
@@ -26,8 +22,6 @@ runs:
         else
           git checkout -b ${{ inputs.branch-name }}
         fi
-        git config user.name lkwlkww
-        git config user.email lkwlkwlkww@gmail.com
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
