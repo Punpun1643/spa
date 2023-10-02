@@ -14,7 +14,10 @@ runs:
       env:
         GIT_PAT: ${{ inputs.git-pat }}
       run: |
-        git checkout -b ${{ inputs.branch-name }}
+        if [ ${{ inputs.branch-name }} == 'master' ]; then
+          git checkout inputs.branch-name
+        else
+          git checkout -b ${{ inputs.branch-name }}
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
