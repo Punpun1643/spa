@@ -9,8 +9,8 @@ concurrency:
 
 jobs:
   build-and-test:
-    # runs-on: macos-latest
-    runs-on: windows-latest
+    runs-on: macos-latest
+    # runs-on: windows-latest
     timeout-minutes: 8
     strategy:
       fail-fast: true
@@ -23,10 +23,9 @@ jobs:
           fetch-depth: 0
       - run: git branch
       - uses: ./.github/actions/build
-      - uses: ./.github/actions/windows-build
-      # - uses: ./.github/actions/unit-test
-      # - uses: ./.github/actions/autotest
-      # - uses: ./.github/actions/push-autotester-output-to-branch
-      #   with:
-      #     branch-name: ${{ github.head_ref }}
-      #     git-pat: ${{ secrets.GIT_PAT }}
+      - uses: ./.github/actions/unit-test
+      - uses: ./.github/actions/autotest
+      - uses: ./.github/actions/push-autotester-output-to-branch
+        with:
+          branch-name: ${{ github.head_ref }}
+          git-pat: ${{ secrets.GIT_PAT }}
