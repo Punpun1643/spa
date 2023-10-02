@@ -1,0 +1,23 @@
+name: Push Autotester Output to Branch
+
+inputs:
+  branch-name:
+    require: true
+  git-pat:
+    require: true
+
+runs:
+  using: composite
+  steps:
+    - name: push-to-branch
+      shell: bash
+      env:
+        GIT_PAT: ${{ inputs.git-pat }}
+      run: |
+        git checkout -b ${{ inputs.branch-name }}
+        git config pull.rebase false
+        git pull origin ${{ inputs.branch-name }}
+        git add ./index.html
+        git add Team30/Tests30/output/*
+        git commit -m 'Github Actions Workflow: Add autotester output'
+        git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}
