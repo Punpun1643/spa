@@ -5,10 +5,6 @@ inputs:
     require: true
   git-pat:
     require: true
-  # user_name:
-  #   require: true
-  # email:
-  #   require: true
 
 runs:
   using: composite
@@ -19,10 +15,6 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
       run: |
         git checkout -b ${{ inputs.branch-name }}
-        # git config user.name lkwlkww
-        # git config user.name ${{ inputs.user_name }}
-        # git config user.email lkwlkwlkww@gmail.com
-        # git config user.email ${{ inputs.email }}
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
