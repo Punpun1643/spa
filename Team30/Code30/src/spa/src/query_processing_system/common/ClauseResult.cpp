@@ -8,8 +8,8 @@
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
-ClauseResult::ClauseResult(const PqlDeclaration& d,
-                           const std::vector<std::string>& values) {
+ClauseResult::ClauseResult(PqlDeclaration const& d,
+                           std::vector<std::string> const& values) {
   if (values.empty()) {
     // Entire clause becomes false because no possible values
     num_declarations = 0;
@@ -22,8 +22,8 @@ ClauseResult::ClauseResult(const PqlDeclaration& d,
 }
 
 ClauseResult::ClauseResult(
-    const PqlDeclaration& d1, const PqlDeclaration& d2,
-    const std::vector<std::pair<std::string, std::string>>& values) {
+    PqlDeclaration const& d1, PqlDeclaration const& d2,
+    std::vector<std::pair<std::string, std::string>> const& values) {
   if (values.empty()) {
     // Entire clause becomes false because no possible values
     num_declarations = 0;

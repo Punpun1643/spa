@@ -70,8 +70,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
   PqlDeclaration declaration = *(arg1->getDeclaration());
   auto possible_values =
       pkb.getRelationValuesGivenFirstType(entity_type, relation_type);
-  return std::make_unique<ClauseResult>(declaration,
-                                        *possible_values);
+  return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
@@ -80,8 +79,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
   PqlDeclaration declaration = *(arg2->getDeclaration());
   auto possible_values =
       pkb.getRelationValuesGivenSecondType(entity_type, relation_type);
-  return std::make_unique<ClauseResult>(declaration,
-                                        *possible_values);
+  return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
@@ -91,8 +89,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
   std::string second_value = arg2->getValue();
   auto possible_values =
       pkb.getRelationValues(entity_type, second_value, relation_type);
-  return std::make_unique<ClauseResult>(declaration,
-                                        *possible_values);
+  return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
@@ -102,8 +99,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
   std::string first_value = arg1->getValue();
   auto possible_values =
       pkb.getRelationValues(first_value, entity_type, relation_type);
-  return std::make_unique<ClauseResult>(declaration,
-                                        *possible_values);
+  return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(

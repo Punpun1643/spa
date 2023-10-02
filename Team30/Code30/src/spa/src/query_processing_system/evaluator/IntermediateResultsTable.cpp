@@ -119,7 +119,8 @@ void IntermediateResultsTable::addPairedDeclarations(
       }
     }
   }
-  assert(table_mapping.count(d1) == 1); // otherwise, doing [] will insert a default key-value pair.
+  assert(table_mapping.count(d1) ==
+         1);  // otherwise, doing [] will insert a default key-value pair.
   if (tables[table_mapping[d1]].hasNoResults()) {
     has_no_results = true;
     return;

@@ -6,7 +6,7 @@
 #include "EntityType.h"
 #include "PqlDeclaration.h"
 
-enum PqlRefType { WILD, VALUE, DECLARATION };
+enum class PqlRefType { WILD, VALUE, DECLARATION };
 
 class PqlReference {
  private:

@@ -18,5 +18,5 @@ class QueryEvaluator {
 
   std::vector<std::string> evaluateQuery(
       std::unique_ptr<SelectClause> select_clause,
-      std::vector<std::shared_ptr<Clause>> other_clauses);
+      std::vector<std::shared_ptr<Clause>> const& other_clauses);
 };

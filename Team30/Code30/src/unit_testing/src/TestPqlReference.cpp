@@ -25,9 +25,9 @@ TEST_CASE("Tests on PqlReferences") {
     auto decl_stmt_ref = std::make_shared<PqlReference>(
         StmtRef(std::make_shared<PqlDeclaration>(a)));
 
-    REQUIRE(wild_stmt_ref->getRefType() == WILD);
-    REQUIRE(value_stmt_ref->getRefType() == VALUE);
-    REQUIRE(decl_stmt_ref->getRefType() == DECLARATION);
+    REQUIRE(wild_stmt_ref->getRefType() == PqlRefType::WILD);
+    REQUIRE(value_stmt_ref->getRefType() == PqlRefType::VALUE);
+    REQUIRE(decl_stmt_ref->getRefType() == PqlRefType::DECLARATION);
 
     REQUIRE(value_stmt_ref->getValue() == "42");
     REQUIRE(decl_stmt_ref->getDeclarationType() == a.getEntityType());
@@ -55,9 +55,9 @@ TEST_CASE("Tests on PqlReferences") {
     auto decl_ent_ref = std::make_shared<PqlReference>(
         EntRef(std::make_shared<PqlDeclaration>(v)));
 
-    REQUIRE(wild_ent_ref->getRefType() == WILD);
-    REQUIRE(value_ent_ref->getRefType() == VALUE);
-    REQUIRE(decl_ent_ref->getRefType() == DECLARATION);
+    REQUIRE(wild_ent_ref->getRefType() == PqlRefType::WILD);
+    REQUIRE(value_ent_ref->getRefType() == PqlRefType::VALUE);
+    REQUIRE(decl_ent_ref->getRefType() == PqlRefType::DECLARATION);
 
     REQUIRE(value_ent_ref->getValue() == "variable");
     REQUIRE(decl_ent_ref->getDeclarationType() == v.getEntityType());

@@ -86,11 +86,11 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
   std::unique_ptr<std::vector<std::string>> output =
       std::make_unique<std::vector<std::string>>();
 
-  if (type == PROCEDURE) {
+  if (type == EntityType::PROCEDURE) {
     *output = PROCEDURES;
-  } else if (type == CONSTANT) {
+  } else if (type == EntityType::CONSTANT) {
     *output = CONSTANTS;
-  } else if (type == VARIABLE) {
+  } else if (type == EntityType::VARIABLE) {
     *output = VARIABLES;
   } else {  // statement type
     *output = STATEMENTS;
@@ -137,7 +137,7 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
                            RelationType rel_type) {
-  if (entity_type_1 == STMT && entity_type_2 == STMT) {
+  if (entity_type_1 == EntityType::STMT && entity_type_2 == EntityType::STMT) {
     auto result =
         std::make_unique<std::vector<std::pair<std::string, std::string>>>();
     result->push_back(std::make_pair("5", "10"));
@@ -155,10 +155,10 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
   if (expr_match_type == MatchType::WILD_MATCH) {
     auto return_vec = std::vector<std::string>({"1"});
     return std::make_unique<std::vector<std::string>>(return_vec);
-  } else if (expr_match_type == MatchType:: PARTIAL_MATCH) {
+  } else if (expr_match_type == MatchType::PARTIAL_MATCH) {
     auto return_vec = std::vector<std::string>({"2"});
     return std::make_unique<std::vector<std::string>>(return_vec);
-  } else { // exact
+  } else {  // exact
     return std::make_unique<std::vector<std::string>>();
   }
 }
@@ -182,14 +182,15 @@ PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
 // given lhs_entity_type
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                      MatchType expr_match_type) {
-  auto output = std::make_unique<std::vector<std::pair<std::string, std::string>>>();
+                                             MatchType expr_match_type) {
+  auto output =
+      std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 
   if (expr_match_type == MatchType::WILD_MATCH) {
-    output->push_back(std::make_pair("1","varX"));
+    output->push_back(std::make_pair("1", "varX"));
 
   } else if (expr_match_type == MatchType::PARTIAL_MATCH) {
-    output->push_back(std::make_pair("2","varY"));
+    output->push_back(std::make_pair("2", "varY"));
   }
   return output;
 };
