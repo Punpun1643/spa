@@ -30,4 +30,5 @@ jobs:
         with:
           branch-name: master
           git-pat: ${{ secrets.GIT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
