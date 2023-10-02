@@ -7,8 +7,7 @@
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
 
-typedef std::unordered_map<std::string, std::shared_ptr<PqlDeclaration>>
-    DeclarationMap;
+typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;
 
 class DeclarationListExpression;
@@ -54,8 +53,7 @@ class QueryInterpreter {
   EntityType GetEntityTypeAsDeclaration(std::string const& argument);
   std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
-  std::shared_ptr<PqlDeclaration> GetMappedDeclaration(
-      std::string const& synonym);
+  PqlDeclaration GetMappedDeclaration(std::string const& synonym);
 
   std::shared_ptr<DeclarationMap> declarations;
   ClauseList clause_list;

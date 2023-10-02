@@ -26,5 +26,5 @@ std::vector<std::string> QueryEvaluator::evaluateQuery(
       return {};
     }
   }
-  return table.getValuesGivenDeclaration(*target_declaration);
+  return table.getValuesGivenDeclaration(target_declaration);
 }

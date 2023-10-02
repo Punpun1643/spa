@@ -4,8 +4,8 @@
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-PatternClause::PatternClause(std::shared_ptr<PqlDeclaration> assign_decl,
-                             EntRef lhs_ent_ref, MatchType rhs_expr_match_type,
+PatternClause::PatternClause(const PqlDeclaration& assign_decl,
+                             const EntRef& lhs_ent_ref, MatchType rhs_expr_match_type,
                              std::string rhs_expr)
     : assign_decl(assign_decl),
       lhs_ent_ref(lhs_ent_ref),
@@ -13,7 +13,7 @@ PatternClause::PatternClause(std::shared_ptr<PqlDeclaration> assign_decl,
       rhs_expr(std::move(rhs_expr)) {
   assert(rhs_expr_match_type != MatchType::EXACT_MATCH);  // not supported yet
 
-  if (assign_decl->getEntityType() != EntityType::ASSIGN) {
+  if (assign_decl.getEntityType() != EntityType::ASSIGN) {
     throw InvalidSemanticsException(
         "Pattern Clause only accepts assign declarations");
   }
@@ -32,19 +32,19 @@ std::unique_ptr<ClauseResult> PatternClause::evaluate(PkbApi& pkb) {
       auto values = pkb.getPatternMatchesWithDeclarationLhs(
           rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
-          *assign_decl, *(lhs_ent_ref.getDeclaration()), *values);
+          assign_decl, lhs_ent_ref.getDeclaration(), *values);
       break;
     }
     case (PqlRefType::VALUE): {
       auto values = pkb.getPatternMatchesWithLhsValue(
           lhs_ent_ref.getValue(), rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(*assign_decl, *values);
+      return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }
     case (PqlRefType::WILD): {
       auto values =
           pkb.getPatternMatchesWithWildLhs(rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(*assign_decl, *values);
+      return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }
     default:
