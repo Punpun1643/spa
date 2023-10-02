@@ -1,0 +1,17 @@
+name: Build
+env:
+  BUILD_TYPE: Release
+
+runs:
+  using: composite
+  steps:
+    - name: Build
+      shell: bash
+      run: |
+        cd Team30/Code30/
+        mkdir build
+        cd build
+        cmake -A Win32 ..
+        cmake --build . --target unit_testing --config $BUILD_TYPE
+        cmake --build . --target integration_testing --config $BUILD_TYPE
+        cmake --build . --target autotester --config $BUILD_TYPE

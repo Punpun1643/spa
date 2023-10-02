@@ -1,0 +1,31 @@
+name: PR
+on:
+  pull_request:
+env:
+  BUILD_TYPE: Release
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    # runs-on: windows-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: true
+    env:
+      GIT_PAT: ${{ secrets.GIT_PAT }}
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git branch
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/unit-test
+      - uses: ./.github/actions/autotest
+      - uses: ./.github/actions/push-autotester-output-to-branch
+        with:
+          branch-name: ${{ github.head_ref }}
+          git-pat: ${{ secrets.GIT_PAT }}
