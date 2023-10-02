@@ -5,6 +5,8 @@ inputs:
     require: true
   git-pat:
     require: true
+  GITHUB_TOKEN:
+    require: true
 
 runs:
   using: composite
