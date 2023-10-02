@@ -63,11 +63,11 @@ The following are the system test cases in the following format:
 
 # Team Members
 
-Name | Mobile | Email                   | Development OS/Toolchain
--:|:-:|:------------------------|-|
-Lee Kang Wei | 83387981 | leekangwei@u.nus.edu | **OS:** macOS Ventura 13.2.1 <br/> **IDE:** NA <br/> **Toolchain:** CMake 3.27.6
-Lim Wei Liang | 91551321 | lim.weiliang@u.nus.edu | **OS:** macOS Ventura 13.5.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** CMake 3.26.4
-Papattarada Apithanangsiri | 96147377 | papattarada.a@u.nus.edu | **OS:** macOS Ventura 13.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** CMake 3.27.4
-Ryan Ong Ren-An | 90495351 | ryanongra@u.nus.edu | **OS**: Windows 11 <br/> **IDE:** Microsoft Visual Studio 2022 <br/> **Toolchain:** C++ Clang tools for Windows (16.0.5 - x64/x86)
-Tang Swen Yi | 83832882 | e0532612@u.nus.edu | **OS:** macOS Ventura 13.4.1 <br/> **IDE:** CLion 2023.2.1 <br/> **Toolchain:** Apple clang version 14.0.3 (clang-1403.0.22.14.1)
-Tay Yan Han | 96559670 | tayyanhan@u.nus.edu | **OS**: Windows 11 <br/> **IDE:** Microsoft Visual Studio 2022 <br/> **Toolchain:** C++ Clang tools for Windows (16.0.5 - x64/x86)
+|                       Name |  Mobile  | Email                   | Development OS/Toolchain                                                                                                  |
+|---------------------------:|:--------:|:------------------------|---------------------------------------------------------------------------------------------------------------------------|
+|               Lee Kang Wei | 83387981 | leekangwei@u.nus.edu    | **OS:** macOS Ventura 13.2.1 <br/> **IDE:** NA <br/> **Toolchain:** CMake 3.27.6 + Apple clang 14.0.3                     |
+|              Lim Wei Liang | 91551321 | lim.weiliang@u.nus.edu  | **OS:** macOS Ventura 13.5.2 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** CMake 3.26.4 + Apple clang 14.0.3           |
+| Papattarada Apithanangsiri | 96147377 | papattarada.a@u.nus.edu | **OS:** macOS Sonoma 14.0 <br/> **IDE:** CLion 2023.2 <br/> **Toolchain:** CMake 3.27.4 + Apple clang 14.0.3              |
+|            Ryan Ong Ren-An | 90495351 | ryanongra@u.nus.edu     | **OS**: Windows 11 <br/> **IDE:** Microsoft Visual Studio 2022 <br/> **Toolchain:** CMake 3.26 + MSVC 19.37.32822.0       |
+|               Tang Swen Yi | 83832882 | e0532612@u.nus.edu      | **OS:** macOS Ventura 13.4.1 <br/> **IDE:** CLion 2023.2.1 <br/> **Toolchain:** CMake 3.26.3 + Apple clang version 14.0.3 |
+|                Tay Yan Han | 96559670 | tayyanhan@u.nus.edu     | **OS**: Windows 11 <br/> **IDE:** Microsoft Visual Studio 2022 <br/> **Toolchain:** CMake 3.26 + MSVC 19.37.32822.0       |
