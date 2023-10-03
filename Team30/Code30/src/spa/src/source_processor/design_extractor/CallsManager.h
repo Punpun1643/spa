@@ -3,16 +3,22 @@
 #include <memory>
 #include <source_processor/node/stmt_node/CallNode.h>
 #include <queue>
-#include "CallsGraphNode.h"
+#include "CallsGraphProcNode.h"
+#include <unordered_map>
 
 class CallsManager {
  public:
   explicit CallsManager();
-  void insertCallsStmt(std::vector<std::string> actors,
-                       std::shared_ptr<CallNode> callNode);
+
+  // procA: the procedure in which the call stmt is found
+  // procB: the procedure that the call stmt calls
+  // i.e. A calls B
+  void insertCallsStmt(std::string procA, std::string procB,
+                       std::vector<std::string> actors);
+  void insertProcNode(std::string procName);
   void executeCallsGraphTraversal();
 
  private:
-  std::priority_queue<CallsGraphNode> nodeQueue;
-  std::vector<std::shared_ptr<CallNode>> existingNodes;
+  // Key: string procedureName, Value: CallsGraphProcNode node
+  std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>> procNodeMap;
 };

@@ -11,7 +11,6 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "CallStmtCacheObject.h"
 #include "UsesModifiesTypeExtractor.h"
 
 class ModifiesExtractor : public UsesModifiesTypeExtractor {
@@ -30,8 +29,6 @@ class ModifiesExtractor : public UsesModifiesTypeExtractor {
   PkbApi& pkb;
 
   std::shared_ptr<CallsManager> callsManager;
-
-  std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
 
   void insertCondVars(std::unordered_set<std::string> condVars,
                       std::string stmtIndex);

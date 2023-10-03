@@ -3,15 +3,24 @@
 #include <vector>
 CallsManager::CallsManager() {}
 
-void CallsManager::insertCallsStmt(std::vector<std::string> actors,
-                                   std::shared_ptr<CallNode> callNode) {
-  if (std::find(existingNodes.begin(), existingNodes.end(), callNode) ==
-      existingNodes.end()) {
-    // node has already been inserted
-    return;
-  }
+void CallsManager::insertProcNode(std::string procName) {
+  std::shared_ptr<CallsGraphProcNode> newNode =
+      std::make_shared<CallsGraphProcNode>(procName);
+  procNodeMap.insert({procName, newNode});
+}
 
-  existingNodes.push_back(callNode);
+void CallsManager::insertCallsStmt(std::string procCalled,
+                                   std::string procCalling,
+                                   std::vector<std::string> actors) {
+  std::shared_ptr<CallsGraphStmtNode> newStmtNode =
+      std::make_shared<CallsGraphStmtNode>(actors);
+  std::shared_ptr<CallsGraphProcNode> procCalledNode = procNodeMap.at(procCalled);
+  std::shared_ptr<CallsGraphProcNode> procCallingNode =
+      procNodeMap.at(procCalling);
+
+  procCalledNode->addStmtCalledBy(newStmtNode);
+  procCalledNode->addProcCalledBy(procCalledNode);
+  procCallingNode->addProcCalled(procCallingNode);
 }
 
 void CallsManager::executeCallsGraphTraversal() {}

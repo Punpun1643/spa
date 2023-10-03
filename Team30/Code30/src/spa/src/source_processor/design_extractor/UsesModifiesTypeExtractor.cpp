@@ -12,7 +12,7 @@ void UsesModifiesTypeExtractor::extractFromProcedure(
 
 void UsesModifiesTypeExtractor::extractFromCall(
     std::shared_ptr<CallNode> node) {
-  callsManager->insertCallsStmt(actors, node);
+  callsManager->insertCallsStmt(actors[0], node->getProcName(), actors);
 }
 
 void UsesModifiesTypeExtractor::extractFromWhile(
@@ -28,10 +28,5 @@ void UsesModifiesTypeExtractor::popActor() {
   if (!actors.empty()) {
     actors.pop_back();
   }
-}
-
-std::vector<std::shared_ptr<CallStmtCacheObject>>
-UsesModifiesTypeExtractor::getCallStmtCache() {
-  return callStmtCache;
 }
 

@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "../node/ANode.h"
-#include "CallStmtCacheObject.h"
 #include "CallsManager.h"
 #include "IDesignExtractor.h"
 #include "IExtractionController.h"
@@ -26,9 +25,5 @@ class ExtractionController : public IExtractionController {
   std::shared_ptr<CallsManager> callsManager;
 
   void handleContainerStmts(std::shared_ptr<StmtNode> node);
-  void handleCallStmts();
-  void handleCallStmtsHelper(
-      std::vector<std::shared_ptr<CallStmtCacheObject>> cache,
-      RelationType rel);
   void popActors();
 };

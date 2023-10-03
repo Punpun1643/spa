@@ -27,6 +27,7 @@ void ExtractionController::executeProgramExtraction(
   if (!children.empty()) {
     for (std::shared_ptr<ProcedureNode> child : children) {
       executeProcedureExtraction(child);
+      callsManager->insertProcNode(child->getProcedureName());
     }
   }
 

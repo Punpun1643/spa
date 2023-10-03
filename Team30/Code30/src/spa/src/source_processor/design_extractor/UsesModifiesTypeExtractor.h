@@ -11,7 +11,6 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "CallStmtCacheObject.h"
 #include "DesignExtractor.h"
 #include "CallsManager.h"
 
@@ -30,14 +29,10 @@ class UsesModifiesTypeExtractor : public DesignExtractor {
 
   void popActor();
 
-  std::vector<std::shared_ptr<CallStmtCacheObject>> getCallStmtCache();
-
   ~UsesModifiesTypeExtractor() = default;
 
  private:
   PkbApi& pkb;
-
-  std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
 
   std::shared_ptr<CallsManager> callsManager;
 
