@@ -4,27 +4,9 @@
 #include <iostream>
 #include <vector>
 
-ModifiesExtractor::ModifiesExtractor(PkbApi& pkb) : pkb(pkb) {}
+ModifiesExtractor::ModifiesExtractor(PkbApi& pkb) : pkb(pkb), UsesModifiesTypeExtractor(pkb) {}
 
 void ModifiesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
-
-void ModifiesExtractor::extractFromProcedure(
-    std::shared_ptr<ProcedureNode> node) {
-  modifiesActors.push_back(node->getProcedureName());
-}
-
-void ModifiesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
-  // TODO
-}
-
-void ModifiesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  CallStmtCacheObject newCallStmt = CallStmtCacheObject(modifiesActors, node);
-  callStmtCache.push_back(std::make_shared<CallStmtCacheObject>(newCallStmt));
-}
-
-void ModifiesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   // TODO
 }
 
@@ -34,28 +16,10 @@ void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
   insertVarWithActors(node->getVarName());
 }
 
-void ModifiesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-  modifiesActors.push_back(std::to_string(node->getStmtIndex()));
-}
-
-void ModifiesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-  modifiesActors.push_back(std::to_string(node->getStmtIndex()));
-}
-
 void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->getStmtIndex()), node->getVarName());
   insertVarWithActors(node->getVarName());
-}
-
-void ModifiesExtractor::popModifiesActor() {
-  if (!modifiesActors.empty()) {
-    modifiesActors.pop_back();
-  }
-}
-
-std::vector<std::shared_ptr<CallStmtCacheObject>> ModifiesExtractor::getCallStmtCache() {
-  return callStmtCache;
 }
 
 //////////////////////////////
@@ -65,7 +29,7 @@ std::vector<std::shared_ptr<CallStmtCacheObject>> ModifiesExtractor::getCallStmt
 //////////////////////////////
 
 void ModifiesExtractor::insertVarWithActors(std::string var) {
-  for (std::string modifiesActor : modifiesActors) {
+  for (std::string modifiesActor : actors) {
     // insertIntoPkb(modifiesActor, var);
     bool isStmtIndex =
         !modifiesActor.empty() &&

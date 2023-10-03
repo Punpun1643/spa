@@ -3,12 +3,11 @@
 #include <memory>
 #include <vector>
 
-#include "IExtractionController.h"
-#include "IDesignExtractor.h"
 #include "../node/ANode.h"
+#include "CallStmtCacheObject.h"
+#include "CallsManager.h"
 #include "IDesignExtractor.h"
 #include "IExtractionController.h"
-#include "CallStmtCacheObject.h"
 
 class ExtractionController : public IExtractionController {
  public:
@@ -24,6 +23,7 @@ class ExtractionController : public IExtractionController {
  private:
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
   PkbApi& pkb;
+  std::shared_ptr<CallsManager> callsManager;
 
   void handleContainerStmts(std::shared_ptr<StmtNode> node);
   void handleCallStmts();

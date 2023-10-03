@@ -12,29 +12,31 @@
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
 #include "CallStmtCacheObject.h"
-#include "UsesModifiesTypeExtractor.h"
+#include "DesignExtractor.h"
 
-class UsesExtractor : public UsesModifiesTypeExtractor {
+class UsesModifiesTypeExtractor : public DesignExtractor {
  public:
-  explicit UsesExtractor(PkbApi& pkb);
+  explicit UsesModifiesTypeExtractor(PkbApi& pkb);
 
-  void extractFromPrint(std::shared_ptr<PrintNode> node) override;
+  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
+
+  void extractFromCall(std::shared_ptr<CallNode> node) override;
 
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
   void extractFromIf(std::shared_ptr<IfNode> node) override;
 
-  void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+  void popActor();
 
-  ~UsesExtractor() = default;
+  std::vector<std::shared_ptr<CallStmtCacheObject>> getCallStmtCache();
+
+  ~UsesModifiesTypeExtractor() = default;
 
  private:
   PkbApi& pkb;
 
   std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
 
-  void insertMultipleVars(std::unordered_set<std::string> vars,
-                          std::string stmtIndex);
-
-  void insertVarWithActors(std::string var);
+ protected:
+  std::vector<std::string> actors;
 };

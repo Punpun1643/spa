@@ -3,24 +3,8 @@
 #include <algorithm>
 #include <iostream>
 
-UsesExtractor::UsesExtractor(PkbApi& pkb) : pkb(pkb) {}
-
-void UsesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
-
-void UsesExtractor::extractFromProcedure(std::shared_ptr<ProcedureNode> node) {
-  usesActors.push_back(node->getProcedureName());
-}
-
-void UsesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
-  // TODO
-}
-
-void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  CallStmtCacheObject newCallStmt = CallStmtCacheObject(usesActors, node);
-  callStmtCache.push_back(std::make_shared<CallStmtCacheObject>(newCallStmt));
-}
+UsesExtractor::UsesExtractor(PkbApi& pkb)
+    : pkb(pkb), UsesModifiesTypeExtractor(pkb) {}
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertRelation(RelationType::USES_S, std::to_string(node->getStmtIndex()),
@@ -28,37 +12,23 @@ void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   insertVarWithActors(node->getVarName());
 }
 
-void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  // TODO
-}
-
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
       *node->getCondExpr()->getVariables();
   insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
-  usesActors.push_back(std::to_string(node->getStmtIndex()));
+  actors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
       *node->getCondExpr()->getVariables();
   insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
-  usesActors.push_back(std::to_string(node->getStmtIndex()));
+  actors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
   std::unordered_set<std::string> rhsVars = *node->getVariables();
   insertMultipleVars(rhsVars, std::to_string(node->getStmtIndex()));
-}
-
-void UsesExtractor::popUsesActor() {
-  if (!usesActors.empty()) {
-    usesActors.pop_back();
-  }
-}
-
-std::vector<std::shared_ptr<CallStmtCacheObject>> UsesExtractor::getCallStmtCache() {
-  return callStmtCache;
 }
 
 //////////////////////////////
@@ -76,7 +46,7 @@ void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
 }
 
 void UsesExtractor::insertVarWithActors(std::string var) {
-  for (std::string usesActor : usesActors) {
+  for (std::string usesActor : actors) {
     bool isStmtIndex =
         !usesActor.empty() &&
         std::all_of(usesActor.begin(), usesActor.end(), ::isdigit);

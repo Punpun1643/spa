@@ -11,28 +11,32 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "CallStmtCacheObject.h"
-#include "UsesModifiesTypeExtractor.h"
+#include "IDesignExtractor.h"
 
-class ModifiesExtractor : public UsesModifiesTypeExtractor {
+class DesignExtractor : public IDesignExtractor {
  public:
-  explicit ModifiesExtractor(PkbApi& pkb);
+  explicit DesignExtractor(PkbApi& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
+  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
+
+  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
+
+  void extractFromCall(std::shared_ptr<CallNode> node) override;
+
+  void extractFromPrint(std::shared_ptr<PrintNode> node) override;
+
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
+
+  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+
+  void extractFromIf(std::shared_ptr<IfNode> node) override;
 
   void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  ~ModifiesExtractor() = default;
+  ~DesignExtractor() = default;
 
  private:
   PkbApi& pkb;
-
-  std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
-
-  void insertCondVars(std::unordered_set<std::string> condVars,
-                      std::string stmtIndex);
-
-  void insertVarWithActors(std::string var);
 };
