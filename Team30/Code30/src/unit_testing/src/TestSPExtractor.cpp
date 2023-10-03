@@ -21,19 +21,20 @@ class ExtractorBuilder {
   std::shared_ptr<UsesExtractor> uExtractor;
 
   PkbStub pkb;
-  ExtractorBuilder(PkbStub& pkb) : pkb(pkb) {
+  std::shared_ptr<CallsManager> callsManager;
+  ExtractorBuilder(PkbStub& pkb, std::shared_ptr<CallsManager> callsManager) : pkb(pkb), callsManager(callsManager) {
     eExtractor = std::make_shared<EntityExtractor>(pkb);
     fExtractor = std::make_shared<FollowsExtractor>(pkb);
     pExtractor = std::make_shared<ParentExtractor>(pkb);
-    mExtractor = std::make_shared<ModifiesExtractor>(pkb);
-    uExtractor = std::make_shared<UsesExtractor>(pkb);
+    mExtractor = std::make_shared<ModifiesExtractor>(pkb, callsManager);
+    uExtractor = std::make_shared<UsesExtractor>(pkb, callsManager);
   }
 };
 
 TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -66,8 +67,8 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -100,8 +101,8 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
 
 TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -136,8 +137,8 @@ TEST_CASE(
     "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
     "(if-if-while)") {
   PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {

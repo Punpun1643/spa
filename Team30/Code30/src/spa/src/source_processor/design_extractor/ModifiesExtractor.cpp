@@ -4,7 +4,8 @@
 #include <iostream>
 #include <vector>
 
-ModifiesExtractor::ModifiesExtractor(PkbApi& pkb) : pkb(pkb), UsesModifiesTypeExtractor(pkb) {}
+ModifiesExtractor::ModifiesExtractor(PkbApi& pkb, std::shared_ptr<CallsManager> callsManager)
+    : pkb(pkb), callsManager(callsManager), UsesModifiesTypeExtractor(pkb, callsManager) {}
 
 void ModifiesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO

@@ -16,7 +16,8 @@
 
 class UsesExtractor : public UsesModifiesTypeExtractor {
  public:
-  explicit UsesExtractor(PkbApi& pkb);
+  explicit UsesExtractor(PkbApi& pkb,
+                         std::shared_ptr<CallsManager> callsManager);
 
   void extractFromPrint(std::shared_ptr<PrintNode> node) override;
 
@@ -30,6 +31,8 @@ class UsesExtractor : public UsesModifiesTypeExtractor {
 
  private:
   PkbApi& pkb;
+
+  std::shared_ptr<CallsManager> callsManager;
 
   std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
 

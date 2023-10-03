@@ -12,8 +12,8 @@ ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
 
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
-  extractors.push_back(std::make_shared<UsesExtractor>(pkb));
-  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb));
+  extractors.push_back(std::make_shared<UsesExtractor>(pkb, callsManager));
+  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb, callsManager));
   extractors.push_back(std::make_shared<EntityExtractor>(pkb));
   extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }

@@ -13,10 +13,12 @@
 #include "../node/stmt_node/WhileNode.h"
 #include "CallStmtCacheObject.h"
 #include "DesignExtractor.h"
+#include "CallsManager.h"
 
 class UsesModifiesTypeExtractor : public DesignExtractor {
  public:
-  explicit UsesModifiesTypeExtractor(PkbApi& pkb);
+  explicit UsesModifiesTypeExtractor(
+      PkbApi& pkb, std::shared_ptr<CallsManager> callsManager);
 
   void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
 
@@ -36,6 +38,8 @@ class UsesModifiesTypeExtractor : public DesignExtractor {
   PkbApi& pkb;
 
   std::vector<std::shared_ptr<CallStmtCacheObject>> callStmtCache;
+
+  std::shared_ptr<CallsManager> callsManager;
 
  protected:
   std::vector<std::string> actors;
