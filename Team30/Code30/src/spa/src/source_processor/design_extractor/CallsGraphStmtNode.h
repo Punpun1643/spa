@@ -7,7 +7,8 @@
 
 class CallsGraphStmtNode {
  public:
-  CallsGraphStmtNode(std::vector<std::string> actors);
+  CallsGraphStmtNode(std::vector<std::string> actors,
+                     std::shared_ptr<CallNode> callNode);
   std::vector<std::string> getActors();
 
   ~CallsGraphStmtNode() = default;

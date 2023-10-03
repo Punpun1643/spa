@@ -14,7 +14,8 @@ class CallsManager {
   // procB: the procedure that the call stmt calls
   // i.e. A calls B
   void insertCallsStmt(std::string procA, std::string procB,
-                       std::vector<std::string> actors);
+                       std::vector<std::string> actors,
+                       std::shared_ptr<CallNode> callNode);
   void insertProcNode(std::string procName);
   void executeCallsGraphTraversal();
 

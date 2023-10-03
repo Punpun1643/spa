@@ -12,25 +12,6 @@
 #include "PkbStub.h"
 #include "catch.hpp"
 
-class ExtractorBuilder {
- public:
-  std::shared_ptr<EntityExtractor> eExtractor;
-  std::shared_ptr<FollowsExtractor> fExtractor;
-  std::shared_ptr<ParentExtractor> pExtractor;
-  std::shared_ptr<ModifiesExtractor> mExtractor;
-  std::shared_ptr<UsesExtractor> uExtractor;
-
-  PkbStub pkb;
-  std::shared_ptr<CallsManager> callsManager;
-  ExtractorBuilder(PkbStub& pkb, std::shared_ptr<CallsManager> callsManager) : pkb(pkb), callsManager(callsManager) {
-    eExtractor = std::make_shared<EntityExtractor>(pkb);
-    fExtractor = std::make_shared<FollowsExtractor>(pkb);
-    pExtractor = std::make_shared<ParentExtractor>(pkb);
-    mExtractor = std::make_shared<ModifiesExtractor>(pkb, callsManager);
-    uExtractor = std::make_shared<UsesExtractor>(pkb, callsManager);
-  }
-};
-
 TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   PkbStub pkb = PkbStub();
   std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
