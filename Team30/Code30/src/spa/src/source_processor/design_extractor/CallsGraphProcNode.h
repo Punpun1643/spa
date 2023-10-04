@@ -21,10 +21,20 @@ class CallsGraphProcNode {
 
   std::unordered_set<std::shared_ptr<CallsGraphStmtNode>> getStmtsCalledBy();
 
+  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> getProcsCalledBy();
+
+  std::string getProcName();
+
+  int getNumProcsCalled();
+
+  void removeProcCalled(std::shared_ptr<CallsGraphProcNode> proc); 
+
   ~CallsGraphProcNode() = default;
 
  private:
   std::string proc;
+
+  int numProcsCalled;
 
   // Call stmts that call this procedure
   std::unordered_set<std::shared_ptr<CallsGraphStmtNode>> stmtsCalledBy;

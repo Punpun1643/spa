@@ -1,8 +1,9 @@
 #include "CallsGraphProcNode.h"
 
 #include <iterator>
+#include <cassert>
 
-CallsGraphProcNode::CallsGraphProcNode(std::string proc) : proc(proc) {}
+CallsGraphProcNode::CallsGraphProcNode(std::string proc) : proc(proc), numProcsCalled(0) {}
 
 void CallsGraphProcNode::addStmtCalledBy(
     std::shared_ptr<CallsGraphStmtNode> stmtCalledBy) {
@@ -11,7 +12,10 @@ void CallsGraphProcNode::addStmtCalledBy(
 
 void CallsGraphProcNode::addProcCalled(
     std::shared_ptr<CallsGraphProcNode> procCalled) {
-  procsCalled.insert(procCalled);
+  if (procsCalled.find(procCalled) == procsCalled.end()) {
+    procsCalled.insert(procCalled);
+    numProcsCalled++;
+  }
 }
 
 void CallsGraphProcNode::addProcCalledBy(
@@ -28,3 +32,21 @@ std::unordered_set<std::shared_ptr<CallsGraphStmtNode>>
 CallsGraphProcNode::getStmtsCalledBy() {
   return stmtsCalledBy;
 }
+
+std::unordered_set<std::shared_ptr<CallsGraphProcNode>>
+CallsGraphProcNode::getProcsCalledBy() {
+  return procsCalledBy;
+}
+
+int CallsGraphProcNode::getNumProcsCalled() { return numProcsCalled; }
+
+void CallsGraphProcNode::removeProcCalled(
+    std::shared_ptr<CallsGraphProcNode> proc) {
+  procsCalled.erase(proc);
+  numProcsCalled--;
+  assert(numProcsCalled >= 0);
+}
+
+std::string CallsGraphProcNode::getProcName() { return proc; }
+
+
