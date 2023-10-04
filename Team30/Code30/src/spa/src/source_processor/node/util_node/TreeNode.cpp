@@ -49,5 +49,5 @@ std::vector<std::string> TreeNode::createPreOrderTraversal(std::shared_ptr<TreeN
         std::vector<std::string> leftSubTreePreOrderTraversal =
         createPreOrderTraversal(root->getLeftSubTree());
 
-        preOrderTraversal.insert(
+//        preOrderTraversal.insert(
 }
