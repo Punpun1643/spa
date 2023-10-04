@@ -1,33 +1,43 @@
 #include "CallsManager.h"
 
-#include <vector>
 #include <iostream>
+#include <vector>
 CallsManager::CallsManager() {}
 
 void CallsManager::insertProcNode(std::string procName) {
   std::shared_ptr<CallsGraphProcNode> newNode =
       std::make_shared<CallsGraphProcNode>(procName);
-   procNodeMap.insert({procName, newNode});
+  procNodeMap.insert({procName, newNode});
 }
 
-void CallsManager::insertCallsStmt(std::string procCalled,
-                                   std::string procCalling,
+// procA: the procedure in which the call stmt is found
+// procB: the procedure that the call stmt calls
+// i.e. A calls B
+void CallsManager::insertCallsStmt(std::string procA, std::string procB,
                                    std::vector<std::string> actors,
                                    std::shared_ptr<CallNode> callNode) {
   std::shared_ptr<CallsGraphStmtNode> newStmtNode =
       std::make_shared<CallsGraphStmtNode>(actors, callNode);
-  std::shared_ptr<CallsGraphProcNode> procCalledNode =
-      procNodeMap[procCalled];
-  std::shared_ptr<CallsGraphProcNode> procCallingNode =
-      procNodeMap[procCalling];
-  if (procCalledNode != NULL && procCallingNode != NULL) {
-    procCalledNode->addStmtCalledBy(newStmtNode);
-    procCalledNode->addProcCalledBy(procCalledNode);
-    procCallingNode->addProcCalled(procCallingNode);
-  } else {
-      // Throw error -> procedure calls itself (cyclic) or 
-      //                calls a procedure that does not exist
+
+  std::shared_ptr<CallsGraphProcNode> procCalling = procNodeMap[procA];
+  std::shared_ptr<CallsGraphProcNode> procGettingCalled = procNodeMap[procB];
+
+  if (procCalling == NULL) {
+    // invalid proc
+    return;
   }
+  if (procGettingCalled == NULL) {
+    // throw error: call to non-existant procedure
+    return;
+  }
+  if (procCalling == procGettingCalled) {
+    // throw error: cyclic call detected
+    return;
+  }
+
+  procGettingCalled->addStmtCalledBy(newStmtNode);
+  procGettingCalled->addProcCalledBy(procCalling);
+  procCalling->addProcCalled(procGettingCalled);
 }
 
 void CallsManager::executeCallsGraphTraversal() {
