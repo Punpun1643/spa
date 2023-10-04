@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include <vector>
-CallsManager::CallsManager() {}
+CallsManager::CallsManager(PkbApi& pkb,
+                           std::shared_ptr<CallsExtractor> callsExtractor) : pkb(pkb), callsExtractor(callsExtractor) {}
 
 void CallsManager::insertProcNode(std::string procName) {
   std::shared_ptr<CallsGraphProcNode> newNode =

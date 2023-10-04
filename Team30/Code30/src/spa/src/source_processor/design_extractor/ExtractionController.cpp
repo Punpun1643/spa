@@ -8,7 +8,7 @@
 #include "UsesExtractor.h"
 
 ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
-  callsManager = std::make_shared<CallsManager>();
+  callsManager = std::make_shared<CallsManager>(pkb, std::make_shared<CallsExtractor>(pkb));
 
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));

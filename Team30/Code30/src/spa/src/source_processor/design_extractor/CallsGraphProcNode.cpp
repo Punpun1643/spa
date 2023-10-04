@@ -1,6 +1,6 @@
-#include <iterator>
-
 #include "CallsGraphProcNode.h"
+
+#include <iterator>
 
 CallsGraphProcNode::CallsGraphProcNode(std::string proc) : proc(proc) {}
 
@@ -19,3 +19,7 @@ void CallsGraphProcNode::addProcCalledBy(
   procsCalledBy.insert(procCalledBy);
 }
 
+std::unordered_set<std::shared_ptr<CallsGraphProcNode>>
+CallsGraphProcNode::getProcsCalled() {
+  return procsCalled;
+}

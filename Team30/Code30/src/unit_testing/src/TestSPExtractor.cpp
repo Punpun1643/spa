@@ -14,7 +14,6 @@
 
 TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   PkbStub pkb = PkbStub();
-  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -49,7 +48,6 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   PkbStub pkb = PkbStub();
-  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -83,7 +81,6 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
 
 TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   PkbStub pkb = PkbStub();
-  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -119,7 +116,6 @@ TEST_CASE(
     "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
     "(if-if-while)") {
   PkbStub pkb = PkbStub();
-  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -154,7 +150,6 @@ TEST_CASE(
 TEST_CASE(
     "AST 5: Three procedures, nested calls") {
   PkbStub pkb = PkbStub();
-  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_5();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);

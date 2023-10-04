@@ -17,6 +17,7 @@ class CallsGraphProcNode {
 
   void addProcCalledBy(std::shared_ptr<CallsGraphProcNode> procCalledBy);
 
+  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> getProcsCalled();
 
   ~CallsGraphProcNode() = default;
 

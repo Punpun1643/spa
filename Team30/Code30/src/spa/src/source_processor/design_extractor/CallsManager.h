@@ -5,10 +5,11 @@
 #include <queue>
 #include "CallsGraphProcNode.h"
 #include <unordered_map>
+#include "CallsExtractor.h"
 
 class CallsManager {
  public:
-  explicit CallsManager();
+  explicit CallsManager(PkbApi& pkb, std::shared_ptr<CallsExtractor> callsExtractor);
 
   // procA: the procedure in which the call stmt is found
   // procB: the procedure that the call stmt calls
@@ -22,4 +23,7 @@ class CallsManager {
  private:
   // Key: string procedureName, Value: CallsGraphProcNode node
   std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>> procNodeMap;
+
+  PkbApi& pkb;
+  std::shared_ptr<CallsExtractor> callsExtractor;
 };
