@@ -12,144 +12,144 @@
 #include "PkbStub.h"
 #include "catch.hpp"
 
-//TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
-//  PkbStub pkb = PkbStub();
-//  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
-//  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
-//  ExtractionController ec = ExtractionController(pkb);
-//  ec.executeProgramExtraction(ast);
-//  SECTION("Follows extraction functionality") {
-//    REQUIRE(pkb.insertFollowsCallCount == 8);
-//  }
-//  SECTION("Parent extraction functionality") {
-//    REQUIRE(pkb.insertParentCallCount == 6);
-//  }
-//  SECTION("Uses extraction functionality") {
-//    REQUIRE(pkb.insertUsesCallCount == 19);
-//    // NOTE: this expected value includes all the duplicate calls
-//    // that may occur (handled by pkb)
-//  }
-//  SECTION("Modifies extraction functionality") {
-//    REQUIRE(pkb.insertModifiesCallCount == 15);
-//  }
-//  SECTION("Entity extraction functionality") {
-//    REQUIRE(pkb.insertEntityCallCount == 15);
-//    REQUIRE(pkb.entitiesSet.size() == 22);
-//  }
-//  SECTION("Constant extraction functionality") {
-//    REQUIRE(pkb.insertConstantCallCount == 3);
-//  }
-//  SECTION("Variable extraction functionality") {
-//    REQUIRE(pkb.insertVariableCallCount == 14);
-//  }
-//  SECTION("Pattern extraction functionality") {
-//    REQUIRE(pkb.insertPatternCallCount == 2);
-//  }
-//}
-//
-//TEST_CASE("AST 2: Basic SPA, doubly nested while") {
-//  PkbStub pkb = PkbStub();
-//  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
-//  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
-//  ExtractionController ec = ExtractionController(pkb);
-//  ec.executeProgramExtraction(ast);
-//  SECTION("Follows extraction functionality") {
-//    REQUIRE(pkb.insertFollowsCallCount == 1);
-//  }
-//  SECTION("Parent extraction functionality") {
-//    REQUIRE(pkb.insertParentCallCount == 3);
-//  }
-//  SECTION("Uses extraction functionality") {
-//    REQUIRE(pkb.insertUsesCallCount == 9);
-//    // NOTE: the expected value 15 includes all the duplicate calls
-//    // that may occur (handled by pkb)
-//  }
-//  SECTION("Modifies extraction functionality") {
-//    REQUIRE(pkb.insertModifiesCallCount == 4);
-//  }
-//  SECTION("Entity extraction functionality") {
-//    REQUIRE(pkb.insertEntityCallCount == 5);
-//  }
-//  SECTION("Constant extraction functionality") {
-//    REQUIRE(pkb.insertConstantCallCount == 2);
-//  }
-//  SECTION("Variable extraction functionality") {
-//    REQUIRE(pkb.insertVariableCallCount == 4);
-//  }
-//  SECTION("Pattern extraction functionality") {
-//    REQUIRE(pkb.insertPatternCallCount == 0);
-//  }
-//}
-//
-//TEST_CASE("AST 3: Basic SPA, 2 procedures") {
-//  PkbStub pkb = PkbStub();
-//  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
-//  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
-//  ExtractionController ec = ExtractionController(pkb);
-//  ec.executeProgramExtraction(ast);
-//  SECTION("Follows extraction functionality") {
-//    REQUIRE(pkb.insertFollowsCallCount == 2);
-//  }
-//  SECTION("Parent extraction functionality") {
-//    REQUIRE(pkb.insertParentCallCount == 0);
-//  }
-//  SECTION("Uses extraction functionality") {
-//    REQUIRE(pkb.insertUsesCallCount == 4);
-//    // NOTE: the expected value 15 includes all the duplicate calls
-//    // that may occur (handled by pkb)
-//  }
-//  SECTION("Modifies extraction functionality") {
-//    REQUIRE(pkb.insertModifiesCallCount == 4);
-//  }
-//  SECTION("Entity extraction functionality") {
-//    REQUIRE(pkb.insertEntityCallCount == 6);
-//  }
-//  SECTION("Constant extraction functionality") {
-//    REQUIRE(pkb.insertConstantCallCount == 0);
-//  }
-//  SECTION("Variable extraction functionality") {
-//    REQUIRE(pkb.insertVariableCallCount == 4);
-//  }
-//  SECTION("Pattern extraction functionality") {
-//    REQUIRE(pkb.insertPatternCallCount == 0);
-//  }
-//}
-//
-//TEST_CASE(
-//    "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
-//    "(if-if-while)") {
-//  PkbStub pkb = PkbStub();
-//  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
-//  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
-//  ExtractionController ec = ExtractionController(pkb);
-//  ec.executeProgramExtraction(ast);
-//  SECTION("Follows extraction functionality") {
-//    REQUIRE(pkb.insertFollowsCallCount == 1);
-//  }
-//  SECTION("Parent extraction functionality") {
-//    REQUIRE(pkb.insertParentCallCount == 6);
-//  }
-//  SECTION("Uses extraction functionality") {
-//    REQUIRE(pkb.insertUsesCallCount == 20);
-//    // NOTE: the expected value 15 includes all the duplicate calls
-//    // that may occur (handled by pkb)
-//  }
-//  SECTION("Modifies extraction functionality") {
-//    REQUIRE(pkb.insertModifiesCallCount == 5);
-//  }
-//  SECTION("Entity extraction functionality") {
-//    REQUIRE(pkb.insertEntityCallCount == 10);
-//  }
-//  SECTION("Constant extraction functionality") {
-//    REQUIRE(pkb.insertConstantCallCount == 3);
-//  }
-//  SECTION("Variable extraction functionality") {
-//    REQUIRE(pkb.insertVariableCallCount == 8);
-//  }
-//  SECTION("Pattern extraction functionality") {
-//    REQUIRE(pkb.insertPatternCallCount == 1);
-//  }
-//}
+TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 8);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 6);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 19);
+    // NOTE: this expected value includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 15);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 15);
+    REQUIRE(pkb.entitiesSet.size() == 22);
+  }
+  SECTION("Constant extraction functionality") {
+    REQUIRE(pkb.insertConstantCallCount == 3);
+  }
+  SECTION("Variable extraction functionality") {
+    REQUIRE(pkb.insertVariableCallCount == 14);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 2);
+  }
+}
+
+TEST_CASE("AST 2: Basic SPA, doubly nested while") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 1);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 3);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 9);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 4);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 5);
+  }
+  SECTION("Constant extraction functionality") {
+    REQUIRE(pkb.insertConstantCallCount == 2);
+  }
+  SECTION("Variable extraction functionality") {
+    REQUIRE(pkb.insertVariableCallCount == 4);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 0);
+  }
+}
+
+TEST_CASE("AST 3: Basic SPA, 2 procedures") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 2);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 0);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 4);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 4);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 6);
+  }
+  SECTION("Constant extraction functionality") {
+    REQUIRE(pkb.insertConstantCallCount == 0);
+  }
+  SECTION("Variable extraction functionality") {
+    REQUIRE(pkb.insertVariableCallCount == 4);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 0);
+  }
+}
+
+TEST_CASE(
+    "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
+    "(if-if-while)") {
+  PkbStub pkb = PkbStub();
+  std::shared_ptr<CallsManager> callsManager = std::make_shared<CallsManager>();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 1);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 6);
+  }
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 20);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 5);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 10);
+  }
+  SECTION("Constant extraction functionality") {
+    REQUIRE(pkb.insertConstantCallCount == 3);
+  }
+  SECTION("Variable extraction functionality") {
+    REQUIRE(pkb.insertVariableCallCount == 8);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 1);
+  }
+}
 
 TEST_CASE(
     "AST 5: Three procedures, nested calls") {

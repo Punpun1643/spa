@@ -6,7 +6,7 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
   std::shared_ptr<PrintNode> pr =
       std::make_shared<PrintNode>(2, StmtType::PRINT_STMT, "var1");
   std::shared_ptr<CallNode> c =
-      std::make_shared<CallNode>(3, StmtType::CALL_STMT, "proc");
+      std::make_shared<CallNode>(3, StmtType::CALL_STMT, "procB");
 
   std::unordered_set<std::string> a_vars;
   a_vars.insert("var1");
@@ -91,6 +91,7 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
   std::shared_ptr<StmtLstNode> stlB = std::make_shared<StmtLstNode>(stmtsB);
   std::shared_ptr<ProcedureNode> procB =
       std::make_shared<ProcedureNode>("procB", stlB);
+
   std::vector<std::shared_ptr<ProcedureNode>> procs;
   procs.push_back(procA);
   procs.push_back(procB);
@@ -233,7 +234,7 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_4() {
 
   // outer else body
   std::shared_ptr<CallNode> c =
-      std::make_shared<CallNode>(7, StmtType::CALL_STMT, "proc2");
+      std::make_shared<CallNode>(7, StmtType::CALL_STMT, "procB");
   std::vector<std::shared_ptr<StmtNode>> outf_e_stmts;
   outf_e_stmts.push_back(c);
   std::shared_ptr<StmtLstNode> outf_e_stl =

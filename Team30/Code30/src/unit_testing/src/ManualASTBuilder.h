@@ -54,7 +54,7 @@ class ManualASTBuilder {
   // 5.      while (var2 < 3) {
   // 6.        print var3;}
   //     } else {
-  // 7.    call proc2;}}
+  // 7.    call procB;}}
   // procedure proc2 {
   // 8.  x = y;}
   static std::shared_ptr<ProgramNode> getAST_4();
