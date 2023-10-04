@@ -76,10 +76,24 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_1() {
   stmts.push_back(w);
   stmts.push_back(ifs);
   std::shared_ptr<StmtLstNode> stl = std::make_shared<StmtLstNode>(stmts);
-  std::shared_ptr<ProcedureNode> proc =
-      std::make_shared<ProcedureNode>("proc", stl);
+  std::shared_ptr<ProcedureNode> procA =
+      std::make_shared<ProcedureNode>("procA", stl);
+
+  std::unordered_set<std::string> a_varsB;
+  a_varsB.insert("y");
+  std::unordered_set<int> a_constB;
+  std::shared_ptr<TreeNode> a_treeB =
+      std::make_shared<TreeNode>("y", emptyTree, emptyTree);
+  std::shared_ptr<AssignNode> aB = std::make_shared<AssignNode>(
+      13, StmtType::ASSIGN_STMT, a_varsB, a_constB, "x", a_treeB);
+  std::vector<std::shared_ptr<StmtNode>> stmtsB;
+  stmtsB.push_back(aB);
+  std::shared_ptr<StmtLstNode> stlB = std::make_shared<StmtLstNode>(stmtsB);
+  std::shared_ptr<ProcedureNode> procB =
+      std::make_shared<ProcedureNode>("procB", stlB);
   std::vector<std::shared_ptr<ProcedureNode>> procs;
-  procs.push_back(proc);
+  procs.push_back(procA);
+  procs.push_back(procB);
   std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
   return prog;
 }
@@ -119,6 +133,7 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_2() {
   std::shared_ptr<StmtLstNode> stl3 = std::make_shared<StmtLstNode>(stmts3);
   std::shared_ptr<ProcedureNode> proc =
       std::make_shared<ProcedureNode>("proc", stl3);
+
   std::vector<std::shared_ptr<ProcedureNode>> procs;
   procs.push_back(proc);
   std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
@@ -231,8 +246,24 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_4() {
   std::shared_ptr<StmtLstNode> stl = std::make_shared<StmtLstNode>(stmts);
   std::shared_ptr<ProcedureNode> proc =
       std::make_shared<ProcedureNode>("proc", stl);
+
+  std::unordered_set<std::string> a_varsB;
+  a_varsB.insert("y");
+  std::unordered_set<int> a_constB;
+  std::shared_ptr<TreeNode> emptyTree;
+  std::shared_ptr<TreeNode> a_treeB =
+      std::make_shared<TreeNode>("y", emptyTree, emptyTree);
+  std::shared_ptr<AssignNode> aB = std::make_shared<AssignNode>(
+      13, StmtType::ASSIGN_STMT, a_varsB, a_constB, "x", a_treeB);
+  std::vector<std::shared_ptr<StmtNode>> stmtsB;
+  stmtsB.push_back(aB);
+  std::shared_ptr<StmtLstNode> stlB = std::make_shared<StmtLstNode>(stmtsB);
+  std::shared_ptr<ProcedureNode> procB =
+      std::make_shared<ProcedureNode>("procB", stlB);
+
   std::vector<std::shared_ptr<ProcedureNode>> procs;
   procs.push_back(proc);
+  procs.push_back(procB);
   std::shared_ptr<ProgramNode> prog = std::make_shared<ProgramNode>(procs);
   return prog;
 }

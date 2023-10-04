@@ -11,10 +11,10 @@
 
 class ManualASTBuilder {
  public:
-  // procedure proc {
+  // procedure procA {
   // 1.  read var1;
   // 2.  print var1;
-  // 3.  call proc;
+  // 3.  call procB;
   // 4.  var1 = var1 + 3;
   // 5.  while (var3 < 3) {
   // 6.      read var2;
@@ -25,6 +25,8 @@ class ManualASTBuilder {
   //     } else {
   // 11.     read var5;
   // 12.     print var5; }}
+  // procedure procB {
+  // 13.  x = y;}
   static std::shared_ptr<ProgramNode> getAST_1();
 
   // procedure proc{
@@ -53,16 +55,18 @@ class ManualASTBuilder {
   // 6.        print var3;}
   //     } else {
   // 7.    call proc2;}}
+  // procedure proc2 {
+  // 8.  x = y;}
   static std::shared_ptr<ProgramNode> getAST_4();
 
   // procedure procA {
   // 1.  call procB;}
-  // 
+  //
   // procedure procB {
   // 2.  while (var1 < 3) {
   // 3.    call procC;}}
-  // 
+  //
   // procedure procC {
-  // 4.  x = y;} 
+  // 4.  x = y;}
   static std::shared_ptr<ProgramNode> getAST_5();
 };

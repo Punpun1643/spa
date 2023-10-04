@@ -24,14 +24,17 @@ void CallsManager::insertCallsStmt(std::string procA, std::string procB,
 
   if (procCalling == NULL) {
     // invalid proc
+    std::cout << "ERROR: procCalling == NULL\n";
     return;
   }
   if (procGettingCalled == NULL) {
     // throw error: call to non-existant procedure
+    std::cout << "ERROR: procGettingCalled == NULL\n";
     return;
   }
   if (procCalling == procGettingCalled) {
     // throw error: cyclic call detected
+    std::cout << "ERROR: same name\n";
     return;
   }
 

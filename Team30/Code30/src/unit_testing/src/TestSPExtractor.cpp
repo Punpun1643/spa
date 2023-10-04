@@ -25,24 +25,25 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 17);
+    REQUIRE(pkb.insertUsesCallCount == 19);
     // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 13);
+    REQUIRE(pkb.insertModifiesCallCount == 15);
   }
   SECTION("Entity extraction functionality") {
-    REQUIRE(pkb.insertEntityCallCount == 13);
+    REQUIRE(pkb.insertEntityCallCount == 15);
+    REQUIRE(pkb.entitiesSet.size() == 22);
   }
   SECTION("Constant extraction functionality") {
     REQUIRE(pkb.insertConstantCallCount == 3);
   }
   SECTION("Variable extraction functionality") {
-    REQUIRE(pkb.insertVariableCallCount == 12);
+    REQUIRE(pkb.insertVariableCallCount == 14);
   }
   SECTION("Pattern extraction functionality") {
-    REQUIRE(pkb.insertPatternCallCount == 1);
+    REQUIRE(pkb.insertPatternCallCount == 2);
   }
 }
 
@@ -129,23 +130,23 @@ TEST_CASE(
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 18);
+    REQUIRE(pkb.insertUsesCallCount == 20);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 3);
+    REQUIRE(pkb.insertModifiesCallCount == 5);
   }
   SECTION("Entity extraction functionality") {
-    REQUIRE(pkb.insertEntityCallCount == 8);
+    REQUIRE(pkb.insertEntityCallCount == 10);
   }
   SECTION("Constant extraction functionality") {
     REQUIRE(pkb.insertConstantCallCount == 3);
   }
   SECTION("Variable extraction functionality") {
-    REQUIRE(pkb.insertVariableCallCount == 6);
+    REQUIRE(pkb.insertVariableCallCount == 8);
   }
   SECTION("Pattern extraction functionality") {
-    REQUIRE(pkb.insertPatternCallCount == 0);
+    REQUIRE(pkb.insertPatternCallCount == 1);
   }
 }

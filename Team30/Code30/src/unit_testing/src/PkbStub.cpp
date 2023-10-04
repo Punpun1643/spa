@@ -21,10 +21,16 @@ void PkbStub::insertEntity(EntityType type, std::string entity) {
   } else {
     insertEntityCallCount++;
   }
-  // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
+  entitiesSet.insert(entity);
+   //std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
-void PkbStub::insertRelationCommon(RelationType type) {
+void PkbStub::insertRelationCommon(RelationType type, std::string a,
+                                   std::string b) {
+  //if (type == RelationType::USES_P || type == RelationType::USES_S) {
+  //  std::cout << REL_TYPE_STRINGS[type] + "(" + a + ", " + b + ")\n";
+  //}
+
   ++insertRelationCallCount;
   switch (type) {
     case (RelationType::FOLLOWS):
@@ -53,26 +59,26 @@ void PkbStub::insertRelationCommon(RelationType type) {
 // Relation (integer, integer)
 void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
                              std::string s2_line_num) {
-  insertRelationCommon(rel_type);
+  insertRelationCommon(rel_type, s1_line_num, s2_line_num);
 }
 
 // Relation (integer, EntityType)
 void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
-                             EntityType ent_type, std::string enity) {
-  insertRelationCommon(rel_type);
+                             EntityType ent_type, std::string entity) {
+  insertRelationCommon(rel_type, s_line_num, entity);
 }
 
 // Relation (EntityType, integer)
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,
                              std::string entity, std::string s_line_num) {
-  insertRelationCommon(rel_type);
+  insertRelationCommon(rel_type, s_line_num, entity);
 }
 
 // Relation (EntityType, EntityType)
 void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
                              std::string entity1, EntityType ent_type2,
                              std::string entity2) {
-  insertRelationCommon(rel_type);
+  insertRelationCommon(rel_type, entity1, entity2);
 }
 
 // Pattern clause
@@ -155,10 +161,10 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
   if (expr_match_type == MatchType::WILD_MATCH) {
     auto return_vec = std::vector<std::string>({"1"});
     return std::make_unique<std::vector<std::string>>(return_vec);
-  } else if (expr_match_type == MatchType:: PARTIAL_MATCH) {
+  } else if (expr_match_type == MatchType::PARTIAL_MATCH) {
     auto return_vec = std::vector<std::string>({"2"});
     return std::make_unique<std::vector<std::string>>(return_vec);
-  } else { // exact
+  } else {  // exact
     return std::make_unique<std::vector<std::string>>();
   }
 }
@@ -182,14 +188,15 @@ PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
 // given lhs_entity_type
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                      MatchType expr_match_type) {
-  auto output = std::make_unique<std::vector<std::pair<std::string, std::string>>>();
+                                             MatchType expr_match_type) {
+  auto output =
+      std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 
   if (expr_match_type == MatchType::WILD_MATCH) {
-    output->push_back(std::make_pair("1","varX"));
+    output->push_back(std::make_pair("1", "varX"));
 
   } else if (expr_match_type == MatchType::PARTIAL_MATCH) {
-    output->push_back(std::make_pair("2","varY"));
+    output->push_back(std::make_pair("2", "varY"));
   }
   return output;
 };
