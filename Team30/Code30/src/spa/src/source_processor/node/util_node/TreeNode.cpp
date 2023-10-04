@@ -36,3 +36,18 @@ std::vector<std::string> TreeNode::createInOrderTraversal(
 
   return inOrderTraversal;
 }
+
+std::vector<std::string> TreeNode::createPreOrderTraversal(std::shared_ptr<TreeNode> const& root) {
+  std::vector<std::string> preOrderTraversal;
+
+  if (root == nullptr) {
+    return preOrderTraversal;
+  }
+
+  preOrderTraversal.push_back(root->getVal());
+
+        std::vector<std::string> leftSubTreePreOrderTraversal =
+        createPreOrderTraversal(root->getLeftSubTree());
+
+        preOrderTraversal.insert(
+}
