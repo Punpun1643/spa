@@ -14,6 +14,15 @@ class TreeNode {
 
   std::shared_ptr<TreeNode> getRightSubTree() const;
 
+  static std::vector<std::string> createInOrderTraversal(
+      std::shared_ptr<TreeNode> const& root);
+
+  static std::vector<std::string> createPreOrderTraversal(
+      std::shared_ptr<TreeNode> const& root);
+
+  static bool isSubTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
+                        std::shared_ptr<TreeNode> const& subTreeRoot);
+
   ~TreeNode() = default;
 
  private:
