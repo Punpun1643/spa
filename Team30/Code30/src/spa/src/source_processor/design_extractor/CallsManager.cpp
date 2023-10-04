@@ -8,6 +8,7 @@ void CallsManager::insertProcNode(std::string procName) {
   std::shared_ptr<CallsGraphProcNode> newNode =
       std::make_shared<CallsGraphProcNode>(procName);
   procNodeMap.insert({procName, newNode});
+  //std::cout << "INSERTED " + procName + "\n";
 }
 
 // procA: the procedure in which the call stmt is found

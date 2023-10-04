@@ -26,13 +26,12 @@ void ExtractionController::executeProgramExtraction(
   std::vector<std::shared_ptr<ProcedureNode>> children = node->getChildren();
   if (!children.empty()) {
     for (std::shared_ptr<ProcedureNode> child : children) {
-      executeProcedureExtraction(child);
       callsManager->insertProcNode(child->getProcedureName());
     }
+    for (std::shared_ptr<ProcedureNode> child : children) {
+      executeProcedureExtraction(child);
+    }
   }
-
-  // handle call stmts here
-  //handleCallStmts();
 }
 
 void ExtractionController::executeProcedureExtraction(

@@ -272,10 +272,9 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_5() {
   std::shared_ptr<CallNode> c1 =
       std::make_shared<CallNode>(1, StmtType::CALL_STMT, "procB");
   std::shared_ptr<CallNode> c3 =
-      std::make_shared<CallNode>(1, StmtType::CALL_STMT, "procC");
+      std::make_shared<CallNode>(3, StmtType::CALL_STMT, "procC");
 
   std::unordered_set<std::string> a4_vars;
-  a4_vars.insert("x");
   a4_vars.insert("y");
   std::unordered_set<int> a4_const;
   std::shared_ptr<TreeNode> emptyTree;
@@ -303,13 +302,13 @@ std::shared_ptr<ProgramNode> ManualASTBuilder::getAST_5() {
       std::make_shared<ProcedureNode>("procA", stlA);
 
   std::vector<std::shared_ptr<StmtNode>> stmtsB;
-  stmtsA.push_back(w2);
+  stmtsB.push_back(w2);
   std::shared_ptr<StmtLstNode> stlB = std::make_shared<StmtLstNode>(stmtsB);
   std::shared_ptr<ProcedureNode> procB =
       std::make_shared<ProcedureNode>("procB", stlB);
 
   std::vector<std::shared_ptr<StmtNode>> stmtsC;
-  stmtsA.push_back(a4);
+  stmtsC.push_back(a4);
   std::shared_ptr<StmtLstNode> stlC = std::make_shared<StmtLstNode>(stmtsC);
   std::shared_ptr<ProcedureNode> procC =
       std::make_shared<ProcedureNode>("procC", stlC);
