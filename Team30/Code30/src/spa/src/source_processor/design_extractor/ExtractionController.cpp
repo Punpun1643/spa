@@ -8,7 +8,7 @@
 #include "UsesExtractor.h"
 
 ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
-  callsManager = std::make_shared<CallsManager>(pkb, std::make_shared<CallsExtractor>(pkb));
+  callsManager = std::make_shared<CallsManager>(pkb);
 
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
@@ -32,6 +32,7 @@ void ExtractionController::executeProgramExtraction(
       executeProcedureExtraction(child);
     }
   }
+  executePostProcessing();
 }
 
 void ExtractionController::executeProcedureExtraction(
@@ -129,4 +130,9 @@ void ExtractionController::popActors() {
   std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popActor();
   std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))
       ->popActor();
+}
+
+void ExtractionController::executePostProcessing() {
+  callsManager->executeCallsExtraction();
+  callsManager->connectProcsAndUpdateRelations();
 }

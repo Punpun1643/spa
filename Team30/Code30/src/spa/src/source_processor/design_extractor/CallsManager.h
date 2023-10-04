@@ -6,10 +6,11 @@
 #include "CallsGraphProcNode.h"
 #include <unordered_map>
 #include "CallsExtractor.h"
+#include "CallsProcConnector.h"
 
 class CallsManager {
  public:
-  explicit CallsManager(PkbApi& pkb, std::shared_ptr<CallsExtractor> callsExtractor);
+  explicit CallsManager(PkbApi& pkb);
 
   // procA: the procedure in which the call stmt is found
   // procB: the procedure that the call stmt calls
@@ -19,6 +20,8 @@ class CallsManager {
                        std::shared_ptr<CallNode> callNode);
   void insertProcNode(std::string procName);
   void executeCallsGraphTraversal();
+  void executeCallsExtraction();
+  void connectProcsAndUpdateRelations();
 
  private:
   // Key: string procedureName, Value: CallsGraphProcNode node
@@ -26,4 +29,5 @@ class CallsManager {
 
   PkbApi& pkb;
   std::shared_ptr<CallsExtractor> callsExtractor;
+  std::shared_ptr<CallsProcConnector> procConnector;
 };

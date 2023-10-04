@@ -23,3 +23,8 @@ std::unordered_set<std::shared_ptr<CallsGraphProcNode>>
 CallsGraphProcNode::getProcsCalled() {
   return procsCalled;
 }
+
+std::unordered_set<std::shared_ptr<CallsGraphStmtNode>>
+CallsGraphProcNode::getStmtsCalledBy() {
+  return stmtsCalledBy;
+}

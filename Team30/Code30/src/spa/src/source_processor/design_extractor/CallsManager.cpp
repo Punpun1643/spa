@@ -2,8 +2,10 @@
 
 #include <iostream>
 #include <vector>
-CallsManager::CallsManager(PkbApi& pkb,
-                           std::shared_ptr<CallsExtractor> callsExtractor) : pkb(pkb), callsExtractor(callsExtractor) {}
+CallsManager::CallsManager(PkbApi& pkb) : pkb(pkb) {
+  callsExtractor = std::make_shared<CallsExtractor>(pkb);
+  procConnector = std::make_shared<CallsProcConnector>(pkb);
+}
 
 void CallsManager::insertProcNode(std::string procName) {
   std::shared_ptr<CallsGraphProcNode> newNode =
@@ -43,6 +45,14 @@ void CallsManager::insertCallsStmt(std::string procA, std::string procB,
   procGettingCalled->addStmtCalledBy(newStmtNode);
   procGettingCalled->addProcCalledBy(procCalling);
   procCalling->addProcCalled(procGettingCalled);
+}
+
+void CallsManager::executeCallsExtraction() {
+  callsExtractor->extractCallAbstractions(procNodeMap);
+}
+
+void CallsManager::connectProcsAndUpdateRelations() {
+  procConnector->connectProcsAndUpdateRelations(procNodeMap);
 }
 
 void CallsManager::executeCallsGraphTraversal() {

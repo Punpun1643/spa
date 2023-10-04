@@ -26,4 +26,5 @@ class ExtractionController : public IExtractionController {
 
   void handleContainerStmts(std::shared_ptr<StmtNode> node);
   void popActors();
+  void executePostProcessing();
 };
