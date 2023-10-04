@@ -24,12 +24,12 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 19);
+    REQUIRE(pkb.insertUsesCallCount == 23);
     // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 15);
+    REQUIRE(pkb.insertModifiesCallCount == 19);
   }
   SECTION("Entity extraction functionality") {
     REQUIRE(pkb.insertEntityCallCount == 15);
@@ -126,12 +126,12 @@ TEST_CASE(
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 20);
+    REQUIRE(pkb.insertUsesCallCount == 26);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 5);
+    REQUIRE(pkb.insertModifiesCallCount == 11);
   }
   SECTION("Entity extraction functionality") {
     REQUIRE(pkb.insertEntityCallCount == 10);
@@ -147,6 +147,7 @@ TEST_CASE(
   }
 }
 
+// Hardcoded pkb stub returns not really working for this
 TEST_CASE(
     "AST 5: Three procedures, nested calls") {
   PkbStub pkb = PkbStub();
@@ -159,11 +160,13 @@ TEST_CASE(
   SECTION("Parent extraction functionality") {
     REQUIRE(pkb.insertParentCallCount == 1);
   }
+  // Hardcoded pkb stub returns not really working for this
   SECTION("Uses extraction functionality") {
     REQUIRE(pkb.insertUsesCallCount == 4);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
+  // Hardcoded pkb stub returns not really working for this
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 2);
   }

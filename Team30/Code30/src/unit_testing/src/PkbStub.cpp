@@ -22,14 +22,14 @@ void PkbStub::insertEntity(EntityType type, std::string entity) {
     insertEntityCallCount++;
   }
   entitiesSet.insert(entity);
-   //std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
+  // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
 void PkbStub::insertRelationCommon(RelationType type, std::string a,
                                    std::string b) {
   //if (type == RelationType::USES_P || type == RelationType::USES_S) {
-  //  std::cout << REL_TYPE_STRINGS[type] + "(" + a + ", " + b + ")\n";
-  //}
+  //   std::cout << REL_TYPE_STRINGS[type] + "(" + a + ", " + b + ")\n";
+  // }
 
   ++insertRelationCallCount;
   switch (type) {
@@ -137,6 +137,67 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
 }
 std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
     std::string value, EntityType entity_type, RelationType rel_type) {
+  std::vector<std::string> result;
+
+  if (entity_type == EntityType::VARIABLE && rel_type == RelationType::USES_P) {
+    if (value == "proc_AST1_A") {
+      result.push_back("var1");
+      result.push_back("var3");
+      result.push_back("var2");
+      result.push_back("var4");
+      result.push_back("var5");
+    } else if (value == "proc_AST1_B") {
+      result.push_back("y");
+    } else if (value == "proc_AST2_A") {
+      result.push_back("var1");
+      result.push_back("var2");
+      result.push_back("var3");
+    } else if (value == "proc_AST3_A") {
+      result.push_back("var1");
+    } else if (value == "proc_AST3_B") {
+      result.push_back("var2");
+    } else if (value == "proc_AST4_A") {
+      result.push_back("var1");
+      result.push_back("var2");
+      result.push_back("var3");
+    } else if (value == "proc_AST4_B") {
+      result.push_back("y");
+    } else if (value == "proc_AST5_A") {
+
+    } else if (value == "proc_AST5_B") {
+
+    } else if (value == "proc_AST1_C") {
+      result.push_back("y");
+    }
+    return std::make_unique<std::vector<std::string>>(result);
+  }
+
+  if (entity_type == EntityType::VARIABLE && rel_type == RelationType::MODIFIES_P) {
+    if (value == "proc_AST1_A") {
+      result.push_back("var1");
+      result.push_back("var2");
+      result.push_back("var4");
+      result.push_back("var5");
+    } else if (value == "proc_AST1_B") {
+      result.push_back("x");
+    } else if (value == "proc_AST2_A") {
+      result.push_back("var3");
+    } else if (value == "proc_AST3_A") {
+      result.push_back("var1");
+    } else if (value == "proc_AST3_B") {
+      result.push_back("var2");
+    } else if (value == "proc_AST4_A") {
+      result.push_back("var2");
+    } else if (value == "proc_AST4_B") {
+      result.push_back("x");
+    } else if (value == "proc_AST5_A") {
+    } else if (value == "proc_AST5_B") {
+    } else if (value == "proc_AST1_C") {
+      result.push_back("x");
+    }
+    return std::make_unique<std::vector<std::string>>(result);
+  }
+
   return std::make_unique<std::vector<std::string>>();  // empty
 }
 

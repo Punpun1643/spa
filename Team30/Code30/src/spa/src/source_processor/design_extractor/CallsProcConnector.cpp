@@ -13,6 +13,11 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
       procNodeMap_copy = procNodeMap;
 
   while (!procNodeMap_copy.empty()) {
+
+      //for (auto m : procNodeMap_copy) {
+      //std::cout << m.first + "\n";
+      //}
+
     // traverse procNodeMap to find the proc with the smallest size of
     // procsCalled (should be 0)
     int minCalls = INT_MAX;
@@ -21,7 +26,6 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
     for (auto mapNameNode : procNodeMap_copy) {
       int currNumCalls = mapNameNode.second->getNumProcsCalled();
       if (currNumCalls < minCalls) {
-        // std::cout << "UPDATEEEEEEEEED\n";
         minCalls = currNumCalls;
         nodeWMinCalls = mapNameNode.second;
         procNameWMinCalls = mapNameNode.first;
@@ -71,7 +75,7 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
         }
       }
        for (std::string modifiesRelation : modifiesRelations) {
-        pkb.insertRelation(RelationType::USES_S,
+        pkb.insertRelation(RelationType::MODIFIES_S,
                            std::to_string(node->getStmtIndex()),
                            modifiesRelation);
         for (std::string actor : actors) {
