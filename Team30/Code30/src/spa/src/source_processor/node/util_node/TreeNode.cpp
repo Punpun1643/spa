@@ -22,8 +22,7 @@ std::vector<std::string> TreeNode::createInOrderTraversal(
     return inOrderTraversal;
   }
 
-  inOrderTraversal =
-      createInOrderTraversal(root->getLeftSubTree());
+  inOrderTraversal = createInOrderTraversal(root->getLeftSubTree());
   inOrderTraversal.push_back(root->getVal());
 
   std::vector<std::string> rightSubTreeInOrderTraversal =
@@ -37,7 +36,8 @@ std::vector<std::string> TreeNode::createInOrderTraversal(
   return inOrderTraversal;
 }
 
-std::vector<std::string> TreeNode::createPreOrderTraversal(std::shared_ptr<TreeNode> const& root) {
+std::vector<std::string> TreeNode::createPreOrderTraversal(
+    std::shared_ptr<TreeNode> const& root) {
   std::vector<std::string> preOrderTraversal;
 
   if (root == nullptr) {
@@ -46,8 +46,21 @@ std::vector<std::string> TreeNode::createPreOrderTraversal(std::shared_ptr<TreeN
 
   preOrderTraversal.push_back(root->getVal());
 
-        std::vector<std::string> leftSubTreePreOrderTraversal =
-        createPreOrderTraversal(root->getLeftSubTree());
+  std::vector<std::string> leftSubTreePreOrderTraversal =
+      createPreOrderTraversal(root->getLeftSubTree());
 
-//        preOrderTraversal.insert(
+  preOrderTraversal.insert(
+      preOrderTraversal.end(),
+      std::make_move_iterator(leftSubTreePreOrderTraversal.begin()),
+      std::make_move_iterator(leftSubTreePreOrderTraversal.end()));
+
+  std::vector<std::string> rightSubTreePreOrderTraversal =
+      createPreOrderTraversal(root->getRightSubTree());
+  
+  preOrderTraversal.insert(
+      preOrderTraversal.end(),
+      std::make_move_iterator(rightSubTreePreOrderTraversal.begin()),
+      std::make_move_iterator(rightSubTreePreOrderTraversal.end()));
+
+  return preOrderTraversal;
 }
