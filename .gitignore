@@ -689,6 +689,9 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+# Docs generated from doxygen
+Team30/Code30/docs/html/
+
 # End of https://www.toptal.com/developers/gitignore/api/qt,qtcreator,linux,windows,macos,visualstudio,visualstudiocode,clion,c++
 Team30/Code30/CppProperties.json
 Team30/Code30/CMakeSettings.json
