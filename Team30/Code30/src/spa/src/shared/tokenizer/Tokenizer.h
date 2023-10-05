@@ -4,12 +4,14 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include "token/Token.h"
 
 class Tokenizer {
  private:
   std::istream& input;
+  std::unordered_set<std::string> keywords;
   std::shared_ptr<Token> handleSpecialChar(char c);
   std::shared_ptr<Token> next();
   bool hasNext();
