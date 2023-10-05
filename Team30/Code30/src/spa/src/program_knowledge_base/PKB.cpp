@@ -18,28 +18,24 @@ PKB::PKB() : PKBQPSInterface(), PkbApi() {
 };
 
 // ********** Private methods **********
-std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
-                                                EntityType ent_type1,
-                                                EntityType ent_type2) {
+std::unordered_set<std::string> PKB::getAllRelated(
+    RelationType rel_type, std::shared_ptr<std::unordered_set<std::string>> set,
+    std::string value) {
   std::unordered_set<std::string> output;
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (std::string e1 : *entData->get(ent_type1)) {
-    for (std::string e2 : *entData->get(ent_type2)) {
-      if (table->isRelated(e1, e2)) {
-        output.insert(e2);
-      };
+  for (std::string e : *set) {
+    if (relData->isRelated(rel_type, e, value)) {
+      output.insert(e);
     };
   };
   return output;
 };
 
-std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
-                                                std::string value,
-                                                EntityType ent_type) {
+std::unordered_set<std::string> PKB::getAllRelated(
+    RelationType rel_type, std::string value,
+    std::shared_ptr<std::unordered_set<std::string>> set) {
   std::unordered_set<std::string> output;
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (std::string e : *entData->get(ent_type)) {
-    if (table->isRelated(value, e)) {
+  for (std::string e : *set) {
+    if (relData->isRelated(rel_type, value, e)) {
       output.insert(e);
     };
   };
@@ -53,10 +49,9 @@ void PKB::insertEntity(EntityType type, std::string entity) {
 
 void PKB::insertRelation(RelationType type, std::string input1,
                          std::string input2) {
-  relData->getTable(type)->insert(input1, input2);
+  relData->insert(type, input1, input2);
   for (RelationType rt : relatedTables[type]) {
-    std::shared_ptr<BaseTable> table = relData->getTable(rt);
-    table->insert(input1, input2);
+    relData->insert(rt, input1, input2);
   }
 };
 
@@ -67,11 +62,14 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
 
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
-  return getRelated(RelationType::MODIFIES_P, procName, EntityType::VARIABLE);
+  return getAllRelated(RelationType::MODIFIES_P, procName,
+                       entData->get(wildCardMatcher.translateRHSWild(RelationType::MODIFIES_P)));
 }
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-  return getRelated(RelationType::USES_P, procName, EntityType::VARIABLE);
+  return getAllRelated(
+      RelationType::USES_P, procName,
+      entData->get(wildCardMatcher.translateRHSWild(RelationType::USES_P)));
 };
 
 // ********** QPS **********
@@ -87,7 +85,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
 // example Follows(1, 3)
 bool PKB::isRelationTrue(std::string value_1, std::string value_2,
                          RelationType rel_type) {
-  return relData->getTable(rel_type)->isRelated(value_1, value_2);
+  return relData->isRelated(rel_type, value_1, value_2);
 };
 
 // example Follows(1, _)
@@ -95,11 +93,10 @@ bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
       entData->get(wildCardMatcher.translateRHSWild(rel_type));
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
   for (std::string ent : *ents) {
-    if (table->isRelated(value, ent)) {
+    if (relData->isRelated(rel_type, value, ent)) {
       return true;
     }
   }
@@ -111,11 +108,10 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
                                          RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
       entData->get(wildCardMatcher.translateLHSWild(rel_type));
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
   for (std::string ent : *ents) {
-    if (table->isRelated(ent, value)) {
+    if (relData->isRelated(rel_type, ent, value)) {
       return true;
     }
   }
@@ -124,7 +120,7 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 
 // example Follows(_, _)
 bool PKB::isRelationTrueForAny(RelationType relation_type) {
-  return !relData->getTable(relation_type)->isEmpty();
+  return !relData->isEmpty(relation_type);
 }
 
 // 1 Declarations
@@ -132,7 +128,6 @@ bool PKB::isRelationTrueForAny(RelationType relation_type) {
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
     EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output;
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       entData->get(entity_type);
   std::shared_ptr<std::unordered_set<std::string>> ents2 =
@@ -141,7 +136,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
   // TODO: Optimise
   for (std::string ent1 : *ents1) {
     for (std::string ent2 : *ents2) {
-      if (table->isRelated(ent1, ent2)) {
+      if (relData->isRelated(rel_type, ent1, ent2)) {
         output.insert(ent1);
       }
     }
@@ -154,7 +149,6 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
     EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output;
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       entData->get(wildCardMatcher.translateLHSWild(rel_type));
   std::shared_ptr<std::unordered_set<std::string>> ents2 =
@@ -163,7 +157,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
   // TODO: Optimise
   for (std::string ent1 : *ents1) {
     for (std::string ent2 : *ents2) {
-      if (table->isRelated(ent1, ent2)) {
+      if (relData->isRelated(rel_type, ent1, ent2)) {
         output.insert(ent2);
       }
     }
@@ -175,15 +169,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
 // example Follows(s, 3), FolowsStar(s, 3)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
     EntityType entity_type, std::string value, RelationType rel_type) {
-  std::unordered_set<std::string> output;
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(entity_type);
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (std::string ent : *ents) {
-    if (table->isRelated(ent, value)) {
-      output.insert(ent);
-    }
-  }
+  std::unordered_set<std::string> output = getAllRelated(rel_type, entData->get(entity_type), value);
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }
@@ -191,15 +177,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
 // example Follows(3, s)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
     std::string value, EntityType entity_type, RelationType rel_type) {
-  std::unordered_set<std::string> output;
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(entity_type);
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
-  for (std::string ent : *ents) {
-    if (table->isRelated(value, ent)) {
-      output.insert(ent);
-    }
-  }
+  std::unordered_set<std::string> output =
+      getAllRelated(rel_type, value, entData->get(entity_type));
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }
@@ -214,10 +193,10 @@ PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
       PKB::entData->get(entity_type_1);
   std::shared_ptr<std::unordered_set<std::string>> ents2 =
       entData->get(entity_type_2);
-  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+
   for (std::string ent1 : *ents1) {
     for (std::string ent2 : *ents2) {
-      if (table->isRelated(ent1, ent2)) {
+      if (relData->isRelated(rel_type, ent1, ent2)) {
         output.push_back(make_pair(ent1, ent2));
       }
     }
