@@ -57,29 +57,29 @@ class PKB : public PKBQPSInterface, public PkbApi {
 
   // ---------- RELATIONS ----------
   // 0 Declarations
-  bool isRelationTrue(std::string value_1, std::string value_2,
+  bool isRelationTrueValueValue(std::string value_1, std::string value_2,
                       RelationType rel_type) override;
-  bool isRelationTrueGivenFirstValue(std::string value,
+  bool isRelationTrueValueWild(std::string value,
                                      RelationType rel_type) override;
-  bool isRelationTrueGivenSecondValue(std::string value,
+  bool isRelationTrueWildValue(std::string value,
                                       RelationType rel_type) override;
-  bool isRelationTrueForAny(RelationType relation_type) override;
+  bool isRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations
-  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenFirstType(
+  std::unique_ptr<std::vector<std::string>> getRelationSynonymWild(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenSecondType(
+  std::unique_ptr<std::vector<std::string>> getRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValues(
+  std::unique_ptr<std::vector<std::string>> getRelationSynonymValue(
       EntityType entity_type, std::string value,
       RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValues(
+  std::unique_ptr<std::vector<std::string>> getRelationValueSynonym(
       std::string value, EntityType entity_type,
       RelationType rel_type) override;
 
   // 2 Declarations
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+  getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
                     RelationType rel_type) override;
 
   // ---------- PATTERNS ----------

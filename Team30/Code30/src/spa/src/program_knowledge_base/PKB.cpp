@@ -83,13 +83,13 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
 // ---------- RELATIONS ----------
 // 0 Declarations
 // example Follows(1, 3)
-bool PKB::isRelationTrue(std::string value_1, std::string value_2,
+bool PKB::isRelationTrueValueValue(std::string value_1, std::string value_2,
                          RelationType rel_type) {
   return relData->isRelated(rel_type, value_1, value_2);
 };
 
 // example Follows(1, _)
-bool PKB::isRelationTrueGivenFirstValue(std::string value,
+bool PKB::isRelationTrueValueWild(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
       entData->get(wildCardMatcher.translateRHSWild(rel_type));
@@ -104,7 +104,7 @@ bool PKB::isRelationTrueGivenFirstValue(std::string value,
 }
 
 // example Follows(_, 1)
-bool PKB::isRelationTrueGivenSecondValue(std::string value,
+bool PKB::isRelationTrueWildValue(std::string value,
                                          RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
       entData->get(wildCardMatcher.translateLHSWild(rel_type));
@@ -119,13 +119,13 @@ bool PKB::isRelationTrueGivenSecondValue(std::string value,
 }
 
 // example Follows(_, _)
-bool PKB::isRelationTrueForAny(RelationType relation_type) {
+bool PKB::isRelationTrueWildWild(RelationType relation_type) {
   return !relData->isEmpty(relation_type);
 }
 
 // 1 Declarations
 // example Parent(s, _), ParentsStar(s, _)
-std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
+std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymWild(
     EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output;
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
@@ -146,7 +146,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
 }
 
 // example Follows(_, s), FolowsStar(_, s)
-std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
+std::unique_ptr<std::vector<std::string>> PKB::getRelationWildSynonym(
     EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output;
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
@@ -167,7 +167,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
 };
 
 // example Follows(s, 3), FolowsStar(s, 3)
-std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
+std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
     EntityType entity_type, std::string value, RelationType rel_type) {
   std::unordered_set<std::string> output = getAllRelated(rel_type, entData->get(entity_type), value);
   return std::make_unique<std::vector<std::string>>(output.begin(),
@@ -175,7 +175,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
 }
 
 // example Follows(3, s)
-std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
+std::unique_ptr<std::vector<std::string>> PKB::getRelationValueSynonym(
     std::string value, EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output =
       getAllRelated(rel_type, value, entData->get(entity_type));
@@ -186,7 +186,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValues(
 //// 2 Declarations
 // example Follows(s1, s2), FollowsStar(s1, s2)
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+PKB::getRelationSynonymSynonym(EntityType entity_type_1,
+                               EntityType entity_type_2,
                        RelationType rel_type) {
   std::vector<std::pair<std::string, std::string>> output;
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
