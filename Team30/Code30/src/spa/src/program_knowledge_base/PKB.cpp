@@ -6,6 +6,7 @@
 #include <vector>
 
 PKB::PKB() : PKBQPSInterface(), PkbApi() {
+  wildCardMatcher = WildCardMatcher();
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
@@ -33,12 +34,12 @@ std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
 };
 
 std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
-                                                std::string str,
+                                                std::string value,
                                                 EntityType ent_type) {
   std::unordered_set<std::string> output;
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
   for (std::string e : *entData->get(ent_type)) {
-    if (table->isRelated(str, e)) {
+    if (table->isRelated(value, e)) {
       output.insert(e);
     };
   };
@@ -93,13 +94,7 @@ bool PKB::isRelationTrue(std::string value_1, std::string value_2,
 bool PKB::isRelationTrueGivenFirstValue(std::string value,
                                         RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT);  // TODO: FIX THIS
-  if (rel_type == RelationType::USES_P || rel_type == RelationType::USES_S ||
-      rel_type == RelationType::MODIFIES_P ||
-      rel_type == RelationType::MODIFIES_S) {
-    ents = entData->get(EntityType::VARIABLE);
-  }
-
+      entData->get(wildCardMatcher.translateRHSWild(rel_type));
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -115,7 +110,7 @@ bool PKB::isRelationTrueGivenFirstValue(std::string value,
 bool PKB::isRelationTrueGivenSecondValue(std::string value,
                                          RelationType rel_type) {
   std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(EntityType::STMT);
+      entData->get(wildCardMatcher.translateLHSWild(rel_type));
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
 
   // TODO: Optimise
@@ -140,14 +135,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       entData->get(entity_type);
-  std::shared_ptr<std::unordered_set<std::string>> ents2;
-  if (rel_type == RelationType::USES_S || rel_type == RelationType::USES_P ||
-      rel_type == RelationType::MODIFIES_S ||
-      rel_type == RelationType::MODIFIES_P) {  // TODO: CLEAN THIS UP
-    ents2 = entData->get(EntityType::VARIABLE);
-  } else {
-    ents2 = entData->get(EntityType::STMT);
-  }
+  std::shared_ptr<std::unordered_set<std::string>> ents2 =
+      entData->get(wildCardMatcher.translateRHSWild(rel_type));
 
   // TODO: Optimise
   for (std::string ent1 : *ents1) {
@@ -161,13 +150,13 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenFirstType(
                                                     output.end());
 }
 
-// example Follows(_, 3), FolowsStar(_, 3)
+// example Follows(_, s), FolowsStar(_, s)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValuesGivenSecondType(
     EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output;
   std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
-      entData->get(EntityType::STMT);
+      entData->get(wildCardMatcher.translateLHSWild(rel_type));
   std::shared_ptr<std::unordered_set<std::string>> ents2 =
       entData->get(entity_type);
 

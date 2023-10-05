@@ -16,12 +16,15 @@
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
+#include "WildCardMatcher.h"
 
 class PKB : public PKBQPSInterface, public PkbApi {
  private:
+  WildCardMatcher wildCardMatcher;
   std::unique_ptr<EntityDatabase> entData;
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;
+
   std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
 
   std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
