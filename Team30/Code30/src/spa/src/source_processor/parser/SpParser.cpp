@@ -256,12 +256,8 @@ void SpParser::handleWordOrIntegerToken(
 void SpParser::handleOperatorToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  if (isLogicalOperator(getCurrTokenValue()) &&
-      operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) != 0) {
-    throw std::invalid_argument("Invalid condExpr");
-  }
-  while (!operatorStack.empty() && precedence(operatorStack.top()->c_str()) >=
-                                       precedence(getCurrTokenValue())) {
+  while (!operatorStack.empty() && Precedence(operatorStack.top()->c_str()) >=
+                                       Precedence(getCurrTokenValue())) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
@@ -362,8 +358,8 @@ void SpParser::buildCondExprPostFix(
         }
       }
       while (!operatorStack.empty() &&
-             precedence(operatorStack.top()->getTokenVal()) >=
-                 precedence(getCurrTokenValue())) {
+             Precedence(operatorStack.top()->getTokenVal()) >=
+                 Precedence(getCurrTokenValue())) {
         postFixQueue.push(operatorStack.top());
         operatorStack.pop();
       }
@@ -506,7 +502,7 @@ std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
     auto element = postFixQueue.front();
     postFixQueue.pop();
 
-    if (isOperator(element->c_str())) {
+    if (isMathematicalOperator(element->c_str())) {
       if (treeStack.size() < 2) {
         throw std::invalid_argument(
             "Invalid expression: insufficient operands for operator");
@@ -643,7 +639,7 @@ bool SpParser::isNotToken(std::shared_ptr<Token> token) {
 }
 
 // helper function to calculate precedence of an operator
-int SpParser::precedence(std::string const& op) {
+int SpParser::Precedence(std::string const& op) {
   if (op.compare(SpParserMathOperator::MULTIPLY) == 0 ||
       op.compare(SpParserMathOperator::DIVIDE) == 0 ||
       op.compare(SpParserMathOperator::MODULO) == 0) {

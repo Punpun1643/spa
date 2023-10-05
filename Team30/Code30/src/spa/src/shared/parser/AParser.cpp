@@ -2,6 +2,20 @@
 
 #include <stdexcept>
 
+namespace a_parser_constant {
+constexpr char LEFT_PARENTHESIS[] = "(";
+constexpr char RIGHT_PARENTHESIS[] = ")";
+constexpr int MINIMUM_OPERATOR_SIZE = 2;
+}  // namespace a_parser_constant
+
+namespace a_parser_mathematical_operator {
+constexpr char PLUS[] = "+";
+constexpr char MINUS[] = "-";
+constexpr char MULTIPLY[] = "*";
+constexpr char DIVIDE[] = "/";
+constexpr char MODULO[] = "%";
+}  // namespace a_parser_mathematical_operator
+
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
 
@@ -69,6 +83,14 @@ bool AParser::IsTokenValue(std::shared_ptr<Token> token,
   return tokenValue == token->getTokenVal();
 }
 
+bool AParser::IsMathematicalOperator(std::string const& tokenValue) {
+  return tokenValue == a_parser_mathematical_operator::PLUS ||
+         tokenValue == a_parser_mathematical_operator::MINUS ||
+         tokenValue == a_parser_mathematical_operator::MULTIPLY ||
+         tokenValue == a_parser_mathematical_operator::DIVIDE ||
+         tokenValue == a_parser_mathematical_operator::MODULO;
+}
+
 bool AParser::isCurrTokenType(TokenType tokenType) {
   return IsTokenType(getCurrToken(), tokenType);
 }
@@ -97,4 +119,137 @@ void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
   if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
     throw std::invalid_argument(errorMessage);
   }
+}
+
+void AParser::HandleInfixWordOrIntegerToken(
+    std::shared_ptr<Token> token,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
+  postFixQueue.push(std::make_shared<std::string>(token->getTokenVal()));
+}
+
+int AParser::Precedence(std::string const& operatorValue) {
+  if (operatorValue == a_parser_mathematical_operator::MULTIPLY ||
+      operatorValue == a_parser_mathematical_operator::DIVIDE ||
+      operatorValue == a_parser_mathematical_operator::MODULO) {
+    return 2;
+  } else if (operatorValue == a_parser_mathematical_operator::PLUS ||
+             operatorValue == a_parser_mathematical_operator::MINUS) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+
+bool AParser::IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
+                                         std::string const& operatorValue2) {
+  return Precedence(operatorValue1) >= Precedence(operatorValue2);
+}
+
+void AParser::HandleInfixOperatorToken(
+    std::shared_ptr<Token> token,
+    std::stack<std::shared_ptr<std::string>>& operatorStack,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
+  while (!operatorStack.empty() &&
+         IsGreaterOrEqualPrecedence(operatorStack.top()->c_str(),
+                                    token->getTokenVal())) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+  operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
+}
+
+void AParser::HandleLeftParenthesisToken(
+    std::shared_ptr<Token> token,
+    std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
+  if (AParser::isPeekTokenValue(a_parser_constant::RIGHT_PARENTHESIS)) {
+    throw std::invalid_argument("Empty parenthesis");
+  }
+  ++parenCount;
+  operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
+}
+
+void AParser::HandleRightParenthesisToken(
+    std::stack<std::shared_ptr<std::string>>& operatorStack,
+    std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount) {
+  if (parenCount <= 0) {
+    throw std::invalid_argument("Parenthesis mismatch");
+  }
+
+  while (operatorStack.top()->c_str() != a_parser_constant::LEFT_PARENTHESIS) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+
+  --parenCount;
+  operatorStack.pop();
+}
+
+std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
+    std::vector<std::shared_ptr<Token>> infixTokens) {
+  std::queue<std::shared_ptr<std::string>> postFixQueue;
+  std::stack<std::shared_ptr<std::string>> operatorStack;
+
+  int parenCount = 0;
+
+  for (auto const& token : infixTokens) {
+    if (IsWordOrIntegerToken(token)) {
+      HandleInfixWordOrIntegerToken(token, postFixQueue);
+    } else if (IsMathematicalOperator(token->getTokenVal())) {
+      HandleInfixOperatorToken(token, operatorStack, postFixQueue);
+    } else if (isCurrTokenValue(a_parser_constant::LEFT_PARENTHESIS)) {
+      HandleLeftParenthesisToken(token, operatorStack, parenCount);
+    } else if (isCurrTokenValue(a_parser_constant::RIGHT_PARENTHESIS)) {
+      HandleRightParenthesisToken(operatorStack, postFixQueue, parenCount);
+    } else {
+      throw std::invalid_argument("Invalid assign");
+    }
+  }
+
+  if (parenCount != 0) {
+    throw std::invalid_argument("Parenthesis mismatch");
+  }
+
+  while (!operatorStack.empty()) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+
+  return postFixQueue;
+}
+
+void AParser::ValidateTreeStackSize(
+    std::stack<std::shared_ptr<TreeNode>>& treeStack, int size) {
+  if (treeStack.size() < size) {
+    throw std::invalid_argument(
+        "Invalid expression: insufficient operands for operator");
+  }
+}
+
+std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
+    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
+  std::stack<std::shared_ptr<TreeNode>> treeStack;
+
+  while (!postFixQueue.empty()) {
+    std::shared_ptr<std::string> element = postFixQueue.front();
+    postFixQueue.pop();
+
+    if (IsMathematicalOperator(element->c_str())) {
+      ValidateTreeStackSize(treeStack,
+                            a_parser_constant::MINIMUM_OPERATOR_SIZE);
+
+      std::shared_ptr<TreeNode> rightSubTree = treeStack.top();
+      treeStack.pop();
+      std::shared_ptr<TreeNode> leftSubTree = treeStack.top();
+      treeStack.pop();
+
+      treeStack.push(
+          std::make_shared<TreeNode>(*element, leftSubTree, rightSubTree));
+    } else {
+      treeStack.push(std::make_shared<TreeNode>(*element, nullptr, nullptr));
+    }
+  }
+
+  ValidateTreeStackSize(treeStack, 1);
+
+  return treeStack.top();
 }
