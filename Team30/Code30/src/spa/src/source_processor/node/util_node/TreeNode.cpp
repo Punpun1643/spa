@@ -82,14 +82,15 @@ bool TreeNode::IsSubString(
   while (pointerToElement < subTreeInOrderTraversalSize) {
     if (subTreeInOrderTraversal[pointerToElement] ==
         subTreeInOrderTraversal[prevLength]) {
-      longestProperPrefixSuffix[pointerToElement] = ++prevLength;
+      ++prevLength;
+      longestProperPrefixSuffix[pointerToElement] = prevLength;
       ++pointerToElement;
     } else {
-      if (prevLength != 0) {
-        prevLength = longestProperPrefixSuffix[prevLength - 1];
-      } else {
+      if (prevLength == 0) {
         longestProperPrefixSuffix[pointerToElement] = 0;
         ++pointerToElement;
+      } else {
+        prevLength = longestProperPrefixSuffix[prevLength - 1];
       }
     }
   }
@@ -97,13 +98,13 @@ bool TreeNode::IsSubString(
   int baseTreePointer = 0;
   int subTreePointer = 0;
 
-  while (subTreePointer < baseTreeInOrderTraversalSize) {
+  while (baseTreePointer < baseTreeInOrderTraversalSize) {
     if (baseTreeInOrderTraversal[baseTreePointer] ==
         subTreeInOrderTraversal[subTreePointer]) {
       ++baseTreePointer;
       ++subTreePointer;
 
-      if (baseTreePointer == 0) {
+      if (subTreePointer == subTreeInOrderTraversalSize) {
         return true;
       }
     } else {
