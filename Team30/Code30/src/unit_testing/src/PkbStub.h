@@ -73,4 +73,10 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                       MatchType expr_match_type) override;
+
+  std::unordered_set<std::string> PkbStub::getProcedureUses(
+      std::string procName);
+
+  std::unordered_set<std::string> PkbStub::getProcedureModifies(
+      std::string procName);
 };

@@ -10,14 +10,42 @@ PKB::PKB() : PKBQPSInterface(), PkbApi() {
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
 
-  // TODO: Find a cleaner way to insert to multiple tables simultaneously
   relatedTables = {
       {RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
       {RelationType::PARENT, {RelationType::PARENT_STAR}},
   };
 };
 
-// ---------- INSERTIONS ----------
+// ********** Private methods **********
+std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
+                                                EntityType ent_type1,
+                                                EntityType ent_type2) {
+  std::unordered_set<std::string> output;
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (std::string e1 : *entData->get(ent_type1)) {
+    for (std::string e2 : *entData->get(ent_type2)) {
+      if (table->isRelated(e1, e2)) {
+        output.insert(e2);
+      };
+    };
+  };
+  return output;
+};
+
+std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
+                                                std::string str,
+                                                EntityType ent_type) {
+  std::unordered_set<std::string> output;
+  std::shared_ptr<BaseTable> table = relData->getTable(rel_type);
+  for (std::string e : *entData->get(ent_type)) {
+    if (table->isRelated(str, e)) {
+      output.insert(e);
+    };
+  };
+  return output;
+};
+
+// ********** SP **********
 void PKB::insertEntity(EntityType type, std::string entity) {
   entData->insert(type, entity);
 };
@@ -36,14 +64,24 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
   patData->insert(statement_number, lhs, rhs);
 };
 
-// ---------- RETRIEVE ENTITIES ----------
+std::unordered_set<std::string> PKB::getProcedureModifies(
+    std::string procName) {
+  return getRelated(RelationType::MODIFIES_P, procName, EntityType::VARIABLE);
+}
+
+std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
+  return getRelated(RelationType::USES_P, procName, EntityType::VARIABLE);
+};
+
+// ********** QPS **********
+// ---------- ENTITIES ----------
 std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
     EntityType type) {
   std::shared_ptr<std::unordered_set<std::string>> e = entData->get(type);
   return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
-// ---------- RETRIEVE RELATIONS ----------
+// ---------- RELATIONS ----------
 // 0 Declarations
 // example Follows(1, 3)
 bool PKB::isRelationTrue(std::string value_1, std::string value_2,
@@ -199,7 +237,7 @@ PKB::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
       output);
 };
 
-// Pattern clause
+// ---------- PATTERNS ----------
 std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(
     std::string rhs_expr, MatchType expr_match_type) {
   // Wild match: pattern a(_, _), i.e. all statement numbers

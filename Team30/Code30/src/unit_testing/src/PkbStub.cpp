@@ -175,3 +175,13 @@ PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
   }
   return output;
 };
+
+std::unordered_set<std::string> PkbStub::getProcedureModifies(
+    std::string procName) {
+  return std::unordered_set<std::string>();
+}
+
+std::unordered_set<std::string> PkbStub::getProcedureUses(
+    std::string procName) {
+  return std::unordered_set<std::string>();
+};
