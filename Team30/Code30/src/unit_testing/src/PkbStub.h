@@ -75,8 +75,8 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
                                       MatchType expr_match_type) override;
 
   std::unordered_set<std::string> PkbStub::getProcedureUses(
-      std::string procName);
+      std::string procName) override;
 
   std::unordered_set<std::string> PkbStub::getProcedureModifies(
-      std::string procName);
+      std::string procName) override;
 };
