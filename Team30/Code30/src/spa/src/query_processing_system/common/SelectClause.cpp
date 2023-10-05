@@ -9,7 +9,7 @@ SelectClause::SelectClause(PqlDeclaration declaration)
 
 PqlDeclaration SelectClause::getDeclaration() const { return declaration; }
 
-std::unique_ptr<ClauseResult> SelectClause::evaluate(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SelectClause::evaluate(PKBQPSInterface& pkb) {
   EntityType entity_type = declaration.getEntityType();
 
   auto values = pkb.getEntitiesWithType(entity_type);
