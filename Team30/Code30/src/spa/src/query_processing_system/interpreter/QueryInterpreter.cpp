@@ -3,10 +3,8 @@
 #include <cassert>
 
 #include "../common/FollowsClause.h"
-#include "../common/FollowsStarClause.h"
 #include "../common/ModifiesSClause.h"
 #include "../common/ParentClause.h"
-#include "../common/ParentStarClause.h"
 #include "../common/PatternClause.h"
 #include "../common/SelectClause.h"
 #include "../common/UsesSClause.h"
@@ -71,7 +69,7 @@ void QueryInterpreter::Interpret(FollowsExpression& follows_expression) {
   }
 
   this->clause_list.push_back(std::make_shared<FollowsClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
 }
 
 void QueryInterpreter::Interpret(ModifiesExpression& modifies_expression) {
@@ -109,8 +107,8 @@ void QueryInterpreter::Interpret(FollowsTExpression& follows_t_expression) {
     throw InvalidSyntaxException(
         "Second argument for FollowsT Clause should be a StmtRef.");
   }
-  this->clause_list.push_back(std::make_shared<FollowsStarClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+  this->clause_list.push_back(std::make_shared<FollowsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
 }
 
 void QueryInterpreter::Interpret(PatternExpression& pattern_expression) {
@@ -153,7 +151,7 @@ void QueryInterpreter::Interpret(ParentExpression& parent_expression) {
         "Second argument for Parent Clause should be a StmtRef.");
   }
   this->clause_list.push_back(std::make_shared<ParentClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
 }
 
 void QueryInterpreter::Interpret(ParentTExpression& parent_t_expression) {
@@ -166,8 +164,8 @@ void QueryInterpreter::Interpret(ParentTExpression& parent_t_expression) {
     throw InvalidSyntaxException(
         "Second argument for ParentT Clause should be a StmtRef.");
   }
-  this->clause_list.push_back(std::make_shared<ParentStarClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+  this->clause_list.push_back(std::make_shared<ParentClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
 }
 
 void QueryInterpreter::Interpret(SelectExpression& select_expression) {
