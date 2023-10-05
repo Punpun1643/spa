@@ -33,11 +33,11 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
 
   // 0 Declarations - SuchThatClauses
   bool isRelationTrueValueValue(std::string value_1, std::string value_2,
-                      RelationType rel_type) override;
+                                RelationType rel_type) override;
   bool isRelationTrueValueWild(std::string value,
-                                     RelationType rel_type) override;
+                               RelationType rel_type) override;
   bool isRelationTrueWildValue(std::string value,
-                                      RelationType rel_type) override;
+                               RelationType rel_type) override;
   bool isRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations - SuchThatClauses
@@ -55,7 +55,7 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
   // 2 Declarations - SuchThatClauses
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
-                    RelationType rel_type) override;
+                            RelationType rel_type) override;
 
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
@@ -74,9 +74,9 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
   getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                       MatchType expr_match_type) override;
 
-  std::unordered_set<std::string> PkbStub::getProcedureUses(
+  std::unordered_set<std::string> getProcedureUses(
       std::string procName) override;
 
-  std::unordered_set<std::string> PkbStub::getProcedureModifies(
+  std::unordered_set<std::string> getProcedureModifies(
       std::string procName) override;
 };
