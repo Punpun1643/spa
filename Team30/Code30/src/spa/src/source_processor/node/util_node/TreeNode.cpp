@@ -14,7 +14,7 @@ std::shared_ptr<TreeNode> TreeNode::getRightSubTree() const {
   return rightSubTree;
 }
 
-std::vector<std::string> TreeNode::createInOrderTraversal(
+std::vector<std::string> TreeNode::CreateInOrderTraversal(
     std::shared_ptr<TreeNode> const& root) {
   std::vector<std::string> inOrderTraversal;
 
@@ -22,11 +22,11 @@ std::vector<std::string> TreeNode::createInOrderTraversal(
     return inOrderTraversal;
   }
 
-  inOrderTraversal = createInOrderTraversal(root->getLeftSubTree());
+  inOrderTraversal = CreateInOrderTraversal(root->getLeftSubTree());
   inOrderTraversal.push_back(root->getVal());
 
   std::vector<std::string> rightSubTreeInOrderTraversal =
-      createInOrderTraversal(root->getRightSubTree());
+      CreateInOrderTraversal(root->getRightSubTree());
 
   inOrderTraversal.insert(
       inOrderTraversal.end(),
@@ -36,7 +36,7 @@ std::vector<std::string> TreeNode::createInOrderTraversal(
   return inOrderTraversal;
 }
 
-std::vector<std::string> TreeNode::createPreOrderTraversal(
+std::vector<std::string> TreeNode::CreatePreOrderTraversal(
     std::shared_ptr<TreeNode> const& root) {
   std::vector<std::string> preOrderTraversal;
 
@@ -47,7 +47,7 @@ std::vector<std::string> TreeNode::createPreOrderTraversal(
   preOrderTraversal.push_back(root->getVal());
 
   std::vector<std::string> leftSubTreePreOrderTraversal =
-      createPreOrderTraversal(root->getLeftSubTree());
+      CreatePreOrderTraversal(root->getLeftSubTree());
 
   preOrderTraversal.insert(
       preOrderTraversal.end(),
@@ -55,7 +55,7 @@ std::vector<std::string> TreeNode::createPreOrderTraversal(
       std::make_move_iterator(leftSubTreePreOrderTraversal.end()));
 
   std::vector<std::string> rightSubTreePreOrderTraversal =
-      createPreOrderTraversal(root->getRightSubTree());
+      CreatePreOrderTraversal(root->getRightSubTree());
   
   preOrderTraversal.insert(
       preOrderTraversal.end(),
@@ -64,3 +64,5 @@ std::vector<std::string> TreeNode::createPreOrderTraversal(
 
   return preOrderTraversal;
 }
+
+//bool TreeNode::isSubTree()
