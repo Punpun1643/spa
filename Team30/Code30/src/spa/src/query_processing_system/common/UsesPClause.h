@@ -4,14 +4,13 @@
 
 #include "EntRef.h"
 #include "EntityType.h"
-#include "StmtRef.h"
 #include "UsesOrModifiesClause.h"
 
-class ModifiesSClause : public UsesOrModifiesClause {
+class UsesPClause : public UsesOrModifiesClause {
  private:
   static const std::vector<EntityType> VALID_DECL_TYPES_FOR_ARG_1;
   static const std::string INVALID_ARG_1_DECL_TYPE_MSG;
 
  public:
-  ModifiesSClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<EntRef> arg2);
+  UsesPClause(std::unique_ptr<EntRef> arg1, std::unique_ptr<EntRef> arg2);
 };
