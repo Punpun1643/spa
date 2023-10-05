@@ -3,22 +3,14 @@
 #include <algorithm>
 #include <iostream>
 
-UsesExtractor::UsesExtractor(PkbApi& pkb) : pkb(pkb) {}
-
-void UsesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
-
-void UsesExtractor::extractFromProcedure(std::shared_ptr<ProcedureNode> node) {
-  usesActors.push_back(node->getProcedureName());
-}
-
-void UsesExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
-  // TODO
-}
+UsesExtractor::UsesExtractor(PkbApi& pkb,
+                             std::shared_ptr<CallsManager> callsManager)
+    : pkb(pkb),
+      callsManager(callsManager),
+      UsesModifiesTypeExtractor(pkb, callsManager) {}
 
 void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  // TODO
+  callsManager->insertCallsStmt(actors[0], node->getProcName(), actors, node);
 }
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
@@ -27,22 +19,18 @@ void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   insertVarWithActors(node->getVarName());
 }
 
-void UsesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  // TODO
-}
-
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
       *node->getCondExpr()->getVariables();
   insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
-  usesActors.push_back(std::to_string(node->getStmtIndex()));
+  actors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
       *node->getCondExpr()->getVariables();
   insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
-  usesActors.push_back(std::to_string(node->getStmtIndex()));
+  actors.push_back(std::to_string(node->getStmtIndex()));
 }
 
 void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
@@ -56,12 +44,6 @@ void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
 //
 //////////////////////////////
 
-void UsesExtractor::popUsesActor() {
-  if (!usesActors.empty()) {
-    usesActors.pop_back();
-  }
-}
-
 void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
                                        std::string stmtIndex) {
   for (std::string var : vars) {
@@ -71,7 +53,7 @@ void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
 }
 
 void UsesExtractor::insertVarWithActors(std::string var) {
-  for (std::string usesActor : usesActors) {
+  for (std::string usesActor : actors) {
     bool isStmtIndex =
         !usesActor.empty() &&
         std::all_of(usesActor.begin(), usesActor.end(), ::isdigit);

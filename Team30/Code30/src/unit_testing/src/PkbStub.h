@@ -11,6 +11,10 @@ class PkbStub : public PkbApi {
   std::vector<std::string> VARIABLES = {"varX", "varY"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
+  std::vector<std::string> REL_TYPE_STRINGS = {
+      "FOLLOWS", "FOLLOWS_STAR", "PARENT",     "PARENT_STAR",
+      "USES_P",  "USES_S",       "MODIFIES_P", "MODIFIES_S"};
+
   int insertEntityCallCount;
   int insertVariableCallCount;
   int insertConstantCallCount;
@@ -20,6 +24,8 @@ class PkbStub : public PkbApi {
   int insertUsesCallCount;
   int insertModifiesCallCount;
   int insertPatternCallCount;
+
+  std::unordered_set<std::string> entitiesSet;
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
@@ -31,7 +37,7 @@ class PkbStub : public PkbApi {
   void insertRelation(RelationType rel_type, EntityType ent_type1,
                       std::string entity1, EntityType ent_type2,
                       std::string entity2) override;
-  void insertRelationCommon(RelationType type);
+  void insertRelationCommon(RelationType type, std::string a, std::string b);
 
   // Select Clause
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
