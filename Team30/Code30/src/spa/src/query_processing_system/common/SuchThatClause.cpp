@@ -37,85 +37,89 @@ void SuchThatClause::checkArgReferenceType(
   }
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildWild(PkbApi& pkb) {
-  bool is_valid_rel = pkb.isRelationTrueForAny(relation_type);
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildWild(
+    PKBQPSInterface& pkb) {
+  bool is_valid_rel = pkb.isRelationTrueWildWild(relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueWild(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueWild(
+    PKBQPSInterface& pkb) {
   std::string first_value = arg1->getValue();
   bool is_valid_rel =
-      pkb.isRelationTrueGivenFirstValue(first_value, relation_type);
+      pkb.isRelationTrueValueWild(first_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildValue(
+    PKBQPSInterface& pkb) {
   std::string second_value = arg2->getValue();
   bool is_valid_rel =
-      pkb.isRelationTrueGivenSecondValue(second_value, relation_type);
+      pkb.isRelationTrueWildValue(second_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueValue(
+    PKBQPSInterface& pkb) {
   std::string first_value = arg1->getValue();
   std::string second_value = arg2->getValue();
   bool is_valid_rel =
-      pkb.isRelationTrue(first_value, second_value, relation_type);
+      pkb.isRelationTrueValueValue(first_value, second_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = arg1->getDeclaration();
   auto possible_values =
-      pkb.getRelationValuesGivenFirstType(entity_type, relation_type);
+      pkb.getRelationSynonymWild(entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = arg2->getDeclaration();
   auto possible_values =
-      pkb.getRelationValuesGivenSecondType(entity_type, relation_type);
+      pkb.getRelationWildSynonym(entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = arg1->getDeclaration();
   std::string second_value = arg2->getValue();
   auto possible_values =
-      pkb.getRelationValues(entity_type, second_value, relation_type);
+      pkb.getRelationSynonymValue(entity_type, second_value, relation_type);
   return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = arg2->getDeclaration();
   std::string first_value = arg1->getValue();
   auto possible_values =
-      pkb.getRelationValues(first_value, entity_type, relation_type);
+      pkb.getRelationValueSynonym(first_value, entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type_1 = arg1->getDeclarationType();
   EntityType entity_type_2 = arg2->getDeclarationType();
   PqlDeclaration declaration_1 = arg1->getDeclaration();
   PqlDeclaration declaration_2 = arg2->getDeclaration();
 
-  auto possible_values =
-      pkb.getRelationValues(entity_type_1, entity_type_2, relation_type);
+  auto possible_values = pkb.getRelationSynonymSynonym(
+      entity_type_1, entity_type_2, relation_type);
   return std::make_unique<ClauseResult>(declaration_1, declaration_2,
                                         *possible_values);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PKBQPSInterface& pkb) {
   // This method uses the template design pattern
   PqlRefType ref_type_1 = arg1->getRefType();
   PqlRefType ref_type_2 = arg2->getRefType();

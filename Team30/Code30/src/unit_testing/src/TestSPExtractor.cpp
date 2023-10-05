@@ -7,7 +7,7 @@
 #include <iostream>
 #include <source_processor/design_extractor/ExtractionController.cpp>
 
-#include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "ManualASTBuilder.h"
 #include "PkbStub.h"
 #include "catch.hpp"
