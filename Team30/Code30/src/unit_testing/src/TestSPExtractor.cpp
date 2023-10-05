@@ -9,11 +9,11 @@
 
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "ManualASTBuilder.h"
-#include "PkbStub.h"
+#include "PKBSPStub.h"
 #include "catch.hpp"
 
 TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -47,7 +47,7 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
 }
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -80,7 +80,7 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
 }
 
 TEST_CASE("AST 3: Basic SPA, 2 procedures") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -115,7 +115,7 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
 TEST_CASE(
     "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
     "(if-if-while)") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
@@ -148,9 +148,8 @@ TEST_CASE(
 }
 
 // Hardcoded pkb stub returns not really working for this
-TEST_CASE(
-    "AST 5: Three procedures, nested calls") {
-  PkbStub pkb = PkbStub();
+TEST_CASE("AST 5: Three procedures, nested calls") {
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_5();
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
