@@ -1,7 +1,8 @@
-#include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
+#include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
 
-class PkbStub : public PkbApi {
+class PkbStub : public PKBQPSInterface, public PkbApi {
  public:
   PkbStub();
 
@@ -44,30 +45,30 @@ class PkbStub : public PkbApi {
       EntityType type) override;
 
   // 0 Declarations - SuchThatClauses
-  bool isRelationTrue(std::string value_1, std::string value_2,
-                      RelationType rel_type) override;
-  bool isRelationTrueGivenFirstValue(std::string value,
-                                     RelationType rel_type) override;
-  bool isRelationTrueGivenSecondValue(std::string value,
-                                      RelationType rel_type) override;
-  bool isRelationTrueForAny(RelationType relation_type) override;
+  bool isRelationTrueValueValue(std::string value_1, std::string value_2,
+                                RelationType rel_type) override;
+  bool isRelationTrueValueWild(std::string value,
+                               RelationType rel_type) override;
+  bool isRelationTrueWildValue(std::string value,
+                               RelationType rel_type) override;
+  bool isRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations - SuchThatClauses
-  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenFirstType(
+  std::unique_ptr<std::vector<std::string>> getRelationSynonymWild(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValuesGivenSecondType(
+  std::unique_ptr<std::vector<std::string>> getRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValues(
+  std::unique_ptr<std::vector<std::string>> getRelationSynonymValue(
       EntityType entity_type, std::string value,
       RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValues(
+  std::unique_ptr<std::vector<std::string>> getRelationValueSynonym(
       std::string value, EntityType entity_type,
       RelationType rel_type) override;
 
   // 2 Declarations - SuchThatClauses
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
-                    RelationType rel_type) override;
+  getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
+                            RelationType rel_type) override;
 
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
@@ -85,4 +86,10 @@ class PkbStub : public PkbApi {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
                                       MatchType expr_match_type) override;
+
+  std::unordered_set<std::string> getProcedureUses(
+      std::string procName) override;
+
+  std::unordered_set<std::string> getProcedureModifies(
+      std::string procName) override;
 };

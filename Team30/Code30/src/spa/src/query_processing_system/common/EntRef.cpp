@@ -11,8 +11,7 @@ EntRef::EntRef(std::string entity_value)
   // Assumes that entity_value is a valid identifier
 }
 
-EntRef::EntRef(const PqlDeclaration& declaration)
-    : PqlReference(declaration) {
+EntRef::EntRef(PqlDeclaration const& declaration) : PqlReference(declaration) {
   EntityType declaration_type = declaration.getEntityType();
   if (std::find(VALID_ENT_TYPES.begin(), VALID_ENT_TYPES.end(),
                 declaration_type) == VALID_ENT_TYPES.end()) {

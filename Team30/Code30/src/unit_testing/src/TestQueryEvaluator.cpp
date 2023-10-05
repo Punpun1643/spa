@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
@@ -18,7 +18,7 @@ class QeFactoryMethods {
   static std::unique_ptr<FollowsClause> getFollowsClause(StmtRef ref1,
                                                          StmtRef ref2) {
     return std::make_unique<FollowsClause>(std::make_unique<StmtRef>(ref1),
-                                           std::make_unique<StmtRef>(ref2));
+                                           std::make_unique<StmtRef>(ref2), false);
   }
 };
 

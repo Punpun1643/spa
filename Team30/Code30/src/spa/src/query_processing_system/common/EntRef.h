@@ -16,5 +16,5 @@ class EntRef : public PqlReference {
 
   explicit EntRef(std::string entity_value);
 
-  explicit EntRef(const PqlDeclaration& declaration);
+  explicit EntRef(PqlDeclaration const& declaration);
 };

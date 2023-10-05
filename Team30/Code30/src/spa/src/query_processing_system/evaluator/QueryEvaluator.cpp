@@ -6,7 +6,7 @@
 
 #include "IntermediateResultsTable.h"
 
-QueryEvaluator::QueryEvaluator(PkbApi& pkb) : pkb(pkb) {}
+QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 
 std::vector<std::string> QueryEvaluator::evaluateQuery(
     std::unique_ptr<SelectClause> select_clause,

@@ -1,6 +1,6 @@
 #include "FollowsExtractor.h"
 
-#include <program_knowledge_base/PkbApi.h>
+#include "program_knowledge_base/PKBSPInterface.h"
 #include <stdio.h>
 
 #include <iostream>
