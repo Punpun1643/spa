@@ -8,10 +8,12 @@
 #include "UsesExtractor.h"
 
 ExtractionController::ExtractionController(PkbApi& pkb) : pkb(pkb) {
+  callsManager = std::make_shared<CallsManager>(pkb);
+
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
-  extractors.push_back(std::make_shared<UsesExtractor>(pkb));
-  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb));
+  extractors.push_back(std::make_shared<UsesExtractor>(pkb, callsManager));
+  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb, callsManager));
   extractors.push_back(std::make_shared<EntityExtractor>(pkb));
   extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }
@@ -24,9 +26,13 @@ void ExtractionController::executeProgramExtraction(
   std::vector<std::shared_ptr<ProcedureNode>> children = node->getChildren();
   if (!children.empty()) {
     for (std::shared_ptr<ProcedureNode> child : children) {
+      callsManager->insertProcNode(child->getProcedureName());
+    }
+    for (std::shared_ptr<ProcedureNode> child : children) {
       executeProcedureExtraction(child);
     }
   }
+  executePostProcessing();
 }
 
 void ExtractionController::executeProcedureExtraction(
@@ -86,8 +92,47 @@ void ExtractionController::handleContainerStmts(
   }
 }
 
+//void ExtractionController::handleCallStmts() {
+//  std::vector<std::shared_ptr<CallStmtCacheObject>> usesCache =
+//      std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))
+//          ->getCallStmtCache();
+//  handleCallStmtsHelper(usesCache, RelationType::USES_S);
+//
+//  std::vector<std::shared_ptr<CallStmtCacheObject>> modifiesCache =
+//      std::dynamic_pointer_cast<UsesExtractor>(extractors.at(3))
+//          ->getCallStmtCache();
+//  handleCallStmtsHelper(modifiesCache, RelationType::MODIFIES_S);
+//}
+//
+//void ExtractionController::handleCallStmtsHelper(
+//    std::vector<std::shared_ptr<CallStmtCacheObject>> cache, RelationType rel) {
+//  bool isGettingUpdated = true;
+//  while (isGettingUpdated) {
+//    bool hasUpdateThisIteration = false;
+//    for (std::shared_ptr<CallStmtCacheObject> callStmt : cache) {
+//      std::vector<std::string> varsFromProc = *pkb.getRelationValues(
+//          callStmt->getCallNode()->getProcName(), EntityType::VARIABLE, rel);
+//
+//      bool hasUpdate = callStmt->updateVars(varsFromProc);
+//      bool hasUpdateThisIteration = hasUpdateThisIteration || hasUpdate;
+//
+//      for (std::string var : varsFromProc) {
+//        for (std::string actor : callStmt->getActors()) {
+//          pkb.insertRelation(rel, actor, var);
+//        }
+//      }
+//    }
+//    isGettingUpdated = hasUpdateThisIteration;
+//  }
+//}
+
 void ExtractionController::popActors() {
-  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popUsesActor();
+  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popActor();
   std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))
-      ->popModifiesActor();
+      ->popActor();
+}
+
+void ExtractionController::executePostProcessing() {
+  callsManager->executeCallsExtraction();
+  callsManager->connectProcsAndUpdateRelations();
 }
