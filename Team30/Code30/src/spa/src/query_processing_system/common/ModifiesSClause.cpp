@@ -17,17 +17,19 @@ ModifiesSClause::ModifiesSClause(std::unique_ptr<StmtRef> arg1,
 }
 
 std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException(
       "1st argument of Modifies cannot be a wildcard");
 }
 
-std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildWild(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildWild(
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException(
       "1st argument of Modifies cannot be a wildcard");
 }
 
-std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> ModifiesSClause::evaluateWildValue(
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException(
       "1st argument of Modifies cannot be a wildcard");
 }

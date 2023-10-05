@@ -16,14 +16,16 @@ UsesSClause::UsesSClause(std::unique_ptr<StmtRef> arg1,
 }
 
 std::unique_ptr<ClauseResult> UsesSClause::evaluateWildDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
 }
 
-std::unique_ptr<ClauseResult> UsesSClause::evaluateWildWild(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> UsesSClause::evaluateWildWild(
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
 }
 
-std::unique_ptr<ClauseResult> UsesSClause::evaluateWildValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> UsesSClause::evaluateWildValue(
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException("1st argument of Uses cannot be a wildcard");
 }

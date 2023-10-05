@@ -24,9 +24,11 @@ class ModifiesSClause : public SuchThatClause {
                                                        PqlRefType::DECLARATION};
 
  protected:
-  std::unique_ptr<ClauseResult> evaluateWildDeclaration(PkbApi& pkb) override;
-  std::unique_ptr<ClauseResult> evaluateWildValue(PkbApi& pkb) override;
-  std::unique_ptr<ClauseResult> evaluateWildWild(PkbApi& pkb) override;
+  std::unique_ptr<ClauseResult> evaluateWildDeclaration(
+      PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> evaluateWildValue(
+      PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> evaluateWildWild(PKBQPSInterface& pkb) override;
 
  public:
   ModifiesSClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<EntRef> arg2);
