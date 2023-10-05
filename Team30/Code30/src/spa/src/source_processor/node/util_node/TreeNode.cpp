@@ -138,3 +138,23 @@ bool TreeNode::IsSubTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
   return IsSubString(baseTreeInOrderTraversal, subTreeInOrderTraversal) &&
          IsSubString(baseTreePreOrderTraversal, subTreePreOrderTraversal);
 }
+
+bool TreeNode::IsSameTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
+                          std::shared_ptr<TreeNode> const& subTreeRoot) {
+  if (subTreeRoot == nullptr) {
+    return true;
+  }
+
+  std::vector<std::string> baseTreeInOrderTraversal =
+      CreateInOrderTraversal(baseTreeRoot);
+  std::vector<std::string> subTreeInOrderTraversal =
+      CreateInOrderTraversal(subTreeRoot);
+
+  std::vector<std::string> baseTreePreOrderTraversal =
+      CreatePreOrderTraversal(baseTreeRoot);
+  std::vector<std::string> subTreePreOrderTraversal =
+      CreatePreOrderTraversal(subTreeRoot);
+
+  return baseTreeInOrderTraversal == subTreeInOrderTraversal &&
+         baseTreePreOrderTraversal == subTreePreOrderTraversal;
+}

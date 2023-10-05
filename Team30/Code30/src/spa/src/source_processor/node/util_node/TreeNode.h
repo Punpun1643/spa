@@ -28,6 +28,9 @@ class TreeNode {
       std::vector<std::string> const& baseTreeInOrderTraversal,
       std::vector<std::string> const& subTreeInOrderTraversal);
 
+  static bool IsSameTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
+                         std::shared_ptr<TreeNode> const& subTreeRoot);
+
   ~TreeNode() = default;
 
  private:
