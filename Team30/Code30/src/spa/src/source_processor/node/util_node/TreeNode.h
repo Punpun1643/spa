@@ -24,8 +24,9 @@ class TreeNode {
   static bool IsSubTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
                         std::shared_ptr<TreeNode> const& subTreeRoot);
 
-  static bool IsSubString(std::vector<std::string> const& baseTreeInOrderTraversal,
-                          std::vector<std::string> const& subTreeInOrderTraversal);
+  static bool IsSubString(
+      std::vector<std::string> const& baseTreeInOrderTraversal,
+      std::vector<std::string> const& subTreeInOrderTraversal);
 
   ~TreeNode() = default;
 
