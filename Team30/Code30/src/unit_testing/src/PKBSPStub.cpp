@@ -11,6 +11,7 @@ PKBSPStub::PKBSPStub()
       insertParentCallCount(0),
       insertUsesCallCount(0),
       insertModifiesCallCount(0),
+      insertCallsCallCount(0),
       insertPatternCallCount(0){};
 
 void PKBSPStub::insertEntity(EntityType type, std::string entity) {
@@ -50,6 +51,9 @@ void PKBSPStub::insertRelationCommon(RelationType type, std::string a,
       break;
     case (RelationType::MODIFIES_P):
       ++insertModifiesCallCount;
+      break;
+    case (RelationType::CALLS):
+      ++insertCallsCallCount;
       break;
     default:
       break;

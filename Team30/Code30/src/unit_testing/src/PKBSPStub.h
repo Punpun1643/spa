@@ -7,8 +7,9 @@ class PKBSPStub : public PKBSPInterface {
   PKBSPStub();
 
   std::vector<std::string> REL_TYPE_STRINGS = {
-      "FOLLOWS", "FOLLOWS_STAR", "PARENT",     "PARENT_STAR",
-      "USES_P",  "USES_S",       "MODIFIES_P", "MODIFIES_S"};
+      "FOLLOWS", "FOLLOWS_STAR", "PARENT",     "PARENT_STAR", "USES_P",
+      "USES_S",  "MODIFIES_P",   "MODIFIES_S", "CALLS",       "CALLS_STAR",
+      "NEXT",    "NEXT_STAR",    "AFFECTS"};
 
   int insertEntityCallCount;
   int insertVariableCallCount;
@@ -18,6 +19,7 @@ class PKBSPStub : public PKBSPInterface {
   int insertParentCallCount;
   int insertUsesCallCount;
   int insertModifiesCallCount;
+  int insertCallsCallCount;
   int insertPatternCallCount;
 
   std::unordered_set<std::string> entitiesSet;
@@ -26,7 +28,7 @@ class PKBSPStub : public PKBSPInterface {
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void insertPattern(std::string statement_number, std::string lhs,
-                             std::unordered_set<std::string> rhs) override;
+                     std::unordered_set<std::string> rhs) override;
   void insertRelationCommon(RelationType type, std::string a, std::string b);
 
   std::unordered_set<std::string> getProcedureUses(
