@@ -21,8 +21,6 @@ class UsesModifiesTypeExtractor : public DesignExtractor {
 
   void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
 
-  void extractFromCall(std::shared_ptr<CallNode> node) override;
-
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
   void extractFromIf(std::shared_ptr<IfNode> node) override;

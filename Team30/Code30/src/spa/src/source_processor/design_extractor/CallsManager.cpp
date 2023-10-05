@@ -8,10 +8,14 @@ CallsManager::CallsManager(PkbApi& pkb) : pkb(pkb) {
 }
 
 void CallsManager::insertProcNode(std::string procName) {
-  std::shared_ptr<CallsGraphProcNode> newNode =
-      std::make_shared<CallsGraphProcNode>(procName);
-  procNodeMap.insert({procName, newNode});
-  //std::cout << "INSERTED " + procName + "\n";
+  if (procNodeMap.find(procName) == procNodeMap.end()) {
+    std::shared_ptr<CallsGraphProcNode> newNode =
+        std::make_shared<CallsGraphProcNode>(procName);
+    procNodeMap.insert({procName, newNode});
+    // std::cout << "INSERTED " + procName + "\n";
+  } else {
+      // throw error: two procs with same name
+  }
 }
 
 // procA: the procedure in which the call stmt is found
@@ -22,7 +26,6 @@ void CallsManager::insertCallsStmt(std::string procA, std::string procB,
                                    std::shared_ptr<CallNode> callNode) {
   std::shared_ptr<CallsGraphStmtNode> newStmtNode =
       std::make_shared<CallsGraphStmtNode>(actors, callNode);
-
   std::shared_ptr<CallsGraphProcNode> procCalling = procNodeMap[procA];
   std::shared_ptr<CallsGraphProcNode> procGettingCalled = procNodeMap[procB];
 

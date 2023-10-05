@@ -1,13 +1,16 @@
 #include "CallsGraphProcNode.h"
 
-#include <iterator>
 #include <cassert>
+#include <iterator>
 
-CallsGraphProcNode::CallsGraphProcNode(std::string proc) : proc(proc), numProcsCalled(0) {}
+CallsGraphProcNode::CallsGraphProcNode(std::string proc)
+    : proc(proc), numProcsCalled(0) {}
 
 void CallsGraphProcNode::addStmtCalledBy(
     std::shared_ptr<CallsGraphStmtNode> stmtCalledBy) {
-  stmtsCalledBy.insert(stmtCalledBy);
+  if (stmtsCalledBy.find(stmtCalledBy) == stmtsCalledBy.end()) {
+    stmtsCalledBy.insert(stmtCalledBy);
+  }
 }
 
 void CallsGraphProcNode::addProcCalled(
@@ -48,5 +51,3 @@ void CallsGraphProcNode::removeProcCalled(
 }
 
 std::string CallsGraphProcNode::getProcName() { return proc; }
-
-

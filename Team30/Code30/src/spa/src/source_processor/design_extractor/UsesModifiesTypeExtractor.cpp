@@ -10,11 +10,6 @@ void UsesModifiesTypeExtractor::extractFromProcedure(
   actors.push_back(node->getProcedureName());
 }
 
-void UsesModifiesTypeExtractor::extractFromCall(
-    std::shared_ptr<CallNode> node) {
-   callsManager->insertCallsStmt(actors[0], node->getProcName(), actors, node);
-}
-
 void UsesModifiesTypeExtractor::extractFromWhile(
     std::shared_ptr<WhileNode> node) {
   actors.push_back(std::to_string(node->getStmtIndex()));

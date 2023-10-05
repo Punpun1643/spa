@@ -20,6 +20,8 @@ class UsesExtractor : public UsesModifiesTypeExtractor {
 
   void extractFromPrint(std::shared_ptr<PrintNode> node) override;
 
+  void extractFromCall(std::shared_ptr<CallNode> node) override;
+
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
   void extractFromIf(std::shared_ptr<IfNode> node) override;

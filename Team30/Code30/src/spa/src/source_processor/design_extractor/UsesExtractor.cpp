@@ -5,7 +5,13 @@
 
 UsesExtractor::UsesExtractor(PkbApi& pkb,
                              std::shared_ptr<CallsManager> callsManager)
-    : pkb(pkb), callsManager(callsManager), UsesModifiesTypeExtractor(pkb, callsManager) {}
+    : pkb(pkb),
+      callsManager(callsManager),
+      UsesModifiesTypeExtractor(pkb, callsManager) {}
+
+void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
+  callsManager->insertCallsStmt(actors[0], node->getProcName(), actors, node);
+}
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertRelation(RelationType::USES_S, std::to_string(node->getStmtIndex()),

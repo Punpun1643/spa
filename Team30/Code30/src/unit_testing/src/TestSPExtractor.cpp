@@ -24,12 +24,12 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 23);
+    REQUIRE(pkb.insertUsesCallCount == 21);
     // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 19);
+    REQUIRE(pkb.insertModifiesCallCount == 17);
   }
   SECTION("Entity extraction functionality") {
     REQUIRE(pkb.insertEntityCallCount == 15);
@@ -126,12 +126,12 @@ TEST_CASE(
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 26);
+    REQUIRE(pkb.insertUsesCallCount == 23);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 11);
+    REQUIRE(pkb.insertModifiesCallCount == 8);
   }
   SECTION("Entity extraction functionality") {
     REQUIRE(pkb.insertEntityCallCount == 10);
