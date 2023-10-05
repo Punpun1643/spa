@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-PKB::PKB() : PKBQPSInterface(), PkbApi() {
+PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   wildCardMatcher = WildCardMatcher();
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();

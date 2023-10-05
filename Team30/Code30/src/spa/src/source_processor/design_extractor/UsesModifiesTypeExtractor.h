@@ -17,7 +17,7 @@
 class UsesModifiesTypeExtractor : public DesignExtractor {
  public:
   explicit UsesModifiesTypeExtractor(
-      PkbApi& pkb, std::shared_ptr<CallsManager> callsManager);
+      PKBSPInterface& pkb, std::shared_ptr<CallsManager> callsManager);
 
   void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
 
@@ -30,7 +30,7 @@ class UsesModifiesTypeExtractor : public DesignExtractor {
   ~UsesModifiesTypeExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 
   std::shared_ptr<CallsManager> callsManager;
 

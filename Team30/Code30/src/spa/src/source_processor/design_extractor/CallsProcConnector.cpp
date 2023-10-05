@@ -4,7 +4,7 @@
 #include <cassert>
 #include <iostream>
 
-CallsProcConnector::CallsProcConnector(PkbApi& pkb) : pkb(pkb) {}
+CallsProcConnector::CallsProcConnector(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void CallsProcConnector::connectProcsAndUpdateRelations(
     std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
@@ -13,10 +13,9 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
       procNodeMap_copy = procNodeMap;
 
   while (!procNodeMap_copy.empty()) {
-
-      //for (auto m : procNodeMap_copy) {
-      //std::cout << m.first + "\n";
-      //}
+    // for (auto m : procNodeMap_copy) {
+    // std::cout << m.first + "\n";
+    // }
 
     // traverse procNodeMap to find the proc with the smallest size of
     // procsCalled (should be 0)
@@ -42,13 +41,11 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
 
     // from the pkb, get all the variables that are used / modified
     // by the proc
-    std::vector<std::string> usesRelations;
-    std::vector<std::string> modifiesRelations;
-     usesRelations =
-         *pkb.getRelationValues(procNameWMinCalls, EntityType::VARIABLE,
-         USES_P);
-     modifiesRelations = *pkb.getRelationValues(
-         procNameWMinCalls, EntityType::VARIABLE, MODIFIES_P);
+
+    std::unordered_set<std::string> usesRelations =
+        pkb.getProcedureUses(procNameWMinCalls);
+    std::unordered_set<std::string> modifiesRelations =
+        pkb.getProcedureModifies(procNameWMinCalls);
 
     // for each procCalledBy in procsCalls, insert into pkb the relevant uses /
     // modifies relation
@@ -59,14 +56,12 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
 
       // for each stmtCalledBy in stmtsCalledBy, insert into pkb the relevant
       // uses or modifies relation, and with all the actors
-       for (std::string usesRelation : usesRelations) {
+      for (std::string usesRelation : usesRelations) {
         pkb.insertRelation(RelationType::USES_S,
-                           std::to_string(node->getStmtIndex()),
-                           usesRelation);
+                           std::to_string(node->getStmtIndex()), usesRelation);
         for (std::string actor : actors) {
           bool isStmtIndex = !actor.empty() &&
-                             std::all_of(actor.begin(), actor.end(),
-                             ::isdigit);
+                             std::all_of(actor.begin(), actor.end(), ::isdigit);
           if (isStmtIndex) {
             pkb.insertRelation(RelationType::USES_S, actor, usesRelation);
           } else {
@@ -74,14 +69,13 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
           }
         }
       }
-       for (std::string modifiesRelation : modifiesRelations) {
+      for (std::string modifiesRelation : modifiesRelations) {
         pkb.insertRelation(RelationType::MODIFIES_S,
                            std::to_string(node->getStmtIndex()),
                            modifiesRelation);
         for (std::string actor : actors) {
           bool isStmtIndex = !actor.empty() &&
-                             std::all_of(actor.begin(), actor.end(),
-                             ::isdigit);
+                             std::all_of(actor.begin(), actor.end(), ::isdigit);
           if (isStmtIndex) {
             pkb.insertRelation(RelationType::MODIFIES_S, actor,
                                modifiesRelation);

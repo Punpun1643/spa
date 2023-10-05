@@ -1,6 +1,5 @@
 #include "FollowsExtractor.h"
 
-#include "program_knowledge_base/PKBSPInterface.h"
 #include <stdio.h>
 
 #include <iostream>
@@ -8,8 +7,10 @@
 #include <vector>
 
 #include "../../program_knowledge_base/PKB.h"
+#include "program_knowledge_base/PKBSPInterface.h"
 
-FollowsExtractor::FollowsExtractor(PkbApi& pkb) : pkb(pkb), DesignExtractor(pkb) {}
+FollowsExtractor::FollowsExtractor(PKBSPInterface& pkb)
+    : pkb(pkb), DesignExtractor(pkb) {}
 
 void FollowsExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();

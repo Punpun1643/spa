@@ -5,16 +5,16 @@
 #include "../node/ProcedureNode.h"
 #include "../node/ProgramNode.h"
 #include "../node/StmtLstNode.h"
+#include "../node/stmt_node/AssignNode.h"
 #include "../node/stmt_node/CallNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "../node/stmt_node/AssignNode.h"
 #include "DesignExtractor.h"
 
 class ParentExtractor : public DesignExtractor {
  public:
-  explicit ParentExtractor(PkbApi& pkb);
+  explicit ParentExtractor(PKBSPInterface& pkb);
 
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
@@ -23,5 +23,5 @@ class ParentExtractor : public DesignExtractor {
   ~ParentExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 };

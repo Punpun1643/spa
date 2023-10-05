@@ -13,7 +13,7 @@
 #include "RelationType.h"
 #include "query_processing_system/common/MatchType.h"
 
-class PkbApi {
+class PKBSPInterface {
  public:
   virtual void insertEntity(EntityType type, std::string entity) = 0;
   virtual void insertRelation(RelationType rel_type, std::string s1_line_num,

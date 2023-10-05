@@ -15,7 +15,8 @@
 
 class ModifiesExtractor : public UsesModifiesTypeExtractor {
  public:
-  explicit ModifiesExtractor(PkbApi& pkb, std::shared_ptr<CallsManager> callsManager);
+  explicit ModifiesExtractor(PKBSPInterface& pkb,
+                             std::shared_ptr<CallsManager> callsManager);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -26,7 +27,7 @@ class ModifiesExtractor : public UsesModifiesTypeExtractor {
   ~ModifiesExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 
   std::shared_ptr<CallsManager> callsManager;
 

@@ -15,7 +15,7 @@
 
 class DesignExtractor : public IDesignExtractor {
  public:
-  explicit DesignExtractor(PkbApi& pkb);
+  explicit DesignExtractor(PKBSPInterface& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -38,5 +38,5 @@ class DesignExtractor : public IDesignExtractor {
   ~DesignExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 };

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-UsesExtractor::UsesExtractor(PkbApi& pkb,
+UsesExtractor::UsesExtractor(PKBSPInterface& pkb,
                              std::shared_ptr<CallsManager> callsManager)
     : pkb(pkb),
       callsManager(callsManager),

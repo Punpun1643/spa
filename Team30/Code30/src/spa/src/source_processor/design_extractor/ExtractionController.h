@@ -10,7 +10,7 @@
 
 class ExtractionController : public IExtractionController {
  public:
-  explicit ExtractionController(PkbApi& pkb);
+  explicit ExtractionController(PKBSPInterface& pkb);
 
   void executeProgramExtraction(std::shared_ptr<ProgramNode> node);
   void executeProcedureExtraction(std::shared_ptr<ProcedureNode> node);
@@ -21,7 +21,7 @@ class ExtractionController : public IExtractionController {
 
  private:
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
   std::shared_ptr<CallsManager> callsManager;
 
   void handleContainerStmts(std::shared_ptr<StmtNode> node);

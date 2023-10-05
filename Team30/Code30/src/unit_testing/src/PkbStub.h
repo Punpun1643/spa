@@ -2,7 +2,7 @@
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
 
-class PkbStub : public PKBQPSInterface, public PkbApi {
+class PkbStub : public PKBQPSInterface, public PKBSPInterface {
  public:
   PkbStub();
 
@@ -31,13 +31,7 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void insertRelation(RelationType rel_type, std::string s_line_num,
-                      EntityType ent_type, std::string entity) override;
-  void insertRelation(RelationType rel_type, EntityType ent_type,
-                      std::string entity, std::string s_line_num) override;
-  void insertRelation(RelationType rel_type, EntityType ent_type1,
-                      std::string entity1, EntityType ent_type2,
-                      std::string entity2) override;
+
   void insertRelationCommon(RelationType type, std::string a, std::string b);
 
   // Select Clause

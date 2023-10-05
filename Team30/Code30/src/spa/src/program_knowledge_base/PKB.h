@@ -18,7 +18,7 @@
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
 
-class PKB : public PKBQPSInterface, public PkbApi {
+class PKB : public PKBQPSInterface, public PKBSPInterface {
  private:
   WildCardMatcher wildCardMatcher;
   std::unique_ptr<EntityDatabase> entData;

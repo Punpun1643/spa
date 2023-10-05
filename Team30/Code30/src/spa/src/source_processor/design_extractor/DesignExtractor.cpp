@@ -1,13 +1,13 @@
-#include <program_knowledge_base/PkbApi.h>
+#include "DesignExtractor.h"
+
+#include <program_knowledge_base/PKBSPInterface.h>
 #include <stdio.h>
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include "DesignExtractor.h"
-
-DesignExtractor::DesignExtractor(PkbApi& pkb) : pkb(pkb) {}
+DesignExtractor::DesignExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void DesignExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {}
 

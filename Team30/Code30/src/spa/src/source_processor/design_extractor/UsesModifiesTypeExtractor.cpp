@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <iostream>
 
-UsesModifiesTypeExtractor::UsesModifiesTypeExtractor(PkbApi& pkb, std::shared_ptr<CallsManager> callsManager) : pkb(pkb), callsManager(callsManager), DesignExtractor(pkb) {}
+UsesModifiesTypeExtractor::UsesModifiesTypeExtractor(
+    PKBSPInterface& pkb, std::shared_ptr<CallsManager> callsManager)
+    : pkb(pkb), callsManager(callsManager), DesignExtractor(pkb) {}
 
 void UsesModifiesTypeExtractor::extractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {
@@ -24,4 +26,3 @@ void UsesModifiesTypeExtractor::popActor() {
     actors.pop_back();
   }
 }
-

@@ -15,12 +15,12 @@
 
 class FollowsExtractor : public DesignExtractor {
  public:
-  explicit FollowsExtractor(PkbApi& pkb);
+  explicit FollowsExtractor(PKBSPInterface& pkb);
 
   void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
 
   ~FollowsExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 };

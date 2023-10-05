@@ -1,16 +1,18 @@
 #pragma once
-#include <vector>
-#include <memory>
 #include <source_processor/node/stmt_node/CallNode.h>
+
+#include <memory>
 #include <queue>
-#include "CallsGraphProcNode.h"
 #include <unordered_map>
+#include <vector>
+
 #include "CallsExtractor.h"
+#include "CallsGraphProcNode.h"
 #include "CallsProcConnector.h"
 
 class CallsManager {
  public:
-  explicit CallsManager(PkbApi& pkb);
+  explicit CallsManager(PKBSPInterface& pkb);
 
   // procA: the procedure in which the call stmt is found
   // procB: the procedure that the call stmt calls
@@ -25,9 +27,10 @@ class CallsManager {
 
  private:
   // Key: string procedureName, Value: CallsGraphProcNode node
-  std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>> procNodeMap;
+  std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
+      procNodeMap;
 
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
   std::shared_ptr<CallsExtractor> callsExtractor;
   std::shared_ptr<CallsProcConnector> procConnector;
 };

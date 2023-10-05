@@ -62,25 +62,6 @@ void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
   insertRelationCommon(rel_type, s1_line_num, s2_line_num);
 }
 
-// Relation (integer, EntityType)
-void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
-                             EntityType ent_type, std::string entity) {
-  insertRelationCommon(rel_type, s_line_num, entity);
-}
-
-// Relation (EntityType, integer)
-void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,
-                             std::string entity, std::string s_line_num) {
-  insertRelationCommon(rel_type, s_line_num, entity);
-}
-
-// Relation (EntityType, EntityType)
-void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
-                             std::string entity1, EntityType ent_type2,
-                             std::string entity2) {
-  insertRelationCommon(rel_type, entity1, entity2);
-}
-
 // Pattern clause
 void PkbStub::insertPattern(std::string statement_number, std::string lhs,
                             std::unordered_set<std::string> rhs) {

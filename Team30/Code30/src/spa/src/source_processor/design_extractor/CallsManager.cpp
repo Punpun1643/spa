@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-CallsManager::CallsManager(PkbApi& pkb) : pkb(pkb) {
+CallsManager::CallsManager(PKBSPInterface& pkb) : pkb(pkb) {
   callsExtractor = std::make_shared<CallsExtractor>(pkb);
   procConnector = std::make_shared<CallsProcConnector>(pkb);
 }
@@ -14,7 +14,7 @@ void CallsManager::insertProcNode(std::string procName) {
     procNodeMap.insert({procName, newNode});
     // std::cout << "INSERTED " + procName + "\n";
   } else {
-      // throw error: two procs with same name
+    // throw error: two procs with same name
   }
 }
 

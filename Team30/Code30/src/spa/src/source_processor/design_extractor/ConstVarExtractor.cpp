@@ -4,7 +4,7 @@
 #include <iterator>
 #include <unordered_set>
 
-ConstVarExtractor::ConstVarExtractor(PkbApi& pkb) : pkb(pkb) {}
+ConstVarExtractor::ConstVarExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void ConstVarExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO

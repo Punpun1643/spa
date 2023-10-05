@@ -3,7 +3,8 @@
 #include <iostream>
 #include <vector>
 
-ParentExtractor::ParentExtractor(PkbApi& pkb) : pkb(pkb), DesignExtractor(pkb) {}
+ParentExtractor::ParentExtractor(PKBSPInterface& pkb)
+    : pkb(pkb), DesignExtractor(pkb) {}
 
 void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children =
