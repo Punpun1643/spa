@@ -18,7 +18,7 @@ class QeFactoryMethods {
   static std::unique_ptr<FollowsClause> getFollowsClause(StmtRef ref1,
                                                          StmtRef ref2) {
     return std::make_unique<FollowsClause>(std::make_unique<StmtRef>(ref1),
-                                           std::make_unique<StmtRef>(ref2));
+                                           std::make_unique<StmtRef>(ref2), false);
   }
 };
 
