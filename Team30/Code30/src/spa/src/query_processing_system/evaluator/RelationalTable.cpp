@@ -129,8 +129,8 @@ void RelationalTable::join(RelationalTable& other_table) {
 
   std::vector<std::vector<std::string>> new_table;
   // For every pair of rows
-  for (const auto& this_row : table) {
-    for (const auto& other_row : other_table.table) {
+  for (auto const& this_row : table) {
+    for (auto const& other_row : other_table.table) {
       bool all_match = checkIfRowsMatch(
           this_row, other_row, other_table.column_mapping, shared_cols);
       if (!all_match) {

@@ -6,20 +6,20 @@
 #include "EntityType.h"
 #include "PqlDeclaration.h"
 
-enum PqlRefType { WILD, VALUE, DECLARATION };
+enum class PqlRefType { WILD, VALUE, DECLARATION };
 
 class PqlReference {
  private:
   PqlRefType const ref_type;
   std::optional<std::string> const ref_value;
-  std::shared_ptr<PqlDeclaration const> const ref_declaration;  // can be null
+  std::optional<PqlDeclaration> const ref_declaration;  // can be null
 
  protected:
   PqlReference();
 
   explicit PqlReference(std::string ref_value);
 
-  explicit PqlReference(std::shared_ptr<PqlDeclaration const> declaration);
+  explicit PqlReference(PqlDeclaration declaration);
 
  public:
   virtual ~PqlReference();
@@ -28,7 +28,7 @@ class PqlReference {
 
   std::string getValue() const;
 
-  std::shared_ptr<PqlDeclaration const> getDeclaration() const;
+  PqlDeclaration getDeclaration() const;
 
   EntityType getDeclarationType() const;
 };

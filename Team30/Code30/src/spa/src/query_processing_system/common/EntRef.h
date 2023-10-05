@@ -8,13 +8,13 @@
 
 class EntRef : public PqlReference {
  private:
-  std::vector<EntityType> const VALID_ENT_TYPES = {EntityType::VARIABLE, EntityType::PROCEDURE,
-                                                   EntityType::CONSTANT};
+  std::vector<EntityType> const VALID_ENT_TYPES = {
+      EntityType::VARIABLE, EntityType::PROCEDURE, EntityType::CONSTANT};
 
  public:
   EntRef();
 
   explicit EntRef(std::string entity_value);
 
-  explicit EntRef(std::shared_ptr<PqlDeclaration const> declaration);
+  explicit EntRef(const PqlDeclaration& declaration);
 };

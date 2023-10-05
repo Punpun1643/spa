@@ -6,32 +6,26 @@
 
 TEST_CASE("Tests on PqlReferences") {
   // Declarations
-  auto a =
-      PqlDeclaration(std::make_shared<std::string>("a"), EntityType::ASSIGN);
-  auto print =
-      PqlDeclaration(std::make_shared<std::string>("print"), EntityType::PRINT);
-  auto c = PqlDeclaration(std::make_shared<std::string>("constant"),
-                          EntityType::CONSTANT);
-  auto v = PqlDeclaration(std::make_shared<std::string>("variable"),
-                          EntityType::VARIABLE);
-  auto proc = PqlDeclaration(std::make_shared<std::string>("procedure"),
-                             EntityType::PROCEDURE);
-  auto s =
-      PqlDeclaration(std::make_shared<std::string>("stmt"), EntityType::STMT);
+  auto a = PqlDeclaration("a", EntityType::ASSIGN);
+  auto print = PqlDeclaration("print", EntityType::PRINT);
+  auto c = PqlDeclaration("constant", EntityType::CONSTANT);
+  auto v = PqlDeclaration("variable", EntityType::VARIABLE);
+  auto proc = PqlDeclaration("procedure", EntityType::PROCEDURE);
+  auto s = PqlDeclaration("stmt", EntityType::STMT);
 
   SECTION("StmtRef") {
     auto wild_stmt_ref = std::make_shared<PqlReference>(StmtRef());
     auto value_stmt_ref = std::make_shared<PqlReference>(StmtRef(42));
     auto decl_stmt_ref = std::make_shared<PqlReference>(
-        StmtRef(std::make_shared<PqlDeclaration>(a)));
+        StmtRef(a));
 
-    REQUIRE(wild_stmt_ref->getRefType() == WILD);
-    REQUIRE(value_stmt_ref->getRefType() == VALUE);
-    REQUIRE(decl_stmt_ref->getRefType() == DECLARATION);
+    REQUIRE(wild_stmt_ref->getRefType() == PqlRefType::WILD);
+    REQUIRE(value_stmt_ref->getRefType() == PqlRefType::VALUE);
+    REQUIRE(decl_stmt_ref->getRefType() == PqlRefType::DECLARATION);
 
     REQUIRE(value_stmt_ref->getValue() == "42");
     REQUIRE(decl_stmt_ref->getDeclarationType() == a.getEntityType());
-    REQUIRE(*(decl_stmt_ref->getDeclaration()) == a);
+    REQUIRE(decl_stmt_ref->getDeclaration() == a);
 
     // Copying works
     auto ref = *value_stmt_ref;
@@ -41,11 +35,11 @@ TEST_CASE("Tests on PqlReferences") {
     auto copied_ref_2 = ref_2;
 
     // Invalid input declaration types
-    REQUIRE_THROWS_AS(StmtRef(std::make_shared<PqlDeclaration>(c)),
+    REQUIRE_THROWS_AS(StmtRef(c),
                       InvalidSemanticsException);
-    REQUIRE_THROWS_AS(StmtRef(std::make_shared<PqlDeclaration>(v)),
+    REQUIRE_THROWS_AS(StmtRef(v),
                       InvalidSemanticsException);
-    REQUIRE_THROWS_AS(StmtRef(std::make_shared<PqlDeclaration>(proc)),
+    REQUIRE_THROWS_AS(StmtRef(proc),
                       InvalidSemanticsException);
   }
 
@@ -53,15 +47,15 @@ TEST_CASE("Tests on PqlReferences") {
     auto wild_ent_ref = std::make_shared<PqlReference>(EntRef());
     auto value_ent_ref = std::make_shared<PqlReference>(EntRef("variable"));
     auto decl_ent_ref = std::make_shared<PqlReference>(
-        EntRef(std::make_shared<PqlDeclaration>(v)));
+        EntRef(v));
 
-    REQUIRE(wild_ent_ref->getRefType() == WILD);
-    REQUIRE(value_ent_ref->getRefType() == VALUE);
-    REQUIRE(decl_ent_ref->getRefType() == DECLARATION);
+    REQUIRE(wild_ent_ref->getRefType() == PqlRefType::WILD);
+    REQUIRE(value_ent_ref->getRefType() == PqlRefType::VALUE);
+    REQUIRE(decl_ent_ref->getRefType() == PqlRefType::DECLARATION);
 
     REQUIRE(value_ent_ref->getValue() == "variable");
     REQUIRE(decl_ent_ref->getDeclarationType() == v.getEntityType());
-    REQUIRE(*(decl_ent_ref->getDeclaration()) == v);
+    REQUIRE(decl_ent_ref->getDeclaration() == v);
 
     // Copying works
     auto ref = *value_ent_ref;
@@ -71,11 +65,11 @@ TEST_CASE("Tests on PqlReferences") {
     auto copied_ref_2 = ref_2;
 
     // Invalid input declaration types
-    REQUIRE_THROWS_AS(EntRef(std::make_shared<PqlDeclaration>(a)),
+    REQUIRE_THROWS_AS(EntRef(a),
                       InvalidSemanticsException);
-    REQUIRE_THROWS_AS(EntRef(std::make_shared<PqlDeclaration>(s)),
+    REQUIRE_THROWS_AS(EntRef(s),
                       InvalidSemanticsException);
-    REQUIRE_THROWS_AS(EntRef(std::make_shared<PqlDeclaration>(print)),
+    REQUIRE_THROWS_AS(EntRef(print),
                       InvalidSemanticsException);
   }
 }

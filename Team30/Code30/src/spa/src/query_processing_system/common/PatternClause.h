@@ -5,13 +5,13 @@
 
 class PatternClause : public Clause {
  private:
-  std::shared_ptr<PqlDeclaration> assign_decl;
-  EntRef lhs_ent_ref;
-  MatchType rhs_expr_match_type;
-  std::string rhs_expr;
+  const PqlDeclaration assign_decl;
+  const EntRef lhs_ent_ref;
+  const MatchType rhs_expr_match_type;
+  const std::string rhs_expr;
 
  public:
-  PatternClause(std::shared_ptr<PqlDeclaration> assign_decl, EntRef lhs_ent_ref,
+  PatternClause(const PqlDeclaration& assign_decl, const EntRef& lhs_ent_ref,
                 MatchType rhs_expr_match_type, std::string rhs_expr);
   std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) override;
 };

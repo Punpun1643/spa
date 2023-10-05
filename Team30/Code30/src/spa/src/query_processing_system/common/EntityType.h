@@ -1,6 +1,6 @@
 #pragma once
 
-enum EntityType {
+enum class EntityType {
   STMT,
   READ,
   PRINT,

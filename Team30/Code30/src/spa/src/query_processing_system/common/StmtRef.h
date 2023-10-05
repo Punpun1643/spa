@@ -8,13 +8,14 @@
 
 class StmtRef : public PqlReference {
  private:
-  std::vector<EntityType> const VALID_STMT_TYPES = {EntityType::STMT,  EntityType::READ, EntityType::PRINT, EntityType::CALL,
-                                                    EntityType::WHILE, EntityType::IF,   EntityType::ASSIGN};
+  std::vector<EntityType> const VALID_STMT_TYPES = {
+      EntityType::STMT,  EntityType::READ, EntityType::PRINT, EntityType::CALL,
+      EntityType::WHILE, EntityType::IF,   EntityType::ASSIGN};
 
  public:
   StmtRef();
 
   explicit StmtRef(int stmt_num);
 
-  explicit StmtRef(std::shared_ptr<PqlDeclaration const> declaration);
+  explicit StmtRef(const PqlDeclaration& declaration);
 };
