@@ -13,10 +13,10 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "PKBQPSInterface.h"
 #include "PKBSPInterface.h"
+#include "WildCardMatcher.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
-#include "WildCardMatcher.h"
 
 class PKB : public PKBQPSInterface, public PkbApi {
  private:
@@ -27,12 +27,14 @@ class PKB : public PKBQPSInterface, public PkbApi {
 
   std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
 
-  std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
-                                                  EntityType ent_type1,
-                                                  EntityType ent_type2);
-  std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
-                                                  std::string str,
-                                                  EntityType ent_type2);
+  // Helper functions
+  std::unordered_set<std::string> getAllRelated(
+      RelationType rel_type,
+      std::shared_ptr<std::unordered_set<std::string>> set, std::string value);
+
+  std::unordered_set<std::string> getAllRelated(
+      RelationType rel_type, std::string value,
+      std::shared_ptr<std::unordered_set<std::string>> set);
 
  public:
   PKB();
