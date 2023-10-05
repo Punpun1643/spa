@@ -56,25 +56,6 @@ void PkbStub::insertRelation(RelationType rel_type, std::string s1_line_num,
   insertRelationCommon(rel_type);
 }
 
-// Relation (integer, EntityType)
-void PkbStub::insertRelation(RelationType rel_type, std::string s_line_num,
-                             EntityType ent_type, std::string enity) {
-  insertRelationCommon(rel_type);
-}
-
-// Relation (EntityType, integer)
-void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type,
-                             std::string entity, std::string s_line_num) {
-  insertRelationCommon(rel_type);
-}
-
-// Relation (EntityType, EntityType)
-void PkbStub::insertRelation(RelationType rel_type, EntityType ent_type1,
-                             std::string entity1, EntityType ent_type2,
-                             std::string entity2) {
-  insertRelationCommon(rel_type);
-}
-
 // Pattern clause
 void PkbStub::insertPattern(std::string statement_number, std::string lhs,
                             std::unordered_set<std::string> rhs) {
@@ -98,44 +79,45 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
   return output;
 }
 
-bool PkbStub::isRelationTrue(std::string value_1, std::string value_2,
+bool PkbStub::isRelationTrueValueValue(std::string value_1, std::string value_2,
                              RelationType rel_type) {
   return true;
 }
-bool PkbStub::isRelationTrueGivenFirstValue(std::string value,
+bool PkbStub::isRelationTrueValueWild(std::string value,
                                             RelationType rel_type) {
   return false;
 }
-bool PkbStub::isRelationTrueGivenSecondValue(std::string value,
+bool PkbStub::isRelationTrueWildValue(std::string value,
                                              RelationType rel_type) {
   return true;
 }
-bool PkbStub::isRelationTrueForAny(RelationType relation_type) { return false; }
+bool PkbStub::isRelationTrueWildWild(RelationType relation_type) { return false; }
 
 std::unique_ptr<std::vector<std::string>>
-PkbStub::getRelationValuesGivenFirstType(EntityType entity_type,
+PkbStub::getRelationSynonymWild(EntityType entity_type,
                                          RelationType rel_type) {
   return std::make_unique<std::vector<std::string>>();  // empty
 }
 std::unique_ptr<std::vector<std::string>>
-PkbStub::getRelationValuesGivenSecondType(EntityType entity_type,
+PkbStub::getRelationWildSynonym(EntityType entity_type,
                                           RelationType rel_type) {
   std::vector<std::string> vec = {"1", "3", "5", "7", "9"};
   return std::make_unique<std::vector<std::string>>(vec);
 }
 
-std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
+std::unique_ptr<std::vector<std::string>> PkbStub::getRelationSynonymValue(
     EntityType entity_type, std::string value, RelationType rel_type) {
   std::vector<std::string> vec = {"2", "4", "6", "8", "10"};
   return std::make_unique<std::vector<std::string>>(vec);
 }
-std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
+std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValueSynonym(
     std::string value, EntityType entity_type, RelationType rel_type) {
   return std::make_unique<std::vector<std::string>>();  // empty
 }
 
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+PkbStub::getRelationSynonymSynonym(EntityType entity_type_1,
+                                   EntityType entity_type_2,
                            RelationType rel_type) {
   if (entity_type_1 == EntityType::STMT && entity_type_2 == EntityType::STMT) {
     auto result =
@@ -193,4 +175,14 @@ PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
     output->push_back(std::make_pair("2", "varY"));
   }
   return output;
+};
+
+std::unordered_set<std::string> PkbStub::getProcedureModifies(
+    std::string procName) {
+  return std::unordered_set<std::string>();
+}
+
+std::unordered_set<std::string> PkbStub::getProcedureUses(
+    std::string procName) {
+  return std::unordered_set<std::string>();
 };

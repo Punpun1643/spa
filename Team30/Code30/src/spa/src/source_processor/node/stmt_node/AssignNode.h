@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_set>
 
-#include "../util_node/TreeNode.h"
+#include "../../../shared/parser/node/TreeNode.h"
 #include "StmtNode.h"
 #include "StmtType.h"
 
