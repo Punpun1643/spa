@@ -37,26 +37,30 @@ void SuchThatClause::checkArgReferenceType(
   }
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildWild(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildWild(
+    PKBQPSInterface& pkb) {
   bool is_valid_rel = pkb.isRelationTrueForAny(relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueWild(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueWild(
+    PKBQPSInterface& pkb) {
   std::string first_value = arg1->getValue();
   bool is_valid_rel =
       pkb.isRelationTrueGivenFirstValue(first_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildValue(
+    PKBQPSInterface& pkb) {
   std::string second_value = arg2->getValue();
   bool is_valid_rel =
       pkb.isRelationTrueGivenSecondValue(second_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueValue(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueValue(
+    PKBQPSInterface& pkb) {
   std::string first_value = arg1->getValue();
   std::string second_value = arg2->getValue();
   bool is_valid_rel =
@@ -65,7 +69,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueValue(PkbApi& pkb) {
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = arg1->getDeclaration();
   auto possible_values =
@@ -74,7 +78,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = arg2->getDeclaration();
   auto possible_values =
@@ -83,7 +87,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = arg1->getDeclaration();
   std::string second_value = arg2->getValue();
@@ -93,7 +97,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationValue(
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = arg2->getDeclaration();
   std::string first_value = arg1->getValue();
@@ -103,7 +107,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueDeclaration(
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   EntityType entity_type_1 = arg1->getDeclarationType();
   EntityType entity_type_2 = arg2->getDeclarationType();
   PqlDeclaration declaration_1 = arg1->getDeclaration();
@@ -115,7 +119,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationDeclaration(
                                         *possible_values);
 }
 
-std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> SuchThatClause::evaluate(PKBQPSInterface& pkb) {
   // This method uses the template design pattern
   PqlRefType ref_type_1 = arg1->getRefType();
   PqlRefType ref_type_2 = arg2->getRefType();

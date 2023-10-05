@@ -5,28 +5,16 @@
 #include <string>
 #include <vector>
 
-#include "../query_processing_system/common/EntityType.h"
-#include "PkbApi.h"
-#include "program_knowledge_base/EntityDatabase.h"
-#include "program_knowledge_base/RelDatabase.h"
-
-PKB::PKB() : PkbApi() {
+PKB::PKB() : PKBQPSInterface(), PkbApi() {
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
 
   // TODO: Find a cleaner way to insert to multiple tables simultaneously
   relatedTables = {
-      {RelationType::FOLLOWS,
-       {RelationType::FOLLOWS, RelationType::FOLLOWS_STAR}},
-
-      {RelationType::PARENT, {RelationType::PARENT, RelationType::PARENT_STAR}},
-
-      {RelationType::USES_S, {RelationType::USES_S}},
-      {RelationType::USES_P, {RelationType::USES_P}},
-
-      {RelationType::MODIFIES_S, {RelationType::MODIFIES_S}},
-      {RelationType::MODIFIES_P, {RelationType::MODIFIES_P}}};
+      {RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
+      {RelationType::PARENT, {RelationType::PARENT_STAR}},
+  };
 };
 
 // ---------- INSERTIONS ----------
@@ -36,22 +24,12 @@ void PKB::insertEntity(EntityType type, std::string entity) {
 
 void PKB::insertRelation(RelationType type, std::string input1,
                          std::string input2) {
-  // Inserts into more than 1 table simultaneously
-  // Add all related tables to relatedTables
-
+  relData->getTable(type)->insert(input1, input2);
   for (RelationType rt : relatedTables[type]) {
     std::shared_ptr<BaseTable> table = relData->getTable(rt);
     table->insert(input1, input2);
   }
 };
-
-void PKB::insertRelation(RelationType rel_type, std::string s_line_num,
-                         EntityType ent_type, std::string enity){};
-void PKB::insertRelation(RelationType rel_type, EntityType ent_type,
-                         std::string entity, std::string s_line_num){};
-void PKB::insertRelation(RelationType rel_type, EntityType ent_type1,
-                         std::string entity1, EntityType ent_type2,
-                         std::string entity2){};
 
 void PKB::insertPattern(std::string statement_number, std::string lhs,
                         std::unordered_set<std::string> rhs) {
