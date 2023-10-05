@@ -4,17 +4,17 @@
 #include <string>
 #include <vector>
 
-#include "../../program_knowledge_base/PkbApi.h"
+#include "../../program_knowledge_base/PKBQPSInterface.h"
 #include "../common/SelectClause.h"
 #include "../common/SuchThatClause.h"
 #include "query_processing_system/common/PatternClause.h"
 
 class QueryEvaluator {
  private:
-  PkbApi& pkb;
+  PKBQPSInterface& pkb;
 
  public:
-  explicit QueryEvaluator(PkbApi& pkb);
+  explicit QueryEvaluator(PKBQPSInterface& pkb);
 
   std::vector<std::string> evaluateQuery(
       std::unique_ptr<SelectClause> select_clause,

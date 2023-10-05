@@ -11,5 +11,5 @@ class SelectClause : public Clause {
  public:
   explicit SelectClause(PqlDeclaration declaration);
   PqlDeclaration getDeclaration() const;
-  std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) override;
+  std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface& pkb) override;
 };

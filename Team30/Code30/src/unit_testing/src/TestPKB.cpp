@@ -28,103 +28,103 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   pkb.insertRelation(RelationType::PARENT, "6", "7");
 
   // added follows relation
-  REQUIRE(pkb.isRelationTrue("2", "3", RelationType::FOLLOWS));
+  REQUIRE(pkb.isRelationTrueValueValue("2", "3", RelationType::FOLLOWS));
   // unadded follows relation
-  REQUIRE(pkb.isRelationTrue("5", "8", RelationType::FOLLOWS) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("5", "8", RelationType::FOLLOWS) == false);
   // follows not transitive
-  REQUIRE(pkb.isRelationTrue("1", "4", RelationType::FOLLOWS) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("1", "4", RelationType::FOLLOWS) == false);
 
   // added follows and hence follows_star relation
-  REQUIRE(pkb.isRelationTrue("2", "3", RelationType::FOLLOWS_STAR));
+  REQUIRE(pkb.isRelationTrueValueValue("2", "3", RelationType::FOLLOWS_STAR));
   // unadded follows_star relation
-  REQUIRE(pkb.isRelationTrue("1", "6", RelationType::FOLLOWS_STAR) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("1", "6", RelationType::FOLLOWS_STAR) == false);
   // follows_star should be transitive
-  REQUIRE(pkb.isRelationTrue("1", "3", RelationType::FOLLOWS_STAR));
+  REQUIRE(pkb.isRelationTrueValueValue("1", "3", RelationType::FOLLOWS_STAR));
 
   // added parent relation
-  REQUIRE(pkb.isRelationTrue("6", "7", RelationType::PARENT));
+  REQUIRE(pkb.isRelationTrueValueValue("6", "7", RelationType::PARENT));
   // unadded parent relation
-  REQUIRE(pkb.isRelationTrue("3", "5", RelationType::PARENT) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("3", "5", RelationType::PARENT) == false);
   // parent not transitive
-  REQUIRE(pkb.isRelationTrue("4", "7", RelationType::PARENT) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("4", "7", RelationType::PARENT) == false);
 
   // added parent and hence parent_star relation
-  REQUIRE(pkb.isRelationTrue("4", "5", RelationType::PARENT_STAR));
+  REQUIRE(pkb.isRelationTrueValueValue("4", "5", RelationType::PARENT_STAR));
   // unadded follows_star relation
-  REQUIRE(pkb.isRelationTrue("1", "6", RelationType::PARENT_STAR) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("1", "6", RelationType::PARENT_STAR) == false);
   // parent_star should be transitive
-  REQUIRE(pkb.isRelationTrue("4", "7", RelationType::PARENT_STAR));
+  REQUIRE(pkb.isRelationTrueValueValue("4", "7", RelationType::PARENT_STAR));
 
   // Returns if Relation(int, _)
   // no statements follow 7
-  REQUIRE(pkb.isRelationTrueGivenFirstValue("7", RelationType::FOLLOWS) ==
+  REQUIRE(pkb.isRelationTrueValueWild("7", RelationType::FOLLOWS) ==
           false);
   // statement 6 follows statement 5
-  REQUIRE(pkb.isRelationTrueGivenFirstValue("5", RelationType::FOLLOWS));
+  REQUIRE(pkb.isRelationTrueValueWild("5", RelationType::FOLLOWS));
   // statement 6 is the Parent* of 7
-  REQUIRE(pkb.isRelationTrueGivenFirstValue("6", RelationType::PARENT_STAR));
+  REQUIRE(pkb.isRelationTrueValueWild("6", RelationType::PARENT_STAR));
   // statement 1 is not the parent of any statement
-  REQUIRE(pkb.isRelationTrueGivenFirstValue("1", RelationType::PARENT) ==
+  REQUIRE(pkb.isRelationTrueValueWild("1", RelationType::PARENT) ==
           false);
 
   // Returns if Relation(_, int)
   // statement 4 follows* statements 1, 2, 3
-  REQUIRE(pkb.isRelationTrueGivenSecondValue("4", RelationType::FOLLOWS_STAR));
+  REQUIRE(pkb.isRelationTrueWildValue("4", RelationType::FOLLOWS_STAR));
   // statement 1 does not follow any statement
-  REQUIRE(pkb.isRelationTrueGivenSecondValue("1", RelationType::FOLLOWS) ==
+  REQUIRE(pkb.isRelationTrueWildValue("1", RelationType::FOLLOWS) ==
           false);
   // statement 7 has parents
-  REQUIRE(pkb.isRelationTrueGivenSecondValue("7", RelationType::PARENT_STAR));
+  REQUIRE(pkb.isRelationTrueWildValue("7", RelationType::PARENT_STAR));
 
   // Returns if Relation(_, _)
-  REQUIRE(pkb.isRelationTrueForAny(RelationType::FOLLOWS));
-  REQUIRE(pkb.isRelationTrueForAny(RelationType::FOLLOWS_STAR));
-  REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT));
-  REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT_STAR));
+  REQUIRE(pkb.isRelationTrueWildWild(RelationType::FOLLOWS));
+  REQUIRE(pkb.isRelationTrueWildWild(RelationType::FOLLOWS_STAR));
+  REQUIRE(pkb.isRelationTrueWildWild(RelationType::PARENT));
+  REQUIRE(pkb.isRelationTrueWildWild(RelationType::PARENT_STAR));
 
   std::vector<std::string> empty_vector;
 
   // Returns all s such that Relation(s, _)
   // there are no assignment statements that are followed by any other
   // statements
-  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+  REQUIRE(*pkb.getRelationSynonymWild(
               EntityType::ASSIGN, RelationType::FOLLOWS) == empty_vector);
   // statement 4 is the only if statement that is a parent
   std::vector<std::string> tmp = {"4"};
-  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+  REQUIRE(*pkb.getRelationSynonymWild(
               EntityType::IF, RelationType::PARENT_STAR) == tmp);
   // there are no while statements
-  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+  REQUIRE(*pkb.getRelationSynonymWild(
               EntityType::WHILE, RelationType::PARENT) == empty_vector);
 
   // Returns all s such that Relation(s, int)
   // statement 3 follows 1 and 2
   tmp = {"1", "2"};
-  REQUIRE(*pkb.getRelationValues(EntityType::STMT, "3",
+  REQUIRE(*pkb.getRelationSynonymValue(EntityType::STMT, "3",
                                  RelationType::FOLLOWS_STAR) == tmp);
   // statement 4 is the only if statement that is a parent of 7
   tmp = {"4"};
-  REQUIRE(*pkb.getRelationValues(EntityType::IF, "7",
+  REQUIRE(*pkb.getRelationSynonymValue(EntityType::IF, "7",
                                  RelationType::PARENT_STAR) == tmp);
   // statement 2 is the only CALL statement that is followed by 3
   tmp = {"2"};
-  REQUIRE(*pkb.getRelationValues(EntityType::CALL, "3",
+  REQUIRE(*pkb.getRelationSynonymValue(EntityType::CALL, "3",
                                  RelationType::FOLLOWS) == tmp);
   // no call statements followed by 4
-  REQUIRE(*pkb.getRelationValues(EntityType::CALL, "4",
+  REQUIRE(*pkb.getRelationSynonymValue(EntityType::CALL, "4",
                                  RelationType::FOLLOWS) == empty_vector);
 
   // Returns all s such that Relation(int, s)
   // 3 and 4 follows* 2
   tmp = {"3", "4"};
-  REQUIRE(*pkb.getRelationValues("2", EntityType::STMT,
+  REQUIRE(*pkb.getRelationValueSynonym("2", EntityType::STMT,
                                  RelationType::FOLLOWS_STAR) == tmp);
   // 4 is a parent of 5, 6, 7
   tmp = {"5", "6", "7"};
   //  REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
   //                                 RelationType::PARENT_STAR) == tmp);
   //// 3 is not a parent
-  REQUIRE(*pkb.getRelationValues("3", EntityType::STMT, RelationType::PARENT) ==
+  REQUIRE(*pkb.getRelationValueSynonym("3", EntityType::STMT, RelationType::PARENT) ==
           empty_vector);
 
   // Returns all s1, s2 such that Relation(s1, s2)
@@ -137,8 +137,8 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
 
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
   PKB pkb = PKB();
-  REQUIRE(pkb.isRelationTrueForAny(RelationType::FOLLOWS) == false);
-  REQUIRE(pkb.isRelationTrueForAny(RelationType::PARENT_STAR) == false);
+  REQUIRE(pkb.isRelationTrueWildWild(RelationType::FOLLOWS) == false);
+  REQUIRE(pkb.isRelationTrueWildWild(RelationType::PARENT_STAR) == false);
 }
 
 // UsesS only holds Uses relations for Statements
@@ -167,24 +167,24 @@ TEST_CASE("Uses and Modifies") {
   pkb.insertRelation(RelationType::MODIFIES_S, "7", "y");
 
   // added USES relation for statement
-  REQUIRE(pkb.isRelationTrue("3", "x", RelationType::USES_S));
+  REQUIRE(pkb.isRelationTrueValueValue("3", "x", RelationType::USES_S));
   // added USES relation for procedure
-  REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_P));
+  REQUIRE(pkb.isRelationTrueValueValue("sub", "x", RelationType::USES_P));
 
   // USES relation for statement should not be in procedure table
-  REQUIRE(pkb.isRelationTrue("4", "y", RelationType::USES_P) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("4", "y", RelationType::USES_P) == false);
   // USES relation for procedure should not be in statement table
-  REQUIRE(pkb.isRelationTrue("sub", "x", RelationType::USES_S) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("sub", "x", RelationType::USES_S) == false);
 
   // added MODIFIES relation for statement
-  REQUIRE(pkb.isRelationTrue("5", "x", RelationType::MODIFIES_S));
+  REQUIRE(pkb.isRelationTrueValueValue("5", "x", RelationType::MODIFIES_S));
   // added MODIFIES relation for procedure
-  REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_P));
+  REQUIRE(pkb.isRelationTrueValueValue("main", "x", RelationType::MODIFIES_P));
 
   // MODIFIES relation for statement should not be in procedure table
-  REQUIRE(pkb.isRelationTrue("7", "y", RelationType::MODIFIES_P) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("7", "y", RelationType::MODIFIES_P) == false);
   // MODIFIES relation for procedure should not be in statement table
-  REQUIRE(pkb.isRelationTrue("main", "x", RelationType::MODIFIES_S) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("main", "x", RelationType::MODIFIES_S) == false);
 
   std::vector<std::string> empty_vector;
 
@@ -192,14 +192,14 @@ TEST_CASE("Uses and Modifies") {
 
   std::vector<std::string> tmp = {"main"};
   // Select p such that Modifies(p, _)
-  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+  REQUIRE(*pkb.getRelationSynonymWild(
               EntityType::PROCEDURE, RelationType::MODIFIES_P) == tmp);
   tmp = {"5", "7"};
   // Select s such that Modifies(s, _)
-  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+  REQUIRE(*pkb.getRelationSynonymWild(
               EntityType::STMT, RelationType::MODIFIES_S) == tmp);
   // Query from wrong table
-  REQUIRE(*pkb.getRelationValuesGivenFirstType(
+  REQUIRE(*pkb.getRelationSynonymWild(
               EntityType::STMT, RelationType::USES_P) == empty_vector);
 
   // Select Uses(pn, v)
@@ -208,12 +208,13 @@ TEST_CASE("Uses and Modifies") {
   std::vector<std::pair<std::string, std::string>> tmp1 = {
       std::make_pair("3", "x")};
 
-  REQUIRE(*pkb.getRelationValues(EntityType::PRINT, EntityType::VARIABLE,
+  REQUIRE(*pkb.getRelationSynonymSynonym(EntityType::PRINT,
+                                         EntityType::VARIABLE,
                                  RelationType::USES_S) == tmp1);
 
   // Modifies(c, v)
   // No procedure call that modifies a variable
-  REQUIRE(*pkb.getRelationValues(EntityType::CALL, EntityType::VARIABLE,
+  REQUIRE(*pkb.getRelationSynonymSynonym(EntityType::CALL, EntityType::VARIABLE,
                                  RelationType::MODIFIES_S) == emptyPair);
 }
 
@@ -299,9 +300,9 @@ TEST_CASE("PKB test1-source Parent*") {
   pkb.insertRelation(RelationType::PARENT, "24", "26");
 
   for (int i = 1; i < 27; i++) {
-    REQUIRE(!pkb.isRelationTrue("22", std::to_string(i),
+    REQUIRE(!pkb.isRelationTrueValueValue("22", std::to_string(i),
                                 RelationType::PARENT_STAR));
-    REQUIRE(!pkb.isRelationTrue("22", std::to_string(i), RelationType::PARENT));
+    REQUIRE(!pkb.isRelationTrueValueValue("22", std::to_string(i), RelationType::PARENT));
   }
 }
 

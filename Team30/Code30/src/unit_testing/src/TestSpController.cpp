@@ -1,7 +1,7 @@
 #include <memory>
 #include <optional>
 
-#include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "../../spa/src/query_processing_system/common/EntityType.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
