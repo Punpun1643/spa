@@ -10,7 +10,7 @@ StmtRef::StmtRef(int stmt_num) : PqlReference(std::to_string(stmt_num)) {
   assert(stmt_num >= 1);  // should have been caught at syntax checker stage
 }
 
-StmtRef::StmtRef(const PqlDeclaration& declaration)
+StmtRef::StmtRef(PqlDeclaration const& declaration)
     : PqlReference(declaration) {
   EntityType declaration_type = declaration.getEntityType();
   if (std::find(VALID_STMT_TYPES.begin(), VALID_STMT_TYPES.end(),
