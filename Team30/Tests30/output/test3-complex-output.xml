@@ -1,5 +1,6 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
+<<<<<<< HEAD
 	<info>
 		<name>23s1-cp-spa-team-30</name>
 		<parsing_time_taken>0.393000</parsing_time_taken>
@@ -62,4 +63,60 @@
 			<passed/>
 		</query>
 	</queries>
+=======
+<info>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.354000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Parentstar="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find while loops with assignment to variable count">1</id><querystr><![CDATA[assign a; while w; Select w such that Parent* (w, a) pattern a ("count", _)]]></querystr>
+<stuans>5</stuans>
+<correct>5</correct>
+<time_taken>1.449000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Uses="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find assignments that use and modify the same variable">2</id><querystr><![CDATA[assign a; variable v; Select a such that Uses (a, v) pattern a (v, _)]]></querystr>
+<stuans>12,13,6,7,8</stuans>
+<correct>6,7,8,12,13</correct>
+<time_taken>1.359000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Uses="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find assignments that use and modify the variable x">3</id><querystr><![CDATA[assign a; Select a pattern a ("x", _) such that Uses (a, "x")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.308000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Uses="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find assignments that use and modify the variable x">4</id><querystr><![CDATA[assign a; Select a such that Uses (a, "x") pattern a ("x", _)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.289000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Parentstar="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find assignments that are nested directly">5</id><querystr><![CDATA[assign a; while w; Select a such that Parent* (w, a) pattern a ("count", _)]]></querystr>
+<stuans>6</stuans>
+<correct>6</correct>
+<time_taken>1.186000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Parentstar="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find assignments that are nested">6</id><querystr><![CDATA[assign a; while w; Select a pattern a ("count", _) such that Parent* (w, a)]]></querystr>
+<stuans>6</stuans>
+<correct>6</correct>
+<time_taken>1.116000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Parentstar="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Find all assignments nested in if loops that use and change cenX">7</id><querystr><![CDATA[if i; assign a; Select i such that Parent* (i, a) pattern a ("cenX", _"cenX"_)]]></querystr>
+<stuans>10</stuans>
+<correct>10</correct>
+<time_taken>1.181000</time_taken>
+<passed/>
+</query>
+</queries>
+>>>>>>> 892bb9e3d4bc5b7d50f64d06f7d342780980ec6f
 </test_results>
