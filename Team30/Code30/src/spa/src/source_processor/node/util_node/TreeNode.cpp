@@ -121,15 +121,12 @@ bool TreeNode::IsSubTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
     return true;
   }
 
-  // get in-order traversal
   std::vector<std::string> baseTreeInOrderTraversal = CreateInOrderTraversal(baseTreeRoot);
   std::vector<std::string> subTreeInOrderTraversal = CreateInOrderTraversal(subTreeRoot);
 
-  // get pre-order traversal
   std::vector<std::string> baseTreePreOrderTraversal = CreatePreOrderTraversal(baseTreeRoot);
   std::vector<std::string> subTreePreOrderTraversal = CreatePreOrderTraversal(subTreeRoot);
 
   return IsSubString(baseTreeInOrderTraversal, subTreeInOrderTraversal) &&
          IsSubString(baseTreePreOrderTraversal, subTreePreOrderTraversal);
 }
-
