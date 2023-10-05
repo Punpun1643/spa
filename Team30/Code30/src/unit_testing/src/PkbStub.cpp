@@ -79,44 +79,45 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
   return output;
 }
 
-bool PkbStub::isRelationTrue(std::string value_1, std::string value_2,
+bool PkbStub::isRelationTrueValueValue(std::string value_1, std::string value_2,
                              RelationType rel_type) {
   return true;
 }
-bool PkbStub::isRelationTrueGivenFirstValue(std::string value,
+bool PkbStub::isRelationTrueValueWild(std::string value,
                                             RelationType rel_type) {
   return false;
 }
-bool PkbStub::isRelationTrueGivenSecondValue(std::string value,
+bool PkbStub::isRelationTrueWildValue(std::string value,
                                              RelationType rel_type) {
   return true;
 }
-bool PkbStub::isRelationTrueForAny(RelationType relation_type) { return false; }
+bool PkbStub::isRelationTrueWildWild(RelationType relation_type) { return false; }
 
 std::unique_ptr<std::vector<std::string>>
-PkbStub::getRelationValuesGivenFirstType(EntityType entity_type,
+PkbStub::getRelationSynonymWild(EntityType entity_type,
                                          RelationType rel_type) {
   return std::make_unique<std::vector<std::string>>();  // empty
 }
 std::unique_ptr<std::vector<std::string>>
-PkbStub::getRelationValuesGivenSecondType(EntityType entity_type,
+PkbStub::getRelationWildSynonym(EntityType entity_type,
                                           RelationType rel_type) {
   std::vector<std::string> vec = {"1", "3", "5", "7", "9"};
   return std::make_unique<std::vector<std::string>>(vec);
 }
 
-std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
+std::unique_ptr<std::vector<std::string>> PkbStub::getRelationSynonymValue(
     EntityType entity_type, std::string value, RelationType rel_type) {
   std::vector<std::string> vec = {"2", "4", "6", "8", "10"};
   return std::make_unique<std::vector<std::string>>(vec);
 }
-std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValues(
+std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValueSynonym(
     std::string value, EntityType entity_type, RelationType rel_type) {
   return std::make_unique<std::vector<std::string>>();  // empty
 }
 
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbStub::getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+PkbStub::getRelationSynonymSynonym(EntityType entity_type_1,
+                                   EntityType entity_type_2,
                            RelationType rel_type) {
   if (entity_type_1 == EntityType::STMT && entity_type_2 == EntityType::STMT) {
     auto result =

@@ -22,37 +22,37 @@ class PKBQPSInterface {
   // ---------- RELATIONS ----------
   // 0 Declarations
   // Relation(int, int)
-  virtual bool isRelationTrue(std::string value_1, std::string value_2,
+  virtual bool isRelationTrueValueValue(std::string value_1, std::string value_2,
                               RelationType rel_type) = 0;
   // Relation(int, _)
-  virtual bool isRelationTrueGivenFirstValue(std::string value,
+  virtual bool isRelationTrueValueWild(std::string value,
                                              RelationType rel_type) = 0;
   // Relation(_, int)
-  virtual bool isRelationTrueGivenSecondValue(std::string value,
+  virtual bool isRelationTrueWildValue(std::string value,
                                               RelationType rel_type) = 0;
   // Relation(_, _)
-  virtual bool isRelationTrueForAny(RelationType relation_type) = 0;
+  virtual bool isRelationTrueWildWild(RelationType relation_type) = 0;
 
   // 1 Declarations
   // Relation(syn, _)
   virtual std::unique_ptr<std::vector<std::string>>
-  getRelationValuesGivenFirstType(EntityType entity_type,
+  getRelationSynonymWild(EntityType entity_type,
                                   RelationType rel_type) = 0;
   // Relation(_, syn)
   virtual std::unique_ptr<std::vector<std::string>>
-  getRelationValuesGivenSecondType(EntityType entity_type,
+  getRelationWildSynonym(EntityType entity_type,
                                    RelationType rel_type) = 0;
   // Relation(syn, int)
-  virtual std::unique_ptr<std::vector<std::string>> getRelationValues(
+  virtual std::unique_ptr<std::vector<std::string>> getRelationSynonymValue(
       EntityType entity_type, std::string value, RelationType rel_type) = 0;
   // Relation(int, syn)
-  virtual std::unique_ptr<std::vector<std::string>> getRelationValues(
+  virtual std::unique_ptr<std::vector<std::string>> getRelationValueSynonym(
       std::string value, EntityType entity_type, RelationType rel_type) = 0;
 
   // 2 Declarations
   // Relation(syn1, syn2)
   virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationValues(EntityType entity_type_1, EntityType entity_type_2,
+  getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
                     RelationType rel_type) = 0;
 
   // ---------- PATTERNS ----------
