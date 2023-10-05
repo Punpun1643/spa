@@ -1,6 +1,7 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.500000</parsing_time_taken>
 <name>23s1-cp-spa-team-30</name><parsing_time_taken>0.467000</parsing_time_taken>
 </info>
 <queries>
@@ -57,7 +58,7 @@
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="negative, select statements which directly precede an if container">8</id><querystr><![CDATA[stmt s, if i; Select s such that Follows(s, i)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.205000</time_taken>
+<time_taken>1.506000</time_taken>
 <passed/>
 </query>
 </queries>
