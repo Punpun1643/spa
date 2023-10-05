@@ -20,4 +20,8 @@ class PkbApi {
                               std::string s2_line_num) = 0;
   virtual void insertPattern(std::string statement_number, std::string lhs,
                              std::unordered_set<std::string> rhs) = 0;
+  virtual std::unordered_set<std::string> getProcedureModifies(
+      std::string procName) = 0;
+  virtual std::unordered_set<std::string> getProcedureUses(
+      std::string procName) = 0;
 };

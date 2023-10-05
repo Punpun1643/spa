@@ -11,29 +11,41 @@
 
 #include "../query_processing_system/common/EntityType.h"
 #include "../source_processor/node/stmt_node/StmtNode.h"
+#include "PKBQPSInterface.h"
+#include "PKBSPInterface.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
-#include "PKBQPSInterface.h"
-#include "PKBSPInterface.h"
 
 class PKB : public PKBQPSInterface, public PkbApi {
+ private:
   std::unique_ptr<EntityDatabase> entData;
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;
   std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
 
+  std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
+                                                  EntityType ent_type1,
+                                                  EntityType ent_type2);
+  std::unordered_set<std::string> PKB::getRelated(RelationType rel_type,
+                                                  std::string str,
+                                                  EntityType ent_type2);
+
  public:
   PKB();
 
-  // ********** INSERTIONS **********
+  // ********** SP **********
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
+  std::unordered_set<std::string> getProcedureModifies(
+      std::string procName) override;
+  std::unordered_set<std::string> getProcedureUses(
+      std::string procName) override;
 
-  // ********** RETRIEVAL **********
+  // ********** QPS **********
   // ---------- ENTITIES ----------
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
