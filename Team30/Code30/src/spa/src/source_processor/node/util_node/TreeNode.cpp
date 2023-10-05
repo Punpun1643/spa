@@ -56,7 +56,7 @@ std::vector<std::string> TreeNode::CreatePreOrderTraversal(
 
   std::vector<std::string> rightSubTreePreOrderTraversal =
       CreatePreOrderTraversal(root->getRightSubTree());
-  
+
   preOrderTraversal.insert(
       preOrderTraversal.end(),
       std::make_move_iterator(rightSubTreePreOrderTraversal.begin()),
@@ -65,4 +65,71 @@ std::vector<std::string> TreeNode::CreatePreOrderTraversal(
   return preOrderTraversal;
 }
 
-//bool TreeNode::isSubTree()
+bool TreeNode::IsSubString(std::vector<std::string> const& baseTreeInOrderTraversal,
+                        std::vector<std::string> const& subTreeInOrderTraversal) {
+  int baseTreeInOrderTraversalSize = baseTreeInOrderTraversal.size();
+  int subTreeInOrderTraversalSize = subTreeInOrderTraversal.size();
+
+  if (subTreeInOrderTraversalSize > baseTreeInOrderTraversalSize) {
+    return false;
+  }
+
+  std::vector<int> longestProperPrefixSuffix(subTreeInOrderTraversalSize, 0);
+  int prevLength = 0;
+  int pointerToElement = 1;
+
+  while (pointerToElement < subTreeInOrderTraversalSize) {
+    if (subTreeInOrderTraversal[pointerToElement] == subTreeInOrderTraversal[prevLength]) {
+      longestProperPrefixSuffix[pointerToElement] = ++prevLength;
+      ++pointerToElement;
+    } else {
+      if (prevLength != 0) {
+        prevLength = longestProperPrefixSuffix[prevLength - 1];
+      } else {
+        longestProperPrefixSuffix[pointerToElement] = 0;
+        ++pointerToElement;
+      }
+    }
+  }
+
+  int baseTreePointer = 0;
+  int subTreePointer = 0;
+
+  while (subTreePointer < baseTreeInOrderTraversalSize) {
+      if (baseTreeInOrderTraversal[baseTreePointer] == subTreeInOrderTraversal[subTreePointer]) {
+        ++baseTreePointer;
+        ++subTreePointer;
+
+        if (baseTreePointer == 0) {
+          return true;
+        }
+      } else {
+        if (subTreePointer == 0) {
+          ++baseTreePointer;
+        } else {
+          subTreePointer = longestProperPrefixSuffix[subTreePointer - 1];
+        }
+      }
+  }
+
+  return false;
+}
+
+bool TreeNode::IsSubTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
+                         std::shared_ptr<TreeNode> const& subTreeRoot) {
+  if (subTreeRoot == nullptr) {
+    return true;
+  }
+
+  // get in-order traversal
+  std::vector<std::string> baseTreeInOrderTraversal = CreateInOrderTraversal(baseTreeRoot);
+  std::vector<std::string> subTreeInOrderTraversal = CreateInOrderTraversal(subTreeRoot);
+
+  // get pre-order traversal
+  std::vector<std::string> baseTreePreOrderTraversal = CreatePreOrderTraversal(baseTreeRoot);
+  std::vector<std::string> subTreePreOrderTraversal = CreatePreOrderTraversal(subTreeRoot);
+
+  return IsSubString(baseTreeInOrderTraversal, subTreeInOrderTraversal) &&
+         IsSubString(baseTreePreOrderTraversal, subTreePreOrderTraversal);
+}
+
