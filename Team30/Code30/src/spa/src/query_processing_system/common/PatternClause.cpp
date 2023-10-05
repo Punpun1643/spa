@@ -4,8 +4,9 @@
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-PatternClause::PatternClause(const PqlDeclaration& assign_decl,
-                             const EntRef& lhs_ent_ref, MatchType rhs_expr_match_type,
+PatternClause::PatternClause(PqlDeclaration const& assign_decl,
+                             EntRef const& lhs_ent_ref,
+                             MatchType rhs_expr_match_type,
                              std::string rhs_expr)
     : assign_decl(assign_decl),
       lhs_ent_ref(lhs_ent_ref),
