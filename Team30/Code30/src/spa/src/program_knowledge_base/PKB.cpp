@@ -6,7 +6,6 @@
 #include <vector>
 
 PKB::PKB() : PKBQPSInterface(), PkbApi() {
-  wildCardMatcher = WildCardMatcher();
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
