@@ -91,30 +91,12 @@ bool PKB::isRelationTrueValueValue(std::string value_1, std::string value_2,
 
 // example Follows(1, _)
 bool PKB::isRelationTrueValueWild(std::string value, RelationType rel_type) {
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(wildCardMatcher.translateRHSWild(rel_type));
-
-  // TODO: Optimise
-  for (std::string ent : *ents) {
-    if (relData->isRelated(rel_type, value, ent)) {
-      return true;
-    }
-  }
-  return false;
+  return relData->hasRelations(rel_type, value);
 }
 
 // example Follows(_, 1)
 bool PKB::isRelationTrueWildValue(std::string value, RelationType rel_type) {
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(wildCardMatcher.translateLHSWild(rel_type));
-
-  // TODO: Optimise
-  for (std::string ent : *ents) {
-    if (relData->isRelated(rel_type, ent, value)) {
-      return true;
-    }
-  }
-  return false;
+  return relData->hasInverseRelations(rel_type, value);
 }
 
 // example Follows(_, _)

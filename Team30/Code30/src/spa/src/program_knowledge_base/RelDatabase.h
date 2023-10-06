@@ -16,8 +16,12 @@ class RelDatabase {
   RelDatabase();
   ~RelDatabase() = default;
   void insert(RelationType type, std::string val1, std::string val2);
-  bool isRelated(RelationType type, std::string val1, std::string val2);
   bool isEmpty(RelationType type);
+
+  bool isRelated(RelationType type, std::string val1, std::string val2);
+  bool hasRelations(RelationType type, std::string val);
+  bool hasInverseRelations(RelationType type, std::string val);
+
   std::unordered_set<std::string> getAllRelated(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
   std::unordered_set<std::string> getAllInverseRelated(

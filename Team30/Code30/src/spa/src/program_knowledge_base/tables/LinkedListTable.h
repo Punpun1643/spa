@@ -14,8 +14,11 @@ class LinkedListTable : public BaseTable {
   ~LinkedListTable() = default;
 
   void insert(std::string i, std::string j) override;
-  bool isRelated(std::string i, std::string j) override;
   bool isEmpty() override;
+
+  bool isRelated(std::string i, std::string j) override;
+  bool hasRelations(std::string val) override;
+  bool hasInverseRelations(std::string val) override;
 
   std::unordered_set<std::string> getAllRelated(
       std::shared_ptr<std::unordered_set<std::string>> vals) override;

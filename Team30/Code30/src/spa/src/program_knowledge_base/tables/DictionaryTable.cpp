@@ -18,6 +18,8 @@ void DictionaryTable::insert(std::string i, std::string j) {
   };
 };
 
+bool DictionaryTable::isEmpty() { return relations.size() == 0; }
+
 bool DictionaryTable::isRelated(std::string i, std::string j) {
   auto it = relations.find(i);
   if (it == relations.end()) {
@@ -26,13 +28,19 @@ bool DictionaryTable::isRelated(std::string i, std::string j) {
   return relations[i].find(j) != relations[i].end();
 }
 
-bool DictionaryTable::isEmpty() { return relations.size() == 0; }
+bool DictionaryTable::hasRelations(std::string val) {
+  return relations.find(val) != relations.end();
+};
+
+bool DictionaryTable::hasInverseRelations(std::string val) {
+  return inverse_relations.find(val) != inverse_relations.end();
+}
 
 std::unordered_set<std::string> DictionaryTable::getAllRelated(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
-    if (relations.find(val) != relations.end()) {
+    if (hasRelations(val)) {
       output.insert(val);
     }
   }
@@ -43,7 +51,7 @@ std::unordered_set<std::string> DictionaryTable::getAllInverseRelated(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
-    if (inverse_relations.find(val) != inverse_relations.end()) {
+    if (hasInverseRelations(val)) {
       output.insert(val);
     }
   }
