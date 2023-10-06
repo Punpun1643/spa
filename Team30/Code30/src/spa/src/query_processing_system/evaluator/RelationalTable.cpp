@@ -29,13 +29,20 @@ RelationalTable::RelationalTable(PqlDeclaration const& d1,
   }
 }
 
-std::vector<std::string> RelationalTable::getTableCol(PqlDeclaration const& d) {
-  assert(column_mapping.count(d) == 1);
-  int col_idx = column_mapping[d];
-
-  std::vector<std::string> output = {};
-  for (auto& row : table) {
-    output.push_back(row[col_idx]);
+std::vector<std::vector<std::string>> RelationalTable::getTableCols(std::vector<PqlDeclaration> const& decls) {
+  assert(!decls.empty());
+  for (auto& d: decls) {
+    assert(column_mapping.count(d) == 1);
+  }
+  std::vector<std::vector<std::string>> output = {};
+  // Construct row by row
+  for (auto const& row: table) {
+    std::vector<std::string> output_row = {};
+    for (auto& d: decls) {
+      int col_idx = column_mapping[d];
+      output_row.push_back(row[col_idx]);
+    }
+    output.push_back(output_row);
   }
   return output;
 }
@@ -100,13 +107,13 @@ RelationalTable::getRenumberedColsAfterRemoval(
   std::vector<std::pair<PqlDeclaration, int>> table_mapping_vector;
   for (auto& [key, index] : column_mapping) {
     if (std::find(to_remove.begin(), to_remove.end(), key) == to_remove.end()) {
-      table_mapping_vector.push_back(std::make_pair(key, index));
+      table_mapping_vector.emplace_back(key, index);
     }
   }
   // sort table_mapping_vector by idx
   std::sort(
       table_mapping_vector.begin(), table_mapping_vector.end(),
-      [&](std::pair<PqlDeclaration, int> a, std::pair<PqlDeclaration, int> b) {
+      [&](const std::pair<PqlDeclaration, int>& a, const std::pair<PqlDeclaration, int>& b) {
         return a.second < b.second;
       });
 
@@ -119,13 +126,15 @@ RelationalTable::getRenumberedColsAfterRemoval(
   return table_mapping_vector;
 }
 
-void RelationalTable::join(RelationalTable& other_table) {
+void RelationalTable::join(RelationalTable& other_table, bool allow_cross_product) {
   /**
    * Joins this table with the given table by all shared columns
    */
   // get shared columns
   auto shared_cols = getSharedColumns(other_table);
-  assert(!shared_cols.empty());  // block doing a cross-product
+  if (!allow_cross_product) {
+    assert(!shared_cols.empty());  // block doing a cross-product
+  }
 
   std::vector<std::vector<std::string>> new_table;
   // For every pair of rows

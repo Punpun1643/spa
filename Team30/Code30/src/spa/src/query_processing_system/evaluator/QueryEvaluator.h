@@ -44,6 +44,6 @@ class QueryEvaluator {
    *
    * Only if that decl has not shown up at all yet do we need to retrieve all values of that type.
    *
-   * SelectClause therefore evaluated last.
+   * SelectClause therefore evaluated last. Rename selectClause to get all values later.
    */
 };

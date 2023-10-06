@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <unordered_set>
 
-void ArrayUtility::removeDuplicates(std::vector<std::string>& vec) {
+void ArrayUtility::removeDuplicates(std::vector<std::vector<std::string>>& vec) {
   /**
    * Removes duplicates from the given vector in-place.
    */
