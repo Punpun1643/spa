@@ -15,5 +15,7 @@ class RelDatabase {
  public:
   RelDatabase();
   ~RelDatabase() = default;
-  std::shared_ptr<BaseTable> getTable(RelationType type);
+  void insert(RelationType type, std::string val1, std::string val2);
+  bool isRelated(RelationType type, std::string val1, std::string val2);
+  bool isEmpty(RelationType type);
 };

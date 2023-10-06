@@ -11,7 +11,7 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "program_knowledge_base/PkbApi.h"
+#include "program_knowledge_base/PKBSPInterface.h"
 
 class IDesignExtractor {
  public:
