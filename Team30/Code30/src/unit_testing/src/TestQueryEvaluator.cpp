@@ -4,193 +4,176 @@
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
+#include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "PkbStub.h"
 #include "catch.hpp"
 
 class QeFactoryMethods {
  public:
-  static std::unique_ptr<SelectClause> getSelectClause(std::string name,
-                                                       EntityType type) {
-    return std::make_unique<SelectClause>(PqlDeclaration(name, type));
-  }
-
-  static std::unique_ptr<FollowsClause> getFollowsClause(StmtRef ref1,
+  static std::shared_ptr<FollowsClause> getFollowsClause(StmtRef ref1,
                                                          StmtRef ref2) {
-    return std::make_unique<FollowsClause>(std::make_unique<StmtRef>(ref1),
+    return std::make_shared<FollowsClause>(std::make_unique<StmtRef>(ref1),
                                            std::make_unique<StmtRef>(ref2));
   }
 };
 
-TEST_CASE("Evaluate query with only select clause") {
+TEST_CASE("Test Query Evaluator") {
   PkbStub pkb = PkbStub();
   QueryEvaluator qe = QueryEvaluator(pkb);
+  PqlDeclaration decl = PqlDeclaration("dummy", EntityType::STMT);
+  std::shared_ptr<Clause> follows_clause;
+  std::vector<std::vector<std::string>> result;
 
-  std::unique_ptr<SelectClause> clause =
-      QeFactoryMethods::getSelectClause("a", EntityType::CONSTANT);
-  std::vector<std::string> result = qe.evaluateQuery(std::move(clause), {});
-  REQUIRE(result == pkb.CONSTANTS);
+  SECTION("Evaluate boolean query") {
+    // bool query with no clauses is true
+    REQUIRE(qe.evaluateQuery({}));
 
-  clause = QeFactoryMethods::getSelectClause("bc", EntityType::PROCEDURE);
-  result = qe.evaluateQuery(std::move(clause), {});
-  REQUIRE(result == pkb.PROCEDURES);
+    // bool query with a result
+    follows_clause =
+        QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef(1));
+    REQUIRE(qe.evaluateQuery({follows_clause}));
 
-  clause = QeFactoryMethods::getSelectClause("ddd", EntityType::VARIABLE);
-  result = qe.evaluateQuery(std::move(clause), {});
-  REQUIRE(result == pkb.VARIABLES);
+    // bool query with no result
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
+    REQUIRE_FALSE(qe.evaluateQuery({follows_clause}));
+  }
 
-  clause = QeFactoryMethods::getSelectClause("Longname", EntityType::STMT);
-  result = qe.evaluateQuery(std::move(clause), {});
-  REQUIRE(result == pkb.STATEMENTS);
+  SECTION("Evaluate query with single result") {
+    decl = PqlDeclaration("a", EntityType::CONSTANT);
+    result = qe.evaluateQuery({decl}, {});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.CONSTANTS);
+
+    decl = PqlDeclaration("Longname", EntityType::STMT);
+    result = qe.evaluateQuery({decl}, {});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
+  }
+
+  SECTION("Select and Follows Clause with boolean result") {
+    decl = PqlDeclaration("a", EntityType::CONSTANT);
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef(1));
+    result =
+        qe.evaluateQuery({decl}, {follows_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.CONSTANTS);
+
+    decl = PqlDeclaration("a", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef(1));
+    result =
+        qe.evaluateQuery({decl}, {follows_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
+
+    decl = PqlDeclaration("a", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+
+    decl = PqlDeclaration("a", EntityType::VARIABLE);
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+  }
+
+  SECTION("Select and Follows Clause with 0 common declarations") {
+    decl = PqlDeclaration("a", EntityType::CONSTANT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("b", EntityType::STMT)),
+        StmtRef());
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+
+    decl = PqlDeclaration("a", EntityType::PROCEDURE);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(52),
+        StmtRef(PqlDeclaration("b", EntityType::PRINT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+
+    // Case where follows clause has declarations that are different from select
+    // clause
+    decl = PqlDeclaration("a", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("b", EntityType::STMT)),
+        StmtRef(PqlDeclaration("s", EntityType::STMT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
+  }
+
+  SECTION("Select and Follows Clause with 1 common declarations") {
+    // Some overlapping values between declarations
+    decl = PqlDeclaration("a", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("a", EntityType::STMT)),
+        StmtRef(PqlDeclaration("s", EntityType::STMT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
+
+    decl = PqlDeclaration("a", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("asd", EntityType::STMT)),
+        StmtRef(PqlDeclaration("a", EntityType::STMT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"1", "2"}));
+
+    decl = PqlDeclaration("abc", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(),
+        StmtRef(PqlDeclaration("abc", EntityType::STMT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"1", "3"}));
+
+    decl = PqlDeclaration("abc", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("abc", EntityType::STMT)),
+        StmtRef(1));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
+
+    // No overlapping values between declarations
+    decl = PqlDeclaration("abc", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(1),
+        StmtRef(PqlDeclaration("abc", EntityType::STMT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+
+    decl = PqlDeclaration("abc", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("abc", EntityType::STMT)),
+        StmtRef());
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+
+    decl = PqlDeclaration("a", EntityType::PRINT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("a", EntityType::PRINT)),
+        StmtRef(PqlDeclaration("s", EntityType::PRINT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(result.empty());
+  }
+
+  SECTION("Select and Follows Clause with 2 common declarations") {
+    decl = PqlDeclaration("abc", EntityType::STMT);
+    follows_clause = QeFactoryMethods::getFollowsClause(
+        StmtRef(PqlDeclaration("abc", EntityType::STMT)),
+        StmtRef(PqlDeclaration("abc", EntityType::STMT)));
+    result =
+        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
+  }
 }
 
-TEST_CASE("Select and Follows Clause with boolean result") {
-  PkbStub pkb = PkbStub();
-  QueryEvaluator qe = QueryEvaluator(pkb);
-  std::unique_ptr<SelectClause> select_clause;
-  std::unique_ptr<Clause> follows_clause;
-  std::vector<std::string> result;
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::CONSTANT);
-  follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef(1));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == pkb.CONSTANTS);
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef(1));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == pkb.STATEMENTS);
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::VARIABLE);
-  follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-}
-
-TEST_CASE("Select and Follows Clause with 0 common declarations") {
-  PkbStub pkb = PkbStub();
-  QueryEvaluator qe = QueryEvaluator(pkb);
-  std::unique_ptr<SelectClause> select_clause;
-  std::unique_ptr<FollowsClause> follows_clause;
-  std::vector<std::string> result;
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::CONSTANT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("b", EntityType::STMT)),
-      StmtRef());
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::PROCEDURE);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(52),
-      StmtRef(PqlDeclaration("b", EntityType::PRINT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-
-  // Case where follows clause has declarations that are different from select
-  // clause
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("b", EntityType::STMT)),
-      StmtRef(PqlDeclaration("s", EntityType::STMT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == pkb.STATEMENTS);
-}
-
-TEST_CASE("Select and Follows Clause with 1 common declarations") {
-  PkbStub pkb = PkbStub();
-  QueryEvaluator qe = QueryEvaluator(pkb);
-  std::unique_ptr<SelectClause> select_clause;
-  std::unique_ptr<Clause> follows_clause;
-  std::vector<std::string> result;
-
-  // Some overlapping values between declarations
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("a", EntityType::STMT)),
-      StmtRef(PqlDeclaration("s", EntityType::STMT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == std::vector<std::string>({"2"}));
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("asd", EntityType::STMT)),
-      StmtRef(PqlDeclaration("a", EntityType::STMT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == std::vector<std::string>({"1", "2"}));
-
-  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(),
-      StmtRef(PqlDeclaration("abc", EntityType::STMT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == std::vector<std::string>({"1", "3"}));
-
-  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("abc", EntityType::STMT)),
-      StmtRef(1));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == std::vector<std::string>({"2"}));
-
-  // No overlapping values between declarations
-  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(1),
-      StmtRef(PqlDeclaration("abc", EntityType::STMT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-
-  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("abc", EntityType::STMT)),
-      StmtRef());
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-
-  select_clause = QeFactoryMethods::getSelectClause("a", EntityType::PRINT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("a", EntityType::PRINT)),
-      StmtRef(PqlDeclaration("s", EntityType::PRINT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result.empty());
-}
-
-TEST_CASE("Select and Follows Clause with 2 common declarations") {
-  PkbStub pkb = PkbStub();
-  QueryEvaluator qe = QueryEvaluator(pkb);
-  std::unique_ptr<SelectClause> select_clause;
-  std::unique_ptr<Clause> follows_clause;
-  std::vector<std::string> result;
-
-  select_clause = QeFactoryMethods::getSelectClause("abc", EntityType::STMT);
-  follows_clause = QeFactoryMethods::getFollowsClause(
-      StmtRef(PqlDeclaration("abc", EntityType::STMT)),
-      StmtRef(PqlDeclaration("abc", EntityType::STMT)));
-  result =
-      qe.evaluateQuery(std::move(select_clause), {std::move(follows_clause)});
-  REQUIRE(result == std::vector<std::string>({"2"}));
-}
 
 TEST_CASE("Pattern clauses") {
   PkbStub pkb = PkbStub();
