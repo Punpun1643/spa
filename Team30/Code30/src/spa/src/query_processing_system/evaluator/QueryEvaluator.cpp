@@ -4,7 +4,7 @@
 #include <cassert>
 #include <iterator>
 
-QueryEvaluator::QueryEvaluator(PkbApi& pkb)
+QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb)
     : pkb(pkb) {}
 
 void QueryEvaluator::populateIntermediateResultsTable(IntermediateResultsTable& table, ClauseList clauses) {

@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "../../spa/src/program_knowledge_base/PkbApi.h"
+#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
@@ -14,7 +14,7 @@ class QeFactoryMethods {
   static std::shared_ptr<FollowsClause> getFollowsClause(StmtRef ref1,
                                                          StmtRef ref2) {
     return std::make_shared<FollowsClause>(std::make_unique<StmtRef>(ref1),
-                                           std::make_unique<StmtRef>(ref2));
+                                           std::make_unique<StmtRef>(ref2), false);
   }
 };
 
@@ -110,7 +110,7 @@ TEST_CASE("Pattern clauses") {
   auto qe = QueryEvaluator(pkb);
   // decl, partial
   auto a = PqlDeclaration("a", EntityType::ASSIGN);
-  auto v = PqlDeclaration("v", EntityType::VARIABLE); 
+  auto v = PqlDeclaration("v", EntityType::VARIABLE);
   SECTION("decl, wild") {
     auto pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(v), MatchType::WILD_MATCH, "");

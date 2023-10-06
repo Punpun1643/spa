@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../../program_knowledge_base/PkbApi.h"
+#include "../../program_knowledge_base/PKBQPSInterface.h"
 #include "../common/SelectClause.h"
 #include "../common/SuchThatClause.h"
 #include "IntermediateResultsTable.h"
@@ -13,13 +13,12 @@
 class QueryEvaluator {
   typedef std::vector<std::shared_ptr<Clause>> const& ClauseList;
  private:
-  PkbApi& pkb;
+  PKBQPSInterface& pkb;
 
   void populateIntermediateResultsTable(IntermediateResultsTable& table, ClauseList clauses);
 
  public:
-
-  explicit QueryEvaluator(PkbApi& pkb);
+  explicit QueryEvaluator(PKBQPSInterface& pkb);
 
   bool evaluateQuery(ClauseList clauses);
 

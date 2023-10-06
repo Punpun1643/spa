@@ -27,7 +27,7 @@ PatternClause::PatternClause(PqlDeclaration const& assign_decl,
   }
 }
 
-std::unique_ptr<ClauseResult> PatternClause::evaluate(PkbApi& pkb) {
+std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
   switch (lhs_ent_ref.getRefType()) {
     case (PqlRefType::DECLARATION): {
       auto values = pkb.getPatternMatchesWithDeclarationLhs(

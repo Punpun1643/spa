@@ -22,9 +22,10 @@ class UsesOrModifiesClause : public SuchThatClause {
                                                        PqlRefType::DECLARATION};
 
  protected:
-  std::unique_ptr<ClauseResult> evaluateWildDeclaration(PkbApi& pkb) override;
-  std::unique_ptr<ClauseResult> evaluateWildValue(PkbApi& pkb) override;
-  std::unique_ptr<ClauseResult> evaluateWildWild(PkbApi& pkb) override;
+  std::unique_ptr<ClauseResult> evaluateWildDeclaration(PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> evaluateWildValue(
+      PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> evaluateWildWild(PKBQPSInterface& pkb) override;
   UsesOrModifiesClause(std::unique_ptr<PqlReference const> arg1,
                        std::unique_ptr<EntRef const> arg2,
                        RelationType relation_type,
