@@ -31,8 +31,6 @@ class RelationalTable {
       std::vector<std::string> const& row_2,
       std::unordered_set<int> const& skipped_idx_in_row_2);
 
-  int getNumCols();
-
  public:
   RelationalTable(PqlDeclaration const& d,
                   std::vector<std::string> const& values);
@@ -40,13 +38,13 @@ class RelationalTable {
                   std::vector<std::string> const& d1_values,
                   std::vector<std::string> const& d2_values);
 
-  // std::vector<std::string> getTableCol(PqlDeclaration const& d);
-
   std::vector<std::vector<std::string>> getTableCols(std::vector<PqlDeclaration> const& decls);
 
   bool hasNoResults();
 
   std::vector<PqlDeclaration> getTableColNames();
+
+  int getNumCols();
 
   void join(RelationalTable& other_table, bool allow_cross_product = false);
 };
