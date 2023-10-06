@@ -65,7 +65,6 @@ std::vector<std::vector<std::string>> IntermediateResultsTable::getValuesGivenDe
   }
 
   // Retrieve the paired-return from that single table.
-  // Must account for selecting the same thing multiple times.
   RelationalTable relevant_table = tables[table_idx];
   return relevant_table.getTableCols(decls);
 }

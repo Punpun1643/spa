@@ -29,20 +29,4 @@ class QueryEvaluator {
   std::vector<std::string> evaluateQuery(
       std::unique_ptr<SelectClause> select_clause,
       ClauseList other_clauses);
-
-  /*
-   * Approach to handle multi-select.
-   * Overload the query evaluator. Do away with SelectClauses entirely because
-   * they don't really do anything (just wrap around), and for the reason below:
-   *
-   * A source of optimisation is to check if the desired declaration is
-   * already in the table. if it is, we don't even need to 'evaluate' a SelectClause,
-   * because select clause will always encompass all possible values of that type.
-   *
-   * Would be annoying to make SelectClause be able to handle bools, singles, and multiple return values.
-   *
-   * Only if that decl has not shown up at all yet do we need to retrieve all values of that type.
-   *
-   * SelectClause therefore evaluated last. Rename selectClause to get all values later.
-   */
 };
