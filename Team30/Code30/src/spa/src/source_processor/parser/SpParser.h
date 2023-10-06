@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../../shared/parser/AParser.h"
+#include "../../shared/parser/node/TreeNode.h"
 #include "../../shared/tokenizer/token/Token.h"
 #include "../node/ProcedureNode.h"
 #include "../node/ProgramNode.h"
@@ -19,7 +20,6 @@
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
 #include "../node/util_node/CondExprNode.h"
-#include "../node/util_node/TreeNode.h"
 
 class SpParser : public AParser {
  public:
@@ -59,7 +59,7 @@ class SpParser : public AParser {
 
   std::shared_ptr<ProgramNode> sourceProgramNode;
 
-  static int precedence(std::string const& op);
+  int Precedence(std::string const& op) override;
 
   static bool isOperator(std::string const& tokenVal);
 

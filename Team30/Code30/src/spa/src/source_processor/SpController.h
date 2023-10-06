@@ -5,7 +5,7 @@
 
 #include "node/ProgramNode.h"
 #include "parser/SpParserManager.h"
-#include "../program_knowledge_base/PkbApi.h"
+#include "../program_knowledge_base/PKBSPInterface.h"
 
 class SpController {
  public:

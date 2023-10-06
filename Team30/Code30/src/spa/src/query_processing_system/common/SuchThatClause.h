@@ -16,16 +16,21 @@ class SuchThatClause : public Clause {
                  std::unique_ptr<PqlReference const> arg2,
                  RelationType relation_type);
 
-  virtual std::unique_ptr<ClauseResult> evaluateWildWild(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateValueWild(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateWildValue(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateValueValue(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateDeclarationWild(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateWildDeclaration(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateDeclarationValue(PkbApi& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateValueDeclaration(PkbApi& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateWildWild(PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateValueWild(PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateWildValue(PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateValueValue(
+      PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateDeclarationWild(
+      PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateWildDeclaration(
+      PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateDeclarationValue(
+      PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> evaluateValueDeclaration(
+      PKBQPSInterface& pkb);
   virtual std::unique_ptr<ClauseResult> evaluateDeclarationDeclaration(
-      PkbApi& pkb);
+      PKBQPSInterface& pkb);
 
   void checkDeclarationArgEntityType(
       int arg_num, std::vector<EntityType> const& allowed_types,
@@ -35,6 +40,6 @@ class SuchThatClause : public Clause {
                              std::string const& error_msg);
 
  public:
-  std::unique_ptr<ClauseResult> evaluate(PkbApi& pkb) override;
+  std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface& pkb) override;
   virtual ~SuchThatClause();
 };
