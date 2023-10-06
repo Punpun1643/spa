@@ -1,7 +1,7 @@
 1 - Follows Call synonym/stmt num
 call c; stmt s;
 Select s such that Follows (c, s)
-4, 8, 26
+4
 5000
 2 - Follows* Call synonym/stmt num
 call c; read r;
