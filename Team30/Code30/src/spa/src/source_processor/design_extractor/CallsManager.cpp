@@ -1,5 +1,7 @@
 #include "CallsManager.h"
 
+#include <source_processor/exceptions/InvalidSourceSemanticsException.h>
+
 #include <iostream>
 #include <vector>
 CallsManager::CallsManager(PKBSPInterface& pkb) : pkb(pkb) {
@@ -31,18 +33,16 @@ void CallsManager::insertCallsStmt(std::string procA, std::string procB,
 
   if (procCalling == NULL) {
     // invalid proc
-    std::cout << "ERROR: procCalling == NULL\n";
-    return;
+    throw InvalidSourceSemanticsException("Proceduce calling does not exist.");
   }
   if (procGettingCalled == NULL) {
     // throw error: call to non-existant procedure
-    std::cout << "ERROR: procGettingCalled == NULL\n";
-    return;
+    throw InvalidSourceSemanticsException(
+        "Proceduce getting called does not exist.");
   }
   if (procCalling == procGettingCalled) {
     // throw error: cyclic call detected
-    std::cout << "ERROR: same name\n";
-    return;
+    throw InvalidSourceSemanticsException("Proceduce calls itself.");
   }
 
   procGettingCalled->addStmtCalledBy(newStmtNode);

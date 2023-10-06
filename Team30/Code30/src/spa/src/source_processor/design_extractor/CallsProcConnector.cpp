@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <source_processor/exceptions/InvalidSourceSemanticsException.h>
 
 CallsProcConnector::CallsProcConnector(PKBSPInterface& pkb) : pkb(pkb) {}
 
@@ -35,8 +36,7 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
 
     // checks for cyclic calls
     if (minCalls != 0) {
-      // throw error: cyclic call detected
-      return;
+      throw InvalidSourceSemanticsException("Cyclic call detected.");
     }
 
     // from the pkb, get all the variables that are used / modified
