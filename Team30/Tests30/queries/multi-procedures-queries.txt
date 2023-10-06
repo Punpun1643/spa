@@ -60,11 +60,11 @@ Select i such that Modifies("Bumblebee", _)
 5000
 13 - Invalid, 2nd parameter for UsesP should not be a constant
 procedure p;
-Select p such that Uses(p, _"2"_)
-SemanticError
+Select p such that Uses(p, "2")
+SyntaxError
 5000
 14 - Invalid, 2nd parameter for ModifiesP should not be a constant 
 procedure p;
-Select p such that Modifies(p, _"1"_)
-SemanticError
+Select p such that Modifies(p, "1")
+SyntaxError
 5000
