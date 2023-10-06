@@ -1,4 +1,4 @@
-#include "../../spa/src/source_processor/node/util_node/TreeNode.h"
+#include "../../spa/src/shared/parser/node/TreeNode.h"
 #include "catch.hpp"
 
 TEST_CASE("Test if a tree is a subtree or same tree as another tree",
