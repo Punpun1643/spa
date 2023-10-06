@@ -185,8 +185,10 @@ std::unordered_set<std::string> PkbStub::getProcedureUses(
   return std::unordered_set<std::string>();
 };
 
-void PkbStub::insertPattern(PatternType type, std::string statement_number, std::string lhs,
-                   std::shared_ptr<TreeNode> rhs){};
+void PkbStub::insertPattern(PatternType type, std::string statement_number,
+                            std::string lhs, std::shared_ptr<TreeNode> rhs) {
+  insertPatternCallCount++;
+};
 
 std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWildLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
