@@ -243,43 +243,43 @@ TEST_CASE("Assignment Pattern PKB") {
 
   // pattern a("x", "_a_")
   std::vector<std::string> expected_result = {"3"};
-  REQUIRE(*pkb.getPatternMatchesWithLhsValue(
+  REQUIRE(*pkb.getPatternMatchesValueLhs(
               "x", "a", MatchType::PARTIAL_MATCH) == expected_result);
 
   // pattern a("x", _)
   expected_result = {"3", "5"};
-  REQUIRE(*pkb.getPatternMatchesWithLhsValue("x", "", MatchType::WILD_MATCH) ==
+  REQUIRE(*pkb.getPatternMatchesValueLhs("x", "", MatchType::WILD_MATCH) ==
           expected_result);
 
   // pattern a("y", "_a_")
-  REQUIRE(*pkb.getPatternMatchesWithLhsValue(
+  REQUIRE(*pkb.getPatternMatchesValueLhs(
               "y", "a", MatchType::PARTIAL_MATCH) == empty_vector);
 
   // pattern a(_, "_b_")
   expected_result = {"3", "4"};
-  REQUIRE(*pkb.getPatternMatchesWithWildLhs("b", MatchType::PARTIAL_MATCH) ==
+  REQUIRE(*pkb.getPatternMatchesWildLhs("b", MatchType::PARTIAL_MATCH) ==
           expected_result);
 
   // pattern a(_, "_x_")
   expected_result = {"5"};
-  REQUIRE(*pkb.getPatternMatchesWithWildLhs("x", MatchType::PARTIAL_MATCH) ==
+  REQUIRE(*pkb.getPatternMatchesWildLhs("x", MatchType::PARTIAL_MATCH) ==
           expected_result);
 
   // pattern a(_, _)
   expected_result = {"3", "4", "5"};
-  REQUIRE(*pkb.getPatternMatchesWithWildLhs("", MatchType::WILD_MATCH) ==
+  REQUIRE(*pkb.getPatternMatchesWildLhs("", MatchType::WILD_MATCH) ==
           expected_result);
 
   // pattern a(var, "_b_")
   std::vector<std::pair<std::string, std::string>> expected_pairs = {
       {"3", "x"}, {"4", "y"}};
-  REQUIRE(*pkb.getPatternMatchesWithDeclarationLhs(
+  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
               "b", MatchType::PARTIAL_MATCH) == expected_pairs);
 
   // pattern a(var, "_")
   expected_pairs = {{"3", "x"}, {"4", "y"}, {"5", "x"}};
   REQUIRE_THAT(
-      *pkb.getPatternMatchesWithDeclarationLhs("", MatchType::WILD_MATCH),
+      *pkb.getPatternMatchesSynonymLhs("", MatchType::WILD_MATCH),
       Catch::UnorderedEquals(expected_pairs));
 }
 
@@ -352,6 +352,6 @@ TEST_CASE("Test1-Source PKB") {
 
   std::vector<std::string> expected_res = {"22", "25"};
   REQUIRE_THAT(
-      *pkb.getPatternMatchesWithLhsValue("x", "1", MatchType::PARTIAL_MATCH),
+      *pkb.getPatternMatchesValueLhs("x", "1", MatchType::PARTIAL_MATCH),
       Catch::UnorderedEquals(expected_res));
 }

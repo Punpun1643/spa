@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "../query_processing_system/common/EntityType.h"
+#include "PatternType.h"
 #include "RelationType.h"
 #include "query_processing_system/common/MatchType.h"
 
@@ -18,10 +19,15 @@ class PkbApi {
   virtual void insertEntity(EntityType type, std::string entity) = 0;
   virtual void insertRelation(RelationType rel_type, std::string s1_line_num,
                               std::string s2_line_num) = 0;
-  virtual void insertPattern(std::string statement_number, std::string lhs,
-                             std::unordered_set<std::string> rhs) = 0;
+  virtual void insertPattern(PatternType type, std::string statement_number,
+                             std::string lhs,
+                             std::shared_ptr<TreeNode> rhs) = 0;
   virtual std::unordered_set<std::string> getProcedureModifies(
       std::string procName) = 0;
   virtual std::unordered_set<std::string> getProcedureUses(
       std::string procName) = 0;
+
+  // ----------- TO DELETE -------------
+  virtual void insertPattern(std::string statement_number, std::string lhs,
+                             std::unordered_set<std::string> rhs) = 0;
 };

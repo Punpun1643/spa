@@ -80,27 +80,27 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getEntitiesWithType(
 }
 
 bool PkbStub::isRelationTrueValueValue(std::string value_1, std::string value_2,
-                             RelationType rel_type) {
+                                       RelationType rel_type) {
   return true;
 }
 bool PkbStub::isRelationTrueValueWild(std::string value,
-                                            RelationType rel_type) {
+                                      RelationType rel_type) {
   return false;
 }
 bool PkbStub::isRelationTrueWildValue(std::string value,
-                                             RelationType rel_type) {
+                                      RelationType rel_type) {
   return true;
 }
-bool PkbStub::isRelationTrueWildWild(RelationType relation_type) { return false; }
+bool PkbStub::isRelationTrueWildWild(RelationType relation_type) {
+  return false;
+}
 
-std::unique_ptr<std::vector<std::string>>
-PkbStub::getRelationSynonymWild(EntityType entity_type,
-                                         RelationType rel_type) {
+std::unique_ptr<std::vector<std::string>> PkbStub::getRelationSynonymWild(
+    EntityType entity_type, RelationType rel_type) {
   return std::make_unique<std::vector<std::string>>();  // empty
 }
-std::unique_ptr<std::vector<std::string>>
-PkbStub::getRelationWildSynonym(EntityType entity_type,
-                                          RelationType rel_type) {
+std::unique_ptr<std::vector<std::string>> PkbStub::getRelationWildSynonym(
+    EntityType entity_type, RelationType rel_type) {
   std::vector<std::string> vec = {"1", "3", "5", "7", "9"};
   return std::make_unique<std::vector<std::string>>(vec);
 }
@@ -118,7 +118,7 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValueSynonym(
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbStub::getRelationSynonymSynonym(EntityType entity_type_1,
                                    EntityType entity_type_2,
-                           RelationType rel_type) {
+                                   RelationType rel_type) {
   if (entity_type_1 == EntityType::STMT && entity_type_2 == EntityType::STMT) {
     auto result =
         std::make_unique<std::vector<std::pair<std::string, std::string>>>();
@@ -132,7 +132,7 @@ PkbStub::getRelationSynonymSynonym(EntityType entity_type_1,
   }
 }
 
-std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
+std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWildLhs(
     std::string rhs_expr, MatchType expr_match_type) {
   if (expr_match_type == MatchType::WILD_MATCH) {
     auto return_vec = std::vector<std::string>({"1"});
@@ -145,10 +145,8 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWithWildLhs(
   }
 }
 
-std::unique_ptr<std::vector<std::string>>
-PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
-                                       std::string rhs_expr,
-                                       MatchType expr_match_type) {
+std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesValueLhs(
+    std::string lhs_value, std::string rhs_expr, MatchType expr_match_type) {
   if (expr_match_type == MatchType::WILD_MATCH) {
     auto return_vec = std::vector<std::string>({"3"});
     return std::make_unique<std::vector<std::string>>(return_vec);
@@ -163,8 +161,8 @@ PkbStub::getPatternMatchesWithLhsValue(std::string lhs_value,
 // 2 paired values - for the implicit assign declaration, and the values for the
 // given lhs_entity_type
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbStub::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                             MatchType expr_match_type) {
+PkbStub::getPatternMatchesSynonymLhs(std::string rhs_expr,
+                                     MatchType expr_match_type) {
   auto output =
       std::make_unique<std::vector<std::pair<std::string, std::string>>>();
 
@@ -185,4 +183,22 @@ std::unordered_set<std::string> PkbStub::getProcedureModifies(
 std::unordered_set<std::string> PkbStub::getProcedureUses(
     std::string procName) {
   return std::unordered_set<std::string>();
+};
+
+void PkbStub::insertPattern(PatternType type, std::string statement_number, std::string lhs,
+                   std::shared_ptr<TreeNode> rhs){};
+
+std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesWildLhs(
+    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+  return NULL;
+};
+std::unique_ptr<std::vector<std::string>> PkbStub::getPatternMatchesValueLhs(
+    std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+    MatchType match_type) {
+  return NULL;
+};
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+PkbStub::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+                                     MatchType match_type) {
+  return NULL;
 };
