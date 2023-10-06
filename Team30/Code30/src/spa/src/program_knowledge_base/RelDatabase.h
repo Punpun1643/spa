@@ -18,4 +18,8 @@ class RelDatabase {
   void insert(RelationType type, std::string val1, std::string val2);
   bool isRelated(RelationType type, std::string val1, std::string val2);
   bool isEmpty(RelationType type);
+  std::unordered_set<std::string> getAllRelated(
+      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+  std::unordered_set<std::string> getAllInverseRelated(
+      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
 };

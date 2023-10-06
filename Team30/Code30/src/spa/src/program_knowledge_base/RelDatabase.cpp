@@ -38,3 +38,13 @@ bool RelDatabase::isRelated(RelationType type, std::string val1,
 bool RelDatabase::isEmpty(RelationType type) {
   return relationships[type]->isEmpty();
 };
+
+std::unordered_set<std::string> RelDatabase::getAllRelated(RelationType type,
+                                                           std::shared_ptr<std::unordered_set<std::string>> vals) {
+  return relationships[type]->getAllRelated(vals);
+};
+
+std::unordered_set<std::string> RelDatabase::getAllInverseRelated(
+    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+  return relationships[type]->getAllInverseRelated(vals);
+};

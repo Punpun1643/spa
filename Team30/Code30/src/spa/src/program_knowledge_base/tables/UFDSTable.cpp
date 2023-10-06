@@ -12,3 +12,12 @@ bool UFDSTable::isRelated(std::string i, std::string j) {
 }
 
 bool UFDSTable::isEmpty() { return empty; }
+
+std::unordered_set<std::string> UFDSTable::getAllRelated(
+    std::shared_ptr<std::unordered_set<std::string>> vals) {
+  return {};
+};
+std::unordered_set<std::string> UFDSTable::getAllInverseRelated(
+    std::shared_ptr<std::unordered_set<std::string>> vals) {
+  return {};
+};
