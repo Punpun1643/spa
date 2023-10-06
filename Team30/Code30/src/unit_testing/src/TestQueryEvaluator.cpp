@@ -65,13 +65,13 @@ TEST_CASE("Test Query Evaluator") {
     decl = PqlDeclaration("a", EntityType::STMT);
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
     result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+        qe.evaluateQuery({decl}, {follows_clause});
     REQUIRE(result.empty());
 
     decl = PqlDeclaration("a", EntityType::VARIABLE);
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
     result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+        qe.evaluateQuery({decl}, {follows_clause});
     REQUIRE(result.empty());
   }
 
@@ -81,7 +81,7 @@ TEST_CASE("Test Query Evaluator") {
         StmtRef(PqlDeclaration("b", EntityType::STMT)),
         StmtRef());
     result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+        qe.evaluateQuery({decl}, {follows_clause});
     REQUIRE(result.empty());
 
     decl = PqlDeclaration("a", EntityType::PROCEDURE);
@@ -89,7 +89,7 @@ TEST_CASE("Test Query Evaluator") {
         StmtRef(52),
         StmtRef(PqlDeclaration("b", EntityType::PRINT)));
     result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+        qe.evaluateQuery({decl}, {follows_clause});
     REQUIRE(result.empty());
 
     // Case where follows clause has declarations that are different from select
@@ -99,78 +99,8 @@ TEST_CASE("Test Query Evaluator") {
         StmtRef(PqlDeclaration("b", EntityType::STMT)),
         StmtRef(PqlDeclaration("s", EntityType::STMT)));
     result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
+        qe.evaluateQuery({decl}, {follows_clause});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
-  }
-
-  SECTION("Select and Follows Clause with 1 common declarations") {
-    // Some overlapping values between declarations
-    decl = PqlDeclaration("a", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("a", EntityType::STMT)),
-        StmtRef(PqlDeclaration("s", EntityType::STMT)));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
-
-    decl = PqlDeclaration("a", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("asd", EntityType::STMT)),
-        StmtRef(PqlDeclaration("a", EntityType::STMT)));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"1", "2"}));
-
-    decl = PqlDeclaration("abc", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(),
-        StmtRef(PqlDeclaration("abc", EntityType::STMT)));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"1", "3"}));
-
-    decl = PqlDeclaration("abc", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("abc", EntityType::STMT)),
-        StmtRef(1));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
-
-    // No overlapping values between declarations
-    decl = PqlDeclaration("abc", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(1),
-        StmtRef(PqlDeclaration("abc", EntityType::STMT)));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(result.empty());
-
-    decl = PqlDeclaration("abc", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("abc", EntityType::STMT)),
-        StmtRef());
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(result.empty());
-
-    decl = PqlDeclaration("a", EntityType::PRINT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("a", EntityType::PRINT)),
-        StmtRef(PqlDeclaration("s", EntityType::PRINT)));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(result.empty());
-  }
-
-  SECTION("Select and Follows Clause with 2 common declarations") {
-    decl = PqlDeclaration("abc", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("abc", EntityType::STMT)),
-        StmtRef(PqlDeclaration("abc", EntityType::STMT)));
-    result =
-        qe.evaluateQuery({decl}, {std::move(follows_clause)});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
   }
 }
 
@@ -180,49 +110,47 @@ TEST_CASE("Pattern clauses") {
   auto qe = QueryEvaluator(pkb);
   // decl, partial
   auto a = PqlDeclaration("a", EntityType::ASSIGN);
-  auto v = PqlDeclaration("v", EntityType::VARIABLE);
-  auto SELECT_A = std::make_unique<SelectClause>(a);
-  auto SELECT_V = std::make_unique<SelectClause>(v);
+  auto v = PqlDeclaration("v", EntityType::VARIABLE); 
   SECTION("decl, wild") {
     auto pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(v), MatchType::WILD_MATCH, "");
-    auto result = qe.evaluateQuery(std::move(SELECT_V), {pattern_clause});
-    REQUIRE(result == std::vector<std::string>({"varX"}));
+    auto result = qe.evaluateQuery({v}, {pattern_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"varX"}));
   }
 
   SECTION("decl, partial") {
     auto pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(v), MatchType::PARTIAL_MATCH, "a");
-    auto result = qe.evaluateQuery(std::move(SELECT_V), {pattern_clause});
-    REQUIRE(result == std::vector<std::string>({"varY"}));
+    auto result = qe.evaluateQuery({v}, {pattern_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"varY"}));
   }
 
   SECTION("value, wild") {
     auto pattern_clause = std::make_shared<PatternClause>(
         a, EntRef("varName"), MatchType::WILD_MATCH, "");
-    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
-    REQUIRE(result == std::vector<std::string>({"3"}));
+    auto result = qe.evaluateQuery({a}, {pattern_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"3"}));
   }
 
   SECTION("value, partial") {
     auto pattern_clause = std::make_shared<PatternClause>(
         a, EntRef("varName"), MatchType::PARTIAL_MATCH, "a");
-    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
-    REQUIRE(result.empty());
+    auto result = qe.evaluateQuery({a}, {pattern_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"4"}));
   }
 
   SECTION("wild, wild") {
     auto pattern_clause =
         std::make_shared<PatternClause>(a, EntRef(), MatchType::WILD_MATCH, "");
-    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
-    REQUIRE(result == std::vector<std::string>({"1"}));
+    auto result = qe.evaluateQuery({a}, {pattern_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"1"}));
   }
 
   SECTION("wild, partial") {
     auto pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(), MatchType::PARTIAL_MATCH, "blah");
-    auto result = qe.evaluateQuery(std::move(SELECT_A), {pattern_clause});
-    REQUIRE(result == std::vector<std::string>({"2"}));
+    auto result = qe.evaluateQuery({a}, {pattern_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
   }
 
   SECTION("semantic errors") {
