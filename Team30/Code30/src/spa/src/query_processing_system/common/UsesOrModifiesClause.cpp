@@ -24,19 +24,19 @@ UsesOrModifiesClause::UsesOrModifiesClause(
 }
 
 std::unique_ptr<ClauseResult> UsesOrModifiesClause::evaluateWildDeclaration(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException(
       "1st argument of Uses/Modifies cannot be a wildcard");
 }
 
 std::unique_ptr<ClauseResult> UsesOrModifiesClause::evaluateWildWild(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException(
       "1st argument of Uses/Modifies cannot be a wildcard");
 }
 
 std::unique_ptr<ClauseResult> UsesOrModifiesClause::evaluateWildValue(
-    PkbApi& pkb) {
+    PKBQPSInterface& pkb) {
   throw InvalidSemanticsException(
       "1st argument of Uses/Modifies cannot be a wildcard");
 }

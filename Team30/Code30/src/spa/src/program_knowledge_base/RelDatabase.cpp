@@ -22,7 +22,7 @@ RelDatabase::RelDatabase() {
   relationships[RelationType::CALLS] =
       std::make_shared<DictionaryTable>(DictionaryTable());
   relationships[RelationType::CALLS_STAR] =
-      std::make_shared<DictionaryTable>(LinkedListTable());
+      std::make_shared<LinkedListTable>(LinkedListTable());
 }
 
 void RelDatabase::insert(RelationType type, std::string val1,
