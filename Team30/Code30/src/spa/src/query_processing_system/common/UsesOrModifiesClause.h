@@ -9,9 +9,6 @@
 
 class UsesOrModifiesClause : public SuchThatClause {
  private:
-  std::vector<EntityType> valid_decl_types_for_arg_1;
-  std::string invalid_arg_1_decl_type_msg;
-
   std::string INVALID_ARG_2_DECL_TYPE_MSG =
       "If the 2nd arg of Uses/Modifies is a declaration, it must have the var "
       "type.";
@@ -28,9 +25,7 @@ class UsesOrModifiesClause : public SuchThatClause {
   std::unique_ptr<ClauseResult> evaluateWildWild(PKBQPSInterface& pkb) override;
   UsesOrModifiesClause(std::unique_ptr<PqlReference const> arg1,
                        std::unique_ptr<EntRef const> arg2,
-                       RelationType relation_type,
-                       std::vector<EntityType> valid_decl_types_for_arg_1,
-                       std::string invalid_arg_1_decl_type_msg);
+                       RelationType relation_type);
 
  public:
   virtual ~UsesOrModifiesClause();
