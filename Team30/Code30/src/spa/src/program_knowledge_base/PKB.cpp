@@ -60,30 +60,19 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
   patData->insert(statement_number, lhs, rhs);
 };
 
-// std::unordered_set<std::string> PKB::getProcedureModifies(
-//     std::string procName) {
-//   std::shared_ptr<std::unordered_set<std::string>> input;
-//   input->insert(procName);
-//   return relData->getAllRelated(RelationType::MODIFIES_P, input);
-// };
-//
-// std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-//   std::shared_ptr<std::unordered_set<std::string>> input;
-//   input->insert(procName);
-//   return relData->getAllRelated(RelationType::USES_P, input);
-// };
-
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
-  return getAllRelated(
-      RelationType::MODIFIES_P, procName,
-      entData->get(wildCardMatcher.translateRHSWild(RelationType::MODIFIES_P)));
-}
+  std::unordered_set<std::string> set = {procName};
+  std::shared_ptr<std::unordered_set<std::string>> input =
+      std::make_shared<std::unordered_set<std::string>>(set);
+  return relData->getAllRelated(RelationType::MODIFIES_P, input);
+};
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-  return getAllRelated(
-      RelationType::USES_P, procName,
-      entData->get(wildCardMatcher.translateRHSWild(RelationType::USES_P)));
+  std::unordered_set<std::string> set = {procName};
+  std::shared_ptr<std::unordered_set<std::string>> input =
+      std::make_shared<std::unordered_set<std::string>>(set);
+  return relData->getAllRelated(RelationType::USES_P, input);
 };
 
 // ********** QPS **********
