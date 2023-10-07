@@ -1,6 +1,7 @@
 #include "SpParser.h"
 #include "../exceptions/InvalidPrintException.h"
 #include "../exceptions/InvalidReadException.h"
+#include "../exceptions/InvalidCallException.h"
 
 #include <stdexcept>
 
@@ -148,14 +149,14 @@ std::shared_ptr<ReadNode> SpParser::parseRead() {
 
 std::shared_ptr<CallNode> SpParser::parseCall() {
   if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
-    throw std::invalid_argument("Invalid call 2");
+    throw InvalidCallException();
   }
 
   std::string procedureName = getCurrTokenValue();
   nextToken();
 
   if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
-    throw std::invalid_argument("Invalid call 1");
+    throw InvalidCallException();
   }
 
   nextToken();
