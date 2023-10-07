@@ -5,6 +5,7 @@
 class PkbQpsInterfaceStub : public PKBQPSInterface {
  public:
   PkbQpsInterfaceStub();
+
   RelationType last_rel_passed = RelationType::FOLLOWS;
   int valueValueCalls = 0;
   int valueWildCalls = 0;
@@ -15,6 +16,18 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   int synonymValueCalls = 0;
   int valueSynonymCalls = 0;
   int synonymSynonymCalls = 0;
+
+  const bool valueValueBool = false;
+  const bool valueWildBool = false;
+  const bool wildValueBool = true;
+  const bool wildWildBool = true;
+
+  const std::vector<std::string> synonymWildValues = {"1","2","3"};
+  const std::vector<std::string> wildSynonymValues = {"a","b","c"};
+  const std::vector<std::string> synonymValueValues = {"4","5","6"};
+  const std::vector<std::string> valueSynonymValues = {"d","e","f"};
+  const std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {};
+
 
   // Select Clause
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
