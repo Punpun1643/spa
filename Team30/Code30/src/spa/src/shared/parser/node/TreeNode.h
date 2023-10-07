@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 class TreeNode {
  public:
@@ -13,6 +14,22 @@ class TreeNode {
   std::shared_ptr<TreeNode> getLeftSubTree() const;
 
   std::shared_ptr<TreeNode> getRightSubTree() const;
+
+  static std::vector<std::string> CreateInOrderTraversal(
+      std::shared_ptr<TreeNode> const& root);
+
+  static std::vector<std::string> CreatePreOrderTraversal(
+      std::shared_ptr<TreeNode> const& root);
+
+  static bool IsSubTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
+                        std::shared_ptr<TreeNode> const& subTreeRoot);
+
+  static bool IsSubString(
+      std::vector<std::string> const& baseTreeInOrderTraversal,
+      std::vector<std::string> const& subTreeInOrderTraversal);
+
+  static bool IsSameTree(std::shared_ptr<TreeNode> const& baseTreeRoot,
+                         std::shared_ptr<TreeNode> const& subTreeRoot);
 
   ~TreeNode() = default;
 

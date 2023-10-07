@@ -13,30 +13,16 @@ TEST_CASE("Linked list functionality check") {
   ll.addEdge("1", "2");
   ll.addEdge("2", "3");
 
-  ll.addEdge("4", "5");
+  REQUIRE(ll.getNode("1")->next.find(ll.getNode("2")) !=
+          ll.getNode("1")->next.end());
+  REQUIRE(ll.getNode("2")->next.find(ll.getNode("3")) !=
+          ll.getNode("2")->next.end());
 
-  ll.addEdge("5", "6");
-  ll.addEdge("5", "7");
-  ll.addEdge("5", "8");
+  REQUIRE(ll.getNode("3")->prev->value == "2");
+  REQUIRE(ll.getNode("3")->prev->prev->value == "1");
 
-  REQUIRE(ll.hasPath("1", "2"));
-  REQUIRE(ll.hasPath("2", "3"));
-  REQUIRE(ll.hasPath("1", "3"));
-
-  REQUIRE(ll.hasPath("4", "5"));
-  REQUIRE(ll.hasPath("4", "6"));
-  REQUIRE(ll.hasPath("4", "7"));
-  REQUIRE(ll.hasPath("4", "8"));
-  REQUIRE(ll.hasPath("5", "8"));
-
-  REQUIRE(!ll.hasPath("3", "4"));
-  REQUIRE(!ll.hasPath("1", "6"));
-  REQUIRE(!ll.hasPath("6", "7"));
-  REQUIRE(!ll.hasPath("6", "8"));
-
-  REQUIRE(!ll.hasPath("2", "1"));
-  REQUIRE(!ll.hasPath("3", "1"));
-  REQUIRE(!ll.hasPath("8", "7"));
+  REQUIRE(ll.getNode("3")->next.empty());
+  REQUIRE(ll.getNode("1")->prev == nullptr);
 }
 
 TEST_CASE("Linked list table check") {
@@ -51,6 +37,7 @@ TEST_CASE("Linked list table check") {
   llt.insert("5", "6");
   llt.insert("5", "7");
   llt.insert("5", "8");
+  llt.insert("9", "10");
 
   REQUIRE(llt.isRelated("1", "2"));
   REQUIRE(!llt.isEmpty());
@@ -71,4 +58,22 @@ TEST_CASE("Linked list table check") {
   REQUIRE(!llt.isRelated("2", "1"));
   REQUIRE(!llt.isRelated("3", "1"));
   REQUIRE(!llt.isRelated("8", "7"));
+
+  std::unordered_set<std::string> empty_set = {};
+  auto input = std::make_shared<std::unordered_set<std::string>>();
+  input->insert("1");
+  input->insert("2");
+  input->insert("3");
+  input->insert("4");
+  input->insert("5");
+  input->insert("6");
+  input->insert("7");
+  input->insert("8");
+  input->insert("9");
+  input->insert("10");
+
+  std::unordered_set<std::string> expected = {"1", "2", "4", "5", "9"};
+  REQUIRE(llt.getAllRelated(input) == expected);
+  expected = {"2", "3", "5", "6", "7", "8", "10"};
+  REQUIRE(llt.getAllInverseRelated(input) == expected);
 }
