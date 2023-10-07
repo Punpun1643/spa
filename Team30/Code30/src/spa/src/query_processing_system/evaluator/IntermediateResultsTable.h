@@ -20,6 +20,8 @@ class IntermediateResultsTable {
   void addPairedDeclarations(PqlDeclaration const& d1, PqlDeclaration const& d2,
                              std::vector<std::string> const& new_d1_values,
                              std::vector<std::string> const& new_d2_values);
+  void mergeExistingTables(int table_to_keep_id, int table_to_merge_id,
+                           bool allow_cross_product = false);
 
  public:
   IntermediateResultsTable();
@@ -28,6 +30,8 @@ class IntermediateResultsTable {
 
   bool hasNoResults() const;
 
-  std::vector<std::string> getValuesGivenDeclaration(
-      PqlDeclaration const& declaration);
+  bool hasDeclaration(PqlDeclaration const& declaration) const;
+
+  std::vector<std::vector<std::string>> getValuesGivenDeclarations(
+      std::vector<PqlDeclaration> const& decls);
 };
