@@ -1,5 +1,6 @@
 #include "SpParser.h"
 #include "../exceptions/InvalidPrintException.h"
+#include "../exceptions/InvalidReadException.h"
 
 #include <stdexcept>
 
@@ -130,14 +131,14 @@ std::shared_ptr<PrintNode> SpParser::parsePrint() {
 
 std::shared_ptr<ReadNode> SpParser::parseRead() {
   if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
-    throw std::invalid_argument("Invalid read 1");
+    throw InvalidReadException();
   }
 
   std::string varName = getCurrTokenValue();
   nextToken();
 
   if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
-    throw std::invalid_argument("Invalid read 2");
+    throw InvalidReadException();
   }
 
   nextToken();
