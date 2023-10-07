@@ -26,7 +26,9 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   const std::vector<std::string> wildSynonymValues = {"a","b","c"};
   const std::vector<std::string> synonymValueValues = {"4","5","6"};
   const std::vector<std::string> valueSynonymValues = {"d","e","f"};
-  const std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {};
+  const std::vector<std::string> synonymSynonymValues1 = {"42"};
+  const std::vector<std::string> synonymSynonymValues2 = {"43"};
+  const std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
 
 
   // Select Clause

@@ -1,5 +1,6 @@
 #include "PkbQpsInterfaceStub.h"
 #include "catch.hpp"
+#include "query_processing_system/common/CallsClause.h"
 #include "query_processing_system/common/Clause.h"
 #include "query_processing_system/common/FollowsClause.h"
 #include "query_processing_system/common/ModifiesPClause.h"
@@ -15,7 +16,9 @@ TEST_CASE("Test SuchThat Clauses") {
   PqlDeclaration v = PqlDeclaration("var", EntityType::VARIABLE);
   PqlDeclaration re = PqlDeclaration("read", EntityType::READ);
   PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
-  PqlDeclaration proc = PqlDeclaration("procedure", EntityType::PROCEDURE);
+  PqlDeclaration proc = PqlDeclaration("procedure1", EntityType::PROCEDURE);
+  PqlDeclaration proc2 = PqlDeclaration("procedure2", EntityType::PROCEDURE);
+  PqlDeclaration constant = PqlDeclaration("constant", EntityType::CONSTANT);
 
   SECTION("Follows/* Clauses") {
     // Also tests wildWild and valueWild
@@ -36,6 +39,9 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(pkb.last_rel_passed == RelationType::FOLLOWS_STAR);
     REQUIRE(result->isBooleanResult());
     REQUIRE(result->getBooleanClauseValue() == pkb.valueWildBool);
+
+    REQUIRE_NOTHROW(FollowsClause(std::make_unique<StmtRef>(s),
+                                  std::make_unique<StmtRef>(print), false));
   }
 
   SECTION("Parent/* Clauses") {
@@ -57,13 +63,55 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(pkb.last_rel_passed == RelationType::PARENT_STAR);
     REQUIRE(result->isBooleanResult());
     REQUIRE(result->getBooleanClauseValue() == pkb.valueValueBool);
+
+    REQUIRE_NOTHROW(ParentClause(std::make_unique<StmtRef>(re),
+                                  std::make_unique<StmtRef>(print), false));
+  }
+
+  SECTION("Calls/* Clauses") {
+    // Also tests synonymSynonym and wildSynonym
+    CallsClause calls = CallsClause(std::make_unique<EntRef>(proc),
+                                    std::make_unique<EntRef>(proc2), false);
+    CallsClause calls_star = CallsClause(std::make_unique<EntRef>(),
+                                    std::make_unique<EntRef>(proc), true);
+    REQUIRE(pkb.synonymSynonymCalls == 0);
+    result = calls.evaluate(pkb);
+    REQUIRE(pkb.synonymSynonymCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::CALLS);
+    REQUIRE(result->getNumDeclarations() == 2);
+    REQUIRE_THAT(result->getDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{proc, proc2}));
+    auto values = result->getValues(proc);
+    REQUIRE(*values == pkb.synonymSynonymValues1);
+    values = result->getValues(proc2);
+    REQUIRE(*values == pkb.synonymSynonymValues2);
+
+    REQUIRE(pkb.wildSynonymCalls == 0);
+    result = calls_star.evaluate(pkb);
+    REQUIRE(pkb.wildSynonymCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::CALLS_STAR);
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE(result->contains(proc));
+    REQUIRE_FALSE(result->contains(proc2));
+    values = result->getValues(proc);
+    REQUIRE(*values == pkb.wildSynonymValues);
+
+    // Test type checking for Calls/*
+    REQUIRE_THROWS_AS(CallsClause(std::make_unique<EntRef>(constant),
+                                      std::make_unique<EntRef>(proc), true), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(CallsClause(std::make_unique<EntRef>(v),
+                                      std::make_unique<EntRef>(proc2), false), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(CallsClause(std::make_unique<EntRef>(proc),
+                                      std::make_unique<EntRef>(constant), true), InvalidSemanticsException);
+
+    REQUIRE_THROWS_AS(CallsClause(std::make_unique<EntRef>(proc2),
+                                      std::make_unique<EntRef>(v), false), InvalidSemanticsException);
   }
 
   SECTION("ModifiesS and ModifiesP Clauses") {
     // Also tests synonymWild and synonymValue
 
     // Expected behaviour
-    ModifiesSClause modifies_s = ModifiesSClause(std::make_unique<StmtRef>(s),
+    ModifiesSClause modifies_s = ModifiesSClause(std::make_unique<StmtRef>(print),
                                        std::make_unique<EntRef>());
     ModifiesPClause modifies_p = ModifiesPClause(std::make_unique<EntRef>(proc),
                                             std::make_unique<EntRef>("var"));
@@ -72,10 +120,10 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(pkb.synonymWildCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::MODIFIES_S);
     REQUIRE(result->getNumDeclarations() == 1);
-    REQUIRE(result->contains(s));
+    REQUIRE(result->contains(print));
     REQUIRE_FALSE(result->contains(proc));
-    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{s});
-    auto values = result->getValues(s);
+    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{print});
+    auto values = result->getValues(print);
     REQUIRE(*values == pkb.synonymWildValues);
 
     REQUIRE(pkb.synonymValueCalls == 0);
@@ -96,9 +144,20 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(),
                                       std::make_unique<EntRef>("abc")), InvalidSemanticsException);
     // if first arg is a declaration, must conform to expected types
-    REQUIRE_THROWS_AS(ModifiesSClause(std::make_unique<StmtRef>(proc),
-                                      std::make_unique<EntRef>(v)), InvalidSemanticsException);
     REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(s),
                                       std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(print),
+                                      std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    // Second arg must be a variable synonym
+    REQUIRE_THROWS_AS(ModifiesSClause(std::make_unique<StmtRef>(s),
+                                      std::make_unique<EntRef>(proc)), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(proc),
+                                      std::make_unique<EntRef>(constant)), InvalidSemanticsException);
+    REQUIRE_NOTHROW(ModifiesSClause(std::make_unique<StmtRef>(s), std::make_unique<EntRef>(v)));
+    REQUIRE_NOTHROW(ModifiesPClause(std::make_unique<EntRef>(proc), std::make_unique<EntRef>(v)));
+  }
+
+  SECTION("UsesS and UsesP Clauses") {
+    // test
   }
 }
