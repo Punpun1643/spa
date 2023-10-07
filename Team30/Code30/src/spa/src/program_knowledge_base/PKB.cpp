@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-PKB::PKB() : PKBQPSInterface(), PkbApi() {
+PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
@@ -61,14 +61,16 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
 
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
-  std::shared_ptr<std::unordered_set<std::string>> input;
-  input->insert(procName);
+  std::unordered_set<std::string> set = {procName};
+  std::shared_ptr<std::unordered_set<std::string>> input =
+      std::make_shared<std::unordered_set<std::string>>(set);
   return relData->getAllRelated(RelationType::MODIFIES_P, input);
 };
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-  std::shared_ptr<std::unordered_set<std::string>> input;
-  input->insert(procName);
+  std::unordered_set<std::string> set = {procName};
+  std::shared_ptr<std::unordered_set<std::string>> input =
+      std::make_shared<std::unordered_set<std::string>>(set);
   return relData->getAllRelated(RelationType::USES_P, input);
 };
 

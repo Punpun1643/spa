@@ -13,9 +13,9 @@
 #include "../node/stmt_node/WhileNode.h"
 #include "IDesignExtractor.h"
 
-class EntityExtractor : public IDesignExtractor {
+class DesignExtractor : public IDesignExtractor {
  public:
-  explicit EntityExtractor(PKBSPInterface& pkb);
+  explicit DesignExtractor(PKBSPInterface& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -35,7 +35,7 @@ class EntityExtractor : public IDesignExtractor {
 
   void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  ~EntityExtractor() = default;
+  ~DesignExtractor() = default;
 
  private:
   PKBSPInterface& pkb;

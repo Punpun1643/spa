@@ -3,32 +3,8 @@
 #include <iostream>
 #include <vector>
 
-ParentExtractor::ParentExtractor(PkbApi& pkb) : pkb(pkb) {}
-
-void ParentExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
-
-void ParentExtractor::extractFromProcedure(
-    std::shared_ptr<ProcedureNode> node) {
-  // TODO
-}
-
-void ParentExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
-  // TODO
-}
-
-void ParentExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  // TODO
-}
-
-void ParentExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
-  // TODO
-}
-
-void ParentExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  // TODO
-}
+ParentExtractor::ParentExtractor(PKBSPInterface& pkb)
+    : pkb(pkb), DesignExtractor(pkb) {}
 
 void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children =
@@ -53,8 +29,4 @@ void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
                        std::to_string(node->getStmtIndex()),
                        std::to_string(children[i]->getStmtIndex()));
   }
-}
-
-void ParentExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  // TODO
 }
