@@ -6,7 +6,6 @@
 #include "RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
-#include "tables/UFDSTable.h"
 
 class PatternDatabase {
   // stores {statement_number : assigned variable}

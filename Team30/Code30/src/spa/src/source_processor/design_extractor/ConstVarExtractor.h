@@ -15,7 +15,7 @@
 
 class ConstVarExtractor : public IDesignExtractor {
  public:
-  explicit ConstVarExtractor(PkbApi& pkb);
+  explicit ConstVarExtractor(PKBSPInterface& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -38,7 +38,7 @@ class ConstVarExtractor : public IDesignExtractor {
   ~ConstVarExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 
   void insertConstsVars(std::unordered_set<int> consts,
                         std::unordered_set<std::string> vars);

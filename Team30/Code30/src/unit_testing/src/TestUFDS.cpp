@@ -1,5 +1,3 @@
-#include <program_knowledge_base/tables/UFDSTable.h>
-
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -46,26 +44,3 @@ TEST_CASE("Check correct dynamic UFDS expansion") {
   REQUIRE(ufds.sizeOf(7) == 3);
   REQUIRE(ufds.sizeOf(11) == 1);
 }
-
-//TEST_CASE("Check UFDS Table") {
-//  UFDSTable ut = UFDSTable();
-//  ut.insert("4", "5");
-//  ut.insert("4", "6");
-//  ut.insert("4", "7");
-//  ut.insert("7", "8");
-//  ut.insert("4", "10");
-//  ut.insert("14", "15");
-//  ut.insert("14", "16");
-//  ut.insert("20", "21");
-//  ut.insert("20", "22");
-//  ut.insert("20", "23");
-//  ut.insert("20", "24");
-//  ut.insert("24", "25");
-//  ut.insert("24", "26");
-//
-//  for (int i = 1; i < 30; i++) {
-//    if (ut.isRelated("22", std::to_string(i))) {
-//      std::cout << i;
-//    }
-//  }
-//}
