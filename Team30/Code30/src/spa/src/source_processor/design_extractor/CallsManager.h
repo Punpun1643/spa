@@ -22,7 +22,6 @@ class CallsManager {
                        std::vector<std::string> actors,
                        std::shared_ptr<CallNode> callNode);
   void insertProcNode(std::string procName);
-  void executeCallsGraphTraversal();
   void executeCallsExtraction();
   void connectProcsAndUpdateRelations();
 

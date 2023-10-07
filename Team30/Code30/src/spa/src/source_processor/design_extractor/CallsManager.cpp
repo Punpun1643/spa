@@ -58,21 +58,3 @@ void CallsManager::executeCallsExtraction() {
 void CallsManager::connectProcsAndUpdateRelations() {
   procConnector->connectProcsAndUpdateRelations(procNodeMap);
 }
-
-void CallsManager::executeCallsGraphTraversal() {
-  // traverse procNodeMap to find the proc with the smallest size of procsCalled
-  // (should be 0)
-
-  // from the pkb, get all the variables that are used / modified
-  // by the proc
-
-  // for each procCalledBy in procsCalls, insert into pkb the relevant uses /
-  // modifies relation
-
-  // for each stmtCalledBy in stmtsCalledBy, insert into pkb the relevant uses /
-  // modifies relation, and with all the actors
-
-  // remove this procNode from the procNodeMap
-
-  // loop until no more procs in procNodeMap
-}
