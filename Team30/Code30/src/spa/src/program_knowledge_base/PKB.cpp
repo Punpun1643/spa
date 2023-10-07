@@ -6,6 +6,7 @@
 #include <vector>
 
 PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
+  wildCardMatcher = WildCardMatcher();
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
@@ -59,17 +60,30 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
   patData->insert(statement_number, lhs, rhs);
 };
 
+// std::unordered_set<std::string> PKB::getProcedureModifies(
+//     std::string procName) {
+//   std::shared_ptr<std::unordered_set<std::string>> input;
+//   input->insert(procName);
+//   return relData->getAllRelated(RelationType::MODIFIES_P, input);
+// };
+//
+// std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
+//   std::shared_ptr<std::unordered_set<std::string>> input;
+//   input->insert(procName);
+//   return relData->getAllRelated(RelationType::USES_P, input);
+// };
+
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
-  std::shared_ptr<std::unordered_set<std::string>> input;
-  input->insert(procName);
-  return relData->getAllRelated(RelationType::MODIFIES_P, input);
-};
+  return getAllRelated(
+      RelationType::MODIFIES_P, procName,
+      entData->get(wildCardMatcher.translateRHSWild(RelationType::MODIFIES_P)));
+}
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-  std::shared_ptr<std::unordered_set<std::string>> input;
-  input->insert(procName);
-  return relData->getAllRelated(RelationType::USES_P, input);
+  return getAllRelated(
+      RelationType::USES_P, procName,
+      entData->get(wildCardMatcher.translateRHSWild(RelationType::USES_P)));
 };
 
 // ********** QPS **********

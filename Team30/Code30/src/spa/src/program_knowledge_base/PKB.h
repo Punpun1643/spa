@@ -20,6 +20,7 @@
 
 class PKB : public PKBQPSInterface, public PKBSPInterface {
  private:
+  WildCardMatcher wildCardMatcher = WildCardMatcher();
   std::unique_ptr<EntityDatabase> entData;
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;
