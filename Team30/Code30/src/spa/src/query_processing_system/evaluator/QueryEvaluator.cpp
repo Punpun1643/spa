@@ -26,7 +26,8 @@ bool QueryEvaluator::evaluateQuery(ClauseList clauses) {
 std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(std::vector<PqlDeclaration> const& selected_decls, ClauseList clauses) {
   /**
    * Returns the possible values that each of the selected declarations can take in the form of a 2D vector.
-   * Each internal vector represents the set of possible values (shit but IRT returns no duplicates)
+   * Each row represents one set of possible values
+   * (e.g. a = 2, b = 3, c = 4 will be {{"2", "3", "4"}})
    */
   assert(!selected_decls.empty());
   auto table = IntermediateResultsTable();
