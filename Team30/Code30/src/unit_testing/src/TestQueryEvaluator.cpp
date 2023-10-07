@@ -3,9 +3,10 @@
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/common/SelectClause.h"
-#include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
+#include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
+#include "PkbQpsInterfaceStub.h"
 #include "PkbStub.h"
 #include "catch.hpp"
 
@@ -19,93 +20,72 @@ class QeFactoryMethods {
 };
 
 TEST_CASE("Test Query Evaluator") {
-  PkbStub pkb = PkbStub();
+  PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
   QueryEvaluator qe = QueryEvaluator(pkb);
-  PqlDeclaration decl = PqlDeclaration("dummy", EntityType::STMT);
+  PqlDeclaration a = PqlDeclaration("a", EntityType::ASSIGN);
+  PqlDeclaration if_decl = PqlDeclaration("if", EntityType::IF);
+  PqlDeclaration s = PqlDeclaration("s", EntityType::STMT);
+  PqlDeclaration v = PqlDeclaration("v", EntityType::VARIABLE);
+
   std::shared_ptr<Clause> follows_clause;
   std::shared_ptr<Clause> pattern_clause;
   std::vector<std::vector<std::string>> result;
+
+  auto negation_clause =
+      QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
 
   SECTION("Evaluate boolean query") {
     // bool query with no clauses is true
     REQUIRE(qe.evaluateQuery({}));
 
     // bool query with a result
-    follows_clause =
-        QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef(1));
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
     REQUIRE(qe.evaluateQuery({follows_clause}));
 
     // bool query with no result
-    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
-    REQUIRE_FALSE(qe.evaluateQuery({follows_clause}));
+    pattern_clause = std::make_shared<PatternClause>(
+        a, EntRef(), MatchType::EXACT_MATCH, "blah");
+    REQUIRE_FALSE(qe.evaluateQuery({follows_clause, pattern_clause}));
   }
 
-  SECTION("Evaluate query with single result") {
-    decl = PqlDeclaration("a", EntityType::CONSTANT);
-    result = qe.evaluateQuery({decl}, {});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.CONSTANTS);
+  SECTION("Evaluate query with one decl that is not in the clauses") {
+    result = qe.evaluateQuery({a}, {});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
 
-    decl = PqlDeclaration("Longname", EntityType::STMT);
-    result = qe.evaluateQuery({decl}, {});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
-  }
-
-  SECTION("Select and Follows Clause with boolean result") {
-    decl = PqlDeclaration("a", EntityType::CONSTANT);
-    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef(1));
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.CONSTANTS);
-
-    decl = PqlDeclaration("a", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef(1));
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
-
-    decl = PqlDeclaration("a", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(1), StmtRef());
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
+    // negated by clauses
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
+    result = qe.evaluateQuery({a}, {follows_clause});
     REQUIRE(result.empty());
 
-    decl = PqlDeclaration("a", EntityType::VARIABLE);
+    // clause has values
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
+    result = qe.evaluateQuery({a}, {follows_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
+  }
+
+  SECTION("Evaluate query with one decl, decl also in clauses") {
+    // output values should follow existing clauses
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
+    result = qe.evaluateQuery({a}, {follows_clause});
+    REQUIRE(ArrayUtility::flattenVector(result) == pkb.synonymValueValues);
+    // Addition of empty clause -> no results
+    result = qe.evaluateQuery({a}, {follows_clause, negation_clause});
     REQUIRE(result.empty());
   }
 
-  SECTION("Select and Follows Clause with 0 common declarations") {
-    decl = PqlDeclaration("a", EntityType::CONSTANT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("b", EntityType::STMT)),
-        StmtRef());
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
-    REQUIRE(result.empty());
+  SECTION("Evaluate query with multiple decls") {
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
+    pattern_clause = std::make_shared<PatternClause>(
+        a, EntRef(v), MatchType::EXACT_MATCH, "blah");
+    result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause});
+    std::vector<std::vector<std::string>> expected_result = {
+        {"x","x","123","345"},{"y","y", "123","345"},{"z", "z","123","345"}
+    };
+    REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
 
-    decl = PqlDeclaration("a", EntityType::PROCEDURE);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(52),
-        StmtRef(PqlDeclaration("b", EntityType::PRINT)));
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
-    REQUIRE(result.empty());
+    // Addition of empty clause -> no results
 
-    // Case where follows clause has declarations that are different from select
-    // clause
-    decl = PqlDeclaration("a", EntityType::STMT);
-    follows_clause = QeFactoryMethods::getFollowsClause(
-        StmtRef(PqlDeclaration("b", EntityType::STMT)),
-        StmtRef(PqlDeclaration("s", EntityType::STMT)));
-    result =
-        qe.evaluateQuery({decl}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.STATEMENTS);
+    result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause, negation_clause});
+    REQUIRE(result.empty());
   }
 }
-
-
-// TODO: Future, separate clause tests from query evaluator tests.
-// Clean up the testing code.
-// add 3 clause evaluation testing

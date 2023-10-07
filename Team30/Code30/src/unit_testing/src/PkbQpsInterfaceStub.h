@@ -8,6 +8,9 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
 
   RelationType last_rel_passed = RelationType::FOLLOWS;
 
+  // Select
+  const std::vector<std::string> getAllOfTypeValues = {"x","y","z"};
+
   // SuchThat Clauses
   std::string last_value_passed;
   std::string last_value_2_passed;

@@ -5,9 +5,7 @@ PkbQpsInterfaceStub::PkbQpsInterfaceStub(){
 
 std::unique_ptr<std::vector<std::string>> PkbQpsInterfaceStub::getEntitiesWithType(
     EntityType type) {
-  std::unique_ptr<std::vector<std::string>> output =
-      std::make_unique<std::vector<std::string>>();
-  return {};
+  return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
 }
 
 bool PkbQpsInterfaceStub::isRelationTrueValueValue(std::string value_1, std::string value_2,
