@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../interpreter/QueryInterpreter.h"
-#include "ClauseExpression.h"
+#include "SuchThatExpression.h"
 
-class FollowsExpression : public ClauseExpression {
+class FollowsExpression : public SuchThatExpression {
  public:
   FollowsExpression(std::string arg1, std::string arg2);
 

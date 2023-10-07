@@ -3,7 +3,7 @@
 #include <optional>
 
 #include "../expression/ClauseExpression.h"
-#include "../expression/QueryExpression.h"
+#include "../expression/SuchThatExpression.h"
 #include "QpParser.h"
 
 class ExpressionTreeBuilder : public QpParser {
@@ -23,6 +23,7 @@ class ExpressionTreeBuilder : public QpParser {
   std::optional<std::shared_ptr<ClauseExpression>> CreateClauseExpression();
   /* std::unique_ptr<PatternExpression> CreatePatternExpression(); */
   std::shared_ptr<SelectExpression> CreateSelectExpression();
+  std::shared_ptr<SuchThatExpression> CreateSuchThatExpression();
 
   /* void
    * AddSuchThatExpression(std::vector<std::shared_ptr<SuchThatExpression>>& */

@@ -1,17 +1,9 @@
 #pragma once
 
-#include "AExpression.h"
+#include "ClauseExpression.h"
 
-class SuchThatExpression : public AExpression {
+class SuchThatExpression : public ClauseExpression {
  public:
-  SuchThatExpression(std::string arg1, std::string arg2);
-  std::string GetArg1();
-  std::string GetArg2();
-  virtual void acceptInterpreter(QueryInterpreter& interperter) = 0;
-
-  virtual ~SuchThatExpression() = default;
-
- private:
-  std::string arg1;
-  std::string arg2;
+  SuchThatExpression(std::string arg1, std::string arg2)
+      : ClauseExpression(arg1, arg2){};
 };

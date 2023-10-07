@@ -4,7 +4,7 @@
 
 #include "AExpression.h"
 
-class ClauseExpression : AExpression {
+class ClauseExpression : public AExpression {
  public:
   ClauseExpression(std::string arg1, std::string arg2);
 

@@ -20,11 +20,14 @@ class QPSController {
 
  private:
   void CheckSyntax(std::vector<std::shared_ptr<Token>> tokens);
-  std::shared_ptr<Context> FormContext(std::vector<std::shared_ptr<Token>> tokens);
+  std::shared_ptr<Context> FormContext(
+      std::vector<std::shared_ptr<Token>> tokens);
   std::shared_ptr<AExpression> FormExpressionTree(
       std::vector<std::shared_ptr<Token>> tokens);
-  void InterpretContext(std::shared_ptr<Context> context, std::unique_ptr<AExpression> expression_tree);
+  void InterpretContext(std::shared_ptr<Context> context,
+                        std::shared_ptr<AExpression> expression_tree);
   std::vector<std::shared_ptr<Token>> TokenizeQuery(std::string& query);
+
   /* std::unique_ptr<QueryExpression> FormQueryExpression( */
   /*     std::vector<std::shared_ptr<Token>> tokens); */
   /* std::vector<std::shared_ptr<Clause>> InterpretQueryExpression( */

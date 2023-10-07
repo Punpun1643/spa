@@ -3,6 +3,7 @@
 #include "../common/EntityType.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/SelectClause.h"
+#include "../common/SuchThatClause.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 
@@ -10,8 +11,10 @@ class Context {
  public:
   void addDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
-  void AddSelectClause(std::shared_ptr<SelectClause> select_clause);
+  void AddSelectDeclaration(PqlDeclaration declaration);
   void AddSuchThatClause(std::shared_ptr<SuchThatClause> such_that_clause);
+  bool CheckDeclarationExists(std::string synonym);
+  PqlDeclaration GetDeclaration(std::string synonym);
   std::vector<PqlDeclaration> GetSelectedDeclarations();
   std::vector<std::shared_ptr<Clause>> GetOtherClauses();
   std::shared_ptr<SelectClause> GetSelectClause();

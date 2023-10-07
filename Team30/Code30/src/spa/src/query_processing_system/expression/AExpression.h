@@ -1,10 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "../interpreter/QueryInterpreter.h"
 
 class QueryInterpreter;
 
-class AExpression {
+class AExpression : public std::enable_shared_from_this<AExpression> {
  public:
   virtual void acceptInterpreter(QueryInterpreter& interpreter) = 0;
 

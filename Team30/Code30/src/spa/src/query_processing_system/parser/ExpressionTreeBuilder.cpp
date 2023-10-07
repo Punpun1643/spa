@@ -5,8 +5,6 @@
 #include <iostream>
 
 #include "../expression/ClauseExpression.h"
-#include "../expression/DeclarationExpression.h"
-#include "../expression/DeclarationListExpression.h"
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
 #include "../expression/ModifiesExpression.h"
@@ -14,7 +12,6 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/SelectExpression.h"
-#include "../expression/SuchThatExpression.h"
 #include "../expression/UsesExpression.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
@@ -52,30 +49,30 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 
 std::optional<std::shared_ptr<ClauseExpression>>
 ExpressionTreeBuilder ::CreateClauseExpression() {
-  while (AParser::IsTokenType(getCurrToken(), TokenType::EOF_TOKEN)) {
-    std::optional<std::shared_ptr<ClauseExpression>>
-        previous_clause_expression =
-            std::make_optional<std::shared_ptr<ClauseExpression>>();
-    std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head =
-        previous_clause_expression;
+  std::optional<std::shared_ptr<ClauseExpression>> previous_clause_expression =
+      std::make_optional<std::shared_ptr<ClauseExpression>>();
+  std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head =
+      previous_clause_expression;
+  // test pointer stuff
+  // TODO remove this
+  std::optional<std::shared_ptr<std::string>> test1 =
+      std::make_optional<std::shared_ptr<std::string>>(
+          std::make_shared<std::string>("abc"));
+  std::optional<std::shared_ptr<std::string>> test2 = test1;
+  assert(*test2.value() == "abc");
+  test1 = std::make_optional<std::shared_ptr<std::string>>(
+      std::make_shared<std::string>("999"));
+  assert(*test2.value() == "abc");
 
-    // test pointer stuff
-    std::optional<std::shared_ptr<std::string>> test1 =
-        std::make_optional<std::shared_ptr<std::string>>(
-            std::make_shared<std::string>("abc"));
-    std::optional<std::shared_ptr<std::string>> test2 = test1;
-    assert(*test2.value() == "abc");
-    test1.assign(std::make_shared<std::string>("999"));
-    assert(*test2.value() == "abc");
-
-    if (getCurrToken()->getTokenVal() == "such") {
-      std::optional<std::shared_ptr<SuchThatExpression>> such_that_expression(
-          this->CreateSuchThatExpression());
-      if (previous_clause_expression.has_value()) {
-        previous_clause_expression.SetNextExpression(such_that_expression);
-      }
-      previous_clause_expression = such_that_expression;
+  while (getCurrToken()->getTokenVal() == "such") {
+    std::optional<std::shared_ptr<SuchThatExpression>> such_that_expression =
+        std::make_optional<std::shared_ptr<SuchThatExpression>>(
+            this->CreateSuchThatExpression());
+    if (previous_clause_expression.has_value()) {
+      previous_clause_expression.value()->SetNextExpression(
+          such_that_expression);
     }
+    previous_clause_expression = such_that_expression;
     /* else if (getCurrToken()->getTokenVal() == "pattern") { */
     /*   std::unique_ptr<PatternExpression> pattern_expression =
      * this->CreatePatternExpression(); */
@@ -88,16 +85,18 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
   return clause_expression_head;
 }
 
-std::unique_ptr<SuchThatListExpression>
+std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpression() {
   assert(getCurrToken()->getTokenVal() == "such");
-  std::unique_ptr<SuchThatExpression> such_that_expression_head;
-  std::optional<std::unique_ptr<SuchThatExpression>>
-  previous_such_that_expression();
+  std::shared_ptr<SuchThatExpression> such_that_expression_head;
 
   nextToken();  // that
   bool is_first_run = true;
-  while (is_first_run || getCurrToken->getTokenVal() == "and") {
+  std::optional<std::shared_ptr<SuchThatExpression>>
+      previous_such_that_expression;
+  std::optional<std::shared_ptr<SuchThatExpression>>
+      current_such_that_expression;
+  while (is_first_run || getCurrToken()->getTokenVal() == "and") {
     std::string clause_name = nextToken()->getTokenVal();
     nextToken();  // (
 
@@ -116,20 +115,25 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
     }
 
     if (clause_name == "Follows") {
-      std::optional<std::unique_ptr<SuchThatExpression>>
-          current_such_that_expression(
-              make_unique<FollowsExpression>(arg1, arg2));
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<FollowsExpression>>(
+              std::make_shared<FollowsExpression>(arg1, arg2));
     }
 
     if (previous_such_that_expression.has_value()) {
-      previous_such_that_expression.value().SetNextExpression(
+      previous_such_that_expression.value()->SetNextExpression(
           current_such_that_expression);
     }
     previous_such_that_expression = current_such_that_expression;
 
+    if (is_first_run) {
+      such_that_expression_head = current_such_that_expression.value();
+    }
+
     is_first_run = false;
     nextToken();  // and OR start of another clause OR Eof
   }
+  return such_that_expression_head;
 }
 
 // --------- refactoring ended here -----
