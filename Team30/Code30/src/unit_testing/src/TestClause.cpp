@@ -6,6 +6,8 @@
 #include "query_processing_system/common/ModifiesPClause.h"
 #include "query_processing_system/common/ModifiesSClause.h"
 #include "query_processing_system/common/ParentClause.h"
+#include "query_processing_system/common/UsesPClause.h"
+#include "query_processing_system/common/UsesSClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 TEST_CASE("Test SuchThat Clauses") {
@@ -137,7 +139,6 @@ TEST_CASE("Test SuchThat Clauses") {
     values = result->getValues(proc);
     REQUIRE(*values == pkb.synonymValueValues);
 
-    // catch errors as well
     // first arg cannot be wild.
     REQUIRE_THROWS_AS(ModifiesSClause(std::make_unique<StmtRef>(),
                                   std::make_unique<EntRef>(v)), InvalidSemanticsException);
@@ -158,6 +159,66 @@ TEST_CASE("Test SuchThat Clauses") {
   }
 
   SECTION("UsesS and UsesP Clauses") {
-    // test
+    // Tests valueSynonym, valueWild
+    UsesSClause uses_s =
+        UsesSClause(std::make_unique<StmtRef>(2), std::make_unique<EntRef>(v));
+    UsesPClause uses_p = UsesPClause(std::make_unique<EntRef>("name"),
+                                     std::make_unique<EntRef>());
+    REQUIRE(pkb.valueSynonymCalls == 0);
+    result = uses_s.evaluate(pkb);
+    REQUIRE(pkb.valueSynonymCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::USES_S);
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE(result->contains(v));
+    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{v});
+    auto values = result->getValues(v);
+    REQUIRE(*values == pkb.valueSynonymValues);
+
+    REQUIRE(pkb.valueWildCalls == 0);
+    result = uses_p.evaluate(pkb);
+    REQUIRE(pkb.valueWildCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::USES_P);
+    REQUIRE(result->getNumDeclarations() == 0);
+    REQUIRE(result->getBooleanClauseValue() == pkb.valueWildBool);
+  }
+
+  SECTION("Modifies_S/Uses_S error handling") {
+    // first arg cannot be wild.
+    REQUIRE_THROWS_AS(UsesSClause(std::make_unique<StmtRef>(),
+                                  std::make_unique<EntRef>(v)), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(ModifiesSClause(std::make_unique<StmtRef>(),
+                                  std::make_unique<EntRef>()), InvalidSemanticsException);
+    // Second arg must be a variable synonym
+    REQUIRE_THROWS_AS(UsesSClause(std::make_unique<StmtRef>(s),
+                                      std::make_unique<EntRef>(proc)), InvalidSemanticsException);
+    REQUIRE_NOTHROW(UsesSClause(std::make_unique<StmtRef>(s), std::make_unique<EntRef>(v)));
+    REQUIRE_THROWS_AS(ModifiesSClause(std::make_unique<StmtRef>(s),
+                                      std::make_unique<EntRef>(constant)), InvalidSemanticsException);
+    REQUIRE_NOTHROW(ModifiesSClause(std::make_unique<StmtRef>(s), std::make_unique<EntRef>(v)));
+
+  }
+
+  SECTION("Modifies_P/Uses_P error handling") {
+    // first arg cannot be wild
+    REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(),
+                                  std::make_unique<EntRef>(v)), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(UsesPClause(std::make_unique<EntRef>(),
+                                      std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    // if first arg is a declaration, must conform to expected types
+    REQUIRE_THROWS_AS(UsesPClause(std::make_unique<EntRef>(s),
+                                      std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(UsesPClause(std::make_unique<EntRef>(print),
+                                      std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(s),
+                                      std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>(print),
+                                      std::make_unique<EntRef>("abc")), InvalidSemanticsException);
+    // Second arg must be a variable synonym
+    REQUIRE_THROWS_AS(UsesPClause(std::make_unique<EntRef>(proc),
+                                      std::make_unique<EntRef>(constant)), InvalidSemanticsException);
+    REQUIRE_NOTHROW(UsesPClause(std::make_unique<EntRef>(proc), std::make_unique<EntRef>(v)));
+    REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>("abc"),
+                                      std::make_unique<EntRef>(proc2)), InvalidSemanticsException);
+    REQUIRE_NOTHROW(ModifiesPClause(std::make_unique<EntRef>(proc), std::make_unique<EntRef>(v)));
   }
 }
