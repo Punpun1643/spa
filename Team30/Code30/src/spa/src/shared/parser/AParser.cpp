@@ -1,6 +1,5 @@
 #include "AParser.h"
-
-#include <stdexcept>
+#include "exceptions/InvalidTokenException.h"
 
 namespace a_parser_constant {
 constexpr char LEFT_PARENTHESIS[] = "(";
@@ -117,7 +116,7 @@ void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
                                           std::string const& expectedValue,
                                           std::string const& errorMessage) {
   if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
-    throw std::invalid_argument(errorMessage);
+    throw InvalidTokenException(errorMessage);
   }
 }
 

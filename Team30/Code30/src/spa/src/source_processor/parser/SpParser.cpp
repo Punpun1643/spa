@@ -1,9 +1,9 @@
 #include "SpParser.h"
 
 #include "../exceptions/InvalidCallException.h"
-#include "../exceptions/InvalidContainerStmtException.h"
 #include "../exceptions/InvalidPrintException.h"
 #include "../exceptions/InvalidReadException.h"
+#include "../exceptions/exception_message/ExceptionMessage.h"
 
 namespace SpParserConstant {
 
@@ -169,44 +169,47 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_COND_EXPR,
-                              "Invalid if 1");
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
-                              SpParserConstant::END_COND_EXPR, "Invalid if 2");
+                              SpParserConstant::END_COND_EXPR,
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   assertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                              SpParserConstant::THEN_KEYWORD, "Invalid if 3");
+                              SpParserConstant::THEN_KEYWORD,
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_THEN_STMTLST,
-                              "Invalid if 4");
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   std::shared_ptr<StmtLstNode> thenStmtLst = parseStmtLst();
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_THEN_STMTLST,
-                              "Invalid if 5");
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   assertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                              SpParserConstant::ELSE_KEYWORD, "Invalid if 6");
+                              SpParserConstant::ELSE_KEYWORD,
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_ELSE_STMTLST,
-                              "Invalid if 7");
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   std::shared_ptr<StmtLstNode> elseStmtLst = parseStmtLst();
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_ELSE_STMTLST,
-                              "Invalid if 8");
+                              ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   nextToken();
   return std::make_shared<IfNode>(ifStmtIndex, StmtType::IF_STMT, condExpr,
