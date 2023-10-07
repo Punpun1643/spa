@@ -23,6 +23,7 @@ TEST_CASE("Test Query Evaluator") {
   QueryEvaluator qe = QueryEvaluator(pkb);
   PqlDeclaration decl = PqlDeclaration("dummy", EntityType::STMT);
   std::shared_ptr<Clause> follows_clause;
+  std::shared_ptr<Clause> pattern_clause;
   std::vector<std::vector<std::string>> result;
 
   SECTION("Evaluate boolean query") {
@@ -104,64 +105,6 @@ TEST_CASE("Test Query Evaluator") {
   }
 }
 
-
-TEST_CASE("Pattern clauses") {
-  PkbStub pkb = PkbStub();
-  auto qe = QueryEvaluator(pkb);
-  // decl, partial
-  auto a = PqlDeclaration("a", EntityType::ASSIGN);
-  auto v = PqlDeclaration("v", EntityType::VARIABLE);
-  SECTION("decl, wild") {
-    auto pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(v), MatchType::WILD_MATCH, "");
-    auto result = qe.evaluateQuery({v}, {pattern_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"varX"}));
-  }
-
-  SECTION("decl, partial") {
-    auto pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(v), MatchType::PARTIAL_MATCH, "a");
-    auto result = qe.evaluateQuery({v}, {pattern_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"varY"}));
-  }
-
-  SECTION("value, wild") {
-    auto pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef("varName"), MatchType::WILD_MATCH, "");
-    auto result = qe.evaluateQuery({a}, {pattern_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"3"}));
-  }
-
-  SECTION("value, partial") {
-    auto pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef("varName"), MatchType::PARTIAL_MATCH, "a");
-    auto result = qe.evaluateQuery({a}, {pattern_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"4"}));
-  }
-
-  SECTION("wild, wild") {
-    auto pattern_clause =
-        std::make_shared<PatternClause>(a, EntRef(), MatchType::WILD_MATCH, "");
-    auto result = qe.evaluateQuery({a}, {pattern_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"1"}));
-  }
-
-  SECTION("wild, partial") {
-    auto pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(), MatchType::PARTIAL_MATCH, "blah");
-    auto result = qe.evaluateQuery({a}, {pattern_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == std::vector<std::string>({"2"}));
-  }
-
-  SECTION("semantic errors") {
-    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(
-                          a, EntRef(a), MatchType::PARTIAL_MATCH, "a"),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(
-                          v, EntRef(v), MatchType::PARTIAL_MATCH, "a"),
-                      InvalidSemanticsException);
-  }
-}
 
 // TODO: Future, separate clause tests from query evaluator tests.
 // Clean up the testing code.

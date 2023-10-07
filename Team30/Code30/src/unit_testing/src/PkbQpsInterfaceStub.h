@@ -7,6 +7,13 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   PkbQpsInterfaceStub();
 
   RelationType last_rel_passed = RelationType::FOLLOWS;
+
+  // SuchThat Clauses
+  std::string last_value_passed;
+  std::string last_value_2_passed;
+  EntityType last_entity_type_passed = EntityType::IF;
+  EntityType last_entity_type_2_passed = EntityType::IF;
+
   int valueValueCalls = 0;
   int valueWildCalls = 0;
   int wildValueCalls = 0;
@@ -21,7 +28,6 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   const bool valueWildBool = false;
   const bool wildValueBool = true;
   const bool wildWildBool = true;
-
   const std::vector<std::string> synonymWildValues = {"1","2","3"};
   const std::vector<std::string> wildSynonymValues = {"a","b","c"};
   const std::vector<std::string> synonymValueValues = {"4","5","6"};
@@ -29,6 +35,19 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   const std::vector<std::string> synonymSynonymValues1 = {"42"};
   const std::vector<std::string> synonymSynonymValues2 = {"43"};
   const std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
+
+  // Pattern Clauses
+  int patternWildCalls = 0;
+  int patternValueCalls = 0;
+  int patternDeclCalls = 0;
+  MatchType last_match_type_passed = MatchType::EXACT_MATCH;
+  std::string last_rhs_expr_passed = "";
+
+  const std::vector<std::string> patternWildValues = {"10","20","30"};
+  const std::vector<std::string> patternValueValues = {"ab","bb","cb"};
+  const std::vector<std::string> patternDeclValues1 = {"123"};
+  const std::vector<std::string> patternDeclValues2 = {"345"};
+  const std::vector<std::pair<std::string, std::string>> patternDeclValues = {std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
 
 
   // Select Clause
