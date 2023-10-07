@@ -432,75 +432,97 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected_pairs.push_back({"3", "x"});
   expected_pairs.push_back({"4", "y"});
   expected_pairs.push_back({"5", "x"});
-  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
-              buildTree4(), MatchType::WILD_MATCH) == expected_pairs);
+  auto actual_pairs =
+      *pkb.getPatternMatchesSynonymLhs(buildTree4(), MatchType::WILD_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
 
   // syn = _b * c_
   expected_pairs.clear();
   expected_pairs.push_back({"3", "x"});
   expected_pairs.push_back({"4", "y"});
-  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
-              buildTree4(), MatchType::PARTIAL_MATCH) == expected_pairs);
+  actual_pairs =
+      *pkb.getPatternMatchesSynonymLhs(buildTree4(), MatchType::PARTIAL_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
 
   // syn = b * c
   expected_pairs.clear();
-  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
-              buildTree4(), MatchType::EXACT_MATCH) == expected_pairs);
+  actual_pairs =
+      *pkb.getPatternMatchesSynonymLhs(buildTree4(), MatchType::EXACT_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
 
   // syn = a + b
   expected_pairs.push_back({"5", "x"});
-  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
-              buildTree3(), MatchType::EXACT_MATCH) == expected_pairs);
+  actual_pairs =
+      *pkb.getPatternMatchesSynonymLhs(buildTree3(), MatchType::EXACT_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
 
   // x = _
   std::vector<std::string> expected;
   expected.push_back("3");
   expected.push_back("5");
-  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree4(),
-                                         MatchType::WILD_MATCH) == expected);
+  auto actual =
+      *pkb.getPatternMatchesValueLhs("x", buildTree4(), MatchType::WILD_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // x = _b * c_
   expected.clear();
   expected.push_back("3");
-  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree4(),
-                                         MatchType::PARTIAL_MATCH) == expected);
+  actual = *pkb.getPatternMatchesValueLhs("x", buildTree4(),
+                                          MatchType::PARTIAL_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // x = _a + b_
   expected.clear();
   expected.push_back("5");
-  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree3(),
-                                         MatchType::PARTIAL_MATCH) == expected);
+  actual = *pkb.getPatternMatchesValueLhs("x", buildTree3(),
+                                          MatchType::PARTIAL_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // x = a + b * c % d
   expected.clear();
   expected.push_back("3");
-  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree1(),
-                                         MatchType::EXACT_MATCH) == expected);
+  actual =
+      *pkb.getPatternMatchesValueLhs("x", buildTree1(), MatchType::EXACT_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // y = a + b * c % d;
   expected.clear();
-  REQUIRE(*pkb.getPatternMatchesValueLhs("y", buildTree1(),
-                                         MatchType::EXACT_MATCH) == expected);
+  actual =
+      *pkb.getPatternMatchesValueLhs("y", buildTree1(), MatchType::EXACT_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // _ = _
   expected.clear();
   expected.push_back("3");
   expected.push_back("4");
   expected.push_back("5");
-  REQUIRE(*pkb.getPatternMatchesWildLhs(buildTree1(), MatchType::WILD_MATCH) ==
-          expected);
+  actual = *pkb.getPatternMatchesWildLhs(buildTree1(), MatchType::WILD_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // _ = _a_
   expected.clear();
   expected.push_back("3");
   expected.push_back("5");
-  REQUIRE(*pkb.getPatternMatchesWildLhs(
-              std::make_shared<TreeNode>("a", nullptr, nullptr),
-              MatchType::PARTIAL_MATCH) == expected);
+  actual = *pkb.getPatternMatchesWildLhs(
+      std::make_shared<TreeNode>("a", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 
   // _ = _a_
   expected.clear();
   expected.push_back("4");
-  REQUIRE(*pkb.getPatternMatchesWildLhs(buildTree2(),
-              MatchType::EXACT_MATCH) == expected);
+  actual = *pkb.getPatternMatchesWildLhs(buildTree2(), MatchType::EXACT_MATCH);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == expected);
 }
