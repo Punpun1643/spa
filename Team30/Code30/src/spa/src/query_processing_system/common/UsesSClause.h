@@ -7,6 +7,6 @@
 #include "UsesOrModifiesClause.h"
 
 class UsesSClause : public UsesOrModifiesClause {
-public:
- UsesSClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<EntRef> arg2);
+ public:
+  UsesSClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<EntRef> arg2);
 };

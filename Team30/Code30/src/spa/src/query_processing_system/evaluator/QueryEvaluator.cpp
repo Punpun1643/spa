@@ -4,15 +4,15 @@
 #include <cassert>
 #include <iterator>
 
-QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb)
-    : pkb(pkb) {}
+QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 
-void QueryEvaluator::populateIntermediateResultsTable(IntermediateResultsTable& table, ClauseList clauses) {
+void QueryEvaluator::populateIntermediateResultsTable(
+    IntermediateResultsTable& table, ClauseList clauses) {
   for (auto& clause : clauses) {
     auto clause_result = clause->evaluate(pkb);
     table.addClauseResult(*clause_result);
     if (table.hasNoResults()) {
-      break; // no point continuing
+      break;  // no point continuing
     }
   }
 }
@@ -23,10 +23,11 @@ bool QueryEvaluator::evaluateQuery(ClauseList clauses) {
   return !table.hasNoResults();
 }
 
-std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(std::vector<PqlDeclaration> const& selected_decls, ClauseList clauses) {
+std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(
+    std::vector<PqlDeclaration> const& selected_decls, ClauseList clauses) {
   /**
-   * Returns the possible values that each of the selected declarations can take in the form of a 2D vector.
-   * Each row represents one set of possible values
+   * Returns the possible values that each of the selected declarations can take
+   * in the form of a 2D vector. Each row represents one set of possible values
    * (e.g. a = 2, b = 3, c = 4 will be {{"2", "3", "4"}})
    */
   assert(!selected_decls.empty());
@@ -35,7 +36,7 @@ std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(std::vector<
 
   auto missing_decl_clauses = std::vector<std::shared_ptr<Clause>>();
 
-  for (auto const& decl: selected_decls) {
+  for (auto const& decl : selected_decls) {
     if (!table.hasDeclaration(decl)) {
       auto all_clause = std::make_shared<SelectClause>(decl);
       missing_decl_clauses.push_back(all_clause);
@@ -57,7 +58,7 @@ std::vector<std::string> QueryEvaluator::evaluateQuery(
 
   // Flatten and return
   std::vector<std::string> old_output = {};
-  for (auto& row: new_output) {
+  for (auto& row : new_output) {
     assert(row.size() == 1);
     old_output.push_back(row[0]);
   }

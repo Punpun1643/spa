@@ -7,7 +7,7 @@ UsesPClause::UsesPClause(std::unique_ptr<EntRef> arg1,
     : UsesOrModifiesClause(std::move(arg1), std::move(arg2),
                            RelationType::USES_P) {
   this->checkDeclarationArgEntityType(1, VALID_DECL_TYPES_FOR_ARG_1,
-                                              INVALID_ARG_1_DECL_TYPE_MSG);
+                                      INVALID_ARG_1_DECL_TYPE_MSG);
 }
 
 std::vector<EntityType> const UsesPClause::VALID_DECL_TYPES_FOR_ARG_1 = {

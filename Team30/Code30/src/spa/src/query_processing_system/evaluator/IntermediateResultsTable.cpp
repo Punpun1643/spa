@@ -42,7 +42,8 @@ void IntermediateResultsTable::addClauseResult(
 
 bool IntermediateResultsTable::hasNoResults() const { return has_no_results; }
 
-std::vector<std::vector<std::string>> IntermediateResultsTable::getValuesGivenDeclarations(
+std::vector<std::vector<std::string>>
+IntermediateResultsTable::getValuesGivenDeclarations(
     std::vector<PqlDeclaration> const& decls) {
   assert(!decls.empty());
 
@@ -52,13 +53,14 @@ std::vector<std::vector<std::string>> IntermediateResultsTable::getValuesGivenDe
     return {};  // empty values
   }
 
-  for (auto& decl: decls) {
+  for (auto& decl : decls) {
     assert(hasDeclaration(decl));
   }
 
-  // Merge all the declarations into a single table: possible source of future optimisation.
+  // Merge all the declarations into a single table: possible source of future
+  // optimisation.
   int table_idx = table_mapping[decls[0]];
-  for (auto& decl: decls) {
+  for (auto& decl : decls) {
     if (table_mapping[decl] != table_idx) {
       mergeExistingTables(table_idx, table_mapping[decl], true);
     }
@@ -136,11 +138,14 @@ void IntermediateResultsTable::addPairedDeclarations(
   }
 }
 
-bool IntermediateResultsTable::hasDeclaration(PqlDeclaration const& declaration) const{
+bool IntermediateResultsTable::hasDeclaration(
+    PqlDeclaration const& declaration) const {
   return table_mapping.count(declaration) == 1;
 }
 
-void IntermediateResultsTable::mergeExistingTables(int table_to_keep_id, int table_to_merge_id, bool allow_cross_product) {
+void IntermediateResultsTable::mergeExistingTables(int table_to_keep_id,
+                                                   int table_to_merge_id,
+                                                   bool allow_cross_product) {
   tables[table_to_keep_id].join(tables[table_to_merge_id], allow_cross_product);
   // Update table_mappings lazily (without removing old table)
   // May want to remove old table in the future to reduce mem usage

@@ -7,6 +7,6 @@
 #include "UsesOrModifiesClause.h"
 
 class ModifiesSClause : public UsesOrModifiesClause {
-public:
+ public:
   ModifiesSClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<EntRef> arg2);
 };

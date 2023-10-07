@@ -29,16 +29,17 @@ RelationalTable::RelationalTable(PqlDeclaration const& d1,
   }
 }
 
-std::vector<std::vector<std::string>> RelationalTable::getTableCols(std::vector<PqlDeclaration> const& decls) const {
+std::vector<std::vector<std::string>> RelationalTable::getTableCols(
+    std::vector<PqlDeclaration> const& decls) const {
   assert(!decls.empty());
-  for (auto& d: decls) {
+  for (auto& d : decls) {
     assert(column_mapping.count(d) == 1);
   }
   std::vector<std::vector<std::string>> output = {};
   // Construct row by row
-  for (auto const& row: table) {
+  for (auto const& row : table) {
     std::vector<std::string> output_row = {};
-    for (auto& d: decls) {
+    for (auto& d : decls) {
       int col_idx = column_mapping.at(d);
       output_row.push_back(row[col_idx]);
     }
@@ -48,7 +49,7 @@ std::vector<std::vector<std::string>> RelationalTable::getTableCols(std::vector<
   return output;
 }
 
-std::vector<PqlDeclaration> RelationalTable::getSharedColumns (
+std::vector<PqlDeclaration> RelationalTable::getSharedColumns(
     RelationalTable& other_table) const {
   std::vector<PqlDeclaration> shared_cols = {};
   for (auto const& [key, value] : other_table.column_mapping) {
@@ -112,11 +113,11 @@ RelationalTable::getRenumberedColsAfterRemoval(
     }
   }
   // sort table_mapping_vector by idx
-  std::sort(
-      table_mapping_vector.begin(), table_mapping_vector.end(),
-      [&](const std::pair<PqlDeclaration, int>& a, const std::pair<PqlDeclaration, int>& b) {
-        return a.second < b.second;
-      });
+  std::sort(table_mapping_vector.begin(), table_mapping_vector.end(),
+            [&](std::pair<PqlDeclaration, int> const& a,
+                std::pair<PqlDeclaration, int> const& b) {
+              return a.second < b.second;
+            });
 
   // renumber in order
   int i = 0;
@@ -127,7 +128,8 @@ RelationalTable::getRenumberedColsAfterRemoval(
   return table_mapping_vector;
 }
 
-void RelationalTable::join(RelationalTable& other_table, bool allow_cross_product) {
+void RelationalTable::join(RelationalTable& other_table,
+                           bool allow_cross_product) {
   /**
    * Joins this table with the given table by all shared columns
    */

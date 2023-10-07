@@ -15,7 +15,8 @@ class RelationalTable {
   std::vector<std::vector<std::string>> table;
   std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> column_mapping;
 
-  std::vector<PqlDeclaration> getSharedColumns(RelationalTable& other_table) const;
+  std::vector<PqlDeclaration> getSharedColumns(
+      RelationalTable& other_table) const;
   std::vector<std::pair<PqlDeclaration, int>> getRenumberedColsAfterRemoval(
       std::vector<PqlDeclaration> const& to_remove) const;
 
@@ -38,7 +39,8 @@ class RelationalTable {
                   std::vector<std::string> const& d1_values,
                   std::vector<std::string> const& d2_values);
 
-  std::vector<std::vector<std::string>> getTableCols(std::vector<PqlDeclaration> const& decls) const;
+  std::vector<std::vector<std::string>> getTableCols(
+      std::vector<PqlDeclaration> const& decls) const;
 
   bool hasNoResults() const;
 
