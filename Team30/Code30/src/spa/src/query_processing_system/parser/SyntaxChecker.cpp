@@ -39,8 +39,7 @@ void SyntaxChecker::CheckDeclaration() {
     if (!IsSynonym(getCurrToken()->getTokenVal())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
     } else {
-      if (dec.find(getCurrToken()->getTokenVal()) !=
-          dec.end()) {
+      if (dec.find(getCurrToken()->getTokenVal()) != dec.end()) {
         throw InvalidSyntaxException("Synonym cannot be declared twice");
       }
       dec.insert(getCurrToken()->getTokenVal());
@@ -51,8 +50,7 @@ void SyntaxChecker::CheckDeclaration() {
       if (!IsSynonym(getCurrToken()->getTokenVal())) {
         throw InvalidSyntaxException("Invalid synonym given in declaration");
       } else {
-        if (dec.find(getCurrToken()->getTokenVal()) !=
-            dec.end()) {
+        if (dec.find(getCurrToken()->getTokenVal()) != dec.end()) {
           throw InvalidSyntaxException("Synonym cannot be declared twice");
         }
         dec.insert(getCurrToken()->getTokenVal());

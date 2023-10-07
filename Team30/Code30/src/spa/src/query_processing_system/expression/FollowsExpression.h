@@ -1,17 +1,13 @@
 #pragma once
 
 #include "../interpreter/QueryInterpreter.h"
-#include "SuchThatExpression.h"
+#include "ClauseExpression.h"
 
-class FollowsExpression : public SuchThatExpression {
+class FollowsExpression : public ClauseExpression {
  public:
   FollowsExpression(std::string arg1, std::string arg2);
 
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~FollowsExpression() = default;
-
- private:
-  std::string arg1;
-  std::string arg2;
 };

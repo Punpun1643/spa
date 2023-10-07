@@ -21,16 +21,94 @@
 #include "../expression/UsesExpression.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-QueryInterpreter::QueryInterpreter()
-    : declarations(std::make_shared<DeclarationMap>()){};
+QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
+                                   std::shared_ptr<AExpression> expression_tree)
+    : context(context), expression_tree(std::move(expression_tree)){};
 
-std::shared_ptr<DeclarationMap> QueryInterpreter::getDeclarations() {
-  return this->declarations;
+PqlDeclaration QueryInterpreter::GetMappedDeclaration(
+    std::string const& synonym) {
+  return (this->context->GetDeclaration(synonym));
 }
 
-ClauseList QueryInterpreter::GetClauseList() {
-  return this->clause_list;
+void QueryInterpreter::Interpret() {
+  std::shared_ptr<AExpression> expression_tree =
+      std::move(this->expression - tree);
+  assert(dynamic_cast<SelectExpression>(expression_tree) != nullptr);
+  expression_tree.acceptInterpreter(*this);
 }
+
+void QueryInterpreter::Interpret(FollowsExpression& follows_expression) {
+  std::string arg1 = follows_expression.GetArg1();
+  std::string arg2 = follows_expression.GetArg2();
+  // TODO: all exceptions shouldve been checked and thrown before this, during
+  // parsing
+  if (!IsStmtRef(arg1)) {
+    throw InvalidSyntaxException(
+        "First argument for Follows Clause should be a StmtRef.");
+  } else if (!IsStmtRef(arg2)) {
+    throw InvalidSyntaxException(
+        "Second argument for Follows Clause should be a StmtRef.");
+  }
+  this->context->AddSuchThatClause(std::make_shared<FollowsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  this->InterpretNext(follows_expression);
+}
+
+void QueryInterpreter::Interpret(SelectExpression& select_expression) {
+  std::string synonym = select_expression.GetSynonym();
+  PqlDeclaration selected_declaration =
+      QueryInterpreter::GetMappedDeclaration(synonym);
+  this->context->AddSelectClause(
+      std::make_shared<SelectClause>(selected_declaration));
+  this->InterpretNext(select_expression)
+}
+
+void QueryInterpreter::InterpretNext(AExpression& expression) {
+  std::optional<std::shared_ptr<AExpression>> next_expression =
+      expression.GetNextExpression();
+  if (next_expression.has_value()) {
+    next_expression.acceptInterpreter(*this);
+  }
+}
+
+bool QueryInterpreter::IsStmtRef(std::string const& argument) {
+  if (IsWildcard(argument) || IsInteger(argument) || IsSynonym(argument)) {
+    return true;
+  } else if (IsADeclaration(argument)) {
+    EntityType entity_type = GetEntityTypeAsDeclaration(argument);
+    if (entity_type == EntityType::STMT || entity_type == EntityType::READ ||
+        entity_type == EntityType::PRINT || entity_type == EntityType::CALL ||
+        entity_type == EntityType::WHILE || entity_type == EntityType::IF ||
+        entity_type == EntityType::ASSIGN) {
+      return true;
+    }
+  }
+  return false;
+}
+
+std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
+    std::string const& string) {
+  if (IsSynonym(string)) {
+    return std::make_unique<StmtRef>(
+        QueryInterpreter::GetMappedDeclaration(string));
+  } else if (IsWildcard(string)) {
+    return std::make_unique<StmtRef>();
+  } else if (IsInteger(string)) {
+    return std::make_unique<StmtRef>(stoi(string));
+  } else {
+    throw InvalidSyntaxException("Invalid string to be converted into StmtRef");
+  }
+}
+
+// --------- refacotring ends here ------
+
+/* std::shared_ptr<DeclarationMap> QueryInterpreter::getDeclarations() { */
+/*   return this->declarations; */
+/* } */
+
+/* ClauseList QueryInterpreter::GetClauseList() { */
+/*   return this->clause_list; */
+/* } */
 
 void QueryInterpreter::Interpret(QueryExpression& query_expression) {
   if (query_expression.HasDeclarationListExpression()) {
@@ -55,21 +133,6 @@ void QueryInterpreter::Interpret(
        *declaration_expressions) {
     declaration_expression->acceptInterpreter(*this);
   }
-}
-
-void QueryInterpreter::Interpret(FollowsExpression& follows_expression) {
-  std::string arg1 = follows_expression.GetArg1();
-  std::string arg2 = follows_expression.GetArg2();
-  if (!IsStmtRef(arg1)) {
-    throw InvalidSyntaxException(
-        "First argument for Follows Clause should be a StmtRef.");
-  } else if (!IsStmtRef(arg2)) {
-    throw InvalidSyntaxException(
-        "Second argument for Follows Clause should be a StmtRef.");
-  }
-
-  this->clause_list.push_back(std::make_shared<FollowsClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
 }
 
 void QueryInterpreter::Interpret(ModifiesExpression& modifies_expression) {
@@ -168,14 +231,6 @@ void QueryInterpreter::Interpret(ParentTExpression& parent_t_expression) {
       StringToStmtRef(arg1), StringToStmtRef(arg2), true));
 }
 
-void QueryInterpreter::Interpret(SelectExpression& select_expression) {
-  std::string synonym = select_expression.GetSynonym();
-  PqlDeclaration selected_declaration =
-      QueryInterpreter::GetMappedDeclaration(synonym);
-  this->clause_list.push_back(
-      std::make_shared<SelectClause>(selected_declaration));
-}
-
 void QueryInterpreter::Interpret(
     SuchThatListExpression& such_that_list_expression) {
   std::unique_ptr<std::vector<std::shared_ptr<SuchThatExpression>>>
@@ -221,20 +276,6 @@ void QueryInterpreter::InterpretDeclarations(
   this->declarations->insert(std::make_pair(synonym, declaration));
 }
 
-std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
-    std::string const& string) {
-  if (IsSynonym(string)) {
-    return std::make_unique<StmtRef>(
-        QueryInterpreter::GetMappedDeclaration(string));
-  } else if (IsWildcard(string)) {
-    return std::make_unique<StmtRef>();
-  } else if (IsInteger(string)) {
-    return std::make_unique<StmtRef>(stoi(string));
-  } else {
-    throw InvalidSyntaxException("Invalid string to be converted into StmtRef");
-  }
-}
-
 std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
     std::string const& string) {
   if (IsADeclaration(string)) {
@@ -247,14 +288,6 @@ std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
   } else {
     throw std::runtime_error("Invalid string to be converted into Entref");
   }
-}
-
-PqlDeclaration QueryInterpreter::GetMappedDeclaration(
-    std::string const& synonym) {
-  if (!(this->declarations->count(synonym))) {
-    throw InvalidSemanticsException("Synonym has not been declared");
-  }
-  return (this->declarations)->at(synonym);
 }
 
 bool QueryInterpreter::IsSynonym(std::string const& argument) {
@@ -285,21 +318,6 @@ bool QueryInterpreter::IsInteger(std::string const& argument) {
 bool QueryInterpreter::IsValidRelArg(std::string const& argument) {
   if (IsStmtRef(argument) || IsEntRef(argument)) {
     return true;
-  }
-  return false;
-}
-
-bool QueryInterpreter::IsStmtRef(std::string const& argument) {
-  if (IsWildcard(argument) || IsInteger(argument) || IsSynonym(argument)) {
-    return true;
-  } else if (IsADeclaration(argument)) {
-    EntityType entity_type = GetEntityTypeAsDeclaration(argument);
-    if (entity_type == EntityType::STMT || entity_type == EntityType::READ ||
-        entity_type == EntityType::PRINT || entity_type == EntityType::CALL ||
-        entity_type == EntityType::WHILE || entity_type == EntityType::IF ||
-        entity_type == EntityType::ASSIGN) {
-      return true;
-    }
   }
   return false;
 }

@@ -1,8 +1,8 @@
 #include "PatternExpression.h"
 
-PatternExpression::PatternExpression(std::string syn_assign,
-    std::string arg1, std::string arg2)
-    : syn_assign(syn_assign), arg1(arg1), arg2(arg2) {};
+PatternExpression::PatternExpression(std::string syn_assign, std::string arg1,
+                                     std::string arg2)
+    : syn_assign(syn_assign), arg1(arg1), arg2(arg2){};
 
 void PatternExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(*this);

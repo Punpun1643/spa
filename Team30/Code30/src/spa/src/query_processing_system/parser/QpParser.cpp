@@ -1,5 +1,7 @@
 #include "QpParser.h"
 
+#include <query_processing_system/exceptions/InvalidSyntaxException.h>
+
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -8,7 +10,6 @@
 #include "../common/FollowsClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
-#include <query_processing_system/exceptions/InvalidSyntaxException.h>
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};

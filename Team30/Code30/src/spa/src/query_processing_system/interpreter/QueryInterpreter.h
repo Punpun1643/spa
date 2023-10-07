@@ -6,6 +6,8 @@
 #include "../common/EntRef.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
+#include "../context/context.h"
+#include "../expression/AExpression.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;
@@ -25,9 +27,13 @@ class UsesExpression;
 
 class QueryInterpreter {
  public:
-  QueryInterpreter();
-  std::shared_ptr<DeclarationMap> getDeclarations();
-  ClauseList GetClauseList();
+  QueryInterpreter(std::shared_ptr<Context> context,
+                   std::unique_ptr<AExpression> expression_tree);
+
+  void Interpret();
+
+  /* std::shared_ptr<DeclarationMap> getDeclarations(); */
+  /* ClauseList GetClauseList(); */
   void Interpret(QueryExpression& query_expression);
   void Interpret(DeclarationListExpression& declaration_list_expression);
   void Interpret(FollowsExpression& follows_expression);
@@ -42,19 +48,23 @@ class QueryInterpreter {
   void InterpretDeclarations(DeclarationExpression& declaration_expression);
 
  private:
+  std::shared_ptr<Context> context;
+  std::unique_ptr<AExpression> expression_tree;
+
   bool IsSynonym(std::string const& argument);
   bool IsWildcard(std::string const& argument);
   bool IsInteger(std::string const& argument);
-  bool IsValidRelArg(std::string const& argument);
   bool IsStmtRef(std::string const& argument);
+  std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
+
+  bool IsValidRelArg(std::string const& argument);
   bool IsEntRef(std::string const& argument);
   bool IsIdentifier(std::string const& argument);
   bool IsADeclaration(std::string const& argument);
   EntityType GetEntityTypeAsDeclaration(std::string const& argument);
-  std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
-  PqlDeclaration GetMappedDeclaration(std::string const& synonym);
+  /* PqlDeclaration GetMappedDeclaration(std::string const& synonym); */
 
-  std::shared_ptr<DeclarationMap> declarations;
-  ClauseList clause_list;
+  /* std::shared_ptr<DeclarationMap> declarations; */
+  /* ClauseList clause_list; */
 };
