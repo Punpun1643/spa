@@ -14,9 +14,10 @@ void CallsManager::insertProcNode(std::string procName) {
     std::shared_ptr<CallsGraphProcNode> newNode =
         std::make_shared<CallsGraphProcNode>(procName);
     procNodeMap.insert({procName, newNode});
-    // std::cout << "INSERTED " + procName + "\n";
   } else {
     // throw error: two procs with same name
+    throw InvalidSourceSemanticsException(
+        "Multiple procedures sharing the same name");
   }
 }
 
@@ -31,11 +32,11 @@ void CallsManager::insertCallsStmt(std::string procA, std::string procB,
   std::shared_ptr<CallsGraphProcNode> procCalling = procNodeMap[procA];
   std::shared_ptr<CallsGraphProcNode> procGettingCalled = procNodeMap[procB];
 
-  if (procCalling == NULL) {
+  if (procCalling == nullptr) {
     // invalid proc
     throw InvalidSourceSemanticsException("Proceduce calling does not exist.");
   }
-  if (procGettingCalled == NULL) {
+  if (procGettingCalled == nullptr) {
     // throw error: call to non-existant procedure
     throw InvalidSourceSemanticsException(
         "Proceduce getting called does not exist.");

@@ -47,7 +47,6 @@ void CallsGraphProcNode::removeProcCalled(
     std::shared_ptr<CallsGraphProcNode> proc) {
   procsCalled.erase(proc);
   numProcsCalled--;
-  assert(numProcsCalled >= 0);
 }
 
 std::string CallsGraphProcNode::getProcName() { return proc; }

@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "CallsGraphProcNode.h"
+#include "../node/util_node/CallsGraphProcNode.h"
 class CallsProcConnector {
  public:
   explicit CallsProcConnector(PKBSPInterface& pkb);

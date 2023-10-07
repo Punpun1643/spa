@@ -3,11 +3,12 @@
 
 #include <memory>
 #include <queue>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
+#include "../node/util_node/CallsGraphProcNode.h"
 #include "CallsExtractor.h"
-#include "CallsGraphProcNode.h"
 #include "CallsProcConnector.h"
 
 class CallsManager {
