@@ -30,49 +30,52 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // added follows relation
   REQUIRE(pkb.isRelationTrueValueValue("2", "3", RelationType::FOLLOWS));
   // unadded follows relation
-  REQUIRE(pkb.isRelationTrueValueValue("5", "8", RelationType::FOLLOWS) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("5", "8", RelationType::FOLLOWS) ==
+          false);
   // follows not transitive
-  REQUIRE(pkb.isRelationTrueValueValue("1", "4", RelationType::FOLLOWS) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("1", "4", RelationType::FOLLOWS) ==
+          false);
 
   // added follows and hence follows_star relation
   REQUIRE(pkb.isRelationTrueValueValue("2", "3", RelationType::FOLLOWS_STAR));
   // unadded follows_star relation
-  REQUIRE(pkb.isRelationTrueValueValue("1", "6", RelationType::FOLLOWS_STAR) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("1", "6", RelationType::FOLLOWS_STAR) ==
+          false);
   // follows_star should be transitive
   REQUIRE(pkb.isRelationTrueValueValue("1", "3", RelationType::FOLLOWS_STAR));
 
   // added parent relation
   REQUIRE(pkb.isRelationTrueValueValue("6", "7", RelationType::PARENT));
   // unadded parent relation
-  REQUIRE(pkb.isRelationTrueValueValue("3", "5", RelationType::PARENT) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("3", "5", RelationType::PARENT) ==
+          false);
   // parent not transitive
-  REQUIRE(pkb.isRelationTrueValueValue("4", "7", RelationType::PARENT) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("4", "7", RelationType::PARENT) ==
+          false);
 
   // added parent and hence parent_star relation
   REQUIRE(pkb.isRelationTrueValueValue("4", "5", RelationType::PARENT_STAR));
   // unadded follows_star relation
-  REQUIRE(pkb.isRelationTrueValueValue("1", "6", RelationType::PARENT_STAR) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("1", "6", RelationType::PARENT_STAR) ==
+          false);
   // parent_star should be transitive
   REQUIRE(pkb.isRelationTrueValueValue("4", "7", RelationType::PARENT_STAR));
 
   // Returns if Relation(int, _)
   // no statements follow 7
-  REQUIRE(pkb.isRelationTrueValueWild("7", RelationType::FOLLOWS) ==
-          false);
+  REQUIRE(pkb.isRelationTrueValueWild("7", RelationType::FOLLOWS) == false);
   // statement 6 follows statement 5
   REQUIRE(pkb.isRelationTrueValueWild("5", RelationType::FOLLOWS));
   // statement 6 is the Parent* of 7
   REQUIRE(pkb.isRelationTrueValueWild("6", RelationType::PARENT_STAR));
   // statement 1 is not the parent of any statement
-  REQUIRE(pkb.isRelationTrueValueWild("1", RelationType::PARENT) ==
-          false);
+  REQUIRE(pkb.isRelationTrueValueWild("1", RelationType::PARENT) == false);
 
   // Returns if Relation(_, int)
   // statement 4 follows* statements 1, 2, 3
   REQUIRE(pkb.isRelationTrueWildValue("4", RelationType::FOLLOWS_STAR));
   // statement 1 does not follow any statement
-  REQUIRE(pkb.isRelationTrueWildValue("1", RelationType::FOLLOWS) ==
-          false);
+  REQUIRE(pkb.isRelationTrueWildValue("1", RelationType::FOLLOWS) == false);
   // statement 7 has parents
   REQUIRE(pkb.isRelationTrueWildValue("7", RelationType::PARENT_STAR));
 
@@ -87,45 +90,45 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // Returns all s such that Relation(s, _)
   // there are no assignment statements that are followed by any other
   // statements
-  REQUIRE(*pkb.getRelationSynonymWild(
-              EntityType::ASSIGN, RelationType::FOLLOWS) == empty_vector);
+  REQUIRE(*pkb.getRelationSynonymWild(EntityType::ASSIGN,
+                                      RelationType::FOLLOWS) == empty_vector);
   // statement 4 is the only if statement that is a parent
   std::vector<std::string> tmp = {"4"};
-  REQUIRE(*pkb.getRelationSynonymWild(
-              EntityType::IF, RelationType::PARENT_STAR) == tmp);
+  REQUIRE(*pkb.getRelationSynonymWild(EntityType::IF,
+                                      RelationType::PARENT_STAR) == tmp);
   // there are no while statements
-  REQUIRE(*pkb.getRelationSynonymWild(
-              EntityType::WHILE, RelationType::PARENT) == empty_vector);
+  REQUIRE(*pkb.getRelationSynonymWild(EntityType::WHILE,
+                                      RelationType::PARENT) == empty_vector);
 
   // Returns all s such that Relation(s, int)
   // statement 3 follows 1 and 2
   tmp = {"1", "2"};
   REQUIRE(*pkb.getRelationSynonymValue(EntityType::STMT, "3",
-                                 RelationType::FOLLOWS_STAR) == tmp);
+                                       RelationType::FOLLOWS_STAR) == tmp);
   // statement 4 is the only if statement that is a parent of 7
   tmp = {"4"};
   REQUIRE(*pkb.getRelationSynonymValue(EntityType::IF, "7",
-                                 RelationType::PARENT_STAR) == tmp);
+                                       RelationType::PARENT_STAR) == tmp);
   // statement 2 is the only CALL statement that is followed by 3
   tmp = {"2"};
   REQUIRE(*pkb.getRelationSynonymValue(EntityType::CALL, "3",
-                                 RelationType::FOLLOWS) == tmp);
+                                       RelationType::FOLLOWS) == tmp);
   // no call statements followed by 4
   REQUIRE(*pkb.getRelationSynonymValue(EntityType::CALL, "4",
-                                 RelationType::FOLLOWS) == empty_vector);
+                                       RelationType::FOLLOWS) == empty_vector);
 
   // Returns all s such that Relation(int, s)
   // 3 and 4 follows* 2
   tmp = {"3", "4"};
   REQUIRE(*pkb.getRelationValueSynonym("2", EntityType::STMT,
-                                 RelationType::FOLLOWS_STAR) == tmp);
+                                       RelationType::FOLLOWS_STAR) == tmp);
   // 4 is a parent of 5, 6, 7
   tmp = {"5", "6", "7"};
   //  REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
   //                                 RelationType::PARENT_STAR) == tmp);
   //// 3 is not a parent
-  REQUIRE(*pkb.getRelationValueSynonym("3", EntityType::STMT, RelationType::PARENT) ==
-          empty_vector);
+  REQUIRE(*pkb.getRelationValueSynonym("3", EntityType::STMT,
+                                       RelationType::PARENT) == empty_vector);
 
   // Returns all s1, s2 such that Relation(s1, s2)
   std::vector<std::pair<std::string, std::string>> tmp_pair;
@@ -172,9 +175,11 @@ TEST_CASE("Uses and Modifies") {
   REQUIRE(pkb.isRelationTrueValueValue("sub", "x", RelationType::USES_P));
 
   // USES relation for statement should not be in procedure table
-  REQUIRE(pkb.isRelationTrueValueValue("4", "y", RelationType::USES_P) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("4", "y", RelationType::USES_P) ==
+          false);
   // USES relation for procedure should not be in statement table
-  REQUIRE(pkb.isRelationTrueValueValue("sub", "x", RelationType::USES_S) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("sub", "x", RelationType::USES_S) ==
+          false);
 
   // added MODIFIES relation for statement
   REQUIRE(pkb.isRelationTrueValueValue("5", "x", RelationType::MODIFIES_S));
@@ -182,9 +187,11 @@ TEST_CASE("Uses and Modifies") {
   REQUIRE(pkb.isRelationTrueValueValue("main", "x", RelationType::MODIFIES_P));
 
   // MODIFIES relation for statement should not be in procedure table
-  REQUIRE(pkb.isRelationTrueValueValue("7", "y", RelationType::MODIFIES_P) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("7", "y", RelationType::MODIFIES_P) ==
+          false);
   // MODIFIES relation for procedure should not be in statement table
-  REQUIRE(pkb.isRelationTrueValueValue("main", "x", RelationType::MODIFIES_S) == false);
+  REQUIRE(pkb.isRelationTrueValueValue("main", "x", RelationType::MODIFIES_S) ==
+          false);
 
   std::vector<std::string> empty_vector;
 
@@ -192,15 +199,15 @@ TEST_CASE("Uses and Modifies") {
 
   std::vector<std::string> tmp = {"main"};
   // Select p such that Modifies(p, _)
-  REQUIRE(*pkb.getRelationSynonymWild(
-              EntityType::PROCEDURE, RelationType::MODIFIES_P) == tmp);
+  REQUIRE(*pkb.getRelationSynonymWild(EntityType::PROCEDURE,
+                                      RelationType::MODIFIES_P) == tmp);
   tmp = {"5", "7"};
   // Select s such that Modifies(s, _)
-  REQUIRE(*pkb.getRelationSynonymWild(
-              EntityType::STMT, RelationType::MODIFIES_S) == tmp);
+  REQUIRE(*pkb.getRelationSynonymWild(EntityType::STMT,
+                                      RelationType::MODIFIES_S) == tmp);
   // Query from wrong table
-  REQUIRE(*pkb.getRelationSynonymWild(
-              EntityType::STMT, RelationType::USES_P) == empty_vector);
+  REQUIRE(*pkb.getRelationSynonymWild(EntityType::STMT, RelationType::USES_P) ==
+          empty_vector);
 
   // Select Uses(pn, v)
   // Statement 3 is a print statement that uses "x". Returns that pair.
@@ -210,12 +217,13 @@ TEST_CASE("Uses and Modifies") {
 
   REQUIRE(*pkb.getRelationSynonymSynonym(EntityType::PRINT,
                                          EntityType::VARIABLE,
-                                 RelationType::USES_S) == tmp1);
+                                         RelationType::USES_S) == tmp1);
 
   // Modifies(c, v)
   // No procedure call that modifies a variable
   REQUIRE(*pkb.getRelationSynonymSynonym(EntityType::CALL, EntityType::VARIABLE,
-                                 RelationType::MODIFIES_S) == emptyPair);
+                                         RelationType::MODIFIES_S) ==
+          emptyPair);
 }
 
 TEST_CASE("Assignment Pattern PKB") {
@@ -243,8 +251,8 @@ TEST_CASE("Assignment Pattern PKB") {
 
   // pattern a("x", "_a_")
   std::vector<std::string> expected_result = {"3"};
-  REQUIRE(*pkb.getPatternMatchesValueLhs(
-              "x", "a", MatchType::PARTIAL_MATCH) == expected_result);
+  REQUIRE(*pkb.getPatternMatchesValueLhs("x", "a", MatchType::PARTIAL_MATCH) ==
+          expected_result);
 
   // pattern a("x", _)
   expected_result = {"3", "5"};
@@ -252,8 +260,8 @@ TEST_CASE("Assignment Pattern PKB") {
           expected_result);
 
   // pattern a("y", "_a_")
-  REQUIRE(*pkb.getPatternMatchesValueLhs(
-              "y", "a", MatchType::PARTIAL_MATCH) == empty_vector);
+  REQUIRE(*pkb.getPatternMatchesValueLhs("y", "a", MatchType::PARTIAL_MATCH) ==
+          empty_vector);
 
   // pattern a(_, "_b_")
   expected_result = {"3", "4"};
@@ -273,14 +281,13 @@ TEST_CASE("Assignment Pattern PKB") {
   // pattern a(var, "_b_")
   std::vector<std::pair<std::string, std::string>> expected_pairs = {
       {"3", "x"}, {"4", "y"}};
-  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
-              "b", MatchType::PARTIAL_MATCH) == expected_pairs);
+  REQUIRE(*pkb.getPatternMatchesSynonymLhs("b", MatchType::PARTIAL_MATCH) ==
+          expected_pairs);
 
   // pattern a(var, "_")
   expected_pairs = {{"3", "x"}, {"4", "y"}, {"5", "x"}};
-  REQUIRE_THAT(
-      *pkb.getPatternMatchesSynonymLhs("", MatchType::WILD_MATCH),
-      Catch::UnorderedEquals(expected_pairs));
+  REQUIRE_THAT(*pkb.getPatternMatchesSynonymLhs("", MatchType::WILD_MATCH),
+               Catch::UnorderedEquals(expected_pairs));
 }
 
 TEST_CASE("PKB test1-source Parent*") {
@@ -301,8 +308,9 @@ TEST_CASE("PKB test1-source Parent*") {
 
   for (int i = 1; i < 27; i++) {
     REQUIRE(!pkb.isRelationTrueValueValue("22", std::to_string(i),
-                                RelationType::PARENT_STAR));
-    REQUIRE(!pkb.isRelationTrueValueValue("22", std::to_string(i), RelationType::PARENT));
+                                          RelationType::PARENT_STAR));
+    REQUIRE(!pkb.isRelationTrueValueValue("22", std::to_string(i),
+                                          RelationType::PARENT));
   }
 }
 
@@ -354,4 +362,145 @@ TEST_CASE("Test1-Source PKB") {
   REQUIRE_THAT(
       *pkb.getPatternMatchesValueLhs("x", "1", MatchType::PARTIAL_MATCH),
       Catch::UnorderedEquals(expected_res));
+}
+
+std::shared_ptr<TreeNode> buildTree1() {
+  // a + b * c % d;
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
+               std::make_shared<TreeNode>("c", nullptr, nullptr));
+  TreeNode modulo = TreeNode("%", std::make_shared<TreeNode>(multiply),
+                             std::make_shared<TreeNode>("d", nullptr, nullptr));
+  TreeNode add =
+      TreeNode("%", std::make_shared<TreeNode>("a", nullptr, nullptr),
+               std::make_shared<TreeNode>(modulo));
+  return std::make_shared<TreeNode>(add);
+}
+
+std::shared_ptr<TreeNode> buildTree2() {
+  // b * c + d;
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
+               std::make_shared<TreeNode>("c", nullptr, nullptr));
+  TreeNode add = TreeNode("%", std::make_shared<TreeNode>(multiply),
+                          std::make_shared<TreeNode>("d", nullptr, nullptr));
+  return std::make_shared<TreeNode>(add);
+}
+
+std::shared_ptr<TreeNode> buildTree3() {
+  // a + b;
+  TreeNode add =
+      TreeNode("+", std::make_shared<TreeNode>("a", nullptr, nullptr),
+               std::make_shared<TreeNode>("b", nullptr, nullptr));
+  return std::make_shared<TreeNode>(add);
+}
+
+std::shared_ptr<TreeNode> buildTree4() {
+  // b * c;
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
+               std::make_shared<TreeNode>("c", nullptr, nullptr));
+  return std::make_shared<TreeNode>(multiply);
+}
+
+TEST_CASE("Pattern Database Assignment insertion and retrieval") {
+  PKB pkb = PKB();
+
+  /*
+     Line 3: x = a + b * c % d;
+     Line 4: y = b * c + d;
+     Line 5: x = a + b;
+  */
+
+  pkb.insertEntity(EntityType::ASSIGN, "3");
+  pkb.insertEntity(EntityType::ASSIGN, "4");
+  pkb.insertEntity(EntityType::ASSIGN, "5");
+  pkb.insertEntity(EntityType::VARIABLE, "x");
+  pkb.insertEntity(EntityType::VARIABLE, "y");
+  pkb.insertEntity(EntityType::VARIABLE, "a");
+  pkb.insertEntity(EntityType::VARIABLE, "b");
+  pkb.insertEntity(EntityType::VARIABLE, "c");
+  pkb.insertEntity(EntityType::VARIABLE, "d");
+
+  pkb.insertPattern(PatternType::ASSIGN, "3", "x", buildTree1());
+  pkb.insertPattern(PatternType::ASSIGN, "4", "y", buildTree2());
+  pkb.insertPattern(PatternType::ASSIGN, "5", "x", buildTree3());
+
+  std::vector<std::pair<std::string, std::string>> expected_pairs;
+
+  // syn = _ (all assignment statements)
+  expected_pairs.push_back({"3", "x"});
+  expected_pairs.push_back({"4", "y"});
+  expected_pairs.push_back({"5", "x"});
+  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
+              buildTree4(), MatchType::WILD_MATCH) == expected_pairs);
+
+  // syn = _b * c_
+  expected_pairs.clear();
+  expected_pairs.push_back({"3", "x"});
+  expected_pairs.push_back({"4", "y"});
+  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
+              buildTree4(), MatchType::PARTIAL_MATCH) == expected_pairs);
+
+  // syn = b * c
+  expected_pairs.clear();
+  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
+              buildTree4(), MatchType::EXACT_MATCH) == expected_pairs);
+
+  // syn = a + b
+  expected_pairs.push_back({"5", "x"});
+  REQUIRE(*pkb.getPatternMatchesSynonymLhs(
+              buildTree3(), MatchType::EXACT_MATCH) == expected_pairs);
+
+  // x = _
+  std::vector<std::string> expected;
+  expected.push_back("3");
+  expected.push_back("5");
+  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree4(),
+                                         MatchType::WILD_MATCH) == expected);
+
+  // x = _b * c_
+  expected.clear();
+  expected.push_back("3");
+  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree4(),
+                                         MatchType::PARTIAL_MATCH) == expected);
+
+  // x = _a + b_
+  expected.clear();
+  expected.push_back("5");
+  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree3(),
+                                         MatchType::PARTIAL_MATCH) == expected);
+
+  // x = a + b * c % d
+  expected.clear();
+  expected.push_back("3");
+  REQUIRE(*pkb.getPatternMatchesValueLhs("x", buildTree1(),
+                                         MatchType::EXACT_MATCH) == expected);
+
+  // y = a + b * c % d;
+  expected.clear();
+  REQUIRE(*pkb.getPatternMatchesValueLhs("y", buildTree1(),
+                                         MatchType::EXACT_MATCH) == expected);
+
+  // _ = _
+  expected.clear();
+  expected.push_back("3");
+  expected.push_back("4");
+  expected.push_back("5");
+  REQUIRE(*pkb.getPatternMatchesWildLhs(buildTree1(), MatchType::WILD_MATCH) ==
+          expected);
+
+  // _ = _a_
+  expected.clear();
+  expected.push_back("3");
+  expected.push_back("5");
+  REQUIRE(*pkb.getPatternMatchesWildLhs(
+              std::make_shared<TreeNode>("a", nullptr, nullptr),
+              MatchType::PARTIAL_MATCH) == expected);
+
+  // _ = _a_
+  expected.clear();
+  expected.push_back("4");
+  REQUIRE(*pkb.getPatternMatchesWildLhs(buildTree2(),
+              MatchType::EXACT_MATCH) == expected);
 }
