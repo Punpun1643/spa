@@ -15,20 +15,10 @@ std::shared_ptr<Node> LinkedList::getNode(std::string val) {
 void LinkedList::addEdge(std::string val1, std::string val2) {
   std::shared_ptr<Node> node1 = getNode(val1);
   std::shared_ptr<Node> node2 = getNode(val2);
-  node2->next = node1;
+  node1->next.insert(node2);
+  node2->prev = node1;
 }
 
-bool LinkedList::hasPath(std::string val1, std::string val2) {
-  std::shared_ptr<Node> curr = getNode(val2);
-  std::shared_ptr<Node> target = getNode(val1);
-  curr = curr->next;
-  while (curr != nullptr) {
-    if (curr == target) {
-      return true;
-    }
-    curr = curr->next;
-  }
-  return false;
-}
+
 
 bool LinkedList::isEmpty() { return nodes.empty(); }

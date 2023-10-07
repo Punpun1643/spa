@@ -9,13 +9,12 @@
 class LinkedList {
  private:
   std::unordered_map<std::string, std::shared_ptr<Node>> nodes;
-  std::shared_ptr<Node> getNode(std::string val);
-
+  
  public:
   explicit LinkedList();
   ~LinkedList() = default;
 
-  bool hasPath(std::string val1, std::string val2);
+  std::shared_ptr<Node> getNode(std::string val);
   void addEdge(std::string val1, std::string val2);
   bool isEmpty();
 };

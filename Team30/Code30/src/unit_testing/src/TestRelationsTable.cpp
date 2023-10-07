@@ -1,5 +1,5 @@
+#include <program_knowledge_base/tables/LinkedListTable.h>
 #include "../../spa/src/program_knowledge_base/tables/DictionaryTable.h"
-#include "../../spa/src/program_knowledge_base/tables/UFDSTable.h"
 #include "catch.hpp"
 
 TEST_CASE("Parent & Follows (DictionaryTable)") {
@@ -18,11 +18,10 @@ TEST_CASE("Parent & Follows (DictionaryTable)") {
   REQUIRE(p.isRelated("4", "1") == false);
   // non transitive
   REQUIRE(p.isRelated("1", "7") == false);
-
 }
 
-TEST_CASE("Parents Star & Follows Star (UFDSTable)") {
-  UFDSTable ps = UFDSTable();
+TEST_CASE("Parents Star & Follows Star (LinkedListTable)") {
+  LinkedListTable ps = LinkedListTable();
 
   ps.insert("1", "4");
   ps.insert("4", "7");
@@ -42,32 +41,28 @@ TEST_CASE("Parents Star & Follows Star (UFDSTable)") {
   REQUIRE(ps.isRelated("7", "1") == false);
 }
 
- TEST_CASE("Uses & Modifies (Dictionary Table)") {
+TEST_CASE("Uses & Modifies (Dictionary Table)") {
+  DictionaryTable um = DictionaryTable();
 
-    DictionaryTable um = DictionaryTable();
+  um.insert("2", "foo");
+  um.insert("2", "bar");
+  um.insert("5", "foo");
+  um.insert("main", "bar");
 
-    um.insert("2", "foo");
-    um.insert("2", "bar");
-    um.insert("5", "foo");
-    um.insert("main", "bar");
+  // added relation
+  REQUIRE(um.isRelated("2", "foo"));
+  // non added relation
+  REQUIRE(um.isRelated("3", "flan") == false);
 
+  // non reflexive
+  REQUIRE(um.isRelated("2", "2") == false);
+  // non symmetric
+  REQUIRE(um.isRelated("foo", "5") == false);
 
-    // added relation
-    REQUIRE(um.isRelated("2", "foo"));
-    // non added relation
-    REQUIRE(um.isRelated("3", "flan") == false);
+  REQUIRE(um.isRelated("main", "2") == false);
 
-    // non reflexive
-    REQUIRE(um.isRelated("2", "2") == false);
-    // non symmetric
-    REQUIRE(um.isRelated("foo", "5") == false);
-
-    REQUIRE(um.isRelated("main", "2") == false);
-    
-    //TODO: Case where procedure contains a statement that has a known Relation
-    //But no way to know if procedure contains statement? 
-    //Eg. "main" proc contains stmt 2 and Uses/Modifies(2, foo) is true
-    //REQUIRE(ps.isRelated("main", "foo")); 
-    
-
- }
+  // TODO: Case where procedure contains a statement that has a known Relation
+  // But no way to know if procedure contains statement?
+  // Eg. "main" proc contains stmt 2 and Uses/Modifies(2, foo) is true
+  // REQUIRE(ps.isRelated("main", "foo"));
+}

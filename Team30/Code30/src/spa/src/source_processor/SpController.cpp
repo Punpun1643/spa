@@ -5,7 +5,7 @@
 
 SpController::SpController() {}
 
-void SpController::parseAndExtract(PkbApi& pkb,
+void SpController::parseAndExtract(PKBSPInterface& pkb,
                                    std::string sourceProgramFilePath) {
   SpParserManager parserManager;
   std::shared_ptr<ProgramNode> programNode =

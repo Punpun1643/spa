@@ -5,8 +5,7 @@
 #include <string>
 #include <vector>
 
-PKB::PKB() : PKBQPSInterface(), PkbApi() {
-  wildCardMatcher = WildCardMatcher();
+PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
@@ -67,15 +66,17 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
 
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
-  return getAllRelated(
-      RelationType::MODIFIES_P, procName,
-      entData->get(wildCardMatcher.translateRHSWild(RelationType::MODIFIES_P)));
-}
+  std::unordered_set<std::string> set = {procName};
+  std::shared_ptr<std::unordered_set<std::string>> input =
+      std::make_shared<std::unordered_set<std::string>>(set);
+  return relData->getAllRelated(RelationType::MODIFIES_P, input);
+};
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-  return getAllRelated(
-      RelationType::USES_P, procName,
-      entData->get(wildCardMatcher.translateRHSWild(RelationType::USES_P)));
+  std::unordered_set<std::string> set = {procName};
+  std::shared_ptr<std::unordered_set<std::string>> input =
+      std::make_shared<std::unordered_set<std::string>>(set);
+  return relData->getAllRelated(RelationType::USES_P, input);
 };
 
 // ********** QPS **********
@@ -96,30 +97,12 @@ bool PKB::isRelationTrueValueValue(std::string value_1, std::string value_2,
 
 // example Follows(1, _)
 bool PKB::isRelationTrueValueWild(std::string value, RelationType rel_type) {
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(wildCardMatcher.translateRHSWild(rel_type));
-
-  // TODO: Optimise
-  for (std::string ent : *ents) {
-    if (relData->isRelated(rel_type, value, ent)) {
-      return true;
-    }
-  }
-  return false;
+  return relData->hasRelations(rel_type, value);
 }
 
 // example Follows(_, 1)
 bool PKB::isRelationTrueWildValue(std::string value, RelationType rel_type) {
-  std::shared_ptr<std::unordered_set<std::string>> ents =
-      entData->get(wildCardMatcher.translateLHSWild(rel_type));
-
-  // TODO: Optimise
-  for (std::string ent : *ents) {
-    if (relData->isRelated(rel_type, ent, value)) {
-      return true;
-    }
-  }
-  return false;
+  return relData->hasInverseRelations(rel_type, value);
 }
 
 // example Follows(_, _)
@@ -131,20 +114,8 @@ bool PKB::isRelationTrueWildWild(RelationType relation_type) {
 // example Parent(s, _), ParentsStar(s, _)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymWild(
     EntityType entity_type, RelationType rel_type) {
-  std::unordered_set<std::string> output;
-  std::shared_ptr<std::unordered_set<std::string>> ents1 =
-      entData->get(entity_type);
-  std::shared_ptr<std::unordered_set<std::string>> ents2 =
-      entData->get(wildCardMatcher.translateRHSWild(rel_type));
-
-  // TODO: Optimise
-  for (std::string ent1 : *ents1) {
-    for (std::string ent2 : *ents2) {
-      if (relData->isRelated(rel_type, ent1, ent2)) {
-        output.insert(ent1);
-      }
-    }
-  }
+  std::unordered_set<std::string> output =
+      relData->getAllRelated(rel_type, entData->get(entity_type));
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }
@@ -152,20 +123,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymWild(
 // example Follows(_, s), FolowsStar(_, s)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationWildSynonym(
     EntityType entity_type, RelationType rel_type) {
-  std::unordered_set<std::string> output;
-  std::shared_ptr<std::unordered_set<std::string>> ents1 =
-      entData->get(wildCardMatcher.translateLHSWild(rel_type));
-  std::shared_ptr<std::unordered_set<std::string>> ents2 =
-      entData->get(entity_type);
-
-  // TODO: Optimise
-  for (std::string ent1 : *ents1) {
-    for (std::string ent2 : *ents2) {
-      if (relData->isRelated(rel_type, ent1, ent2)) {
-        output.insert(ent2);
-      }
-    }
-  }
+  std::unordered_set<std::string> output =
+      relData->getAllInverseRelated(rel_type, entData->get(entity_type));
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 };

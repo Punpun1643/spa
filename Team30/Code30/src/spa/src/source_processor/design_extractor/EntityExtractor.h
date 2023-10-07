@@ -15,7 +15,7 @@
 
 class EntityExtractor : public IDesignExtractor {
  public:
-  explicit EntityExtractor(PkbApi& pkb);
+  explicit EntityExtractor(PKBSPInterface& pkb);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
@@ -38,5 +38,5 @@ class EntityExtractor : public IDesignExtractor {
   ~EntityExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 };

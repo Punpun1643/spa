@@ -9,31 +9,12 @@
 
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "ManualASTBuilder.h"
-#include "PkbStub.h"
+#include "PKBSPStub.h"
 #include "catch.hpp"
 
-class ExtractorBuilder {
- public:
-  std::shared_ptr<EntityExtractor> eExtractor;
-  std::shared_ptr<FollowsExtractor> fExtractor;
-  std::shared_ptr<ParentExtractor> pExtractor;
-  std::shared_ptr<ModifiesExtractor> mExtractor;
-  std::shared_ptr<UsesExtractor> uExtractor;
-
-  PkbStub pkb;
-  ExtractorBuilder(PkbStub& pkb) : pkb(pkb) {
-    eExtractor = std::make_shared<EntityExtractor>(pkb);
-    fExtractor = std::make_shared<FollowsExtractor>(pkb);
-    pExtractor = std::make_shared<ParentExtractor>(pkb);
-    mExtractor = std::make_shared<ModifiesExtractor>(pkb);
-    uExtractor = std::make_shared<UsesExtractor>(pkb);
-  }
-};
-
 TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -43,31 +24,34 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 17);
+    REQUIRE(pkb.insertUsesCallCount == 21);
     // NOTE: this expected value includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 13);
+    REQUIRE(pkb.insertModifiesCallCount == 17);
+  }
+  SECTION("Calls extraction functionality") {
+    REQUIRE(pkb.insertCallsCallCount == 1);
   }
   SECTION("Entity extraction functionality") {
-    REQUIRE(pkb.insertEntityCallCount == 13);
+    REQUIRE(pkb.insertEntityCallCount == 15);
+    REQUIRE(pkb.entitiesSet.size() == 22);
   }
   SECTION("Constant extraction functionality") {
     REQUIRE(pkb.insertConstantCallCount == 3);
   }
   SECTION("Variable extraction functionality") {
-    REQUIRE(pkb.insertVariableCallCount == 12);
+    REQUIRE(pkb.insertVariableCallCount == 14);
   }
   SECTION("Pattern extraction functionality") {
-    REQUIRE(pkb.insertPatternCallCount == 1);
+    REQUIRE(pkb.insertPatternCallCount == 2);
   }
 }
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -84,6 +68,9 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 4);
   }
+  SECTION("Calls extraction functionality") {
+    REQUIRE(pkb.insertCallsCallCount == 0);
+  }
   SECTION("Entity extraction functionality") {
     REQUIRE(pkb.insertEntityCallCount == 5);
   }
@@ -99,9 +86,8 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
 }
 
 TEST_CASE("AST 3: Basic SPA, 2 procedures") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -117,6 +103,9 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   }
   SECTION("Modifies extraction functionality") {
     REQUIRE(pkb.insertModifiesCallCount == 4);
+  }
+  SECTION("Calls extraction functionality") {
+    REQUIRE(pkb.insertCallsCallCount == 0);
   }
   SECTION("Entity extraction functionality") {
     REQUIRE(pkb.insertEntityCallCount == 6);
@@ -135,9 +124,8 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
 TEST_CASE(
     "AST 4: Basic SPA, doubly nested if (if-if) and triple nested while stmt "
     "(if-if-while)") {
-  PkbStub pkb = PkbStub();
+  PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
-  ExtractorBuilder eb = ExtractorBuilder(pkb);
   ExtractionController ec = ExtractionController(pkb);
   ec.executeProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
@@ -147,23 +135,65 @@ TEST_CASE(
     REQUIRE(pkb.insertParentCallCount == 6);
   }
   SECTION("Uses extraction functionality") {
-    REQUIRE(pkb.insertUsesCallCount == 18);
+    REQUIRE(pkb.insertUsesCallCount == 23);
     // NOTE: the expected value 15 includes all the duplicate calls
     // that may occur (handled by pkb)
   }
   SECTION("Modifies extraction functionality") {
-    REQUIRE(pkb.insertModifiesCallCount == 3);
+    REQUIRE(pkb.insertModifiesCallCount == 8);
+  }
+  SECTION("Calls extraction functionality") {
+    REQUIRE(pkb.insertCallsCallCount == 1);
   }
   SECTION("Entity extraction functionality") {
-    REQUIRE(pkb.insertEntityCallCount == 8);
+    REQUIRE(pkb.insertEntityCallCount == 10);
   }
   SECTION("Constant extraction functionality") {
     REQUIRE(pkb.insertConstantCallCount == 3);
   }
   SECTION("Variable extraction functionality") {
-    REQUIRE(pkb.insertVariableCallCount == 6);
+    REQUIRE(pkb.insertVariableCallCount == 8);
   }
   SECTION("Pattern extraction functionality") {
-    REQUIRE(pkb.insertPatternCallCount == 0);
+    REQUIRE(pkb.insertPatternCallCount == 1);
+  }
+}
+
+// Hardcoded pkb stub returns not really working for this
+TEST_CASE("AST 5: Three procedures, nested calls") {
+  PKBSPStub pkb = PKBSPStub();
+  std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_5();
+  ExtractionController ec = ExtractionController(pkb);
+  ec.executeProgramExtraction(ast);
+  SECTION("Follows extraction functionality") {
+    REQUIRE(pkb.insertFollowsCallCount == 0);
+  }
+  SECTION("Parent extraction functionality") {
+    REQUIRE(pkb.insertParentCallCount == 1);
+  }
+  // Hardcoded pkb stub returns not really working for this
+  SECTION("Uses extraction functionality") {
+    REQUIRE(pkb.insertUsesCallCount == 4);
+    // NOTE: the expected value 15 includes all the duplicate calls
+    // that may occur (handled by pkb)
+  }
+  // Hardcoded pkb stub returns not really working for this
+  SECTION("Modifies extraction functionality") {
+    REQUIRE(pkb.insertModifiesCallCount == 2);
+  }
+  SECTION("Calls extraction functionality") {
+    REQUIRE(pkb.insertCallsCallCount == 2);
+  }
+  SECTION("Entity extraction functionality") {
+    REQUIRE(pkb.insertEntityCallCount == 7);
+  }
+  SECTION("Constant extraction functionality") {
+    REQUIRE(pkb.insertConstantCallCount == 1);
+  }
+  SECTION("Variable extraction functionality") {
+    REQUIRE(pkb.insertVariableCallCount == 3);
+  }
+  SECTION("Pattern extraction functionality") {
+    REQUIRE(pkb.insertPatternCallCount == 1);
   }
 }

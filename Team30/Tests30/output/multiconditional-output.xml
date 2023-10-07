@@ -1,42 +1,42 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.378000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.450000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check variable used in multiconditional stmt">1</id><querystr><![CDATA[stmt s; Select s such that Uses (s, "d")]]></querystr>
 <stuans>5,6</stuans>
 <correct>5,6</correct>
-<time_taken>1.567000</time_taken>
+<time_taken>1.717000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check variable used in multiconditional stmt">2</id><querystr><![CDATA[variable v, v1; while w; Select v such that Uses (w, v1)]]></querystr>
 <stuans>a,b,c,d,x,y,z</stuans>
 <correct>a,b,c,d,x,y,z</correct>
-<time_taken>1.197000</time_taken>
+<time_taken>1.580000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="check if pattern matches for multiconditional asssign">3</id><querystr><![CDATA[assign a; Select a pattern a (_, _"b"_)]]></querystr>
 <stuans>3,6</stuans>
 <correct>3,6</correct>
-<time_taken>1.196000</time_taken>
+<time_taken>1.396000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Multiclause query">4</id><querystr><![CDATA[assign a; Select a such that Modifies (a, "z") pattern a (_, "c")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.285000</time_taken>
+<time_taken>1.410000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="3" Pattern="1" CondNum="5" RelNum="0" comment="Invalid, cannot have brackets for pattern matching">5</id><querystr><![CDATA[assign a; Select a pattern a (_, _"(y)"_)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.203000</time_taken>
+<time_taken>1.383000</time_taken>
 <passed/>
 </query>
 </queries>

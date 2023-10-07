@@ -11,23 +11,16 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "IDesignExtractor.h"
+#include "UsesModifiesTypeExtractor.h"
 
-class UsesExtractor : public IDesignExtractor {
+class UsesExtractor : public UsesModifiesTypeExtractor {
  public:
-  explicit UsesExtractor(PkbApi& pkb);
-
-  void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
-
-  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
-
-  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
-
-  void extractFromCall(std::shared_ptr<CallNode> node) override;
+  explicit UsesExtractor(PKBSPInterface& pkb,
+                         std::shared_ptr<CallsManager> callsManager);
 
   void extractFromPrint(std::shared_ptr<PrintNode> node) override;
 
-  void extractFromRead(std::shared_ptr<ReadNode> node) override;
+  void extractFromCall(std::shared_ptr<CallNode> node) override;
 
   void extractFromWhile(std::shared_ptr<WhileNode> node) override;
 
@@ -35,17 +28,15 @@ class UsesExtractor : public IDesignExtractor {
 
   void extractFromAssign(std::shared_ptr<AssignNode> node) override;
 
-  void popUsesActor();
-
   ~UsesExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 
-  std::vector<std::string> usesActors;
+  std::shared_ptr<CallsManager> callsManager;
 
   void insertMultipleVars(std::unordered_set<std::string> vars,
-                      std::string stmtIndex);
+                          std::string stmtIndex);
 
   void insertVarWithActors(std::string var);
 };
