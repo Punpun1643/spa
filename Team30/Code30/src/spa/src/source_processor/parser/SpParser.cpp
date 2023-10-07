@@ -221,25 +221,25 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_COND_EXPR,
-                              "Invalid while 1");
+                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_COND_EXPR,
-                              "Invalid while 2");
+                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   nextToken();
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_WHILE_STMTLST,
-                              "Invalid while 3");
+                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   nextToken();
   std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
   assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_WHILE_STMTLST,
-                              "Invalid while 4");
+                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   nextToken();
   return std::make_shared<WhileNode>(whileStmtIndex, StmtType::WHILE_STMT,
