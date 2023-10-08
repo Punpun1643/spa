@@ -11,38 +11,25 @@
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
 #include "../node/stmt_node/WhileNode.h"
-#include "IDesignExtractor.h"
+#include "UsesModifiesTypeExtractor.h"
 
-class ModifiesExtractor : public IDesignExtractor {
+class ModifiesExtractor : public UsesModifiesTypeExtractor {
  public:
-  explicit ModifiesExtractor(PkbApi& pkb);
+  explicit ModifiesExtractor(PKBSPInterface& pkb,
+                             std::shared_ptr<CallsManager> callsManager);
 
   void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
 
-  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
-
-  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
-
-  void extractFromCall(std::shared_ptr<CallNode> node) override;
-
-  void extractFromPrint(std::shared_ptr<PrintNode> node) override;
-
   void extractFromRead(std::shared_ptr<ReadNode> node) override;
 
-  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
-
-  void extractFromIf(std::shared_ptr<IfNode> node) override;
-
   void extractFromAssign(std::shared_ptr<AssignNode> node) override;
-
-  void popModifiesActor();
 
   ~ModifiesExtractor() = default;
 
  private:
-  PkbApi& pkb;
+  PKBSPInterface& pkb;
 
-  std::vector<std::string> modifiesActors;
+  std::shared_ptr<CallsManager> callsManager;
 
   void insertCondVars(std::unordered_set<std::string> condVars,
                       std::string stmtIndex);

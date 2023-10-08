@@ -42,17 +42,33 @@ void IntermediateResultsTable::addClauseResult(
 
 bool IntermediateResultsTable::hasNoResults() const { return has_no_results; }
 
-std::vector<std::string> IntermediateResultsTable::getValuesGivenDeclaration(
-    PqlDeclaration const& declaration) {
+std::vector<std::vector<std::string>>
+IntermediateResultsTable::getValuesGivenDeclarations(
+    std::vector<PqlDeclaration> const& decls) {
+  assert(!decls.empty());
+
+  // This check must come first, because decls are technically
+  // not added to a table that already has no results.
   if (has_no_results) {
     return {};  // empty values
-  } else {
-    assert(table_mapping.count(declaration) == 1);
-    RelationalTable relevant_table = tables[table_mapping[declaration]];
-    auto table_values = relevant_table.getTableCol(declaration);
-    ArrayUtility::removeDuplicates(table_values);
-    return table_values;
   }
+
+  for (auto& decl : decls) {
+    assert(hasDeclaration(decl));
+  }
+
+  // Merge all the declarations into a single table: possible source of future
+  // optimisation.
+  int table_idx = table_mapping[decls[0]];
+  for (auto& decl : decls) {
+    if (table_mapping[decl] != table_idx) {
+      mergeExistingTables(table_idx, table_mapping[decl], true);
+    }
+  }
+
+  // Retrieve the paired-return from that single table.
+  RelationalTable relevant_table = tables[table_idx];
+  return relevant_table.getTableCols(decls);
 }
 
 void IntermediateResultsTable::addBooleanClauseResult(bool result) {
@@ -78,7 +94,6 @@ void IntermediateResultsTable::addSingleDeclaration(
   }
 }
 
-//
 void IntermediateResultsTable::addPairedDeclarations(
     PqlDeclaration const& d1, PqlDeclaration const& d2,
     std::vector<std::string> const& new_d1_values,
@@ -112,11 +127,7 @@ void IntermediateResultsTable::addPairedDeclarations(
       int d1_table_idx = table_mapping[d1];
       int d2_table_idx = table_mapping[d2];
       tables[d1_table_idx].join(new_table);
-      tables[d1_table_idx].join(tables[d2_table_idx]);
-      // Update table_mappings lazily (without removing old table)
-      for (auto const& name : tables[d2_table_idx].getTableColNames()) {
-        table_mapping[name] = d1_table_idx;
-      }
+      mergeExistingTables(d1_table_idx, d2_table_idx);
     }
   }
   assert(table_mapping.count(d1) ==
@@ -124,5 +135,21 @@ void IntermediateResultsTable::addPairedDeclarations(
   if (tables[table_mapping[d1]].hasNoResults()) {
     has_no_results = true;
     return;
+  }
+}
+
+bool IntermediateResultsTable::hasDeclaration(
+    PqlDeclaration const& declaration) const {
+  return table_mapping.count(declaration) == 1;
+}
+
+void IntermediateResultsTable::mergeExistingTables(int table_to_keep_id,
+                                                   int table_to_merge_id,
+                                                   bool allow_cross_product) {
+  tables[table_to_keep_id].join(tables[table_to_merge_id], allow_cross_product);
+  // Update table_mappings lazily (without removing old table)
+  // May want to remove old table in the future to reduce mem usage
+  for (auto const& name : tables[table_to_merge_id].getTableColNames()) {
+    table_mapping[name] = table_to_keep_id;
   }
 }
