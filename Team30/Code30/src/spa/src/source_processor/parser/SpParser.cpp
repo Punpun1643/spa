@@ -3,6 +3,7 @@
 #include "../exceptions/InvalidCallException.h"
 #include "../exceptions/InvalidPrintException.h"
 #include "../exceptions/InvalidReadException.h"
+#include "../exceptions/InvalidProcedureException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 
 namespace SpParserConstant {
@@ -80,7 +81,7 @@ std::shared_ptr<ProgramNode> SpParser::parseProgram() {
   while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
     if (!isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                  SpParserConstant::PROCEDURE_KEYWORD)) {
-      throw std::invalid_argument("Invalid procedure");
+      throw InvalidProcedureException();
     }
 
     nextToken();
@@ -92,21 +93,21 @@ std::shared_ptr<ProgramNode> SpParser::parseProgram() {
 
 std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
   if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
-    throw std::invalid_argument("Invalid procedure 1");
+    throw InvalidProcedureException();
   }
 
   std::string procedureName = getCurrTokenValue();
   nextToken();
 
   if (!isCurrTokenValue(SpParserConstant::START_PROCEDURE)) {
-    throw std::invalid_argument("Invalid procedure 2");
+    throw InvalidProcedureException();
   }
 
   nextToken();
   std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
   if (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
-    throw std::invalid_argument("Invalid procedure 3");
+    throw InvalidProcedureException();
   }
 
   nextToken();
