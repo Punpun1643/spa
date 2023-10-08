@@ -25,6 +25,6 @@ runs:
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
-        git add Team30/Tests30/output/*
+        git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
         git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}

@@ -1,0 +1,53 @@
+procedure A {
+  call C;
+  x = y + z;
+  call B;
+}
+
+procedure B {
+  call D;
+  read y;
+}
+
+procedure C {
+  print a;
+  call D; 
+}
+
+procedure D {
+  while ((x == 4) && (y == 8)){
+    x = x + 1;
+    y = y + 1;
+    call J;
+  }
+}
+
+procedure E {
+  call H;
+  call F;
+}
+
+procedure F {
+  if (z == 8) then {
+    call G;
+  } else {
+    call I;
+  }
+  call H;
+}
+
+procedure G {
+  call J;
+}
+
+procedure H {
+  x = x;
+}
+
+procedure I {
+  print p;
+}
+
+procedure J {
+  calls I;
+}

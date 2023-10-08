@@ -46,16 +46,14 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildWild(
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateValueWild(
     PKBQPSInterface& pkb) {
   std::string first_value = arg1->getValue();
-  bool is_valid_rel =
-      pkb.isRelationTrueValueWild(first_value, relation_type);
+  bool is_valid_rel = pkb.isRelationTrueValueWild(first_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildValue(
     PKBQPSInterface& pkb) {
   std::string second_value = arg2->getValue();
-  bool is_valid_rel =
-      pkb.isRelationTrueWildValue(second_value, relation_type);
+  bool is_valid_rel = pkb.isRelationTrueWildValue(second_value, relation_type);
   return std::make_unique<ClauseResult>(is_valid_rel);
 }
 
@@ -72,8 +70,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateDeclarationWild(
     PKBQPSInterface& pkb) {
   EntityType entity_type = arg1->getDeclarationType();
   PqlDeclaration declaration = arg1->getDeclaration();
-  auto possible_values =
-      pkb.getRelationSynonymWild(entity_type, relation_type);
+  auto possible_values = pkb.getRelationSynonymWild(entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 
@@ -81,8 +78,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::evaluateWildDeclaration(
     PKBQPSInterface& pkb) {
   EntityType entity_type = arg2->getDeclarationType();
   PqlDeclaration declaration = arg2->getDeclaration();
-  auto possible_values =
-      pkb.getRelationWildSynonym(entity_type, relation_type);
+  auto possible_values = pkb.getRelationWildSynonym(entity_type, relation_type);
   return std::make_unique<ClauseResult>(declaration, *possible_values);
 }
 

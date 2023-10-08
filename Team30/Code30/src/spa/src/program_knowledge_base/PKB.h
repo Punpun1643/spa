@@ -13,14 +13,12 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "PKBQPSInterface.h"
 #include "PKBSPInterface.h"
-#include "WildCardMatcher.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
 
-class PKB : public PKBQPSInterface, public PkbApi {
+class PKB : public PKBQPSInterface, public PKBSPInterface {
  private:
-  WildCardMatcher wildCardMatcher;
   std::unique_ptr<EntityDatabase> entData;
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;

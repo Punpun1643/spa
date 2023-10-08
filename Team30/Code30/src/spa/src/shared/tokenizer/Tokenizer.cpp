@@ -7,7 +7,9 @@
 #include "token/SpecialCharToken.h"
 #include "token/WordToken.h"
 
-Tokenizer::Tokenizer(std::istream& input) : input(input) {}
+Tokenizer::Tokenizer(std::istream& input) : input(input) {
+  keywords = {"Follows", "Parent", "Calls", "Next"};
+}
 
 std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
   std::vector<std::shared_ptr<Token>> tokens;
@@ -27,6 +29,11 @@ std::shared_ptr<Token> Tokenizer::next() {
       std::string word;
       word += c;
       while (std::isalnum(input.peek())) {
+        input.get(c);
+        word += c;
+      }
+
+      if (keywords.find(word) != keywords.end() && input.peek() == '*') {
         input.get(c);
         word += c;
       }
@@ -67,6 +74,7 @@ std::shared_ptr<Token> Tokenizer::next() {
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
   }
+  throw std::runtime_error("Unexpected end of input in Tokenizer::next");
 }
 
 std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {

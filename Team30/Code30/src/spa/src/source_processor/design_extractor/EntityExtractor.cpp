@@ -4,7 +4,7 @@
 #include <iterator>
 #include <unordered_set>
 
-EntityExtractor::EntityExtractor(PkbApi& pkb) : pkb(pkb) {}
+EntityExtractor::EntityExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void EntityExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO

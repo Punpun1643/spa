@@ -1,4 +1,6 @@
 #include "AParser.h"
+#include "exceptions/EndOfFileException.h"
+#include "exceptions/StartOfFileException.h"
 
 #include "exceptions/InvalidTokenException.h"
 
@@ -24,18 +26,21 @@ std::shared_ptr<Token> AParser::nextToken() {
   if (currTokenIndex < tokens.size()) {
     return tokens[++currTokenIndex];
   }
+  throw EndOfFileException();
 }
 
 std::shared_ptr<Token> AParser::peekToken() {
   if (currTokenIndex + 1 < tokens.size()) {
     return tokens[currTokenIndex + 1];
   }
+  throw EndOfFileException();
 }
 
 std::shared_ptr<Token> AParser::peekBackToken() {
   if (currTokenIndex - 1 >= 0) {
     return tokens[currTokenIndex - 1];
   }
+  throw StartOfFileException();
 }
 
 std::shared_ptr<Token> AParser::getCurrToken() {

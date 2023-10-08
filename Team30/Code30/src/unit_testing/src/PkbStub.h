@@ -2,7 +2,7 @@
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
 
-class PkbStub : public PKBQPSInterface, public PkbApi {
+class PkbStub : public PKBQPSInterface, public PKBSPInterface {
  public:
   PkbStub();
 
@@ -11,6 +11,10 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
   std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
   std::vector<std::string> VARIABLES = {"varX", "varY"};
   std::vector<std::string> STATEMENTS = {"1", "2", "3"};
+
+  std::vector<std::string> REL_TYPE_STRINGS = {
+      "FOLLOWS", "FOLLOWS_STAR", "PARENT",     "PARENT_STAR",
+      "USES_P",  "USES_S",       "MODIFIES_P", "MODIFIES_S"};
 
   int insertEntityCallCount;
   int insertVariableCallCount;
@@ -22,10 +26,13 @@ class PkbStub : public PKBQPSInterface, public PkbApi {
   int insertModifiesCallCount;
   int insertPatternCallCount;
 
+  std::unordered_set<std::string> entitiesSet;
+
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void insertRelationCommon(RelationType type);
+
+  void insertRelationCommon(RelationType type, std::string a, std::string b);
 
   // Select Clause
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
