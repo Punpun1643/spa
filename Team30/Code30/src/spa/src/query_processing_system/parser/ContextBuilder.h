@@ -27,5 +27,5 @@ class ContextBuilder : public QpParser {
   std::set<std::string> existing_synonyms;
 
   void parseDeclaration();
-  void addSynonym(std::vector<std::string> synonym_list, std::string synonym);
+  void addSynonym(std::shared_ptr<std::vector<std::string>> synonym_list, std::string synonym);
 };

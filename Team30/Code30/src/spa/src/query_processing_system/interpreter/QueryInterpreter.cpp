@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <iostream>
+
 #include "../common/FollowsClause.h"
 #include "../common/ModifiesSClause.h"
 #include "../common/ParentClause.h"

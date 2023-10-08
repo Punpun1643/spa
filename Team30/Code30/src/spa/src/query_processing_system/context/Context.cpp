@@ -1,5 +1,7 @@
 #include "Context.h"
 
+#include <iostream>
+
 void Context::addDeclarations(EntityType entity_type,
                               std::vector<std::string> synonyms) {
   for (std::string synonym : synonyms) {

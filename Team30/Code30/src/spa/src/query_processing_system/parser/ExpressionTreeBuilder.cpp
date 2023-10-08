@@ -16,12 +16,12 @@
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens)
-    : QpParser(tokens) {}
-
-/* std::unique_ptr<QueryExpression> ExpressionTreeBuilder::GetQueryExpression()
- * { */
-/*   return std::move(this->query_expression); */
-/* } */
+    : QpParser(tokens) {
+      // Declaration parsing already done by ContextBuilder
+      while (getCurrToken()->getTokenVal() != "Select") {
+        nextToken();
+      }
+    }
 
 std::shared_ptr<AExpression> ExpressionTreeBuilder::GetExpressionTree() {
   return std::move(this->expression_tree);
@@ -49,29 +49,22 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 
 std::optional<std::shared_ptr<ClauseExpression>>
 ExpressionTreeBuilder ::CreateClauseExpression() {
-  std::optional<std::shared_ptr<ClauseExpression>> previous_clause_expression =
-      std::make_optional<std::shared_ptr<ClauseExpression>>();
-  std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head =
-      previous_clause_expression;
-  // test pointer stuff
-  // TODO remove this
-  std::optional<std::shared_ptr<std::string>> test1 =
-      std::make_optional<std::shared_ptr<std::string>>(
-          std::make_shared<std::string>("abc"));
-  std::optional<std::shared_ptr<std::string>> test2 = test1;
-  assert(*test2.value() == "abc");
-  test1 = std::make_optional<std::shared_ptr<std::string>>(
-      std::make_shared<std::string>("999"));
-  assert(*test2.value() == "abc");
+  std::optional<std::shared_ptr<ClauseExpression>> previous_clause_expression;
+  std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head;
 
+  bool is_first_run = true;
   while (getCurrToken()->getTokenVal() == "such") {
     std::optional<std::shared_ptr<SuchThatExpression>> such_that_expression =
         std::make_optional<std::shared_ptr<SuchThatExpression>>(
             this->CreateSuchThatExpression());
     if (previous_clause_expression.has_value()) {
-      previous_clause_expression.value()->SetNextExpression(
-          such_that_expression);
+      previous_clause_expression.value()->SetNextExpression(such_that_expression);
     }
+
+    if (is_first_run) {
+      clause_expression_head = such_that_expression;
+    }
+
     previous_clause_expression = such_that_expression;
     /* else if (getCurrToken()->getTokenVal() == "pattern") { */
     /*   std::unique_ptr<PatternExpression> pattern_expression =

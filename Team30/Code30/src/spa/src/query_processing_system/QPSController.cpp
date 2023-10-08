@@ -8,57 +8,66 @@
 #include "common/SuchThatClause.h"
 #include "parser/ContextBuilder.h"
 
+
+#include "common/FollowsClause.h"
+
 QPSController::QPSController(){};
 
 void QPSController::HandleQuery(
     std::string& query, std::list<std::string>& results,
     std::shared_ptr<QueryEvaluator> query_evaluator) {
   std::vector<std::shared_ptr<Token>> tokens = this->TokenizeQuery(query);
+
   this->CheckSyntax(tokens);
 
   std::shared_ptr<Context> context = this->FormContext(tokens);
 
+
   std::shared_ptr<AExpression> expression_tree =
       this->FormExpressionTree(tokens);
+  
 
   this->InterpretContext(context, expression_tree);
+
+
   std::vector<PqlDeclaration> selected_declarations =
       context->GetSelectedDeclarations();
-  /* std::unique_ptr<SelectClause> select_clause = context.GetSelectClause(); */
   std::vector<std::shared_ptr<Clause>> other_clauses =
       context->GetOtherClauses();
+
+  /* std::vector<PqlDeclaration> pql_dec_vec; */
+  /* pql_dec_vec.push_back(PqlDeclaration("s", EntityType::STMT)); */
+  /* std::vector<std::shared_ptr<Clause>> clause_dec; */
+  /* clause_dec.push_back( */
+  /*           std::make_shared<FollowsClause>( */
+  /*             std::make_unique<StmtRef>( */
+  /*               PqlDeclaration("s", EntityType::STMT) */
+  /*               ), */
+  /*             std::make_unique<StmtRef>( */
+  /*               PqlDeclaration("w", EntityType::WHILE) */
+  /*               ), */
+  /*             false */
+  /*             ) */
+  /*     ); */
+    
   std::vector<std::vector<std::string>> query_results =
+  /*     query_evaluator->evaluateQuery( */
+  /*         pql_dec_vec, */
+  /*         clause_dec */
+  /*         ); */
       query_evaluator->evaluateQuery(selected_declarations, other_clauses);
   for (std::vector<std::string> result : query_results) {
     std::string result_string;
     for (std::vector<std::string>::iterator it = result.begin();
          it != result.end(); it++) {
       result_string += *it;
-      if (it != result.end()) {
+      if (it != std::prev(result.end())) {
         result_string += ", ";
       }
     }
     results.push_back(result_string);
   }
 }
-
-/* std::unique_ptr<QueryExpression> query_expression = */
-/*     this->FormQueryExpression(tokens); */
-/* std::vector<std::shared_ptr<Clause>> clause_list = */
-/*     this->InterpretQueryExpression(std::move(query_expression)); */
-/* std::vector<std::string> query_results; */
-
-/* auto select_clause_shared_ptr =
- * std::dynamic_pointer_cast<SelectClause>(clause_list[0]); */
-/* auto select_clause =
- * std::make_unique<SelectClause>(*select_clause_shared_ptr); */
-
-/* clause_list.erase(clause_list.begin()); */
-/* query_results = query_evaluator->evaluateQuery(std::move(select_clause),
- * clause_list); */
-/* std::copy(query_results.begin(), query_results.end(), */
-/*           std::back_inserter(results)); */
-/* } */
 
 void QPSController::CheckSyntax(std::vector<std::shared_ptr<Token>> tokens) {
   std::unique_ptr<SyntaxChecker> syntax_checker =
@@ -95,32 +104,3 @@ std::vector<std::shared_ptr<Token>> QPSController::TokenizeQuery(
   Tokenizer tokenizer = Tokenizer(string_stream);
   return tokenizer.tokenize();
 }
-
-// ------------ refactoring ends here -----------------
-
-/* std::unique_ptr<QueryExpression> QPSController::FormQueryExpression( */
-/*     std::vector<std::shared_ptr<Token>> tokens) { */
-/*   std::unique_ptr<ExpressionTreeBuilder> expression_tree_builder = */
-/*       std::make_unique<ExpressionTreeBuilder>(tokens); */
-/*   expression_tree_builder->parse(); */
-/*   return expression_tree_builder->GetQueryExpression(); */
-/* } */
-
-/* std::vector<std::shared_ptr<Clause>> QPSController::InterpretQueryExpression(
- */
-/*     std::unique_ptr<QueryExpression> query_expression) { */
-/*   std::unique_ptr<QueryInterpreter> query_interpreter = */
-/*       std::make_unique<QueryInterpreter>(); */
-/*   query_interpreter->Interpret(*(std::move(query_expression))); */
-/*   return query_interpreter->GetClauseList(); */
-/* } */
-
-/* std::vector<std::shared_ptr<Clause>> QPSController::ParseAndGetClauses( */
-/*     std::vector<std::shared_ptr<Token>>& tokens) { */
-/*   this->CheckSyntax(tokens); */
-/*   std::unique_ptr<QueryExpression> query_expression = */
-/*       this->FormQueryExpression(tokens); */
-/*   std::vector<std::shared_ptr<Clause>> clause_list = */
-/*       this->InterpretQueryExpression(std::move(query_expression)); */
-/*   return clause_list; */
-/* } */

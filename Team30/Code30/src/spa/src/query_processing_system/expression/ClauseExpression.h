@@ -8,10 +8,8 @@ class ClauseExpression : public AExpression {
  public:
   ClauseExpression(std::string arg1, std::string arg2);
 
-  /* void virtual acceptInterpreter(QueryInterpreter& interpreter) */
-
-  std::string GetArg1();
-  std::string GetArg2();
+  std::string GetArg1() const;
+  std::string GetArg2() const;
 
   ~ClauseExpression() = default;
 
