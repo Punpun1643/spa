@@ -2,8 +2,8 @@
 
 #include "../exceptions/InvalidCallException.h"
 #include "../exceptions/InvalidPrintException.h"
-#include "../exceptions/InvalidReadException.h"
 #include "../exceptions/InvalidProcedureException.h"
+#include "../exceptions/InvalidReadException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 
 namespace SpParserConstant {
@@ -115,54 +115,24 @@ std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
 }
 
 std::shared_ptr<PrintNode> SpParser::parsePrint() {
-  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
-    throw InvalidPrintException();
-  }
-
-  std::string varName = getCurrTokenValue();
-  nextToken();
-
-  if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
-    throw InvalidPrintException();
-  }
-
-  nextToken();
+  std::string varName =
+      AParser::ParseAndValidateVarName<InvalidPrintException>();
   return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT,
                                      varName);
 }
 
 std::shared_ptr<ReadNode> SpParser::parseRead() {
-  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
-    throw InvalidReadException();
-  }
-
-  std::string varName = getCurrTokenValue();
-  nextToken();
-
-  if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
-    throw InvalidReadException();
-  }
-
-  nextToken();
+  std::string varName =
+      AParser::ParseAndValidateVarName<InvalidReadException>();
   return std::make_shared<ReadNode>(currStmtIndex++, StmtType::READ_STMT,
                                     varName);
 }
 
 std::shared_ptr<CallNode> SpParser::parseCall() {
-  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
-    throw InvalidCallException();
-  }
-
-  std::string procedureName = getCurrTokenValue();
-  nextToken();
-
-  if (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
-    throw InvalidCallException();
-  }
-
-  nextToken();
+  std::string varName =
+      AParser::ParseAndValidateVarName<InvalidCallException>();
   return std::make_shared<CallNode>(currStmtIndex++, StmtType::CALL_STMT,
-                                    procedureName);
+                                    varName);
 }
 
 std::shared_ptr<IfNode> SpParser::parseIf() {
@@ -220,27 +190,27 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 std::shared_ptr<WhileNode> SpParser::parseWhile() {
   int whileStmtIndex = currStmtIndex++;
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
-                              SpParserConstant::START_COND_EXPR,
-                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
+  assertCurrTokenTypeAndValue(
+      TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::START_COND_EXPR,
+      ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
-                              SpParserConstant::END_COND_EXPR,
-                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
+  assertCurrTokenTypeAndValue(
+      TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::END_COND_EXPR,
+      ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   nextToken();
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
-                              SpParserConstant::START_WHILE_STMTLST,
-                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
+  assertCurrTokenTypeAndValue(
+      TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::START_WHILE_STMTLST,
+      ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   nextToken();
   std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
-                              SpParserConstant::END_WHILE_STMTLST,
-                              ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
+  assertCurrTokenTypeAndValue(
+      TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::END_WHILE_STMTLST,
+      ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   nextToken();
   return std::make_shared<WhileNode>(whileStmtIndex, StmtType::WHILE_STMT,
