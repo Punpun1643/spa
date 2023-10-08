@@ -1,5 +1,4 @@
 procedure Exact {
-
     w = 5;
     x = 5 + y + z;
     y = x * 5 + 8 / 6;
@@ -14,6 +13,5 @@ procedure Exact {
     h = a + a - a * a / a % a;
     i = a + (a - a) * a / (a % a);
     j = (a + a) - (a * a / a) % a;
-
 }
 
