@@ -4,6 +4,27 @@
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
+PatternClause::PatternClause(PqlDeclaration assign_decl,
+                             EntRef lhs_ent_ref,
+                             MatchType rhs_expr_match_type,
+                             std::unique_ptr<TreeNode> rhs_expr)
+    : assign_decl(std::move(assign_decl)),
+      lhs_ent_ref(std::move(lhs_ent_ref)),
+      rhs_expr_match_type(rhs_expr_match_type),
+      rhs_tree_expr(std::move(rhs_expr)) {
+  if (this->assign_decl.getEntityType() != EntityType::ASSIGN) {
+    throw InvalidSemanticsException(
+        "Pattern Clause only accepts assign declarations");
+  }
+
+  if (this->lhs_ent_ref.getRefType() == PqlRefType::DECLARATION &&
+      this->lhs_ent_ref.getDeclarationType() != EntityType::VARIABLE) {
+    throw InvalidSemanticsException(
+        "If the entRef of the pattern clause is a declaration, it must be of "
+        "type variable.");
+  }
+}
+
 PatternClause::PatternClause(PqlDeclaration const& assign_decl,
                              EntRef const& lhs_ent_ref,
                              MatchType rhs_expr_match_type,
