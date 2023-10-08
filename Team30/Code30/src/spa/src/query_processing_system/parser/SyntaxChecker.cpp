@@ -155,14 +155,6 @@ void SyntaxChecker::CheckSuchThat() {
   if (!QpParser::IsRelRef(getCurrToken()->getTokenVal())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
-  if (peekToken()->getTokenVal() == "*") {
-    if (!QpParser::IsTransitiveRelRef(getCurrToken()->getTokenVal())) {
-      throw InvalidSyntaxException(
-          "Invalid transitive relref for such that clause");
-    } else {
-      nextToken();  // *
-    }
-  }
   nextToken();  // (
   if (getCurrToken()->getTokenVal() != "(") {
     throw InvalidSyntaxException("Invalid such that clause syntax");
@@ -181,6 +173,13 @@ void SyntaxChecker::CheckSuchThat() {
     } else {
       throw InvalidSyntaxException(
           "First arg in such that clause not valid stmtref/entref");
+    }
+  } else {
+    // is stmtref/entref
+    if (QpParser::IsSynonym(getCurrToken()->getTokenVal())) {
+      if (dec.find(getCurrToken()->getTokenVal()) == dec.end()) {
+        throw InvalidSemanticsException("Synonym argument has not been declared");
+      }
     }
   }
 
