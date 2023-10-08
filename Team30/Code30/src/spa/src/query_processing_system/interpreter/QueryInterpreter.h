@@ -56,7 +56,4 @@ class QueryInterpreter {
   bool IsIdentifier(std::string const& argument);
   EntityType GetEntityTypeAsDeclaration(std::string const& argument);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
-
-  /* std::shared_ptr<DeclarationMap> declarations; */
-  /* ClauseList clause_list; */
 };

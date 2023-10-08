@@ -1,14 +1,15 @@
 #include "QueryInterpreter.h"
 
 #include <cassert>
-
 #include <iostream>
 
 #include "../common/FollowsClause.h"
+#include "../common/ModifiesPClause.h"
 #include "../common/ModifiesSClause.h"
 #include "../common/ParentClause.h"
 #include "../common/PatternClause.h"
 #include "../common/SelectClause.h"
+#include "../common/UsesPClause.h"
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
 #include "../expression/AExpression.h"
@@ -42,15 +43,6 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<FollowsExpression> follows_expression) {
   std::string arg1 = follows_expression->GetArg1();
   std::string arg2 = follows_expression->GetArg2();
-  // TODO: all exceptions shouldve been checked and thrown before this, during
-  // parsing
-  /* if (!IsStmtRef(arg1)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "First argument for Follows Clause should be a StmtRef."); */
-  /* } else if (!IsStmtRef(arg2)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "Second argument for Follows Clause should be a StmtRef."); */
-  /* } */
   this->context->AddSuchThatClause(std::make_shared<FollowsClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false));
   this->InterpretNext(follows_expression);
@@ -60,13 +52,6 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<FollowsTExpression> follows_t_expression) {
   std::string arg1 = follows_t_expression->GetArg1();
   std::string arg2 = follows_t_expression->GetArg2();
-  /* if (!IsStmtRef(arg1)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "First argument for FollowsT Clause should be a StmtRef."); */
-  /* } else if (!IsStmtRef(arg2)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "Second argument for FollowsT Clause should be a StmtRef."); */
-  /* } */
   this->context->AddSuchThatClause(std::make_shared<FollowsClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), true));
   this->InterpretNext(follows_t_expression);
@@ -76,38 +61,19 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<ModifiesExpression> modifies_expression) {
   std::string arg1 = modifies_expression->GetArg1();
   std::string arg2 = modifies_expression->GetArg2();
-  /* if (!IsValidRelArg(arg1)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "First argument for Modifies Clause should be a StmtRef."); */
-  /* } else if (!IsEntRef(arg2)) { */
-  /*   if (IsSynonym(arg2)) { */
-  /*     throw InvalidSemanticsException( */
-  /*         "Second argument for Modifies Clause should be declared as
-   * EntRef."); */
-  /*   } */
-  /*   throw InvalidSyntaxException( */
-  /*       "Second argument for Modifies Clause should be an EntRef."); */
-  /* } */
   if (IsStmtRef(arg1)) {
     this->context->AddSuchThatClause(std::make_shared<ModifiesSClause>(
         StringToStmtRef(arg1), StringToEntRef(arg2)));
+  } else if (IsEntRef(arg1)) {
+    this->context->AddSuchThatClause(std::make_shared<ModifiesPClause>(
+        StringToEntRef(arg1), StringToEntRef(arg2)));
   }
-  /* } else { */
-  /*   throw InvalidSyntaxException("Modifies Clause has wrong syntax"); */
-  /* } */
 }
 
 void QueryInterpreter::Interpret(
     std::shared_ptr<ParentExpression> parent_expression) {
   std::string arg1 = parent_expression->GetArg1();
   std::string arg2 = parent_expression->GetArg2();
-  /* if (!IsStmtRef(arg1)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "First argument for Parent Clause should be a StmtRef."); */
-  /* } else if (!IsStmtRef(arg2)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "Second argument for Parent Clause should be a StmtRef."); */
-  /* } */
   this->context->AddSuchThatClause(std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false));
 }
@@ -116,13 +82,6 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<ParentTExpression> parent_t_expression) {
   std::string arg1 = parent_t_expression->GetArg1();
   std::string arg2 = parent_t_expression->GetArg2();
-  /* if (!IsStmtRef(arg1)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "First argument for ParentT Clause should be a StmtRef."); */
-  /* } else if (!IsStmtRef(arg2)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "Second argument for ParentT Clause should be a StmtRef."); */
-  /* } */
   this->context->AddSuchThatClause(std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), true));
 }
@@ -140,25 +99,13 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<UsesExpression> uses_expression) {
   std::string arg1 = uses_expression->GetArg1();
   std::string arg2 = uses_expression->GetArg2();
-  /* if (!IsStmtRef(arg1)) { */
-  /*   throw InvalidSyntaxException( */
-  /*       "First argument for Uses Clause should be a StmtRef."); */
-  /* } else if (!IsEntRef(arg2)) { */
-  /*   if (IsSynonym(arg2)) { */
-  /*     throw InvalidSemanticsException( */
-  /*         "Second argument for Uses Clause should be declared as EntRef.");
-   */
-  /*   } */
-  /*   throw InvalidSyntaxException( */
-  /*       "Second argument for Uses Clause should be an EntRef."); */
-  /* } */
   if (IsStmtRef(arg1)) {
     this->context->AddSuchThatClause(std::make_shared<UsesSClause>(
         StringToStmtRef(arg1), StringToEntRef(arg2)));
+  } else if (IsEntRef(arg1)) {
+    this->context->AddSuchThatClause(std::make_shared<UsesPClause>(
+        StringToEntRef(arg1), StringToEntRef(arg2)));
   }
-  /* } else { */
-  /*   throw InvalidSyntaxException("Uses Clause has wrong syntax"); */
-  /* } */
 }
 
 void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {

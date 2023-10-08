@@ -39,10 +39,11 @@ void SyntaxChecker::CheckDeclaration() {
     if (!IsSynonym(getCurrToken()->getTokenVal())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
     } else {
-      if (dec.find(getCurrToken()->getTokenVal()) != dec.end()) {
+      if (existing_declarations.find(getCurrToken()->getTokenVal()) !=
+          existing_declarations.end()) {
         throw InvalidSyntaxException("Synonym cannot be declared twice");
       }
-      dec.insert(getCurrToken()->getTokenVal());
+      existing_declarations.insert(getCurrToken()->getTokenVal());
     }
     nextToken();  // , OR ;
     while (getCurrToken()->getTokenVal() == ",") {
@@ -50,10 +51,11 @@ void SyntaxChecker::CheckDeclaration() {
       if (!IsSynonym(getCurrToken()->getTokenVal())) {
         throw InvalidSyntaxException("Invalid synonym given in declaration");
       } else {
-        if (dec.find(getCurrToken()->getTokenVal()) != dec.end()) {
+        if (existing_declarations.find(getCurrToken()->getTokenVal()) !=
+            existing_declarations.end()) {
           throw InvalidSyntaxException("Synonym cannot be declared twice");
         }
-        dec.insert(getCurrToken()->getTokenVal());
+        existing_declarations.insert(getCurrToken()->getTokenVal());
       }
       nextToken();  // , OR ;
     }
@@ -68,6 +70,89 @@ void SyntaxChecker::CheckEOF() {
   if (!IsEOFToken(getCurrToken())) {
     throw InvalidSyntaxException("EOF Token Expected");
   }
+}
+
+void SyntaxChecker::CheckFollows() {
+  assert(getCurrToken()->getTokenVal() == "Follows" ||
+         getCurrToken()->getTokenVal() == "Follows*");
+
+  nextToken();
+  this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Follows/* clause");
+
+  nextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for first argument of Follows/* clause",
+      "Synonym in first arg of Follows/* clause has not been declared");
+
+  nextToken();
+  this->CheckCurrentTokenSyntax(",", "Expected \',\' for Follows/* clause");
+
+  nextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for second argument of Follows/* clause",
+      "Synonym in second arg of Follows/* clause has not been declared");
+
+  nextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected \')\' for Follows/* clause");
+
+  nextToken();
+}
+
+void SyntaxChecker::CheckModifies() {
+  assert(getCurrToken()->getTokenVal() == "Modifies");
+
+  nextToken();
+  CheckCurrentTokenSyntax("(", "Expected \'(\' for Modifies clause");
+
+  nextToken();
+  if (QpParser::IsStmtRef(getCurrToken()->getTokenVal())) {
+    this->CheckCurrentTokenStmtRef(
+        "First arg of Modifies clause not valid stmt ref",
+        "First arg of Modifies clause has not been declared");
+  } else {
+    this->CheckUpcomingTokensAreEntRef(
+        "First arg of Modifies clause not valid ent ref",
+        "First arg of Modifies clause has not been declared");
+  }
+
+  nextToken();
+  CheckCurrentTokenSyntax(",", "Expected \',\' for Modifies clause");
+
+  nextToken();
+  this->CheckUpcomingTokensAreEntRef(
+      "Second arg of Modifies clause not valid ent ref",
+      "Second arg of Modifies clause has not been declared");
+
+  nextToken();
+  CheckCurrentTokenSyntax(")", "Expected \')\' for Modifies clause");
+
+  nextToken();
+}
+
+void SyntaxChecker::CheckParent() {
+  assert(getCurrToken()->getTokenVal() == "Parent" ||
+         getCurrToken()->getTokenVal() == "Parent*");
+
+  nextToken();
+  this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Parent/* clause");
+
+  nextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for first argument of Parent/* clause",
+      "Synonym in first arg of Parent/* clause has not been declared");
+
+  nextToken();
+  this->CheckCurrentTokenSyntax(",", "Expected \',\' for Parent/* clause");
+
+  nextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for second argument of Parent/* clause",
+      "Synonym in second arg of Parent/* clause has not been declared");
+
+  nextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected \')\' for Parent/* clause");
+
+  nextToken();
 }
 
 void SyntaxChecker::CheckPattern() {
@@ -155,64 +240,104 @@ void SyntaxChecker::CheckSuchThat() {
   if (!QpParser::IsRelRef(getCurrToken()->getTokenVal())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
-  nextToken();  // (
-  if (getCurrToken()->getTokenVal() != "(") {
-    throw InvalidSyntaxException("Invalid such that clause syntax");
+  std::string rel_ref = getCurrToken()->getTokenVal();
+  if (rel_ref == "Follows" || rel_ref == "Follows*") {
+    this->CheckFollows();
+  } else if (rel_ref == "Parent" || rel_ref == "Parent*") {
+    this->CheckParent();
+  } else if (rel_ref == "Uses") {
+    this->CheckUses();
+  } else if (rel_ref == "Modifies") {
+    this->CheckModifies();
   }
-  nextToken();  // stmtRef
-  if (!IsStmtRef(getCurrToken()->getTokenVal()) &&
-      !IsEntRef(getCurrToken()->getTokenVal())) {
-    if (getCurrToken()->getTokenVal() == "\"") {
-      if (!(IsSynonym(nextToken()->getTokenVal()))) {
-        throw InvalidSyntaxException(
-            "Invalid first arg: Expected synonym within identifier quotes");
-      }
-      if (nextToken()->getTokenVal() != "\"") {
-        throw InvalidSyntaxException("Invalid first arg: Expected closing \"");
-      }
-    } else {
-      throw InvalidSyntaxException(
-          "First arg in such that clause not valid stmtref/entref");
-    }
-  } else {
-    // is stmtref/entref
-    if (QpParser::IsSynonym(getCurrToken()->getTokenVal())) {
-      if (dec.find(getCurrToken()->getTokenVal()) == dec.end()) {
-        throw InvalidSemanticsException("Synonym argument has not been declared");
-      }
-    }
-  }
-
-  nextToken();  // ,
-  if (getCurrToken()->getTokenVal() != ",") {
-    throw InvalidSyntaxException("Invalid such that clause syntax");
-  }
-  nextToken();  // stmtRef
-  if (!(IsStmtRef(getCurrToken()->getTokenVal())) &&
-      !(QpParser::IsEntRef(getCurrToken()->getTokenVal()))) {
-    if (getCurrToken()->getTokenVal() == "\"") {
-      if (!(QpParser::IsSynonym(nextToken()->getTokenVal()))) {
-        throw InvalidSyntaxException(
-            "Invalid second arg: Expected synonym within identifier quotes");
-      }
-      if (nextToken()->getTokenVal() != "\"") {
-        throw InvalidSyntaxException("Invalid second arg: Expected closing \"");
-      }
-    } else {
-      throw InvalidSyntaxException(
-          "Second arg in such that clause not valid stmtref/entref");
-    }
-  }
-  nextToken();  // )
-  if (getCurrToken()->getTokenVal() != ")") {
-    throw InvalidSyntaxException("Invalid such that clause structure");
-  }
-  nextToken();
 }
 
 void SyntaxChecker::CheckSuchThatOrPattern() {
   for (int i = 0; i < 2; i++) {
     CheckSuchThat();
     CheckPattern();
+  }
+}
+
+void SyntaxChecker::CheckUses() {
+  assert(getCurrToken()->getTokenVal() == "Uses");
+
+  nextToken();
+  CheckCurrentTokenSyntax("(", "Expected \'(\' for Uses clause");
+
+  nextToken();
+  if (QpParser::IsStmtRef(getCurrToken()->getTokenVal())) {
+    this->CheckCurrentTokenStmtRef(
+        "First arg of Uses clause not valid stmt ref",
+        "First arg of Uses clause has not been declared");
+  } else {
+    this->CheckUpcomingTokensAreEntRef(
+        "First arg of Uses clause not valid ent ref",
+        "First arg of Uses clause has not been declared");
+  }
+
+  nextToken();
+  CheckCurrentTokenSyntax(",", "Expected \',\' for Uses clause");
+
+  nextToken();
+  this->CheckUpcomingTokensAreEntRef(
+      "Second arg of Uses clause not valid ent ref",
+      "Second arg of Uses clause has not been declared");
+
+  nextToken();
+  CheckCurrentTokenSyntax(")", "Expected \')\' for Uses clause");
+
+  nextToken();
+}
+
+// ---------- HELPER CHECKERS -------------
+
+void SyntaxChecker::CheckCurrentTokenStmtRef(
+    std::string syntax_error_msg, std::string not_existing_error_msg) {
+  std::string token_value = getCurrToken()->getTokenVal();
+  if (!QpParser::IsStmtRef(token_value)) {
+    throw InvalidSyntaxException(syntax_error_msg);
+  } else {
+    if (QpParser::IsSynonym(token_value)) {
+      this->CheckSynonymExists(token_value, not_existing_error_msg);
+    }
+  }
+}
+
+void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
+                                            std::string error_msg) {
+  if (getCurrToken()->getTokenVal() != expected_value) {
+    throw InvalidSyntaxException(error_msg + ". Got " +
+                                 getCurrToken()->getTokenVal() + " instead.");
+  }
+}
+
+void SyntaxChecker::CheckSynonymExists(std::string synonym,
+                                       std::string error_msg) {
+  if (existing_declarations.find(synonym) == existing_declarations.end()) {
+    throw InvalidSemanticsException(error_msg);
+  }
+}
+
+void SyntaxChecker::CheckUpcomingTokensAreEntRef(
+    std::string syntax_error_msg, std::string not_existing_error_msg) {
+  std::string value = "";
+  if (getCurrToken()->getTokenVal() == "\"") {
+    value += "\"";
+    nextToken();
+  }
+  if (QpParser::IsIdentifier(getCurrToken()->getTokenVal()) ||
+      getCurrToken()->getTokenVal() == "_") {
+    value += getCurrToken()->getTokenVal();
+  }
+  if (peekToken()->getTokenVal() == "\"") {
+    value += nextToken()->getTokenVal();
+  }
+  if (!QpParser::IsEntRef(value)) {
+    throw InvalidSyntaxException(syntax_error_msg);
+  } else {
+    if (QpParser::IsSynonym(value)) {
+      this->CheckSynonymExists(value, not_existing_error_msg);
+    }
   }
 }

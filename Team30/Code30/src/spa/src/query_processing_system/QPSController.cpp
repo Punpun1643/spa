@@ -6,10 +6,8 @@
 #include "../shared/tokenizer/Tokenizer.h"
 #include "common/SelectClause.h"
 #include "common/SuchThatClause.h"
+#include "common/UsesSClause.h"
 #include "parser/ContextBuilder.h"
-
-
-#include "common/FollowsClause.h"
 
 QPSController::QPSController(){};
 
@@ -22,40 +20,23 @@ void QPSController::HandleQuery(
 
   std::shared_ptr<Context> context = this->FormContext(tokens);
 
-
+  std::cout << "qpsc1\n";
   std::shared_ptr<AExpression> expression_tree =
       this->FormExpressionTree(tokens);
-  
 
+  std::cout << "qpsc2\n";
   this->InterpretContext(context, expression_tree);
 
+  std::cout << "qpsc3\n";
 
   std::vector<PqlDeclaration> selected_declarations =
       context->GetSelectedDeclarations();
   std::vector<std::shared_ptr<Clause>> other_clauses =
       context->GetOtherClauses();
 
-  /* std::vector<PqlDeclaration> pql_dec_vec; */
-  /* pql_dec_vec.push_back(PqlDeclaration("s", EntityType::STMT)); */
-  /* std::vector<std::shared_ptr<Clause>> clause_dec; */
-  /* clause_dec.push_back( */
-  /*           std::make_shared<FollowsClause>( */
-  /*             std::make_unique<StmtRef>( */
-  /*               PqlDeclaration("s", EntityType::STMT) */
-  /*               ), */
-  /*             std::make_unique<StmtRef>( */
-  /*               PqlDeclaration("w", EntityType::WHILE) */
-  /*               ), */
-  /*             false */
-  /*             ) */
-  /*     ); */
-    
   std::vector<std::vector<std::string>> query_results =
-  /*     query_evaluator->evaluateQuery( */
-  /*         pql_dec_vec, */
-  /*         clause_dec */
-  /*         ); */
       query_evaluator->evaluateQuery(selected_declarations, other_clauses);
+
   for (std::vector<std::string> result : query_results) {
     std::string result_string;
     for (std::vector<std::string>::iterator it = result.begin();

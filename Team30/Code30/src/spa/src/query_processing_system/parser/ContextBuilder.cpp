@@ -21,7 +21,8 @@ void ContextBuilder::parse() {
 void ContextBuilder::parseDeclaration() {
   EntityType entity_type =
       QpParser::StringToEntityType(getCurrToken()->getTokenVal());
-  std::shared_ptr<std::vector<std::string>> synonym_list(std::make_shared<std::vector<std::string>>());
+  std::shared_ptr<std::vector<std::string>> synonym_list(
+      std::make_shared<std::vector<std::string>>());
   std::string synonym = nextToken()->getTokenVal();
   this->addSynonym(synonym_list, synonym);
   nextToken();  // ; OR ,
@@ -35,8 +36,9 @@ void ContextBuilder::parseDeclaration() {
   this->context->addDeclarations(entity_type, *synonym_list);
 }
 
-void ContextBuilder::addSynonym(std::shared_ptr<std::vector<std::string>> synonym_list,
-                                std::string synonym) {
+void ContextBuilder::addSynonym(
+    std::shared_ptr<std::vector<std::string>> synonym_list,
+    std::string synonym) {
   if (this->existing_synonyms.find(synonym) != this->existing_synonyms.end()) {
     throw InvalidSyntaxException("Synonym declared twice");
   } else {

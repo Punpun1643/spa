@@ -37,10 +37,7 @@
 *.app
 
 # Vim
-*.swo
-*.swp
-*.swn
-*.swl
+*.sw*
 
 ### CLion ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

@@ -17,11 +17,11 @@
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens) {
-      // Declaration parsing already done by ContextBuilder
-      while (getCurrToken()->getTokenVal() != "Select") {
-        nextToken();
-      }
-    }
+  // Declaration parsing already done by ContextBuilder
+  while (getCurrToken()->getTokenVal() != "Select") {
+    nextToken();
+  }
+}
 
 std::shared_ptr<AExpression> ExpressionTreeBuilder::GetExpressionTree() {
   return std::move(this->expression_tree);
@@ -58,7 +58,8 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
         std::make_optional<std::shared_ptr<SuchThatExpression>>(
             this->CreateSuchThatExpression());
     if (previous_clause_expression.has_value()) {
-      previous_clause_expression.value()->SetNextExpression(such_that_expression);
+      previous_clause_expression.value()->SetNextExpression(
+          such_that_expression);
     }
 
     if (is_first_run) {
@@ -123,6 +124,14 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ParentTExpression>>(
               std::make_shared<ParentTExpression>(arg1, arg2));
+    } else if (clause_name == "Uses") {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<UsesExpression>>(
+              std::make_shared<UsesExpression>(arg1, arg2));
+    } else if (clause_name == "Modifies") {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<ModifiesExpression>>(
+              std::make_shared<ModifiesExpression>(arg1, arg2));
     }
 
     if (previous_such_that_expression.has_value()) {
@@ -140,7 +149,6 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
   }
   return such_that_expression_head;
 }
-
 
 /* std::unique_ptr<PatternExpression> */
 /* ExpressionTreeBuilder ::CreatePatternExpression() { */
