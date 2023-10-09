@@ -76,7 +76,7 @@ none
 16 - Calls* (wildcard, proc_syn)
 procedure p;
 Select r such that Calls* (_, "D")
-5
+SyntaxError
 5000
 17 - Calls* (wildcard, proc_name)
 if i;
@@ -104,7 +104,7 @@ Select p such that Calls (p, "x")
 none
 5000
 22 - Calls* Variable as 2nd term, should not output error but return no values.
-Procedure p;
+procedure p;
 Select p such that Calls* (p, "y")
 none
 5000

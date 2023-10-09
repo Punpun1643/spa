@@ -46,17 +46,17 @@ class QueryInterpreter {
   std::shared_ptr<Context> context;
   std::shared_ptr<AExpression> expression_tree;
 
+  EntityType GetEntityTypeAsDeclaration(std::string const& argument);
   PqlDeclaration GetMappedDeclaration(std::string const& synonym);
   bool IsADeclaration(std::string const& argument);
-  bool IsInteger(std::string const& argument);
-  bool IsStmtRef(std::string const& argument);
-  bool IsSynonym(std::string const& argument);
-  bool IsWildcard(std::string const& argument);
-  std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
-
-  bool IsValidRelArg(std::string const& argument);
   bool IsEntRef(std::string const& argument);
   bool IsIdentifier(std::string const& argument);
-  EntityType GetEntityTypeAsDeclaration(std::string const& argument);
+  bool IsInteger(std::string const& argument);
+  bool IsQuotedIdentifier(std::string const& argument);
+  bool IsStmtRef(std::string const& argument);
+  bool IsSynonym(std::string const& argument);
+  bool IsValidRelArg(std::string const& argument);
+  bool IsWildcard(std::string const& argument);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
+  std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
 };

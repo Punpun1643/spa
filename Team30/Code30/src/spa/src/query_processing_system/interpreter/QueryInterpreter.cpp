@@ -29,11 +29,6 @@ QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
                                    std::shared_ptr<AExpression> expression_tree)
     : context(context), expression_tree(expression_tree){};
 
-PqlDeclaration QueryInterpreter::GetMappedDeclaration(
-    std::string const& synonym) {
-  return (this->context->GetDeclaration(synonym));
-}
-
 void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =
       std::move(this->expression_tree);
@@ -115,7 +110,7 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {
     lhs_expr = std::make_shared<EntRef>();
-  } else if (this->IsIdentifier(arg1)) {
+  } else if (this->IsQuotedIdentifier(arg1)) {
     lhs_expr = std::make_shared<EntRef>(arg1.substr(1, arg1.size() - 2));
   } else if (this->IsSynonym(arg1)) {
     lhs_expr = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
@@ -136,6 +131,10 @@ void QueryInterpreter::Interpret(
 void QueryInterpreter::Interpret(
     std::shared_ptr<SelectExpression> select_expression) {
   std::string synonym = select_expression->GetSynonym();
+  if (!this->IsSynonym(synonym)) {
+    throw InvalidSyntaxException(
+        "Synonym to be selected has not been declared");
+  }
   PqlDeclaration selected_declaration =
       QueryInterpreter::GetMappedDeclaration(synonym);
   this->context->AddSelectDeclaration(selected_declaration);
@@ -163,8 +162,48 @@ void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
   }
 }
 
+// ------- PRIVATE METHODS ----------
+
+EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
+    std::string const& argument) {
+  return context->GetDeclaration(argument).getEntityType();
+}
+
+PqlDeclaration QueryInterpreter::GetMappedDeclaration(
+    std::string const& synonym) {
+  std::cout << "qi1: " << synonym << "\n";
+  assert(this->context->CheckDeclarationExists(synonym));
+  return (this->context->GetDeclaration(synonym));
+}
+
 bool QueryInterpreter::IsADeclaration(std::string const& argument) {
   return this->context->CheckDeclarationExists(argument);
+}
+
+bool QueryInterpreter::IsEntRef(std::string const& argument) {
+  if (IsSynonym(argument)) {
+    EntityType entity_type = GetEntityTypeAsDeclaration(argument);
+    if (entity_type == EntityType::PROCEDURE ||
+        entity_type == EntityType::VARIABLE ||
+        entity_type == EntityType::CONSTANT) {
+      return true;
+    }
+  } else if (IsWildcard(argument) || IsQuotedIdentifier(argument)) {
+    return true;
+  }
+  return false;
+}
+
+bool QueryInterpreter::IsIdentifier(std::string const& argument) {
+  if (!std::isalpha(argument[0])) {
+    return false;
+  }
+  for (size_t i = 1; i < argument.length(); i++) {
+    if (!std::isalnum(argument[i])) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool QueryInterpreter::IsInteger(std::string const& argument) {
@@ -176,10 +215,19 @@ bool QueryInterpreter::IsInteger(std::string const& argument) {
   return true;
 }
 
+bool QueryInterpreter::IsQuotedIdentifier(std::string const& argument) {
+  if (argument.size() >= 3) {
+    return (argument.substr(0, 1) == "\"" &&
+            this->IsIdentifier(argument.substr(1, argument.size() - 2)) &&
+            argument.substr(argument.size() - 1, 1) == "\"");
+  }
+  return false;
+}
+
 bool QueryInterpreter::IsStmtRef(std::string const& argument) {
-  if (IsWildcard(argument) || IsInteger(argument) || IsSynonym(argument)) {
+  if (IsWildcard(argument) || IsInteger(argument)) {
     return true;
-  } else if (IsADeclaration(argument)) {
+  } else if (IsSynonym(argument)) {
     EntityType entity_type = GetEntityTypeAsDeclaration(argument);
     if (entity_type == EntityType::STMT || entity_type == EntityType::READ ||
         entity_type == EntityType::PRINT || entity_type == EntityType::CALL ||
@@ -192,19 +240,32 @@ bool QueryInterpreter::IsStmtRef(std::string const& argument) {
 }
 
 bool QueryInterpreter::IsSynonym(std::string const& argument) {
-  if (!std::isalpha(argument[0])) {
-    return false;
+  return (this->IsADeclaration(argument) && this->IsIdentifier(argument));
+}
+
+bool QueryInterpreter::IsValidRelArg(std::string const& argument) {
+  if (IsStmtRef(argument) || IsEntRef(argument)) {
+    return true;
   }
-  for (size_t i = 1; i < argument.length(); i++) {
-    if (!std::isalnum(argument[i])) {
-      return false;
-    }
-  }
-  return true;
+  return false;
 }
 
 bool QueryInterpreter::IsWildcard(std::string const& argument) {
   return argument == "_";
+}
+
+std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
+    std::string const& string) {
+  if (IsSynonym(string)) {
+    return std::make_unique<EntRef>(
+        QueryInterpreter::GetMappedDeclaration(string));
+  } else if (IsWildcard(string)) {
+    return std::make_unique<EntRef>();
+  } else if (IsQuotedIdentifier(string)) {
+    return std::make_unique<EntRef>(string.substr(1, string.size() - 2));
+  } else {
+    throw std::runtime_error("Invalid string to be converted into Entref");
+  }
 }
 
 std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
@@ -218,55 +279,5 @@ std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
     return std::make_unique<StmtRef>(stoi(string));
   } else {
     throw InvalidSyntaxException("Invalid string to be converted into StmtRef");
-  }
-}
-
-bool QueryInterpreter::IsValidRelArg(std::string const& argument) {
-  if (IsStmtRef(argument) || IsEntRef(argument)) {
-    return true;
-  }
-  return false;
-}
-
-bool QueryInterpreter::IsEntRef(std::string const& argument) {
-  if (IsADeclaration(argument)) {
-    EntityType entity_type = GetEntityTypeAsDeclaration(argument);
-    if (entity_type == EntityType::PROCEDURE ||
-        entity_type == EntityType::VARIABLE ||
-        entity_type == EntityType::CONSTANT) {
-      return true;
-    }
-  } else if (IsWildcard(argument) || IsIdentifier(argument)) {
-    return true;
-  }
-  return false;
-}
-
-bool QueryInterpreter::IsIdentifier(std::string const& argument) {
-  if (argument.size() >= 3) {
-    return (argument.substr(0, 1) == "\"" &&
-            IsSynonym(argument.substr(1, argument.size() - 2)) &&
-            argument.substr(argument.size() - 1, 1) == "\"");
-  }
-  return false;
-}
-
-EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
-    std::string const& argument) {
-  /* assert(this->declarations->count(argument) > 0); */
-  return context->GetDeclaration(argument).getEntityType();
-}
-
-std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
-    std::string const& string) {
-  if (IsADeclaration(string)) {
-    return std::make_unique<EntRef>(
-        QueryInterpreter::GetMappedDeclaration(string));
-  } else if (IsWildcard(string)) {
-    return std::make_unique<EntRef>();
-  } else if (IsIdentifier(string)) {
-    return std::make_unique<EntRef>(string.substr(1, string.size() - 2));
-  } else {
-    throw std::runtime_error("Invalid string to be converted into Entref");
   }
 }

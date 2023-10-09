@@ -16,7 +16,7 @@ Bumblebee, Megatron, IronHide, Barricade
 4 - check specific variable used by specific procedures
 read r;
 Select r such that Uses("IronHide", "p")
-None
+none
 5000
 5 - check variable synonym used by specific procedures
 variable v;
@@ -46,7 +46,7 @@ Bumblebee, Megatron, IronHide, Barricade
 10 - check specific variable modified by specific procedure
 while w;
 Select w such that Modifies("Barricade", "p")
-None
+none
 5000
 11 - check variable synonym modified by specific procedure
 variable v;
