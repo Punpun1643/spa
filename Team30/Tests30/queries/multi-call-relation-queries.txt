@@ -36,7 +36,7 @@ B, C, D, F, G, H, I, J
 8 - Calls (wildcard, proc_name)
 assign a;
 Select a such that Calls (_, p)
-2, 9, 10, 19
+SemanticError
 5000
 9 - Calls (wildcard, wildcard)
 read r;
