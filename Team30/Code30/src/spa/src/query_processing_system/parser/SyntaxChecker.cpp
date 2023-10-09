@@ -362,7 +362,22 @@ void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
   }
 }
 
-void SyntaxChecker::CheckIsExpr(std::string error_msg) { return; }
+void SyntaxChecker::CheckIsExpr(std::string error_msg) { 
+  std::vector<std::shared_ptr<Token>> infix_tokens;
+
+  while (getCurrToken()->getTokenVal() != "\"") {
+    if (getCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+      throw InvalidSyntaxException(error_msg);
+    }
+    infix_tokens.push_back(getCurrToken());
+    nextToken();
+  }
+  try {
+    AParser::ConvertInfixToPostfix(infix_tokens);
+  } catch (std::invalid_argument e) {
+    throw InvalidSyntaxException(error_msg);
+  }
+}
 
 void SyntaxChecker::CheckSynonymExists(std::string synonym,
                                        std::string error_msg) {
@@ -400,7 +415,6 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
   nextToken();
   this->CheckIsExpr(error_msg);
 
-  nextToken();
   CheckCurrentTokenSyntax("\"", error_msg);
 
   nextToken();
