@@ -97,7 +97,6 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Invalid declaration format");
     }
     nextToken();  // entity_type or Select
-    std::cout << "ending tokne: " << getCurrToken()->getTokenVal() << "\n";
   }
 }
 

@@ -83,6 +83,7 @@ void QueryInterpreter::Interpret(
     this->context->AddSuchThatClause(std::make_shared<ModifiesPClause>(
         StringToEntRef(arg1), StringToEntRef(arg2)));
   }
+  this->InterpretNext(modifies_expression);
 }
 
 void QueryInterpreter::Interpret(
@@ -99,6 +100,7 @@ void QueryInterpreter::Interpret(
   std::string arg2 = parent_t_expression->GetArg2();
   this->context->AddSuchThatClause(std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), true));
+  this->InterpretNext(parent_t_expression);
 }
 
 void QueryInterpreter::Interpret(
@@ -126,6 +128,7 @@ void QueryInterpreter::Interpret(
   }
   this->context->AddPatternClause(std::make_shared<PatternClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr));
+  this->InterpretNext(pattern_expression);
 }
 
 void QueryInterpreter::Interpret(
@@ -152,6 +155,7 @@ void QueryInterpreter::Interpret(
     this->context->AddSuchThatClause(std::make_shared<UsesPClause>(
         StringToEntRef(arg1), StringToEntRef(arg2)));
   }
+  this->InterpretNext(uses_expression);
 }
 
 void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
@@ -171,7 +175,6 @@ EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
 
 PqlDeclaration QueryInterpreter::GetMappedDeclaration(
     std::string const& synonym) {
-  std::cout << "qi1: " << synonym << "\n";
   assert(this->context->CheckDeclarationExists(synonym));
   return (this->context->GetDeclaration(synonym));
 }

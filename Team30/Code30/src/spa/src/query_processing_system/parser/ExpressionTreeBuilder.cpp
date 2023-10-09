@@ -73,6 +73,7 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
       clause_expression_head = current_clause_expression;
     }
     previous_clause_expression = current_clause_expression;
+    is_first_run = false;
   }
   return clause_expression_head;
 }
