@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <stdexcept>
+#include <cassert>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
