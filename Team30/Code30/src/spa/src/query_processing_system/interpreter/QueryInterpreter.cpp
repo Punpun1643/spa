@@ -171,7 +171,6 @@ EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
 
 PqlDeclaration QueryInterpreter::GetMappedDeclaration(
     std::string const& synonym) {
-  std::cout << "qi1: " << synonym << "\n";
   assert(this->context->CheckDeclarationExists(synonym));
   return (this->context->GetDeclaration(synonym));
 }
