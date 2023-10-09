@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "../common/CallsClause.h"
 #include "../common/FollowsClause.h"
 #include "../common/ModifiesPClause.h"
 #include "../common/ModifiesSClause.h"
@@ -13,6 +14,8 @@
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
 #include "../expression/AExpression.h"
+#include "../expression/CallsExpression.h"
+#include "../expression/CallsTExpression.h"
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
 #include "../expression/ModifiesExpression.h"
@@ -36,6 +39,24 @@ void QueryInterpreter::Interpret() {
       std::move(this->expression_tree);
   assert(typeid(*expression_tree) == typeid(SelectExpression));
   expression_tree->acceptInterpreter(*this);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<CallsExpression> calls_expression) {
+  std::string arg1 = calls_expression->GetArg1();
+  std::string arg2 = calls_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<CallsClause>(
+      StringToEntRef(arg1), StringToEntRef(arg2), false));
+  this->InterpretNext(calls_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<CallsTExpression> calls_t_expression) {
+  std::string arg1 = calls_t_expression->GetArg1();
+  std::string arg2 = calls_t_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<CallsClause>(
+      StringToEntRef(arg1), StringToEntRef(arg2), true));
+  this->InterpretNext(calls_t_expression);
 }
 
 void QueryInterpreter::Interpret(

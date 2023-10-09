@@ -21,7 +21,7 @@ G, H, I
 5 - Calls (proc_name, proc_name)
 assign a;
 Select a such that Calls ("F", "J")
-None
+none
 5000
 6 - Calls (proc_name, wildcard)
 print pn;
@@ -71,7 +71,7 @@ Select a such that Calls* ("A", "I")
 15 - Calls* (proc_name, wildcard)
 while w;
 Select w such that Calls* ("I",_)
-None
+none
 5000
 16 - Calls* (wildcard, proc_syn)
 procedure p;
@@ -101,10 +101,10 @@ SyntaxError
 21 - Calls Variable as 2nd term, should not output error but return no values.
 procedure p;
 Select p such that Calls (p, "x")
-None
+none
 5000
 22 - Calls* Variable as 2nd term, should not output error but return no values.
 Procedure p;
 Select p such that Calls* (p, "y")
-None
+none
 5000

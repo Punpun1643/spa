@@ -49,5 +49,5 @@ procedure I {
 }
 
 procedure J {
-  calls I;
+  call I;
 }

@@ -32,7 +32,7 @@ void SyntaxChecker::CheckCalls() {
          getCurrToken()->getTokenVal() == "Calls*");
 
   nextToken();
-  CheckCurrentTokenSyntax("(", "Expected \'(\' for Modifies clause");
+  CheckCurrentTokenSyntax("(", "Expected \'(\' for Calls clause");
 
   nextToken();
   this->CheckUpcomingTokensAreEntRef(
@@ -40,7 +40,7 @@ void SyntaxChecker::CheckCalls() {
       "First arg of Calls clause has not been declared");
 
   nextToken();
-  CheckCurrentTokenSyntax(",", "Expected \',\' for Modifies clause");
+  CheckCurrentTokenSyntax(",", "Expected \',\' for Calls clause");
 
   nextToken();
   this->CheckUpcomingTokensAreEntRef(
@@ -48,7 +48,7 @@ void SyntaxChecker::CheckCalls() {
       "Second arg of Calls clause has not been declared");
 
   nextToken();
-  CheckCurrentTokenSyntax(")", "Expected \')\' for Modifies clause");
+  CheckCurrentTokenSyntax(")", "Expected \')\' for Calls clause");
 
   nextToken();
 }

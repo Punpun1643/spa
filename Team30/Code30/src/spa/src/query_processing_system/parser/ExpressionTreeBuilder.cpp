@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "../expression/CallsExpression.h"
+#include "../expression/CallsTExpression.h"
 #include "../expression/ClauseExpression.h"
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
@@ -128,6 +130,14 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ModifiesExpression>>(
               std::make_shared<ModifiesExpression>(arg1, arg2));
+    } else if (clause_name == "Calls") {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<CallsExpression>>(
+              std::make_shared<CallsExpression>(arg1, arg2));
+    } else if (clause_name == "Calls*") {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<CallsTExpression>>(
+              std::make_shared<CallsTExpression>(arg1, arg2));
     }
 
     if (previous_such_that_expression.has_value()) {
