@@ -1,7 +1,6 @@
 #include "SyntaxChecker.h"
 
 #include <iostream>
-#include <unordered_map>
 #include <stdexcept>
 #include <cassert>
 
@@ -97,7 +96,6 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Invalid declaration format");
     }
     nextToken();  // entity_type or Select
-    std::cout << "ending tokne: " << getCurrToken()->getTokenVal() << "\n";
   }
 }
 
