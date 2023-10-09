@@ -36,7 +36,7 @@ Megatron, Barricade
 8 - check variable synonym modified by procedure synonym
 procedure p; variable v; assign a;
 Select p such that Modifies(p, v) pattern a (v, _"x"_)
-Megatron, Barricade 
+Megatron, Barricade, Bumblebee, IronHide
 5000
 9 - check wildcard modified by procedure synonym
 procedure p;
