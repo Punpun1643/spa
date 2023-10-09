@@ -20,14 +20,10 @@ void QPSController::HandleQuery(
 
   std::shared_ptr<Context> context = this->FormContext(tokens);
 
-  std::cout << "qpsc1\n";
   std::shared_ptr<AExpression> expression_tree =
       this->FormExpressionTree(tokens);
 
-  std::cout << "qpsc2\n";
   this->InterpretContext(context, expression_tree);
-
-  std::cout << "qpsc3\n";
 
   std::vector<PqlDeclaration> selected_declarations =
       context->GetSelectedDeclarations();

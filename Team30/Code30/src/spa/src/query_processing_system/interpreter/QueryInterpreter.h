@@ -15,7 +15,7 @@ class AExpression;
 class FollowsExpression;
 class FollowsTExpression;
 class ModifiesExpression;
-/* class PatternExpression; */
+class PatternExpression;
 class ParentExpression;
 class ParentTExpression;
 class SelectExpression;
@@ -34,10 +34,9 @@ class QueryInterpreter {
   void Interpret(std::shared_ptr<ModifiesExpression> modifies_expression);
   void Interpret(std::shared_ptr<ParentExpression> parent_expression);
   void Interpret(std::shared_ptr<ParentTExpression> parent_t_expression);
+  void Interpret(std::shared_ptr<PatternExpression> pattern_expression);
   void Interpret(std::shared_ptr<SelectExpression> select_expression);
   void Interpret(std::shared_ptr<UsesExpression> uses_expression);
-
-  /* void Interpret(PatternExpression& pattern_expression); */
 
  private:
   std::shared_ptr<Context> context;

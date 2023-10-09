@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../common/EntityType.h"
+#include "../common/PatternClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/SelectClause.h"
 #include "../common/SuchThatClause.h"
@@ -11,6 +12,7 @@ class Context {
  public:
   void addDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
+  void AddPatternClause(std::shared_ptr<PatternClause> pattern_clause);
   void AddSelectDeclaration(PqlDeclaration declaration);
   void AddSuchThatClause(std::shared_ptr<SuchThatClause> such_that_clause);
   bool CheckDeclarationExists(std::string synonym);
@@ -25,4 +27,5 @@ class Context {
   std::vector<PqlDeclaration> selected_declarations;
   std::shared_ptr<SelectClause> select_clause;
   std::vector<std::shared_ptr<SuchThatClause>> such_that_clauses;
+  std::vector<std::shared_ptr<PatternClause>> pattern_clauses;
 };

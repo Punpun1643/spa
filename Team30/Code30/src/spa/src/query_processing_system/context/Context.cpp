@@ -10,6 +10,10 @@ void Context::addDeclarations(EntityType entity_type,
   }
 }
 
+void Context::AddPatternClause(std::shared_ptr<PatternClause> pattern_clause) {
+  this->pattern_clauses.push_back(pattern_clause);
+}
+
 void Context::AddSelectDeclaration(PqlDeclaration declaration) {
   this->selected_declarations.push_back(declaration);
 }
@@ -36,6 +40,8 @@ std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
   std::vector<std::shared_ptr<Clause>> other_clauses;
   other_clauses.insert(other_clauses.end(), this->such_that_clauses.begin(),
                        this->such_that_clauses.end());
+  other_clauses.insert(other_clauses.end(), this->pattern_clauses.begin(),
+                       this->pattern_clauses.end());
   return other_clauses;
 }
 

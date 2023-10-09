@@ -10,7 +10,6 @@
 #include "../expression/ModifiesExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
-#include "../expression/PatternExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
 
@@ -50,31 +49,28 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 std::optional<std::shared_ptr<ClauseExpression>>
 ExpressionTreeBuilder ::CreateClauseExpression() {
   std::optional<std::shared_ptr<ClauseExpression>> previous_clause_expression;
+  std::optional<std::shared_ptr<ClauseExpression>> current_clause_expression;
   std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head;
 
   bool is_first_run = true;
-  while (getCurrToken()->getTokenVal() == "such") {
-    std::optional<std::shared_ptr<SuchThatExpression>> such_that_expression =
-        std::make_optional<std::shared_ptr<SuchThatExpression>>(
-            this->CreateSuchThatExpression());
+  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+    if (getCurrToken()->getTokenVal() == "such") {
+      current_clause_expression =
+          std::make_optional<std::shared_ptr<SuchThatExpression>>(
+              this->CreateSuchThatExpression());
+    } else if (getCurrToken()->getTokenVal() == "pattern") {
+      current_clause_expression =
+          std::make_optional<std::shared_ptr<PatternExpression>>(
+              this->CreatePatternExpression());
+    }
     if (previous_clause_expression.has_value()) {
       previous_clause_expression.value()->SetNextExpression(
-          such_that_expression);
+          current_clause_expression);
     }
-
     if (is_first_run) {
-      clause_expression_head = such_that_expression;
+      clause_expression_head = current_clause_expression;
     }
-
-    previous_clause_expression = such_that_expression;
-    /* else if (getCurrToken()->getTokenVal() == "pattern") { */
-    /*   std::unique_ptr<PatternExpression> pattern_expression =
-     * this->CreatePatternExpression(); */
-    /*   if (previous_clause_expression.has_value()) { */
-    /*     previous_clause_expression.SetNextExpression(pattern_expression); */
-    /*   } */
-    /*   previous_clause_expression = pattern_expression; */
-    /* } */
+    previous_clause_expression = current_clause_expression;
   }
   return clause_expression_head;
 }
@@ -150,33 +146,25 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
   return such_that_expression_head;
 }
 
-/* std::unique_ptr<PatternExpression> */
-/* ExpressionTreeBuilder ::CreatePatternExpression() { */
-/*   if (getCurrToken()->getTokenVal() == "pattern") { */
-/*     std::string syn_assign = nextToken()->getTokenVal(); */
-/*     nextToken();    // ( */
-/*     nextToken(); */
+std::shared_ptr<PatternExpression>
+ExpressionTreeBuilder ::CreatePatternExpression() {
+  assert(getCurrToken()->getTokenVal() == "pattern");
+  std::string syn_assign = nextToken()->getTokenVal();
+  std::string arg1 = "";
+  std::string arg2 = "";
+  nextToken();  // (
+  nextToken();
+  while (getCurrToken()->getTokenVal() != ",") {
+    arg1 += getCurrToken()->getTokenVal();
+    nextToken();
+  }
 
-/*     std::string arg1 = ""; */
-/*     if (getCurrToken()->getTokenVal() == "\"") { */
-/*       arg1 += "\""; */
-/*       arg1 += nextToken()->getTokenVal(); // identifier */
-/*       arg1 += nextToken()->getTokenVal(); // " */
-/*     } else { */
-/*       arg1 = getCurrToken()->getTokenVal(); // synonym or _ */
-/*     } */
-/*     nextToken();  // , */
-/*     nextToken(); // _ */
-/*     std::string arg2 = "_"; */
-/*     if (nextToken()->getTokenVal() == "\"") { */
-/*       arg2 += "\""; */
-/*       arg2 += nextToken()->getTokenVal(); // factor */
-/*       arg2 += nextToken()->getTokenVal(); // " */
-/*       arg2 += nextToken()->getTokenVal(); // _ */
-/*     } */
-/*     nextToken(); // ) */
-/*     return std::make_unique<PatternExpression>(syn_assign, arg1, arg2); */
-/*   } else { */
-/*     return nullptr; */
-/*   } */
-/* } */
+  nextToken();
+  while (getCurrToken()->getTokenVal() != ")") {
+    arg2 += getCurrToken()->getTokenVal();
+    nextToken();
+  }
+
+  nextToken();  // EOF
+  return std::make_shared<PatternExpression>(syn_assign, arg1, arg2);
+}
