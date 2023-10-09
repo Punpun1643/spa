@@ -19,7 +19,7 @@ ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens) {
   // Declaration parsing already done by ContextBuilder
-  while (getCurrToken()->getTokenVal() != "Select") {
+  while (getCurrToken()->getTokenVal() != "Select" || getPeekBackTokenValue() != ";") {
     nextToken();
   }
 }
