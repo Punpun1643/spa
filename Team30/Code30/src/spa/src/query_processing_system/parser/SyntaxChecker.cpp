@@ -96,6 +96,7 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Invalid declaration format");
     }
     nextToken();  // entity_type or Select
+    std::cout << "ending tokne: " << getCurrToken()->getTokenVal() << "\n";
   }
 }
 
@@ -227,9 +228,6 @@ void SyntaxChecker::CheckSelect() {
 }
 
 void SyntaxChecker::CheckSuchThat() {
-  if (getCurrToken()->getTokenVal() != "such") {
-    return;
-  }
   nextToken();  // that
   nextToken();  // relRef
   if (!QpParser::IsRelRef(getCurrToken()->getTokenVal())) {
@@ -250,9 +248,15 @@ void SyntaxChecker::CheckSuchThat() {
 }
 
 void SyntaxChecker::CheckSuchThatOrPattern() {
-  for (int i = 0; i < 2; i++) {
-    CheckSuchThat();
-    CheckPattern();
+  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+    if (getCurrToken()->getTokenVal() == "such") {
+      this->CheckSuchThat();
+    } else if (getCurrToken()->getTokenVal() == "pattern") {
+      this->CheckPattern();
+    }
+    else {
+      throw InvalidSyntaxException("Did not encounter expected clause");
+    }
   }
 }
 

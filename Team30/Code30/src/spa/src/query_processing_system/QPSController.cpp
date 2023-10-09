@@ -3,18 +3,23 @@
 #include <iostream>
 #include <sstream>
 
-#include "../shared/tokenizer/Tokenizer.h"
-#include "common/SelectClause.h"
 #include "common/SuchThatClause.h"
 #include "common/UsesSClause.h"
+#include "exceptions/InvalidSyntaxException.h"
 #include "parser/ContextBuilder.h"
+#include "../shared/tokenizer/Tokenizer.h"
 
 QPSController::QPSController(){};
 
 void QPSController::HandleQuery(
     std::string& query, std::list<std::string>& results,
     std::shared_ptr<QueryEvaluator> query_evaluator) {
-  std::vector<std::shared_ptr<Token>> tokens = this->TokenizeQuery(query);
+  std::vector<std::shared_ptr<Token>> tokens;
+  try {
+    tokens = this->TokenizeQuery(query);
+  } catch (std::invalid_argument e) {
+    throw InvalidSyntaxException("Invalid item to be tokenized");
+  }
 
   this->CheckSyntax(tokens);
 
