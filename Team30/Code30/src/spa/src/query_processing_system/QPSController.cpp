@@ -3,8 +3,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "common/CallsClause.h"
-
 #include "common/SuchThatClause.h"
 #include "common/UsesSClause.h"
 #include "exceptions/InvalidSyntaxException.h"
