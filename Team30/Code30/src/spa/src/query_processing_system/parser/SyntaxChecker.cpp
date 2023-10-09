@@ -1,7 +1,7 @@
 #include "SyntaxChecker.h"
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <stdexcept>
 
 #include "../exceptions/InvalidSemanticsException.h"
