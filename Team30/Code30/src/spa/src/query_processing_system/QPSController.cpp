@@ -3,8 +3,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "common/CallsClause.h"
-
 #include "common/SuchThatClause.h"
 #include "common/UsesSClause.h"
 #include "exceptions/InvalidSyntaxException.h"
@@ -32,27 +30,13 @@ void QPSController::HandleQuery(
 
   this->InterpretContext(context, expression_tree);
 
-  /* std::vector<PqlDeclaration> selected_declarations = */
-  /*     context->GetSelectedDeclarations(); */
-  /* std::vector<std::shared_ptr<Clause>> other_clauses = */
-  /*     context->GetOtherClauses(); */
-
-  std::vector<PqlDeclaration> selected_declarations;
-  selected_declarations.push_back(PqlDeclaration("p", EntityType::PROCEDURE));
-
-  std::vector<std::shared_ptr<Clause>> other_clauses;
-  other_clauses.push_back(std::make_shared<CallsClause>(
-        std::make_unique<EntRef>(PqlDeclaration("p", EntityType::PROCEDURE)),
-        std::make_unique<EntRef>(PqlDeclaration("p1", EntityType::PROCEDURE)),
-        true
-        ));
+  std::vector<PqlDeclaration> selected_declarations =
+      context->GetSelectedDeclarations();
+  std::vector<std::shared_ptr<Clause>> other_clauses =
+      context->GetOtherClauses();
 
   std::vector<std::vector<std::string>> query_results =
       query_evaluator->evaluateQuery(selected_declarations, other_clauses);
-
-  std::cout << "qpsc0: " << other_clauses.size() << "\n";
-  std::cout << "qpsc1: " << query_results.size() << "\n";
-
 
   for (std::vector<std::string> result : query_results) {
     std::string result_string;
