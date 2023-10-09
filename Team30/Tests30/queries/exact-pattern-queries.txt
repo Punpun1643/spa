@@ -1,0 +1,35 @@
+1 - Exact Match single term
+assign a;
+Select a pattern a (_, "5")
+1
+5000
+2 - Exact Match entire RHS
+assign a;
+Select a pattern a (_, "5 + y + z")
+2
+5000
+3 - Exact Match without brackets 
+assign a;
+Select a pattern a (_, "a + a - a * a / a % a")
+10
+5000
+4 - Exact Match with brackets 
+assign a;
+Select a pattern a (_, "(b + c) / (c * a)")
+5
+5000
+5 - Invalid Exact Match RHS
+assign a;
+Select a pattern a (_, "5 +")
+SyntaxError
+5000
+6 - Partial Match substring RHS
+assign a;
+Select a pattern a (_, _"c/c"_)
+7
+5000
+7 - Partial Match substring RHS 
+assign a;
+Select a pattern a (_, _"a * a / a"_)
+12
+5000

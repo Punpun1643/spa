@@ -74,6 +74,7 @@ std::shared_ptr<Token> Tokenizer::next() {
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
   }
+  throw std::runtime_error("Unexpected end of input in Tokenizer::next");
 }
 
 std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
