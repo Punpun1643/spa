@@ -5,57 +5,58 @@
 #include "../exceptions/InvalidProcedureException.h"
 #include "../exceptions/InvalidReadException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
+#include "../constant/SpParserConstant.h"
 
-namespace SpParserConstant {
-// Procedure boundaries
-constexpr char START_PROCEDURE[] = "{";
-constexpr char END_PROCEDURE[] = "}";
-
-// While statement boundaries
-constexpr char START_WHILE_STMTLST[] = "{";
-constexpr char END_WHILE_STMTLST[] = "}";
-
-// Conditional statement boundaries
-constexpr char START_COND_EXPR[] = "(";
-constexpr char END_COND_EXPR[] = ")";
-
-// If statement boundaries
-constexpr char START_THEN_STMTLST[] = "{";
-constexpr char END_THEN_STMTLST[] = "}";
-constexpr char START_ELSE_STMTLST[] = "{";
-constexpr char END_ELSE_STMTLST[] = "}";
-
-// Assignment symbol
-constexpr char ASSIGN_SYMBOL[] = "=";
-
-// Keywords
-constexpr char PROCEDURE_KEYWORD[] = "procedure";
-constexpr char PRINT_KEYWORD[] = "print";
-constexpr char READ_KEYWORD[] = "read";
-constexpr char CALL_KEYWORD[] = "call";
-constexpr char WHILE_KEYWORD[] = "while";
-constexpr char IF_KEYWORD[] = "if";
-constexpr char THEN_KEYWORD[] = "then";
-constexpr char ELSE_KEYWORD[] = "else";
-
-}  // namespace SpParserConstant
-
-namespace SpParserComparisonOperator {
-// Comparison operators for conditional expressions
-constexpr char EQUAL[] = "==";
-constexpr char NOT_EQUAL[] = "!=";
-constexpr char LESS_THAN[] = "<";
-constexpr char LESS_THAN_EQUAL[] = "<=";
-constexpr char GREATER_THAN[] = ">";
-constexpr char GREATER_THAN_EQUAL[] = ">=";
-}  // namespace SpParserComparisonOperator
-
-namespace SpRelationLogicalOperator {
-// Logical operators for combining conditions
-constexpr char AND[] = "&&";
-constexpr char OR[] = "||";
-constexpr char NOT[] = "!";
-}  // namespace SpRelationLogicalOperator
+//namespace SpParserConstant {
+//// Procedure boundaries
+//constexpr char START_PROCEDURE[] = "{";
+//constexpr char END_PROCEDURE[] = "}";
+//
+//// While statement boundaries
+//constexpr char START_WHILE_STMTLST[] = "{";
+//constexpr char END_WHILE_STMTLST[] = "}";
+//
+//// Conditional statement boundaries
+//constexpr char START_COND_EXPR[] = "(";
+//constexpr char END_COND_EXPR[] = ")";
+//
+//// If statement boundaries
+//constexpr char START_THEN_STMTLST[] = "{";
+//constexpr char END_THEN_STMTLST[] = "}";
+//constexpr char START_ELSE_STMTLST[] = "{";
+//constexpr char END_ELSE_STMTLST[] = "}";
+//
+//// Assignment symbol
+//constexpr char ASSIGN_SYMBOL[] = "=";
+//
+//// Keywords
+//constexpr char PROCEDURE_KEYWORD[] = "procedure";
+//constexpr char PRINT_KEYWORD[] = "print";
+//constexpr char READ_KEYWORD[] = "read";
+//constexpr char CALL_KEYWORD[] = "call";
+//constexpr char WHILE_KEYWORD[] = "while";
+//constexpr char IF_KEYWORD[] = "if";
+//constexpr char THEN_KEYWORD[] = "then";
+//constexpr char ELSE_KEYWORD[] = "else";
+//
+//}  // namespace SpParserConstant
+//
+//namespace SpParserComparisonOperator {
+//// Comparison operators for conditional expressions
+//constexpr char EQUAL[] = "==";
+//constexpr char NOT_EQUAL[] = "!=";
+//constexpr char LESS_THAN[] = "<";
+//constexpr char LESS_THAN_EQUAL[] = "<=";
+//constexpr char GREATER_THAN[] = ">";
+//constexpr char GREATER_THAN_EQUAL[] = ">=";
+//}  // namespace SpParserComparisonOperator
+//
+//namespace SpRelationLogicalOperator {
+//// Logical operators for combining conditions
+//constexpr char AND[] = "&&";
+//constexpr char OR[] = "||";
+//constexpr char NOT[] = "!";
+//}  // namespace SpRelationLogicalOperator
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
@@ -543,30 +544,30 @@ bool SpParser::isOperator(std::string const& tokenVal) {
          tokenVal == AParserConstant::MULTIPLY ||
          tokenVal == AParserConstant::DIVIDE ||
          tokenVal == AParserConstant::MODULO ||
-         tokenVal == SpParserComparisonOperator::EQUAL ||
-         tokenVal == SpParserComparisonOperator::NOT_EQUAL ||
-         tokenVal == SpParserComparisonOperator::LESS_THAN ||
-         tokenVal == SpParserComparisonOperator::LESS_THAN_EQUAL ||
-         tokenVal == SpParserComparisonOperator::GREATER_THAN ||
-         tokenVal == SpParserComparisonOperator::GREATER_THAN_EQUAL ||
-         tokenVal == SpRelationLogicalOperator::AND ||
-         tokenVal == SpRelationLogicalOperator::OR ||
-         tokenVal == SpRelationLogicalOperator::NOT;
+         tokenVal == SpParserConstant::EQUAL ||
+         tokenVal == SpParserConstant::NOT_EQUAL ||
+         tokenVal == SpParserConstant::LESS_THAN ||
+         tokenVal == SpParserConstant::LESS_THAN_EQUAL ||
+         tokenVal == SpParserConstant::GREATER_THAN ||
+         tokenVal == SpParserConstant::GREATER_THAN_EQUAL ||
+         tokenVal == SpParserConstant::AND ||
+         tokenVal == SpParserConstant::OR ||
+         tokenVal == SpParserConstant::NOT;
 }
 
 bool SpParser::isComparisonOperator(std::string const& tokenVal) {
-  return tokenVal == SpParserComparisonOperator::EQUAL ||
-         tokenVal == SpParserComparisonOperator::NOT_EQUAL ||
-         tokenVal == SpParserComparisonOperator::LESS_THAN ||
-         tokenVal == SpParserComparisonOperator::LESS_THAN_EQUAL ||
-         tokenVal == SpParserComparisonOperator::GREATER_THAN ||
-         tokenVal == SpParserComparisonOperator::GREATER_THAN_EQUAL;
+  return tokenVal == SpParserConstant::EQUAL ||
+         tokenVal == SpParserConstant::NOT_EQUAL ||
+         tokenVal == SpParserConstant::LESS_THAN ||
+         tokenVal == SpParserConstant::LESS_THAN_EQUAL ||
+         tokenVal == SpParserConstant::GREATER_THAN ||
+         tokenVal == SpParserConstant::GREATER_THAN_EQUAL;
 }
 
 bool SpParser::isLogicalOperator(std::string const& tokenVal) {
-  return tokenVal == SpRelationLogicalOperator::AND ||
-         tokenVal == SpRelationLogicalOperator::OR ||
-         tokenVal == SpRelationLogicalOperator::NOT;
+  return tokenVal == SpParserConstant::AND ||
+         tokenVal == SpParserConstant::OR ||
+         tokenVal == SpParserConstant::NOT;
 }
 
 bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
@@ -580,12 +581,12 @@ bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
 bool SpParser::isPossibleRelFactor(std::shared_ptr<Token> token) {
   return AParser::IsWordOrIntegerToken(token) ||
          AParser::IsTokenValue(token, AParserConstant::LEFT_PARENTHESIS) ||
-         AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
+         AParser::IsTokenValue(token, SpParserConstant::NOT);
 }
 
 bool SpParser::isAndOrOrToken(std::shared_ptr<Token> token) {
-  return AParser::IsTokenValue(token, SpRelationLogicalOperator::AND) ||
-         AParser::IsTokenValue(token, SpRelationLogicalOperator::OR);
+  return AParser::IsTokenValue(token, SpParserConstant::AND) ||
+         AParser::IsTokenValue(token, SpParserConstant::OR);
 }
 
 bool SpParser::isLeftParenthesisToken(std::shared_ptr<Token> token) {
@@ -597,7 +598,7 @@ bool SpParser::isRightParenthesisToken(std::shared_ptr<Token> token) {
 }
 
 bool SpParser::isNotToken(std::shared_ptr<Token> token) {
-  return AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
+  return AParser::IsTokenValue(token, SpParserConstant::NOT);
 }
 
 // helper function to calculate precedence of an operator
