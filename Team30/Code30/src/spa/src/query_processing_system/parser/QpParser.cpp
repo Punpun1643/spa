@@ -15,6 +15,7 @@ QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};
 
 // Constants
+std::string const QpParser::AND = "and";
 std::string const QpParser::CALLS = "Calls";
 std::string const QpParser::CALLS_STAR = "Calls*";
 std::string const QpParser::FOLLOWS = "Follows";
