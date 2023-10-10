@@ -18,6 +18,7 @@ class SyntaxChecker : public QpParser {
 
  private:
   void CheckCalls();
+  void CheckClauses();
   void CheckDeclaration();
   void CheckEOF();
   void CheckFollows();
@@ -26,9 +27,9 @@ class SyntaxChecker : public QpParser {
   void CheckPattern();
   void CheckSelect();
   void CheckSuchThat();
-  void CheckSuchThatOrPattern();
   void CheckUses();
-  // Helper checkers
+
+  // Helpers
   EntityType CheckCurrentTokenPatternEntity();
   void CheckCurrentTokenPatternFirstArg(EntityType variable_type);
   void CheckCurrentTokenPatternSecondArg(EntityType variable_type);

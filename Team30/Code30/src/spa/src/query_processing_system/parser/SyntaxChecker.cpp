@@ -21,11 +21,11 @@ void SyntaxChecker::parse() {
   if (current_token->getTokenVal() == "Select") {
     // no declaration, only select
     CheckSelect();
-    CheckSuchThatOrPattern();
+    CheckClauses();
   } else {
     CheckDeclaration();
     CheckSelect();
-    CheckSuchThatOrPattern();
+    CheckClauses();
   }
 }
 
@@ -53,6 +53,19 @@ void SyntaxChecker::CheckCalls() {
   CheckCurrentTokenSyntax(")", "Expected \')\' for Calls clause");
 
   nextToken();
+}
+
+void SyntaxChecker::CheckClauses() {
+  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+    if (getCurrToken()->getTokenVal() == "such") {
+      this->CheckSuchThat();
+    } else if (getCurrToken()->getTokenVal() == "pattern") {
+      this->CheckPattern();
+    }
+    else {
+      throw InvalidSyntaxException("Did not encounter expected clause");
+    }
+  }
 }
 
 void SyntaxChecker::CheckDeclaration() {
@@ -247,18 +260,6 @@ void SyntaxChecker::CheckSuchThat() {
   }
 }
 
-void SyntaxChecker::CheckSuchThatOrPattern() {
-  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
-    if (getCurrToken()->getTokenVal() == "such") {
-      this->CheckSuchThat();
-    } else if (getCurrToken()->getTokenVal() == "pattern") {
-      this->CheckPattern();
-    }
-    else {
-      throw InvalidSyntaxException("Did not encounter expected clause");
-    }
-  }
-}
 
 void SyntaxChecker::CheckUses() {
   assert(getCurrToken()->getTokenVal() == "Uses");
@@ -291,7 +292,7 @@ void SyntaxChecker::CheckUses() {
   nextToken();
 }
 
-// ---------- HELPER CHECKERS -------------
+// ---------- HELPERS -------------
 
 EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
   std::string token_value = getCurrToken()->getTokenVal();
