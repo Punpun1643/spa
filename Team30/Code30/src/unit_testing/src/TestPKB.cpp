@@ -2,6 +2,195 @@
 #include "program_knowledge_base/PKB.h"
 #include "program_knowledge_base/RelationType.h"
 
+std::shared_ptr<TreeNode> buildTree1() {
+  // a + b * c % d;
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
+               std::make_shared<TreeNode>("c", nullptr, nullptr));
+  TreeNode modulo = TreeNode("%", std::make_shared<TreeNode>(multiply),
+                             std::make_shared<TreeNode>("d", nullptr, nullptr));
+  TreeNode add =
+      TreeNode("%", std::make_shared<TreeNode>("a", nullptr, nullptr),
+               std::make_shared<TreeNode>(modulo));
+  return std::make_shared<TreeNode>(add);
+}
+
+std::shared_ptr<TreeNode> buildTree2() {
+  // b * c + d;
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
+               std::make_shared<TreeNode>("c", nullptr, nullptr));
+  TreeNode add = TreeNode("%", std::make_shared<TreeNode>(multiply),
+                          std::make_shared<TreeNode>("d", nullptr, nullptr));
+  return std::make_shared<TreeNode>(add);
+}
+
+std::shared_ptr<TreeNode> buildTree3() {
+  // a + b;
+  TreeNode add =
+      TreeNode("+", std::make_shared<TreeNode>("a", nullptr, nullptr),
+               std::make_shared<TreeNode>("b", nullptr, nullptr));
+  return std::make_shared<TreeNode>(add);
+}
+
+std::shared_ptr<TreeNode> buildTree4() {
+  // b * c;
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
+               std::make_shared<TreeNode>("c", nullptr, nullptr));
+  return std::make_shared<TreeNode>(multiply);
+}
+
+std::shared_ptr<TreeNode> buildTree5() {
+  // 2 * z
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("2", nullptr, nullptr),
+               std::make_shared<TreeNode>("z", nullptr, nullptr));
+  return std::make_shared<TreeNode>(multiply);
+}
+
+std::shared_ptr<TreeNode> buildTree6() {
+  // p - y
+  TreeNode minus =
+      TreeNode("-", std::make_shared<TreeNode>("p", nullptr, nullptr),
+               std::make_shared<TreeNode>("y", nullptr, nullptr));
+  return std::make_shared<TreeNode>(minus);
+}
+
+std::shared_ptr<TreeNode> buildTree7() {
+  // x + 24
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>("24", nullptr, nullptr));
+  return std::make_shared<TreeNode>(plus);
+}
+
+std::shared_ptr<TreeNode> buildTree8() {
+  // x * q - 5
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>("q", nullptr, nullptr));
+  TreeNode minus = TreeNode("-", std::make_shared<TreeNode>(multiply),
+                            std::make_shared<TreeNode>("5", nullptr, nullptr));
+  return std::make_shared<TreeNode>(minus);
+}
+
+std::shared_ptr<TreeNode> buildTree9() {
+  // z - 1
+  TreeNode minus =
+      TreeNode("-", std::make_shared<TreeNode>("z", nullptr, nullptr),
+               std::make_shared<TreeNode>("1", nullptr, nullptr));
+  return std::make_shared<TreeNode>(minus);
+}
+
+std::shared_ptr<TreeNode> buildTree10() {
+  // x + y * z + p * q
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("y", nullptr, nullptr),
+               std::make_shared<TreeNode>("z", nullptr, nullptr));
+
+  TreeNode multiply_2 =
+      TreeNode("*", std::make_shared<TreeNode>("p", nullptr, nullptr),
+               std::make_shared<TreeNode>("q", nullptr, nullptr));
+
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>(multiply));
+
+  TreeNode plus_2 = TreeNode("+", std::make_shared<TreeNode>(plus),
+                             std::make_shared<TreeNode>(multiply_2));
+
+  return std::make_shared<TreeNode>(plus_2);
+}
+
+std::shared_ptr<TreeNode> buildTree11() {
+  // x + j + z
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>("j", nullptr, nullptr));
+  TreeNode plus_2 = TreeNode("+", std::make_shared<TreeNode>(plus),
+                             std::make_shared<TreeNode>("z", nullptr, nullptr));
+  return std::make_shared<TreeNode>(plus_2);
+}
+
+std::shared_ptr<TreeNode> buildTree12() {
+  // x * 10
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>("10", nullptr, nullptr));
+  return std::make_shared<TreeNode>(multiply);
+}
+
+std::shared_ptr<TreeNode> buildTree13() {
+  // y + y * 10
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("y", nullptr, nullptr),
+               std::make_shared<TreeNode>("10", nullptr, nullptr));
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("y", nullptr, nullptr),
+               std::make_shared<TreeNode>(multiply));
+  return std::make_shared<TreeNode>(plus);
+}
+
+std::shared_ptr<TreeNode> buildTree14() {
+  // 5 * p - 5
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("5", nullptr, nullptr),
+               std::make_shared<TreeNode>("p", nullptr, nullptr));
+  TreeNode minus = TreeNode("-", std::make_shared<TreeNode>(multiply),
+                            std::make_shared<TreeNode>("5", nullptr, nullptr));
+  return std::make_shared<TreeNode>(minus);
+}
+
+std::shared_ptr<TreeNode> buildTree15() {
+  // p * 5
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("p", nullptr, nullptr),
+               std::make_shared<TreeNode>("5", nullptr, nullptr));
+  return std::make_shared<TreeNode>(multiply);
+}
+
+std::shared_ptr<TreeNode> buildTree16() {
+  // x * 10
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>("10", nullptr, nullptr));
+  return std::make_shared<TreeNode>(multiply);
+}
+
+std::shared_ptr<TreeNode> buildTree17() {
+  // x + y * 10
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("y", nullptr, nullptr),
+               std::make_shared<TreeNode>("10", nullptr, nullptr));
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("x", nullptr, nullptr),
+               std::make_shared<TreeNode>(multiply));
+  return std::make_shared<TreeNode>(plus);
+}
+
+std::shared_ptr<TreeNode> buildTree18() {
+  // a + 1
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("a", nullptr, nullptr),
+               std::make_shared<TreeNode>("1", nullptr, nullptr));
+  return std::make_shared<TreeNode>(plus);
+}
+
+std::shared_ptr<TreeNode> buildTree19() {
+  // i + x + y * z
+  TreeNode multiply =
+      TreeNode("*", std::make_shared<TreeNode>("y", nullptr, nullptr),
+               std::make_shared<TreeNode>("z", nullptr, nullptr));
+  TreeNode plus =
+      TreeNode("+", std::make_shared<TreeNode>("i", nullptr, nullptr),
+               std::make_shared<TreeNode>("x", nullptr, nullptr));
+  TreeNode plus_2 = TreeNode("+", std::make_shared<TreeNode>(plus),
+                             std::make_shared<TreeNode>(multiply));
+
+  return std::make_shared<TreeNode>(plus_2);
+}
+
 TEST_CASE("Follows, Parent, Follows* and Parent*") {
   PKB pkb = PKB();
   pkb.insertEntity(EntityType::PROCEDURE, "main");
@@ -335,72 +524,103 @@ TEST_CASE("Test1-Source PKB") {
   pkb.insertEntity(EntityType::VARIABLE, "10");
   pkb.insertEntity(EntityType::VARIABLE, "100");
 
-  pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2", "z"}));
-  pkb.insertPattern("3", "z", std::unordered_set<std::string>({"p", "y"}));
-  pkb.insertPattern("5", "z", std::unordered_set<std::string>({"x", "24"}));
-  pkb.insertPattern("8", "y", std::unordered_set<std::string>({"x", "q", "5"}));
-  pkb.insertPattern("9", "z", std::unordered_set<std::string>({"z", "1"}));
-  pkb.insertPattern("10", "y",
-                    std::unordered_set<std::string>({"x", "z", "p", "q"}));
-  pkb.insertPattern("11", "i",
-                    std::unordered_set<std::string>({"x", "j", "z"}));
-  pkb.insertPattern("12", "p", std::unordered_set<std::string>({"x", "10"}));
-  pkb.insertPattern("13", "q", std::unordered_set<std::string>({"y", "10"}));
-  pkb.insertPattern("15", "a", std::unordered_set<std::string>({"5", "p"}));
-  pkb.insertPattern("17", "q", std::unordered_set<std::string>({"p", "5"}));
-  pkb.insertPattern("18", "i", std::unordered_set<std::string>({"x", "10"}));
-  pkb.insertPattern("19", "j",
-                    std::unordered_set<std::string>({"x", "y", "10"}));
-  pkb.insertPattern("22", "x", std::unordered_set<std::string>({"1"}));
-  pkb.insertPattern("23", "y",
-                    std::unordered_set<std::string>({"i", "x", "y", "z"}));
-  pkb.insertPattern("25", "x", std::unordered_set<std::string>({"a", "1"}));
-  pkb.insertPattern("26", "a", std::unordered_set<std::string>({"b"}));
-  pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2", "z"}));
+  pkb.insertPattern(PatternType::ASSIGN, "2", "x", buildTree5());
+  pkb.insertPattern(PatternType::ASSIGN, "3", "z", buildTree6());
+  pkb.insertPattern(PatternType::ASSIGN, "5", "z", buildTree7());
+  pkb.insertPattern(PatternType::ASSIGN, "8", "y", buildTree8());
+  pkb.insertPattern(PatternType::ASSIGN, "9", "z", buildTree9());
+  pkb.insertPattern(PatternType::ASSIGN, "10", "y", buildTree10());
+  pkb.insertPattern(PatternType::ASSIGN, "11", "i", buildTree11());
+  pkb.insertPattern(PatternType::ASSIGN, "12", "p", buildTree12());
+  pkb.insertPattern(PatternType::ASSIGN, "13", "q", buildTree13());
+  pkb.insertPattern(PatternType::ASSIGN, "15", "a", buildTree14());
+  pkb.insertPattern(PatternType::ASSIGN, "17", "q", buildTree15());
+  pkb.insertPattern(PatternType::ASSIGN, "18", "i", buildTree16());
+  pkb.insertPattern(PatternType::ASSIGN, "19", "j", buildTree17());
+  pkb.insertPattern(PatternType::ASSIGN, "22", "x",
+                    std::make_shared<TreeNode>("1", nullptr, nullptr));
+  pkb.insertPattern(PatternType::ASSIGN, "23", "y", buildTree19());
+  pkb.insertPattern(PatternType::ASSIGN, "25", "x", buildTree18());
+  pkb.insertPattern(PatternType::ASSIGN, "26", "a",
+                    std::make_shared<TreeNode>("b", nullptr, nullptr));
 
-  std::vector<std::string> expected_res = {"22", "25"};
-  REQUIRE_THAT(
-      *pkb.getPatternMatchesValueLhs("x", "1", MatchType::PARTIAL_MATCH),
-      Catch::UnorderedEquals(expected_res));
-}
+  std::vector<std::string> expected_res = {"8", "15", "17"};
+  std::vector<std::string> actual;
+  actual = *pkb.getPatternMatchesWildLhs(
+      std::make_shared<TreeNode>("5", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH);
 
-std::shared_ptr<TreeNode> buildTree1() {
-  // a + b * c % d;
-  TreeNode multiply =
-      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
-               std::make_shared<TreeNode>("c", nullptr, nullptr));
-  TreeNode modulo = TreeNode("%", std::make_shared<TreeNode>(multiply),
-                             std::make_shared<TreeNode>("d", nullptr, nullptr));
-  TreeNode add =
-      TreeNode("%", std::make_shared<TreeNode>("a", nullptr, nullptr),
-               std::make_shared<TreeNode>(modulo));
-  return std::make_shared<TreeNode>(add);
-}
+  std::sort(actual.begin(), actual.end());
+  std::sort(expected_res.begin(), expected_res.end());
+  REQUIRE(actual == expected_res);
 
-std::shared_ptr<TreeNode> buildTree2() {
-  // b * c + d;
-  TreeNode multiply =
-      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
-               std::make_shared<TreeNode>("c", nullptr, nullptr));
-  TreeNode add = TreeNode("%", std::make_shared<TreeNode>(multiply),
-                          std::make_shared<TreeNode>("d", nullptr, nullptr));
-  return std::make_shared<TreeNode>(add);
-}
+  std::vector<std::pair<std::string, std::string>> expected_pairs = {
+      {"9", "z"}, {"22", "x"}, {"25", "x"}};
+  std::vector<std::pair<std::string, std::string>> actual_pairs;
+  actual_pairs = *pkb.getPatternMatchesSynonymLhs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
 
-std::shared_ptr<TreeNode> buildTree3() {
-  // a + b;
-  TreeNode add =
-      TreeNode("+", std::make_shared<TreeNode>("a", nullptr, nullptr),
-               std::make_shared<TreeNode>("b", nullptr, nullptr));
-  return std::make_shared<TreeNode>(add);
-}
+  expected_res = {"8", "10"};
+  actual = *pkb.getPatternMatchesWildLhs(
+      std::make_shared<TreeNode>("q", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH);
+  std::sort(actual.begin(), actual.end());
+  std::sort(expected_res.begin(), expected_res.end());
+  REQUIRE(actual == expected_res);
 
-std::shared_ptr<TreeNode> buildTree4() {
-  // b * c;
-  TreeNode multiply =
-      TreeNode("*", std::make_shared<TreeNode>("b", nullptr, nullptr),
-               std::make_shared<TreeNode>("c", nullptr, nullptr));
-  return std::make_shared<TreeNode>(multiply);
+  expected_pairs = {{"26", "a"}};
+  actual_pairs = *pkb.getPatternMatchesSynonymLhs(
+      std::make_shared<TreeNode>("b", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
+
+  // pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2",
+  // "z"})); pkb.insertPattern("3", "z",
+  // std::unordered_set<std::string>({"p", "y"}));
+  // pkb.insertPattern("5", "z", std::unordered_set<std::string>({"x",
+  // "24"})); pkb.insertPattern("8", "y",
+  // std::unordered_set<std::string>({"x", "q", "5"}));
+  // pkb.insertPattern("9", "z", std::unordered_set<std::string>({"z",
+  // "1"})); pkb.insertPattern("10", "y",
+  //                   std::unordered_set<std::string>({"x", "z", "p",
+  //                   "q"}));
+  // pkb.insertPattern("11", "i",
+  //                   std::unordered_set<std::string>({"x", "j",
+  //                   "z"}));
+  // pkb.insertPattern("12", "p",
+  // std::unordered_set<std::string>({"x", "10"}));
+  // pkb.insertPattern("13", "q",
+  // std::unordered_set<std::string>({"y", "10"}));
+  // pkb.insertPattern("15", "a",
+  // std::unordered_set<std::string>({"5", "p"}));
+  // pkb.insertPattern("17", "q",
+  // std::unordered_set<std::string>({"p", "5"}));
+  // pkb.insertPattern("18", "i",
+  // std::unordered_set<std::string>({"x", "10"}));
+  // pkb.insertPattern("19", "j",
+  //                   std::unordered_set<std::string>({"x", "y",
+  //                   "10"}));
+  // pkb.insertPattern("22", "x",
+  // std::unordered_set<std::string>({"1"})); pkb.insertPattern("23",
+  // "y",
+  //                   std::unordered_set<std::string>({"i", "x", "y",
+  //                   "z"}));
+  // pkb.insertPattern("25", "x",
+  // std::unordered_set<std::string>({"a", "1"}));
+  // pkb.insertPattern("26", "a",
+  // std::unordered_set<std::string>({"b"}));
+
+  // std::vector<std::string> expected_res = {"22", "25"};
+  // REQUIRE_THAT(
+  //     *pkb.getPatternMatchesValueLhs("x", "1",
+  //     MatchType::PARTIAL_MATCH),
+  //     Catch::UnorderedEquals(expected_res));
 }
 
 TEST_CASE("Pattern Database Assignment insertion and retrieval") {
