@@ -355,3 +355,21 @@ TEST_CASE("Test1-Source PKB") {
       *pkb.getPatternMatchesWithLhsValue("x", "1", MatchType::PARTIAL_MATCH),
       Catch::UnorderedEquals(expected_res));
 }
+
+//TEST_CASE("ccc") { PKB pkb = PKB();
+//  pkb.insertEntity(EntityType::VARIABLE, "x");
+//  pkb.insertEntity(EntityType::VARIABLE, "y");
+//  pkb.insertEntity(EntityType::VARIABLE, "z");
+//  pkb.insertEntity(EntityType::VARIABLE, "p");
+//  pkb.insertEntity(EntityType::VARIABLE, "q");
+//  pkb.insertEntity(EntityType::VARIABLE, "i");
+//  pkb.insertEntity(EntityType::VARIABLE, "j");
+//  pkb.insertEntity(EntityType::VARIABLE, "a");
+//  pkb.insertEntity(EntityType::VARIABLE, "x");
+//  pkb.insertEntity(EntityType::PROCEDURE, "Bumblebee");
+//  pkb.insertEntity(EntityType::PROCEDURE, "Megatron");
+//  pkb.insertEntity(EntityType::PROCEDURE, "IronHide");
+//  pkb.insertEntity(EntityType::PROCEDURE, "Barricade");
+//  pkb.insertEntity(EntityType::ASSIGN, "x");
+//
+//}
