@@ -43,9 +43,9 @@ read r;
 Select r such that Calls (_, _) 
 5
 5000
-10 - Calls* (proc_syn, proc_syn)
+10 - Calls (proc_syn, proc_syn)
 procedure p, p1; 
-Select p such that Calls* (p, p1)
+Select p such that Calls (p, p1)
 A, B, C, D, E, F, G, J
 5000
 11 - Calls* (proc_syn, proc_name)
@@ -65,7 +65,7 @@ F, G, H, I, J
 5000
 14 - Calls* (proc_name, proc_name)
 assign a;
-Select a such that Calls* ("A", "I")
+Select a such that Calls* ("A", "D")
 2, 9, 10, 19
 5000
 15 - Calls* (proc_name, wildcard)
