@@ -17,6 +17,7 @@ class SyntaxChecker : public QpParser {
   ~SyntaxChecker() = default;
 
  private:
+  // Checkers
   void CheckCalls();
   void CheckClauses();
   void CheckDeclaration();
