@@ -6,6 +6,7 @@
 #include "../exceptions/InvalidReadException.h"
 #include "../exceptions/InvalidStmtLstException.h"
 #include "../exceptions/EmptyParenthesesException.h"
+#include "../exceptions/UnmatchedParenthesesException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
@@ -286,7 +287,7 @@ void SpParser::buildCondExprPostFix(
   }
 
   if (parenCount != 0) {
-    throw std::invalid_argument("Unmatched parentheses");
+    throw UnmatchedParenthesesException();
   }
 
   while (!operatorStack.empty()) {
@@ -468,7 +469,7 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   }
 
   if (parenCount != 0) {
-    throw std::invalid_argument("Unmatched parentheses");
+    throw UnmatchedParenthesesException();
   }
 
   while (!operatorStack.empty()) {
