@@ -7,57 +7,6 @@
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
-//namespace SpParserConstant {
-//// Procedure boundaries
-//constexpr char START_PROCEDURE[] = "{";
-//constexpr char END_PROCEDURE[] = "}";
-//
-//// While statement boundaries
-//constexpr char START_WHILE_STMTLST[] = "{";
-//constexpr char END_WHILE_STMTLST[] = "}";
-//
-//// Conditional statement boundaries
-//constexpr char START_COND_EXPR[] = "(";
-//constexpr char END_COND_EXPR[] = ")";
-//
-//// If statement boundaries
-//constexpr char START_THEN_STMTLST[] = "{";
-//constexpr char END_THEN_STMTLST[] = "}";
-//constexpr char START_ELSE_STMTLST[] = "{";
-//constexpr char END_ELSE_STMTLST[] = "}";
-//
-//// Assignment symbol
-//constexpr char ASSIGN_SYMBOL[] = "=";
-//
-//// Keywords
-//constexpr char PROCEDURE_KEYWORD[] = "procedure";
-//constexpr char PRINT_KEYWORD[] = "print";
-//constexpr char READ_KEYWORD[] = "read";
-//constexpr char CALL_KEYWORD[] = "call";
-//constexpr char WHILE_KEYWORD[] = "while";
-//constexpr char IF_KEYWORD[] = "if";
-//constexpr char THEN_KEYWORD[] = "then";
-//constexpr char ELSE_KEYWORD[] = "else";
-//
-//}  // namespace SpParserConstant
-//
-//namespace SpParserComparisonOperator {
-//// Comparison operators for conditional expressions
-//constexpr char EQUAL[] = "==";
-//constexpr char NOT_EQUAL[] = "!=";
-//constexpr char LESS_THAN[] = "<";
-//constexpr char LESS_THAN_EQUAL[] = "<=";
-//constexpr char GREATER_THAN[] = ">";
-//constexpr char GREATER_THAN_EQUAL[] = ">=";
-//}  // namespace SpParserComparisonOperator
-//
-//namespace SpRelationLogicalOperator {
-//// Logical operators for combining conditions
-//constexpr char AND[] = "&&";
-//constexpr char OR[] = "||";
-//constexpr char NOT[] = "!";
-//}  // namespace SpRelationLogicalOperator
-
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
 
