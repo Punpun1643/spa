@@ -57,3 +57,8 @@ std::unordered_set<std::string> DictionaryTable::getAllWithInverseRelations(
   }
   return output;
 };
+
+std::unordered_set<std::string> DictionaryTable::getAllRelatedToValue(
+    std::string val){
+  return relations[val];
+};

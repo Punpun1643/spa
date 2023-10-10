@@ -21,4 +21,6 @@ class BaseTable {
       std::shared_ptr<std::unordered_set<std::string>> vals) = 0;
   virtual std::unordered_set<std::string> getAllWithInverseRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) = 0;
+  virtual std::unordered_set<std::string> getAllRelatedToValue(
+      std::string val) = 0;
 };

@@ -26,4 +26,7 @@ class RelDatabase {
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
   std::unordered_set<std::string> getAllWithInverseRelations(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+
+  std::unordered_set<std::string> getAllRelatedToValue(
+      RelationType type, std::string val);
 };

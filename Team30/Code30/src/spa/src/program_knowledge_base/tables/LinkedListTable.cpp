@@ -34,7 +34,7 @@ std::unordered_set<std::string> LinkedListTable::getAllWithRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
 
-  for (std::string val : *vals) {    
+  for (std::string val : *vals) {
     if (hasRelations(val)) {
       output.insert(val);
     }
@@ -53,3 +53,9 @@ std::unordered_set<std::string> LinkedListTable::getAllWithInverseRelations(
   }
   return output;
 };
+
+std::unordered_set<std::string> LinkedListTable::getAllRelatedToValue(
+    std::string val) {
+  // TODO
+  return std::unordered_set<std::string>();
+}

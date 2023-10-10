@@ -18,7 +18,7 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 };
 
 // ********** Private methods **********
-std::unordered_set<std::string> PKB::getAllWithRelations(
+std::unordered_set<std::string> PKB::getAllRelatedToValue(
     RelationType rel_type, std::shared_ptr<std::unordered_set<std::string>> set,
     std::string value) {
   std::unordered_set<std::string> output;
@@ -30,7 +30,7 @@ std::unordered_set<std::string> PKB::getAllWithRelations(
   return output;
 };
 
-std::unordered_set<std::string> PKB::getAllWithRelations(
+std::unordered_set<std::string> PKB::getAllRelatedToValue(
     RelationType rel_type, std::string value,
     std::shared_ptr<std::unordered_set<std::string>> set) {
   std::unordered_set<std::string> output;
@@ -67,17 +67,11 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
 
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
-  std::unordered_set<std::string> set = {procName};
-  std::shared_ptr<std::unordered_set<std::string>> input =
-      std::make_shared<std::unordered_set<std::string>>(set);
-  return relData->getAllWithRelations(RelationType::MODIFIES_P, input);
+  return relData->getAllRelatedToValue(RelationType::MODIFIES_P, procName);
 };
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
-  std::unordered_set<std::string> set = {procName};
-  std::shared_ptr<std::unordered_set<std::string>> input =
-      std::make_shared<std::unordered_set<std::string>>(set);
-  return relData->getAllWithRelations(RelationType::USES_P, input);
+  return relData->getAllRelatedToValue(RelationType::USES_P, procName);
 };
 
 // ********** QPS **********
@@ -134,7 +128,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationWildSynonym(
 std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
     EntityType entity_type, std::string value, RelationType rel_type) {
   std::unordered_set<std::string> output =
-      getAllWithRelations(rel_type, entData->get(entity_type), value);
+      getAllRelatedToValue(rel_type, entData->get(entity_type), value);
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }
@@ -143,7 +137,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValueSynonym(
     std::string value, EntityType entity_type, RelationType rel_type) {
   std::unordered_set<std::string> output =
-      getAllWithRelations(rel_type, value, entData->get(entity_type));
+      getAllRelatedToValue(rel_type, value, entData->get(entity_type));
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }

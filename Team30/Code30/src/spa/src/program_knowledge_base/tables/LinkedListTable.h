@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -24,4 +25,6 @@ class LinkedListTable : public BaseTable {
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
   std::unordered_set<std::string> getAllWithInverseRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
+  std::unordered_set<std::string> getAllRelatedToValue(
+      std::string val) override;
 };
