@@ -10,8 +10,4 @@ class UsesExpression : public SuchThatExpression {
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~UsesExpression() = default;
-
- private:
-  std::string arg1;
-  std::string arg2;
 };

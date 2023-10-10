@@ -13,6 +13,7 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   relatedTables = {
       {RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
       {RelationType::PARENT, {RelationType::PARENT_STAR}},
+      {RelationType::CALLS, {RelationType::CALLS_STAR}},
   };
 };
 

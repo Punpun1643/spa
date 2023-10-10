@@ -10,8 +10,4 @@ class ParentTExpression : public SuchThatExpression {
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~ParentTExpression() = default;
-
- private:
-  std::string arg1;
-  std::string arg2;
 };
