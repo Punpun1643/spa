@@ -22,8 +22,8 @@ class RelDatabase {
   bool hasRelations(RelationType type, std::string val);
   bool hasInverseRelations(RelationType type, std::string val);
 
-  std::unordered_set<std::string> getAllRelated(
+  std::unordered_set<std::string> getAllWithRelations(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
-  std::unordered_set<std::string> getAllInverseRelated(
+  std::unordered_set<std::string> getAllWithInverseRelations(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
 };

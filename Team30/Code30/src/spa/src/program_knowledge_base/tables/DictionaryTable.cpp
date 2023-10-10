@@ -36,7 +36,7 @@ bool DictionaryTable::hasInverseRelations(std::string val) {
   return inverse_relations.find(val) != inverse_relations.end();
 }
 
-std::unordered_set<std::string> DictionaryTable::getAllRelated(
+std::unordered_set<std::string> DictionaryTable::getAllWithRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
@@ -47,7 +47,7 @@ std::unordered_set<std::string> DictionaryTable::getAllRelated(
   return output;
 };
 
-std::unordered_set<std::string> DictionaryTable::getAllInverseRelated(
+std::unordered_set<std::string> DictionaryTable::getAllWithInverseRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {

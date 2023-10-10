@@ -20,8 +20,8 @@ class LinkedListTable : public BaseTable {
   bool hasRelations(std::string val) override;
   bool hasInverseRelations(std::string val) override;
 
-  std::unordered_set<std::string> getAllRelated(
+  std::unordered_set<std::string> getAllWithRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
-  std::unordered_set<std::string> getAllInverseRelated(
+  std::unordered_set<std::string> getAllWithInverseRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
 };

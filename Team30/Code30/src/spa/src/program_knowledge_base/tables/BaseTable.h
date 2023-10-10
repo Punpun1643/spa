@@ -17,8 +17,8 @@ class BaseTable {
   virtual bool hasRelations(std::string val) = 0;
   virtual bool hasInverseRelations(std::string val) = 0;
 
-  virtual std::unordered_set<std::string> getAllRelated(
+  virtual std::unordered_set<std::string> getAllWithRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) = 0;
-  virtual std::unordered_set<std::string> getAllInverseRelated(
+  virtual std::unordered_set<std::string> getAllWithInverseRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) = 0;
 };

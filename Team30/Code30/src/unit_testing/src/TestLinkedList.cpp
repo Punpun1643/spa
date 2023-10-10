@@ -73,7 +73,7 @@ TEST_CASE("Linked list table check") {
   input->insert("10");
 
   std::unordered_set<std::string> expected = {"1", "2", "4", "5", "9"};
-  REQUIRE(llt.getAllRelated(input) == expected);
+  REQUIRE(llt.getAllWithRelations(input) == expected);
   expected = {"2", "3", "5", "6", "7", "8", "10"};
-  REQUIRE(llt.getAllInverseRelated(input) == expected);
+  REQUIRE(llt.getAllWithInverseRelations(input) == expected);
 }
