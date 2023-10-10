@@ -7,12 +7,6 @@
 #include "../exceptions/exception_message/ExceptionMessage.h"
 
 namespace SpParserConstant {
-
-// Common symbols
-constexpr char LEFT_PARENTHESIS[] = "(";
-constexpr char RIGHT_PARENTHESIS[] = ")";
-constexpr char STMT_TERMINATOR[] = ";";
-
 // Procedure boundaries
 constexpr char START_PROCEDURE[] = "{";
 constexpr char END_PROCEDURE[] = "}";
@@ -45,15 +39,6 @@ constexpr char THEN_KEYWORD[] = "then";
 constexpr char ELSE_KEYWORD[] = "else";
 
 }  // namespace SpParserConstant
-
-//namespace SpParserMathOperator {
-//// Mathematical operators for expressions
-//constexpr char PLUS[] = "+";
-//constexpr char MINUS[] = "-";
-//constexpr char MULTIPLY[] = "*";
-//constexpr char DIVIDE[] = "/";
-//constexpr char MODULO[] = "%";
-//}  // namespace SpParserMathOperator
 
 namespace SpParserComparisonOperator {
 // Comparison operators for conditional expressions
@@ -243,7 +228,7 @@ void SpParser::handleOperatorToken(
 
 void SpParser::handleLeftParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
-  if (AParser::isPeekTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+  if (AParser::isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw std::invalid_argument("Empty parentheses");
   }
   ++parenCount;
@@ -253,7 +238,7 @@ void SpParser::handleLeftParenthesisToken(
 void SpParser::handleCondExprLeftParenthesisToken(
     std::shared_ptr<Token> const& currToken,
     std::stack<std::shared_ptr<Token>>& operatorStack, int& parenCount) {
-  if (isPeekTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+  if (isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw std::invalid_argument("Empty parentheses");
   }
   ++parenCount;
@@ -293,7 +278,7 @@ void SpParser::assignHandleRightParenthesisToken(
   if (parenCount <= 0) {
     throw std::invalid_argument("No matching parenthesis");
   }
-  while (operatorStack.top()->compare(SpParserConstant::LEFT_PARENTHESIS) !=
+  while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) !=
          0) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
@@ -513,14 +498,14 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
 
   int parenCount = 0;
 
-  while (!isCurrTokenValue(SpParserConstant::STMT_TERMINATOR)) {
+  while (!isCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
     if (AParser::IsWordOrIntegerToken(getCurrToken())) {
       handleWordOrIntegerToken(postFixQueue, variables, constants);
     } else if (isMathematicalOperator(getCurrTokenValue())) {
       handleOperatorToken(operatorStack, postFixQueue);
-    } else if (isCurrTokenValue(SpParserConstant::LEFT_PARENTHESIS)) {
+    } else if (isCurrTokenValue(AParserConstant::LEFT_PARENTHESIS)) {
       handleLeftParenthesisToken(operatorStack, parenCount);
-    } else if (isCurrTokenValue(SpParserConstant::RIGHT_PARENTHESIS)) {
+    } else if (isCurrTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
       assignHandleRightParenthesisToken(operatorStack, postFixQueue,
                                         parenCount);
     } else {
@@ -594,7 +579,7 @@ bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
 
 bool SpParser::isPossibleRelFactor(std::shared_ptr<Token> token) {
   return AParser::IsWordOrIntegerToken(token) ||
-         AParser::IsTokenValue(token, SpParserConstant::LEFT_PARENTHESIS) ||
+         AParser::IsTokenValue(token, AParserConstant::LEFT_PARENTHESIS) ||
          AParser::IsTokenValue(token, SpRelationLogicalOperator::NOT);
 }
 
@@ -604,11 +589,11 @@ bool SpParser::isAndOrOrToken(std::shared_ptr<Token> token) {
 }
 
 bool SpParser::isLeftParenthesisToken(std::shared_ptr<Token> token) {
-  return AParser::IsTokenValue(token, SpParserConstant::LEFT_PARENTHESIS);
+  return AParser::IsTokenValue(token, AParserConstant::LEFT_PARENTHESIS);
 }
 
 bool SpParser::isRightParenthesisToken(std::shared_ptr<Token> token) {
-  return AParser::IsTokenValue(token, SpParserConstant::RIGHT_PARENTHESIS);
+  return AParser::IsTokenValue(token, AParserConstant::RIGHT_PARENTHESIS);
 }
 
 bool SpParser::isNotToken(std::shared_ptr<Token> token) {
