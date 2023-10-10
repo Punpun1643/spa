@@ -4,7 +4,7 @@
 
 class EmptyParenthesesException : public std::invalid_argument {
   /**
-   * Thrown when a query has empty parentheses.
+   * Thrown when the program has empty parentheses.
    */
  public:
   explicit EmptyParenthesesException(

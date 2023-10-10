@@ -7,6 +7,7 @@
 #include "../exceptions/InvalidStmtLstException.h"
 #include "../exceptions/EmptyParenthesesException.h"
 #include "../exceptions/UnmatchedParenthesesException.h"
+#include "../exceptions/EmptyStmtLstException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
@@ -575,7 +576,7 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
   if (getCurrTokenValue() == SpParserConstant::END_PROCEDURE) {
-    throw std::invalid_argument("The stmtLst is empty");
+    throw EmptyStmtLstException();
   }
 
   while (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
