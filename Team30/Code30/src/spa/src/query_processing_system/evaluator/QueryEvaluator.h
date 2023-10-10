@@ -26,8 +26,4 @@ class QueryEvaluator {
 
   std::vector<std::vector<std::string>> evaluateQuery(
       std::vector<PqlDeclaration> const& chosen_decls, ClauseList clauses);
-
-  // legacy method, remove when QPS Parser is updated
-  std::vector<std::string> evaluateQuery(
-      std::unique_ptr<SelectClause> select_clause, ClauseList other_clauses);
 };

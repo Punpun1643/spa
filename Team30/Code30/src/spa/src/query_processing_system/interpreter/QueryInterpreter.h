@@ -6,55 +6,57 @@
 #include "../common/EntRef.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
+#include "../context/Context.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;
 
-class DeclarationListExpression;
-class DeclarationExpression;
+class AExpression;
+class CallsExpression;
+class CallsTExpression;
 class FollowsExpression;
 class FollowsTExpression;
 class ModifiesExpression;
 class PatternExpression;
 class ParentExpression;
 class ParentTExpression;
-class QueryExpression;
 class SelectExpression;
-class SuchThatListExpression;
 class UsesExpression;
 
 class QueryInterpreter {
  public:
-  QueryInterpreter();
-  std::shared_ptr<DeclarationMap> getDeclarations();
-  ClauseList GetClauseList();
-  void Interpret(QueryExpression& query_expression);
-  void Interpret(DeclarationListExpression& declaration_list_expression);
-  void Interpret(FollowsExpression& follows_expression);
-  void Interpret(FollowsTExpression& follows_t_expression);
-  void Interpret(ModifiesExpression& modifies_expression);
-  void Interpret(PatternExpression& pattern_expression);
-  void Interpret(ParentExpression& parent_expression);
-  void Interpret(ParentTExpression& parent_t_expression);
-  void Interpret(SelectExpression& select_expression);
-  void Interpret(SuchThatListExpression& such_that_list_expression);
-  void Interpret(UsesExpression& uses_expression);
-  void InterpretDeclarations(DeclarationExpression& declaration_expression);
+  QueryInterpreter(std::shared_ptr<Context> context,
+                   std::shared_ptr<AExpression> expression_tree);
+
+  void Interpret();
+  void InterpretNext(std::shared_ptr<AExpression> expression);
+
+  void Interpret(std::shared_ptr<CallsExpression> calls_expression);
+  void Interpret(std::shared_ptr<CallsTExpression> calls_t_expression);
+  void Interpret(std::shared_ptr<FollowsExpression> follows_expression);
+  void Interpret(std::shared_ptr<FollowsTExpression> follows_t_expression);
+  void Interpret(std::shared_ptr<ModifiesExpression> modifies_expression);
+  void Interpret(std::shared_ptr<ParentExpression> parent_expression);
+  void Interpret(std::shared_ptr<ParentTExpression> parent_t_expression);
+  void Interpret(std::shared_ptr<PatternExpression> pattern_expression);
+  void Interpret(std::shared_ptr<SelectExpression> select_expression);
+  void Interpret(std::shared_ptr<UsesExpression> uses_expression);
 
  private:
-  bool IsSynonym(std::string const& argument);
-  bool IsWildcard(std::string const& argument);
-  bool IsInteger(std::string const& argument);
-  bool IsValidRelArg(std::string const& argument);
-  bool IsStmtRef(std::string const& argument);
+  std::shared_ptr<Context> context;
+  std::shared_ptr<AExpression> expression_tree;
+
+  EntityType GetEntityTypeAsDeclaration(std::string const& argument);
+  PqlDeclaration GetMappedDeclaration(std::string const& synonym);
+  bool IsADeclaration(std::string const& argument);
   bool IsEntRef(std::string const& argument);
   bool IsIdentifier(std::string const& argument);
-  bool IsADeclaration(std::string const& argument);
-  EntityType GetEntityTypeAsDeclaration(std::string const& argument);
-  std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
+  bool IsInteger(std::string const& argument);
+  bool IsQuotedIdentifier(std::string const& argument);
+  bool IsStmtRef(std::string const& argument);
+  bool IsSynonym(std::string const& argument);
+  bool IsValidRelArg(std::string const& argument);
+  bool IsWildcard(std::string const& argument);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
-  PqlDeclaration GetMappedDeclaration(std::string const& synonym);
-
-  std::shared_ptr<DeclarationMap> declarations;
-  ClauseList clause_list;
+  std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
 };

@@ -1,17 +1,21 @@
 #pragma once
 
-#include "AExpression.h"
+#include <iostream>
 
-class SuchThatExpression : public AExpression {
+#include "ClauseExpression.h"
+
+class SuchThatExpression : public ClauseExpression {
  public:
-  SuchThatExpression(std::string arg1, std::string arg2);
-  std::string GetArg1();
-  std::string GetArg2();
-  virtual void acceptInterpreter(QueryInterpreter& interperter) = 0;
+  SuchThatExpression(std::string arg1, std::string arg2)
+      : ClauseExpression(arg1, arg2){};
 
-  virtual ~SuchThatExpression() = default;
+  friend std::ostream& operator<<(std::ostream& os,
+                                  SuchThatExpression const& obj) {
+    os << "arg1: " << obj.GetArg1();
+    os << ", arg2: " << obj.GetArg2();
+    os << "\n";
+    return os;
+  }
 
- private:
-  std::string arg1;
-  std::string arg2;
+  ~SuchThatExpression() = default;
 };

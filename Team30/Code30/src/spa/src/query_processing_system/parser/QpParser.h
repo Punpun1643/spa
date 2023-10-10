@@ -12,8 +12,9 @@ class QpParser : public AParser {
 
  protected:
   bool IsEntRef(std::string const& name);
-  bool IsIdentifier(std::string const& name);
+  bool IsQuotedIdentifier(std::string const& name);
   bool IsStmtRef(std::string const& name);
+  bool IsIdentifier(std::string const& name);
   bool IsSynonym(std::string const& name);
   bool IsTransitiveRelRef(std::string const& name);
   bool IsRelRef(std::string const& name);

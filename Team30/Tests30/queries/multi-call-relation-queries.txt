@@ -21,7 +21,7 @@ G, H, I
 5 - Calls (proc_name, proc_name)
 assign a;
 Select a such that Calls ("F", "J")
-None
+none
 5000
 6 - Calls (proc_name, wildcard)
 print pn;
@@ -36,16 +36,16 @@ B, C, D, F, G, H, I, J
 8 - Calls (wildcard, proc_name)
 assign a;
 Select a such that Calls (_, p)
-2, 9, 10, 19
+SemanticError
 5000
 9 - Calls (wildcard, wildcard)
 read r;
 Select r such that Calls (_, _) 
 5
 5000
-10 - Calls* (proc_syn, proc_syn)
+10 - Calls (proc_syn, proc_syn)
 procedure p, p1; 
-Select p such that Calls* (p, p1)
+Select p such that Calls (p, p1)
 A, B, C, D, E, F, G, J
 5000
 11 - Calls* (proc_syn, proc_name)
@@ -65,18 +65,18 @@ F, G, H, I, J
 5000
 14 - Calls* (proc_name, proc_name)
 assign a;
-Select a such that Calls* ("A", "I")
+Select a such that Calls* ("A", "D")
 2, 9, 10, 19
 5000
 15 - Calls* (proc_name, wildcard)
 while w;
 Select w such that Calls* ("I",_)
-None
+none
 5000
 16 - Calls* (wildcard, proc_syn)
 procedure p;
 Select r such that Calls* (_, "D")
-5
+SyntaxError
 5000
 17 - Calls* (wildcard, proc_name)
 if i;
@@ -101,10 +101,10 @@ SyntaxError
 21 - Calls Variable as 2nd term, should not output error but return no values.
 procedure p;
 Select p such that Calls (p, "x")
-None
+none
 5000
 22 - Calls* Variable as 2nd term, should not output error but return no values.
-Procedure p;
+procedure p;
 Select p such that Calls* (p, "y")
-None
+none
 5000

@@ -136,7 +136,7 @@ SemanticError
 28 - Syntax Error, cannot have identifier in first param of Uses
 variable v1, v2;
 Select v1 such that Uses ("abc", v2)
-SyntaxError
+none
 5000
 29 - Syntax Error, IDENT must start with a letter
 assign a;

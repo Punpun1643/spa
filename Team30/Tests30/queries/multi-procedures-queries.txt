@@ -4,7 +4,7 @@ Select p such that Uses(p, "q")
 Bumblebee, Barricade
 5000
 2 - check variable synonym used by procedure synonym
-procedure p; variable v;
+procedure p; variable v; assign a;
 Select p such that Uses(p, v) pattern a (v, _"j"_) 
 Bumblebee, IronHide, Barricade
 5000
@@ -16,7 +16,7 @@ Bumblebee, Megatron, IronHide, Barricade
 4 - check specific variable used by specific procedures
 read r;
 Select r such that Uses("IronHide", "p")
-None
+none
 5000
 5 - check variable synonym used by specific procedures
 variable v;
@@ -34,9 +34,9 @@ Select p such that Modifies(p, "q")
 Megatron, Barricade
 5000
 8 - check variable synonym modified by procedure synonym
-procedure p; variable v;
-Select p such that Modifies(p, v) pattern (v, _"x"_)
-Megatron, Barricade 
+procedure p; variable v; assign a;
+Select p such that Modifies(p, v) pattern a (v, _"x"_)
+Megatron, Barricade, Bumblebee, IronHide
 5000
 9 - check wildcard modified by procedure synonym
 procedure p;
@@ -46,7 +46,7 @@ Bumblebee, Megatron, IronHide, Barricade
 10 - check specific variable modified by specific procedure
 while w;
 Select w such that Modifies("Barricade", "p")
-None
+none
 5000
 11 - check variable synonym modified by specific procedure
 variable v;

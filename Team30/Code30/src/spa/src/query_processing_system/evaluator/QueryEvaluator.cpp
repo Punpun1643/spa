@@ -45,22 +45,3 @@ std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(
   populateIntermediateResultsTable(table, missing_decl_clauses);
   return table.getValuesGivenDeclarations(selected_decls);
 }
-
-// Legacy method: To be deleted after QP Parser migrates over to new API
-std::vector<std::string> QueryEvaluator::evaluateQuery(
-    std::unique_ptr<SelectClause> select_clause,
-    std::vector<std::shared_ptr<Clause>> const& other_clauses) {
-  assert(select_clause != nullptr);
-
-  auto target_declaration = select_clause->getDeclaration();
-
-  auto new_output = evaluateQuery({target_declaration}, other_clauses);
-
-  // Flatten and return
-  std::vector<std::string> old_output = {};
-  for (auto& row : new_output) {
-    assert(row.size() == 1);
-    old_output.push_back(row[0]);
-  }
-  return old_output;
-}

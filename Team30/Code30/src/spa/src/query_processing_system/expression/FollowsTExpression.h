@@ -10,8 +10,4 @@ class FollowsTExpression : public SuchThatExpression {
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~FollowsTExpression() = default;
-
- private:
-  std::string arg1;
-  std::string arg2;
 };
