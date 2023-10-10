@@ -229,7 +229,7 @@ void SpParser::assignHandleRightParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
     std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount) {
   if (parenCount <= 0) {
-    throw std::invalid_argument("No matching parenthesis");
+    throw UnmatchedParenthesesException();
   }
   while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) !=
          0) {
