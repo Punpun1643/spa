@@ -8,6 +8,7 @@
 
 #include "../tokenizer/token/Token.h"
 #include "node/TreeNode.h"
+#include "constant/AParserConstant.h"
 
 class AParser {
  public:
@@ -168,4 +169,47 @@ class AParser {
   void assertCurrTokenTypeAndValue(TokenType expectedType,
                                    std::string const& expectedValue,
                                    std::string const& errorMessage);
+
+  /**
+   * @brief Checks if the current token is of the given token type.
+   *
+   * @tparam ExceptionType
+   * @param expectedType
+   *
+   * @throw ExceptionType if the current token is not of the given token type.
+   */
+  template <typename ExceptionType>
+  void CheckCurrTokenType(TokenType expectedType) {
+    if (!isCurrTokenType(expectedType)) {
+      throw ExceptionType();
+    }
+  }
+
+  /**
+   * @brief Checks if the current token is of the given token value and advance
+   * to the next token.
+   *
+   * @tparam ExceptionType
+   * @param expectedValue
+   *
+   * @throw ExceptionType if the current token is not of the given token value.
+   */
+  template <typename ExceptionType>
+  void CheckAndAdvanceCurrToken(std::string const& expectedValue) {
+    if (!isCurrTokenValue(expectedValue)) {
+      throw ExceptionType();
+    }
+    nextToken();
+  }
+
+  template <typename ExceptionType>
+  std::string ParseAndValidateVarName() {
+    CheckCurrTokenType<ExceptionType>(TokenType::WORD_TOKEN);
+    std::string varName = getCurrTokenValue();
+    nextToken();
+    CheckAndAdvanceCurrToken<ExceptionType>(AParserConstant::STMT_TERMINATOR);
+    return varName;
+  }
+
+  std::string GetCurrTokenValueAndAdvance();
 };
