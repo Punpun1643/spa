@@ -17,7 +17,10 @@ class SyntaxChecker : public QpParser {
   ~SyntaxChecker() = default;
 
  private:
+  enum class ClauseType { such_that, pattern };
+
   // Checkers
+  void CheckAnd(ClauseType clause_type);
   void CheckCalls();
   void CheckClauses();
   void CheckDeclaration();
