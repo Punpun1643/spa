@@ -46,14 +46,14 @@ constexpr char ELSE_KEYWORD[] = "else";
 
 }  // namespace SpParserConstant
 
-namespace SpParserMathOperator {
-// Mathematical operators for expressions
-constexpr char PLUS[] = "+";
-constexpr char MINUS[] = "-";
-constexpr char MULTIPLY[] = "*";
-constexpr char DIVIDE[] = "/";
-constexpr char MODULO[] = "%";
-}  // namespace SpParserMathOperator
+//namespace SpParserMathOperator {
+//// Mathematical operators for expressions
+//constexpr char PLUS[] = "+";
+//constexpr char MINUS[] = "-";
+//constexpr char MULTIPLY[] = "*";
+//constexpr char DIVIDE[] = "/";
+//constexpr char MODULO[] = "%";
+//}  // namespace SpParserMathOperator
 
 namespace SpParserComparisonOperator {
 // Comparison operators for conditional expressions
@@ -553,11 +553,11 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
 }
 
 bool SpParser::isOperator(std::string const& tokenVal) {
-  return tokenVal == SpParserMathOperator::PLUS ||
-         tokenVal == SpParserMathOperator::MINUS ||
-         tokenVal == SpParserMathOperator::MULTIPLY ||
-         tokenVal == SpParserMathOperator::DIVIDE ||
-         tokenVal == SpParserMathOperator::MODULO ||
+  return tokenVal == AParserConstant::PLUS ||
+         tokenVal == AParserConstant::MINUS ||
+         tokenVal == AParserConstant::MULTIPLY ||
+         tokenVal == AParserConstant::DIVIDE ||
+         tokenVal == AParserConstant::MODULO ||
          tokenVal == SpParserComparisonOperator::EQUAL ||
          tokenVal == SpParserComparisonOperator::NOT_EQUAL ||
          tokenVal == SpParserComparisonOperator::LESS_THAN ||
@@ -585,11 +585,11 @@ bool SpParser::isLogicalOperator(std::string const& tokenVal) {
 }
 
 bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
-  return tokenVal == SpParserMathOperator::PLUS ||
-         tokenVal == SpParserMathOperator::MINUS ||
-         tokenVal == SpParserMathOperator::MULTIPLY ||
-         tokenVal == SpParserMathOperator::DIVIDE ||
-         tokenVal == SpParserMathOperator::MODULO;
+  return tokenVal == AParserConstant::PLUS ||
+         tokenVal == AParserConstant::MINUS ||
+         tokenVal == AParserConstant::MULTIPLY ||
+         tokenVal == AParserConstant::DIVIDE ||
+         tokenVal == AParserConstant::MODULO;
 }
 
 bool SpParser::isPossibleRelFactor(std::shared_ptr<Token> token) {
@@ -617,12 +617,12 @@ bool SpParser::isNotToken(std::shared_ptr<Token> token) {
 
 // helper function to calculate precedence of an operator
 int SpParser::Precedence(std::string const& op) {
-  if (op.compare(SpParserMathOperator::MULTIPLY) == 0 ||
-      op.compare(SpParserMathOperator::DIVIDE) == 0 ||
-      op.compare(SpParserMathOperator::MODULO) == 0) {
+  if (op.compare(AParserConstant::MULTIPLY) == 0 ||
+      op.compare(AParserConstant::DIVIDE) == 0 ||
+      op.compare(AParserConstant::MODULO) == 0) {
     return 4;
-  } else if (op.compare(SpParserMathOperator::PLUS) == 0 ||
-             op.compare(SpParserMathOperator::MINUS) == 0) {
+  } else if (op.compare(AParserConstant::PLUS) == 0 ||
+             op.compare(AParserConstant::MINUS) == 0) {
     return 3;
   } else if (isComparisonOperator(op)) {
     return 2;
