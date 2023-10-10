@@ -5,6 +5,7 @@
 #include "../exceptions/InvalidProcedureException.h"
 #include "../exceptions/InvalidReadException.h"
 #include "../exceptions/InvalidStmtLstException.h"
+#include "../exceptions/EmptyParenthesesException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
@@ -180,7 +181,7 @@ void SpParser::handleOperatorToken(
 void SpParser::handleLeftParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
   if (AParser::isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
-    throw std::invalid_argument("Empty parentheses");
+    throw EmptyParenthesesException();
   }
   ++parenCount;
   operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
@@ -190,7 +191,7 @@ void SpParser::handleCondExprLeftParenthesisToken(
     std::shared_ptr<Token> const& currToken,
     std::stack<std::shared_ptr<Token>>& operatorStack, int& parenCount) {
   if (isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
-    throw std::invalid_argument("Empty parentheses");
+    throw EmptyParenthesesException();
   }
   ++parenCount;
   operatorStack.push(currToken);
