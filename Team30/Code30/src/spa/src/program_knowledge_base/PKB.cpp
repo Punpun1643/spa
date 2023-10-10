@@ -55,6 +55,11 @@ void PKB::insertRelation(RelationType type, std::string input1,
   }
 };
 
+void PKB::insertPattern(PatternType type, std::string statement_number,
+                        std::string lhs, std::shared_ptr<TreeNode> rhs) {
+  patData->insert(type, statement_number, lhs, rhs);
+};
+
 void PKB::insertPattern(std::string statement_number, std::string lhs,
                         std::unordered_set<std::string> rhs) {
   patData->insert(statement_number, lhs, rhs);
@@ -167,7 +172,106 @@ PKB::getRelationSynonymSynonym(EntityType entity_type_1,
 };
 
 // ---------- PATTERNS ----------
-std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
+    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+  std::unordered_set<std::string> output;
+
+  // Wild Wild
+  if (match_type == MatchType::WILD_MATCH) {
+    output = *entData->get(EntityType::ASSIGN);
+  }
+
+  // Wild Partial
+  else if (match_type == MatchType::PARTIAL_MATCH) {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
+        output.insert(pair.first);
+      }
+    }
+  }
+
+  // Wild Exact
+  else {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
+        output.insert(pair.first);
+      }
+    }
+  }
+
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
+};
+
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
+    std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+    MatchType match_type) {
+  std::unordered_set<std::string> output;
+
+  // String Wild
+  if (match_type == MatchType::WILD_MATCH) {
+    output = patData->getStatementNumbersGivenLHS(lhs_value);
+  }
+
+  // String Partial
+  else if (match_type == MatchType::PARTIAL_MATCH) {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      if (pair.second.first == lhs_value &&
+          TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
+        output.insert(pair.first);
+      }
+    }
+  }
+
+  // String Exact
+  else {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      if (pair.second.first == lhs_value &&
+          TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
+        output.insert(pair.first);
+      }
+    }
+  }
+
+  return std::make_unique<std::vector<std::string>>(output.begin(),
+                                                    output.end());
+};
+
+std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+PKB::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+                                 MatchType match_type) {
+  std::vector<std::pair<std::string, std::string>> output;
+
+  // Synonym Wild
+  if (match_type == MatchType::WILD_MATCH) {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      output.push_back(make_pair(pair.first, pair.second.first));
+    }
+  }
+
+  // Synonym Partial
+  else if (match_type == MatchType::PARTIAL_MATCH) {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
+        output.push_back(make_pair(pair.first, pair.second.first));
+      };
+    }
+  }
+
+  // Synonym Exact
+  else {
+    for (auto& pair : patData->getAssignmentPatterns()) {
+      if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
+        output.push_back(make_pair(pair.first, pair.second.first));
+      };
+    }
+  };
+
+  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
+      output.begin(), output.end());
+};
+
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
     std::string rhs_expr, MatchType expr_match_type) {
   // Wild match: pattern a(_, _), i.e. all statement numbers
   if (expr_match_type == MatchType::WILD_MATCH) {
@@ -185,7 +289,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithWildLhs(
                                                     rhs_statements.end());
 };
 
-std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
+std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
     std::string lhs_value, std::string rhs_expr, MatchType expr_match_type) {
   std::unordered_set<std::string> lhs_statements =
       patData->getStatementNumbersGivenLHS(lhs_value);
@@ -213,8 +317,8 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWithLhsValue(
 
 // return possible values of the LHS synonym
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PKB::getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                         MatchType expr_match_type) {
+PKB::getPatternMatchesSynonymLhs(std::string rhs_expr,
+                                 MatchType expr_match_type) {
   std::unordered_set<std::string> statements;
   if (expr_match_type == MatchType::WILD_MATCH) {
     statements = *entData->get(EntityType::ASSIGN);

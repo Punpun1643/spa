@@ -41,6 +41,10 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
+  void insertPattern(PatternType type, std::string statement_number,
+                     std::string lhs,
+                     std::shared_ptr<TreeNode> rhs) override;
+
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
   std::unordered_set<std::string> getProcedureModifies(
@@ -56,11 +60,11 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   // ---------- RELATIONS ----------
   // 0 Declarations
   bool isRelationTrueValueValue(std::string value_1, std::string value_2,
-                      RelationType rel_type) override;
+                                RelationType rel_type) override;
   bool isRelationTrueValueWild(std::string value,
-                                     RelationType rel_type) override;
+                               RelationType rel_type) override;
   bool isRelationTrueWildValue(std::string value,
-                                      RelationType rel_type) override;
+                               RelationType rel_type) override;
   bool isRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations
@@ -78,15 +82,24 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   // 2 Declarations
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
-                    RelationType rel_type) override;
+                            RelationType rel_type) override;
 
   // ---------- PATTERNS ----------
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      MatchType match_type) override;
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+                              MatchType match_type) override;
+
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
       std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
       std::string lhs_value, std::string rhs_expr,
       MatchType expr_match_type) override;
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                      MatchType expr_match_type) override;
+  getPatternMatchesSynonymLhs(std::string rhs_expr,
+                              MatchType expr_match_type) override;
 };

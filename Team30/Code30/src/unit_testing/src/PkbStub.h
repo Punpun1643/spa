@@ -67,23 +67,34 @@ class PkbStub : public PKBQPSInterface, public PKBSPInterface {
   // Pattern clause
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
+  void insertPattern(PatternType type, std::string statement_number,
+                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
 
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
       std::string rhs_expr, MatchType expr_match_type) override;
 
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
       std::string lhs_value, std::string rhs_expr,
       MatchType expr_match_type) override;
 
   // 2 paired values - for the implicit assign declaration, and the values for
   // the given lhs_entity_type
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                      MatchType expr_match_type) override;
+  getPatternMatchesSynonymLhs(std::string rhs_expr,
+                              MatchType expr_match_type) override;
 
   std::unordered_set<std::string> getProcedureUses(
       std::string procName) override;
 
   std::unordered_set<std::string> getProcedureModifies(
       std::string procName) override;
+
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      MatchType match_type) override;
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+                              MatchType match_type) override;
 };
