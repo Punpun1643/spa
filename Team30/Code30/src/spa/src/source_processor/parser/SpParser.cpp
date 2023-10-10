@@ -4,6 +4,7 @@
 #include "../exceptions/InvalidPrintException.h"
 #include "../exceptions/InvalidProcedureException.h"
 #include "../exceptions/InvalidReadException.h"
+#include "../exceptions/InvalidStmtLstException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
@@ -571,7 +572,7 @@ int SpParser::Precedence(std::string const& op) {
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
-  if (getCurrTokenValue() == "}") {
+  if (getCurrTokenValue() == SpParserConstant::END_PROCEDURE) {
     throw std::invalid_argument("The stmtLst is empty");
   }
 
@@ -603,7 +604,7 @@ std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
       nextToken();
       stmts.push_back(parseIf());
     } else {
-      throw std::invalid_argument("The stmtLst is invalid");
+      throw InvalidStmtLstException();
     }
   }
 

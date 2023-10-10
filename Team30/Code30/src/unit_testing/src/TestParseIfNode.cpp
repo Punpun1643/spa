@@ -457,8 +457,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<EofToken>());
 
     SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(),
-                        Contains("invalid"));  // will be invalid stmtLst
+    REQUIRE_THROWS(parser.parseIf());  // will be invalid stmtLst
   }
 
   SECTION("Test missing else keyword should throw error") {
@@ -580,8 +579,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<EofToken>());
 
     SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(),
-                        Contains("invalid"));  // will be invalid stmtLst
+    REQUIRE_THROWS(parser.parseIf());  // will be invalid stmtLst
   }
 }
 
