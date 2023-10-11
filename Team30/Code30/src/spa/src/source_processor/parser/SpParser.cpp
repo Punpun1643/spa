@@ -1,5 +1,6 @@
 #include "SpParser.h"
 
+#include "../../shared/parser/exceptions/UnmatchedParenthesesException.h"
 #include "../constant/SpParserConstant.h"
 #include "../exceptions/EmptyParenthesesException.h"
 #include "../exceptions/EmptyStmtLstException.h"
@@ -11,7 +12,6 @@
 #include "../exceptions/InvalidReadException.h"
 #include "../exceptions/InvalidRelExprException.h"
 #include "../exceptions/InvalidStmtLstException.h"
-#include "../exceptions/UnmatchedParenthesesException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)

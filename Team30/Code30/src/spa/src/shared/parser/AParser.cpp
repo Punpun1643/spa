@@ -4,6 +4,7 @@
 #include "exceptions/InvalidTokenException.h"
 #include "exceptions/StartOfFileException.h"
 #include "exceptions/InvalidExprSpecException.h"
+#include "exceptions/UnmatchedParenthesesException.h"
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
@@ -170,7 +171,7 @@ void AParser::HandleRightParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
     std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount) {
   if (parenCount <= 0) {
-    throw std::invalid_argument("Parenthesis mismatch");
+    throw UnmatchedParenthesesException();
   }
 
   while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) != 0) {
@@ -204,7 +205,7 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
   }
 
   if (parenCount != 0) {
-    throw std::invalid_argument("Parenthesis mismatch");
+    throw UnmatchedParenthesesException();
   }
 
   while (!operatorStack.empty()) {
