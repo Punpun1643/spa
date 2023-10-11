@@ -18,6 +18,12 @@ class CFGNode {
   void addOutgoingNode(std::shared_ptr<CFGNode>);
   void addIncomingNode(std::shared_ptr<CFGNode>);
 
+  static bool HasPath(std::shared_ptr<CFGNode> startNode,
+                         std::shared_ptr<CFGNode> endNode);
+
+  static bool HasAffectPath(std::shared_ptr<CFGNode> startNode,
+                                 std::shared_ptr<CFGNode> endNode);
+
  private:
   std::vector<std::shared_ptr<CFGNode>> outgoingNodes;
   std::vector<std::shared_ptr<CFGNode>> incomingNodes;
