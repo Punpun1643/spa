@@ -1,9 +1,9 @@
 #include "SyntaxChecker.h"
 
-#include <iostream>
-#include <unordered_map>
-#include <stdexcept>
 #include <cassert>
+#include <iostream>
+#include <stdexcept>
+#include <unordered_map>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -34,11 +34,11 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
   nextToken();
 
   if (clause_type == ClauseType::such_that) {
-    if (getCurrTokenValue() == QpParser::SUCH) {
-      CheckSuchThat();
+    if (QpParser::IsRelRef(getCurrTokenValue())) {
+      CheckSuchThat(true);
       return;
     } else {
-      throw InvalidSyntaxException("Expected 'such' after 'and'");
+      throw InvalidSyntaxException("Expected <relref> after 'and'");
     }
   } else if (clause_type == ClauseType::pattern) {
     if (getCurrTokenValue() == QpParser::PATTERN) {
@@ -49,7 +49,8 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
     }
   }
 
-  throw InvalidSyntaxException("Expected either 'such' or 'pattern' after 'and'");
+  throw InvalidSyntaxException(
+      "Expected either 'such' or 'pattern' after 'and'");
 }
 
 void SyntaxChecker::CheckCalls() {
@@ -81,11 +82,10 @@ void SyntaxChecker::CheckCalls() {
 void SyntaxChecker::CheckClauses() {
   while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
     if (getCurrTokenValue() == QpParser::SUCH) {
-      this->CheckSuchThat();
+      this->CheckSuchThat(false);
     } else if (getCurrTokenValue() == QpParser::PATTERN) {
       this->CheckPattern();
-    }
-    else {
+    } else {
       throw InvalidSyntaxException("Did not encounter expected clause");
     }
   }
@@ -97,7 +97,7 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Query missing Select Clause");
     }
     EntityType entity_type = QpParser::StringToEntityType(
-        getCurrTokenValue()); // throws an error if not valid entity_type
+        getCurrTokenValue());  // throws an error if not valid entity_type
     nextToken();               // synonym
     if (!IsSynonym(getCurrTokenValue())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
@@ -199,8 +199,7 @@ void SyntaxChecker::CheckModifies() {
 }
 
 void SyntaxChecker::CheckParent() {
-  assert(getCurrTokenValue() == PARENT ||
-         getCurrTokenValue() == PARENT_STAR);
+  assert(getCurrTokenValue() == PARENT || getCurrTokenValue() == PARENT_STAR);
 
   nextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Parent/* clause");
@@ -265,9 +264,11 @@ void SyntaxChecker::CheckSelect() {
   nextToken();
 }
 
-void SyntaxChecker::CheckSuchThat() {
-  nextToken();  // that
-  nextToken();  // relRef
+void SyntaxChecker::CheckSuchThat(bool has_and) {
+  if (!has_and) {
+    nextToken();  // that
+    nextToken();  // relRef
+  }
   if (!QpParser::IsRelRef(getCurrTokenValue())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
@@ -288,7 +289,6 @@ void SyntaxChecker::CheckSuchThat() {
     CheckAnd(ClauseType::such_that);
   }
 }
-
 
 void SyntaxChecker::CheckUses() {
   assert(getCurrTokenValue() == QpParser::USES);
@@ -330,6 +330,7 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
         "Variable used for pattern does not have an identifier's syntax");
   } else if (existing_declarations.find(token_value) ==
              existing_declarations.end()) {
+    std::cout << "sc1: " << getCurrTokenValue() << "\n";
     throw InvalidSemanticsException(
         "Variable used for pattern has not been declared");
   } else if (existing_declarations.at(token_value).getEntityType() !=
@@ -391,12 +392,12 @@ void SyntaxChecker::CheckCurrentTokenStmtRef(
 void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
                                             std::string error_msg) {
   if (getCurrTokenValue() != expected_value) {
-    throw InvalidSyntaxException(error_msg + ". Got " +
-                                 getCurrTokenValue() + " instead.");
+    throw InvalidSyntaxException(error_msg + ". Got " + getCurrTokenValue() +
+                                 " instead.");
   }
 }
 
-void SyntaxChecker::CheckIsExpr(std::string error_msg) { 
+void SyntaxChecker::CheckIsExpr(std::string error_msg) {
   std::vector<std::shared_ptr<Token>> infix_tokens;
 
   while (getCurrTokenValue() != "\"") {

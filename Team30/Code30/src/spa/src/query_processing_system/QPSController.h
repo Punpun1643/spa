@@ -15,7 +15,8 @@ class QPSController {
 
   void HandleQuery(std::string& query, std::list<std::string>& results,
                    std::shared_ptr<QueryEvaluator> query_evaluator);
-  std::vector<std::shared_ptr<Clause>> HandleTokens(std::vector<std::shared_ptr<Token>> tokens);
+  std::vector<std::shared_ptr<Clause>> HandleTokens(
+      std::vector<std::shared_ptr<Token>> tokens);
 
  private:
   void CheckSyntax(std::vector<std::shared_ptr<Token>> tokens);

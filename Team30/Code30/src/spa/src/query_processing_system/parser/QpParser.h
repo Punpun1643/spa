@@ -22,7 +22,6 @@ class QpParser : public AParser {
   static std::string const SUCH;
   static std::string const USES;
 
-
   virtual ~QpParser() = default;
 
  protected:
