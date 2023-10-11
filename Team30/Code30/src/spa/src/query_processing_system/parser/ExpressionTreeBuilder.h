@@ -10,7 +10,8 @@
 
 class ExpressionTreeBuilder : public QpParser {
  public:
-  ExpressionTreeBuilder(std::vector<std::shared_ptr<Token>> tokens, std::shared_ptr<Context> context);
+  ExpressionTreeBuilder(std::vector<std::shared_ptr<Token>> tokens,
+                        std::shared_ptr<Context> context);
 
   void parse() override;
   std::shared_ptr<AExpression> GetExpressionTree();

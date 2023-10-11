@@ -28,8 +28,8 @@ PatternClause::PatternClause(PqlDeclaration const& assign_decl,
 std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
   switch (lhs_ent_ref.getRefType()) {
     case (PqlRefType::DECLARATION): {
-      auto values = pkb.getPatternMatchesSynonymLhs(
-          rhs_expr, rhs_expr_match_type);
+      auto values =
+          pkb.getPatternMatchesSynonymLhs(rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
           assign_decl, lhs_ent_ref.getDeclaration(), *values);
       break;
@@ -41,8 +41,7 @@ std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
       break;
     }
     case (PqlRefType::WILD): {
-      auto values =
-          pkb.getPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
+      auto values = pkb.getPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }

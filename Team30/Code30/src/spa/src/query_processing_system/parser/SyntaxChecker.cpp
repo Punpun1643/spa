@@ -1,9 +1,9 @@
 #include "SyntaxChecker.h"
 
-#include <iostream>
-#include <unordered_map>
-#include <stdexcept>
 #include <cassert>
+#include <iostream>
+#include <stdexcept>
+#include <unordered_map>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -61,8 +61,7 @@ void SyntaxChecker::CheckClauses() {
       this->CheckSuchThat();
     } else if (getCurrTokenValue() == QpParser::PATTERN) {
       this->CheckPattern();
-    }
-    else {
+    } else {
       throw InvalidSyntaxException("Did not encounter expected clause");
     }
   }
@@ -177,8 +176,7 @@ void SyntaxChecker::CheckModifies() {
 }
 
 void SyntaxChecker::CheckParent() {
-  assert(getCurrTokenValue() == PARENT ||
-         getCurrTokenValue() == PARENT_STAR);
+  assert(getCurrTokenValue() == PARENT || getCurrTokenValue() == PARENT_STAR);
 
   nextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Parent/* clause");
@@ -233,60 +231,60 @@ void SyntaxChecker::CheckSelect() {
     throw InvalidSyntaxException("Expected 'Select'");
   }
 
-  nextToken(); // BOOLEAN or synonym or <
+  nextToken();  // BOOLEAN or synonym or <
   if (getCurrTokenValue() == QpParser::BOOLEAN) {
-    if (existing_declarations.find(QpParser::BOOLEAN) == existing_declarations.end()) {
-      CheckSelectSingle();
-    } else {
+    if (existing_declarations.find(QpParser::BOOLEAN) ==
+        existing_declarations.end()) {
       CheckSelectBoolean();
+    } else {
+      CheckSelectSingle();
     }
   } else if (getCurrTokenValue() == "<") {
     CheckSelectMultiple();
   } else {
     CheckSelectSingle();
   }
+  nextToken();
 }
 
 void SyntaxChecker::CheckSelectBoolean() {
   assert(getCurrTokenValue() == QpParser::BOOLEAN);
-  nextToken(); // clause
-  if (
-      getCurrTokenValue() != QpParser::SUCH ||
-      getCurrTokenValue() != QpParser::PATTERN) {
-    throw InvalidSyntaxException("Expected 'such' or 'pattern' after BOOLEAN");
-  }
-  nextToken();
 }
 
 void SyntaxChecker::CheckSelectMultiple() {
   assert(getCurrTokenValue() == "<");
-  
-  nextToken(); // synonym
+
+  nextToken();  // synonym
   while (getCurrTokenValue() != ">") {
     if (getCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
-      throw InvalidSyntaxException("Reached EOF before reaching '>' for multiple select elements");
+      throw InvalidSyntaxException(
+          "Reached EOF before reaching '>' for multiple select elements");
     }
 
     CheckSelectSingle();
 
-    nextToken(); // , or >
+    nextToken();  // , or >
     if (getCurrTokenValue() == ",") {
-      nextToken(); // element
+      nextToken();  // element
+      if (getCurrTokenValue() == ">") {
+        throw InvalidSyntaxException("Extra comma detected in multiple select");
+      }
     }
   }
-  nextToken();
 }
 
 void SyntaxChecker::CheckSelectSingle() {
   if (getCurrTokenValue() == QpParser::BOOLEAN) {
-    if (existing_declarations.find(QpParser::BOOLEAN) == existing_declarations.end()) {
-      throw InvalidSyntaxException("Expected 'BOOLEAN' to be a declared synonym, but has not been declared");
+    if (existing_declarations.find(QpParser::BOOLEAN) ==
+        existing_declarations.end()) {
+      throw InvalidSyntaxException(
+          "Expected 'BOOLEAN' to be a declared synonym, but has not been "
+          "declared");
     }
   }
   if (!IsSynonym(getCurrTokenValue())) {
     throw InvalidSyntaxException("Expected synonym for single select clause");
   }
-  nextToken();
 }
 
 void SyntaxChecker::CheckSuchThat() {
@@ -308,7 +306,6 @@ void SyntaxChecker::CheckSuchThat() {
     this->CheckCalls();
   }
 }
-
 
 void SyntaxChecker::CheckUses() {
   assert(getCurrTokenValue() == QpParser::USES);
@@ -411,12 +408,12 @@ void SyntaxChecker::CheckCurrentTokenStmtRef(
 void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
                                             std::string error_msg) {
   if (getCurrTokenValue() != expected_value) {
-    throw InvalidSyntaxException(error_msg + ". Got " +
-                                 getCurrTokenValue() + " instead.");
+    throw InvalidSyntaxException(error_msg + ". Got " + getCurrTokenValue() +
+                                 " instead.");
   }
 }
 
-void SyntaxChecker::CheckIsExpr(std::string error_msg) { 
+void SyntaxChecker::CheckIsExpr(std::string error_msg) {
   std::vector<std::shared_ptr<Token>> infix_tokens;
 
   while (getCurrTokenValue() != "\"") {

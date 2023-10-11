@@ -9,6 +9,7 @@ SelectExpression::SelectExpression(std::string synonym, bool is_boolean) {
 };
 
 std::string SelectExpression::GetSynonym() { return this->synonym; }
+bool SelectExpression::IsBoolean() { return this->is_boolean; }
 
 void SelectExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
