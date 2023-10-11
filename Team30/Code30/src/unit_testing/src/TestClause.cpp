@@ -5,6 +5,8 @@
 #include "query_processing_system/common/FollowsClause.h"
 #include "query_processing_system/common/ModifiesPClause.h"
 #include "query_processing_system/common/ModifiesSClause.h"
+#include "query_processing_system/common/NextClause.h"
+#include "query_processing_system/common/AffectsClause.h"
 #include "query_processing_system/common/ParentClause.h"
 #include "query_processing_system/common/PatternClause.h"
 #include "query_processing_system/common/UsesPClause.h"
@@ -18,6 +20,7 @@ TEST_CASE("Test SuchThat Clauses") {
   PqlDeclaration s = PqlDeclaration("stmt", EntityType::STMT);
   PqlDeclaration v = PqlDeclaration("var", EntityType::VARIABLE);
   PqlDeclaration re = PqlDeclaration("read", EntityType::READ);
+  PqlDeclaration w = PqlDeclaration("while", EntityType::WHILE);
   PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
   PqlDeclaration proc = PqlDeclaration("procedure1", EntityType::PROCEDURE);
   PqlDeclaration proc2 = PqlDeclaration("procedure2", EntityType::PROCEDURE);
@@ -234,6 +237,31 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE_THROWS_AS(ModifiesPClause(std::make_unique<EntRef>("abc"),
                                       std::make_unique<EntRef>(proc2)), InvalidSemanticsException);
     REQUIRE_NOTHROW(ModifiesPClause(std::make_unique<EntRef>(proc), std::make_unique<EntRef>(v)));
+  }
+
+  SECTION("Next/* Clauses") {
+    NextClause next = NextClause(std::make_unique<StmtRef>(w),
+                                    std::make_unique<StmtRef>(s), false);
+    NextClause next_star = NextClause(std::make_unique<StmtRef>(),
+                                         std::make_unique<StmtRef>(12), true);
+    result = next.evaluate(pkb);
+    REQUIRE(pkb.synonymSynonymCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::NEXT);
+    REQUIRE(pkb.last_entity_type_passed == EntityType::WHILE);
+    REQUIRE(pkb.last_entity_type_2_passed == EntityType::STMT);
+    REQUIRE(result->getNumDeclarations() == 2);
+    REQUIRE_THAT(result->getDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{w, s}));
+
+    result = next_star.evaluate(pkb);
+    REQUIRE(pkb.wildValueCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::NEXT_STAR);
+    REQUIRE(pkb.last_value_passed == "12");
+    REQUIRE(result->isBooleanResult());
+  }
+
+  SECTION("Affects Clauses") {
+
+
   }
 }
 
