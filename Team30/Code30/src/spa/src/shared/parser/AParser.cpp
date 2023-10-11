@@ -1,12 +1,12 @@
 #include "AParser.h"
 
+#include "exceptions/EmptyParenthesesException.h"
 #include "exceptions/EndOfFileException.h"
+#include "exceptions/InvalidExprException.h"
+#include "exceptions/InvalidExprSpecException.h"
 #include "exceptions/InvalidTokenException.h"
 #include "exceptions/StartOfFileException.h"
-#include "exceptions/InvalidExprSpecException.h"
 #include "exceptions/UnmatchedParenthesesException.h"
-#include "exceptions/EmptyParenthesesException.h"
-#include "exceptions/InvalidExprException.h"
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}

@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "../tokenizer/token/Token.h"
-#include "node/TreeNode.h"
 #include "constant/AParserConstant.h"
+#include "node/TreeNode.h"
 
 class AParser {
  public:
