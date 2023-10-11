@@ -408,6 +408,7 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   std::unordered_set<std::string> variables = std::unordered_set<std::string>();
   std::unordered_set<int> constants = std::unordered_set<int>();
 
+  
   std::vector<std::shared_ptr<Token>> infixTokens;
 
   while (!isCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
