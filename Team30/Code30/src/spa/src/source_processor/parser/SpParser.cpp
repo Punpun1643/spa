@@ -5,6 +5,7 @@
 #include "../exceptions/InvalidProcedureException.h"
 #include "../exceptions/InvalidReadException.h"
 #include "../exceptions/InvalidStmtLstException.h"
+#include "../exceptions/InvalidAssignException.h"
 #include "../exceptions/EmptyParenthesesException.h"
 #include "../exceptions/UnmatchedParenthesesException.h"
 #include "../exceptions/EmptyStmtLstException.h"
@@ -457,7 +458,7 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
       assignHandleRightParenthesisToken(operatorStack, postFixQueue,
                                         parenCount);
     } else {
-      throw std::invalid_argument("Invalid assign");
+      throw InvalidAssignException();
     }
 
     nextToken();
@@ -481,7 +482,7 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
                                         variables, constants, varName,
                                         exprTreeRoot);
   } catch (std::invalid_argument& e) {
-    throw std::invalid_argument("Invalid expression");
+    throw InvalidAssignException();
   }
 }
 
