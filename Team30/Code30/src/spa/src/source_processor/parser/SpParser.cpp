@@ -162,7 +162,6 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
 void SpParser::handleWordOrIntegerToken(
     std::unordered_set<std::string>& variables,
     std::unordered_set<int>& constants) {
-
   if (isCurrTokenType(TokenType::WORD_TOKEN)) {
     variables.insert(getCurrTokenValue());
   } else if (isCurrTokenType(TokenType::INTEGER_TOKEN)) {
@@ -273,9 +272,10 @@ void SpParser::buildCondExprPostFix(
           throw InvalidCondExprException();
         }
       }
+
       while (!operatorStack.empty() &&
-             Precedence(operatorStack.top()->getTokenVal()) >=
-                 Precedence(getCurrTokenValue())) {
+             AParser::IsGreaterOrEqualPrecedence(
+                 operatorStack.top()->getTokenVal(), getCurrTokenValue())) {
         postFixQueue.push(operatorStack.top());
         operatorStack.pop();
       }
@@ -408,7 +408,6 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   std::unordered_set<std::string> variables = std::unordered_set<std::string>();
   std::unordered_set<int> constants = std::unordered_set<int>();
 
-  
   std::vector<std::shared_ptr<Token>> infixTokens;
 
   while (!isCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
@@ -419,7 +418,8 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
     nextToken();
   }
 
-  std::queue<std::shared_ptr<std::string>> postFixQueue = AParser::ConvertInfixToPostfix(infixTokens);
+  std::queue<std::shared_ptr<std::string>> postFixQueue =
+      AParser::ConvertInfixToPostfix(infixTokens);
   nextToken();
 
   try {

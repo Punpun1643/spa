@@ -1,16 +1,8 @@
 #include "AParser.h"
+
 #include "exceptions/EndOfFileException.h"
-#include "exceptions/StartOfFileException.h"
-
 #include "exceptions/InvalidTokenException.h"
-
-namespace a_parser_mathematical_operator {
-constexpr char PLUS[] = "+";
-constexpr char MINUS[] = "-";
-constexpr char MULTIPLY[] = "*";
-constexpr char DIVIDE[] = "/";
-constexpr char MODULO[] = "%";
-}  // namespace a_parser_mathematical_operator
+#include "exceptions/StartOfFileException.h"
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
@@ -83,11 +75,11 @@ bool AParser::IsTokenValue(std::shared_ptr<Token> token,
 }
 
 bool AParser::IsMathematicalOperator(std::string const& tokenValue) {
-  return tokenValue == a_parser_mathematical_operator::PLUS ||
-         tokenValue == a_parser_mathematical_operator::MINUS ||
-         tokenValue == a_parser_mathematical_operator::MULTIPLY ||
-         tokenValue == a_parser_mathematical_operator::DIVIDE ||
-         tokenValue == a_parser_mathematical_operator::MODULO;
+  return tokenValue == AParserConstant::PLUS ||
+         tokenValue == AParserConstant::MINUS ||
+         tokenValue == AParserConstant::MULTIPLY ||
+         tokenValue == AParserConstant::DIVIDE ||
+         tokenValue == AParserConstant::MODULO;
 }
 
 bool AParser::isCurrTokenType(TokenType tokenType) {
@@ -133,12 +125,12 @@ void AParser::HandleInfixWordOrIntegerToken(
 }
 
 int AParser::Precedence(std::string const& operatorValue) {
-  if (operatorValue == a_parser_mathematical_operator::MULTIPLY ||
-      operatorValue == a_parser_mathematical_operator::DIVIDE ||
-      operatorValue == a_parser_mathematical_operator::MODULO) {
+  if (operatorValue == AParserConstant::MULTIPLY ||
+      operatorValue == AParserConstant::DIVIDE ||
+      operatorValue == AParserConstant::MODULO) {
     return 2;
-  } else if (operatorValue == a_parser_mathematical_operator::PLUS ||
-             operatorValue == a_parser_mathematical_operator::MINUS) {
+  } else if (operatorValue == AParserConstant::PLUS ||
+             operatorValue == AParserConstant::MINUS) {
     return 1;
   } else {
     return -1;
@@ -239,8 +231,7 @@ std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
     postFixQueue.pop();
 
     if (IsMathematicalOperator(element->c_str())) {
-      ValidateTreeStackSize(treeStack,
-                            AParserConstant::MINIMUM_OPERATOR_SIZE);
+      ValidateTreeStackSize(treeStack, AParserConstant::MINIMUM_OPERATOR_SIZE);
 
       std::shared_ptr<TreeNode> rightSubTree = treeStack.top();
       treeStack.pop();
