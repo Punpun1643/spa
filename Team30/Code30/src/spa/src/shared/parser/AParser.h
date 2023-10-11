@@ -15,31 +15,31 @@ class AParser {
   AParser(std::vector<std::shared_ptr<Token>> tokens);
 
   // move pointer to the next token
-  std::shared_ptr<Token> nextToken();
+  std::shared_ptr<Token> NextToken();
 
   // explore the next token without moving the pointer
-  std::shared_ptr<Token> peekToken();
+  std::shared_ptr<Token> PeekToken();
 
-  std::shared_ptr<Token> peekBackToken();
+  std::shared_ptr<Token> PeekBackToken();
 
   // get the current token
-  std::shared_ptr<Token> getCurrToken();
+  std::shared_ptr<Token> GetCurrToken();
 
   /**
    * @brief Returns the value of the current token.
    *
    * @return The value of the current token.
    */
-  std::string getCurrTokenValue();
+  std::string GetCurrTokenValue();
 
   /**
    * @brief Parses the tokens.
    *
    * @throw std::runtime_error if the tokens are not valid.
    */
-  std::string getPeekTokenValue();
+  std::string GetPeekTokenValue();
 
-  std::string getPeekBackTokenValue();
+  std::string GetPeekBackTokenValue();
 
   virtual void parse() = 0;
 
@@ -118,7 +118,7 @@ class AParser {
    * @return True if the current token is of the given token type, false
    * otherwise.
    */
-  bool isCurrTokenType(TokenType tokenType);
+  bool IsCurrTokenType(TokenType tokenType);
 
   /**
    * @brief Checks if the current token is of the given token value.
@@ -128,7 +128,7 @@ class AParser {
    * @return True if the current token is of the given token value,
    * false otherwise.
    */
-  bool isCurrTokenValue(std::string const& tokenValue);
+  bool IsCurrTokenValue(std::string const& tokenValue);
 
   /**
    * @brief Checks if the peek token is of the given token value.
@@ -138,9 +138,9 @@ class AParser {
    * @return True if the current token is of the given token value,
    * false otherwise.
    */
-  bool isPeekTokenValue(std::string const& tokenValue);
+  bool IsPeekTokenValue(std::string const& tokenValue);
 
-  bool isPeekBackTokenValue(std::string const& tokenValue);
+  bool IsPeekBackTokenValue(std::string const& tokenValue);
   /**
    * @brief Checks if the current token and type value is equal to the given
    * token value.
@@ -153,7 +153,7 @@ class AParser {
    * @return True if the current token value is equal to the given token value,
    * false otherwise.
    */
-  bool isCurrTokenTypeAndValue(TokenType tokenType,
+  bool IsCurrTokenTypeAndValue(TokenType tokenType,
                                std::string const& tokenValue);
 
   /**
@@ -166,7 +166,7 @@ class AParser {
    * @throw std::runtime_error if the current token is not of the given token
    * type.
    */
-  void assertCurrTokenTypeAndValue(TokenType expectedType,
+  void AssertCurrTokenTypeAndValue(TokenType expectedType,
                                    std::string const& expectedValue,
                                    std::string const& errorMessage);
 
@@ -180,7 +180,7 @@ class AParser {
    */
   template <typename ExceptionType>
   void CheckCurrTokenType(TokenType expectedType) {
-    if (!isCurrTokenType(expectedType)) {
+    if (!IsCurrTokenType(expectedType)) {
       throw ExceptionType();
     }
   }
@@ -196,17 +196,17 @@ class AParser {
    */
   template <typename ExceptionType>
   void CheckAndAdvanceCurrToken(std::string const& expectedValue) {
-    if (!isCurrTokenValue(expectedValue)) {
+    if (!IsCurrTokenValue(expectedValue)) {
       throw ExceptionType();
     }
-    nextToken();
+    NextToken();
   }
 
   template <typename ExceptionType>
   std::string ParseAndValidateVarName() {
     CheckCurrTokenType<ExceptionType>(TokenType::WORD_TOKEN);
-    std::string varName = getCurrTokenValue();
-    nextToken();
+    std::string varName = GetCurrTokenValue();
+    NextToken();
     CheckAndAdvanceCurrToken<ExceptionType>(AParserConstant::STMT_TERMINATOR);
     return varName;
   }

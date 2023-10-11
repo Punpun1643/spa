@@ -19,8 +19,8 @@ ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens) {
   // Declaration parsing already done by ContextBuilder
-  while (getCurrTokenValue() != QpParser::SELECT || getPeekBackTokenValue() != ";") {
-    nextToken();
+  while (GetCurrTokenValue() != QpParser::SELECT || GetPeekBackTokenValue() != ";") {
+    NextToken();
   }
 }
 
@@ -41,10 +41,10 @@ void ExpressionTreeBuilder::parse() {
 std::shared_ptr<SelectExpression>
 ExpressionTreeBuilder ::CreateSelectExpression() {
   // After syntax checking & context building, currToken should be 'Select'
-  assert(getCurrTokenValue() == QpParser::SELECT);
+  assert(GetCurrTokenValue() == QpParser::SELECT);
 
-  std::string synonym = nextToken()->getTokenVal();
-  nextToken();
+  std::string synonym = NextToken()->getTokenVal();
+  NextToken();
   return std::make_shared<SelectExpression>(synonym);
 }
 
@@ -55,12 +55,12 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
   std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head;
 
   bool is_first_run = true;
-  while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
-    if (getCurrTokenValue() == QpParser::SUCH) {
+  while (GetCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+    if (GetCurrTokenValue() == QpParser::SUCH) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<SuchThatExpression>>(
               this->CreateSuchThatExpression());
-    } else if (getCurrTokenValue() == QpParser::PATTERN) {
+    } else if (GetCurrTokenValue() == QpParser::PATTERN) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<PatternExpression>>(
               this->CreatePatternExpression());
@@ -80,31 +80,31 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
 
 std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpression() {
-  assert(getCurrTokenValue() == QpParser::SUCH);
+  assert(GetCurrTokenValue() == QpParser::SUCH);
   std::shared_ptr<SuchThatExpression> such_that_expression_head;
 
-  nextToken();  // that
+  NextToken();  // that
   bool is_first_run = true;
   std::optional<std::shared_ptr<SuchThatExpression>>
       previous_such_that_expression;
   std::optional<std::shared_ptr<SuchThatExpression>>
       current_such_that_expression;
-  while (is_first_run || getCurrTokenValue() == "and") {
-    std::string clause_name = nextToken()->getTokenVal();
-    nextToken();  // (
+  while (is_first_run || GetCurrTokenValue() == "and") {
+    std::string clause_name = NextToken()->getTokenVal();
+    NextToken();  // (
 
     std::string arg1 = "";
-    nextToken();  // start of arg1
-    while (getCurrTokenValue() != ",") {
-      arg1 += getCurrTokenValue();
-      nextToken();
+    NextToken();  // start of arg1
+    while (GetCurrTokenValue() != ",") {
+      arg1 += GetCurrTokenValue();
+      NextToken();
     }
 
     std::string arg2 = "";
-    nextToken();  // start of arg2
-    while (getCurrTokenValue() != ")") {
-      arg2 += getCurrTokenValue();
-      nextToken();
+    NextToken();  // start of arg2
+    while (GetCurrTokenValue() != ")") {
+      arg2 += GetCurrTokenValue();
+      NextToken();
     }
 
     if (clause_name == QpParser::FOLLOWS) {
@@ -152,30 +152,30 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
     }
 
     is_first_run = false;
-    nextToken();  // and OR start of another clause OR Eof
+    NextToken();  // and OR start of another clause OR Eof
   }
   return such_that_expression_head;
 }
 
 std::shared_ptr<PatternExpression>
 ExpressionTreeBuilder ::CreatePatternExpression() {
-  assert(getCurrTokenValue() == QpParser::PATTERN);
-  std::string syn_assign = nextToken()->getTokenVal();
+  assert(GetCurrTokenValue() == QpParser::PATTERN);
+  std::string syn_assign = NextToken()->getTokenVal();
   std::string arg1 = "";
   std::string arg2 = "";
-  nextToken();  // (
-  nextToken();
-  while (getCurrTokenValue() != ",") {
-    arg1 += getCurrTokenValue();
-    nextToken();
+  NextToken();  // (
+  NextToken();
+  while (GetCurrTokenValue() != ",") {
+    arg1 += GetCurrTokenValue();
+    NextToken();
   }
 
-  nextToken();
-  while (getCurrTokenValue() != ")") {
-    arg2 += getCurrTokenValue();
-    nextToken();
+  NextToken();
+  while (GetCurrTokenValue() != ")") {
+    arg2 += GetCurrTokenValue();
+    NextToken();
   }
 
-  nextToken();  // EOF
+  NextToken();  // EOF
   return std::make_shared<PatternExpression>(syn_assign, arg1, arg2);
 }

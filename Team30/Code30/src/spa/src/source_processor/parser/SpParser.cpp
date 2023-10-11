@@ -20,13 +20,13 @@ SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
 std::shared_ptr<ProgramNode> SpParser::parseProgram() {
   std::vector<std::shared_ptr<ProcedureNode>> procedures;
 
-  while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
-    if (!isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+  while (!IsCurrTokenType(TokenType::EOF_TOKEN)) {
+    if (!IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                  SpParserConstant::PROCEDURE_KEYWORD)) {
       throw InvalidProcedureException();
     }
 
-    nextToken();
+    NextToken();
     procedures.push_back(parseProcedure());
   }
 
@@ -34,25 +34,25 @@ std::shared_ptr<ProgramNode> SpParser::parseProgram() {
 }
 
 std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
-  if (!isCurrTokenType(TokenType::WORD_TOKEN)) {
+  if (!IsCurrTokenType(TokenType::WORD_TOKEN)) {
     throw InvalidProcedureException();
   }
 
-  std::string procedureName = getCurrTokenValue();
-  nextToken();
+  std::string procedureName = GetCurrTokenValue();
+  NextToken();
 
-  if (!isCurrTokenValue(SpParserConstant::START_PROCEDURE)) {
+  if (!IsCurrTokenValue(SpParserConstant::START_PROCEDURE)) {
     throw InvalidProcedureException();
   }
 
-  nextToken();
+  NextToken();
   std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
-  if (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
+  if (!IsCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
     throw InvalidProcedureException();
   }
 
-  nextToken();
+  NextToken();
   return std::make_shared<ProcedureNode>(procedureName, stmtLst);
 }
 
@@ -80,51 +80,51 @@ std::shared_ptr<CallNode> SpParser::parseCall() {
 std::shared_ptr<IfNode> SpParser::parseIf() {
   int ifStmtIndex = currStmtIndex++;
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+  AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_COND_EXPR,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+  AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_COND_EXPR,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
-  assertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+  NextToken();
+  AssertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                               SpParserConstant::THEN_KEYWORD,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+  NextToken();
+  AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_THEN_STMTLST,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
+  NextToken();
   std::shared_ptr<StmtLstNode> thenStmtLst = parseStmtLst();
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+  AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_THEN_STMTLST,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
-  assertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+  NextToken();
+  AssertCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                               SpParserConstant::ELSE_KEYWORD,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+  NextToken();
+  AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_ELSE_STMTLST,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
+  NextToken();
   std::shared_ptr<StmtLstNode> elseStmtLst = parseStmtLst();
 
-  assertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
+  AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_ELSE_STMTLST,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  nextToken();
+  NextToken();
   return std::make_shared<IfNode>(ifStmtIndex, StmtType::IF_STMT, condExpr,
                                   thenStmtLst, elseStmtLst);
 }
@@ -132,29 +132,29 @@ std::shared_ptr<IfNode> SpParser::parseIf() {
 std::shared_ptr<WhileNode> SpParser::parseWhile() {
   int whileStmtIndex = currStmtIndex++;
 
-  assertCurrTokenTypeAndValue(
+  AssertCurrTokenTypeAndValue(
       TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::START_COND_EXPR,
       ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   std::shared_ptr<CondExprNode> condExpr = parseCondExpr();
 
-  assertCurrTokenTypeAndValue(
+  AssertCurrTokenTypeAndValue(
       TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::END_COND_EXPR,
       ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
-  nextToken();
-  assertCurrTokenTypeAndValue(
+  NextToken();
+  AssertCurrTokenTypeAndValue(
       TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::START_WHILE_STMTLST,
       ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
-  nextToken();
+  NextToken();
   std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
-  assertCurrTokenTypeAndValue(
+  AssertCurrTokenTypeAndValue(
       TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::END_WHILE_STMTLST,
       ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
-  nextToken();
+  NextToken();
   return std::make_shared<WhileNode>(whileStmtIndex, StmtType::WHILE_STMT,
                                      condExpr, stmtLst);
 }
@@ -162,10 +162,10 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
 void SpParser::handleWordOrIntegerToken(
     std::unordered_set<std::string>& variables,
     std::unordered_set<int>& constants) {
-  if (isCurrTokenType(TokenType::WORD_TOKEN)) {
-    variables.insert(getCurrTokenValue());
-  } else if (isCurrTokenType(TokenType::INTEGER_TOKEN)) {
-    constants.insert(std::stoi(getCurrTokenValue()));
+  if (IsCurrTokenType(TokenType::WORD_TOKEN)) {
+    variables.insert(GetCurrTokenValue());
+  } else if (IsCurrTokenType(TokenType::INTEGER_TOKEN)) {
+    constants.insert(std::stoi(GetCurrTokenValue()));
   }
 }
 
@@ -173,26 +173,26 @@ void SpParser::handleOperatorToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
   while (!operatorStack.empty() && Precedence(operatorStack.top()->c_str()) >=
-                                       Precedence(getCurrTokenValue())) {
+                                       Precedence(GetCurrTokenValue())) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
-  operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
+  operatorStack.push(std::make_shared<std::string>(GetCurrTokenValue()));
 }
 
 void SpParser::handleLeftParenthesisToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
-  if (AParser::isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
+  if (AParser::IsPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw EmptyParenthesesException();
   }
   ++parenCount;
-  operatorStack.push(std::make_shared<std::string>(getCurrTokenValue()));
+  operatorStack.push(std::make_shared<std::string>(GetCurrTokenValue()));
 }
 
 void SpParser::handleCondExprLeftParenthesisToken(
     std::shared_ptr<Token> const& currToken,
     std::stack<std::shared_ptr<Token>>& operatorStack, int& parenCount) {
-  if (isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
+  if (IsPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw EmptyParenthesesException();
   }
   ++parenCount;
@@ -220,7 +220,7 @@ void SpParser::condExprHandleRightParenthesisToken(
 
   // check valid relExpr
   if (isParseRelExpr && !operatorStack.empty() &&
-      !(isAndOrOrToken(peekToken())) &&
+      !(isAndOrOrToken(PeekToken())) &&
       isLeftParenthesisToken(operatorStack.top())) {
     throw InvalidRelExprException();
   }
@@ -243,10 +243,10 @@ void SpParser::assignHandleRightParenthesisToken(
 void SpParser::trackOperatorAndOperand(
     std::vector<int>& constAppearances,
     std::vector<std::string>& varAppearances) {
-  if (AParser::IsWordToken(getCurrToken())) {
-    varAppearances.push_back(getCurrTokenValue());
+  if (AParser::IsWordToken(GetCurrToken())) {
+    varAppearances.push_back(GetCurrTokenValue());
   } else {
-    constAppearances.push_back(std::stoi(getCurrTokenValue()));
+    constAppearances.push_back(std::stoi(GetCurrTokenValue()));
   }
 }
 
@@ -255,36 +255,36 @@ void SpParser::buildCondExprPostFix(
   std::stack<std::shared_ptr<Token>> operatorStack;
   int parenCount = 0;
 
-  while (!isCurrTokenType(TokenType::EOF_TOKEN)) {
-    std::shared_ptr<Token> currToken = getCurrToken();
+  while (!IsCurrTokenType(TokenType::EOF_TOKEN)) {
+    std::shared_ptr<Token> currToken = GetCurrToken();
     if (AParser::IsWordOrIntegerToken(currToken)) {
-      postFixQueue.push(getCurrToken());
+      postFixQueue.push(GetCurrToken());
     } else if (isLeftParenthesisToken(currToken)) {
       handleCondExprLeftParenthesisToken(currToken, operatorStack, parenCount);
-    } else if (isRightParenthesisToken(getCurrToken())) {
+    } else if (isRightParenthesisToken(GetCurrToken())) {
       --parenCount;
       condExprHandleRightParenthesisToken(operatorStack, postFixQueue);
       if (parenCount == 0) break;
-    } else if (isOperator(getCurrTokenValue())) {
-      if (isAndOrOrToken(getCurrToken())) {
-        if (!isRightParenthesisToken(peekBackToken()) ||
-            !isLeftParenthesisToken(peekToken())) {
+    } else if (isOperator(GetCurrTokenValue())) {
+      if (isAndOrOrToken(GetCurrToken())) {
+        if (!isRightParenthesisToken(PeekBackToken()) ||
+            !isLeftParenthesisToken(PeekToken())) {
           throw InvalidCondExprException();
         }
       }
 
       while (!operatorStack.empty() &&
              AParser::IsGreaterOrEqualPrecedence(
-                 operatorStack.top()->getTokenVal(), getCurrTokenValue())) {
+                 operatorStack.top()->getTokenVal(), GetCurrTokenValue())) {
         postFixQueue.push(operatorStack.top());
         operatorStack.pop();
       }
-      operatorStack.push(getCurrToken());
+      operatorStack.push(GetCurrToken());
     } else {
       throw InvalidCondExprException();
     }
 
-    nextToken();
+    NextToken();
   }
 
   if (parenCount != 0) {
@@ -410,17 +410,17 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
 
   std::vector<std::shared_ptr<Token>> infixTokens;
 
-  while (!isCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
-    if (AParser::IsWordOrIntegerToken(getCurrToken())) {
+  while (!IsCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
+    if (AParser::IsWordOrIntegerToken(GetCurrToken())) {
       handleWordOrIntegerToken(variables, constants);
     }
-    infixTokens.push_back(getCurrToken());
-    nextToken();
+    infixTokens.push_back(GetCurrToken());
+    NextToken();
   }
 
   std::queue<std::shared_ptr<std::string>> postFixQueue =
       AParser::ConvertInfixToPostfix(infixTokens);
-  nextToken();
+  NextToken();
 
   try {
     std::shared_ptr<TreeNode> exprTreeRoot =
@@ -515,36 +515,36 @@ int SpParser::Precedence(std::string const& op) {
 std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
   std::vector<std::shared_ptr<StmtNode>> stmts;
 
-  if (getCurrTokenValue() == SpParserConstant::END_PROCEDURE) {
+  if (GetCurrTokenValue() == SpParserConstant::END_PROCEDURE) {
     throw EmptyStmtLstException();
   }
 
-  while (!isCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
-    std::shared_ptr<Token> currToken = getCurrToken();
-    if (isCurrTokenType(TokenType::WORD_TOKEN) &&
-        isPeekTokenValue(SpParserConstant::ASSIGN_SYMBOL)) {
-      nextToken();  // move to assign symbol
-      nextToken();
+  while (!IsCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
+    std::shared_ptr<Token> currToken = GetCurrToken();
+    if (IsCurrTokenType(TokenType::WORD_TOKEN) &&
+        IsPeekTokenValue(SpParserConstant::ASSIGN_SYMBOL)) {
+      NextToken();  // move to assign symbol
+      NextToken();
       stmts.push_back(parseAssign(currToken->getTokenVal()));
-    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                        SpParserConstant::PRINT_KEYWORD)) {
-      nextToken();
+      NextToken();
       stmts.push_back(parsePrint());
-    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                        SpParserConstant::READ_KEYWORD)) {
-      nextToken();
+      NextToken();
       stmts.push_back(parseRead());
-    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                        SpParserConstant::CALL_KEYWORD)) {
-      nextToken();
+      NextToken();
       stmts.push_back(parseCall());
-    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                        SpParserConstant::WHILE_KEYWORD)) {
-      nextToken();
+      NextToken();
       stmts.push_back(parseWhile());
-    } else if (isCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                        SpParserConstant::IF_KEYWORD)) {
-      nextToken();
+      NextToken();
       stmts.push_back(parseIf());
     } else {
       throw InvalidStmtLstException();

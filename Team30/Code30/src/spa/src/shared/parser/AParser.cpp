@@ -11,39 +11,39 @@
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
 
-std::shared_ptr<Token> AParser::nextToken() {
+std::shared_ptr<Token> AParser::NextToken() {
   if (currTokenIndex < tokens.size()) {
     return tokens[++currTokenIndex];
   }
   throw EndOfFileException();
 }
 
-std::shared_ptr<Token> AParser::peekToken() {
+std::shared_ptr<Token> AParser::PeekToken() {
   if (currTokenIndex + 1 < tokens.size()) {
     return tokens[currTokenIndex + 1];
   }
   throw EndOfFileException();
 }
 
-std::shared_ptr<Token> AParser::peekBackToken() {
+std::shared_ptr<Token> AParser::PeekBackToken() {
   if (currTokenIndex - 1 >= 0) {
     return tokens[currTokenIndex - 1];
   }
   throw StartOfFileException();
 }
 
-std::shared_ptr<Token> AParser::getCurrToken() {
+std::shared_ptr<Token> AParser::GetCurrToken() {
   return tokens[currTokenIndex];
 }
 
-std::string AParser::getCurrTokenValue() {
-  return getCurrToken()->getTokenVal();
+std::string AParser::GetCurrTokenValue() {
+  return GetCurrToken()->getTokenVal();
 }
 
-std::string AParser::getPeekTokenValue() { return peekToken()->getTokenVal(); }
+std::string AParser::GetPeekTokenValue() { return PeekToken()->getTokenVal(); }
 
-std::string AParser::getPeekBackTokenValue() {
-  return peekBackToken()->getTokenVal();
+std::string AParser::GetPeekBackTokenValue() {
+  return PeekBackToken()->getTokenVal();
 }
 
 bool AParser::IsTokenType(std::shared_ptr<Token> token, TokenType token_type) {
@@ -86,39 +86,39 @@ bool AParser::IsMathematicalOperator(std::string const& tokenValue) {
          tokenValue == AParserConstant::MODULO;
 }
 
-bool AParser::isCurrTokenType(TokenType tokenType) {
-  return IsTokenType(getCurrToken(), tokenType);
+bool AParser::IsCurrTokenType(TokenType tokenType) {
+  return IsTokenType(GetCurrToken(), tokenType);
 }
 
-bool AParser::isCurrTokenValue(std::string const& tokenValue) {
-  return tokenValue == getCurrToken()->getTokenVal();
+bool AParser::IsCurrTokenValue(std::string const& tokenValue) {
+  return tokenValue == GetCurrToken()->getTokenVal();
 }
 
-bool AParser::isPeekTokenValue(std::string const& tokenValue) {
-  return tokenValue == peekToken()->getTokenVal();
+bool AParser::IsPeekTokenValue(std::string const& tokenValue) {
+  return tokenValue == PeekToken()->getTokenVal();
 }
 
-bool AParser::isPeekBackTokenValue(std::string const& tokenValue) {
-  return tokenValue == peekBackToken()->getTokenVal();
+bool AParser::IsPeekBackTokenValue(std::string const& tokenValue) {
+  return tokenValue == PeekBackToken()->getTokenVal();
 }
 
-bool AParser::isCurrTokenTypeAndValue(TokenType tokenType,
+bool AParser::IsCurrTokenTypeAndValue(TokenType tokenType,
                                       std::string const& tokenValue) {
-  return IsTokenType(getCurrToken(), tokenType) &&
-         tokenValue == getCurrToken()->getTokenVal();
+  return IsTokenType(GetCurrToken(), tokenType) &&
+         tokenValue == GetCurrToken()->getTokenVal();
 }
 
-void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
+void AParser::AssertCurrTokenTypeAndValue(TokenType expectedType,
                                           std::string const& expectedValue,
                                           std::string const& errorMessage) {
-  if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
+  if (!IsCurrTokenTypeAndValue(expectedType, expectedValue)) {
     throw InvalidTokenException(errorMessage);
   }
 }
 
 std::string AParser::GetCurrTokenValueAndAdvance() {
-  std::string tokenValue = getCurrTokenValue();
-  nextToken();
+  std::string tokenValue = GetCurrTokenValue();
+  NextToken();
   return tokenValue;
 }
 
@@ -162,7 +162,7 @@ void AParser::HandleInfixOperatorToken(
 void AParser::HandleLeftParenthesisToken(
     std::shared_ptr<Token> token,
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
-  if (AParser::isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
+  if (AParser::IsPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw EmptyParenthesesException();
   }
   ++parenCount;
