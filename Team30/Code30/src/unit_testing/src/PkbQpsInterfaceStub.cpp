@@ -91,6 +91,7 @@ std::unique_ptr<std::vector<std::string>>
 PkbQpsInterfaceStub::getPatternMatchesWildLhs(std::string rhs_expr,
                                               MatchType expr_match_type) {
   assert(false);
+  return nullptr;
 }
 
 std::unique_ptr<std::vector<std::string>>
@@ -98,6 +99,7 @@ PkbQpsInterfaceStub::getPatternMatchesValueLhs(std::string lhs_value,
                                                std::string rhs_expr,
                                                MatchType expr_match_type) {
   assert(false);
+  return nullptr;
 };
 
 // 2 paired values - for the implicit assign declaration, and the values for the
@@ -105,7 +107,8 @@ PkbQpsInterfaceStub::getPatternMatchesValueLhs(std::string lhs_value,
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PkbQpsInterfaceStub::getPatternMatchesSynonymLhs(std::string rhs_expr,
                                                  MatchType expr_match_type) {
- assert(false);
+  assert(false);
+  return nullptr;
 };
 
 std::unique_ptr<std::vector<std::string>>
