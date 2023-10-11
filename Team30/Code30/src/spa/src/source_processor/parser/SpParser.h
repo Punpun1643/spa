@@ -77,7 +77,6 @@ class SpParser : public AParser {
   static bool isNotToken(std::shared_ptr<Token> token);
 
   void handleWordOrIntegerToken(
-      std::queue<std::shared_ptr<std::string>>& postFixQueue,
       std::unordered_set<std::string>& variables,
       std::unordered_set<int>& constants);
 

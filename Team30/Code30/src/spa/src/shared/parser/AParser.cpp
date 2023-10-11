@@ -207,15 +207,12 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
 
   for (auto const& token : infixTokens) {
     if (IsWordOrIntegerToken(token)) {
-      std::cout << token->getTokenVal() << std::endl;
       HandleInfixWordOrIntegerToken(token, postFixQueue);
     } else if (IsMathematicalOperator(token->getTokenVal())) {
       HandleInfixOperatorToken(token, operatorStack, postFixQueue);
     } else if (IsTokenValue(token, a_parser_constant::LEFT_PARENTHESIS)) {
-      std::cout << "left paren" << std::endl;
       HandleLeftParenthesisToken(token, operatorStack, parenCount);
     } else if (IsTokenValue(token, a_parser_constant::RIGHT_PARENTHESIS)) {
-      std::cout << "right paren" << std::endl;
       HandleRightParenthesisToken(operatorStack, postFixQueue, parenCount);
     } else {
       throw std::invalid_argument("Invalid assign");

@@ -160,10 +160,8 @@ std::shared_ptr<WhileNode> SpParser::parseWhile() {
 }
 
 void SpParser::handleWordOrIntegerToken(
-    std::queue<std::shared_ptr<std::string>>& postFixQueue,
     std::unordered_set<std::string>& variables,
     std::unordered_set<int>& constants) {
-  postFixQueue.push(std::make_shared<std::string>(getCurrTokenValue()));
 
   if (isCurrTokenType(TokenType::WORD_TOKEN)) {
     variables.insert(getCurrTokenValue());
@@ -410,37 +408,17 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   std::unordered_set<std::string> variables = std::unordered_set<std::string>();
   std::unordered_set<int> constants = std::unordered_set<int>();
 
-  std::queue<std::shared_ptr<std::string>> postFixQueue;
-  std::stack<std::shared_ptr<std::string>> operatorStack;
-
-  int parenCount = 0;
+  std::vector<std::shared_ptr<Token>> infixTokens;
 
   while (!isCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
     if (AParser::IsWordOrIntegerToken(getCurrToken())) {
-      handleWordOrIntegerToken(postFixQueue, variables, constants);
-    } else if (isMathematicalOperator(getCurrTokenValue())) {
-      handleOperatorToken(operatorStack, postFixQueue);
-    } else if (isCurrTokenValue(AParserConstant::LEFT_PARENTHESIS)) {
-      handleLeftParenthesisToken(operatorStack, parenCount);
-    } else if (isCurrTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
-      assignHandleRightParenthesisToken(operatorStack, postFixQueue,
-                                        parenCount);
-    } else {
-      throw InvalidAssignException();
+      handleWordOrIntegerToken(variables, constants);
     }
-
+    infixTokens.push_back(getCurrToken());
     nextToken();
   }
 
-  if (parenCount != 0) {
-    throw UnmatchedParenthesesException();
-  }
-
-  while (!operatorStack.empty()) {
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
-  }
-
+  std::queue<std::shared_ptr<std::string>> postFixQueue = AParser::ConvertInfixToPostfix(infixTokens);
   nextToken();
 
   try {
