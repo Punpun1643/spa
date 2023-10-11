@@ -8,6 +8,7 @@
 #include "../exceptions/EmptyParenthesesException.h"
 #include "../exceptions/UnmatchedParenthesesException.h"
 #include "../exceptions/EmptyStmtLstException.h"
+#include "../exceptions/InvalidRelExprException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
@@ -215,14 +216,14 @@ void SpParser::condExprHandleRightParenthesisToken(
   if (!operatorStack.empty()) {
     operatorStack.pop();
   } else {
-    throw std::invalid_argument("Invalid relExpr");
+    throw InvalidRelExprException();
   }
 
   // check valid relExpr
   if (isParseRelExpr && !operatorStack.empty() &&
       !(isAndOrOrToken(peekToken())) &&
       isLeftParenthesisToken(operatorStack.top())) {
-    throw std::invalid_argument("Invalid relExpr");
+    throw InvalidRelExprException();
   }
 }
 
