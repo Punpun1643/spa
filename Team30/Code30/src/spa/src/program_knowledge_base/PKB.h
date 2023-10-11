@@ -93,13 +93,4 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
-
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
-      std::string lhs_value, std::string rhs_expr,
-      MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::string rhs_expr,
-                              MatchType expr_match_type) override;
 };
