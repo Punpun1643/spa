@@ -406,37 +406,6 @@ std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
   return std::make_shared<CondExprNode>(variables, constants);
 }
 
-std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
-    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  std::stack<std::shared_ptr<TreeNode>> treeStack;
-
-  while (!postFixQueue.empty()) {
-    auto element = postFixQueue.front();
-    postFixQueue.pop();
-
-    if (isMathematicalOperator(element->c_str())) {
-      if (treeStack.size() < 2) {
-        throw InvalidCondExprException();
-      }
-
-      auto right = treeStack.top();
-      treeStack.pop();
-      auto left = treeStack.top();
-      treeStack.pop();
-
-      treeStack.push(std::make_shared<TreeNode>(*element, left, right));
-    } else {
-      treeStack.push(std::make_shared<TreeNode>(*element, nullptr, nullptr));
-    }
-  }
-
-  if (treeStack.size() != 1) {
-    throw InvalidCondExprException();
-  }
-
-  return treeStack.top();
-}
-
 std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
   std::unordered_set<std::string> variables = std::unordered_set<std::string>();
   std::unordered_set<int> constants = std::unordered_set<int>();
@@ -476,7 +445,7 @@ std::shared_ptr<AssignNode> SpParser::parseAssign(std::string const& varName) {
 
   try {
     std::shared_ptr<TreeNode> exprTreeRoot =
-        buildExprTreeAndValidate(postFixQueue);
+        AParser::BuildExprTreeAndValidate(postFixQueue);
     return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
                                         variables, constants, varName,
                                         exprTreeRoot);

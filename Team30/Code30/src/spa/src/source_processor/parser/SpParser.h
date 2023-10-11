@@ -47,9 +47,6 @@ class SpParser : public AParser {
 
   std::shared_ptr<ProgramNode> getSourceProgramNode();
 
-  static std::shared_ptr<TreeNode> buildExprTreeAndValidate(
-      std::queue<std::shared_ptr<std::string>>& postFixQueue);
-
   void parse() override;
 
   ~SpParser() = default;
