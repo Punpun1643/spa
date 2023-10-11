@@ -26,8 +26,4 @@ class PKBSPInterface {
       std::string procName) = 0;
   virtual std::unordered_set<std::string> getProcedureUses(
       std::string procName) = 0;
-
-  // ----------- TO DELETE -------------
-  virtual void insertPattern(std::string statement_number, std::string lhs,
-                             std::unordered_set<std::string> rhs) = 0;
 };
