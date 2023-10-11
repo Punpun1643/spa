@@ -5,6 +5,7 @@
 #include "exceptions/StartOfFileException.h"
 #include "exceptions/InvalidExprSpecException.h"
 #include "exceptions/UnmatchedParenthesesException.h"
+#include "exceptions/EmptyParenthesesException.h"
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
@@ -161,7 +162,7 @@ void AParser::HandleLeftParenthesisToken(
     std::shared_ptr<Token> token,
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
   if (AParser::isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
-    throw std::invalid_argument("Empty parenthesis");
+    throw EmptyParenthesesException();
   }
   ++parenCount;
   operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
