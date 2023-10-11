@@ -116,7 +116,8 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     SpParser parser = SpParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid condition expression!"));
+    REQUIRE_THROWS_WITH(parser.parseWhile(),
+                        Contains("Invalid condition expression!"));
   }
 
   SECTION(
