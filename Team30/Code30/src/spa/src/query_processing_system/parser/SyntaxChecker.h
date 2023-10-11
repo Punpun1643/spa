@@ -30,7 +30,7 @@ class SyntaxChecker : public QpParser {
   void CheckParent();
   void CheckPattern();
   void CheckSelect();
-  void CheckSuchThat();
+  void CheckSuchThat(bool has_and);
   void CheckUses();
 
   // Helpers

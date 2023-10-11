@@ -89,7 +89,7 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       previous_such_that_expression;
   std::optional<std::shared_ptr<SuchThatExpression>>
       current_such_that_expression;
-  while (is_first_run || getCurrTokenValue() == "and") {
+  while (is_first_run || getCurrTokenValue() == QpParser::AND) {
     std::string clause_name = nextToken()->getTokenVal();
     nextToken();  // (
 
@@ -159,23 +159,59 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
 
 std::shared_ptr<PatternExpression>
 ExpressionTreeBuilder ::CreatePatternExpression() {
-  assert(getCurrTokenValue() == QpParser::PATTERN);
-  std::string syn_assign = nextToken()->getTokenVal();
-  std::string arg1 = "";
-  std::string arg2 = "";
-  nextToken();  // (
-  nextToken();
-  while (getCurrTokenValue() != ",") {
-    arg1 += getCurrTokenValue();
-    nextToken();
-  }
+  bool is_first_run = true;
+  std::shared_ptr<PatternExpression> pattern_expression_head;
+  std::optional<std::shared_ptr<PatternExpression>> previous_pattern_expression;
+  std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
-  nextToken();
-  while (getCurrTokenValue() != ")") {
-    arg2 += getCurrTokenValue();
-    nextToken();
-  }
+  while (is_first_run || getCurrTokenValue() == QpParser::AND) {
+    if (getCurrTokenValue() == QpParser::AND) {
+      nextToken();  // pattern
+    }
 
-  nextToken();  // EOF
-  return std::make_shared<PatternExpression>(syn_assign, arg1, arg2);
+    std::string syn_assign = nextToken()->getTokenVal();
+
+    std::string arg1 = "";
+    std::string arg2 = "";
+
+    nextToken();  // (
+
+    nextToken();
+    while (getCurrTokenValue() != ",") {
+      arg1 += getCurrToken()->getTokenVal();
+      nextToken();
+    }
+
+    nextToken();
+    int opening_brace_count = 0;
+    while ((opening_brace_count >= 1) || getCurrTokenValue() != ")") {
+      std::string current_token_value = getCurrTokenValue();
+      if (current_token_value == "(") {
+        opening_brace_count++;
+      } else if (current_token_value == ")") {
+        opening_brace_count--;
+      }
+      arg2 += current_token_value;
+      nextToken();
+    }
+
+    current_pattern_expression =
+        std::make_optional<std::shared_ptr<PatternExpression>>(
+            std::make_shared<PatternExpression>(syn_assign, arg1, arg2));
+
+    if (previous_pattern_expression.has_value()) {
+      previous_pattern_expression.value()->SetNextExpression(
+          current_pattern_expression);
+    }
+    previous_pattern_expression = current_pattern_expression;
+
+    if (is_first_run) {
+      pattern_expression_head = current_pattern_expression.value();
+    }
+
+    is_first_run = false;
+
+    nextToken();  // and OR start of another clause OR EOF
+  }
+  return pattern_expression_head;
 }

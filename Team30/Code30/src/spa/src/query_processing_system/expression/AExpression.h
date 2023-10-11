@@ -12,7 +12,11 @@ class AExpression : public std::enable_shared_from_this<AExpression> {
   virtual void acceptInterpreter(QueryInterpreter& interpreter) = 0;
 
   void SetNextExpression(std::optional<std::shared_ptr<AExpression>> next) {
-    this->next_expression = std::move(next);
+    if (next_expression.has_value()) {
+      this->next_expression.value()->SetNextExpression(std::move(next));
+    } else {
+      this->next_expression = std::move(next);
+    }
   }
 
   std::optional<std::shared_ptr<AExpression>> GetNextExpression() {

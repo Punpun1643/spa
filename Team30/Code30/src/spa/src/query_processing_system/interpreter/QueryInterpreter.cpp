@@ -32,7 +32,6 @@ QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
 void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =
       std::move(this->expression_tree);
-  assert(typeid(*expression_tree) == typeid(SelectExpression));
   expression_tree->acceptInterpreter(*this);
 }
 
@@ -92,6 +91,7 @@ void QueryInterpreter::Interpret(
   std::string arg2 = parent_expression->GetArg2();
   this->context->AddSuchThatClause(std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  this->InterpretNext(parent_expression);
 }
 
 void QueryInterpreter::Interpret(
