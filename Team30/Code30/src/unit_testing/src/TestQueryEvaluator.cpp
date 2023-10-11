@@ -26,6 +26,7 @@ TEST_CASE("Test Query Evaluator") {
   PqlDeclaration v = PqlDeclaration("v", EntityType::VARIABLE);
 
   std::shared_ptr<Clause> follows_clause;
+  std::shared_ptr<TreeNode> rhs_expr = std::make_shared<TreeNode>("", nullptr, nullptr);
   std::shared_ptr<Clause> pattern_clause;
   std::vector<std::vector<std::string>> result;
 
@@ -42,7 +43,7 @@ TEST_CASE("Test Query Evaluator") {
 
     // bool query with no result
     pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(), MatchType::EXACT_MATCH, "blah");
+        a, EntRef(), MatchType::EXACT_MATCH, rhs_expr);
     REQUIRE_FALSE(qe.evaluateQuery({follows_clause, pattern_clause}));
   }
 
@@ -74,7 +75,7 @@ TEST_CASE("Test Query Evaluator") {
   SECTION("Evaluate query with multiple decls") {
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
     pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(v), MatchType::EXACT_MATCH, "blah");
+        a, EntRef(v), MatchType::EXACT_MATCH, rhs_expr);
     result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause});
     std::vector<std::vector<std::string>> expected_result = {
         {"x","x","123","345"},{"y","y", "123","345"},{"z", "z","123","345"}
