@@ -55,12 +55,6 @@ std::shared_ptr<Token> Tokenizer::next() {
       return std::make_shared<IntegerToken>(number);
     }
 
-    // else if (c == '{' || c == '}' || c == '(' || c == ')' || c == '+' ||
-    //          c == '-' || c == '/' || c == '*' || c == '%' || c == ';' ||
-    //          c == ',' || c == '\"'|| c == '_') {
-    //   return std::make_shared<SpecialCharToken>(std::string(1, c));
-    // }
-
     else if (c == '&' || c == '|' || c == '!' || c == '=' || c == '>' ||
              c == '<') {
       return handleSpecialChar(c);

@@ -84,16 +84,25 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
                             RelationType rel_type) override;
 
   // Pattern clause
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      MatchType match_type) override;
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+                              MatchType match_type) override;
 
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWithLhsValue(
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+      std::string rhs_expr, MatchType expr_match_type) override;
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
       std::string lhs_value, std::string rhs_expr,
       MatchType expr_match_type) override;
-
-  // 2 paired values - for the implicit assign declaration, and the values for
-  // the given lhs_entity_type
+  // 2 paired values - one for the implicit assign declaration, paired with
+  // the variable declaration on the LHS of the assign stmt
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
-                                      MatchType expr_match_type) override;
+  getPatternMatchesSynonymLhs(std::string rhs_expr,
+                              MatchType expr_match_type) override;
+
+
 };
