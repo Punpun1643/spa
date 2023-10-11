@@ -14,6 +14,19 @@
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};
 
+// Constants
+std::string const QpParser::CALLS = "Calls";
+std::string const QpParser::CALLS_STAR = "Calls*";
+std::string const QpParser::FOLLOWS = "Follows";
+std::string const QpParser::FOLLOWS_STAR = "Follows*";
+std::string const QpParser::MODIFIES = "Modifies";
+std::string const QpParser::PATTERN = "pattern";
+std::string const QpParser::PARENT = "Parent";
+std::string const QpParser::PARENT_STAR = "Parent*";
+std::string const QpParser::SELECT = "Select";
+std::string const QpParser::SUCH = "such";
+std::string const QpParser::USES = "Uses";
+
 bool QpParser::IsEntRef(std::string const& name) {
   return (IsSynonym(name) || IsWildcard(name) || IsQuotedIdentifier(name));
 }
