@@ -4,7 +4,6 @@
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "../../spa/src/query_processing_system/common/EntityType.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
-#include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../spa/src/source_processor/SpController.h"
 #include "../../spa/src/source_processor/node/stmt_node/StmtNode.h"

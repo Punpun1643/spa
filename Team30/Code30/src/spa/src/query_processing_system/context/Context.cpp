@@ -44,7 +44,3 @@ std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
                        this->pattern_clauses.end());
   return other_clauses;
 }
-
-std::shared_ptr<SelectClause> Context::GetSelectClause() {
-  return this->select_clause;
-}
