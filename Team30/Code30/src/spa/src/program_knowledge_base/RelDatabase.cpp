@@ -47,12 +47,17 @@ bool RelDatabase::hasInverseRelations(RelationType type, std::string val) {
   return relationships[type]->hasInverseRelations(val);
 };
 
-std::unordered_set<std::string> RelDatabase::getAllRelated(
+std::unordered_set<std::string> RelDatabase::getAllWithRelations(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
-  return relationships[type]->getAllRelated(vals);
+  return relationships[type]->getAllWithRelations(vals);
 };
 
-std::unordered_set<std::string> RelDatabase::getAllInverseRelated(
+std::unordered_set<std::string> RelDatabase::getAllWithInverseRelations(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
-  return relationships[type]->getAllInverseRelated(vals);
+  return relationships[type]->getAllWithInverseRelations(vals);
 };
+
+std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
+    RelationType type, std::string val) {
+  return relationships[type]->getAllRelatedToValue(val);
+}

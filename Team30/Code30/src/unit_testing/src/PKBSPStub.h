@@ -29,6 +29,9 @@ class PKBSPStub : public PKBSPInterface {
                       std::string s2_line_num) override;
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
+  void insertPattern(PatternType type, std::string statement_number,
+                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
+
   void insertRelationCommon(RelationType type, std::string a, std::string b);
 
   std::unordered_set<std::string> getProcedureUses(

@@ -56,15 +56,26 @@ class PKBQPSInterface {
                     RelationType rel_type) = 0;
 
   // ---------- PATTERNS ----------
+  virtual std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) = 0;
+  virtual std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      MatchType match_type) = 0;
+  virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+                              MatchType match_type) = 0;
+
+
+  // ----------------- TO DELETE ----------------------
   virtual std::unique_ptr<std::vector<std::string>>
-  getPatternMatchesWithWildLhs(std::string rhs_expr,
+  getPatternMatchesWildLhs(std::string rhs_expr,
                                MatchType expr_match_type) = 0;
   virtual std::unique_ptr<std::vector<std::string>>
-  getPatternMatchesWithLhsValue(std::string lhs_value, std::string rhs_expr,
+  getPatternMatchesValueLhs(std::string lhs_value, std::string rhs_expr,
                                 MatchType expr_match_type) = 0;
   // 2 paired values - one for the implicit assign declaration, paired with
   // the variable declaration on the LHS of the assign stmt
   virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesWithDeclarationLhs(std::string rhs_expr,
+  getPatternMatchesSynonymLhs(std::string rhs_expr,
                                       MatchType expr_match_type) = 0;
 };
