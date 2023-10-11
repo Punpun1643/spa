@@ -1,0 +1,110 @@
+1 - Calls (proc_syn, proc_syn)
+procedure p, p1;
+Select p1 such that Calls(p,p1)
+B, C, D, F, G, H, I, J
+5000
+2 - Calls (proc_syn, proc_name)
+procedure p;
+Select p such that Calls (p, "D")
+B, C
+5000
+3 - Calls (proc_syn, wildcard)
+procedure p;
+Select p such that Calls (p, _)
+A, B, C, D, E, F, G, J
+5000
+4 - Calls (proc_name, proc_syn)
+procedure p;
+Select p such that Calls ("F", p)
+G, H, I
+5000
+5 - Calls (proc_name, proc_name)
+assign a;
+Select a such that Calls ("F", "J")
+none
+5000
+6 - Calls (proc_name, wildcard)
+print pn;
+Select pn such that Calls ("D", _)
+6, 20
+5000
+7 - Calls (wildcard, proc_syn)
+procedure p;
+Select p such that Calls (_, p)
+B, C, D, F, G, H, I, J
+5000
+8 - Calls (wildcard, proc_name)
+assign a;
+Select a such that Calls (_, p)
+SemanticError
+5000
+9 - Calls (wildcard, wildcard)
+read r;
+Select r such that Calls (_, _) 
+5
+5000
+10 - Calls (proc_syn, proc_syn)
+procedure p, p1; 
+Select p such that Calls (p, p1)
+A, B, C, D, E, F, G, J
+5000
+11 - Calls* (proc_syn, proc_name)
+procedure p;
+Select p such that Calls* (p, "H")
+E, F
+5000
+12 - Calls* (proc_syn, wildcard)
+procedure p;
+Select p such that Calls* (p, _)
+A, B, C, D, E, F, G, J
+5000
+13 - Calls* (proc_name, proc_syn)
+procedure p;
+Select p such that Calls* ("E", p)
+F, G, H, I, J
+5000
+14 - Calls* (proc_name, proc_name)
+assign a;
+Select a such that Calls* ("A", "D")
+2, 9, 10, 19
+5000
+15 - Calls* (proc_name, wildcard)
+while w;
+Select w such that Calls* ("I",_)
+none
+5000
+16 - Calls* (wildcard, proc_syn)
+procedure p;
+Select r such that Calls* (_, "D")
+SyntaxError
+5000
+17 - Calls* (wildcard, proc_name)
+if i;
+Select i such that Calls* (_, "G")
+14
+5000
+18 - Calls* (wildcard, wildcard)
+procedure p;
+Select p such that Calls* (_, _)
+A, B, C, D, E, F, G, H, I, J
+5000
+19 - Calls Invalid: Cannot have constant as 2nd param
+procedure p; 
+Select p such that Calls (p, "1")
+SyntaxError
+5000
+20 - Calls* Invalid: Cannot have constant as 2nd param
+procedure p; 
+Select p such that Calls* (p, "2")
+SyntaxError
+5000
+21 - Calls Variable as 2nd term, should not output error but return no values.
+procedure p;
+Select p such that Calls (p, "x")
+none
+5000
+22 - Calls* Variable as 2nd term, should not output error but return no values.
+procedure p;
+Select p such that Calls* (p, "y")
+none
+5000

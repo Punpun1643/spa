@@ -1,6 +1,10 @@
 #pragma once
 
-#include "../expression/QueryExpression.h"
+#include <optional>
+
+#include "../expression/ClauseExpression.h"
+#include "../expression/PatternExpression.h"
+#include "../expression/SuchThatExpression.h"
 #include "QpParser.h"
 
 class ExpressionTreeBuilder : public QpParser {
@@ -8,21 +12,15 @@ class ExpressionTreeBuilder : public QpParser {
   ExpressionTreeBuilder(std::vector<std::shared_ptr<Token>> tokens);
 
   void parse() override;
-  std::unique_ptr<QueryExpression> GetQueryExpression();
+  std::shared_ptr<AExpression> GetExpressionTree();
 
   ~ExpressionTreeBuilder() = default;
 
  private:
-  std::unique_ptr<QueryExpression> query_expression;
+  std::shared_ptr<AExpression> expression_tree;
 
-  std::unique_ptr<DeclarationListExpression> CreateDeclarationListExpression();
-  std::unique_ptr<PatternExpression> CreatePatternExpression();
-  std::unique_ptr<SelectExpression> CreateSelectExpression();
-  std::unique_ptr<SuchThatListExpression> CreateSuchThatListExpression();
-
-  void AddSuchThatExpression(std::vector<std::shared_ptr<SuchThatExpression>>&
-                                 such_that_expression_list);
-  void AddDeclarationExpression(
-      std::vector<std::shared_ptr<DeclarationExpression>>&
-          declaration_expression_list);
+  std::optional<std::shared_ptr<ClauseExpression>> CreateClauseExpression();
+  std::shared_ptr<PatternExpression> CreatePatternExpression();
+  std::shared_ptr<SelectExpression> CreateSelectExpression();
+  std::shared_ptr<SuchThatExpression> CreateSuchThatExpression();
 };

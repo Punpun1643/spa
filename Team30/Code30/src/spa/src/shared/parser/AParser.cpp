@@ -1,10 +1,13 @@
 #include "AParser.h"
+#include "exceptions/EndOfFileException.h"
+#include "exceptions/StartOfFileException.h"
 
-#include <stdexcept>
+#include "exceptions/InvalidTokenException.h"
 
 namespace a_parser_constant {
 constexpr char LEFT_PARENTHESIS[] = "(";
 constexpr char RIGHT_PARENTHESIS[] = ")";
+constexpr char STMT_TERMINATOR[] = ";";
 constexpr int MINIMUM_OPERATOR_SIZE = 2;
 }  // namespace a_parser_constant
 
@@ -23,18 +26,21 @@ std::shared_ptr<Token> AParser::nextToken() {
   if (currTokenIndex < tokens.size()) {
     return tokens[++currTokenIndex];
   }
+  throw EndOfFileException();
 }
 
 std::shared_ptr<Token> AParser::peekToken() {
   if (currTokenIndex + 1 < tokens.size()) {
     return tokens[currTokenIndex + 1];
   }
+  throw EndOfFileException();
 }
 
 std::shared_ptr<Token> AParser::peekBackToken() {
   if (currTokenIndex - 1 >= 0) {
     return tokens[currTokenIndex - 1];
   }
+  throw StartOfFileException();
 }
 
 std::shared_ptr<Token> AParser::getCurrToken() {
@@ -117,8 +123,14 @@ void AParser::assertCurrTokenTypeAndValue(TokenType expectedType,
                                           std::string const& expectedValue,
                                           std::string const& errorMessage) {
   if (!isCurrTokenTypeAndValue(expectedType, expectedValue)) {
-    throw std::invalid_argument(errorMessage);
+    throw InvalidTokenException(errorMessage);
   }
+}
+
+std::string AParser::GetCurrTokenValueAndAdvance() {
+  std::string tokenValue = getCurrTokenValue();
+  nextToken();
+  return tokenValue;
 }
 
 void AParser::HandleInfixWordOrIntegerToken(

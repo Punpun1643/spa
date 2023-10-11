@@ -1,5 +1,7 @@
 #include "QpParser.h"
 
+#include <query_processing_system/exceptions/InvalidSyntaxException.h>
+
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -8,16 +10,15 @@
 #include "../common/FollowsClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
-#include <query_processing_system/exceptions/InvalidSyntaxException.h>
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};
 
 bool QpParser::IsEntRef(std::string const& name) {
-  return (IsSynonym(name) || IsWildcard(name) || IsIdentifier(name));
+  return (IsSynonym(name) || IsWildcard(name) || IsQuotedIdentifier(name));
 }
 
-bool QpParser::IsIdentifier(std::string const& name) {
+bool QpParser::IsQuotedIdentifier(std::string const& name) {
   if (name.size() >= 3) {
     return (name.substr(0, 1) == "\"" &&
             IsSynonym(name.substr(1, name.size() - 2)) &&
@@ -40,7 +41,7 @@ bool QpParser::IsStmtRef(std::string const& name) {
   return true;
 }
 
-bool QpParser::IsSynonym(std::string const& name) {
+bool QpParser::IsIdentifier(std::string const& name) {
   if (!std::isalpha(name[0])) {
     return false;
   }
@@ -50,6 +51,10 @@ bool QpParser::IsSynonym(std::string const& name) {
     }
   }
   return true;
+}
+
+bool QpParser::IsSynonym(std::string const& name) {
+  return this->IsIdentifier(name);
 }
 
 bool QpParser::IsTransitiveRelRef(std::string const& name) {
@@ -62,7 +67,8 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {"Follows", "Parent", "Uses", "Modifies"};
+  std::string arr[] = {"Follows", "Follows*", "Parent*", "Parent",
+                       "Uses",    "Modifies", "Calls",   "Calls*"};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;

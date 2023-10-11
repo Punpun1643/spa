@@ -1,0 +1,70 @@
+1 - check specific variable used by procedure synonym
+procedure p;
+Select p such that Uses(p, "q")
+Bumblebee, Barricade
+5000
+2 - check variable synonym used by procedure synonym
+procedure p; variable v; assign a;
+Select p such that Uses(p, v) pattern a (v, _"j"_) 
+Bumblebee, IronHide, Barricade
+5000
+3 - check variable wildcard used by procedure synonym
+procedure p;
+Select p such that Uses(p, _)
+Bumblebee, Megatron, IronHide, Barricade
+5000
+4 - check specific variable used by specific procedures
+read r;
+Select r such that Uses("IronHide", "p")
+none
+5000
+5 - check variable synonym used by specific procedures
+variable v;
+Select v such that Uses("Barricade", v)
+i, x, j, y, p, q
+5000
+6 - check variable wildcard used by specific procedures
+print pn;
+Select pn such that Uses("Megatron", _)
+15, 23
+5000
+7 - check specific variable modified by procedure synonym
+procedure p;
+Select p such that Modifies(p, "q")
+Megatron, Barricade
+5000
+8 - check variable synonym modified by procedure synonym
+procedure p; variable v; assign a;
+Select p such that Modifies(p, v) pattern a (v, _"x"_)
+Megatron, Barricade, Bumblebee, IronHide
+5000
+9 - check wildcard modified by procedure synonym
+procedure p;
+Select p such that Modifies(p, _)
+Bumblebee, Megatron, IronHide, Barricade
+5000
+10 - check specific variable modified by specific procedure
+while w;
+Select w such that Modifies("Barricade", "p")
+none
+5000
+11 - check variable synonym modified by specific procedure
+variable v;
+Select v such that Modifies("IronHide", v)
+i, j, x, y
+5000
+12 - check wildcard modified by specific procedure
+if i;
+Select i such that Modifies("Bumblebee", _)
+4, 19
+5000
+13 - Invalid, 2nd parameter for UsesP should not be a constant
+procedure p;
+Select p such that Uses(p, "2") 
+SyntaxError
+5000
+14 - Invalid, 2nd parameter for ModifiesP should not be a constant 
+procedure p;
+Select p such that Modifies(p, "1")
+SyntaxError
+5000
