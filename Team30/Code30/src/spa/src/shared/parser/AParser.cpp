@@ -4,15 +4,6 @@
 
 #include "exceptions/InvalidTokenException.h"
 
-#include <iostream>
-
-namespace a_parser_constant {
-constexpr char LEFT_PARENTHESIS[] = "(";
-constexpr char RIGHT_PARENTHESIS[] = ")";
-constexpr char STMT_TERMINATOR[] = ";";
-constexpr int MINIMUM_OPERATOR_SIZE = 2;
-}  // namespace a_parser_constant
-
 namespace a_parser_mathematical_operator {
 constexpr char PLUS[] = "+";
 constexpr char MINUS[] = "-";
@@ -175,7 +166,7 @@ void AParser::HandleInfixOperatorToken(
 void AParser::HandleLeftParenthesisToken(
     std::shared_ptr<Token> token,
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
-  if (AParser::isPeekTokenValue(a_parser_constant::RIGHT_PARENTHESIS)) {
+  if (AParser::isPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw std::invalid_argument("Empty parenthesis");
   }
   ++parenCount;
@@ -210,9 +201,9 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
       HandleInfixWordOrIntegerToken(token, postFixQueue);
     } else if (IsMathematicalOperator(token->getTokenVal())) {
       HandleInfixOperatorToken(token, operatorStack, postFixQueue);
-    } else if (IsTokenValue(token, a_parser_constant::LEFT_PARENTHESIS)) {
+    } else if (IsTokenValue(token, AParserConstant::LEFT_PARENTHESIS)) {
       HandleLeftParenthesisToken(token, operatorStack, parenCount);
-    } else if (IsTokenValue(token, a_parser_constant::RIGHT_PARENTHESIS)) {
+    } else if (IsTokenValue(token, AParserConstant::RIGHT_PARENTHESIS)) {
       HandleRightParenthesisToken(operatorStack, postFixQueue, parenCount);
     } else {
       throw std::invalid_argument("Invalid assign");
@@ -249,7 +240,7 @@ std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
 
     if (IsMathematicalOperator(element->c_str())) {
       ValidateTreeStackSize(treeStack,
-                            a_parser_constant::MINIMUM_OPERATOR_SIZE);
+                            AParserConstant::MINIMUM_OPERATOR_SIZE);
 
       std::shared_ptr<TreeNode> rightSubTree = treeStack.top();
       treeStack.pop();
