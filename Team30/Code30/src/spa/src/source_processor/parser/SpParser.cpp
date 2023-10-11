@@ -1,18 +1,18 @@
 #include "SpParser.h"
 
+#include "../constant/SpParserConstant.h"
+#include "../exceptions/EmptyParenthesesException.h"
+#include "../exceptions/EmptyStmtLstException.h"
+#include "../exceptions/InvalidAssignException.h"
 #include "../exceptions/InvalidCallException.h"
+#include "../exceptions/InvalidCondExprException.h"
 #include "../exceptions/InvalidPrintException.h"
 #include "../exceptions/InvalidProcedureException.h"
 #include "../exceptions/InvalidReadException.h"
-#include "../exceptions/InvalidStmtLstException.h"
-#include "../exceptions/InvalidAssignException.h"
-#include "../exceptions/EmptyParenthesesException.h"
-#include "../exceptions/UnmatchedParenthesesException.h"
-#include "../exceptions/EmptyStmtLstException.h"
 #include "../exceptions/InvalidRelExprException.h"
-#include "../exceptions/InvalidCondExprException.h"
+#include "../exceptions/InvalidStmtLstException.h"
+#include "../exceptions/UnmatchedParenthesesException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
-#include "../constant/SpParserConstant.h"
 
 SpParser::SpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
@@ -235,8 +235,7 @@ void SpParser::assignHandleRightParenthesisToken(
   if (parenCount <= 0) {
     throw UnmatchedParenthesesException();
   }
-  while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) !=
-         0) {
+  while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) != 0) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
@@ -499,8 +498,7 @@ bool SpParser::isOperator(std::string const& tokenVal) {
          tokenVal == SpParserConstant::GREATER_THAN ||
          tokenVal == SpParserConstant::GREATER_THAN_EQUAL ||
          tokenVal == SpParserConstant::AND ||
-         tokenVal == SpParserConstant::OR ||
-         tokenVal == SpParserConstant::NOT;
+         tokenVal == SpParserConstant::OR || tokenVal == SpParserConstant::NOT;
 }
 
 bool SpParser::isComparisonOperator(std::string const& tokenVal) {
@@ -514,8 +512,7 @@ bool SpParser::isComparisonOperator(std::string const& tokenVal) {
 
 bool SpParser::isLogicalOperator(std::string const& tokenVal) {
   return tokenVal == SpParserConstant::AND ||
-         tokenVal == SpParserConstant::OR ||
-         tokenVal == SpParserConstant::NOT;
+         tokenVal == SpParserConstant::OR || tokenVal == SpParserConstant::NOT;
 }
 
 bool SpParser::isMathematicalOperator(std::string const& tokenVal) {
