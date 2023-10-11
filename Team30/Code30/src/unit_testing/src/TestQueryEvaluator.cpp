@@ -2,7 +2,6 @@
 
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
-#include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"

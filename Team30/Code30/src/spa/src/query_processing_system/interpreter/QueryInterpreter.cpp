@@ -9,7 +9,6 @@
 #include "../common/ModifiesSClause.h"
 #include "../common/ParentClause.h"
 #include "../common/PatternClause.h"
-#include "../common/SelectClause.h"
 #include "../common/UsesPClause.h"
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
