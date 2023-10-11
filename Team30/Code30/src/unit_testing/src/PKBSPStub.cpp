@@ -71,6 +71,10 @@ void PKBSPStub::insertPattern(std::string statement_number, std::string lhs,
                               std::unordered_set<std::string> rhs) {
   insertPatternCallCount++;
 };
+void PKBSPStub::insertPattern(PatternType type, std::string statement_number,
+                   std::string lhs, std::shared_ptr<TreeNode> rhs) {
+  insertPatternCallCount++;
+};
 
 std::unordered_set<std::string> PKBSPStub::getProcedureUses(
     std::string procName) {

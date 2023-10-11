@@ -16,7 +16,7 @@ void LinkedList::addEdge(std::string val1, std::string val2) {
   std::shared_ptr<Node> node1 = getNode(val1);
   std::shared_ptr<Node> node2 = getNode(val2);
   node1->next.insert(node2);
-  node2->prev = node1;
+  node2->prev.insert(node1);
 }
 
 

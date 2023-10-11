@@ -26,5 +26,5 @@ Select c such that Uses (c, "x")
 6 - Modifies Call synonym/stmt num
 call c;
 Select c such that Modifies (c, "q")
-3, 14, 25
+3, 7, 11, 14, 25
 5000
