@@ -1,6 +1,12 @@
 #include "SelectExpression.h"
 
-SelectExpression::SelectExpression(std::string synonym) : synonym(synonym){};
+SelectExpression::SelectExpression(std::string synonym, bool is_boolean) {
+  if (is_boolean) {
+    assert(synonym == "BOOLEAN");
+  }
+  this->synonym = synonym;
+  this->is_boolean = is_boolean;
+};
 
 std::string SelectExpression::GetSynonym() { return this->synonym; }
 

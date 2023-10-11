@@ -2,6 +2,7 @@
 
 #include <optional>
 
+#include "../context/Context.h"
 #include "../expression/ClauseExpression.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/SuchThatExpression.h"
@@ -9,7 +10,7 @@
 
 class ExpressionTreeBuilder : public QpParser {
  public:
-  ExpressionTreeBuilder(std::vector<std::shared_ptr<Token>> tokens);
+  ExpressionTreeBuilder(std::vector<std::shared_ptr<Token>> tokens, std::shared_ptr<Context> context);
 
   void parse() override;
   std::shared_ptr<AExpression> GetExpressionTree();
@@ -18,6 +19,7 @@ class ExpressionTreeBuilder : public QpParser {
 
  private:
   std::shared_ptr<AExpression> expression_tree;
+  std::shared_ptr<Context> context;
 
   std::optional<std::shared_ptr<ClauseExpression>> CreateClauseExpression();
   std::shared_ptr<PatternExpression> CreatePatternExpression();

@@ -22,7 +22,7 @@ class QPSController {
   std::shared_ptr<Context> FormContext(
       std::vector<std::shared_ptr<Token>> tokens);
   std::shared_ptr<AExpression> FormExpressionTree(
-      std::vector<std::shared_ptr<Token>> tokens);
+      std::vector<std::shared_ptr<Token>> tokens, std::shared_ptr<Context> context);
   void InterpretContext(std::shared_ptr<Context> context,
                         std::shared_ptr<AExpression> expression_tree);
   std::vector<std::shared_ptr<Token>> TokenizeQuery(std::string& query);

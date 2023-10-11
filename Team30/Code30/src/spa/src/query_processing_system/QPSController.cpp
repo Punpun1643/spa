@@ -26,7 +26,7 @@ void QPSController::HandleQuery(
   std::shared_ptr<Context> context = this->FormContext(tokens);
 
   std::shared_ptr<AExpression> expression_tree =
-      this->FormExpressionTree(tokens);
+      this->FormExpressionTree(tokens, context);
 
   this->InterpretContext(context, expression_tree);
 
@@ -57,7 +57,7 @@ std::vector<std::shared_ptr<Clause>> QPSController::HandleTokens(std::vector<std
   std::shared_ptr<Context> context = this->FormContext(tokens);
 
   std::shared_ptr<AExpression> expression_tree =
-      this->FormExpressionTree(tokens);
+      this->FormExpressionTree(tokens, context);
 
   this->InterpretContext(context, expression_tree);
 
@@ -82,9 +82,9 @@ std::shared_ptr<Context> QPSController::FormContext(
 }
 
 std::shared_ptr<AExpression> QPSController::FormExpressionTree(
-    std::vector<std::shared_ptr<Token>> tokens) {
+    std::vector<std::shared_ptr<Token>> tokens, std::shared_ptr<Context> context) {
   std::unique_ptr<ExpressionTreeBuilder> expression_tree_builder =
-      std::make_unique<ExpressionTreeBuilder>(tokens);
+      std::make_unique<ExpressionTreeBuilder>(tokens, context);
   expression_tree_builder->parse();
   return expression_tree_builder->GetExpressionTree();
 }

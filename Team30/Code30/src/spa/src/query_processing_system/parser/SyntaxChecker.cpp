@@ -230,12 +230,61 @@ void SyntaxChecker::CheckPattern() {
 
 void SyntaxChecker::CheckSelect() {
   if (getCurrTokenValue() != QpParser::SELECT) {
-    throw InvalidSyntaxException("Select clause missing or invalid");
+    throw InvalidSyntaxException("Expected 'Select'");
   }
-  // Current token is already "Select"
-  nextToken();  // synonym
+
+  nextToken(); // BOOLEAN or synonym or <
+  if (getCurrTokenValue() == QpParser::BOOLEAN) {
+    if (existing_declarations.find(QpParser::BOOLEAN) == existing_declarations.end()) {
+      CheckSelectSingle();
+    } else {
+      CheckSelectBoolean();
+    }
+  } else if (getCurrTokenValue() == "<") {
+    CheckSelectMultiple();
+  } else {
+    CheckSelectSingle();
+  }
+}
+
+void SyntaxChecker::CheckSelectBoolean() {
+  assert(getCurrTokenValue() == QpParser::BOOLEAN);
+  nextToken(); // clause
+  if (
+      getCurrTokenValue() != QpParser::SUCH ||
+      getCurrTokenValue() != QpParser::PATTERN) {
+    throw InvalidSyntaxException("Expected 'such' or 'pattern' after BOOLEAN");
+  }
+  nextToken();
+}
+
+void SyntaxChecker::CheckSelectMultiple() {
+  assert(getCurrTokenValue() == "<");
+  
+  nextToken(); // synonym
+  while (getCurrTokenValue() != ">") {
+    if (getCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+      throw InvalidSyntaxException("Reached EOF before reaching '>' for multiple select elements");
+    }
+
+    CheckSelectSingle();
+
+    nextToken(); // , or >
+    if (getCurrTokenValue() == ",") {
+      nextToken(); // element
+    }
+  }
+  nextToken();
+}
+
+void SyntaxChecker::CheckSelectSingle() {
+  if (getCurrTokenValue() == QpParser::BOOLEAN) {
+    if (existing_declarations.find(QpParser::BOOLEAN) == existing_declarations.end()) {
+      throw InvalidSyntaxException("Expected 'BOOLEAN' to be a declared synonym, but has not been declared");
+    }
+  }
   if (!IsSynonym(getCurrTokenValue())) {
-    throw InvalidSyntaxException("Invalid synonym given for Select clause");
+    throw InvalidSyntaxException("Expected synonym for single select clause");
   }
   nextToken();
 }

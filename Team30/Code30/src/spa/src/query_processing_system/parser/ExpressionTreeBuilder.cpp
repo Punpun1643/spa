@@ -16,8 +16,8 @@
 #include "../expression/UsesExpression.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
-    std::vector<std::shared_ptr<Token>> tokens)
-    : QpParser(tokens) {
+    std::vector<std::shared_ptr<Token>> tokens, std::shared_ptr<Context> context)
+    : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
   while (getCurrTokenValue() != QpParser::SELECT || getPeekBackTokenValue() != ";") {
     nextToken();
@@ -42,10 +42,47 @@ std::shared_ptr<SelectExpression>
 ExpressionTreeBuilder ::CreateSelectExpression() {
   // After syntax checking & context building, currToken should be 'Select'
   assert(getCurrTokenValue() == QpParser::SELECT);
+  nextToken(); //
 
-  std::string synonym = nextToken()->getTokenVal();
+  std::shared_ptr<SelectExpression> select_head;
+
+  if (getCurrTokenValue() == QpParser::BOOLEAN) {
+    if (this->context->CheckDeclarationExists(QpParser::BOOLEAN)) {
+      select_head = std::make_shared<SelectExpression>(getCurrTokenValue(), true);
+    }
+  } else if (QpParser::IsSynonym(getCurrTokenValue())) {
+    select_head = std::make_shared<SelectExpression>(getCurrTokenValue(), false);
+  } else if (getCurrTokenValue() == "<") {
+    std::optional<std::shared_ptr<SelectExpression>> previous_select_expression;
+    std::optional<std::shared_ptr<SelectExpression>> current_select_expression;
+    bool is_first_run = true;
+
+    while (getCurrTokenValue() != ">") {
+      nextToken(); // elem
+      current_select_expression = std::make_optional<std::shared_ptr<SelectExpression>>(
+          std::make_shared<SelectExpression>(getCurrTokenValue(), false));
+
+      if (previous_select_expression.has_value()) {
+        previous_select_expression.value()->SetNextExpression(
+            current_select_expression);
+      }
+
+      if (is_first_run) {
+        select_head = current_select_expression.value();
+      }
+
+      previous_select_expression = current_select_expression;
+      is_first_run = false;
+
+      nextToken(); // , or >
+      if (nextToken()->getTokenVal() == ",") {
+        nextToken(); // elem
+      }
+    }
+  }
+
   nextToken();
-  return std::make_shared<SelectExpression>(synonym);
+  return select_head;
 }
 
 std::optional<std::shared_ptr<ClauseExpression>>
