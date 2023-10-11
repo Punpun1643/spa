@@ -21,6 +21,7 @@ TEST_CASE("Test SuchThat Clauses") {
   PqlDeclaration v = PqlDeclaration("var", EntityType::VARIABLE);
   PqlDeclaration re = PqlDeclaration("read", EntityType::READ);
   PqlDeclaration w = PqlDeclaration("while", EntityType::WHILE);
+  PqlDeclaration a = PqlDeclaration("assign", EntityType::ASSIGN);
   PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
   PqlDeclaration proc = PqlDeclaration("procedure1", EntityType::PROCEDURE);
   PqlDeclaration proc2 = PqlDeclaration("procedure2", EntityType::PROCEDURE);
@@ -257,11 +258,21 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(pkb.last_rel_passed == RelationType::NEXT_STAR);
     REQUIRE(pkb.last_value_passed == "12");
     REQUIRE(result->isBooleanResult());
+
+    // NextClause accepts all types that StmtRef would accept.
   }
 
   SECTION("Affects Clauses") {
-
-
+    AffectsClause affects = AffectsClause(std::make_unique<StmtRef>(a),
+                                          std::make_unique<StmtRef>(22));
+    result = affects.evaluate(pkb);
+    REQUIRE(pkb.synonymValueCalls == 1);
+    REQUIRE(pkb.last_rel_passed == RelationType::AFFECTS);
+    REQUIRE(pkb.last_entity_type_passed == EntityType::ASSIGN);
+    REQUIRE(pkb.last_value_passed == "22");
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE_THAT(result->getDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{a}));
+    // AffectsClause accepts all types that StmtRef would accept?
   }
 }
 
