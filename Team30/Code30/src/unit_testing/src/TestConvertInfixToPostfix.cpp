@@ -8,15 +8,15 @@
 #include "catch.hpp"
 
 namespace TestConvertInfixToPostfix {
-class TestableParser : public AParser {
- public:
-  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
-      : AParser(tokens) {}
+  class TestableParser : public AParser {
+   public:
+    TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+        : AParser(tokens) {}
 
-  using AParser::ConvertInfixToPostfix;
+    using AParser::ConvertInfixToPostfix;
 
-  void parse() override {}
-};
+    void parse() override {}
+  };
 }  // namespace TestConvertInfixToPostfix
 
 TEST_CASE("Test Convert infix expression to postfix expression",
@@ -272,26 +272,60 @@ TEST_CASE("Test Convert infix expression to postfix expression",
       "i.e. (((v) + ((x) * (y))) + ((z) * (t)))") {
     std::vector<std::shared_ptr<Token>> infixTokens;
 
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
     infixTokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("v")));
     infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("+")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
     infixTokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("x")));
     infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("*")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
     infixTokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("y")));
     infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("+")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
     infixTokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("z")));
     infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>("*")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
     infixTokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("t")));
     infixTokens.push_back(std::static_pointer_cast<Token>(
-        std::make_shared<SpecialCharToken>("+")));
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
 
     std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
         std::make_shared<TestConvertInfixToPostfix::TestableParser>(
@@ -354,6 +388,36 @@ TEST_CASE("Test Convert infix expression to postfix expression",
   }
 
   SECTION(
+      "Test valid infix expression should not throw error i.e. ((x + y)) * z") {
+    std::vector<std::shared_ptr<Token>> infixTokens;
+
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("(")));
+    infixTokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("x")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("+")));
+    infixTokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("y")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>("*")));
+    infixTokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<WordToken>("z")));
+
+    std::shared_ptr<TestConvertInfixToPostfix::TestableParser> parser =
+        std::make_shared<TestConvertInfixToPostfix::TestableParser>(
+            infixTokens);
+
+    REQUIRE_NOTHROW(parser->ConvertInfixToPostfix(infixTokens));
+  }
+
+  SECTION(
       "Test invalid infix expression should throw error i.e. ((x + y))) * z") {
     std::vector<std::shared_ptr<Token>> infixTokens;
 
@@ -367,6 +431,8 @@ TEST_CASE("Test Convert infix expression to postfix expression",
         std::make_shared<SpecialCharToken>("+")));
     infixTokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<WordToken>("y")));
+    infixTokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(")")));
     infixTokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
     infixTokens.push_back(std::static_pointer_cast<Token>(

@@ -4,6 +4,8 @@
 
 #include "exceptions/InvalidTokenException.h"
 
+#include <iostream>
+
 namespace a_parser_constant {
 constexpr char LEFT_PARENTHESIS[] = "(";
 constexpr char RIGHT_PARENTHESIS[] = ")";
@@ -187,7 +189,7 @@ void AParser::HandleRightParenthesisToken(
     throw std::invalid_argument("Parenthesis mismatch");
   }
 
-  while (operatorStack.top()->c_str() != a_parser_constant::LEFT_PARENTHESIS) {
+  while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) != 0) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
@@ -205,12 +207,15 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
 
   for (auto const& token : infixTokens) {
     if (IsWordOrIntegerToken(token)) {
+      std::cout << token->getTokenVal() << std::endl;
       HandleInfixWordOrIntegerToken(token, postFixQueue);
     } else if (IsMathematicalOperator(token->getTokenVal())) {
       HandleInfixOperatorToken(token, operatorStack, postFixQueue);
-    } else if (isCurrTokenValue(a_parser_constant::LEFT_PARENTHESIS)) {
+    } else if (IsTokenValue(token, a_parser_constant::LEFT_PARENTHESIS)) {
+      std::cout << "left paren" << std::endl;
       HandleLeftParenthesisToken(token, operatorStack, parenCount);
-    } else if (isCurrTokenValue(a_parser_constant::RIGHT_PARENTHESIS)) {
+    } else if (IsTokenValue(token, a_parser_constant::RIGHT_PARENTHESIS)) {
+      std::cout << "right paren" << std::endl;
       HandleRightParenthesisToken(operatorStack, postFixQueue, parenCount);
     } else {
       throw std::invalid_argument("Invalid assign");
