@@ -122,8 +122,7 @@ class SpParser : public AParser {
                           std::unordered_set<std::string>& variables,
                           std::unordered_set<int>& constants);
 
-  void validateTokenStackSize(std::stack<std::shared_ptr<Token>>& tokenStack,
-                              int size);
+  void validateTokenStackSize(std::stack<std::shared_ptr<Token>>& tokenStack);
 
   void validateWordOrIntegerToken(
       std::stack<std::shared_ptr<Token>>& tokenStack);

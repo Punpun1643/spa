@@ -316,8 +316,8 @@ void SpParser::handleCondExprIntegerToken(
 }
 
 void SpParser::validateTokenStackSize(
-    std::stack<std::shared_ptr<Token>>& tokenStack, int size) {
-  if (tokenStack.size() < size) {
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (tokenStack.size() < AParserConstant::MINIMUM_OPERATOR_SIZE) {
     throw InvalidCondExprException();
   }
 }
@@ -369,18 +369,18 @@ void SpParser::validateTokenStack(
     } else if (AParser::IsIntegerToken(currToken)) {
       handleCondExprIntegerToken(currToken, constants, tokenStack);
     } else if (isMathematicalOperator(currToken->getTokenVal())) {
-      validateTokenStackSize(tokenStack, 2);
+      validateTokenStackSize(tokenStack);
       validateWordOrIntegerToken(tokenStack);
       isTopStackNotWordOrIntegerToken(tokenStack);
     } else if (isNotToken(currToken)) {
       isTopStackNotComparisonOperatorToken(tokenStack);
     } else if (isAndOrOrToken(currToken)) {
-      validateTokenStackSize(tokenStack, 2);
+      validateTokenStackSize(tokenStack);
       validateComparisonOperatorToken(tokenStack);
       validateComparisonOperatorToken(tokenStack);
 
     } else if (isComparisonOperator(currToken->getTokenVal())) {
-      validateTokenStackSize(tokenStack, 2);
+      validateTokenStackSize(tokenStack);
       validateWordOrIntegerToken(tokenStack);
       validateWordOrIntegerToken(tokenStack);
       tokenStack.push(currToken);
