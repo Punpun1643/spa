@@ -6,6 +6,7 @@
 #include "exceptions/InvalidExprSpecException.h"
 #include "exceptions/UnmatchedParenthesesException.h"
 #include "exceptions/EmptyParenthesesException.h"
+#include "exceptions/InvalidExprException.h"
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
@@ -220,8 +221,7 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
 void AParser::ValidateTreeStackSize(
     std::stack<std::shared_ptr<TreeNode>>& treeStack, int size) {
   if (treeStack.size() < size) {
-    throw std::invalid_argument(
-        "Invalid expression: insufficient operands for operator");
+    throw InvalidExprException();
   }
 }
 
