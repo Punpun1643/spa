@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 class InvalidContainerStmtException : public std::invalid_argument {

@@ -49,21 +49,21 @@ PatternClause::PatternClause(PqlDeclaration const& assign_decl,
 std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
   switch (lhs_ent_ref.getRefType()) {
     case (PqlRefType::DECLARATION): {
-      auto values = pkb.getPatternMatchesWithDeclarationLhs(
+      auto values = pkb.getPatternMatchesSynonymLhs(
           rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
           assign_decl, lhs_ent_ref.getDeclaration(), *values);
       break;
     }
     case (PqlRefType::VALUE): {
-      auto values = pkb.getPatternMatchesWithLhsValue(
+      auto values = pkb.getPatternMatchesValueLhs(
           lhs_ent_ref.getValue(), rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }
     case (PqlRefType::WILD): {
       auto values =
-          pkb.getPatternMatchesWithWildLhs(rhs_expr, rhs_expr_match_type);
+          pkb.getPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }

@@ -18,11 +18,13 @@ TEST_CASE("Linked list functionality check") {
   REQUIRE(ll.getNode("2")->next.find(ll.getNode("3")) !=
           ll.getNode("2")->next.end());
 
-  REQUIRE(ll.getNode("3")->prev->value == "2");
-  REQUIRE(ll.getNode("3")->prev->prev->value == "1");
+  REQUIRE(ll.getNode("3")->prev.find(ll.getNode("2")) !=
+          ll.getNode("3")->prev.end());
+  REQUIRE(ll.getNode("2")->prev.find(ll.getNode("1")) !=
+          ll.getNode("2")->prev.end());
 
   REQUIRE(ll.getNode("3")->next.empty());
-  REQUIRE(ll.getNode("1")->prev == nullptr);
+  REQUIRE(ll.getNode("1")->prev.empty());
 }
 
 TEST_CASE("Linked list table check") {
@@ -32,11 +34,12 @@ TEST_CASE("Linked list table check") {
 
   llt.insert("1", "2");
   llt.insert("2", "3");
-  llt.insert("4", "5");
 
+  llt.insert("4", "5");
   llt.insert("5", "6");
   llt.insert("5", "7");
   llt.insert("5", "8");
+
   llt.insert("9", "10");
 
   REQUIRE(llt.isRelated("1", "2"));
@@ -73,7 +76,7 @@ TEST_CASE("Linked list table check") {
   input->insert("10");
 
   std::unordered_set<std::string> expected = {"1", "2", "4", "5", "9"};
-  REQUIRE(llt.getAllRelated(input) == expected);
+  REQUIRE(llt.getAllWithRelations(input) == expected);
   expected = {"2", "3", "5", "6", "7", "8", "10"};
-  REQUIRE(llt.getAllInverseRelated(input) == expected);
+  REQUIRE(llt.getAllWithInverseRelations(input) == expected);
 }

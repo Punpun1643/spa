@@ -1,5 +1,7 @@
 #include "LinkedListTable.h"
 
+#include <queue>
+
 LinkedListTable::LinkedListTable() : BaseTable() {}
 
 void LinkedListTable::insert(std::string i, std::string j) {
@@ -10,12 +12,23 @@ bool LinkedListTable::isEmpty() { return relations.isEmpty(); }
 
 bool LinkedListTable::isRelated(std::string i, std::string j) {
   std::shared_ptr<Node> target = relations.getNode(i);
-  std::shared_ptr<Node> curr = relations.getNode(j)->prev;
-  while (curr != nullptr) {
+  std::shared_ptr<Node> curr = relations.getNode(j);
+
+  std::queue<std::shared_ptr<Node>> q;
+  for (std::shared_ptr<Node> n : curr->prev) {
+    q.push(n);
+  }
+
+  while (!q.empty()) {
+    curr = q.front();
     if (curr == target) {
       return true;
     }
-    curr = curr->prev;
+    q.pop();
+
+    for (std::shared_ptr<Node> n : curr->prev) {
+      q.push(n);
+    }
   }
   return false;
 };
@@ -27,14 +40,14 @@ bool LinkedListTable::hasRelations(std::string val) {
 
 bool LinkedListTable::hasInverseRelations(std::string val) {
   std::shared_ptr<Node> node = relations.getNode(val);
-  return node->prev != nullptr;
+  return !node->prev.empty();
 }
 
-std::unordered_set<std::string> LinkedListTable::getAllRelated(
+std::unordered_set<std::string> LinkedListTable::getAllWithRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
 
-  for (std::string val : *vals) {    
+  for (std::string val : *vals) {
     if (hasRelations(val)) {
       output.insert(val);
     }
@@ -42,7 +55,7 @@ std::unordered_set<std::string> LinkedListTable::getAllRelated(
   return output;
 };
 
-std::unordered_set<std::string> LinkedListTable::getAllInverseRelated(
+std::unordered_set<std::string> LinkedListTable::getAllWithInverseRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
 
@@ -53,3 +66,9 @@ std::unordered_set<std::string> LinkedListTable::getAllInverseRelated(
   }
   return output;
 };
+
+std::unordered_set<std::string> LinkedListTable::getAllRelatedToValue(
+    std::string val) {
+  // TODO
+  return std::unordered_set<std::string>();
+}
