@@ -3,6 +3,7 @@
 #include "exceptions/EndOfFileException.h"
 #include "exceptions/InvalidTokenException.h"
 #include "exceptions/StartOfFileException.h"
+#include "exceptions/InvalidExprSpecException.h"
 
 AParser::AParser(std::vector<std::shared_ptr<Token>> tokens)
     : tokens(std::move(tokens)) {}
@@ -198,7 +199,7 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
     } else if (IsTokenValue(token, AParserConstant::RIGHT_PARENTHESIS)) {
       HandleRightParenthesisToken(operatorStack, postFixQueue, parenCount);
     } else {
-      throw std::invalid_argument("Invalid assign");
+      throw InvalidExprSpecException();
     }
   }
 
