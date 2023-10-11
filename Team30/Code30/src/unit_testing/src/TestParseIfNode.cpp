@@ -335,7 +335,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     SpParser parser(tokens);
     REQUIRE_THROWS_WITH(
         parser.parseIf(),
-        Contains("Invalid condExpr"));  // will be invalid condExpr
+        Contains("Invalid condition expression!"));  // will be invalid condExpr
   }
 
   SECTION("Test missing then keyword should throw error") {

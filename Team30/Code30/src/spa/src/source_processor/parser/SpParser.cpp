@@ -9,6 +9,7 @@
 #include "../exceptions/UnmatchedParenthesesException.h"
 #include "../exceptions/EmptyStmtLstException.h"
 #include "../exceptions/InvalidRelExprException.h"
+#include "../exceptions/InvalidCondExprException.h"
 #include "../exceptions/exception_message/ExceptionMessage.h"
 #include "../constant/SpParserConstant.h"
 
@@ -271,7 +272,7 @@ void SpParser::buildCondExprPostFix(
       if (isAndOrOrToken(getCurrToken())) {
         if (!isRightParenthesisToken(peekBackToken()) ||
             !isLeftParenthesisToken(peekToken())) {
-          throw std::invalid_argument("Invalid condExpr 100");
+          throw InvalidCondExprException();
         }
       }
       while (!operatorStack.empty() &&
@@ -282,7 +283,7 @@ void SpParser::buildCondExprPostFix(
       }
       operatorStack.push(getCurrToken());
     } else {
-      throw std::invalid_argument("Invalid condExpr 8");
+      throw InvalidCondExprException();
     }
 
     nextToken();
@@ -316,8 +317,7 @@ void SpParser::handleCondExprIntegerToken(
 void SpParser::validateTokenStackSize(
     std::stack<std::shared_ptr<Token>>& tokenStack, int size) {
   if (tokenStack.size() < size) {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 }
 
@@ -326,16 +326,14 @@ void SpParser::validateWordOrIntegerToken(
   if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
     tokenStack.pop();
   } else {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 }
 
 void SpParser::isTopStackNotWordOrIntegerToken(
     std::stack<std::shared_ptr<Token>>& tokenStack) {
   if (!AParser::IsWordOrIntegerToken(tokenStack.top())) {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 }
 
@@ -344,16 +342,14 @@ void SpParser::validateComparisonOperatorToken(
   if (isComparisonOperator(tokenStack.top()->getTokenVal())) {
     return;
   } else {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 }
 
 void SpParser::isTopStackNotComparisonOperatorToken(
     std::stack<std::shared_ptr<Token>>& tokenStack) {
   if (!isComparisonOperator(tokenStack.top()->getTokenVal())) {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 }
 
@@ -389,13 +385,12 @@ void SpParser::validateTokenStack(
       tokenStack.push(currToken);
 
     } else {
-      throw std::invalid_argument("Invalid condExpr");
+      throw InvalidCondExprException();
     }
   }
   // no operator in stack, handle (x) case
   if (tokenStack.empty() || AParser::IsWordOrIntegerToken(tokenStack.top())) {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 }
 
@@ -421,8 +416,7 @@ std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
 
     if (isMathematicalOperator(element->c_str())) {
       if (treeStack.size() < 2) {
-        throw std::invalid_argument(
-            "Invalid expression: insufficient operands for operator");
+        throw InvalidCondExprException();
       }
 
       auto right = treeStack.top();
@@ -437,8 +431,7 @@ std::shared_ptr<TreeNode> SpParser::buildExprTreeAndValidate(
   }
 
   if (treeStack.size() != 1) {
-    throw std::invalid_argument(
-        "Invalid expression: mismatched operators and operands");
+    throw InvalidCondExprException();
   }
 
   return treeStack.top();
