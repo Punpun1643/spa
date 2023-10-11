@@ -19,7 +19,7 @@ ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens) {
   // Declaration parsing already done by ContextBuilder
-  while (getCurrToken()->getTokenVal() != "Select" || getPeekBackTokenValue() != ";") {
+  while (getCurrTokenValue() != QpParser::SELECT || getPeekBackTokenValue() != ";") {
     nextToken();
   }
 }
@@ -41,7 +41,7 @@ void ExpressionTreeBuilder::parse() {
 std::shared_ptr<SelectExpression>
 ExpressionTreeBuilder ::CreateSelectExpression() {
   // After syntax checking & context building, currToken should be 'Select'
-  assert(getCurrToken()->getTokenVal() == "Select");
+  assert(getCurrTokenValue() == QpParser::SELECT);
 
   std::string synonym = nextToken()->getTokenVal();
   nextToken();
@@ -56,11 +56,11 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
 
   bool is_first_run = true;
   while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
-    if (getCurrToken()->getTokenVal() == "such") {
+    if (getCurrTokenValue() == QpParser::SUCH) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<SuchThatExpression>>(
               this->CreateSuchThatExpression());
-    } else if (getCurrToken()->getTokenVal() == "pattern") {
+    } else if (getCurrTokenValue() == QpParser::PATTERN) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<PatternExpression>>(
               this->CreatePatternExpression());
@@ -80,7 +80,7 @@ ExpressionTreeBuilder ::CreateClauseExpression() {
 
 std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpression() {
-  assert(getCurrToken()->getTokenVal() == "such");
+  assert(getCurrTokenValue() == QpParser::SUCH);
   std::shared_ptr<SuchThatExpression> such_that_expression_head;
 
   nextToken();  // that
@@ -89,53 +89,53 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       previous_such_that_expression;
   std::optional<std::shared_ptr<SuchThatExpression>>
       current_such_that_expression;
-  while (is_first_run || getCurrToken()->getTokenVal() == "and") {
+  while (is_first_run || getCurrTokenValue() == "and") {
     std::string clause_name = nextToken()->getTokenVal();
     nextToken();  // (
 
     std::string arg1 = "";
     nextToken();  // start of arg1
-    while (getCurrToken()->getTokenVal() != ",") {
-      arg1 += getCurrToken()->getTokenVal();
+    while (getCurrTokenValue() != ",") {
+      arg1 += getCurrTokenValue();
       nextToken();
     }
 
     std::string arg2 = "";
     nextToken();  // start of arg2
-    while (getCurrToken()->getTokenVal() != ")") {
-      arg2 += getCurrToken()->getTokenVal();
+    while (getCurrTokenValue() != ")") {
+      arg2 += getCurrTokenValue();
       nextToken();
     }
 
-    if (clause_name == "Follows") {
+    if (clause_name == QpParser::FOLLOWS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<FollowsExpression>>(
               std::make_shared<FollowsExpression>(arg1, arg2));
-    } else if (clause_name == "Follows*") {
+    } else if (clause_name == QpParser::FOLLOWS_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<FollowsTExpression>>(
               std::make_shared<FollowsTExpression>(arg1, arg2));
-    } else if (clause_name == "Parent") {
+    } else if (clause_name == QpParser::PARENT) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ParentExpression>>(
               std::make_shared<ParentExpression>(arg1, arg2));
-    } else if (clause_name == "Parent*") {
+    } else if (clause_name == QpParser::PARENT_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ParentTExpression>>(
               std::make_shared<ParentTExpression>(arg1, arg2));
-    } else if (clause_name == "Uses") {
+    } else if (clause_name == QpParser::USES) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<UsesExpression>>(
               std::make_shared<UsesExpression>(arg1, arg2));
-    } else if (clause_name == "Modifies") {
+    } else if (clause_name == QpParser::MODIFIES) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ModifiesExpression>>(
               std::make_shared<ModifiesExpression>(arg1, arg2));
-    } else if (clause_name == "Calls") {
+    } else if (clause_name == QpParser::CALLS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<CallsExpression>>(
               std::make_shared<CallsExpression>(arg1, arg2));
-    } else if (clause_name == "Calls*") {
+    } else if (clause_name == QpParser::CALLS_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<CallsTExpression>>(
               std::make_shared<CallsTExpression>(arg1, arg2));
@@ -159,20 +159,20 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
 
 std::shared_ptr<PatternExpression>
 ExpressionTreeBuilder ::CreatePatternExpression() {
-  assert(getCurrToken()->getTokenVal() == "pattern");
+  assert(getCurrTokenValue() == QpParser::PATTERN);
   std::string syn_assign = nextToken()->getTokenVal();
   std::string arg1 = "";
   std::string arg2 = "";
   nextToken();  // (
   nextToken();
-  while (getCurrToken()->getTokenVal() != ",") {
-    arg1 += getCurrToken()->getTokenVal();
+  while (getCurrTokenValue() != ",") {
+    arg1 += getCurrTokenValue();
     nextToken();
   }
 
   nextToken();
-  while (getCurrToken()->getTokenVal() != ")") {
-    arg2 += getCurrToken()->getTokenVal();
+  while (getCurrTokenValue() != ")") {
+    arg2 += getCurrTokenValue();
     nextToken();
   }
 
