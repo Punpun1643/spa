@@ -59,11 +59,6 @@ void PKB::insertPattern(PatternType type, std::string statement_number,
   patData->insert(type, statement_number, lhs, rhs);
 };
 
-void PKB::insertPattern(std::string statement_number, std::string lhs,
-                        std::unordered_set<std::string> rhs) {
-  patData->insert(statement_number, lhs, rhs);
-};
-
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
   return relData->getAllRelatedToValue(RelationType::MODIFIES_P, procName);

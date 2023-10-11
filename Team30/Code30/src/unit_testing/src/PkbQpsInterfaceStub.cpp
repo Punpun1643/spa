@@ -87,27 +87,6 @@ PkbQpsInterfaceStub::getRelationSynonymSynonym(EntityType entity_type_1,
 }
 
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getPatternMatchesWildLhs(std::string rhs_expr,
-                                              MatchType expr_match_type) {
-  assert(false);
-}
-
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getPatternMatchesValueLhs(std::string lhs_value,
-                                               std::string rhs_expr,
-                                               MatchType expr_match_type) {
-  assert(false);
-};
-
-// 2 paired values - for the implicit assign declaration, and the values for the
-// given lhs_entity_type
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbQpsInterfaceStub::getPatternMatchesSynonymLhs(std::string rhs_expr,
-                                                 MatchType expr_match_type) {
- assert(false);
-};
-
-std::unique_ptr<std::vector<std::string>>
 PkbQpsInterfaceStub::getPatternMatchesWildLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternWildCalls++;
