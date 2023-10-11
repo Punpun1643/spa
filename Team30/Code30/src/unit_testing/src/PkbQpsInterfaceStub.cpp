@@ -4,6 +4,7 @@ PkbQpsInterfaceStub::PkbQpsInterfaceStub(){};
 
 std::unique_ptr<std::vector<std::string>>
 PkbQpsInterfaceStub::getEntitiesWithType(EntityType type) {
+  last_entity_type_passed = type;
   return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
 }
 
