@@ -1,5 +1,7 @@
 #include "LinkedListTable.h"
 
+#include <queue>
+
 LinkedListTable::LinkedListTable() : BaseTable() {}
 
 void LinkedListTable::insert(std::string i, std::string j) {
@@ -10,12 +12,23 @@ bool LinkedListTable::isEmpty() { return relations.isEmpty(); }
 
 bool LinkedListTable::isRelated(std::string i, std::string j) {
   std::shared_ptr<Node> target = relations.getNode(i);
-  std::shared_ptr<Node> curr = relations.getNode(j)->prev;
-  while (curr != nullptr) {
+  std::shared_ptr<Node> curr = relations.getNode(j);
+
+  std::queue<std::shared_ptr<Node>> q;
+  for (std::shared_ptr<Node> n : curr->prev) {
+    q.push(n);
+  }
+
+  while (!q.empty()) {
+    curr = q.front();
     if (curr == target) {
       return true;
     }
-    curr = curr->prev;
+    q.pop();
+
+    for (std::shared_ptr<Node> n : curr->prev) {
+      q.push(n);
+    }
   }
   return false;
 };
@@ -27,7 +40,7 @@ bool LinkedListTable::hasRelations(std::string val) {
 
 bool LinkedListTable::hasInverseRelations(std::string val) {
   std::shared_ptr<Node> node = relations.getNode(val);
-  return node->prev != nullptr;
+  return !node->prev.empty();
 }
 
 std::unordered_set<std::string> LinkedListTable::getAllWithRelations(

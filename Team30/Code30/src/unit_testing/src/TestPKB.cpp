@@ -544,6 +544,7 @@ TEST_CASE("Test1-Source PKB") {
   pkb.insertPattern(PatternType::ASSIGN, "26", "a",
                     std::make_shared<TreeNode>("b", nullptr, nullptr));
 
+
   std::vector<std::string> expected_res = {"8", "15", "17"};
   std::vector<std::string> actual;
   actual = *pkb.getPatternMatchesWildLhs(
@@ -579,48 +580,6 @@ TEST_CASE("Test1-Source PKB") {
   std::sort(actual_pairs.begin(), actual_pairs.end());
   std::sort(expected_pairs.begin(), expected_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
-
-  // pkb.insertPattern("2", "y", std::unordered_set<std::string>({"2",
-  // "z"})); pkb.insertPattern("3", "z",
-  // std::unordered_set<std::string>({"p", "y"}));
-  // pkb.insertPattern("5", "z", std::unordered_set<std::string>({"x",
-  // "24"})); pkb.insertPattern("8", "y",
-  // std::unordered_set<std::string>({"x", "q", "5"}));
-  // pkb.insertPattern("9", "z", std::unordered_set<std::string>({"z",
-  // "1"})); pkb.insertPattern("10", "y",
-  //                   std::unordered_set<std::string>({"x", "z", "p",
-  //                   "q"}));
-  // pkb.insertPattern("11", "i",
-  //                   std::unordered_set<std::string>({"x", "j",
-  //                   "z"}));
-  // pkb.insertPattern("12", "p",
-  // std::unordered_set<std::string>({"x", "10"}));
-  // pkb.insertPattern("13", "q",
-  // std::unordered_set<std::string>({"y", "10"}));
-  // pkb.insertPattern("15", "a",
-  // std::unordered_set<std::string>({"5", "p"}));
-  // pkb.insertPattern("17", "q",
-  // std::unordered_set<std::string>({"p", "5"}));
-  // pkb.insertPattern("18", "i",
-  // std::unordered_set<std::string>({"x", "10"}));
-  // pkb.insertPattern("19", "j",
-  //                   std::unordered_set<std::string>({"x", "y",
-  //                   "10"}));
-  // pkb.insertPattern("22", "x",
-  // std::unordered_set<std::string>({"1"})); pkb.insertPattern("23",
-  // "y",
-  //                   std::unordered_set<std::string>({"i", "x", "y",
-  //                   "z"}));
-  // pkb.insertPattern("25", "x",
-  // std::unordered_set<std::string>({"a", "1"}));
-  // pkb.insertPattern("26", "a",
-  // std::unordered_set<std::string>({"b"}));
-
-  // std::vector<std::string> expected_res = {"22", "25"};
-  // REQUIRE_THAT(
-  //     *pkb.getPatternMatchesValueLhs("x", "1",
-  //     MatchType::PARTIAL_MATCH),
-  //     Catch::UnorderedEquals(expected_res));
 }
 
 TEST_CASE("Pattern Database Assignment insertion and retrieval") {
