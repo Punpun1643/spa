@@ -13,7 +13,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parsePrint;
+  using SpParser::ParsePrint;
 
   void parse() override {}
 };
@@ -33,7 +33,7 @@ TEST_CASE("Test parse print", "[parsePrint]") {
 
     TestParsePrintNode::TestableParser parser =
         TestParsePrintNode::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parsePrint());
+    REQUIRE_NOTHROW(parser.ParsePrint());
   }
 
   SECTION(
@@ -50,7 +50,7 @@ TEST_CASE("Test parse print", "[parsePrint]") {
 
     TestParsePrintNode::TestableParser parser =
         TestParsePrintNode::TestableParser(tokens);
-    std::shared_ptr<PrintNode> printNode = parser.parsePrint();
+    std::shared_ptr<PrintNode> printNode = parser.ParsePrint();
 
     REQUIRE(printNode->GetVarName() == "variable");
   }
@@ -65,6 +65,6 @@ TEST_CASE("Test parse print", "[parsePrint]") {
 
     TestParsePrintNode::TestableParser parser =
         TestParsePrintNode::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parsePrint());
+    REQUIRE_THROWS(parser.ParsePrint());
   }
 }

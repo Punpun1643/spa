@@ -53,7 +53,7 @@ TEST_CASE("Test parse() method") {
 
     SpParser parser = SpParser(tokens);
     parser.parse();
-    auto programNode = parser.getSourceProgramNode();
+    auto programNode = parser.GetSourceProgramNode();
 
     REQUIRE(programNode != nullptr);
     REQUIRE(programNode->GetChildren().size() == 1);
@@ -169,7 +169,7 @@ TEST_CASE("Test parse() method") {
 
     SpParser parser = SpParser(tokens);
     parser.parse();
-    auto programNode = parser.getSourceProgramNode();
+    auto programNode = parser.GetSourceProgramNode();
 
     REQUIRE(programNode != nullptr);
     REQUIRE(programNode->GetChildren().size() == 1);

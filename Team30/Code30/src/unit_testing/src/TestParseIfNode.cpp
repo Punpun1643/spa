@@ -17,7 +17,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseIf;
+  using SpParser::ParseIf;
 
   void parse() override {}
 };
@@ -64,7 +64,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parseIf());
+    REQUIRE_NOTHROW(parser.ParseIf());
   }
 
   SECTION(
@@ -136,7 +136,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parseIf());
+    REQUIRE_NOTHROW(parser.ParseIf());
   }
 
   SECTION("Missing open bracket should throw error") {
@@ -179,7 +179,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test other characters in place of open bracket should throw error") {
@@ -223,7 +223,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION(
@@ -268,7 +268,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing close bracket should throw error") {
@@ -310,7 +310,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(),
+    REQUIRE_THROWS_WITH(parser.ParseIf(),
                         Contains("Invalid"));  // will be invalid condExpr
   }
 
@@ -353,7 +353,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(
-        parser.parseIf(),
+        parser.ParseIf(),
         Contains("Invalid condition expression!"));  // will be invalid condExpr
   }
 
@@ -396,7 +396,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing start then curly bracket should throw error") {
@@ -437,7 +437,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing end then curly bracket should throw error") {
@@ -479,7 +479,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseIf());  // will be invalid stmtLst
+    REQUIRE_THROWS(parser.ParseIf());  // will be invalid stmtLst
   }
 
   SECTION("Test missing else keyword should throw error") {
@@ -521,7 +521,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing open else curly bracket should throw error") {
@@ -563,7 +563,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing close else curly bracket should throw error") {
@@ -604,7 +604,7 @@ TEST_CASE("Test parseIf", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseIf());  // will be invalid stmtLst
+    REQUIRE_THROWS(parser.ParseIf());  // will be invalid stmtLst
   }
 }
 
@@ -650,7 +650,7 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
 
-    std::shared_ptr<IfNode> ifNode = parser.parseIf();
+    std::shared_ptr<IfNode> ifNode = parser.ParseIf();
     std::shared_ptr<CondExprNode> condExprNode = ifNode->GetCondExpr();
     std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->GetThenStmtLst();
     std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->GetElseStmtLst();
@@ -730,7 +730,7 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
 
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
-    std::shared_ptr<IfNode> ifNode = parser.parseIf();
+    std::shared_ptr<IfNode> ifNode = parser.ParseIf();
     std::shared_ptr<CondExprNode> condExprNode = ifNode->GetCondExpr();
     std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->GetThenStmtLst();
     std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->GetElseStmtLst();

@@ -15,7 +15,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseWhile;
+  using SpParser::ParseWhile;
 
   void parse() override {}
 };
@@ -56,7 +56,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION(
@@ -95,7 +95,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION(
@@ -131,7 +131,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(),
+    REQUIRE_THROWS_WITH(parser.ParseWhile(),
                         Contains("Invalid condition expression!"));
   }
 
@@ -172,7 +172,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION(
@@ -211,7 +211,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION("Test missing open brace throws invalid while as the error message") {
@@ -246,7 +246,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION("Test missing braces throws invalid while as the error message") {
@@ -283,7 +283,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_AS(parser.parseWhile(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseWhile(), std::invalid_argument);
   }
 
   SECTION("Test correct while with 2 statments") {
@@ -319,7 +319,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
     REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
@@ -363,7 +363,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
     REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
@@ -401,7 +401,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
     REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
@@ -461,7 +461,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
     REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
@@ -515,7 +515,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
     REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
@@ -565,7 +565,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
 
     TestParseWhileNode::TestableParser parser =
         TestParseWhileNode::TestableParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
     REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }

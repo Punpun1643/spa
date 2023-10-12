@@ -13,7 +13,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseStmtLst;
+  using SpParser::ParseStmtLst;
 
   void parse() override {}
 };
@@ -30,7 +30,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseStmtLst());
+    REQUIRE_THROWS(parser.ParseStmtLst());
   }
 
   SECTION("StmtLst with one statement return one statement node") {
@@ -47,7 +47,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNode =
         std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(0));
 
@@ -77,7 +77,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNodeOne =
         std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(0));
     auto printNodeTwo =
@@ -103,7 +103,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION("StmtLst with invalid stmt missing variable name") {
@@ -118,7 +118,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION(
@@ -141,7 +141,7 @@ TEST_CASE("Parser parseStmtLst print stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 }
 
@@ -162,7 +162,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNode =
         std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(0));
 
@@ -194,7 +194,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto readNode =
         std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(0));
     auto printNode =
@@ -222,7 +222,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION("StmtLst with invalid stmt missing variable name") {
@@ -237,7 +237,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION(
@@ -260,7 +260,7 @@ TEST_CASE("Parser parseStmtLst read stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 }
 
@@ -281,7 +281,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto callNode =
         std::dynamic_pointer_cast<CallNode>(stmtLstNode->GetChildren().at(0));
 
@@ -313,7 +313,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto callNode =
         std::dynamic_pointer_cast<CallNode>(stmtLstNode->GetChildren().at(0));
     auto readNode =
@@ -341,7 +341,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION("StmtLst with invalid stmt missing variable name") {
@@ -356,7 +356,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION(
@@ -379,7 +379,7 @@ TEST_CASE("Parser parseStmtLst call stmts") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 }
 
@@ -400,7 +400,7 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNode =
         std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(0));
 
@@ -432,7 +432,7 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    auto stmtLstNode = parser.ParseStmtLst();
     auto readNode =
         std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(0));
     auto printNode =
@@ -465,7 +465,7 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
 
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parseStmtLst());
+    REQUIRE_NOTHROW(parser.ParseStmtLst());
   }
 
   SECTION(
@@ -489,7 +489,7 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
-        parser.parseStmtLst()->GetChildren().at(0));
+        parser.ParseStmtLst()->GetChildren().at(0));
     REQUIRE(assignNode->GetVarName() == "x");
     REQUIRE(assignNode->GetConstants()->size() == 1);
     REQUIRE(assignNode->GetVariables()->size() == 1);
@@ -520,7 +520,7 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     TestParseStmtLstNode::TestableParser parser =
         TestParseStmtLstNode::TestableParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
-        parser.parseStmtLst()->GetChildren().at(0));
+        parser.ParseStmtLst()->GetChildren().at(0));
     REQUIRE(assignNode->GetConstants()->size() == 0);
     REQUIRE(assignNode->GetVariables()->size() == 2);
     REQUIRE(assignNode->GetVarName() == "normSq");

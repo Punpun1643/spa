@@ -11,7 +11,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseProgram;
+  using SpParser::ParseProgram;
 
   void parse() override {}
 };
@@ -30,7 +30,7 @@ TEST_CASE("Parser parseProgram") {
 
     TestParseProgramNode::TestableParser parser =
         TestParseProgramNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseProgram(), std::invalid_argument);
   }
 
   SECTION("Valid program with one procedure has one procedure node") {
@@ -53,7 +53,7 @@ TEST_CASE("Parser parseProgram") {
 
     TestParseProgramNode::TestableParser parser =
         TestParseProgramNode::TestableParser(tokens);
-    auto programNode = parser.parseProgram();
+    auto programNode = parser.ParseProgram();
 
     REQUIRE(programNode != nullptr);
     REQUIRE(programNode->GetChildren().size() == 1);
@@ -94,7 +94,7 @@ TEST_CASE("Parser parseProgram") {
 
     TestParseProgramNode::TestableParser parser =
         TestParseProgramNode::TestableParser(tokens);
-    auto programNode = parser.parseProgram();
+    auto programNode = parser.ParseProgram();
 
     REQUIRE(programNode != nullptr);
     REQUIRE(programNode->GetChildren().size() == 2);
@@ -133,6 +133,6 @@ TEST_CASE("Parser parseProgram") {
 
     TestParseProgramNode::TestableParser parser =
         TestParseProgramNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseProgram(), std::invalid_argument);
   }
 }

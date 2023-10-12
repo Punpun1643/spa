@@ -15,7 +15,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseCondExpr;
+  using SpParser::ParseCondExpr;
 
   void parse() override {}
 };
@@ -38,7 +38,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
+    std::shared_ptr<CondExprNode> condExprNode = parser.ParseCondExpr();
     REQUIRE(condExprNode->GetVariables()->size() == 2);
     REQUIRE(condExprNode->GetConstants()->size() == 0);
   }
@@ -59,7 +59,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
+    std::shared_ptr<CondExprNode> condExprNode = parser.ParseCondExpr();
     REQUIRE(condExprNode->GetVariables()->size() == 1);
     REQUIRE(condExprNode->GetConstants()->size() == 1);
   }
@@ -86,7 +86,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
+    std::shared_ptr<CondExprNode> condExprNode = parser.ParseCondExpr();
     REQUIRE(condExprNode->GetVariables()->size() == 1);
     REQUIRE(condExprNode->GetConstants()->size() == 1);
   }
@@ -123,7 +123,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
+    std::shared_ptr<CondExprNode> condExprNode = parser.ParseCondExpr();
     REQUIRE(condExprNode->GetVariables()->size() == 2);
     REQUIRE(condExprNode->GetConstants()->size() == 2);
   }
@@ -160,7 +160,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
+    std::shared_ptr<CondExprNode> condExprNode = parser.ParseCondExpr();
     REQUIRE(condExprNode->GetVariables()->size() == 2);
     REQUIRE(condExprNode->GetConstants()->size() == 2);
   }
@@ -195,7 +195,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseCondExpr(), std::invalid_argument);
   }
 
   SECTION("Test invalid rel_expr i.e. y !=== 3") {
@@ -214,7 +214,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseCondExpr(), std::invalid_argument);
   }
 
   SECTION("Test invalid rel_expr i.e. x > 2 && y > 3") {
@@ -241,7 +241,7 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseCondExpr(), std::invalid_argument);
   }
 
   SECTION("Test empty condExpr should throw error") {
@@ -253,6 +253,6 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
 
     TestParseCondExprNode::TestableParser parser =
         TestParseCondExprNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseCondExpr(), std::invalid_argument);
   }
 }

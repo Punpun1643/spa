@@ -13,7 +13,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseRead;
+  using SpParser::ParseRead;
 
   void parse() override {}
 };
@@ -32,7 +32,7 @@ TEST_CASE("Test parse read", "[parseRead]") {
 
         TestParseReadNode::TestableParser parser =
                 TestParseReadNode::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parseRead());
+    REQUIRE_NOTHROW(parser.ParseRead());
   }
 
   SECTION("Test valid read stmt should have the correct procedure name (i.e. read variable;)") {
@@ -47,7 +47,7 @@ TEST_CASE("Test parse read", "[parseRead]") {
 
     TestParseReadNode::TestableParser parser =
         TestParseReadNode::TestableParser(tokens);
-    std::shared_ptr<ReadNode> readNode = parser.parseRead();
+    std::shared_ptr<ReadNode> readNode = parser.ParseRead();
 
     REQUIRE(readNode->GetVarName() == "variable");
   }
@@ -62,6 +62,6 @@ TEST_CASE("Test parse read", "[parseRead]") {
 
     TestParseReadNode::TestableParser parser =
         TestParseReadNode::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseRead());
+    REQUIRE_THROWS(parser.ParseRead());
   }
 }

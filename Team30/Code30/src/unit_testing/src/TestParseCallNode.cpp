@@ -13,7 +13,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseCall;
+  using SpParser::ParseCall;
 
   void parse() override {}
 };
@@ -32,7 +32,7 @@ TEST_CASE("Test parse call", "[parseCall]") {
 
     TestParseCall::TestableParser parser =
         TestParseCall::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parseCall());
+    REQUIRE_NOTHROW(parser.ParseCall());
   }
 
   SECTION(
@@ -49,7 +49,7 @@ TEST_CASE("Test parse call", "[parseCall]") {
 
     TestParseCall::TestableParser parser =
         TestParseCall::TestableParser(tokens);
-    std::shared_ptr<CallNode> callNode = parser.parseCall();
+    std::shared_ptr<CallNode> callNode = parser.ParseCall();
 
     REQUIRE(callNode->GetProcName() == "variable");
   }
@@ -65,6 +65,6 @@ TEST_CASE("Test parse call", "[parseCall]") {
 
     TestParseCall::TestableParser parser =
         TestParseCall::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseCall());
+    REQUIRE_THROWS(parser.ParseCall());
   }
 }

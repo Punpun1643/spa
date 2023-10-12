@@ -11,7 +11,7 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseProcedure;
+  using SpParser::ParseProcedure;
 
   void parse() override {}
 };
@@ -28,7 +28,7 @@ TEST_CASE("Parser parseProcedure") {
 
     TestParseProcedureNode::TestableParser parser =
         TestParseProcedureNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseProcedure(), std::invalid_argument);
   }
 
   SECTION("Invalid procedure with } and { swap position") {
@@ -45,7 +45,7 @@ TEST_CASE("Parser parseProcedure") {
 
     TestParseProcedureNode::TestableParser parser =
         TestParseProcedureNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseProcedure(), std::invalid_argument);
   }
 
   SECTION("Invalid procedure with no }") {
@@ -64,7 +64,7 @@ TEST_CASE("Parser parseProcedure") {
 
     TestParseProcedureNode::TestableParser parser =
         TestParseProcedureNode::TestableParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseProcedure(), std::invalid_argument);
   }
 
   SECTION("Valid procedure with one statement has one statement node") {
@@ -85,7 +85,7 @@ TEST_CASE("Parser parseProcedure") {
 
     TestParseProcedureNode::TestableParser parser =
         TestParseProcedureNode::TestableParser(tokens);
-    auto procedureNode = parser.parseProcedure();
+    auto procedureNode = parser.ParseProcedure();
 
     REQUIRE(procedureNode != nullptr);
     REQUIRE(procedureNode->GetProcedureName() == "main");

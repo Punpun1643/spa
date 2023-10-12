@@ -16,8 +16,8 @@ class TestableParser : public SpParser {
   TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
-  using SpParser::parseAssign;
-  using SpParser::parseStmtLst;
+  using SpParser::ParseAssign;
+  using SpParser::ParseStmtLst;
 
   void parse() override {}
 };
@@ -43,7 +43,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    REQUIRE_NOTHROW(parser.parseStmtLst());
+    REQUIRE_NOTHROW(parser.ParseStmtLst());
   }
 
   SECTION("Test valid assign stmt return the correct expression tree") {
@@ -60,7 +60,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    std::shared_ptr<AssignNode> assignNode = parser.parseAssign("x");
+    std::shared_ptr<AssignNode> assignNode = parser.ParseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "+");
@@ -88,7 +88,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("normSq");
+    auto assignNode = parser.ParseAssign("normSq");
     REQUIRE(assignNode->GetConstants()->size() == 0);
     REQUIRE(assignNode->GetVariables()->size() == 2);
     REQUIRE(assignNode->GetVarName() == "normSq");
@@ -114,7 +114,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    std::shared_ptr<AssignNode> assignNode = parser.parseAssign("normSq");
+    std::shared_ptr<AssignNode> assignNode = parser.ParseAssign("normSq");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "+");
@@ -149,7 +149,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     REQUIRE(assignNode->GetConstants()->size() == 1);
     REQUIRE(assignNode->GetVariables()->size() == 2);
     REQUIRE(assignNode->GetVarName() == "x");
@@ -174,7 +174,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "*");
@@ -208,7 +208,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     REQUIRE(assignNode->GetConstants()->size() == 2);
     REQUIRE(assignNode->GetVariables()->size() == 2);
     REQUIRE(assignNode->GetVarName() == "x");
@@ -238,7 +238,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "*");
@@ -267,7 +267,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     REQUIRE(assignNode->GetConstants()->size() == 1);
     REQUIRE(assignNode->GetVariables()->size() == 1);
     REQUIRE(assignNode->GetVarName() == "x");
@@ -289,7 +289,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "/");
@@ -315,7 +315,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     REQUIRE(assignNode->GetConstants()->size() == 1);
     REQUIRE(assignNode->GetVariables()->size() == 2);
     REQUIRE(assignNode->GetVarName() == "x");
@@ -339,7 +339,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "*");
@@ -367,7 +367,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     REQUIRE(assignNode->GetConstants()->size() == 1);
     REQUIRE(assignNode->GetVariables()->size() == 2);
     REQUIRE(assignNode->GetVarName() == "x");
@@ -391,7 +391,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    auto assignNode = parser.parseAssign("x");
+    auto assignNode = parser.ParseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "+");
@@ -416,7 +416,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 
   SECTION("Test invalid assign stmt with extra bracket should throw an error") {
@@ -442,7 +442,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 
   SECTION(
@@ -468,7 +468,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 
   SECTION(
@@ -488,6 +488,6 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
 
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 }
