@@ -48,6 +48,14 @@ static void AddWordIdent(std::vector<std::shared_ptr<Token>>& tokens,
   AddSpecialCharVector(tokens, {"\"", ")"});
 }
 
+static void AddWordWild(std::vector<std::shared_ptr<Token>>& tokens,
+                        std::string arg) {
+  AddSpecialCharVector(tokens, {"("});
+  AddWordVector(tokens, {arg});
+  AddSpecialCharVector(tokens, {",", "_"});
+  AddSpecialCharVector(tokens, {")"});
+}
+
 static void AddWildWord(std::vector<std::shared_ptr<Token>>& tokens,
                         std::string arg) {
   AddSpecialCharVector(tokens, {"("});
@@ -341,5 +349,28 @@ TEST_CASE("Pattern") {
 
     QPSController controller = QPSController();
     controller.HandleTokens(tokens);
+  }
+}
+
+TEST_CASE("Such That And") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1, s2; Select s1 such that Follows*(_, s2) and Modifies(s2, _)") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Follows*"});
+    AddWildWord(tokens, "s2");
+    AddWordVector(tokens, {"and"});
+    AddWordVector(tokens, {"Modifies"});
+    AddWordWild(tokens, "s2");
+    AddEOF(tokens);
+
+    controller.HandleTokens(tokens);
+  }
+
+  SECTION("Positive. Complex") {
+  }
+
+  SECTION ("Syntax Error") {
   }
 }

@@ -1,9 +1,9 @@
 #include "SyntaxChecker.h"
 
-#include <iostream>
-#include <unordered_map>
-#include <stdexcept>
 #include <cassert>
+#include <iostream>
+#include <stdexcept>
+#include <unordered_map>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -18,15 +18,35 @@ void SyntaxChecker::parse() {
         "Incorrect query format: Expected to start with either 'Select' or a "
         "<Declaration>");
   }
-  if (GetCurrTokenValue() == QpParser::SELECT) {
-    // no declaration, only select
-    CheckSelect();
-    CheckClauses();
-  } else {
+  if (GetCurrTokenValue() != QpParser::SELECT) {
     CheckDeclaration();
-    CheckSelect();
-    CheckClauses();
   }
+  CheckSelect();
+  CheckClauses();
+}
+
+void SyntaxChecker::CheckAnd(ClauseType clause_type) {
+  assert(GetCurrTokenValue() == QpParser::AND);
+  NextToken();
+
+  if (clause_type == ClauseType::such_that) {
+    if (QpParser::IsRelRef(GetCurrTokenValue())) {
+      CheckSuchThat(true);
+      return;
+    } else {
+      throw InvalidSyntaxException("Expected <relref> after 'and'");
+    }
+  } else if (clause_type == ClauseType::pattern) {
+    if (GetCurrTokenValue() == QpParser::PATTERN) {
+      CheckPattern();
+      return;
+    } else {
+      throw InvalidSyntaxException("Expected 'pattern' after 'and'");
+    }
+  }
+
+  throw InvalidSyntaxException(
+      "Expected either 'such' or 'pattern' after 'and'");
 }
 
 void SyntaxChecker::CheckCalls() {
@@ -58,11 +78,10 @@ void SyntaxChecker::CheckCalls() {
 void SyntaxChecker::CheckClauses() {
   while (GetCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
     if (GetCurrTokenValue() == QpParser::SUCH) {
-      this->CheckSuchThat();
+      this->CheckSuchThat(false);
     } else if (GetCurrTokenValue() == QpParser::PATTERN) {
       this->CheckPattern();
-    }
-    else {
+    } else {
       throw InvalidSyntaxException("Did not encounter expected clause");
     }
   }
@@ -74,8 +93,7 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Query missing Select Clause");
     }
     EntityType entity_type = QpParser::StringToEntityType(
-        GetCurrToken()
-            ->getTokenVal());  // throws an error if not valid entity_type
+        GetCurrTokenValue());  // throws an error if not valid entity_type
     NextToken();               // synonym
     if (!IsSynonym(GetCurrTokenValue())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
@@ -225,7 +243,11 @@ void SyntaxChecker::CheckPattern() {
   NextToken();
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
+
   NextToken();
+  if (GetCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::pattern);
+  }
 }
 
 void SyntaxChecker::CheckSelect() {
@@ -240,9 +262,11 @@ void SyntaxChecker::CheckSelect() {
   NextToken();
 }
 
-void SyntaxChecker::CheckSuchThat() {
-  NextToken();  // that
-  NextToken();  // relRef
+void SyntaxChecker::CheckSuchThat(bool has_and) {
+  if (!has_and) {
+    NextToken();  // that
+    NextToken();  // relRef
+  }
   if (!QpParser::IsRelRef(GetCurrTokenValue())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
@@ -258,8 +282,11 @@ void SyntaxChecker::CheckSuchThat() {
   } else if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
     this->CheckCalls();
   }
-}
 
+  if (GetCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::such_that);
+  }
+}
 
 void SyntaxChecker::CheckUses() {
   assert(GetCurrTokenValue() == QpParser::USES);
@@ -367,7 +394,7 @@ void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
   }
 }
 
-void SyntaxChecker::CheckIsExpr(std::string error_msg) { 
+void SyntaxChecker::CheckIsExpr(std::string error_msg) {
   std::vector<std::shared_ptr<Token>> infix_tokens;
 
   while (GetCurrTokenValue() != "\"") {
