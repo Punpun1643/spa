@@ -21,12 +21,8 @@ std::shared_ptr<ProgramNode> SpParser::parseProgram() {
   std::vector<std::shared_ptr<ProcedureNode>> procedures;
 
   while (!IsCurrTokenType(TokenType::EOF_TOKEN)) {
-    if (!IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                                 SpParserConstant::PROCEDURE_KEYWORD)) {
-      throw InvalidProcedureException();
-    }
-
-    NextToken();
+    AParser::CheckAndAdvanceCurrToken<InvalidProcedureException>(
+        SpParserConstant::PROCEDURE_KEYWORD);
     procedures.push_back(parseProcedure());
   }
 
@@ -41,18 +37,13 @@ std::shared_ptr<ProcedureNode> SpParser::parseProcedure() {
   std::string procedureName = GetCurrTokenValue();
   NextToken();
 
-  if (!IsCurrTokenValue(SpParserConstant::START_PROCEDURE)) {
-    throw InvalidProcedureException();
-  }
+  AParser::CheckAndAdvanceCurrToken<InvalidProcedureException>(
+      SpParserConstant::START_PROCEDURE);
 
-  NextToken();
   std::shared_ptr<StmtLstNode> stmtLst = parseStmtLst();
 
-  if (!IsCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
-    throw InvalidProcedureException();
-  }
-
-  NextToken();
+  AParser::CheckAndAdvanceCurrToken<InvalidProcedureException>(
+      SpParserConstant::END_PROCEDURE);
   return std::make_shared<ProcedureNode>(procedureName, stmtLst);
 }
 
