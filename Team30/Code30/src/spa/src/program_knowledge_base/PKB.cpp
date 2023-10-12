@@ -82,6 +82,19 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
   return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
+std::string convertEntityAttribute(std::string value, EntityType type, AttrType curr_attr_type, AttrType wanted_attr_type) {
+    return "";
+};
+
+bool doesEntityExist(EntityType type, AttrType attr_type, std::string value) {
+    return false;
+};
+
+std::vector<std::string> getMatchingEntities(EntityType type_1, AttrType attr_type_1,
+                                             EntityType type_2, AttrType attr_type_2) {
+    return {};
+};
+
 // ---------- RELATIONS ----------
 // 0 Declarations
 // example Follows(1, 3)
