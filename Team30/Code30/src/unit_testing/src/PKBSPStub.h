@@ -27,8 +27,6 @@ class PKBSPStub : public PKBSPInterface {
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void insertPattern(std::string statement_number, std::string lhs,
-                     std::unordered_set<std::string> rhs) override;
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
 

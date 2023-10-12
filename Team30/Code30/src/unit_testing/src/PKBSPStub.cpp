@@ -67,10 +67,6 @@ void PKBSPStub::insertRelation(RelationType rel_type, std::string s1_line_num,
 }
 
 // Pattern clause
-void PKBSPStub::insertPattern(std::string statement_number, std::string lhs,
-                              std::unordered_set<std::string> rhs) {
-  insertPatternCallCount++;
-};
 void PKBSPStub::insertPattern(PatternType type, std::string statement_number,
                    std::string lhs, std::shared_ptr<TreeNode> rhs) {
   insertPatternCallCount++;
