@@ -242,6 +242,25 @@ void SpParser::trackOperatorAndOperand(
   }
 }
 
+void SpParser::ValidateCondExprAndOrOrTokenPosition() {
+  if (!isRightParenthesisToken(PeekBackToken()) ||
+      !isLeftParenthesisToken(PeekToken())) {
+    throw InvalidCondExprException();
+  }
+}
+
+void SpParser::TransferOperatorsToPostfixQueue(
+    std::stack<std::shared_ptr<Token>>& operatorStack,
+    std::queue<std::shared_ptr<Token>>& postFixQueue) {
+  while (!operatorStack.empty() &&
+         AParser::IsGreaterOrEqualPrecedence(operatorStack.top()->getTokenVal(),
+                                             GetCurrTokenValue())) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+  operatorStack.push(GetCurrToken());
+}
+
 void SpParser::buildCondExprPostFix(
     std::queue<std::shared_ptr<Token>>& postFixQueue) {
   std::stack<std::shared_ptr<Token>> operatorStack;
@@ -259,19 +278,9 @@ void SpParser::buildCondExprPostFix(
       if (parenCount == 0) break;
     } else if (isOperator(GetCurrTokenValue())) {
       if (isAndOrOrToken(GetCurrToken())) {
-        if (!isRightParenthesisToken(PeekBackToken()) ||
-            !isLeftParenthesisToken(PeekToken())) {
-          throw InvalidCondExprException();
-        }
+        ValidateCondExprAndOrOrTokenPosition();
       }
-
-      while (!operatorStack.empty() &&
-             AParser::IsGreaterOrEqualPrecedence(
-                 operatorStack.top()->getTokenVal(), GetCurrTokenValue())) {
-        postFixQueue.push(operatorStack.top());
-        operatorStack.pop();
-      }
-      operatorStack.push(GetCurrToken());
+      TransferOperatorsToPostfixQueue(operatorStack, postFixQueue);
     } else {
       throw InvalidCondExprException();
     }

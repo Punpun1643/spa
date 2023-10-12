@@ -160,6 +160,12 @@ class SpParser : public AParser {
 
   void ValidateStmtLst();
 
+  void ValidateCondExprAndOrOrTokenPosition();
+
+  void TransferOperatorsToPostfixQueue(
+      std::stack<std::shared_ptr<Token>>& operatorStack,
+      std::queue<std::shared_ptr<Token>>& postFixQueue);
+
   bool IsAssignStmt();
 
   std::shared_ptr<StmtNode> ParseAssignStmt();
