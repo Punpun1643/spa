@@ -91,6 +91,10 @@ class SpParser : public AParser {
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
+  void HandleCondExprOperatorToken(
+      std::shared_ptr<Token> const& token,
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
   void handleLeftParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
@@ -134,6 +138,21 @@ class SpParser : public AParser {
       std::stack<std::shared_ptr<Token>>& tokenStack);
 
   void validateComparisonOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprMathematicalOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprNotToken(std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprAndOrOrToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprComparisonOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack,
+      std::shared_ptr<Token> const& token);
+
+  void ValidateCondExprFinalTokenStackState(
       std::stack<std::shared_ptr<Token>>& tokenStack);
 
   void isTopStackNotComparisonOperatorToken(

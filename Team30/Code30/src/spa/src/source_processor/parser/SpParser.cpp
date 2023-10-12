@@ -172,8 +172,9 @@ void SpParser::handleWordOrIntegerToken(
 void SpParser::handleOperatorToken(
     std::stack<std::shared_ptr<std::string>>& operatorStack,
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  while (!operatorStack.empty() && Precedence(operatorStack.top()->c_str()) >=
-                                       Precedence(GetCurrTokenValue())) {
+  while (!operatorStack.empty() &&
+         AParser::IsGreaterOrEqualPrecedence(operatorStack.top()->c_str(),
+                                             GetCurrTokenValue())) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
@@ -351,6 +352,57 @@ void SpParser::isTopStackNotComparisonOperatorToken(
   }
 }
 
+void SpParser::ValidateCondExprMathematicalOperatorToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  validateTokenStackSize(tokenStack);
+  validateWordOrIntegerToken(tokenStack);
+  isTopStackNotWordOrIntegerToken(tokenStack);
+}
+
+void SpParser::ValidateCondExprNotToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  isTopStackNotComparisonOperatorToken(tokenStack);
+}
+
+void SpParser::ValidateCondExprAndOrOrToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  validateTokenStackSize(tokenStack);
+  validateComparisonOperatorToken(tokenStack);
+  validateComparisonOperatorToken(tokenStack);
+}
+
+void SpParser::ValidateCondExprComparisonOperatorToken(
+    std::stack<std::shared_ptr<Token>>& tokenStack,
+    std::shared_ptr<Token> const& token) {
+  validateTokenStackSize(tokenStack);
+  validateWordOrIntegerToken(tokenStack);
+  validateWordOrIntegerToken(tokenStack);
+  tokenStack.push(token);
+}
+
+void SpParser::ValidateCondExprFinalTokenStackState(
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (tokenStack.empty() || AParser::IsWordOrIntegerToken(tokenStack.top())) {
+    throw InvalidCondExprException();
+  }
+}
+
+void SpParser::HandleCondExprOperatorToken(
+    std::shared_ptr<Token> const& token,
+    std::stack<std::shared_ptr<Token>>& tokenStack) {
+  if (AParser::IsMathematicalOperator(token->getTokenVal())) {
+    ValidateCondExprMathematicalOperatorToken(tokenStack);
+  } else if (isNotToken(token)) {
+    ValidateCondExprNotToken(tokenStack);
+  } else if (isAndOrOrToken(token)) {
+    ValidateCondExprAndOrOrToken(tokenStack);
+  } else if (isComparisonOperator(token->getTokenVal())) {
+    ValidateCondExprComparisonOperatorToken(tokenStack, token);
+  } else {
+    throw InvalidCondExprException();
+  }
+}
+
 void SpParser::validateTokenStack(
     std::queue<std::shared_ptr<Token>>& postFixQueue,
     std::stack<std::shared_ptr<Token>>& tokenStack,
@@ -365,31 +417,13 @@ void SpParser::validateTokenStack(
       handleCondExprWordToken(currToken, variables, tokenStack);
     } else if (AParser::IsIntegerToken(currToken)) {
       handleCondExprIntegerToken(currToken, constants, tokenStack);
-    } else if (isMathematicalOperator(currToken->getTokenVal())) {
-      validateTokenStackSize(tokenStack);
-      validateWordOrIntegerToken(tokenStack);
-      isTopStackNotWordOrIntegerToken(tokenStack);
-    } else if (isNotToken(currToken)) {
-      isTopStackNotComparisonOperatorToken(tokenStack);
-    } else if (isAndOrOrToken(currToken)) {
-      validateTokenStackSize(tokenStack);
-      validateComparisonOperatorToken(tokenStack);
-      validateComparisonOperatorToken(tokenStack);
-
-    } else if (isComparisonOperator(currToken->getTokenVal())) {
-      validateTokenStackSize(tokenStack);
-      validateWordOrIntegerToken(tokenStack);
-      validateWordOrIntegerToken(tokenStack);
-      tokenStack.push(currToken);
-
+    } else if (isOperator(currToken->getTokenVal())) {
+      HandleCondExprOperatorToken(currToken, tokenStack);
     } else {
       throw InvalidCondExprException();
     }
   }
-  // no operator in stack, handle (x) case
-  if (tokenStack.empty() || AParser::IsWordOrIntegerToken(tokenStack.top())) {
-    throw InvalidCondExprException();
-  }
+  ValidateCondExprFinalTokenStackState(tokenStack);
 }
 
 std::shared_ptr<CondExprNode> SpParser::parseCondExpr() {
