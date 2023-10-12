@@ -109,4 +109,7 @@ class PkbStub : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
+
+  void insertCFGNode(std::string statement_num,
+                     std::shared_ptr<CFGNode> node) override;
 };
