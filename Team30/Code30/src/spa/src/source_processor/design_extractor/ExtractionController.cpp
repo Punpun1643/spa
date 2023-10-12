@@ -25,11 +25,20 @@ void ExtractionController::executeProgramExtraction(
   }
   std::vector<std::shared_ptr<ProcedureNode>> children = node->getChildren();
   if (!children.empty()) {
+
+      // Support creation of the procedure calls graph
     for (std::shared_ptr<ProcedureNode> child : children) {
       callsManager->insertProcNode(child->getProcedureName());
     }
+
+    // Carry out the DFS extraction 
     for (std::shared_ptr<ProcedureNode> child : children) {
       executeProcedureExtraction(child);
+    }
+
+    // Construct CFGs
+    for (std::shared_ptr<ProcedureNode> child : children) {
+      // CFGGenerator->generateCFG(child);
     }
   }
   executePostProcessing();
@@ -91,41 +100,6 @@ void ExtractionController::handleContainerStmts(
     popActors();
   }
 }
-
-// void ExtractionController::handleCallStmts() {
-//   std::vector<std::shared_ptr<CallStmtCacheObject>> usesCache =
-//       std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))
-//           ->getCallStmtCache();
-//   handleCallStmtsHelper(usesCache, RelationType::USES_S);
-//
-//   std::vector<std::shared_ptr<CallStmtCacheObject>> modifiesCache =
-//       std::dynamic_pointer_cast<UsesExtractor>(extractors.at(3))
-//           ->getCallStmtCache();
-//   handleCallStmtsHelper(modifiesCache, RelationType::MODIFIES_S);
-// }
-//
-// void ExtractionController::handleCallStmtsHelper(
-//     std::vector<std::shared_ptr<CallStmtCacheObject>> cache, RelationType
-//     rel) {
-//   bool isGettingUpdated = true;
-//   while (isGettingUpdated) {
-//     bool hasUpdateThisIteration = false;
-//     for (std::shared_ptr<CallStmtCacheObject> callStmt : cache) {
-//       std::vector<std::string> varsFromProc = *pkb.getRelationValues(
-//           callStmt->getCallNode()->getProcName(), EntityType::VARIABLE, rel);
-//
-//       bool hasUpdate = callStmt->updateVars(varsFromProc);
-//       bool hasUpdateThisIteration = hasUpdateThisIteration || hasUpdate;
-//
-//       for (std::string var : varsFromProc) {
-//         for (std::string actor : callStmt->getActors()) {
-//           pkb.insertRelation(rel, actor, var);
-//         }
-//       }
-//     }
-//     isGettingUpdated = hasUpdateThisIteration;
-//   }
-// }
 
 void ExtractionController::popActors() {
   std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popActor();
