@@ -30,10 +30,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
       RelationType rel_type,
       std::shared_ptr<std::unordered_set<std::string>> set, std::string value);
 
-  std::unordered_set<std::string> getAllRelatedToValue(
-      RelationType rel_type, std::string value,
-      std::shared_ptr<std::unordered_set<std::string>> set);
-
  public:
   PKB();
 
