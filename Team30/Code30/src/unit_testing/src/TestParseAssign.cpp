@@ -48,9 +48,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     std::shared_ptr<AssignNode> assignNode = parser.parseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -100,16 +100,16 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     std::shared_ptr<AssignNode> assignNode = parser.parseAssign("normSq");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "*");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() ==
             "cenX");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() ==
             "cenX");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getLeftSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetLeftSubTree()->GetVal() ==
             "cenY");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getRightSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetRightSubTree()->GetVal() ==
             "cenY");
   }
 
@@ -158,11 +158,11 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     auto assignNode = parser.parseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -220,13 +220,13 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     auto assignNode = parser.parseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getLeftSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getRightSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetLeftSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetRightSubTree()->GetVal() ==
             "2");
   }
 
@@ -269,9 +269,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     auto assignNode = parser.parseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "/");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "/");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -317,11 +317,11 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     auto assignNode = parser.parseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "/");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "/");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -367,11 +367,11 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     auto assignNode = parser.parseAssign("x");
     std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION("Test invalid assign stmt with extra operand should throw an error") {

@@ -9,11 +9,11 @@ class TreeNode {
   TreeNode(std::string val, std::shared_ptr<TreeNode> leftSubTree,
            std::shared_ptr<TreeNode> rightSubTree);
 
-  std::string getVal() const;
+  std::string GetVal() const;
 
-  std::shared_ptr<TreeNode> getLeftSubTree() const;
+  std::shared_ptr<TreeNode> GetLeftSubTree() const;
 
-  std::shared_ptr<TreeNode> getRightSubTree() const;
+  std::shared_ptr<TreeNode> GetRightSubTree() const;
 
   static std::vector<std::string> CreateInOrderTraversal(
       std::shared_ptr<TreeNode> const& root);
