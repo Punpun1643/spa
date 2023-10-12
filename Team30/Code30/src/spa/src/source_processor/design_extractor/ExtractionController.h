@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../node/ANode.h"
+#include "CFGGenerator.h"
 #include "CallsManager.h"
 #include "IDesignExtractor.h"
 #include "IExtractionController.h"
@@ -23,6 +24,7 @@ class ExtractionController : public IExtractionController {
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
   PKBSPInterface& pkb;
   std::shared_ptr<CallsManager> callsManager;
+  std::shared_ptr<CFGGenerator> cfgGenerator;
 
   void HandleContainerStmts(std::shared_ptr<StmtNode> node);
   void PopActors();

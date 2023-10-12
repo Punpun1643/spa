@@ -5,22 +5,18 @@
 
 CFGGenerator::CFGGenerator(PKBSPInterface& pkb) : pkb(pkb) {}
 
-void CFGGenerator::GenerateAndInsertCFG(
+void CFGGenerator::ExecuteCFGGeneration(
     std::shared_ptr<ProcedureNode> procNode) {
-  std::shared_ptr<CFGNode> cfg;
   std::vector<std::shared_ptr<StmtNode>> stmts =
       procNode->getChildren()[0]->getChildren();
   GenerateCFG(stmts);
 }
 
-// returns a vector of all possible nodes that the current node must now point
-// to
-std::vector<std::shared_ptr<CFGNode>> CFGGenerator::GenerateCFG(
+// returns the node that the current node should point to
+std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
     std::vector<std::shared_ptr<StmtNode>> stmts) {
-  // check if vector empty or sth
   if (stmts.empty()) {
-    std::vector<std::shared_ptr<CFGNode>> emptyRes;
-    return emptyRes;
+    return nullptr;
   }
 
   // get the first node in the vector, check what kind, if normal control flow,
@@ -31,43 +27,54 @@ std::vector<std::shared_ptr<CFGNode>> CFGGenerator::GenerateCFG(
   stmts.erase(stmts.begin());
 
   // Nodes after the stmt
-  std::vector<std::shared_ptr<CFGNode>> nextNodes = GenerateCFG(stmts);
+  std::vector<std::shared_ptr<CFGNode>> nextNodes;
+  std::shared_ptr<CFGNode> generatedNode = GenerateCFG(stmts);
+  if (generatedNode != nullptr) {
+    nextNodes.push_back(generatedNode);
+  }
 
   if (currType == StmtType::WHILE_STMT) {
-    std::vector<std::shared_ptr<StmtNode>> whileBodyStmts =
-        std::dynamic_pointer_cast<WhileNode>(currStmt)
-            ->getStmtLst()
-            ->getChildren();
-    std::vector<std::shared_ptr<CFGNode>> whileBodyNodes = GenerateCFG(stmts);
+    std::shared_ptr<WhileNode> asWhile =
+        std::dynamic_pointer_cast<WhileNode>(currStmt);
 
-    nextNodes.insert(nextNodes.end(), whileBodyNodes.begin(),
-                     whileBodyNodes.end());
+    std::vector<std::shared_ptr<StmtNode>> whileBodyStmts =
+        asWhile->getStmtLst()->getChildren();
+    std::shared_ptr<CFGNode> whileBodyCFG =
+        GenerateCFG(whileBodyStmts);
+
+    CheckAndInsertNode(nextNodes, whileBodyCFG);
 
   } else if (currType == StmtType::IF_STMT) {
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(currStmt);
 
     std::vector<std::shared_ptr<StmtNode>> thenBodyStmts =
         asIf->getThenStmtLst()->getChildren();
-    std::vector<std::shared_ptr<CFGNode>> thenBodyNodes =
+    std::shared_ptr<CFGNode> thenBodyCFG =
         GenerateCFG(thenBodyStmts);
 
     std::vector<std::shared_ptr<StmtNode>> elseBodyStmts =
         asIf->getElseStmtLst()->getChildren();
-    std::vector<std::shared_ptr<CFGNode>> elseBodyNodes =
+    std::shared_ptr<CFGNode> elseBodyCFG =
         GenerateCFG(elseBodyStmts);
 
-    nextNodes.insert(nextNodes.end(), thenBodyNodes.begin(),
-                     thenBodyNodes.end());
-    nextNodes.insert(nextNodes.end(), elseBodyNodes.begin(),
-                     elseBodyNodes.end());
+    CheckAndInsertNode(nextNodes, thenBodyCFG);
+    CheckAndInsertNode(nextNodes, elseBodyCFG);
   }
+
   for (std::shared_ptr<CFGNode> nextNode : nextNodes) {
     nextNode->addIncomingNode(std::make_shared<CFGNode>(newNode));
     newNode.addOutgoingNode(nextNode);
   }
 
   // insert into pkb somewhere here
-  std::vector<std::shared_ptr<CFGNode>> resNodes;
-  resNodes.push_back(std::make_shared<CFGNode>(newNode));
-  return resNodes;
+  pkb.insertCFGNode(std::to_string(currStmt->getStmtIndex()),
+                    std::make_shared<CFGNode>(newNode));
+  return std::make_shared<CFGNode>(newNode);
+}
+
+void CFGGenerator::CheckAndInsertNode(std::vector<std::shared_ptr<CFGNode>> nextNodes,
+    std::shared_ptr<CFGNode> newNode) {
+  if (newNode != nullptr) {
+    nextNodes.push_back(newNode);
+  }
 }

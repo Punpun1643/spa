@@ -9,6 +9,7 @@
 
 ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
   callsManager = std::make_shared<CallsManager>(pkb);
+  cfgGenerator = std::make_shared<CFGGenerator>(pkb);
 
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
@@ -38,7 +39,7 @@ void ExtractionController::ExecuteProgramExtraction(
 
     // Construct CFGs
     for (std::shared_ptr<ProcedureNode> child : children) {
-      // CFGGenerator->generateCFG(child);
+       cfgGenerator->ExecuteCFGGeneration(child);
     }
   }
   ExecutePostProcessing();

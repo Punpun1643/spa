@@ -7,10 +7,13 @@ class CFGGenerator {
  public:
   explicit CFGGenerator(PKBSPInterface& pkb);
 
-  void GenerateAndInsertCFG(std::shared_ptr<ProcedureNode> procNode);
+  void ExecuteCFGGeneration(std::shared_ptr<ProcedureNode> procNode);
 
  private:
   PKBSPInterface& pkb;
 
-  std::vector<std::shared_ptr<CFGNode>> GenerateCFG(std::vector<std::shared_ptr<StmtNode>>);
+  std::shared_ptr<CFGNode> GenerateCFG(std::vector<std::shared_ptr<StmtNode>>);
+
+  void CheckAndInsertNode(std::vector<std::shared_ptr<CFGNode>> nextNodes,
+                          std::shared_ptr<CFGNode> newNode);
 };
