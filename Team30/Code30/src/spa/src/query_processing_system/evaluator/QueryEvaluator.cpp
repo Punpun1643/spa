@@ -64,9 +64,7 @@ bool QueryEvaluator::updateResultUsingAttrTypes(std::vector<std::vector<std::str
   for (auto& row: values) {
     for (auto i : aliased_idx) {
       const AttrRef& attr_ref = attr_refs[i];
-      row[i] = pkb.convertEntityAttribute(row[i], attr_ref.getEntityType(),
-                                          attr_ref.getDefaultAttrType(),
-                                          attr_ref.getAttrType());
+      row[i] = attr_ref.getRepresentationFromDefault(pkb, row[i]);
     }
   }
   return true;

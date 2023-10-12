@@ -3,6 +3,7 @@
 #include "AttrType.h"
 #include "PqlDeclaration.h"
 #include "EntityType.h"
+#include "program_knowledge_base/PKBQPSInterface.h"
 
 #include <unordered_map>
 
@@ -14,17 +15,14 @@ class AttrRef {
   static const std::unordered_map<EntityType, AttrType> ATTR_TYPE_ALIASES;
 
   void checkTypeCombinationValidity() const;
+  AttrType getDefaultAttrType() const;
 
  public:
   explicit AttrRef(PqlDeclaration decl);
 
   AttrRef(PqlDeclaration decl, AttrType attr_type);
 
-  AttrType getDefaultAttrType() const;
-
-  AttrType getAttrType() const;
-
-  EntityType getEntityType() const;
+  std::string getRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const;
 
   bool isAttrTypeAnAlias() const;
 
