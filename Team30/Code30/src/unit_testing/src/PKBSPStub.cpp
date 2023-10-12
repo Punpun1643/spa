@@ -160,7 +160,7 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
     std::string nodeStmtNo =
         std::to_string(currNode->getNode()->getStmtIndex());
 
-    std::cout << nodeStmtNo + "\n";
+    //std::cout << nodeStmtNo + "\n";
 
     bool removeResult =
         std::remove(outgoingStmtNos.begin(), outgoingStmtNos.end(),
