@@ -1,4 +1,5 @@
 #include "QueryEvaluator.h"
+#include "ArrayUtility.h"
 
 #include <algorithm>
 #include <cassert>
@@ -23,6 +24,55 @@ bool QueryEvaluator::evaluateQuery(ClauseList clauses) {
   return !table.hasNoResults();
 }
 
+std::vector<PqlDeclaration> QueryEvaluator::unwrapAttrRefVector(std::vector<AttrRef> const& attr_refs) {
+  std::vector<PqlDeclaration> decls = {};
+  for (auto const& attr_ref: attr_refs) {
+    decls.push_back(attr_ref.getDecl());
+  }
+  return decls;
+}
+
+void QueryEvaluator::fillMissingDecls(IntermediateResultsTable& table, std::vector<PqlDeclaration> const& decls_to_check) {
+  std::vector<std::shared_ptr<Clause>> missing_decl_clauses = {};
+  for (auto const& decl : decls_to_check) {
+    if (!table.hasDeclaration(decl)) {
+      auto select_all_clause = std::make_shared<SelectAllClause>(decl);
+      missing_decl_clauses.push_back(select_all_clause);
+    }
+  }
+  populateIntermediateResultsTable(table, missing_decl_clauses);
+}
+
+bool QueryEvaluator::updateResultUsingAttrTypes(std::vector<std::vector<std::string>> &values, std::vector<AttrRef> const& attr_refs) {
+  /**
+   * Returns true if the 2D-vector was modified, and false otherwise
+   */
+  if (!values.empty()) {
+    assert(values[0].size() == attr_refs.size()); // assume not ragged 2D vec
+  }
+
+  std::vector<int> aliased_idx = {};
+  for (int i = 0; i < attr_refs.size(); i++) {
+    if (attr_refs[i].isAttrTypeAnAlias()) {
+      aliased_idx.push_back(i);
+    }
+  }
+
+  if (aliased_idx.empty() || values.empty()) {
+    return false;
+  }
+
+  for (auto& row: values) {
+    for (auto i : aliased_idx) {
+      const AttrRef& attr_ref = attr_refs[i];
+      row[i] = pkb.convertEntityAttribute(row[i], attr_ref.getEntityType(),
+                                          attr_ref.getDefaultAttrType(),
+                                          attr_ref.getAttrType());
+    }
+  }
+  return true;
+}
+
 std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(
     std::vector<AttrRef> const& selected_attr_refs, ClauseList clauses) {
   /**
@@ -34,35 +84,14 @@ std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(
   auto table = IntermediateResultsTable();
   populateIntermediateResultsTable(table, clauses);
 
-  // Get declaration vector
-  std::vector<PqlDeclaration> selected_decls = {};
-  for (auto const& attr_ref: selected_attr_refs) {
-    selected_decls.push_back(attr_ref.getDecl());
-  }
-
-  // Fill in missing declarations
-  std::vector<std::shared_ptr<Clause>> missing_decl_clauses = {};
-  for (auto const& decl : selected_decls) {
-    if (!table.hasDeclaration(decl)) {
-      auto select_all_clause = std::make_shared<SelectAllClause>(decl);
-      missing_decl_clauses.push_back(select_all_clause);
-    }
-  }
-  populateIntermediateResultsTable(table, missing_decl_clauses);
-
+  std::vector<PqlDeclaration> selected_decls = unwrapAttrRefVector(selected_attr_refs);
+  fillMissingDecls(table, selected_decls);
   auto values = table.getValuesGivenDeclarations(selected_decls);
-  // Convert values if need be
-  for (auto& row: values) {
-    for (int i=0; i < row.size(); i++) {
-      const AttrRef& attr_ref = selected_attr_refs[i];
-      if (attr_ref.isAttrTypeAnAlias()) {
-        std::string new_value = pkb.convertEntityAttribute(row[i],
-                                                           attr_ref.getEntityType(),
-                                                           attr_ref.getDefaultAttrType(),
-                                                           attr_ref.getAttrType());
-        row[i] = new_value;
-      }
-    }
+
+  // Some of the attr_refs might be asking for alternative attrTypes
+  bool is_modified = updateResultUsingAttrTypes(values, selected_attr_refs);
+  if (is_modified) {
+    ArrayUtility::removeDuplicates(values);
   }
   return values;
 }
