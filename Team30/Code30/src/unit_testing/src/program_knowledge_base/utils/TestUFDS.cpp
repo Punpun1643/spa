@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../spa/src/program_knowledge_base/utils/UFDS.h"
+#include "../../../../spa/src/program_knowledge_base/utils/UFDS.h"
 #include "catch.hpp"
 
 TEST_CASE("Basic checks") {

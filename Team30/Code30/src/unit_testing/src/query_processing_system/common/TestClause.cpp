@@ -1,4 +1,4 @@
-#include "PkbQpsInterfaceStub.h"
+#include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
 #include "query_processing_system/common/CallsClause.h"
 #include "query_processing_system/common/Clause.h"

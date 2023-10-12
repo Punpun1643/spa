@@ -1,5 +1,5 @@
-#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
-#include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
+#include "../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
+#include "../../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
 
 class PkbQpsInterfaceStub : public PKBQPSInterface {

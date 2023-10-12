@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../../spa/src/query_processing_system/QPSController.h"
+#include "../../../spa/src/query_processing_system/QPSController.h"
 #include "ParserHelperFunctions.h"
 #include "catch.hpp"
 

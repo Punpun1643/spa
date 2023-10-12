@@ -1,12 +1,12 @@
 #include <memory>
 
-#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
-#include "../../spa/src/query_processing_system/common/FollowsClause.h"
-#include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
-#include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
-#include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
-#include "PkbQpsInterfaceStub.h"
-#include "PkbStub.h"
+#include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
+#include "../../../../spa/src/query_processing_system/common/FollowsClause.h"
+#include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
+#include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
+#include "../../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
+#include "../../stub/PkbQpsInterfaceStub.h"
+#include "../../stub/PkbStub.h"
 #include "catch.hpp"
 
 class QeFactoryMethods {

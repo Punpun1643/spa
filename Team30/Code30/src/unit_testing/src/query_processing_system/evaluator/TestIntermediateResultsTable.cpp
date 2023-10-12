@@ -1,7 +1,7 @@
-#include "../../spa/src/query_processing_system/common/ClauseResult.h"
+#include "../../../../spa/src/query_processing_system/common/ClauseResult.h"
 #include "catch.hpp"
-#include "query_processing_system/evaluator/IntermediateResultsTable.h"
 #include "query_processing_system/evaluator/ArrayUtility.h"
+#include "query_processing_system/evaluator/IntermediateResultsTable.h"
 
 // ASSUMPTIONS: Tests for RelationalTable all pass.
 

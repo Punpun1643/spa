@@ -1,5 +1,6 @@
 #include <program_knowledge_base/tables/LinkedListTable.h>
-#include "../../spa/src/program_knowledge_base/tables/DictionaryTable.h"
+
+#include "../../../../spa/src/program_knowledge_base/tables/DictionaryTable.h"
 #include "catch.hpp"
 
 TEST_CASE("Parent & Follows (DictionaryTable)") {

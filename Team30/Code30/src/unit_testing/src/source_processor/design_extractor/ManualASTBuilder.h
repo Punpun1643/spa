@@ -1,13 +1,13 @@
-#include "../../../src/spa/src/source_processor/node/ProgramNode.h"
-#include "../../../src/spa/src/source_processor/node/stmt_node/AssignNode.h"
-#include "../../../src/spa/src/source_processor/node/stmt_node/CallNode.h"
-#include "../../../src/spa/src/source_processor/node/stmt_node/IfNode.h"
-#include "../../../src/spa/src/source_processor/node/stmt_node/PrintNode.h"
-#include "../../../src/spa/src/source_processor/node/stmt_node/ReadNode.h"
-#include "../../../src/spa/src/source_processor/node/stmt_node/WhileNode.h"
-#include "../../../src/spa/src/shared/parser/node/TreeNode.h"
-
 #include <memory>
+
+#include "../../../../spa/src/shared/parser/node/TreeNode.h"
+#include "../../../../spa/src/source_processor/node/ProgramNode.h"
+#include "../../../../spa/src/source_processor/node/stmt_node/AssignNode.h"
+#include "../../../../spa/src/source_processor/node/stmt_node/CallNode.h"
+#include "../../../../spa/src/source_processor/node/stmt_node/IfNode.h"
+#include "../../../../spa/src/source_processor/node/stmt_node/PrintNode.h"
+#include "../../../../spa/src/source_processor/node/stmt_node/ReadNode.h"
+#include "../../../../spa/src/source_processor/node/stmt_node/WhileNode.h"
 
 class ManualASTBuilder {
  public:

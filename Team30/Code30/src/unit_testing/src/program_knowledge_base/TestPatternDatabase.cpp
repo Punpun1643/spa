@@ -1,4 +1,4 @@
-#include "../../spa/src/program_knowledge_base/PatternDatabase.h"
+#include "../../../spa/src/program_knowledge_base/PatternDatabase.h"
 #include "catch.hpp"
 
 TEST_CASE("Pattern Database insertion and retrieval") {

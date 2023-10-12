@@ -7,9 +7,9 @@
 #include <iostream>
 #include <source_processor/design_extractor/ExtractionController.cpp>
 
-#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
+#include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
+#include "../../stub/PKBSPStub.h"
 #include "ManualASTBuilder.h"
-#include "PKBSPStub.h"
 #include "catch.hpp"
 
 TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
