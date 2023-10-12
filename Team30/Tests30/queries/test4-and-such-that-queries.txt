@@ -1,0 +1,10 @@
+1 - Modifies,Follows*,pattern
+procedure p1; assign a1, a2;
+Select p1 such that Modifies(p1, "z") and Follows*(a1, a2) pattern a2 ("z", _)
+Bumblebee
+5000
+2 - Complex multiple such that
+assign a1, a2, a3, a4; stmt s; variable v;
+Select a1 such that Uses(a1, v) and Follows(s, a1) pattern a1 ("q", _"y"_) such that Parent(13, a2) and Follows*(a3, 10) pattern a3 ("z", _) such that Uses(a1, "y")
+12
+5000

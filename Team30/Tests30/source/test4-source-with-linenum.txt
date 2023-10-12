@@ -1,0 +1,45 @@
+   procedure Bumblebee {
+01   read x;
+02   y = 2 * z;
+03   z = p - y;
+   
+04   if (q != 1) then {
+05     z = x + 24;
+     } else {
+06     while (z > 0) {
+07         y = x * q - 5;
+08         z = z - 1;
+       }
+09   y = x + y * z + p * q;
+     }
+   
+10   i = x + j + z;
+   }
+   
+   
+   procedure Megatron {
+11   p = x * 10;
+12   q = y + y * 10;
+     
+13   while (t == 0) {
+14     a = 5 * p - 5;
+15     print y;
+     }
+   
+16   q = p * 5;
+   }
+   
+   procedure IronHide {
+17   i = x * 10;
+18   j = x + y * 10;
+19   if (i > j) then {
+20     read x;
+     } else {
+21     y = i + x + y * z;
+     }
+   }
+   
+   procedure Barricade {
+22     q = i * x * j + y + p * q;
+23     print p;
+   }
