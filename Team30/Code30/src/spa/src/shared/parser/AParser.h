@@ -14,15 +14,24 @@ class AParser {
  public:
   AParser(std::vector<std::shared_ptr<Token>> tokens);
 
-  // move pointer to the next token
+  /**
+   * @brief Moves the pointer to the next token.
+   */
   std::shared_ptr<Token> NextToken();
 
-  // explore the next token without moving the pointer
+  /**
+   * @brief Explores the next token without moving the pointer.
+   */
   std::shared_ptr<Token> PeekToken();
 
+  /**
+   * @brief Explores the previous token without moving the pointer.
+   */
   std::shared_ptr<Token> PeekBackToken();
 
-  // get the current token
+  /**
+   * @brief Returns the current token.
+   */
   std::shared_ptr<Token> GetCurrToken();
 
   /**
@@ -33,12 +42,17 @@ class AParser {
   std::string GetCurrTokenValue();
 
   /**
-   * @brief Parses the tokens.
+   * @brief Returns the value of the next token.
    *
-   * @throw std::runtime_error if the tokens are not valid.
+   * @return The value of the next token.
    */
   std::string GetPeekTokenValue();
 
+  /**
+   * @brief Returns the value of the previous token.
+   *
+   * @return The value of the previous token.
+   */
   std::string GetPeekBackTokenValue();
 
   virtual void parse() = 0;
@@ -67,6 +81,12 @@ class AParser {
 
   static bool IsMathematicalOperator(std::string const& tokenValue);
 
+  /**
+   * @brief Checks if the current tree stack has the expected size.
+   *
+   * @param treeStack The tree stack to check.
+   * @param size The expected size of the tree stack.
+   */
   static void ValidateTreeStackSize(
       std::stack<std::shared_ptr<TreeNode>>& treeStack, int size);
 
@@ -74,7 +94,7 @@ class AParser {
    * @brief Builds an expression tree from the given postfix queue.
    *
    * @param postFixQueue The postfix queue from an infix expression.
-   * @return
+   * @return The root of the expression tree.
    */
   static std::shared_ptr<TreeNode> BuildExprTreeAndValidate(
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
@@ -83,30 +103,69 @@ class AParser {
    * @brief Converts the given infix tokens to postfix.
    *
    * @param infixTokens The infix tokens from given expression.
-   * @return
+   * @return The postfix queue.
    */
   std::queue<std::shared_ptr<std::string>> ConvertInfixToPostfix(
       std::vector<std::shared_ptr<Token>> infixTokens);
 
+  /**
+   * @brief Handles the given infix word or integer token.
+   *
+   * @param token The infix word or integer token.
+   * @param postFixQueue The postfix queue to add the token to.
+   */
   void HandleInfixWordOrIntegerToken(
       std::shared_ptr<Token> token,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
+  /**
+   * @brief Handles the given infix operator token.
+   *
+   * @param token The infix operator token.
+   * @param operatorStack The operator stack to add the token to.
+   */
   void HandleInfixOperatorToken(
       std::shared_ptr<Token> token,
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
+  /**
+   * @brief Handles the given left parenthesis token.
+   *
+   * @param token The left parenthesis token.
+   * @param operatorStack The operator stack to add the token to.
+   */
   void HandleLeftParenthesisToken(
       std::shared_ptr<Token> token,
       std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
+  /**
+   * @brief Handles the given right parenthesis token.
+   *
+   * @param operatorStack The operator stack to add the token to.
+   * @param postFixQueue The postfix queue to add the token to.
+   * @param parenCount The number of left parenthesis tokens.
+   */
   void HandleRightParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount);
 
+  /**
+   * @brief The precedence definition of the given operator.
+   *
+   * @param operatorValue The operator value.
+   * @return The precedence of the given operator.
+   */
   virtual int Precedence(std::string const& operatorValue);
 
+  /**
+   * @brief Checks if the first operator has a higher or equal precedence than
+   * the second operator.
+   *
+   * @param operatorValue1 The first operator value.
+   * @param operatorValue2 The second operator value.
+   * @return True if the first operator has a higher or equal precedence than
+   */
   bool IsGreaterOrEqualPrecedence(std::string const& operatorValue1,
                                   std::string const& operatorValue2);
 
@@ -202,6 +261,14 @@ class AParser {
     NextToken();
   }
 
+  /**
+   * @brief Parse and validate a variable/procedure name, and advance
+   * to the next token.
+   *
+   * @tparam ExceptionType The exception type to throw if the current token is
+   * not a variable name.
+   * @return The variable/procedure name.
+   */
   template <typename ExceptionType>
   std::string ParseAndValidateVarName() {
     CheckCurrTokenType<ExceptionType>(TokenType::WORD_TOKEN);
