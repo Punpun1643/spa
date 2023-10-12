@@ -334,6 +334,7 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   std::vector<std::pair<std::string, std::string>> actual_pairs =
       *pkb.getRelationSynonymSynonym(EntityType::STMT, EntityType::STMT,
                                      RelationType::PARENT);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == tmp_pair);
 }
 
