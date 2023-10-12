@@ -22,6 +22,7 @@ runs:
         ./build/src/autotester/autotester Team30/Tests30/source/multi-procedures-and-calls-source.txt Team30/Tests30/queries/multi-procedures-and-calls-queries.txt Team30/Tests30/output/multi-procedures-and-calls-output.xml
         ./build/src/autotester/autotester Team30/Tests30/source/multi-call-source.txt Team30/Tests30/queries/multi-call-relation-queries.txt Team30/Tests30/output/multi-call-relation-output.xml
         ./build/src/autotester/autotester Team30/Tests30/source/exact-pattern-source.txt Team30/Tests30/queries/exact-pattern-queries.txt Team30/Tests30/output/exact-pattern-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/Select/assign/test-assign-source.txt Team30/Tests30/Select/assign/test-assign-queries.txt Team30/Tests30/output/parse-assign-output.xml
     - name: start-index-file
       shell: bash
       run: |
