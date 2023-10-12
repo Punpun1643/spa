@@ -35,8 +35,15 @@ void QPSController::HandleQuery(
   std::vector<std::shared_ptr<Clause>> other_clauses =
       context->GetOtherClauses();
 
+  // ---Temp addition to make it compile
+  std::vector<AttrRef> selected_attr_refs = {};
+  for (auto &decl: selected_declarations) {
+    selected_attr_refs.push_back(AttrRef(decl));
+  }
+  // ---
+
   std::vector<std::vector<std::string>> query_results =
-      query_evaluator->evaluateQuery(selected_declarations, other_clauses);
+      query_evaluator->evaluateQuery(selected_attr_refs, other_clauses);
 
   for (std::vector<std::string> result : query_results) {
     std::string result_string;

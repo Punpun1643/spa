@@ -22,6 +22,7 @@ TEST_CASE("Test Query Evaluator") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
   QueryEvaluator qe = QueryEvaluator(pkb);
   PqlDeclaration a = PqlDeclaration("a", EntityType::ASSIGN);
+  AttrRef a_attr_ref = AttrRef(a);
   PqlDeclaration if_decl = PqlDeclaration("if", EntityType::IF);
   PqlDeclaration s = PqlDeclaration("s", EntityType::STMT);
   PqlDeclaration v = PqlDeclaration("v", EntityType::VARIABLE);
@@ -48,27 +49,27 @@ TEST_CASE("Test Query Evaluator") {
   }
 
   SECTION("Evaluate query with one decl that is not in the clauses") {
-    result = qe.evaluateQuery({a}, {});
+    result = qe.evaluateQuery({a_attr_ref}, {});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
 
     // negated by clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
-    result = qe.evaluateQuery({a}, {follows_clause});
+    result = qe.evaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(result.empty());
 
     // clause has values
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
-    result = qe.evaluateQuery({a}, {follows_clause});
+    result = qe.evaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
   }
 
   SECTION("Evaluate query with one decl, decl also in clauses") {
     // output values should follow existing clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
-    result = qe.evaluateQuery({a}, {follows_clause});
+    result = qe.evaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.synonymValueValues);
     // Addition of empty clause -> no results
-    result = qe.evaluateQuery({a}, {follows_clause, negation_clause});
+    result = qe.evaluateQuery({a_attr_ref}, {follows_clause, negation_clause});
     REQUIRE(result.empty());
   }
 
@@ -76,7 +77,7 @@ TEST_CASE("Test Query Evaluator") {
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
     pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(v), MatchType::EXACT_MATCH, "blah");
-    result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause});
+    result = qe.evaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause});
     std::vector<std::vector<std::string>> expected_result = {
         {"x","x","123","345"},{"y","y", "123","345"},{"z", "z","123","345"}
     };
@@ -84,7 +85,7 @@ TEST_CASE("Test Query Evaluator") {
 
     // Addition of empty clause -> no results
 
-    result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause, negation_clause});
+    result = qe.evaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_clause});
     REQUIRE(result.empty());
   }
 }
