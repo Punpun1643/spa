@@ -56,8 +56,8 @@ TEST_CASE("Parser parseProgram") {
     auto programNode = parser.parseProgram();
 
     REQUIRE(programNode != nullptr);
-    REQUIRE(programNode->getChildren().size() == 1);
-    REQUIRE(programNode->getChildren().at(0)->getProcedureName() == "main");
+    REQUIRE(programNode->GetChildren().size() == 1);
+    REQUIRE(programNode->GetChildren().at(0)->GetProcedureName() == "main");
   }
 
   SECTION("Valid program with 2 procedures") {
@@ -97,9 +97,9 @@ TEST_CASE("Parser parseProgram") {
     auto programNode = parser.parseProgram();
 
     REQUIRE(programNode != nullptr);
-    REQUIRE(programNode->getChildren().size() == 2);
-    REQUIRE(programNode->getChildren().at(0)->getProcedureName() == "main");
-    REQUIRE(programNode->getChildren().at(1)->getProcedureName() == "proc");
+    REQUIRE(programNode->GetChildren().size() == 2);
+    REQUIRE(programNode->GetChildren().at(0)->GetProcedureName() == "main");
+    REQUIRE(programNode->GetChildren().at(1)->GetProcedureName() == "proc");
   }
 
   SECTION(

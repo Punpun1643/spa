@@ -8,25 +8,25 @@ ParentExtractor::ParentExtractor(PKBSPInterface& pkb)
 
 void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children =
-      node->getStmtLst()->getChildren();
+      node->GetStmtLst()->GetChildren();
   for (int i = 0; i < children.size(); i++) {
     pkb.insertRelation(RelationType::PARENT,
-                       std::to_string(node->getStmtIndex()),
-                       std::to_string(children[i]->getStmtIndex()));
+                       std::to_string(node->GetStmtIndex()),
+                       std::to_string(children[i]->GetStmtIndex()));
   }
 }
 
 void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-  int parentIndex = node->getStmtIndex();
+  int parentIndex = node->GetStmtIndex();
   std::vector<std::shared_ptr<StmtNode>> children =
-      node->getThenStmtLst()->getChildren();
+      node->GetThenStmtLst()->GetChildren();
   std::vector<std::shared_ptr<StmtNode>> elseChildren =
-      node->getElseStmtLst()->getChildren();
+      node->GetElseStmtLst()->GetChildren();
   children.insert(std::end(children), std::begin(elseChildren),
                   std::end(elseChildren));
   for (int i = 0; i < children.size(); i++) {
     pkb.insertRelation(RelationType::PARENT,
-                       std::to_string(node->getStmtIndex()),
-                       std::to_string(children[i]->getStmtIndex()));
+                       std::to_string(node->GetStmtIndex()),
+                       std::to_string(children[i]->GetStmtIndex()));
   }
 }

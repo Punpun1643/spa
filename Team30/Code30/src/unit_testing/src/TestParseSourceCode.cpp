@@ -56,35 +56,35 @@ TEST_CASE("Test parse() method") {
     auto programNode = parser.getSourceProgramNode();
 
     REQUIRE(programNode != nullptr);
-    REQUIRE(programNode->getChildren().size() == 1);
-    REQUIRE(programNode->getChildren().at(0)->getProcedureName() ==
+    REQUIRE(programNode->GetChildren().size() == 1);
+    REQUIRE(programNode->GetChildren().at(0)->GetProcedureName() ==
             "computeAverage");
 
-    auto procedureNode = programNode->getChildren().at(0);
-    REQUIRE(procedureNode->getChildren().size() == 1);
+    auto procedureNode = programNode->GetChildren().at(0);
+    REQUIRE(procedureNode->GetChildren().size() == 1);
 
-    auto stmtListNode = procedureNode->getChildren().at(0);
-    REQUIRE(stmtListNode->getChildren().size() == 5);
+    auto stmtListNode = procedureNode->GetChildren().at(0);
+    REQUIRE(stmtListNode->GetChildren().size() == 5);
 
     auto readNode1 =
-        std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(0));
-    REQUIRE(readNode1->getVarName() == "num1");
+        std::dynamic_pointer_cast<ReadNode>(stmtListNode->GetChildren().at(0));
+    REQUIRE(readNode1->GetVarName() == "num1");
 
     auto readNode2 =
-        std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(1));
-    REQUIRE(readNode2->getVarName() == "num2");
+        std::dynamic_pointer_cast<ReadNode>(stmtListNode->GetChildren().at(1));
+    REQUIRE(readNode2->GetVarName() == "num2");
 
     auto readNode3 =
-        std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(2));
-    REQUIRE(readNode3->getVarName() == "num3");
+        std::dynamic_pointer_cast<ReadNode>(stmtListNode->GetChildren().at(2));
+    REQUIRE(readNode3->GetVarName() == "num3");
 
     auto printNode =
-        std::dynamic_pointer_cast<PrintNode>(stmtListNode->getChildren().at(3));
-    REQUIRE(printNode->getVarName() == "ave");
+        std::dynamic_pointer_cast<PrintNode>(stmtListNode->GetChildren().at(3));
+    REQUIRE(printNode->GetVarName() == "ave");
 
     auto callNode =
-        std::dynamic_pointer_cast<CallNode>(stmtListNode->getChildren().at(4));
-    REQUIRE(callNode->getProcName() == "dummy");
+        std::dynamic_pointer_cast<CallNode>(stmtListNode->GetChildren().at(4));
+    REQUIRE(callNode->GetProcName() == "dummy");
   }
 
   SECTION("Test parse() method with while") {
@@ -172,41 +172,41 @@ TEST_CASE("Test parse() method") {
     auto programNode = parser.getSourceProgramNode();
 
     REQUIRE(programNode != nullptr);
-    REQUIRE(programNode->getChildren().size() == 1);
-    REQUIRE(programNode->getChildren().at(0)->getProcedureName() ==
+    REQUIRE(programNode->GetChildren().size() == 1);
+    REQUIRE(programNode->GetChildren().at(0)->GetProcedureName() ==
             "computeAverage");
 
-    auto procedureNode = programNode->getChildren().at(0);
-    REQUIRE(procedureNode->getChildren().size() == 1);
+    auto procedureNode = programNode->GetChildren().at(0);
+    REQUIRE(procedureNode->GetChildren().size() == 1);
 
-    auto stmtListNode = procedureNode->getChildren().at(0);
-    REQUIRE(stmtListNode->getChildren().size() == 6);
+    auto stmtListNode = procedureNode->GetChildren().at(0);
+    REQUIRE(stmtListNode->GetChildren().size() == 6);
 
     auto readNode1 =
-        std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(0));
-    REQUIRE(readNode1->getVarName() == "num1");
+        std::dynamic_pointer_cast<ReadNode>(stmtListNode->GetChildren().at(0));
+    REQUIRE(readNode1->GetVarName() == "num1");
 
     auto readNode2 =
-        std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(1));
-    REQUIRE(readNode2->getVarName() == "num2");
+        std::dynamic_pointer_cast<ReadNode>(stmtListNode->GetChildren().at(1));
+    REQUIRE(readNode2->GetVarName() == "num2");
 
     auto readNode3 =
-        std::dynamic_pointer_cast<ReadNode>(stmtListNode->getChildren().at(2));
-    REQUIRE(readNode3->getVarName() == "num3");
+        std::dynamic_pointer_cast<ReadNode>(stmtListNode->GetChildren().at(2));
+    REQUIRE(readNode3->GetVarName() == "num3");
 
     auto printNode =
-        std::dynamic_pointer_cast<PrintNode>(stmtListNode->getChildren().at(3));
-    REQUIRE(printNode->getVarName() == "ave");
+        std::dynamic_pointer_cast<PrintNode>(stmtListNode->GetChildren().at(3));
+    REQUIRE(printNode->GetVarName() == "ave");
 
     auto callNode =
-        std::dynamic_pointer_cast<CallNode>(stmtListNode->getChildren().at(4));
-    REQUIRE(callNode->getProcName() == "dummy");
+        std::dynamic_pointer_cast<CallNode>(stmtListNode->GetChildren().at(4));
+    REQUIRE(callNode->GetProcName() == "dummy");
 
     auto whileNode =
-        std::dynamic_pointer_cast<WhileNode>(stmtListNode->getChildren().at(5));
+        std::dynamic_pointer_cast<WhileNode>(stmtListNode->GetChildren().at(5));
 
-    auto whileStmtLstNode = whileNode->getStmtLst();
+    auto whileStmtLstNode = whileNode->GetStmtLst();
 
-    REQUIRE(whileStmtLstNode->getChildren().size() == 1);
+    REQUIRE(whileStmtLstNode->GetChildren().size() == 1);
   }
 }

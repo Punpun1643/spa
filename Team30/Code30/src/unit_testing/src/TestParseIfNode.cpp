@@ -651,14 +651,14 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
         TestParseIfNode::TestableParser(tokens);
 
     std::shared_ptr<IfNode> ifNode = parser.parseIf();
-    std::shared_ptr<CondExprNode> condExprNode = ifNode->getCondExpr();
-    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();
-    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->getElseStmtLst();
+    std::shared_ptr<CondExprNode> condExprNode = ifNode->GetCondExpr();
+    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->GetThenStmtLst();
+    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->GetElseStmtLst();
 
-    REQUIRE(condExprNode->getVariables()->size() == 2);
-    REQUIRE(condExprNode->getConstants()->size() == 0);
-    REQUIRE(thenStmtLstNode->getChildren().size() == 3);
-    REQUIRE(elseStmtLstNode->getChildren().size() == 1);
+    REQUIRE(condExprNode->GetVariables()->size() == 2);
+    REQUIRE(condExprNode->GetConstants()->size() == 0);
+    REQUIRE(thenStmtLstNode->GetChildren().size() == 3);
+    REQUIRE(elseStmtLstNode->GetChildren().size() == 1);
   }
 
   SECTION(
@@ -731,19 +731,19 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     TestParseIfNode::TestableParser parser =
         TestParseIfNode::TestableParser(tokens);
     std::shared_ptr<IfNode> ifNode = parser.parseIf();
-    std::shared_ptr<CondExprNode> condExprNode = ifNode->getCondExpr();
-    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();
-    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->getElseStmtLst();
+    std::shared_ptr<CondExprNode> condExprNode = ifNode->GetCondExpr();
+    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->GetThenStmtLst();
+    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->GetElseStmtLst();
 
-    REQUIRE(condExprNode->getVariables()->size() == 1);
-    REQUIRE(condExprNode->getConstants()->size() == 1);
-    REQUIRE(thenStmtLstNode->getChildren().size() == 3);
-    REQUIRE(elseStmtLstNode->getChildren().size() == 2);
+    REQUIRE(condExprNode->GetVariables()->size() == 1);
+    REQUIRE(condExprNode->GetConstants()->size() == 1);
+    REQUIRE(thenStmtLstNode->GetChildren().size() == 3);
+    REQUIRE(elseStmtLstNode->GetChildren().size() == 2);
 
     std::shared_ptr<WhileNode> whileNode =
-        std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->getChildren()[1]);
-    REQUIRE(whileNode->getCondExpr()->getVariables()->size() == 2);
-    REQUIRE(whileNode->getCondExpr()->getConstants()->size() == 0);
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+        std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->GetChildren()[1]);
+    REQUIRE(whileNode->GetCondExpr()->GetVariables()->size() == 2);
+    REQUIRE(whileNode->GetCondExpr()->GetConstants()->size() == 0);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 }

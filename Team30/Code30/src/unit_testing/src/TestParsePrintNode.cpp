@@ -52,7 +52,7 @@ TEST_CASE("Test parse print", "[parsePrint]") {
         TestParsePrintNode::TestableParser(tokens);
     std::shared_ptr<PrintNode> printNode = parser.parsePrint();
 
-    REQUIRE(printNode->getVarName() == "variable");
+    REQUIRE(printNode->GetVarName() == "variable");
   }
 
   SECTION("Test invalid print stmt should throw error (i.e. print variable)") {

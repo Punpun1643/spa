@@ -51,7 +51,7 @@ TEST_CASE("Test parse call", "[parseCall]") {
         TestParseCall::TestableParser(tokens);
     std::shared_ptr<CallNode> callNode = parser.parseCall();
 
-    REQUIRE(callNode->getProcName() == "variable");
+    REQUIRE(callNode->GetProcName() == "variable");
   }
 
   SECTION("Test invalid call stmt should throw error (i.e. call variable)") {

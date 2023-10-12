@@ -20,26 +20,26 @@ void ConstVarExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
 void ConstVarExtractor::extractFromCall(std::shared_ptr<CallNode> node) {}
 
 void ConstVarExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
+  pkb.insertEntity(EntityType::VARIABLE, node->GetVarName());
 }
 
 void ConstVarExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
+  pkb.insertEntity(EntityType::VARIABLE, node->GetVarName());
 }
 
 void ConstVarExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
-  std::shared_ptr<CondExprNode> cond = node->getCondExpr();
-  insertConstsVars(*cond->getConstants(), *cond->getVariables());
+  std::shared_ptr<CondExprNode> cond = node->GetCondExpr();
+  insertConstsVars(*cond->GetConstants(), *cond->GetVariables());
 }
 
 void ConstVarExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
-  std::shared_ptr<CondExprNode> cond = node->getCondExpr();
-  insertConstsVars(*cond->getConstants(), *cond->getVariables());
+  std::shared_ptr<CondExprNode> cond = node->GetCondExpr();
+  insertConstsVars(*cond->GetConstants(), *cond->GetVariables());
 }
 
 void ConstVarExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
-  insertConstsVars(*node->getConstants(), *node->getVariables());
+  pkb.insertEntity(EntityType::VARIABLE, node->GetVarName());
+  insertConstsVars(*node->GetConstants(), *node->GetVariables());
 }
 
 void ConstVarExtractor::insertConstsVars(std::unordered_set<int> consts,

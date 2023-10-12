@@ -321,7 +321,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
         TestParseWhileNode::TestableParser(tokens);
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
 
   SECTION("Test correct while with 3 statements") {
@@ -365,7 +365,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
         TestParseWhileNode::TestableParser(tokens);
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 
   SECTION("Test rel_expr i.e. i > 0") {
@@ -403,7 +403,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
         TestParseWhileNode::TestableParser(tokens);
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
 
   SECTION("Test 2 condExpr i.e. (i != 0) && (j == 10)") {
@@ -463,7 +463,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
         TestParseWhileNode::TestableParser(tokens);
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 
   SECTION("Test cond_expr i.e. (j == 10) || (k == 20)") {
@@ -517,7 +517,7 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
         TestParseWhileNode::TestableParser(tokens);
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
 
   SECTION("Test negation i.e. !(x == 0)") {
@@ -567,6 +567,6 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
         TestParseWhileNode::TestableParser(tokens);
     std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 }

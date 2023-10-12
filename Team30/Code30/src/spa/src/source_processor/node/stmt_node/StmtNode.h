@@ -7,9 +7,9 @@ class StmtNode : public ANode {
  public:
   explicit StmtNode(int stmtIndex, StmtType stmtType);
 
-  int getStmtIndex() const;
+  int GetStmtIndex() const;
 
-  StmtType getStmtType() const;
+  StmtType GetStmtType() const;
 
   virtual ~StmtNode() = default;
 

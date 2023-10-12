@@ -49,7 +49,7 @@ TEST_CASE("Test parse read", "[parseRead]") {
         TestParseReadNode::TestableParser(tokens);
     std::shared_ptr<ReadNode> readNode = parser.parseRead();
 
-    REQUIRE(readNode->getVarName() == "variable");
+    REQUIRE(readNode->GetVarName() == "variable");
   }
 
   SECTION("Test invalid read stmt should throw error (i.e. read variable)") {

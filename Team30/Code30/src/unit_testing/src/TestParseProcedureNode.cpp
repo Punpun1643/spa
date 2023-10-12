@@ -88,7 +88,7 @@ TEST_CASE("Parser parseProcedure") {
     auto procedureNode = parser.parseProcedure();
 
     REQUIRE(procedureNode != nullptr);
-    REQUIRE(procedureNode->getProcedureName() == "main");
-    REQUIRE(procedureNode->getChildren().at(0) != nullptr);
+    REQUIRE(procedureNode->GetProcedureName() == "main");
+    REQUIRE(procedureNode->GetChildren().at(0) != nullptr);
   }
 }

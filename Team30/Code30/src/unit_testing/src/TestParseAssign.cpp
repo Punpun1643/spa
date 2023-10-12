@@ -61,7 +61,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     std::shared_ptr<AssignNode> assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "+");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "1");
@@ -89,9 +89,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("normSq");
-    REQUIRE(assignNode->getConstants()->size() == 0);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "normSq");
+    REQUIRE(assignNode->GetConstants()->size() == 0);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "normSq");
   }
 
   SECTION(
@@ -115,7 +115,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     std::shared_ptr<AssignNode> assignNode = parser.parseAssign("normSq");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "+");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "*");
@@ -150,9 +150,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -175,7 +175,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "*");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
@@ -209,9 +209,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 2);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    REQUIRE(assignNode->GetConstants()->size() == 2);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -239,7 +239,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "*");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
@@ -268,9 +268,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 1);
-    REQUIRE(assignNode->getVarName() == "x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 1);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -290,7 +290,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "/");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "1");
@@ -316,9 +316,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -340,7 +340,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "*");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "/");
@@ -368,9 +368,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -392,7 +392,7 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     TestParseAssign::TestableParser parser =
         TestParseAssign::TestableParser(tokens);
     auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
     REQUIRE(exprTreeRoot->GetVal() == "+");
     REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
