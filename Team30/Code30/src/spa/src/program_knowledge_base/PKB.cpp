@@ -18,17 +18,17 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 };
 
 // ********** Private methods **********
-std::unordered_set<std::string> PKB::getAllRelatedToValue(
-    RelationType rel_type, std::shared_ptr<std::unordered_set<std::string>> set,
-    std::string value) {
+std::unordered_set<std::string> PKB::getIntersection(
+    std::unordered_set<std::string> set1,
+    std::unordered_set<std::string> set2) {
   std::unordered_set<std::string> output;
-  for (std::string e : *set) {
-    if (relData->isRelated(rel_type, e, value)) {
-      output.insert(e);
-    };
-  };
+  for (std::string v : set1) {
+    if (set2.find(v) != set2.end()) {
+      output.insert(v);
+    }
+  }
   return output;
-};
+}
 
 // ********** SP **********
 void PKB::insertEntity(EntityType type, std::string entity) {
@@ -133,16 +133,12 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationWildSynonym(
 // example Follows(s, 3), FolowsStar(s, 3)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
     EntityType entity_type, std::string value, RelationType rel_type) {
-  std::unordered_set<std::string> output;
   std::unordered_set<std::string> allInverseRelated =
       relData->getAllInverseRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = *entData->get(entity_type);
 
-  for (std::string v : allInverseRelated) {
-    if (entities.find(v) != entities.end()) {
-      output.insert(v);
-    }
-  }
+  std::unordered_set<std::string> output =
+      getIntersection(allInverseRelated, entities);
 
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
@@ -151,16 +147,13 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
 // example Follows(3, s)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValueSynonym(
     std::string value, EntityType entity_type, RelationType rel_type) {
-  std::unordered_set<std::string> output;
   std::unordered_set<std::string> allRelated =
       relData->getAllRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = *entData->get(entity_type);
 
-  for (std::string v : allRelated) {
-    if (entities.find(v) != entities.end()) {
-      output.insert(v);
-    }
-  }
+  std::unordered_set<std::string> output =
+      getIntersection(allRelated, entities);
+
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }
@@ -178,8 +171,10 @@ PKB::getRelationSynonymSynonym(EntityType entity_type_1,
       entData->get(entity_type_2);
 
   for (std::string ent1 : *ents1) {
+    std::unordered_set<std::string> allRelated =
+        relData->getAllRelatedToValue(rel_type, ent1);
     for (std::string ent2 : *ents2) {
-      if (relData->isRelated(rel_type, ent1, ent2)) {
+      if (allRelated.find(ent2) != allRelated.end()) {
         output.push_back(make_pair(ent1, ent2));
       }
     }

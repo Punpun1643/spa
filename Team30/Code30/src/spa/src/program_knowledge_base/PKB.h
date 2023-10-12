@@ -26,9 +26,9 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
 
   // Helper functions
-  std::unordered_set<std::string> getAllRelatedToValue(
-      RelationType rel_type,
-      std::shared_ptr<std::unordered_set<std::string>> set, std::string value);
+  std::unordered_set<std::string> getIntersection(
+      std::unordered_set<std::string> set1,
+      std::unordered_set<std::string> set2);
 
  public:
   PKB();
