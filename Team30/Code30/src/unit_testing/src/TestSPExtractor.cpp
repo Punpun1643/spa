@@ -47,6 +47,35 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   SECTION("Pattern extraction functionality") {
     REQUIRE(pkb.insertPatternCallCount == 2);
   }
+  SECTION("CFG node insertion functionality") {
+    REQUIRE(pkb.insertCFGCallCount == 13);
+    REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("2", {"1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {"5"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6", "8"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("5", {"4"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("6", {"7"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("6", {"5"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("7", {"5", "8"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("7", {}));
+    //REQUIRE(pkb.checkCFGNodeOutgoing("8", {"2"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("8", {}));
+    //REQUIRE(pkb.checkCFGNodeOutgoing("9", {"2"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("9", {}));
+    //REQUIRE(pkb.checkCFGNodeOutgoing("10", {"2"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("10", {}));
+    //REQUIRE(pkb.checkCFGNodeOutgoing("11", {"2"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("11", {}));
+    //REQUIRE(pkb.checkCFGNodeOutgoing("12", {"2"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("12", {}));
+    //REQUIRE(pkb.checkCFGNodeOutgoing("13", {"2"}));
+    //REQUIRE(pkb.checkCFGNodeIncoming("13", {}));
+  }
 }
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {

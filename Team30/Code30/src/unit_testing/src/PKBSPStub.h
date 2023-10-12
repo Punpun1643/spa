@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
@@ -21,8 +23,10 @@ class PKBSPStub : public PKBSPInterface {
   int insertModifiesCallCount;
   int insertCallsCallCount;
   int insertPatternCallCount;
+  int insertCFGCallCount;
 
   std::unordered_set<std::string> entitiesSet;
+  std::unordered_map<std::string, std::shared_ptr<CFGNode>> CFGNodeMap;
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
@@ -42,4 +46,9 @@ class PKBSPStub : public PKBSPInterface {
 
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
+
+  bool checkCFGNodeOutgoing(std::string statement_num,
+                            std::vector<std::string> outgoingStmtNos);
+  bool checkCFGNodeIncoming(std::string statement_num,
+                            std::vector<std::string> incomingStmtNos);
 };
