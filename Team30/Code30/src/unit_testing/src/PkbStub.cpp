@@ -25,6 +25,19 @@ void PkbStub::insertEntity(EntityType type, std::string entity) {
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
+std::string PkbStub::convertEntityAttribute(std::string value, EntityType type, AttrType curr_attr_type, AttrType wanted_attr_type) {
+  return "";
+};
+
+bool PkbStub::doesEntityExist(EntityType type, AttrType attr_type, std::string value) {
+  return false;
+};
+
+std::vector<std::string> PkbStub::getMatchingEntities(EntityType type_1, AttrType attr_type_1,
+                                                                  EntityType type_2, AttrType attr_type_2) {
+  return {};
+};
+
 void PkbStub::insertRelationCommon(RelationType type, std::string a,
                                    std::string b) {
   //if (type == RelationType::USES_P || type == RelationType::USES_S) {

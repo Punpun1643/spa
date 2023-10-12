@@ -38,6 +38,13 @@ class PkbStub : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
 
+  std::string convertEntityAttribute(std::string value, EntityType type, AttrType curr_attr_type, AttrType wanted_attr_type) override;
+
+  bool doesEntityExist(EntityType type, AttrType attr_type, std::string value) override;
+
+  std::vector<std::string> getMatchingEntities(EntityType type_1, AttrType attr_type_1,
+                                               EntityType type_2, AttrType attr_type_2) override;
+
   // 0 Declarations - SuchThatClauses
   bool isRelationTrueValueValue(std::string value_1, std::string value_2,
                                 RelationType rel_type) override;
