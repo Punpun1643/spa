@@ -16,7 +16,7 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 8);
   }
@@ -53,7 +53,7 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 1);
   }
@@ -89,7 +89,7 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 2);
   }
@@ -127,7 +127,7 @@ TEST_CASE(
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 1);
   }
@@ -164,7 +164,7 @@ TEST_CASE("AST 5: Three procedures, nested calls") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_5();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 0);
   }

@@ -11,5 +11,5 @@ void SpController::parseAndExtract(PKBSPInterface& pkb,
   std::shared_ptr<ProgramNode> programNode =
       parserManager.parseInputFile(sourceProgramFilePath);
   ExtractionController extractionController = ExtractionController(pkb);
-  extractionController.executeProgramExtraction(programNode);
+  extractionController.ExecuteProgramExtraction(programNode);
 }

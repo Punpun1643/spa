@@ -8,7 +8,7 @@ class CallsExtractor {
  public:
   explicit CallsExtractor(PKBSPInterface& pkb);
 
-  void extractCallAbstractions(
+  void ExtractCallAbstractions(
       std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
           procNodeMap);
 

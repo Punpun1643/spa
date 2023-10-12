@@ -18,15 +18,15 @@ class UsesExtractor : public UsesModifiesTypeExtractor {
   explicit UsesExtractor(PKBSPInterface& pkb,
                          std::shared_ptr<CallsManager> callsManager);
 
-  void extractFromPrint(std::shared_ptr<PrintNode> node) override;
+  void ExtractFromPrint(std::shared_ptr<PrintNode> node) override;
 
-  void extractFromCall(std::shared_ptr<CallNode> node) override;
+  void ExtractFromCall(std::shared_ptr<CallNode> node) override;
 
-  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+  void ExtractFromWhile(std::shared_ptr<WhileNode> node) override;
 
-  void extractFromIf(std::shared_ptr<IfNode> node) override;
+  void ExtractFromIf(std::shared_ptr<IfNode> node) override;
 
-  void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+  void ExtractFromAssign(std::shared_ptr<AssignNode> node) override;
 
   ~UsesExtractor() = default;
 
@@ -35,8 +35,8 @@ class UsesExtractor : public UsesModifiesTypeExtractor {
 
   std::shared_ptr<CallsManager> callsManager;
 
-  void insertMultipleVars(std::unordered_set<std::string> vars,
+  void InsertMultipleVars(std::unordered_set<std::string> vars,
                           std::string stmtIndex);
 
-  void insertVarWithActors(std::string var);
+  void InsertVarWithActors(std::string var);
 };

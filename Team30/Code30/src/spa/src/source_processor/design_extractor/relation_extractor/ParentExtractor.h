@@ -17,9 +17,9 @@ class ParentExtractor : public DesignExtractor {
  public:
   explicit ParentExtractor(PKBSPInterface& pkb);
 
-  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+  void ExtractFromWhile(std::shared_ptr<WhileNode> node) override;
 
-  void extractFromIf(std::shared_ptr<IfNode> node) override;
+  void ExtractFromIf(std::shared_ptr<IfNode> node) override;
 
   ~ParentExtractor() = default;
 

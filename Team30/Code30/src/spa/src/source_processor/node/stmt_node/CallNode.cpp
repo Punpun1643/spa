@@ -8,7 +8,7 @@ CallNode::CallNode(int stmtIndex, StmtType stmtType, std::string procName)
 void CallNode::accept(IDesignExtractor& designExtractor) {
   auto thisCallNodePtr =
       std::dynamic_pointer_cast<CallNode>(shared_from_this());
-  designExtractor.extractFromCall(thisCallNodePtr);
+  designExtractor.ExtractFromCall(thisCallNodePtr);
 }
 
 std::string const& CallNode::getProcName() const { return procName; }

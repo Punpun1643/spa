@@ -4,45 +4,36 @@
 #include <iterator>
 #include <unordered_set>
 
-ConstVarExtractor::ConstVarExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
+ConstVarExtractor::ConstVarExtractor(PKBSPInterface& pkb)
+    : pkb(pkb), DesignExtractor(pkb) {}
 
-void ConstVarExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
-
-void ConstVarExtractor::extractFromProcedure(
+void ConstVarExtractor::ExtractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {}
 
-void ConstVarExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {
-  // TODO
-}
-
-void ConstVarExtractor::extractFromCall(std::shared_ptr<CallNode> node) {}
-
-void ConstVarExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
+void ConstVarExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
 }
 
-void ConstVarExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
+void ConstVarExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
   pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
 }
 
-void ConstVarExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+void ConstVarExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
   std::shared_ptr<CondExprNode> cond = node->getCondExpr();
-  insertConstsVars(*cond->getConstants(), *cond->getVariables());
+  InsertConstsVars(*cond->getConstants(), *cond->getVariables());
 }
 
-void ConstVarExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+void ConstVarExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
   std::shared_ptr<CondExprNode> cond = node->getCondExpr();
-  insertConstsVars(*cond->getConstants(), *cond->getVariables());
+  InsertConstsVars(*cond->getConstants(), *cond->getVariables());
 }
 
-void ConstVarExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+void ConstVarExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertEntity(EntityType::VARIABLE, node->getVarName());
-  insertConstsVars(*node->getConstants(), *node->getVariables());
+  InsertConstsVars(*node->getConstants(), *node->getVariables());
 }
 
-void ConstVarExtractor::insertConstsVars(std::unordered_set<int> consts,
+void ConstVarExtractor::InsertConstsVars(std::unordered_set<int> consts,
                                          std::unordered_set<std::string> vars) {
   for (int num : consts) {
     pkb.insertEntity(EntityType::CONSTANT, std::to_string(num));

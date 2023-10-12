@@ -20,13 +20,13 @@ class UsesModifiesTypeExtractor : public DesignExtractor {
   explicit UsesModifiesTypeExtractor(
       PKBSPInterface& pkb, std::shared_ptr<CallsManager> callsManager);
 
-  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
+  void ExtractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
 
-  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
+  void ExtractFromWhile(std::shared_ptr<WhileNode> node) override;
 
-  void extractFromIf(std::shared_ptr<IfNode> node) override;
+  void ExtractFromIf(std::shared_ptr<IfNode> node) override;
 
-  void popActor();
+  void PopActor();
 
   ~UsesModifiesTypeExtractor() = default;
 

@@ -9,7 +9,7 @@ CallsManager::CallsManager(PKBSPInterface& pkb) : pkb(pkb) {
   procConnector = std::make_shared<CallsProcConnector>(pkb);
 }
 
-void CallsManager::insertProcNode(std::string procName) {
+void CallsManager::InsertProcNode(std::string procName) {
   if (procNodeMap.find(procName) == procNodeMap.end()) {
     std::shared_ptr<CallsGraphProcNode> newNode =
         std::make_shared<CallsGraphProcNode>(procName);
@@ -24,7 +24,7 @@ void CallsManager::insertProcNode(std::string procName) {
 // procA: the procedure in which the call stmt is found
 // procB: the procedure that the call stmt calls
 // i.e. A calls B
-void CallsManager::insertCallsStmt(std::string procA, std::string procB,
+void CallsManager::InsertCallsStmt(std::string procA, std::string procB,
                                    std::vector<std::string> actors,
                                    std::shared_ptr<CallNode> callNode) {
   std::shared_ptr<CallsGraphStmtNode> newStmtNode =
@@ -51,10 +51,10 @@ void CallsManager::insertCallsStmt(std::string procA, std::string procB,
   procCalling->addProcCalled(procGettingCalled);
 }
 
-void CallsManager::executeCallsExtraction() {
-  callsExtractor->extractCallAbstractions(procNodeMap);
+void CallsManager::ExecuteCallsExtraction() {
+  callsExtractor->ExtractCallAbstractions(procNodeMap);
 }
 
-void CallsManager::connectProcsAndUpdateRelations() {
-  procConnector->connectProcsAndUpdateRelations(procNodeMap);
+void CallsManager::ConnectProcsAndUpdateRelations() {
+  procConnector->ConnectProcsAndUpdateRelations(procNodeMap);
 }

@@ -7,7 +7,7 @@ class CallsProcConnector {
  public:
   explicit CallsProcConnector(PKBSPInterface& pkb);
 
-  void connectProcsAndUpdateRelations(
+  void ConnectProcsAndUpdateRelations(
       std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
           procNodeMap);
 

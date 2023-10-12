@@ -6,7 +6,7 @@
 ParentExtractor::ParentExtractor(PKBSPInterface& pkb)
     : pkb(pkb), DesignExtractor(pkb) {}
 
-void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+void ParentExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children =
       node->getStmtLst()->getChildren();
   for (int i = 0; i < children.size(); i++) {
@@ -16,7 +16,7 @@ void ParentExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   }
 }
 
-void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+void ParentExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
   int parentIndex = node->getStmtIndex();
   std::vector<std::shared_ptr<StmtNode>> children =
       node->getThenStmtLst()->getChildren();

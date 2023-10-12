@@ -7,7 +7,7 @@
 
 CallsProcConnector::CallsProcConnector(PKBSPInterface& pkb) : pkb(pkb) {}
 
-void CallsProcConnector::connectProcsAndUpdateRelations(
+void CallsProcConnector::ConnectProcsAndUpdateRelations(
     std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
         procNodeMap) {
   std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>

@@ -11,29 +11,25 @@
 #include "../../node/stmt_node/PrintNode.h"
 #include "../../node/stmt_node/ReadNode.h"
 #include "../../node/stmt_node/WhileNode.h"
-#include "../IDesignExtractor.h"
+#include "../DesignExtractor.h"
 
-class EntityExtractor : public IDesignExtractor {
+class EntityExtractor : public DesignExtractor {
  public:
   explicit EntityExtractor(PKBSPInterface& pkb);
 
-  void extractFromProgram(std::shared_ptr<ProgramNode> node) override;
+  void ExtractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
 
-  void extractFromProcedure(std::shared_ptr<ProcedureNode> node) override;
+  void ExtractFromCall(std::shared_ptr<CallNode> node) override;
 
-  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
+  void ExtractFromPrint(std::shared_ptr<PrintNode> node) override;
 
-  void extractFromCall(std::shared_ptr<CallNode> node) override;
+  void ExtractFromRead(std::shared_ptr<ReadNode> node) override;
 
-  void extractFromPrint(std::shared_ptr<PrintNode> node) override;
+  void ExtractFromWhile(std::shared_ptr<WhileNode> node) override;
 
-  void extractFromRead(std::shared_ptr<ReadNode> node) override;
+  void ExtractFromIf(std::shared_ptr<IfNode> node) override;
 
-  void extractFromWhile(std::shared_ptr<WhileNode> node) override;
-
-  void extractFromIf(std::shared_ptr<IfNode> node) override;
-
-  void extractFromAssign(std::shared_ptr<AssignNode> node) override;
+  void ExtractFromAssign(std::shared_ptr<AssignNode> node) override;
 
   ~EntityExtractor() = default;
 

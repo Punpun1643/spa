@@ -18,7 +18,7 @@ ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
   extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }
 
-void ExtractionController::executeProgramExtraction(
+void ExtractionController::ExecuteProgramExtraction(
     std::shared_ptr<ProgramNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->accept(*e);
@@ -28,12 +28,12 @@ void ExtractionController::executeProgramExtraction(
 
       // Support creation of the procedure calls graph
     for (std::shared_ptr<ProcedureNode> child : children) {
-      callsManager->insertProcNode(child->getProcedureName());
+      callsManager->InsertProcNode(child->getProcedureName());
     }
 
     // Carry out the DFS extraction 
     for (std::shared_ptr<ProcedureNode> child : children) {
-      executeProcedureExtraction(child);
+      ExecuteProcedureExtraction(child);
     }
 
     // Construct CFGs
@@ -41,10 +41,10 @@ void ExtractionController::executeProgramExtraction(
       // CFGGenerator->generateCFG(child);
     }
   }
-  executePostProcessing();
+  ExecutePostProcessing();
 }
 
-void ExtractionController::executeProcedureExtraction(
+void ExtractionController::ExecuteProcedureExtraction(
     std::shared_ptr<ProcedureNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->accept(*e);
@@ -52,13 +52,13 @@ void ExtractionController::executeProcedureExtraction(
   std::vector<std::shared_ptr<StmtLstNode>> children = node->getChildren();
   if (!children.empty()) {
     for (std::shared_ptr<StmtLstNode> child : children) {
-      executeStmtLstExtraction(child);
+      ExecuteStmtLstExtraction(child);
     }
-    popActors();
+    PopActors();
   }
 }
 
-void ExtractionController::executeStmtLstExtraction(
+void ExtractionController::ExecuteStmtLstExtraction(
     std::shared_ptr<StmtLstNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->accept(*e);
@@ -66,28 +66,28 @@ void ExtractionController::executeStmtLstExtraction(
   std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();
   if (!children.empty()) {
     for (std::shared_ptr<StmtNode> child : children) {
-      executeStmtExtraction(child);
+      ExecuteStmtExtraction(child);
     }
   }
 }
 
-void ExtractionController::executeStmtExtraction(
+void ExtractionController::ExecuteStmtExtraction(
     std::shared_ptr<StmtNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->accept(*e);
   }
-  handleContainerStmts(node);
+  HandleContainerStmts(node);
 }
 
-void ExtractionController::handleContainerStmts(
+void ExtractionController::HandleContainerStmts(
     std::shared_ptr<StmtNode> node) {
   // Handle whileNodes
   if (node->getStmtType() == StmtType::WHILE_STMT) {
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(node);
     std::shared_ptr<StmtLstNode> whileBody = asWhile->getStmtLst();
-    executeStmtLstExtraction(whileBody);
-    popActors();
+    ExecuteStmtLstExtraction(whileBody);
+    PopActors();
   }
 
   // Handle ifNodes
@@ -95,18 +95,18 @@ void ExtractionController::handleContainerStmts(
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
     std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLst();
     std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLst();
-    executeStmtLstExtraction(thenBody);
-    executeStmtLstExtraction(elseBody);
-    popActors();
+    ExecuteStmtLstExtraction(thenBody);
+    ExecuteStmtLstExtraction(elseBody);
+    PopActors();
   }
 }
 
-void ExtractionController::popActors() {
-  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popActor();
-  std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->popActor();
+void ExtractionController::PopActors() {
+  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->PopActor();
+  std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->PopActor();
 }
 
-void ExtractionController::executePostProcessing() {
-  callsManager->executeCallsExtraction();
-  callsManager->connectProcsAndUpdateRelations();
+void ExtractionController::ExecutePostProcessing() {
+  callsManager->ExecuteCallsExtraction();
+  callsManager->ConnectProcsAndUpdateRelations();
 }

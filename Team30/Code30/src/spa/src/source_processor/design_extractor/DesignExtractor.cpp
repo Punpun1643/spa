@@ -9,21 +9,21 @@
 
 DesignExtractor::DesignExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 
-void DesignExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {}
+void DesignExtractor::ExtractFromProgram(std::shared_ptr<ProgramNode> node) {}
 
-void DesignExtractor::extractFromProcedure(
+void DesignExtractor::ExtractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {}
 
-void DesignExtractor::extractFromStmtLst(std::shared_ptr<StmtLstNode> node) {}
+void DesignExtractor::ExtractFromStmtLst(std::shared_ptr<StmtLstNode> node) {}
 
-void DesignExtractor::extractFromCall(std::shared_ptr<CallNode> node) {}
+void DesignExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {}
 
-void DesignExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {}
+void DesignExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {}
 
-void DesignExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {}
+void DesignExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {}
 
-void DesignExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {}
+void DesignExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {}
 
-void DesignExtractor::extractFromIf(std::shared_ptr<IfNode> node) {}
+void DesignExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {}
 
-void DesignExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {}
+void DesignExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {}

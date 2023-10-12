@@ -17,7 +17,7 @@ class FollowsExtractor : public DesignExtractor {
  public:
   explicit FollowsExtractor(PKBSPInterface& pkb);
 
-  void extractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
+  void ExtractFromStmtLst(std::shared_ptr<StmtLstNode> node) override;
 
   ~FollowsExtractor() = default;
 

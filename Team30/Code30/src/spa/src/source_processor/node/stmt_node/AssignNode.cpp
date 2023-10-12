@@ -30,5 +30,5 @@ std::shared_ptr<TreeNode> AssignNode::getRootOfTree() const {
 void AssignNode::accept(IDesignExtractor& designExtractor) {
   auto thisAssignNodePtr =
       std::dynamic_pointer_cast<AssignNode>(shared_from_this());
-  designExtractor.extractFromAssign(thisAssignNodePtr);
+  designExtractor.ExtractFromAssign(thisAssignNodePtr);
 }
