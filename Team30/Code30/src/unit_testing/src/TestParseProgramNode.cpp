@@ -5,6 +5,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseProgramNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::parseProgram;
+
+  void parse() override {}
+};
+}  // namespace TestParseProgramNode
+
 TEST_CASE("Parser parseProgram") {
   std::vector<std::shared_ptr<Token>> tokens;
 
@@ -16,7 +28,8 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
   }
 
@@ -38,7 +51,8 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
     auto programNode = parser.parseProgram();
 
     REQUIRE(programNode != nullptr);
@@ -78,7 +92,8 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
     auto programNode = parser.parseProgram();
 
     REQUIRE(programNode != nullptr);
@@ -116,7 +131,8 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
   }
 }

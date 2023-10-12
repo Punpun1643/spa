@@ -25,6 +25,18 @@ class SpParser : public AParser {
  public:
   SpParser(std::vector<std::shared_ptr<Token>> tokens);
 
+  /**
+   * @brief Get the Source Program Node object.
+   *
+   * @return Program node.
+   */
+  std::shared_ptr<ProgramNode> getSourceProgramNode();
+
+  void parse() override;
+
+  ~SpParser() = default;
+
+ protected:
   std::shared_ptr<ProgramNode> parseProgram();
 
   std::shared_ptr<ProcedureNode> parseProcedure();
@@ -44,12 +56,6 @@ class SpParser : public AParser {
   std::shared_ptr<CondExprNode> parseCondExpr();
 
   std::shared_ptr<AssignNode> parseAssign(std::string const& varName);
-
-  std::shared_ptr<ProgramNode> getSourceProgramNode();
-
-  void parse() override;
-
-  ~SpParser() = default;
 
  private:
   int currStmtIndex = 1;

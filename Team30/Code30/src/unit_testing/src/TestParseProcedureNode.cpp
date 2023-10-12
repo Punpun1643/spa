@@ -5,6 +5,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseProcedureNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::parseProcedure;
+
+  void parse() override {}
+};
+}  // namespace TestParseProcedureNode
+
 TEST_CASE("Parser parseProcedure") {
   std::vector<std::shared_ptr<Token>> tokens;
 
@@ -14,7 +26,8 @@ TEST_CASE("Parser parseProcedure") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProcedureNode::TestableParser parser =
+        TestParseProcedureNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
   }
 
@@ -30,7 +43,8 @@ TEST_CASE("Parser parseProcedure") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProcedureNode::TestableParser parser =
+        TestParseProcedureNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
   }
 
@@ -48,7 +62,8 @@ TEST_CASE("Parser parseProcedure") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProcedureNode::TestableParser parser =
+        TestParseProcedureNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseProcedure(), std::invalid_argument);
   }
 
@@ -68,7 +83,8 @@ TEST_CASE("Parser parseProcedure") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseProcedureNode::TestableParser parser =
+        TestParseProcedureNode::TestableParser(tokens);
     auto procedureNode = parser.parseProcedure();
 
     REQUIRE(procedureNode != nullptr);

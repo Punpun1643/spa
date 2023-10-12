@@ -11,6 +11,18 @@
 
 using Catch::Matchers::Contains;
 
+namespace TestParseIfNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::parseIf;
+
+  void parse() override {}
+};
+}  // namespace TestParseIfNode
+
 TEST_CASE("Test parseIf", "[parseIf]") {
   SECTION("Test valid if stmt should not throw any error") {
     /*
@@ -50,7 +62,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_NOTHROW(parser.parseIf());
   }
 
@@ -121,7 +134,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_NOTHROW(parser.parseIf());
   }
 
@@ -163,7 +177,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -206,7 +221,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -250,7 +266,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -291,7 +308,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(),
                         Contains("Invalid"));  // will be invalid condExpr
   }
@@ -332,7 +350,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(
         parser.parseIf(),
         Contains("Invalid condition expression!"));  // will be invalid condExpr
@@ -375,7 +394,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -415,7 +435,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -456,7 +477,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS(parser.parseIf());  // will be invalid stmtLst
   }
 
@@ -497,7 +519,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -538,7 +561,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
   }
 
@@ -578,7 +602,8 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS(parser.parseIf());  // will be invalid stmtLst
   }
 }
@@ -622,7 +647,8 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
 
     std::shared_ptr<IfNode> ifNode = parser.parseIf();
     std::shared_ptr<CondExprNode> condExprNode = ifNode->getCondExpr();
@@ -702,7 +728,8 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     std::shared_ptr<IfNode> ifNode = parser.parseIf();
     std::shared_ptr<CondExprNode> condExprNode = ifNode->getCondExpr();
     std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();

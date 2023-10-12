@@ -7,47 +7,64 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseCall {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::parseCall;
+
+  void parse() override {}
+};
+}  // namespace TestParseCall
+
 TEST_CASE("Test parse call", "[parseCall]") {
   SECTION("Test valid call stmt should not throw error (i.e. call variable;)") {
-        std::vector<std::shared_ptr<Token>> tokens;
+    std::vector<std::shared_ptr<Token>> tokens;
 
-        tokens.push_back(std::static_pointer_cast<Token>(
-            std::make_shared<WordToken>("variable")));
-        tokens.push_back(std::static_pointer_cast<Token>(
-            std::make_shared<SpecialCharToken>(";")));
-        tokens.push_back(
-                std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("variable")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-        SpParser parser = SpParser(tokens);
-        REQUIRE_NOTHROW(parser.parseCall());
+    TestParseCall::TestableParser parser =
+        TestParseCall::TestableParser(tokens);
+    REQUIRE_NOTHROW(parser.parseCall());
   }
 
-  SECTION("Test valid call stmt should have the correct procedure name (i.e. call variable;)") {
-        std::vector<std::shared_ptr<Token>> tokens;
+  SECTION(
+      "Test valid call stmt should have the correct procedure name (i.e. call "
+      "variable;)") {
+    std::vector<std::shared_ptr<Token>> tokens;
 
-        tokens.push_back(std::static_pointer_cast<Token>(
-            std::make_shared<WordToken>("variable")));
-        tokens.push_back(std::static_pointer_cast<Token>(
-            std::make_shared<SpecialCharToken>(";")));
-        tokens.push_back(
-            std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("variable")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<SpecialCharToken>(";")));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-        SpParser parser = SpParser(tokens);
-        std::shared_ptr<CallNode> callNode = parser.parseCall();
+    TestParseCall::TestableParser parser =
+        TestParseCall::TestableParser(tokens);
+    std::shared_ptr<CallNode> callNode = parser.parseCall();
 
-        REQUIRE(callNode->getProcName() == "variable");
+    REQUIRE(callNode->getProcName() == "variable");
   }
 
   SECTION("Test invalid call stmt should throw error (i.e. call variable)") {
-        std::vector<std::shared_ptr<Token>> tokens;
+    std::vector<std::shared_ptr<Token>> tokens;
 
-        tokens.push_back(std::static_pointer_cast<Token>(
-            std::make_shared<WordToken>("variable")));
+    tokens.push_back(std::static_pointer_cast<Token>(
+        std::make_shared<WordToken>("variable")));
 
-        tokens.push_back(
-            std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-        SpParser parser = SpParser(tokens);
-        REQUIRE_THROWS(parser.parseCall());
+    TestParseCall::TestableParser parser =
+        TestParseCall::TestableParser(tokens);
+    REQUIRE_THROWS(parser.parseCall());
   }
 }

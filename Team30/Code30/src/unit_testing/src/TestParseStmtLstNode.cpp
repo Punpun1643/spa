@@ -7,6 +7,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseStmtLstNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::parseStmtLst;
+
+  void parse() override {}
+};
+}  // namespace TestParseStmtLstNode
+
 TEST_CASE("Parser parseStmtLst print stmts") {
   std::vector<std::shared_ptr<Token>> tokens;
 
@@ -16,7 +28,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS(parser.parseStmtLst());
   }
 
@@ -32,7 +45,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto printNode =
         std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
@@ -61,7 +75,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto printNodeOne =
         std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
@@ -86,7 +101,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 
@@ -100,7 +116,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 
@@ -122,7 +139,8 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 }
@@ -142,7 +160,8 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto printNode =
         std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
@@ -173,7 +192,8 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto readNode =
         std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
@@ -200,7 +220,8 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 
@@ -214,7 +235,8 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 
@@ -236,7 +258,8 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 }
@@ -256,7 +279,8 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto callNode =
         std::dynamic_pointer_cast<CallNode>(stmtLstNode->getChildren().at(0));
@@ -287,7 +311,8 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto callNode =
         std::dynamic_pointer_cast<CallNode>(stmtLstNode->getChildren().at(0));
@@ -314,7 +339,8 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 
@@ -328,7 +354,8 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 
@@ -350,7 +377,8 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
   }
 }
@@ -370,7 +398,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto printNode =
         std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
@@ -401,7 +430,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto stmtLstNode = parser.parseStmtLst();
     auto readNode =
         std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
@@ -433,7 +463,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     REQUIRE_NOTHROW(parser.parseStmtLst());
   }
 
@@ -455,7 +486,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
         parser.parseStmtLst()->getChildren().at(0));
     REQUIRE(assignNode->getVarName() == "x");
@@ -485,7 +517,8 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
         parser.parseStmtLst()->getChildren().at(0));
     REQUIRE(assignNode->getConstants()->size() == 0);

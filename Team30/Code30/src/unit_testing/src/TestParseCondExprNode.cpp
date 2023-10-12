@@ -9,6 +9,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseCondExprNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::parseCondExpr;
+
+  void parse() override {}
+};
+}  // namespace TestParseCondExprNode
+
 TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
   SECTION("Test rel_expr i.e. x > y") {
     std::vector<std::shared_ptr<Token>> tokens;
@@ -24,7 +36,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
     REQUIRE(condExprNode->getVariables()->size() == 2);
     REQUIRE(condExprNode->getConstants()->size() == 0);
@@ -44,7 +57,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
     REQUIRE(condExprNode->getVariables()->size() == 1);
     REQUIRE(condExprNode->getConstants()->size() == 1);
@@ -70,7 +84,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
     REQUIRE(condExprNode->getVariables()->size() == 1);
     REQUIRE(condExprNode->getConstants()->size() == 1);
@@ -106,7 +121,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
     REQUIRE(condExprNode->getVariables()->size() == 2);
     REQUIRE(condExprNode->getConstants()->size() == 2);
@@ -142,7 +158,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     std::shared_ptr<CondExprNode> condExprNode = parser.parseCondExpr();
     REQUIRE(condExprNode->getVariables()->size() == 2);
     REQUIRE(condExprNode->getConstants()->size() == 2);
@@ -176,7 +193,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
   }
 
@@ -194,7 +212,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
   }
 
@@ -220,7 +239,8 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
 
-    SpParser parser = SpParser(tokens);
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
   }
 
@@ -230,7 +250,9 @@ TEST_CASE("Test parseCondExpr", "[parseCondExpr]") {
         std::make_shared<SpecialCharToken>("(")));
     tokens.push_back(std::static_pointer_cast<Token>(
         std::make_shared<SpecialCharToken>(")")));
-    SpParser parser = SpParser(tokens);
+
+    TestParseCondExprNode::TestableParser parser =
+        TestParseCondExprNode::TestableParser(tokens);
     REQUIRE_THROWS_AS(parser.parseCondExpr(), std::invalid_argument);
   }
 }
