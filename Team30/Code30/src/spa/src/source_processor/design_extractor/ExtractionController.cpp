@@ -1,11 +1,11 @@
 #include "ExtractionController.h"
 
-#include "ConstVarExtractor.h"
-#include "EntityExtractor.h"
-#include "FollowsExtractor.h"
-#include "ModifiesExtractor.h"
-#include "ParentExtractor.h"
-#include "UsesExtractor.h"
+#include "relation_extractor/ConstVarExtractor.h"
+#include "relation_extractor/EntityExtractor.h"
+#include "relation_extractor/FollowsExtractor.h"
+#include "relation_extractor/ModifiesExtractor.h"
+#include "relation_extractor/ParentExtractor.h"
+#include "relation_extractor/UsesExtractor.h"
 
 ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
   callsManager = std::make_shared<CallsManager>(pkb);

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "../node/util_node/CallsGraphProcNode.h"
-#include "CallsExtractor.h"
+#include "relation_extractor/CallsExtractor.h"
 #include "CallsProcConnector.h"
 
 class CallsManager {

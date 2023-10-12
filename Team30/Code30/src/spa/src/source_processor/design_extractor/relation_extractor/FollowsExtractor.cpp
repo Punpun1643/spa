@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "../../program_knowledge_base/PKB.h"
+#include "../../../program_knowledge_base/PKB.h"
 #include "program_knowledge_base/PKBSPInterface.h"
 
 FollowsExtractor::FollowsExtractor(PKBSPInterface& pkb)

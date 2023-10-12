@@ -3,7 +3,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "../node/util_node/CallsGraphProcNode.h"
+#include "../../node/util_node/CallsGraphProcNode.h"
 class CallsExtractor {
  public:
   explicit CallsExtractor(PKBSPInterface& pkb);
