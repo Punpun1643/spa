@@ -16,10 +16,10 @@ Select BOOLEAN such that Follows(2, BOOLEAN) pattern BOOLEAN (_, _"y"_)
 4 - select multiple
 stmt s1, s2; assign a1, a2;
 Select <s1, a2> such that Parent(s1, a2) pattern a2 (_, _"x"_)
-4, 6, 13 ,19
+4 6, 13 19
 5000
 5 - select multiple with declared BOOLEAN
 stmt s1, s2; assign a1, a2, BOOLEAN;
 Select <s1, BOOLEAN> such that Parent(s1, BOOLEAN) pattern BOOLEAN (_, _"x"_)
-4, 6, 13 ,19
+4 6, 13 19
 5000
