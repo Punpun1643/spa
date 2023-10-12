@@ -162,6 +162,12 @@ class SpParser : public AParser {
 
   void ValidateCondExprAndOrOrTokenPosition();
 
+  void ValidateBalanceParentheses(int& parenCount);
+
+  void HandleOperatorsStackAndPostfixQueue(
+      std::stack<std::shared_ptr<Token>>& operatorStack,
+      std::queue<std::shared_ptr<Token>>& postFixQueue);
+
   void TransferOperatorsToPostfixQueue(
       std::stack<std::shared_ptr<Token>>& operatorStack,
       std::queue<std::shared_ptr<Token>>& postFixQueue);

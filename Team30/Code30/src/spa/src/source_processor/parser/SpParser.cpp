@@ -249,7 +249,7 @@ void SpParser::ValidateCondExprAndOrOrTokenPosition() {
   }
 }
 
-void SpParser::TransferOperatorsToPostfixQueue(
+void SpParser::HandleOperatorsStackAndPostfixQueue(
     std::stack<std::shared_ptr<Token>>& operatorStack,
     std::queue<std::shared_ptr<Token>>& postFixQueue) {
   while (!operatorStack.empty() &&
@@ -259,6 +259,19 @@ void SpParser::TransferOperatorsToPostfixQueue(
     operatorStack.pop();
   }
   operatorStack.push(GetCurrToken());
+}
+
+void SpParser::TransferOperatorsToPostfixQueue(std::stack<std::shared_ptr<Token>>& operatorStack, std::queue<std::shared_ptr<Token>>& postFixQueue) {
+  while (!operatorStack.empty()) {
+    postFixQueue.push(operatorStack.top());
+    operatorStack.pop();
+  }
+}
+
+void SpParser::ValidateBalanceParentheses(int& parenCount) {
+  if (parenCount != 0) {
+    throw UnmatchedParenthesesException();
+  }
 }
 
 void SpParser::buildCondExprPostFix(
@@ -280,7 +293,7 @@ void SpParser::buildCondExprPostFix(
       if (isAndOrOrToken(GetCurrToken())) {
         ValidateCondExprAndOrOrTokenPosition();
       }
-      TransferOperatorsToPostfixQueue(operatorStack, postFixQueue);
+      HandleOperatorsStackAndPostfixQueue(operatorStack, postFixQueue);
     } else {
       throw InvalidCondExprException();
     }
@@ -288,14 +301,8 @@ void SpParser::buildCondExprPostFix(
     NextToken();
   }
 
-  if (parenCount != 0) {
-    throw UnmatchedParenthesesException();
-  }
-
-  while (!operatorStack.empty()) {
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
-  }
+  ValidateBalanceParentheses(parenCount);
+  TransferOperatorsToPostfixQueue(operatorStack, postFixQueue);
 }
 
 void SpParser::handleCondExprWordToken(
