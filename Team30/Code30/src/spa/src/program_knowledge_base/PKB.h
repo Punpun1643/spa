@@ -42,6 +42,9 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   void insertPattern(std::string statement_number, std::string lhs,
                      std::unordered_set<std::string> rhs) override;
+  void insertCFGNode(std::string statement_num,
+                     std::shared_ptr<CFGNode> node) override;
+
   std::unordered_set<std::string> getProcedureModifies(
       std::string procName) override;
   std::unordered_set<std::string> getProcedureUses(

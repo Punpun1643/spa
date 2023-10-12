@@ -288,3 +288,5 @@ PkbStub::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                                      MatchType match_type) {
   return NULL;
 };
+
+void PkbStub::insertCFGNode(std::string statement_num, std::shared_ptr<CFGNode> node){};

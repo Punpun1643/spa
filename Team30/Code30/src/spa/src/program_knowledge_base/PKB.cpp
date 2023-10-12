@@ -53,6 +53,11 @@ void PKB::insertPattern(std::string statement_number, std::string lhs,
   patData->insert(statement_number, lhs, rhs);
 };
 
+void PKB::insertCFGNode(std::string statement_number,
+                        std::shared_ptr<CFGNode> node) {
+  relData->insertCFGNode(statement_number, node);
+};
+
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
   return relData->getAllRelatedToValue(RelationType::MODIFIES_P, procName);
