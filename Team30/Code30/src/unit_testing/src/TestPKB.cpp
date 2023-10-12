@@ -292,8 +292,11 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // Returns all s such that Relation(s, int)
   // statement 3 follows 1 and 2
   tmp = {"1", "2"};
-  REQUIRE(*pkb.getRelationSynonymValue(EntityType::STMT, "3",
-                                       RelationType::FOLLOWS_STAR) == tmp);
+  std::vector<std::string> actual = *pkb.getRelationSynonymValue(
+      EntityType::STMT, "3", RelationType::FOLLOWS_STAR);
+  std::sort(actual.begin(), actual.end());
+
+  REQUIRE(actual == tmp);
   // statement 4 is the only if statement that is a parent of 7
   tmp = {"4"};
   REQUIRE(*pkb.getRelationSynonymValue(EntityType::IF, "7",
@@ -309,12 +312,18 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // Returns all s such that Relation(int, s)
   // 3 and 4 follows* 2
   tmp = {"3", "4"};
-  REQUIRE(*pkb.getRelationValueSynonym("2", EntityType::STMT,
-                                       RelationType::FOLLOWS_STAR) == tmp);
+  actual = *pkb.getRelationValueSynonym("2", EntityType::STMT,
+                                        RelationType::FOLLOWS_STAR);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == tmp);
+
   // 4 is a parent of 5, 6, 7
   tmp = {"5", "6", "7"};
-  //  REQUIRE(*pkb.getRelationValues("4", EntityType::STMT,
-  //                                 RelationType::PARENT_STAR) == tmp);
+  actual = *pkb.getRelationValueSynonym("4", EntityType::STMT,
+                                        RelationType::PARENT_STAR);
+  std::sort(actual.begin(), actual.end());
+  REQUIRE(actual == tmp);
+
   //// 3 is not a parent
   REQUIRE(*pkb.getRelationValueSynonym("3", EntityType::STMT,
                                        RelationType::PARENT) == empty_vector);
@@ -322,9 +331,11 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // Returns all s1, s2 such that Relation(s1, s2)
   std::vector<std::pair<std::string, std::string>> tmp_pair;
   tmp_pair = {{"4", "5"}, {"4", "6"}, {"6", "7"}};
-  //  REQUIRE(
-  //      *pkb.getRelationValues(EntityType::STMT, EntityType::STMT,
-  //                                 RelationType::PARENT) == tmp_pair);
+  std::vector<std::pair<std::string, std::string>> actual_pairs =
+      *pkb.getRelationSynonymSynonym(EntityType::STMT, EntityType::STMT,
+                                     RelationType::PARENT);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
 }
 
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
@@ -543,7 +554,6 @@ TEST_CASE("Test1-Source PKB") {
   pkb.insertPattern(PatternType::ASSIGN, "25", "x", buildTree18());
   pkb.insertPattern(PatternType::ASSIGN, "26", "a",
                     std::make_shared<TreeNode>("b", nullptr, nullptr));
-
 
   std::vector<std::string> expected_res = {"8", "15", "17"};
   std::vector<std::string> actual;

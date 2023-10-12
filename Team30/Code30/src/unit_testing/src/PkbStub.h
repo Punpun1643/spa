@@ -1,63 +1,40 @@
-#include <cassert>
-
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
 
-class PkbQpsInterfaceStub : public PKBQPSInterface {
+class PkbStub : public PKBQPSInterface, public PKBSPInterface {
  public:
-  PkbQpsInterfaceStub();
+  PkbStub();
 
-  RelationType last_rel_passed = RelationType::FOLLOWS;
+  std::vector<std::string> PROCEDURES = {"procedure1", "procedure2",
+                                         "procedure3"};
+  std::vector<std::string> CONSTANTS = {"12", "13", "14", "15"};
+  std::vector<std::string> VARIABLES = {"varX", "varY"};
+  std::vector<std::string> STATEMENTS = {"1", "2", "3"};
 
-  // Select
-  std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
+  std::vector<std::string> REL_TYPE_STRINGS = {
+      "FOLLOWS", "FOLLOWS_STAR", "PARENT",     "PARENT_STAR",
+      "USES_P",  "USES_S",       "MODIFIES_P", "MODIFIES_S"};
 
-  // SuchThat Clauses
-  std::string last_value_passed;
-  std::string last_value_2_passed;
-  EntityType last_entity_type_passed = EntityType::IF;
-  EntityType last_entity_type_2_passed = EntityType::IF;
+  int insertEntityCallCount;
+  int insertVariableCallCount;
+  int insertConstantCallCount;
+  int insertRelationCallCount;
+  int insertFollowsCallCount;
+  int insertParentCallCount;
+  int insertUsesCallCount;
+  int insertModifiesCallCount;
+  int insertPatternCallCount;
 
-  int valueValueCalls = 0;
-  int valueWildCalls = 0;
-  int wildValueCalls = 0;
-  int wildWildCalls = 0;
-  int synonymWildCalls = 0;
-  int wildSynonymCalls = 0;
-  int synonymValueCalls = 0;
-  int valueSynonymCalls = 0;
-  int synonymSynonymCalls = 0;
+  std::unordered_set<std::string> entitiesSet;
 
-  bool const valueValueBool = false;
-  bool const valueWildBool = false;
-  bool const wildValueBool = true;
-  bool const wildWildBool = true;
-  std::vector<std::string> const synonymWildValues = {"1", "2", "3"};
-  std::vector<std::string> const wildSynonymValues = {"a", "b", "c"};
-  std::vector<std::string> const synonymValueValues = {"4", "5", "6"};
-  std::vector<std::string> const valueSynonymValues = {"d", "e", "f"};
-  std::vector<std::string> const synonymSynonymValues1 = {"42"};
-  std::vector<std::string> const synonymSynonymValues2 = {"43"};
-  std::vector<std::pair<std::string, std::string>> const synonymSynonymValues =
-      {std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
+  void insertEntity(EntityType type, std::string entity) override;
+  void insertRelation(RelationType rel_type, std::string s1_line_num,
+                      std::string s2_line_num) override;
 
-  // Pattern Clauses
-  int patternWildCalls = 0;
-  int patternValueCalls = 0;
-  int patternDeclCalls = 0;
-  MatchType last_match_type_passed = MatchType::EXACT_MATCH;
-  std::shared_ptr<TreeNode> last_rhs_expr_passed;
+  void insertRelationCommon(RelationType type, std::string a, std::string b);
 
   // Select Clause
-  std::vector<std::string> const patternWildValues = {"10", "20", "30"};
-  std::vector<std::string> const patternValueValues = {"ab", "bb", "cb"};
-  std::vector<std::string> const patternDeclValues1 = {"123"};
-  std::vector<std::string> const patternDeclValues2 = {"345"};
-  std::vector<std::pair<std::string, std::string>> const patternDeclValues = {
-      std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
-
-  // Entities
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
 
@@ -100,25 +77,39 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
                             RelationType rel_type) override;
 
   // Pattern clause
+  void insertPattern(std::string statement_number, std::string lhs,
+                     std::unordered_set<std::string> rhs) override;
+  void insertPattern(PatternType type, std::string statement_number,
+                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
+
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+      std::string rhs_expr, MatchType expr_match_type) override;
+
+  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+      std::string lhs_value, std::string rhs_expr,
+      MatchType expr_match_type) override;
+
+  // 2 paired values - for the implicit assign declaration, and the values for
+  // the given lhs_entity_type
+  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  getPatternMatchesSynonymLhs(std::string rhs_expr,
+                              MatchType expr_match_type) override;
+
+  std::unordered_set<std::string> getProcedureUses(
+      std::string procName) override;
+
+  std::unordered_set<std::string> getProcedureModifies(
+      std::string procName) override;
+
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
   std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  // 2 paired values - one for the implicit assign declaration, paired with
-  // the variable declaration on the LHS of the assign stmt
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
 
-  // TO DELETE
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
-      std::string lhs_value, std::string rhs_expr,
-      MatchType expr_match_type) override;
-
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::string rhs_expr,
-                              MatchType expr_match_type) override;
+  void insertCFGNode(std::string statement_num,
+                     std::shared_ptr<CFGNode> node) override;
 };
