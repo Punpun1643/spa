@@ -11,13 +11,21 @@
 
 #include "../query_processing_system/common/EntityType.h"
 #include "RelationType.h"
+#include "query_processing_system/common/AttrType.h"
 #include "query_processing_system/common/MatchType.h"
 
 class PKBQPSInterface {
  public:
   // ---------- ENTITIES ----------
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
-      EntityType type) = 0;
+      EntityType type) = 0; // Returns all Entities in the default AttrType
+
+  virtual std::string convertEntityAttribute(std::string value, EntityType type, AttrType curr_attr_type, AttrType wanted_attr_type) = 0;
+
+  virtual bool doesEntityExist(EntityType type, AttrType attr_type, std::string value) = 0;
+
+  virtual std::vector<std::string> getMatchingEntities(EntityType type_1, AttrType attr_type_1,
+                                                       EntityType type_2, AttrType attr_type_2) = 0;
 
   // ---------- RELATIONS ----------
   // 0 Declarations
