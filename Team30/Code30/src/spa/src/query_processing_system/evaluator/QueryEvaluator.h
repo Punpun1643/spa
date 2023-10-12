@@ -8,6 +8,7 @@
 #include "../common/SelectAllClause.h"
 #include "../common/SuchThatClause.h"
 #include "IntermediateResultsTable.h"
+#include "query_processing_system/common/AttrRef.h"
 #include "query_processing_system/common/PatternClause.h"
 
 class QueryEvaluator {
@@ -25,5 +26,5 @@ class QueryEvaluator {
   bool evaluateQuery(ClauseList clauses);
 
   std::vector<std::vector<std::string>> evaluateQuery(
-      std::vector<PqlDeclaration> const& chosen_decls, ClauseList clauses);
+      std::vector<AttrRef> const& selected_attr_refs, ClauseList clauses);
 };
