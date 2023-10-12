@@ -18,15 +18,11 @@ void SyntaxChecker::parse() {
         "Incorrect query format: Expected to start with either 'Select' or a "
         "<Declaration>");
   }
-  if (getCurrTokenValue() == QpParser::SELECT) {
-    // no declaration, only select
-    CheckSelect();
-    CheckClauses();
-  } else {
+  if (getCurrTokenValue() != QpParser::SELECT) {
     CheckDeclaration();
-    CheckSelect();
-    CheckClauses();
   }
+  CheckSelect();
+  CheckClauses();
 }
 
 void SyntaxChecker::CheckAnd(ClauseType clause_type) {
@@ -330,7 +326,6 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
         "Variable used for pattern does not have an identifier's syntax");
   } else if (existing_declarations.find(token_value) ==
              existing_declarations.end()) {
-    std::cout << "sc1: " << getCurrTokenValue() << "\n";
     throw InvalidSemanticsException(
         "Variable used for pattern has not been declared");
   } else if (existing_declarations.at(token_value).getEntityType() !=
