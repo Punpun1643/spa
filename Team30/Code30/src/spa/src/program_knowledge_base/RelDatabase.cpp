@@ -61,3 +61,8 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
     RelationType type, std::string val) {
   return relationships[type]->getAllRelatedToValue(val);
 }
+
+std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
+    RelationType type, std::string val) {
+  return relationships[type]->getAllInverseRelatedToValue(val);
+}
