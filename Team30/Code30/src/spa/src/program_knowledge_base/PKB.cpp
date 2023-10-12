@@ -171,10 +171,8 @@ PKB::getRelationSynonymSynonym(EntityType entity_type_1,
       entData->get(entity_type_2);
 
   for (std::string ent1 : *ents1) {
-    std::unordered_set<std::string> allRelated =
-        relData->getAllRelatedToValue(rel_type, ent1);
     for (std::string ent2 : *ents2) {
-      if (allRelated.find(ent2) != allRelated.end()) {
+      if (relData->isRelated(rel_type, ent1, ent2)) {
         output.push_back(make_pair(ent1, ent2));
       }
     }
