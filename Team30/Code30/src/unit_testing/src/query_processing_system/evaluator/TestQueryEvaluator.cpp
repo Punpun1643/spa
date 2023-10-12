@@ -1,6 +1,5 @@
 #include <memory>
 
-<<<<<<< HEAD:Team30/Code30/src/unit_testing/src/query_processing_system/evaluator/TestQueryEvaluator.cpp
 #include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
@@ -8,13 +7,6 @@
 #include "../../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "../../stub/PkbStub.h"
-=======
-#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
-#include "../../spa/src/query_processing_system/common/FollowsClause.h"
-#include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
-#include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
-#include "PkbQpsInterfaceStub.h"
->>>>>>> master:Team30/Code30/src/unit_testing/src/TestQueryEvaluator.cpp
 #include "catch.hpp"
 
 class QeFactoryMethods {

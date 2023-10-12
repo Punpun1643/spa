@@ -1,12 +1,6 @@
-<<<<<<< HEAD:Team30/Code30/src/unit_testing/src/stub/PkbQpsInterfaceStub.h
 #include "../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../spa/src/program_knowledge_base/PKBSPInterface.h"
-=======
 #include <cassert>
-
-#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
-#include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
->>>>>>> master:Team30/Code30/src/unit_testing/src/PkbQpsInterfaceStub.h
 #include "source_processor/node/stmt_node/StmtNode.h"
 
 class PkbQpsInterfaceStub : public PKBQPSInterface {
