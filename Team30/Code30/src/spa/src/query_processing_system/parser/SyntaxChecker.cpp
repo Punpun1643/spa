@@ -18,15 +18,35 @@ void SyntaxChecker::parse() {
         "Incorrect query format: Expected to start with either 'Select' or a "
         "<Declaration>");
   }
-  if (getCurrTokenValue() == QpParser::SELECT) {
-    // no declaration, only select
-    CheckSelect();
-    CheckClauses();
-  } else {
+  if (getCurrTokenValue() != QpParser::SELECT) {
     CheckDeclaration();
-    CheckSelect();
-    CheckClauses();
   }
+  CheckSelect();
+  CheckClauses();
+}
+
+void SyntaxChecker::CheckAnd(ClauseType clause_type) {
+  assert(getCurrTokenValue() == QpParser::AND);
+  nextToken();
+
+  if (clause_type == ClauseType::such_that) {
+    if (QpParser::IsRelRef(getCurrTokenValue())) {
+      CheckSuchThat(true);
+      return;
+    } else {
+      throw InvalidSyntaxException("Expected <relref> after 'and'");
+    }
+  } else if (clause_type == ClauseType::pattern) {
+    if (getCurrTokenValue() == QpParser::PATTERN) {
+      CheckPattern();
+      return;
+    } else {
+      throw InvalidSyntaxException("Expected 'pattern' after 'and'");
+    }
+  }
+
+  throw InvalidSyntaxException(
+      "Expected either 'such' or 'pattern' after 'and'");
 }
 
 void SyntaxChecker::CheckCalls() {
@@ -58,7 +78,7 @@ void SyntaxChecker::CheckCalls() {
 void SyntaxChecker::CheckClauses() {
   while (getCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
     if (getCurrTokenValue() == QpParser::SUCH) {
-      this->CheckSuchThat();
+      this->CheckSuchThat(false);
     } else if (getCurrTokenValue() == QpParser::PATTERN) {
       this->CheckPattern();
     } else {
@@ -73,8 +93,7 @@ void SyntaxChecker::CheckDeclaration() {
       throw InvalidSyntaxException("Query missing Select Clause");
     }
     EntityType entity_type = QpParser::StringToEntityType(
-        getCurrToken()
-            ->getTokenVal());  // throws an error if not valid entity_type
+        getCurrTokenValue());  // throws an error if not valid entity_type
     nextToken();               // synonym
     if (!IsSynonym(getCurrTokenValue())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
@@ -224,6 +243,9 @@ void SyntaxChecker::CheckPattern() {
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
   nextToken();
+  if (getCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::pattern);
+  }
 }
 
 void SyntaxChecker::CheckSelect() {
@@ -287,9 +309,11 @@ void SyntaxChecker::CheckSelectSingle() {
   }
 }
 
-void SyntaxChecker::CheckSuchThat() {
-  nextToken();  // that
-  nextToken();  // relRef
+void SyntaxChecker::CheckSuchThat(bool has_and) {
+  if (!has_and) {
+    nextToken();  // that
+    nextToken();  // relRef
+  }
   if (!QpParser::IsRelRef(getCurrTokenValue())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
@@ -304,6 +328,10 @@ void SyntaxChecker::CheckSuchThat() {
     this->CheckModifies();
   } else if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
     this->CheckCalls();
+  }
+
+  if (getCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::such_that);
   }
 }
 

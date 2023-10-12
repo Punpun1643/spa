@@ -61,3 +61,13 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
     RelationType type, std::string val) {
   return relationships[type]->getAllRelatedToValue(val);
 }
+
+std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
+    RelationType type, std::string val) {
+  return relationships[type]->getAllInverseRelatedToValue(val);
+}
+
+void RelDatabase::insertCFGNode(std::string statement_num,
+                                std::shared_ptr<CFGNode> node) {
+  cfgNodes.insert({statement_num, node});
+};

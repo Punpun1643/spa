@@ -17,7 +17,10 @@ class SyntaxChecker : public QpParser {
   ~SyntaxChecker() = default;
 
  private:
+  enum class ClauseType { such_that, pattern };
+
   // Checkers
+  void CheckAnd(ClauseType clause_type);
   void CheckCalls();
   void CheckClauses();
   void CheckDeclaration();
@@ -30,7 +33,7 @@ class SyntaxChecker : public QpParser {
   void CheckSelectBoolean();
   void CheckSelectMultiple();
   void CheckSelectSingle();
-  void CheckSuchThat();
+  void CheckSuchThat(bool has_and);
   void CheckUses();
 
   // Helpers

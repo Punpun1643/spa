@@ -13,7 +13,7 @@ class AExpression : public std::enable_shared_from_this<AExpression> {
 
   void SetNextExpression(std::optional<std::shared_ptr<AExpression>> next) {
     if (next_expression.has_value()) {
-       this->next_expression.value()->SetNextExpression(std::move(next));
+      this->next_expression.value()->SetNextExpression(std::move(next));
     } else {
       this->next_expression = std::move(next);
     }

@@ -21,3 +21,13 @@ void CFGNode::addOutgoingNode(std::shared_ptr<CFGNode> newNode) {
 void CFGNode::addIncomingNode(std::shared_ptr<CFGNode> newNode) {
   incomingNodes.push_back(newNode);
 }
+
+bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
+                      std::shared_ptr<CFGNode> endNode) {
+  return true;
+}
+
+bool CFGNode::HasAffectPath(std::shared_ptr<CFGNode> startNode,
+                            std::shared_ptr<CFGNode> endNode) {
+  return true;
+}

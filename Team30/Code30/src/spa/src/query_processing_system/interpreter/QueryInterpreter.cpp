@@ -9,7 +9,6 @@
 #include "../common/ModifiesSClause.h"
 #include "../common/ParentClause.h"
 #include "../common/PatternClause.h"
-#include "../common/SelectClause.h"
 #include "../common/UsesPClause.h"
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -91,6 +90,7 @@ void QueryInterpreter::Interpret(
   std::string arg2 = parent_expression->GetArg2();
   this->context->AddSuchThatClause(std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  this->InterpretNext(parent_expression);
 }
 
 void QueryInterpreter::Interpret(
