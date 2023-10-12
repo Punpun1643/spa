@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <iterator>
 
 QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 

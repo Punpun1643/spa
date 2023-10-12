@@ -4,6 +4,8 @@
 #include "PqlDeclaration.h"
 #include "EntityType.h"
 
+#include <unordered_map>
+
 class AttrRef {
  private:
   PqlDeclaration decl;
