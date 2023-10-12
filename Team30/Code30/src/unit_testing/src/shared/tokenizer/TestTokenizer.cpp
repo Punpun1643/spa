@@ -3,11 +3,11 @@
 #include <iostream>
 #include <sstream>
 
-#include "../../spa/src/shared/tokenizer/Tokenizer.h"
-#include "../../spa/src/shared/tokenizer/token/EofToken.h"
-#include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
-#include "../../spa/src/shared/tokenizer/token/SpecialCharToken.h"
-#include "../../spa/src/shared/tokenizer/token/WordToken.h"
+#include "../../../../spa/src/shared/tokenizer/Tokenizer.h"
+#include "../../../../spa/src/shared/tokenizer/token/EofToken.h"
+#include "../../../../spa/src/shared/tokenizer/token/IntegerToken.h"
+#include "../../../../spa/src/shared/tokenizer/token/SpecialCharToken.h"
+#include "../../../../spa/src/shared/tokenizer/token/WordToken.h"
 #include "catch.hpp"
 
 TEST_CASE("Tokens") {

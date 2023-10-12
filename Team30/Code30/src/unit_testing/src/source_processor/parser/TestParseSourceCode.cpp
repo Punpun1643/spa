@@ -1,9 +1,9 @@
-#include "../../spa/src/shared/tokenizer/token/EofToken.h"
-#include "../../spa/src/shared/tokenizer/token/IntegerToken.h"
-#include "../../spa/src/shared/tokenizer/token/SpecialCharToken.h"
-#include "../../spa/src/shared/tokenizer/token/Token.h"
-#include "../../spa/src/shared/tokenizer/token/WordToken.h"
-#include "../../spa/src/source_processor/parser/SpParser.h"
+#include "../../../../spa/src/shared/tokenizer/token/EofToken.h"
+#include "../../../../spa/src/shared/tokenizer/token/IntegerToken.h"
+#include "../../../../spa/src/shared/tokenizer/token/SpecialCharToken.h"
+#include "../../../../spa/src/shared/tokenizer/token/Token.h"
+#include "../../../../spa/src/shared/tokenizer/token/WordToken.h"
+#include "../../../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
 TEST_CASE("Test parse() method") {

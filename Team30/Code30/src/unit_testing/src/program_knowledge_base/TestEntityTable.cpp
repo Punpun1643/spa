@@ -1,4 +1,4 @@
-#include "../../spa/src/program_knowledge_base/EntityDatabase.h"
+#include "../../../spa/src/program_knowledge_base/EntityDatabase.h"
 #include "catch.hpp"
 
 TEST_CASE("Successful insert and retrieval") {

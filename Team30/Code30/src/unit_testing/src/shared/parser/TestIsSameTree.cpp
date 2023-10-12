@@ -1,8 +1,7 @@
-#include "../../spa/src/shared/parser/node/TreeNode.h"
+#include "../../../../spa/src/shared/parser/node/TreeNode.h"
 #include "catch.hpp"
 
-TEST_CASE("Test if a tree is a subtree or same tree as another tree",
-          "[IsSubTree]") {
+TEST_CASE("Test if a tree is the same tree as another tree", "[IsSameTree]") {
   SECTION("Test base tree: x + y, subtree: x + y, should return true") {
     std::shared_ptr<TreeNode> baseTreeLeft =
         std::make_shared<TreeNode>("x", nullptr, nullptr);
@@ -18,13 +17,34 @@ TEST_CASE("Test if a tree is a subtree or same tree as another tree",
     std::shared_ptr<TreeNode> subTree =
         std::make_shared<TreeNode>("+", subTreeLeft, subTreeRight);
 
-    bool isSubTree = TreeNode::IsSubTree(baseTree, subTree);
+    bool isSameTree = TreeNode::IsSameTree(baseTree, subTree);
 
-    REQUIRE(isSubTree);
+    REQUIRE(isSameTree);
+  }
+
+  SECTION("Test base tree: x + y, subtree: z + y, should return true") {
+    std::shared_ptr<TreeNode> baseTreeLeft =
+        std::make_shared<TreeNode>("x", nullptr, nullptr);
+    std::shared_ptr<TreeNode> baseTreeRight =
+        std::make_shared<TreeNode>("y", nullptr, nullptr);
+    std::shared_ptr<TreeNode> baseTree =
+        std::make_shared<TreeNode>("+", baseTreeLeft, baseTreeRight);
+
+    std::shared_ptr<TreeNode> subTreeLeft =
+        std::make_shared<TreeNode>("z", nullptr, nullptr);
+    std::shared_ptr<TreeNode> subTreeRight =
+        std::make_shared<TreeNode>("y", nullptr, nullptr);
+    std::shared_ptr<TreeNode> subTree =
+        std::make_shared<TreeNode>("+", subTreeLeft, subTreeRight);
+
+    bool isSameTree = TreeNode::IsSameTree(baseTree, subTree);
+
+    REQUIRE(isSameTree == false);
   }
 
   SECTION(
-      "Test base tree: v + x * y + z * t, subtree: x * y, should return true") {
+      "Test base tree: v + x * y + z * t, subtree: x * y, should return "
+      "false") {
     std::shared_ptr<TreeNode> leftRightLeft =
         std::make_shared<TreeNode>("x", nullptr, nullptr);
     std::shared_ptr<TreeNode> leftRightRight =
@@ -54,14 +74,14 @@ TEST_CASE("Test if a tree is a subtree or same tree as another tree",
     std::shared_ptr<TreeNode> subTree =
         std::make_shared<TreeNode>("*", subTreeLeft, subTreeRight);
 
-    bool isSubTree = TreeNode::IsSubTree(baseTree, subTree);
+    bool isSameTree = TreeNode::IsSameTree(baseTree, subTree);
 
-    REQUIRE(isSubTree);
+    REQUIRE(isSameTree == false);
   }
 
   SECTION(
-      "Test base tree: v + x * y + z * t, subtree: x * y + z * t, should "
-      "return false") {
+      "Test base tree: v + x * y + z * t, subtree: x * y, should return "
+      "false") {
     std::shared_ptr<TreeNode> leftRightLeft =
         std::make_shared<TreeNode>("x", nullptr, nullptr);
     std::shared_ptr<TreeNode> leftRightRight =
@@ -84,23 +104,30 @@ TEST_CASE("Test if a tree is a subtree or same tree as another tree",
     std::shared_ptr<TreeNode> baseTree =
         std::make_shared<TreeNode>("+", left, right);
 
-    std::shared_ptr<TreeNode> subTreeLeftLeft =
+    std::shared_ptr<TreeNode> subLeftRightLeft =
         std::make_shared<TreeNode>("x", nullptr, nullptr);
-    std::shared_ptr<TreeNode> subTreeLeftRight =
+    std::shared_ptr<TreeNode> subLeftRightRight =
         std::make_shared<TreeNode>("y", nullptr, nullptr);
-    std::shared_ptr<TreeNode> subTreeLeft =
-        std::make_shared<TreeNode>("*", subTreeLeftLeft, subTreeLeftRight);
-    std::shared_ptr<TreeNode> subTreeRightLeft =
+
+    std::shared_ptr<TreeNode> subLeftLeft =
+        std::make_shared<TreeNode>("v", nullptr, nullptr);
+    std::shared_ptr<TreeNode> subLeftRight =
+        std::make_shared<TreeNode>("*", subLeftRightLeft, subLeftRightRight);
+    std::shared_ptr<TreeNode> subRightLeft =
         std::make_shared<TreeNode>("z", nullptr, nullptr);
-    std::shared_ptr<TreeNode> subTreeRightRight =
+    std::shared_ptr<TreeNode> subRightRight =
         std::make_shared<TreeNode>("t", nullptr, nullptr);
-    std::shared_ptr<TreeNode> subTreeRight =
-        std::make_shared<TreeNode>("*", subTreeRightLeft, subTreeRightRight);
+
+    std::shared_ptr<TreeNode> subLeft =
+        std::make_shared<TreeNode>("+", subLeftLeft, subLeftRight);
+    std::shared_ptr<TreeNode> subRight =
+        std::make_shared<TreeNode>("*", subRightLeft, subRightRight);
+
     std::shared_ptr<TreeNode> subTree =
-        std::make_shared<TreeNode>("+", subTreeLeft, subTreeRight);
+        std::make_shared<TreeNode>("+", subLeft, subRight);
 
-    bool isSubTree = TreeNode::IsSubTree(baseTree, subTree);
+    bool isSameTree = TreeNode::IsSameTree(baseTree, subTree);
 
-    REQUIRE(isSubTree == false);
+    REQUIRE(isSameTree == true);
   }
 }

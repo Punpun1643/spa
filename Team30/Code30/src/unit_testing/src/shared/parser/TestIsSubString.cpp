@@ -1,4 +1,4 @@
-#include "../../spa/src/shared/parser/node/TreeNode.h"
+#include "../../../../spa/src/shared/parser/node/TreeNode.h"
 #include "catch.hpp"
 
 TEST_CASE("Test if a string is the substring of another string",

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../spa/src/program_knowledge_base/utils/LinkedList.h"
+#include "../../../../spa/src/program_knowledge_base/utils/LinkedList.h"
 #include "catch.hpp"
 
 TEST_CASE("Linked list functionality check") {
