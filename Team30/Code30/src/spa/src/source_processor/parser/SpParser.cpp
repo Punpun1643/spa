@@ -512,45 +512,65 @@ int SpParser::Precedence(std::string const& op) {
   }
 }
 
-std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
-  std::vector<std::shared_ptr<StmtNode>> stmts;
-
+void SpParser::ValidateStmtLst() {
   if (GetCurrTokenValue() == SpParserConstant::END_PROCEDURE) {
     throw EmptyStmtLstException();
   }
+}
 
-  while (!IsCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
-    std::shared_ptr<Token> currToken = GetCurrToken();
-    if (IsCurrTokenType(TokenType::WORD_TOKEN) &&
-        IsPeekTokenValue(SpParserConstant::ASSIGN_SYMBOL)) {
-      NextToken();  // move to assign symbol
-      NextToken();
-      stmts.push_back(parseAssign(currToken->getTokenVal()));
-    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                                       SpParserConstant::PRINT_KEYWORD)) {
-      NextToken();
-      stmts.push_back(parsePrint());
-    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                                       SpParserConstant::READ_KEYWORD)) {
-      NextToken();
-      stmts.push_back(parseRead());
-    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                                       SpParserConstant::CALL_KEYWORD)) {
-      NextToken();
-      stmts.push_back(parseCall());
-    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                                       SpParserConstant::WHILE_KEYWORD)) {
-      NextToken();
-      stmts.push_back(parseWhile());
-    } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
-                                       SpParserConstant::IF_KEYWORD)) {
-      NextToken();
-      stmts.push_back(parseIf());
-    } else {
-      throw InvalidStmtLstException();
-    }
+bool SpParser::IsAssignStmt() {
+  return IsCurrTokenType(TokenType::WORD_TOKEN) &&
+         IsPeekTokenValue(SpParserConstant::ASSIGN_SYMBOL);
+}
+
+std::shared_ptr<StmtNode> SpParser::ParseAssignStmt() {
+  std::shared_ptr<Token> currToken = GetCurrToken();
+  NextToken();  // move to assign symbol
+  NextToken();
+  return parseAssign(currToken->getTokenVal());
+}
+
+std::shared_ptr<StmtNode> SpParser::ParseNonAssignStmt() {
+  std::shared_ptr<StmtNode> stmtNode;
+  if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                              SpParserConstant::PRINT_KEYWORD)) {
+    NextToken();
+    stmtNode = parsePrint();
+  } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                     SpParserConstant::READ_KEYWORD)) {
+    NextToken();
+    stmtNode = parseRead();
+  } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                     SpParserConstant::CALL_KEYWORD)) {
+    NextToken();
+    stmtNode = parseCall();
+  } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                     SpParserConstant::WHILE_KEYWORD)) {
+    NextToken();
+    stmtNode = parseWhile();
+  } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
+                                     SpParserConstant::IF_KEYWORD)) {
+    NextToken();
+    stmtNode = parseIf();
+  } else {
+    throw InvalidStmtLstException();
   }
 
+  return stmtNode;
+}
+
+std::shared_ptr<StmtLstNode> SpParser::parseStmtLst() {
+  std::vector<std::shared_ptr<StmtNode>> stmts;
+
+  ValidateStmtLst();
+
+  while (!IsCurrTokenValue(SpParserConstant::END_PROCEDURE)) {
+    if (IsAssignStmt()) {
+      stmts.push_back(ParseAssignStmt());
+    } else {
+      stmts.push_back(ParseNonAssignStmt());
+    }
+  }
   return std::make_shared<StmtLstNode>(stmts);
 }
 

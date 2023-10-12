@@ -4,6 +4,7 @@
 #include <queue>
 #include <stack>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -18,6 +19,7 @@
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "../node/stmt_node/StmtNode.h"
 #include "../node/stmt_node/WhileNode.h"
 #include "../node/util_node/CondExprNode.h"
 
@@ -136,4 +138,12 @@ class SpParser : public AParser {
 
   void isTopStackNotComparisonOperatorToken(
       std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateStmtLst();
+
+  bool IsAssignStmt();
+
+  std::shared_ptr<StmtNode> ParseAssignStmt();
+
+  std::shared_ptr<StmtNode> ParseNonAssignStmt();
 };
