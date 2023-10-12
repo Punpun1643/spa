@@ -30,18 +30,6 @@ std::unordered_set<std::string> PKB::getAllRelatedToValue(
   return output;
 };
 
-std::unordered_set<std::string> PKB::getAllRelatedToValue(
-    RelationType rel_type, std::string value,
-    std::shared_ptr<std::unordered_set<std::string>> set) {
-  std::unordered_set<std::string> output;
-  for (std::string e : *set) {
-    if (relData->isRelated(rel_type, value, e)) {
-      output.insert(e);
-    };
-  };
-  return output;
-};
-
 // ********** SP **********
 void PKB::insertEntity(EntityType type, std::string entity) {
   entData->insert(type, entity);
@@ -154,8 +142,15 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
 // example Follows(3, s)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationValueSynonym(
     std::string value, EntityType entity_type, RelationType rel_type) {
-  std::unordered_set<std::string> output =
-      getAllRelatedToValue(rel_type, value, entData->get(entity_type));
+  std::unordered_set<std::string> output;
+  std::unordered_set<std::string> allRelated =
+      relData->getAllRelatedToValue(rel_type, value);
+  std::unordered_set<std::string> entities = *entData->get(entity_type);
+  for (std::string v : allRelated) {
+    if (entities.find(v) != entities.end()) {
+      output.insert(v);
+    }
+  }
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
 }
