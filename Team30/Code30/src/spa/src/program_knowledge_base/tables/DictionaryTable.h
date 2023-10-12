@@ -29,4 +29,6 @@ class DictionaryTable : public BaseTable {
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
   std::unordered_set<std::string> getAllRelatedToValue(
       std::string val) override;
+  std::unordered_set<std::string> getAllInverseRelatedToValue(
+      std::string val) override;
 };
