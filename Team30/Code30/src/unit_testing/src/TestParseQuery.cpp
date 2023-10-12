@@ -468,7 +468,7 @@ TEST_CASE("Such That And") {
     AddWordWild(tokens, "s2");
     AddEOF(tokens);
 
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 
   SECTION("Positive. Complex") {
