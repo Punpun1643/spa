@@ -3,11 +3,11 @@
 #include <iostream>
 #include <sstream>
 
+#include "../shared/tokenizer/Tokenizer.h"
 #include "common/SuchThatClause.h"
 #include "common/UsesSClause.h"
 #include "exceptions/InvalidSyntaxException.h"
 #include "parser/ContextBuilder.h"
-#include "../shared/tokenizer/Tokenizer.h"
 
 QPSController::QPSController(){};
 
@@ -51,7 +51,8 @@ void QPSController::HandleQuery(
   }
 }
 
-std::vector<std::shared_ptr<Clause>> QPSController::HandleTokens(std::vector<std::shared_ptr<Token>> tokens) {
+std::vector<std::shared_ptr<Clause>> QPSController::HandleTokens(
+    std::vector<std::shared_ptr<Token>> tokens) {
   this->CheckSyntax(tokens);
 
   std::shared_ptr<Context> context = this->FormContext(tokens);
