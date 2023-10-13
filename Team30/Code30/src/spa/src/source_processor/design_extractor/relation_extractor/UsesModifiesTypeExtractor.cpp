@@ -18,7 +18,7 @@ void UsesModifiesTypeExtractor::ExtractFromWhile(
 }
 
 void UsesModifiesTypeExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
-  actors.push_back(std::to_string(node->getStmtIndex()));
+  actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
 void UsesModifiesTypeExtractor::PopActor() {

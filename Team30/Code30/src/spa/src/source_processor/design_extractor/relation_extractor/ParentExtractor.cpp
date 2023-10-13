@@ -16,7 +16,7 @@ void ParentExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
   }
 }
 
-void ParentExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+void ParentExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
   int parentIndex = node->GetStmtIndex();
   std::vector<std::shared_ptr<StmtNode>> children =
       node->GetThenStmtLst()->GetChildren();

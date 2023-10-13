@@ -16,14 +16,14 @@ void ModifiesExtractor::ExtractFromProgram(std::shared_ptr<ProgramNode> node) {
 
 void ModifiesExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
   pkb.insertRelation(RelationType::MODIFIES_S,
-                     std::to_string(node->getStmtIndex()), node->getVarName());
-  InsertVarWithActors(node->getVarName());
+                     std::to_string(node->GetStmtIndex()), node->GetVarName());
+  InsertVarWithActors(node->GetVarName());
 }
 
 void ModifiesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertRelation(RelationType::MODIFIES_S,
-                     std::to_string(node->getStmtIndex()), node->getVarName());
-  InsertVarWithActors(node->getVarName());
+                     std::to_string(node->GetStmtIndex()), node->GetVarName());
+  InsertVarWithActors(node->GetVarName());
 }
 
 //////////////////////////////

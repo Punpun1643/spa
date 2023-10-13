@@ -29,7 +29,7 @@ void ExtractionController::ExecuteProgramExtraction(
 
       // Support creation of the procedure calls graph
     for (std::shared_ptr<ProcedureNode> child : children) {
-      callsManager->InsertProcNode(child->getProcedureName());
+      callsManager->InsertProcNode(child->GetProcedureName());
     }
 
     // Carry out the DFS extraction 
@@ -86,7 +86,7 @@ void ExtractionController::HandleContainerStmts(
   if (node->GetStmtType() == StmtType::WHILE_STMT) {
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(node);
-    std::shared_ptr<StmtLstNode> whileBody = asWhile->getStmtLst();
+    std::shared_ptr<StmtLstNode> whileBody = asWhile->GetStmtLst();
     ExecuteStmtLstExtraction(whileBody);
     PopActors();
   }
@@ -94,8 +94,8 @@ void ExtractionController::HandleContainerStmts(
   // Handle ifNodes
   if (node->GetStmtType() == StmtType::IF_STMT) {
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
-    std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLst();
-    std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLst();
+    std::shared_ptr<StmtLstNode> thenBody = asIf->GetThenStmtLst();
+    std::shared_ptr<StmtLstNode> elseBody = asIf->GetElseStmtLst();
     ExecuteStmtLstExtraction(thenBody);
     ExecuteStmtLstExtraction(elseBody);
     PopActors();

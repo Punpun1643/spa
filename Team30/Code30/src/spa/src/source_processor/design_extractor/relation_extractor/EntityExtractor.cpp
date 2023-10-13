@@ -13,27 +13,27 @@ void EntityExtractor::ExtractFromProcedure(
 }
 
 void EntityExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {
-  pkb.insertEntity(EntityType::CALL, std::to_string(node->getStmtIndex()));
+  pkb.insertEntity(EntityType::CALL, std::to_string(node->GetStmtIndex()));
 }
 
 void EntityExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertEntity(EntityType::PRINT, std::to_string(node->getStmtIndex()));
+  pkb.insertEntity(EntityType::PRINT, std::to_string(node->GetStmtIndex()));
 }
 
 void EntityExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.insertEntity(EntityType::READ, std::to_string(node->getStmtIndex()));
+  pkb.insertEntity(EntityType::READ, std::to_string(node->GetStmtIndex()));
 }
 
 void EntityExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
-  pkb.insertEntity(EntityType::WHILE, std::to_string(node->getStmtIndex()));
+  pkb.insertEntity(EntityType::WHILE, std::to_string(node->GetStmtIndex()));
 }
 
 void EntityExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
-  pkb.insertEntity(EntityType::IF, std::to_string(node->getStmtIndex()));
+  pkb.insertEntity(EntityType::IF, std::to_string(node->GetStmtIndex()));
 }
 
 void EntityExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
-  pkb.insertEntity(EntityType::ASSIGN, std::to_string(node->getStmtIndex()));
+  pkb.insertEntity(EntityType::ASSIGN, std::to_string(node->GetStmtIndex()));
 
   // Pattern insertion
   pkb.insertPattern(PatternType::ASSIGN, std::to_string(node->GetStmtIndex()), node->GetVarName(),
