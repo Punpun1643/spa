@@ -49,54 +49,28 @@ PatternClause::PatternClause(PqlDeclaration const& assign_decl,
 }
 
 std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
-  if (rhs_tree_expr == nullptr) {
-    switch (lhs_ent_ref.getRefType()) {
-      case (PqlRefType::DECLARATION): {
-        auto values = pkb.getPatternMatchesSynonymLhs(
-            rhs_expr, rhs_expr_match_type);
-        return std::make_unique<ClauseResult>(
-            assign_decl, lhs_ent_ref.getDeclaration(), *values);
-        break;
-      }
-      case (PqlRefType::VALUE): {
-        auto values = pkb.getPatternMatchesValueLhs(
-            lhs_ent_ref.getValue(), rhs_expr, rhs_expr_match_type);
-        return std::make_unique<ClauseResult>(assign_decl, *values);
-        break;
-      }
-      case (PqlRefType::WILD): {
-        auto values =
-            pkb.getPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
-        return std::make_unique<ClauseResult>(assign_decl, *values);
-        break;
-      }
-      default:
-        break;
+  switch (lhs_ent_ref.getRefType()) {
+    case (PqlRefType::DECLARATION): {
+      auto values = pkb.getPatternMatchesSynonymLhs(
+          rhs_tree_expr, rhs_expr_match_type);
+      return std::make_unique<ClauseResult>(
+          assign_decl, lhs_ent_ref.getDeclaration(), *values);
+      break;
     }
-  } else {
-    switch (lhs_ent_ref.getRefType()) {
-      case (PqlRefType::DECLARATION): {
-        auto values = pkb.getPatternMatchesSynonymLhs(
-            rhs_tree_expr, rhs_expr_match_type);
-        return std::make_unique<ClauseResult>(
-            assign_decl, lhs_ent_ref.getDeclaration(), *values);
-        break;
-      }
-      case (PqlRefType::VALUE): {
-        auto values = pkb.getPatternMatchesValueLhs(
-            lhs_ent_ref.getValue(), rhs_tree_expr, rhs_expr_match_type);
-        return std::make_unique<ClauseResult>(assign_decl, *values);
-        break;
-      }
-      case (PqlRefType::WILD): {
-        auto values =
-            pkb.getPatternMatchesWildLhs(rhs_tree_expr, rhs_expr_match_type);
-        return std::make_unique<ClauseResult>(assign_decl, *values);
-        break;
-      }
-      default:
-        break;
+    case (PqlRefType::VALUE): {
+      auto values = pkb.getPatternMatchesValueLhs(
+          lhs_ent_ref.getValue(), rhs_tree_expr, rhs_expr_match_type);
+      return std::make_unique<ClauseResult>(assign_decl, *values);
+      break;
     }
+    case (PqlRefType::WILD): {
+      auto values =
+          pkb.getPatternMatchesWildLhs(rhs_tree_expr, rhs_expr_match_type);
+      return std::make_unique<ClauseResult>(assign_decl, *values);
+      break;
+    }
+    default:
+      break;
   }
 
 }

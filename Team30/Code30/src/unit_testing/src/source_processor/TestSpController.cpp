@@ -7,7 +7,7 @@
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../spa/src/source_processor/SpController.h"
 #include "../../spa/src/source_processor/node/stmt_node/StmtNode.h"
-#include "PKBSPStub.h"
+#include "../stub/PKBSPStub.h"
 #include "catch.hpp"
 
 TEST_CASE("Test SpController parses and extract nodes information successfully",
