@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 class InvalidAssignException : public std::invalid_argument {
