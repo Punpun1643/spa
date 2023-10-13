@@ -1,9 +1,8 @@
-#include <catch.hpp>
-
+#include "../../stub/PkbQpsInterfaceStub.h"
+#include "catch.hpp"
 #include "query_processing_system/common/AttrRef.h"
 #include "query_processing_system/common/AttrType.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
-#include "PkbQpsInterfaceStub.h"
 
 TEST_CASE("Test AttrRef") {
   PqlDeclaration con = PqlDeclaration("const", EntityType::CONSTANT);
