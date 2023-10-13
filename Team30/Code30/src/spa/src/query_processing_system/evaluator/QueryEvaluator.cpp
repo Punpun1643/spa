@@ -38,8 +38,8 @@ std::vector<std::vector<std::string>> QueryEvaluator::evaluateQuery(
 
   for (auto const& decl : selected_decls) {
     if (!table.hasDeclaration(decl)) {
-      auto all_clause = std::make_shared<SelectClause>(decl);
-      missing_decl_clauses.push_back(all_clause);
+      auto select_all_clause = std::make_shared<SelectAllClause>(decl);
+      missing_decl_clauses.push_back(select_all_clause);
     }
   }
   populateIntermediateResultsTable(table, missing_decl_clauses);

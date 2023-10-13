@@ -12,11 +12,11 @@ class IfNode : public StmtNode {
          std::shared_ptr<StmtLstNode> thenStmtLstNode,
          std::shared_ptr<StmtLstNode> elseStmtLstNode);
 
-  void accept(IDesignExtractor& extractor) override;
+  void Accept(IDesignExtractor& extractor) override;
 
-  std::shared_ptr<StmtLstNode> const getThenStmtLst() const;
-  std::shared_ptr<StmtLstNode> const getElseStmtLst() const;
-  std::shared_ptr<CondExprNode> const getCondExpr() const;
+  std::shared_ptr<StmtLstNode> const GetThenStmtLst() const;
+  std::shared_ptr<StmtLstNode> const GetElseStmtLst() const;
+  std::shared_ptr<CondExprNode> const GetCondExpr() const;
 
   ~IfNode() = default;
 

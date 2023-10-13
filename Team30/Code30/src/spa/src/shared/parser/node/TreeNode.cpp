@@ -4,13 +4,13 @@ TreeNode::TreeNode(std::string val, std::shared_ptr<TreeNode> leftSubTree,
                    std::shared_ptr<TreeNode> rightSubTree)
     : val(val), leftSubTree(leftSubTree), rightSubTree(rightSubTree) {}
 
-std::string TreeNode::getVal() const { return val; }
+std::string TreeNode::GetVal() const { return val; }
 
-std::shared_ptr<TreeNode> TreeNode::getLeftSubTree() const {
+std::shared_ptr<TreeNode> TreeNode::GetLeftSubTree() const {
   return leftSubTree;
 }
 
-std::shared_ptr<TreeNode> TreeNode::getRightSubTree() const {
+std::shared_ptr<TreeNode> TreeNode::GetRightSubTree() const {
   return rightSubTree;
 }
 
@@ -22,11 +22,11 @@ std::vector<std::string> TreeNode::CreateInOrderTraversal(
     return inOrderTraversal;
   }
 
-  inOrderTraversal = CreateInOrderTraversal(root->getLeftSubTree());
-  inOrderTraversal.push_back(root->getVal());
+  inOrderTraversal = CreateInOrderTraversal(root->GetLeftSubTree());
+  inOrderTraversal.push_back(root->GetVal());
 
   std::vector<std::string> rightSubTreeInOrderTraversal =
-      CreateInOrderTraversal(root->getRightSubTree());
+      CreateInOrderTraversal(root->GetRightSubTree());
 
   inOrderTraversal.insert(
       inOrderTraversal.end(),
@@ -44,10 +44,10 @@ std::vector<std::string> TreeNode::CreatePreOrderTraversal(
     return preOrderTraversal;
   }
 
-  preOrderTraversal.push_back(root->getVal());
+  preOrderTraversal.push_back(root->GetVal());
 
   std::vector<std::string> leftSubTreePreOrderTraversal =
-      CreatePreOrderTraversal(root->getLeftSubTree());
+      CreatePreOrderTraversal(root->GetLeftSubTree());
 
   preOrderTraversal.insert(
       preOrderTraversal.end(),
@@ -55,7 +55,7 @@ std::vector<std::string> TreeNode::CreatePreOrderTraversal(
       std::make_move_iterator(leftSubTreePreOrderTraversal.end()));
 
   std::vector<std::string> rightSubTreePreOrderTraversal =
-      CreatePreOrderTraversal(root->getRightSubTree());
+      CreatePreOrderTraversal(root->GetRightSubTree());
 
   preOrderTraversal.insert(
       preOrderTraversal.end(),

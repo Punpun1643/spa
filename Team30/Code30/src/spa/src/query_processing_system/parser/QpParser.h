@@ -8,6 +8,22 @@ class QpParser : public AParser {
  public:
   QpParser(std::vector<std::shared_ptr<Token>> tokens);
 
+
+  // Constants
+  static std::string const AND;
+  static std::string const BOOLEAN;
+  static std::string const CALLS;
+  static std::string const CALLS_STAR;
+  static std::string const FOLLOWS;
+  static std::string const FOLLOWS_STAR;
+  static std::string const MODIFIES;
+  static std::string const PATTERN;
+  static std::string const PARENT;
+  static std::string const PARENT_STAR;
+  static std::string const SELECT;
+  static std::string const SUCH;
+  static std::string const USES;
+
   virtual ~QpParser() = default;
 
  protected:

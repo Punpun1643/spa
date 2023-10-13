@@ -4,6 +4,7 @@
 #include <queue>
 #include <stack>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -18,6 +19,7 @@
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/PrintNode.h"
 #include "../node/stmt_node/ReadNode.h"
+#include "../node/stmt_node/StmtNode.h"
 #include "../node/stmt_node/WhileNode.h"
 #include "../node/util_node/CondExprNode.h"
 
@@ -25,34 +27,37 @@ class SpParser : public AParser {
  public:
   SpParser(std::vector<std::shared_ptr<Token>> tokens);
 
-  std::shared_ptr<ProgramNode> parseProgram();
-
-  std::shared_ptr<ProcedureNode> parseProcedure();
-
-  std::shared_ptr<StmtLstNode> parseStmtLst();
-
-  std::shared_ptr<PrintNode> parsePrint();
-
-  std::shared_ptr<ReadNode> parseRead();
-
-  std::shared_ptr<CallNode> parseCall();
-
-  std::shared_ptr<IfNode> parseIf();
-
-  std::shared_ptr<WhileNode> parseWhile();
-
-  std::shared_ptr<CondExprNode> parseCondExpr();
-
-  std::shared_ptr<AssignNode> parseAssign(std::string const& varName);
-
-  std::shared_ptr<ProgramNode> getSourceProgramNode();
-
-  static std::shared_ptr<TreeNode> buildExprTreeAndValidate(
-      std::queue<std::shared_ptr<std::string>>& postFixQueue);
+  /**
+   * @brief Get the Source Program Node object.
+   *
+   * @return Program node.
+   */
+  std::shared_ptr<ProgramNode> GetSourceProgramNode();
 
   void parse() override;
 
   ~SpParser() = default;
+
+ protected:
+  std::shared_ptr<ProgramNode> ParseProgram();
+
+  std::shared_ptr<ProcedureNode> ParseProcedure();
+
+  std::shared_ptr<StmtLstNode> ParseStmtLst();
+
+  std::shared_ptr<PrintNode> ParsePrint();
+
+  std::shared_ptr<ReadNode> ParseRead();
+
+  std::shared_ptr<CallNode> ParseCall();
+
+  std::shared_ptr<IfNode> ParseIf();
+
+  std::shared_ptr<WhileNode> ParseWhile();
+
+  std::shared_ptr<CondExprNode> ParseCondExpr();
+
+  std::shared_ptr<AssignNode> ParseAssign(std::string const& varName);
 
  private:
   int currStmtIndex = 1;
@@ -61,79 +66,115 @@ class SpParser : public AParser {
 
   int Precedence(std::string const& op) override;
 
-  static bool isOperator(std::string const& tokenVal);
+  static bool IsOperator(std::string const& tokenVal);
 
-  static bool isComparisonOperator(std::string const& tokenVal);
+  static bool IsComparisonOperator(std::string const& tokenVal);
 
-  static bool isLogicalOperator(std::string const& tokenVal);
+  static bool IsLogicalOperator(std::string const& tokenVal);
 
-  static bool isMathematicalOperator(std::string const& tokenVal);
+  static bool IsMathematicalOperator(std::string const& tokenVal);
 
-  static bool isPossibleRelFactor(std::shared_ptr<Token> token);
+  static bool IsPossibleRelFactor(std::shared_ptr<Token> token);
 
-  static bool isAndOrOrToken(std::shared_ptr<Token> token);
+  static bool IsAndOrOrToken(std::shared_ptr<Token> token);
 
-  static bool isLeftParenthesisToken(std::shared_ptr<Token> token);
+  static bool IsLeftParenthesisToken(std::shared_ptr<Token> token);
 
-  static bool isRightParenthesisToken(std::shared_ptr<Token> token);
+  static bool IsRightParenthesisToken(std::shared_ptr<Token> token);
 
-  static bool isNotToken(std::shared_ptr<Token> token);
+  static bool IsNotToken(std::shared_ptr<Token> token);
 
-  void handleWordOrIntegerToken(
-      std::queue<std::shared_ptr<std::string>>& postFixQueue,
-      std::unordered_set<std::string>& variables,
-      std::unordered_set<int>& constants);
+  void HandleWordOrIntegerToken(std::unordered_set<std::string>& variables,
+                                std::unordered_set<int>& constants);
 
-  void handleOperatorToken(
+  void HandleOperatorToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue);
 
-  void handleLeftParenthesisToken(
+  void HandleCondExprOperatorToken(
+      std::shared_ptr<Token> const& token,
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void HandleLeftParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount);
 
-  void handleCondExprLeftParenthesisToken(
+  void HandleCondExprLeftParenthesisToken(
       std::shared_ptr<Token> const& currToken,
       std::stack<std::shared_ptr<Token>>& operatorStack, int& parenCount);
 
-  void condExprHandleRightParenthesisToken(
+  void CondExprHandleRightParenthesisToken(
       std::stack<std::shared_ptr<Token>>& operatorStack,
       std::queue<std::shared_ptr<Token>>& postFixQueue);
 
-  void handleCondExprWordToken(std::shared_ptr<Token> const& currToken,
+  void HandleCondExprWordToken(std::shared_ptr<Token> const& currToken,
                                std::unordered_set<std::string>& variables,
                                std::stack<std::shared_ptr<Token>>& tokenStack);
 
-  void handleCondExprIntegerToken(
+  void HandleCondExprIntegerToken(
       std::shared_ptr<Token> const& currToken,
       std::unordered_set<int>& constants,
       std::stack<std::shared_ptr<Token>>& tokenStack);
 
-  void assignHandleRightParenthesisToken(
+  void AssignHandleRightParenthesisToken(
       std::stack<std::shared_ptr<std::string>>& operatorStack,
       std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount);
 
-  void trackOperatorAndOperand(std::vector<int>& constAppearances,
+  void TrackOperatorAndOperand(std::vector<int>& constAppearances,
                                std::vector<std::string>& varAppearances);
 
-  void buildCondExprPostFix(std::queue<std::shared_ptr<Token>>& postFixQueue);
+  void BuildCondExprPostFix(std::queue<std::shared_ptr<Token>>& postFixQueue);
 
-  void validateTokenStack(std::queue<std::shared_ptr<Token>>& postFixQueue,
+  void ValidateTokenStack(std::queue<std::shared_ptr<Token>>& postFixQueue,
                           std::stack<std::shared_ptr<Token>>& tokenStack,
                           std::unordered_set<std::string>& variables,
                           std::unordered_set<int>& constants);
 
-  void validateTokenStackSize(std::stack<std::shared_ptr<Token>>& tokenStack,
-                              int size);
+  void ValidateTokenStackSize(std::stack<std::shared_ptr<Token>>& tokenStack);
 
-  void validateWordOrIntegerToken(
+  void ValidateWordOrIntegerToken(
       std::stack<std::shared_ptr<Token>>& tokenStack);
 
-  void isTopStackNotWordOrIntegerToken(
+  void IsTopStackNotWordOrIntegerToken(
       std::stack<std::shared_ptr<Token>>& tokenStack);
 
-  void validateComparisonOperatorToken(
+  void ValidateComparisonOperatorToken(
       std::stack<std::shared_ptr<Token>>& tokenStack);
 
-  void isTopStackNotComparisonOperatorToken(
+  void ValidateCondExprMathematicalOperatorToken(
       std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprNotToken(std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprAndOrOrToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateCondExprComparisonOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack,
+      std::shared_ptr<Token> const& token);
+
+  void ValidateCondExprFinalTokenStackState(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void IsTopStackNotComparisonOperatorToken(
+      std::stack<std::shared_ptr<Token>>& tokenStack);
+
+  void ValidateStmtLst();
+
+  void ValidateCondExprAndOrOrTokenPosition();
+
+  void ValidateBalanceParentheses(int& parenCount);
+
+  void HandleOperatorsStackAndPostfixQueue(
+      std::stack<std::shared_ptr<Token>>& operatorStack,
+      std::queue<std::shared_ptr<Token>>& postFixQueue);
+
+  void TransferOperatorsToPostfixQueue(
+      std::stack<std::shared_ptr<Token>>& operatorStack,
+      std::queue<std::shared_ptr<Token>>& postFixQueue);
+
+  bool IsAssignStmt();
+
+  std::shared_ptr<StmtNode> ParseAssignStmt();
+
+  std::shared_ptr<StmtNode> ParseNonAssignStmt();
 };

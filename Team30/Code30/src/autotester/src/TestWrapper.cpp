@@ -3,7 +3,6 @@
 #include <fstream>
 #include <iostream>
 #include "../../spa/src/shared/tokenizer/Tokenizer.h"
-#include "../../spa/src/query_processing_system/common/SelectClause.h"
 #include "../../spa/src/query_processing_system/common/SuchThatClause.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSyntaxException.h"
@@ -29,7 +28,7 @@ TestWrapper::TestWrapper() {
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
-  this->sp_controller->parseAndExtract(*(this->pkb), filename);
+  this->sp_controller->ParseAndExtract(*(this->pkb), filename);
 }
 
 // method to evaluating a query

@@ -36,15 +36,10 @@ std::vector<PqlDeclaration> Context::GetSelectedDeclarations() {
 }
 
 std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
-  // TODO: extend to join all clause vectors and return
   std::vector<std::shared_ptr<Clause>> other_clauses;
   other_clauses.insert(other_clauses.end(), this->such_that_clauses.begin(),
                        this->such_that_clauses.end());
   other_clauses.insert(other_clauses.end(), this->pattern_clauses.begin(),
                        this->pattern_clauses.end());
   return other_clauses;
-}
-
-std::shared_ptr<SelectClause> Context::GetSelectClause() {
-  return this->select_clause;
 }

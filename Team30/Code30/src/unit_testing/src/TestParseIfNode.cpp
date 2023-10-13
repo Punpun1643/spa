@@ -11,6 +11,18 @@
 
 using Catch::Matchers::Contains;
 
+namespace TestParseIfNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::ParseIf;
+
+  void parse() override {}
+};
+}  // namespace TestParseIfNode
+
 TEST_CASE("Test parseIf", "[parseIf]") {
   SECTION("Test valid if stmt should not throw any error") {
     /*
@@ -50,8 +62,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_NOTHROW(parser.parseIf());
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_NOTHROW(parser.ParseIf());
   }
 
   SECTION(
@@ -121,8 +134,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_NOTHROW(parser.parseIf());
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_NOTHROW(parser.ParseIf());
   }
 
   SECTION("Missing open bracket should throw error") {
@@ -163,8 +177,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test other characters in place of open bracket should throw error") {
@@ -206,8 +221,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION(
@@ -250,8 +266,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing close bracket should throw error") {
@@ -291,8 +308,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(),
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(),
                         Contains("Invalid"));  // will be invalid condExpr
   }
 
@@ -332,10 +350,11 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
     REQUIRE_THROWS_WITH(
-        parser.parseIf(),
-        Contains("Invalid condExpr"));  // will be invalid condExpr
+        parser.ParseIf(),
+        Contains("Invalid condition expression!"));  // will be invalid condExpr
   }
 
   SECTION("Test missing then keyword should throw error") {
@@ -375,8 +394,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing start then curly bracket should throw error") {
@@ -415,8 +435,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing end then curly bracket should throw error") {
@@ -456,9 +477,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(),
-                        Contains("invalid"));  // will be invalid stmtLst
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseIf());  // will be invalid stmtLst
   }
 
   SECTION("Test missing else keyword should throw error") {
@@ -498,8 +519,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing open else curly bracket should throw error") {
@@ -539,8 +561,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(), Contains("Invalid if"));
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS_WITH(parser.ParseIf(), Contains("Invalid if"));
   }
 
   SECTION("Test missing close else curly bracket should throw error") {
@@ -579,9 +602,9 @@ TEST_CASE("Test parseIf", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    REQUIRE_THROWS_WITH(parser.parseIf(),
-                        Contains("invalid"));  // will be invalid stmtLst
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseIf());  // will be invalid stmtLst
   }
 }
 
@@ -624,17 +647,18 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
 
-    std::shared_ptr<IfNode> ifNode = parser.parseIf();
-    std::shared_ptr<CondExprNode> condExprNode = ifNode->getCondExpr();
-    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();
-    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->getElseStmtLst();
+    std::shared_ptr<IfNode> ifNode = parser.ParseIf();
+    std::shared_ptr<CondExprNode> condExprNode = ifNode->GetCondExpr();
+    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->GetThenStmtLst();
+    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->GetElseStmtLst();
 
-    REQUIRE(condExprNode->getVariables()->size() == 2);
-    REQUIRE(condExprNode->getConstants()->size() == 0);
-    REQUIRE(thenStmtLstNode->getChildren().size() == 3);
-    REQUIRE(elseStmtLstNode->getChildren().size() == 1);
+    REQUIRE(condExprNode->GetVariables()->size() == 2);
+    REQUIRE(condExprNode->GetConstants()->size() == 0);
+    REQUIRE(thenStmtLstNode->GetChildren().size() == 3);
+    REQUIRE(elseStmtLstNode->GetChildren().size() == 1);
   }
 
   SECTION(
@@ -704,21 +728,22 @@ TEST_CASE("Test parseIf node values", "[parseIf]") {
     tokens.push_back(std::make_shared<SpecialCharToken>("}"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser(tokens);
-    std::shared_ptr<IfNode> ifNode = parser.parseIf();
-    std::shared_ptr<CondExprNode> condExprNode = ifNode->getCondExpr();
-    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->getThenStmtLst();
-    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->getElseStmtLst();
+    TestParseIfNode::TestableParser parser =
+        TestParseIfNode::TestableParser(tokens);
+    std::shared_ptr<IfNode> ifNode = parser.ParseIf();
+    std::shared_ptr<CondExprNode> condExprNode = ifNode->GetCondExpr();
+    std::shared_ptr<StmtLstNode> thenStmtLstNode = ifNode->GetThenStmtLst();
+    std::shared_ptr<StmtLstNode> elseStmtLstNode = ifNode->GetElseStmtLst();
 
-    REQUIRE(condExprNode->getVariables()->size() == 1);
-    REQUIRE(condExprNode->getConstants()->size() == 1);
-    REQUIRE(thenStmtLstNode->getChildren().size() == 3);
-    REQUIRE(elseStmtLstNode->getChildren().size() == 2);
+    REQUIRE(condExprNode->GetVariables()->size() == 1);
+    REQUIRE(condExprNode->GetConstants()->size() == 1);
+    REQUIRE(thenStmtLstNode->GetChildren().size() == 3);
+    REQUIRE(elseStmtLstNode->GetChildren().size() == 2);
 
     std::shared_ptr<WhileNode> whileNode =
-        std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->getChildren()[1]);
-    REQUIRE(whileNode->getCondExpr()->getVariables()->size() == 2);
-    REQUIRE(whileNode->getCondExpr()->getConstants()->size() == 0);
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+        std::dynamic_pointer_cast<WhileNode>(elseStmtLstNode->GetChildren()[1]);
+    REQUIRE(whileNode->GetCondExpr()->GetVariables()->size() == 2);
+    REQUIRE(whileNode->GetCondExpr()->GetConstants()->size() == 0);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 }

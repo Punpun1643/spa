@@ -25,11 +25,29 @@ void PkbStub::insertEntity(EntityType type, std::string entity) {
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
+std::string PkbStub::convertEntityAttribute(std::string value, EntityType type,
+                                            AttrType curr_attr_type,
+                                            AttrType wanted_attr_type) {
+  return "";
+};
+
+bool PkbStub::doesEntityExist(EntityType type, AttrType attr_type,
+                              std::string value) {
+  return false;
+};
+
+std::vector<std::string> PkbStub::getMatchingEntities(EntityType type_1,
+                                                      AttrType attr_type_1,
+                                                      EntityType type_2,
+                                                      AttrType attr_type_2) {
+  return {};
+};
+
 void PkbStub::insertRelationCommon(RelationType type, std::string a,
                                    std::string b) {
-  //if (type == RelationType::USES_P || type == RelationType::USES_S) {
-  //   std::cout << REL_TYPE_STRINGS[type] + "(" + a + ", " + b + ")\n";
-  // }
+  // if (type == RelationType::USES_P || type == RelationType::USES_S) {
+  //    std::cout << REL_TYPE_STRINGS[type] + "(" + a + ", " + b + ")\n";
+  //  }
 
   ++insertRelationCallCount;
   switch (type) {
@@ -144,16 +162,15 @@ std::unique_ptr<std::vector<std::string>> PkbStub::getRelationValueSynonym(
     } else if (value == "proc_AST4_B") {
       result.push_back("y");
     } else if (value == "proc_AST5_A") {
-
     } else if (value == "proc_AST5_B") {
-
     } else if (value == "proc_AST1_C") {
       result.push_back("y");
     }
     return std::make_unique<std::vector<std::string>>(result);
   }
 
-  if (entity_type == EntityType::VARIABLE && rel_type == RelationType::MODIFIES_P) {
+  if (entity_type == EntityType::VARIABLE &&
+      rel_type == RelationType::MODIFIES_P) {
     if (value == "proc_AST1_A") {
       result.push_back("var1");
       result.push_back("var2");
@@ -271,3 +288,5 @@ PkbStub::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                                      MatchType match_type) {
   return NULL;
 };
+
+void PkbStub::insertCFGNode(std::string statement_num, std::shared_ptr<CFGNode> node){};

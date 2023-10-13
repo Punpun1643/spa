@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "../../program_knowledge_base/PKBQPSInterface.h"
-#include "../common/SelectClause.h"
+#include "../common/SelectAllClause.h"
 #include "../common/SuchThatClause.h"
 #include "IntermediateResultsTable.h"
 #include "query_processing_system/common/PatternClause.h"

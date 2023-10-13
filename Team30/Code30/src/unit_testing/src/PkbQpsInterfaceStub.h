@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
@@ -9,7 +11,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   RelationType last_rel_passed = RelationType::FOLLOWS;
 
   // Select
-  const std::vector<std::string> getAllOfTypeValues = {"x","y","z"};
+  std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
 
   // SuchThat Clauses
   std::string last_value_passed;
@@ -27,35 +29,49 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   int valueSynonymCalls = 0;
   int synonymSynonymCalls = 0;
 
-  const bool valueValueBool = false;
-  const bool valueWildBool = false;
-  const bool wildValueBool = true;
-  const bool wildWildBool = true;
-  const std::vector<std::string> synonymWildValues = {"1","2","3"};
-  const std::vector<std::string> wildSynonymValues = {"a","b","c"};
-  const std::vector<std::string> synonymValueValues = {"4","5","6"};
-  const std::vector<std::string> valueSynonymValues = {"d","e","f"};
-  const std::vector<std::string> synonymSynonymValues1 = {"42"};
-  const std::vector<std::string> synonymSynonymValues2 = {"43"};
-  const std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
+  bool const valueValueBool = false;
+  bool const valueWildBool = false;
+  bool const wildValueBool = true;
+  bool const wildWildBool = true;
+  std::vector<std::string> const synonymWildValues = {"1", "2", "3"};
+  std::vector<std::string> const wildSynonymValues = {"a", "b", "c"};
+  std::vector<std::string> const synonymValueValues = {"4", "5", "6"};
+  std::vector<std::string> const valueSynonymValues = {"d", "e", "f"};
+  std::vector<std::string> const synonymSynonymValues1 = {"42"};
+  std::vector<std::string> const synonymSynonymValues2 = {"43"};
+  std::vector<std::pair<std::string, std::string>> const synonymSynonymValues =
+      {std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
 
   // Pattern Clauses
   int patternWildCalls = 0;
   int patternValueCalls = 0;
   int patternDeclCalls = 0;
   MatchType last_match_type_passed = MatchType::EXACT_MATCH;
-  std::string last_rhs_expr_passed = "";
-
-  const std::vector<std::string> patternWildValues = {"10","20","30"};
-  const std::vector<std::string> patternValueValues = {"ab","bb","cb"};
-  const std::vector<std::string> patternDeclValues1 = {"123"};
-  const std::vector<std::string> patternDeclValues2 = {"345"};
-  const std::vector<std::pair<std::string, std::string>> patternDeclValues = {std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
-
+  std::shared_ptr<TreeNode> last_rhs_expr_passed;
 
   // Select Clause
+  std::vector<std::string> const patternWildValues = {"10", "20", "30"};
+  std::vector<std::string> const patternValueValues = {"ab", "bb", "cb"};
+  std::vector<std::string> const patternDeclValues1 = {"123"};
+  std::vector<std::string> const patternDeclValues2 = {"345"};
+  std::vector<std::pair<std::string, std::string>> const patternDeclValues = {
+      std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
+
+  // Entities
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
+
+  std::string convertEntityAttribute(std::string value, EntityType type,
+                                     AttrType curr_attr_type,
+                                     AttrType wanted_attr_type) override;
+
+  bool doesEntityExist(EntityType type, AttrType attr_type,
+                       std::string value) override;
+
+  std::vector<std::string> getMatchingEntities(EntityType type_1,
+                                               AttrType attr_type_1,
+                                               EntityType type_2,
+                                               AttrType attr_type_2) override;
 
   // 0 Declarations - SuchThatClauses
   bool isRelationTrueValueValue(std::string value_1, std::string value_2,
@@ -90,19 +106,19 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  // 2 paired values - one for the implicit assign declaration, paired with
+  // the variable declaration on the LHS of the assign stmt
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
 
+  // TO DELETE
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
       std::string rhs_expr, MatchType expr_match_type) override;
   std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
       std::string lhs_value, std::string rhs_expr,
       MatchType expr_match_type) override;
-  // 2 paired values - one for the implicit assign declaration, paired with
-  // the variable declaration on the LHS of the assign stmt
+
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesSynonymLhs(std::string rhs_expr,
                               MatchType expr_match_type) override;
-
-
 };

@@ -17,7 +17,12 @@ class SyntaxChecker : public QpParser {
   ~SyntaxChecker() = default;
 
  private:
+  enum class ClauseType { such_that, pattern };
+
+  // Checkers
+  void CheckAnd(ClauseType clause_type);
   void CheckCalls();
+  void CheckClauses();
   void CheckDeclaration();
   void CheckEOF();
   void CheckFollows();
@@ -25,10 +30,13 @@ class SyntaxChecker : public QpParser {
   void CheckParent();
   void CheckPattern();
   void CheckSelect();
-  void CheckSuchThat();
-  void CheckSuchThatOrPattern();
+  void CheckSelectBoolean();
+  void CheckSelectMultiple();
+  void CheckSelectSingle();
+  void CheckSuchThat(bool has_and);
   void CheckUses();
-  // Helper checkers
+
+  // Helpers
   EntityType CheckCurrentTokenPatternEntity();
   void CheckCurrentTokenPatternFirstArg(EntityType variable_type);
   void CheckCurrentTokenPatternSecondArg(EntityType variable_type);
