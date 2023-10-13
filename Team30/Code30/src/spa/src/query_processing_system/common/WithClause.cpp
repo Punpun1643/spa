@@ -21,7 +21,6 @@ AttrRefOutputType WithClause::GetRefOutputType(WithRef ref) {
   }
 }
 
-
 void WithClause::VerifyRefsHaveComparableTypes() const {
   AttrRefOutputType ref1_type = GetRefOutputType(ref1);
   AttrRefOutputType ref2_type = GetRefOutputType(ref2);
@@ -42,7 +41,10 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateStrStr(PKBQPSInterface& pkb) {
 
 std::unique_ptr<ClauseResult> WithClause::EvaluateIntRef(PKBQPSInterface& pkb, int int_ref_id) {
   assert(int_ref_id == 1 || int_ref_id == 2);
-
+  AttrRef attr_ref = (int_ref_id == 1 ? std::get<AttrRef>(ref2) : std::get<AttrRef>(ref1));
+  auto value = std::to_string(int_ref_id == 1 ? std::get<int>(ref1) : std::get<int>(ref2));
+  auto result = pkb.doesEntityExist(entity_type, attr_type, value);
+  return std::make_unique<ClauseResult>(result);
 }
 
 std::unique_ptr<ClauseResult> WithClause::evaluate(PKBQPSInterface& pkb) {
@@ -51,8 +53,8 @@ std::unique_ptr<ClauseResult> WithClause::evaluate(PKBQPSInterface& pkb) {
   } else if (std::holds_alternative<std::string>(ref1) && std::holds_alternative<std::string>(ref2)) {
     return EvaluateStrStr(pkb);
   } else if (std::holds_alternative<int>(ref1) && std::holds_alternative<AttrRef>(ref2)) {
-    return EvaluateIntRef(pkb, 2);
-  } else if (std::holds_alternative<AttrRef>(ref1) && std::holds_alternative<int>(ref2)) {
     return EvaluateIntRef(pkb, 1);
+  } else if (std::holds_alternative<AttrRef>(ref1) && std::holds_alternative<int>(ref2)) {
+    return EvaluateIntRef(pkb, 2);
   }
 }
