@@ -58,7 +58,7 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
       // uses or modifies relation, and with all the actors
       for (std::string usesRelation : usesRelations) {
         pkb.insertRelation(RelationType::USES_S,
-                           std::to_string(node->getStmtIndex()), usesRelation);
+                           std::to_string(node->GetStmtIndex()), usesRelation);
         for (std::string actor : actors) {
           bool isStmtIndex = !actor.empty() &&
                              std::all_of(actor.begin(), actor.end(), ::isdigit);
@@ -71,7 +71,7 @@ void CallsProcConnector::connectProcsAndUpdateRelations(
       }
       for (std::string modifiesRelation : modifiesRelations) {
         pkb.insertRelation(RelationType::MODIFIES_S,
-                           std::to_string(node->getStmtIndex()),
+                           std::to_string(node->GetStmtIndex()),
                            modifiesRelation);
         for (std::string actor : actors) {
           bool isStmtIndex = !actor.empty() &&

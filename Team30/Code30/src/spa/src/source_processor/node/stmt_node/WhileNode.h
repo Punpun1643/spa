@@ -13,11 +13,11 @@ class WhileNode : public StmtNode {
                      std::shared_ptr<CondExprNode> condExprNode,
                      std::shared_ptr<StmtLstNode> stmtLstNode);
 
-  std::shared_ptr<CondExprNode> getCondExpr();
+  std::shared_ptr<CondExprNode> GetCondExpr();
 
-  std::shared_ptr<StmtLstNode> getStmtLst();
+  std::shared_ptr<StmtLstNode> GetStmtLst();
 
-  void accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& designExtractor) override;
 
   ~WhileNode() = default;
 

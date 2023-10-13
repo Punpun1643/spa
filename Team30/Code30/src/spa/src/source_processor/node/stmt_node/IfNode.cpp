@@ -11,19 +11,19 @@ IfNode::IfNode(int stmtIndex, StmtType stmtType,
       thenStmtLstNode(std::move(thenStmtLstNode)),
       elseStmtLstNode(std::move(elseStmtLstNode)) {}
 
-void IfNode::accept(IDesignExtractor& designExtractor) {
+void IfNode::Accept(IDesignExtractor& designExtractor) {
   auto thisIfNodePtr = std::dynamic_pointer_cast<IfNode>(shared_from_this());
   designExtractor.extractFromIf(thisIfNodePtr);
 }
 
-std::shared_ptr<StmtLstNode> const IfNode::getThenStmtLst() const {
+std::shared_ptr<StmtLstNode> const IfNode::GetThenStmtLst() const {
   return thenStmtLstNode;
 }
 
-std::shared_ptr<StmtLstNode> const IfNode::getElseStmtLst() const {
+std::shared_ptr<StmtLstNode> const IfNode::GetElseStmtLst() const {
   return elseStmtLstNode;
 }
 
-std::shared_ptr<CondExprNode> const IfNode::getCondExpr() const {
+std::shared_ptr<CondExprNode> const IfNode::GetCondExpr() const {
   return condExprNode;
 }

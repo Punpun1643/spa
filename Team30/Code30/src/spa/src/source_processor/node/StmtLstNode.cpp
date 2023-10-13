@@ -5,12 +5,12 @@
 StmtLstNode::StmtLstNode(std::vector<std::shared_ptr<StmtNode>> stmts)
     : stmts(std::move(stmts)) {}
 
-void StmtLstNode::accept(IDesignExtractor& designExtractor) {
+void StmtLstNode::Accept(IDesignExtractor& designExtractor) {
   auto thisStmtLstNodePtr =
       std::dynamic_pointer_cast<StmtLstNode>(shared_from_this());
   designExtractor.extractFromStmtLst(thisStmtLstNodePtr);
 }
 
-std::vector<std::shared_ptr<StmtNode>> StmtLstNode::getChildren() const {
+std::vector<std::shared_ptr<StmtNode>> StmtLstNode::GetChildren() const {
   return this->stmts;
 }
