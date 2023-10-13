@@ -62,12 +62,12 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 
     NextToken();  // elem
     while (GetCurrTokenValue() != ">") {
-      if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
+      if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
         throw std::runtime_error("ETB multiple select parsing hit eof");
       }
       current_select_expression =
           std::make_optional<std::shared_ptr<SelectExpression>>(
-              std::make_shared<SelectExpression>(getCurrTokenValue(), false));
+              std::make_shared<SelectExpression>(GetCurrTokenValue(), false));
 
       if (previous_select_expression.has_value()) {
         previous_select_expression.value()->SetNextExpression(

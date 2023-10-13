@@ -27,6 +27,8 @@ void QPSController::HandleQuery(
 
   std::vector<PqlDeclaration> selected_declarations = clauses.first;
   std::vector<std::shared_ptr<Clause>> other_clauses = clauses.second;
+  std::cout << "qpsc1: " << selected_declarations.size();
+  std::cout << "qpsc2: " << other_clauses.size();
 
   if (selected_declarations.empty()) {
     bool query_results = query_evaluator->evaluateQuery(other_clauses);

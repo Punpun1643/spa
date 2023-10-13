@@ -241,7 +241,6 @@ void SyntaxChecker::CheckPattern() {
   this->CheckCurrentTokenPatternSecondArg(entity_type);
 
   NextToken();
-  NextToken();
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
   NextToken();
@@ -272,25 +271,25 @@ void SyntaxChecker::CheckSelect() {
 }
 
 void SyntaxChecker::CheckSelectBoolean() {
-  assert(getCurrTokenValue() == QpParser::BOOLEAN);
+  assert(GetCurrTokenValue() == QpParser::BOOLEAN);
 }
 
 void SyntaxChecker::CheckSelectMultiple() {
-  assert(getCurrTokenValue() == "<");
+  assert(GetCurrTokenValue() == "<");
 
-  nextToken();  // synonym
-  while (getCurrTokenValue() != ">") {
-    if (getCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+  NextToken();  // synonym
+  while (GetCurrTokenValue() != ">") {
+    if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
       throw InvalidSyntaxException(
           "Reached EOF before reaching '>' for multiple select elements");
     }
 
     CheckSelectSingle();
 
-    nextToken();  // , or >
-    if (getCurrTokenValue() == ",") {
-      nextToken();  // element
-      if (getCurrTokenValue() == ">") {
+    NextToken();  // , or >
+    if (GetCurrTokenValue() == ",") {
+      NextToken();  // element
+      if (GetCurrTokenValue() == ">") {
         throw InvalidSyntaxException("Extra comma detected in multiple select");
       }
     }
@@ -298,7 +297,7 @@ void SyntaxChecker::CheckSelectMultiple() {
 }
 
 void SyntaxChecker::CheckSelectSingle() {
-  if (getCurrTokenValue() == QpParser::BOOLEAN) {
+  if (GetCurrTokenValue() == QpParser::BOOLEAN) {
     if (existing_declarations.find(QpParser::BOOLEAN) ==
         existing_declarations.end()) {
       throw InvalidSyntaxException(
@@ -306,7 +305,7 @@ void SyntaxChecker::CheckSelectSingle() {
           "declared");
     }
   }
-  if (!IsSynonym(getCurrTokenValue())) {
+  if (!IsSynonym(GetCurrTokenValue())) {
     throw InvalidSyntaxException("Expected synonym for single select clause");
   }
 }
@@ -413,6 +412,7 @@ void SyntaxChecker::CheckCurrentTokenPatternSecondArg(
         this->CheckUpcomingTokensAreQuotedExpr(
             "Expected quoted expr for pattern second arg");
 
+        NextToken();
         this->CheckCurrentTokenSyntax(
             "_", "Expected '_' at the ending of pattern second arg");
       }
@@ -460,7 +460,7 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
   std::cout << "\n";
   try {
     AParser::ConvertInfixToPostfix(infix_tokens);
-  } catch (std::invalid_argument e) {
+  } catch (std::invalid_argument& e) {
     throw InvalidSyntaxException(error_msg);
   }
 }
