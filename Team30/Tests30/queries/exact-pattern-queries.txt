@@ -11,9 +11,9 @@ Select a pattern a (_, "5 + y + z")
 3 - Exact Match without brackets 
 assign a;
 Select a pattern a (_, "a + a - a * a / a % a")
-10
+10, 12
 5000
-4 - Exact Match with brackets 
+4 - Exact Match with brackets
 assign a;
 Select a pattern a (_, "(b + c) / (c * a)")
 5
@@ -28,8 +28,8 @@ assign a;
 Select a pattern a (_, _"c/c"_)
 7
 5000
-7 - Partial Match substring RHS 
+7 - Partial Match substring RHS
 assign a;
 Select a pattern a (_, _"a * a / a"_)
-12
+10, 12
 5000

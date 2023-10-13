@@ -453,11 +453,6 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
     infix_tokens.push_back(GetCurrToken());
     NextToken();
   }
-  std::cout << "sc4\n";
-  for (std::shared_ptr<Token> token : infix_tokens) {
-    std::cout << token->getTokenVal();
-  }
-  std::cout << "\n";
   try {
     AParser::ConvertInfixToPostfix(infix_tokens);
   } catch (std::invalid_argument& e) {
