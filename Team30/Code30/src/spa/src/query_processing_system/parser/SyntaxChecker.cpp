@@ -239,6 +239,7 @@ void SyntaxChecker::CheckPattern() {
   nextToken();
   this->CheckCurrentTokenPatternSecondArg(entity_type);
 
+  std::cout << "sc1: " << getCurrTokenValue();
   nextToken();
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
@@ -451,6 +452,11 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
     infix_tokens.push_back(getCurrToken());
     nextToken();
   }
+  std::cout << "sc4\n";
+  for (std::shared_ptr<Token> token : infix_tokens) {
+    std::cout << token->getTokenVal();
+  }
+  std::cout << "\n";
   try {
     AParser::ConvertInfixToPostfix(infix_tokens);
   } catch (std::invalid_argument e) {
@@ -495,6 +501,4 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
   this->CheckIsExpr(error_msg);
 
   CheckCurrentTokenSyntax("\"", error_msg);
-
-  nextToken();
 }
