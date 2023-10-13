@@ -9,12 +9,6 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
-
-  relatedTables = {
-      {RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
-      {RelationType::PARENT, {RelationType::PARENT_STAR}},
-      {RelationType::CALLS, {RelationType::CALLS_STAR}},
-  };
 };
 
 // ********** Private methods **********
@@ -38,9 +32,6 @@ void PKB::insertEntity(EntityType type, std::string entity) {
 void PKB::insertRelation(RelationType type, std::string input1,
                          std::string input2) {
   relData->insert(type, input1, input2);
-  for (RelationType rt : relatedTables[type]) {
-    relData->insert(rt, input1, input2);
-  }
 };
 
 void PKB::insertPattern(PatternType type, std::string statement_number,

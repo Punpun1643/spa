@@ -23,8 +23,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;
 
-  std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
-
   // Helper functions
   std::unordered_set<std::string> getIntersection(
       std::unordered_set<std::string> set1,
