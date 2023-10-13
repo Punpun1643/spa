@@ -5,10 +5,10 @@
 ReadNode::ReadNode(int stmtIndex, StmtType stmtType, std::string varName)
     : StmtNode(stmtIndex, StmtType::READ_STMT), varName(varName){};
 
-void ReadNode::accept(IDesignExtractor& designExtractor) {
+void ReadNode::Accept(IDesignExtractor& designExtractor) {
   auto thisReadNodePtr =
       std::dynamic_pointer_cast<ReadNode>(shared_from_this());
   designExtractor.ExtractFromRead(thisReadNodePtr);
 }
 
-std::string const& ReadNode::getVarName() const { return varName; }
+std::string const& ReadNode::GetVarName() const { return varName; }

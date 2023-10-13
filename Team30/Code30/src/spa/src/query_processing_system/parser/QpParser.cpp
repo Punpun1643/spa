@@ -12,9 +12,12 @@
 #include "../common/StmtRef.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
-    : AParser(tokens){};
+    : AParser(tokens){
+    };
 
 // Constants
+std::string const QpParser::AND = "and";
+std::string const QpParser::BOOLEAN = "BOOLEAN";
 std::string const QpParser::CALLS = "Calls";
 std::string const QpParser::CALLS_STAR = "Calls*";
 std::string const QpParser::FOLLOWS = "Follows";
@@ -71,7 +74,7 @@ bool QpParser::IsSynonym(std::string const& name) {
 }
 
 bool QpParser::IsTransitiveRelRef(std::string const& name) {
-  std::string arr[] = {"Follows", "Parent"};
+  std::string arr[] = {FOLLOWS, PARENT};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;
@@ -80,8 +83,8 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {"Follows", "Follows*", "Parent*", "Parent",
-                       "Uses",    "Modifies", "Calls",   "Calls*"};
+  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
+                       USES,    MODIFIES,     CALLS,       CALLS_STAR};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;

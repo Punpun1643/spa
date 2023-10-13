@@ -9,7 +9,7 @@ EntityExtractor::EntityExtractor(PKBSPInterface& pkb)
 
 void EntityExtractor::ExtractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {
-  pkb.insertEntity(EntityType::PROCEDURE, node->getProcedureName());
+  pkb.insertEntity(EntityType::PROCEDURE, node->GetProcedureName());
 }
 
 void EntityExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {
@@ -36,6 +36,6 @@ void EntityExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertEntity(EntityType::ASSIGN, std::to_string(node->getStmtIndex()));
 
   // Pattern insertion
-  pkb.insertPattern(PatternType::ASSIGN, std::to_string(node->getStmtIndex()), node->getVarName(),
-                    node->getRootOfTree());
+  pkb.insertPattern(PatternType::ASSIGN, std::to_string(node->GetStmtIndex()), node->GetVarName(),
+                    node->GetRootOfTree());
 }

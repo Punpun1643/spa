@@ -12,7 +12,7 @@ std::vector<std::shared_ptr<CFGNode>> CFGNode::getIncomingNodes() {
 
 std::shared_ptr<StmtNode> CFGNode::getNode() { return node; }
 
-StmtType CFGNode::getNodeType() { return node->getStmtType(); }
+StmtType CFGNode::getNodeType() { return node->GetStmtType(); }
 
 void CFGNode::addOutgoingNode(std::shared_ptr<CFGNode> newNode) {
   outgoingNodes.push_back(newNode);

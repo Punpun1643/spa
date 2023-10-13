@@ -22,9 +22,9 @@ ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
 void ExtractionController::ExecuteProgramExtraction(
     std::shared_ptr<ProgramNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
-    node->accept(*e);
+    node->Accept(*e);
   }
-  std::vector<std::shared_ptr<ProcedureNode>> children = node->getChildren();
+  std::vector<std::shared_ptr<ProcedureNode>> children = node->GetChildren();
   if (!children.empty()) {
 
       // Support creation of the procedure calls graph
@@ -48,9 +48,9 @@ void ExtractionController::ExecuteProgramExtraction(
 void ExtractionController::ExecuteProcedureExtraction(
     std::shared_ptr<ProcedureNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
-    node->accept(*e);
+    node->Accept(*e);
   }
-  std::vector<std::shared_ptr<StmtLstNode>> children = node->getChildren();
+  std::vector<std::shared_ptr<StmtLstNode>> children = node->GetChildren();
   if (!children.empty()) {
     for (std::shared_ptr<StmtLstNode> child : children) {
       ExecuteStmtLstExtraction(child);
@@ -62,9 +62,9 @@ void ExtractionController::ExecuteProcedureExtraction(
 void ExtractionController::ExecuteStmtLstExtraction(
     std::shared_ptr<StmtLstNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
-    node->accept(*e);
+    node->Accept(*e);
   }
-  std::vector<std::shared_ptr<StmtNode>> children = node->getChildren();
+  std::vector<std::shared_ptr<StmtNode>> children = node->GetChildren();
   if (!children.empty()) {
     for (std::shared_ptr<StmtNode> child : children) {
       ExecuteStmtExtraction(child);
@@ -75,7 +75,7 @@ void ExtractionController::ExecuteStmtLstExtraction(
 void ExtractionController::ExecuteStmtExtraction(
     std::shared_ptr<StmtNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
-    node->accept(*e);
+    node->Accept(*e);
   }
   HandleContainerStmts(node);
 }
@@ -83,7 +83,7 @@ void ExtractionController::ExecuteStmtExtraction(
 void ExtractionController::HandleContainerStmts(
     std::shared_ptr<StmtNode> node) {
   // Handle whileNodes
-  if (node->getStmtType() == StmtType::WHILE_STMT) {
+  if (node->GetStmtType() == StmtType::WHILE_STMT) {
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(node);
     std::shared_ptr<StmtLstNode> whileBody = asWhile->getStmtLst();
@@ -92,7 +92,7 @@ void ExtractionController::HandleContainerStmts(
   }
 
   // Handle ifNodes
-  if (node->getStmtType() == StmtType::IF_STMT) {
+  if (node->GetStmtType() == StmtType::IF_STMT) {
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
     std::shared_ptr<StmtLstNode> thenBody = asIf->getThenStmtLst();
     std::shared_ptr<StmtLstNode> elseBody = asIf->getElseStmtLst();

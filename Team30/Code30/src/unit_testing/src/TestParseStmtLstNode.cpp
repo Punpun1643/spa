@@ -7,6 +7,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseStmtLstNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::ParseStmtLst;
+
+  void parse() override {}
+};
+}  // namespace TestParseStmtLstNode
+
 TEST_CASE("Parser parseStmtLst print stmts") {
   std::vector<std::shared_ptr<Token>> tokens;
 
@@ -16,8 +28,9 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parseStmtLst());
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseStmtLst());
   }
 
   SECTION("StmtLst with one statement return one statement node") {
@@ -32,15 +45,16 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNode =
-        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(0));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 1);
+    REQUIRE(stmtLstNode->GetChildren().size() == 1);
     REQUIRE(printNode != nullptr);
-    REQUIRE(printNode->getVarName() == "variable");
+    REQUIRE(printNode->GetVarName() == "variable");
   }
 
   SECTION("StmtLst with two statement return two statement nodes") {
@@ -61,19 +75,20 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNodeOne =
-        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(0));
     auto printNodeTwo =
-        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(1));
+        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(1));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 2);
+    REQUIRE(stmtLstNode->GetChildren().size() == 2);
     REQUIRE(printNodeOne != nullptr);
-    REQUIRE(printNodeOne->getVarName() == "variable1");
+    REQUIRE(printNodeOne->GetVarName() == "variable1");
     REQUIRE(printNodeTwo != nullptr);
-    REQUIRE(printNodeTwo->getVarName() == "variable2");
+    REQUIRE(printNodeTwo->GetVarName() == "variable2");
   }
 
   SECTION("StmtLst with invalid stmt missing ;") {
@@ -86,8 +101,9 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION("StmtLst with invalid stmt missing variable name") {
@@ -100,8 +116,9 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION(
@@ -122,8 +139,9 @@ TEST_CASE("Parser parseStmtLst print stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 }
 
@@ -142,15 +160,16 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNode =
-        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(0));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 1);
+    REQUIRE(stmtLstNode->GetChildren().size() == 1);
     REQUIRE(printNode != nullptr);
-    REQUIRE(printNode->getVarName() == "variable");
+    REQUIRE(printNode->GetVarName() == "variable");
   }
 
   SECTION(
@@ -173,21 +192,22 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto readNode =
-        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(0));
     auto printNode =
-        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(1));
+        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(1));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 2);
+    REQUIRE(stmtLstNode->GetChildren().size() == 2);
     REQUIRE(readNode != nullptr);
-    REQUIRE(readNode->getStmtType() == StmtType::READ_STMT);
-    REQUIRE(readNode->getVarName() == "variable1");
+    REQUIRE(readNode->GetStmtType() == StmtType::READ_STMT);
+    REQUIRE(readNode->GetVarName() == "variable1");
     REQUIRE(printNode != nullptr);
-    REQUIRE(printNode->getStmtType() == StmtType::PRINT_STMT);
-    REQUIRE(printNode->getVarName() == "variable2");
+    REQUIRE(printNode->GetStmtType() == StmtType::PRINT_STMT);
+    REQUIRE(printNode->GetVarName() == "variable2");
   }
 
   SECTION("StmtLst with invalid stmt missing ;") {
@@ -200,8 +220,9 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION("StmtLst with invalid stmt missing variable name") {
@@ -214,8 +235,9 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION(
@@ -236,8 +258,9 @@ TEST_CASE("Parser parseStmtLst read stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 }
 
@@ -256,15 +279,16 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto callNode =
-        std::dynamic_pointer_cast<CallNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<CallNode>(stmtLstNode->GetChildren().at(0));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 1);
+    REQUIRE(stmtLstNode->GetChildren().size() == 1);
     REQUIRE(callNode != nullptr);
-    REQUIRE(callNode->getProcName() == "variable");
+    REQUIRE(callNode->GetProcName() == "variable");
   }
 
   SECTION(
@@ -287,21 +311,22 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto callNode =
-        std::dynamic_pointer_cast<CallNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<CallNode>(stmtLstNode->GetChildren().at(0));
     auto readNode =
-        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(1));
+        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(1));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 2);
+    REQUIRE(stmtLstNode->GetChildren().size() == 2);
     REQUIRE(callNode != nullptr);
-    REQUIRE(callNode->getStmtType() == StmtType::CALL_STMT);
-    REQUIRE(callNode->getProcName() == "variable1");
+    REQUIRE(callNode->GetStmtType() == StmtType::CALL_STMT);
+    REQUIRE(callNode->GetProcName() == "variable1");
     REQUIRE(readNode != nullptr);
-    REQUIRE(readNode->getStmtType() == StmtType::READ_STMT);
-    REQUIRE(readNode->getVarName() == "variable2");
+    REQUIRE(readNode->GetStmtType() == StmtType::READ_STMT);
+    REQUIRE(readNode->GetVarName() == "variable2");
   }
 
   SECTION("StmtLst with invalid stmt missing ;") {
@@ -314,8 +339,9 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION("StmtLst with invalid stmt missing variable name") {
@@ -328,8 +354,9 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 
   SECTION(
@@ -350,8 +377,9 @@ TEST_CASE("Parser parseStmtLst call stmts") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseStmtLst(), std::invalid_argument);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseStmtLst(), std::invalid_argument);
   }
 }
 
@@ -370,15 +398,16 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto printNode =
-        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(0));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 1);
+    REQUIRE(stmtLstNode->GetChildren().size() == 1);
     REQUIRE(printNode != nullptr);
-    REQUIRE(printNode->getStmtIndex() == 1);
+    REQUIRE(printNode->GetStmtIndex() == 1);
   }
 
   SECTION(
@@ -401,19 +430,20 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto stmtLstNode = parser.parseStmtLst();
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    auto stmtLstNode = parser.ParseStmtLst();
     auto readNode =
-        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->getChildren().at(0));
+        std::dynamic_pointer_cast<ReadNode>(stmtLstNode->GetChildren().at(0));
     auto printNode =
-        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->getChildren().at(1));
+        std::dynamic_pointer_cast<PrintNode>(stmtLstNode->GetChildren().at(1));
 
     REQUIRE(stmtLstNode != nullptr);
-    REQUIRE(stmtLstNode->getChildren().size() == 2);
+    REQUIRE(stmtLstNode->GetChildren().size() == 2);
     REQUIRE(readNode != nullptr);
-    REQUIRE(readNode->getStmtIndex() == 1);
+    REQUIRE(readNode->GetStmtIndex() == 1);
     REQUIRE(printNode != nullptr);
-    REQUIRE(printNode->getStmtIndex() == 2);
+    REQUIRE(printNode->GetStmtIndex() == 2);
   }
 
   SECTION(
@@ -433,8 +463,9 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_NOTHROW(parser.parseStmtLst());
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
+    REQUIRE_NOTHROW(parser.ParseStmtLst());
   }
 
   SECTION(
@@ -455,12 +486,13 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
-        parser.parseStmtLst()->getChildren().at(0));
-    REQUIRE(assignNode->getVarName() == "x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 1);
+        parser.ParseStmtLst()->GetChildren().at(0));
+    REQUIRE(assignNode->GetVarName() == "x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 1);
   }
 
   SECTION(
@@ -485,11 +517,12 @@ TEST_CASE("Parser parseStmtLst stmtIndexing") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
+    TestParseStmtLstNode::TestableParser parser =
+        TestParseStmtLstNode::TestableParser(tokens);
     auto assignNode = std::dynamic_pointer_cast<AssignNode>(
-        parser.parseStmtLst()->getChildren().at(0));
-    REQUIRE(assignNode->getConstants()->size() == 0);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "normSq");
+        parser.ParseStmtLst()->GetChildren().at(0));
+    REQUIRE(assignNode->GetConstants()->size() == 0);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "normSq");
   }
 }

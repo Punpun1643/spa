@@ -10,6 +10,6 @@
 class SpController {
  public:
   SpController();
-  void parseAndExtract(PKBSPInterface& pkb, std::string sourceProgramFilePath);
+  void ParseAndExtract(PKBSPInterface& pkb, std::string sourceProgramFilePath);
   ~SpController() = default;
 };

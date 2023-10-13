@@ -48,11 +48,26 @@ static void AddWordIdent(std::vector<std::shared_ptr<Token>>& tokens,
   AddSpecialCharVector(tokens, {"\"", ")"});
 }
 
+static void AddWordWild(std::vector<std::shared_ptr<Token>>& tokens,
+                        std::string arg) {
+  AddSpecialCharVector(tokens, {"("});
+  AddWordVector(tokens, {arg});
+  AddSpecialCharVector(tokens, {",", "_"});
+  AddSpecialCharVector(tokens, {")"});
+}
+
 static void AddWildWord(std::vector<std::shared_ptr<Token>>& tokens,
                         std::string arg) {
   AddSpecialCharVector(tokens, {"("});
   AddSpecialCharVector(tokens, {"_", ","});
   AddWordVector(tokens, {arg});
+  AddSpecialCharVector(tokens, {")"});
+}
+
+static void AddWildWild(std::vector<std::shared_ptr<Token>>& tokens) {
+  AddSpecialCharVector(tokens, {"("});
+  AddSpecialCharVector(tokens, {"_", ","});
+  AddSpecialCharVector(tokens, {"_"});
   AddSpecialCharVector(tokens, {")"});
 }
 
@@ -66,7 +81,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 read declaration; Select Clause") {
     AddDeclaration(tokens, "read", {"r"});
@@ -74,7 +89,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
 }
   SECTION("1 print declaration; Select Clause") {
     AddDeclaration(tokens, "print", {"p"});
@@ -82,7 +97,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
 }
   SECTION("1 call declaration; Select Clause") {
     AddDeclaration(tokens, "call", {"c"});
@@ -90,7 +105,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 while declaration; Select Clause") {
     AddDeclaration(tokens, "while", {"wh"});
@@ -98,7 +113,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 if declaration; Select Clause") {
     AddDeclaration(tokens, "if", {"if"});
@@ -106,7 +121,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 assign declaration; Select Clause") {
     AddDeclaration(tokens, "assign", {"as"});
@@ -114,7 +129,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 variable declaration; Select Clause") {
     AddDeclaration(tokens, "variable", {"v"});
@@ -122,7 +137,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 constant declaration; Select Clause") {
     AddDeclaration(tokens, "constant", {"c"});
@@ -130,7 +145,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
 
   }
   SECTION("1 procedure declaration; Select Clause") {
@@ -139,7 +154,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 
   SECTION("stmt s1, s2, Select; Select s1") {
@@ -148,7 +163,7 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -166,7 +181,7 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("1 stmt; 1 print; 3 read declaration; Select + Follows(read, print") {
     AddDeclaration(tokens, "stmt", {"s1"});
@@ -177,7 +192,7 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
   SECTION("2 variable; 1 constant, 1 stmt; Select + Follows(_, variable") {
     AddDeclaration(tokens, "variable", {"v1", "v2"});
@@ -188,7 +203,7 @@ TEST_CASE("Parse Select + Follows query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -202,7 +217,7 @@ TEST_CASE("Parse Select + Follows* query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -220,7 +235,7 @@ TEST_CASE("Parse Select + Parent query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 
   SECTION("assign a; Select a such that parent (_, a)") {
@@ -230,7 +245,7 @@ TEST_CASE("Parse Select + Parent query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -244,7 +259,7 @@ TEST_CASE("Parse Select + Parent* query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -259,7 +274,7 @@ TEST_CASE("Parse Select + Modifies query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -274,7 +289,7 @@ TEST_CASE("Parse Select + Uses query") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -288,7 +303,7 @@ TEST_CASE("Parse Select + Uses(stmtref, entref)") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 }
 
@@ -307,7 +322,7 @@ TEST_CASE("Pattern") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 
   SECTION("Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (_, _\"x\"_)") {
@@ -322,7 +337,7 @@ TEST_CASE("Pattern") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
   }
 
   SECTION("Positive. variable v, stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (v, _\"x\"_)") {
@@ -340,6 +355,125 @@ TEST_CASE("Pattern") {
     AddEOF(tokens);
 
     QPSController controller = QPSController();
-    controller.HandleTokens(tokens);
+    controller.TokensToClauses(tokens);
+  }
+}
+
+TEST_CASE("Multiple Select, BOOLEAN Select") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("Positive Select BOOLEAN") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "BOOLEAN", "such", "that", "Follows"});
+    AddIntWord(tokens, "3", "s1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive Select declared BOOLEAN") {
+    AddDeclaration(tokens, "stmt", {"s1", "BOOLEAN"});
+    AddWordVector(tokens, {"Select", "BOOLEAN", "such", "that", "Follows"});
+    AddIntWord(tokens, "3", "s1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive Select Multiple") {
+    AddDeclaration(tokens, "stmt", {"s1", "BOOLEAN"});
+    AddDeclaration(tokens, "assign", {"a1", "a2"});
+    AddWordVector(tokens, {"Select", "BOOLEAN", "such", "that", "Follows"});
+    AddWordWord(tokens, "s1", "a2");
+    AddWordVector(tokens, {"pattern", "a2"});
+    AddWildWild(tokens);
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive Select Multiple with declared BOOLEAN") {
+    AddDeclaration(tokens, "stmt", {"s1", "BOOLEAN"});
+    AddDeclaration(tokens, "assign", {"a1", "a2"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"s1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"a1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"BOOLEAN"});
+    AddSpecialCharVector(tokens, {">"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddWordWord(tokens, "s1", "a2");
+    AddWordVector(tokens, {"pattern", "a2"});
+    AddWildWild(tokens);
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Negative Select Multiple. Additional comma.") {
+    AddDeclaration(tokens, "stmt", {"s1", "BOOLEAN"});
+    AddDeclaration(tokens, "assign", {"a1", "a2"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"s1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"a1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"BOOLEAN"});
+    AddSpecialCharVector(tokens, {","});
+    AddSpecialCharVector(tokens, {">"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddWordWord(tokens, "s1", "a2");
+    AddWordVector(tokens, {"pattern", "a2"});
+    AddWildWild(tokens);
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+
+  SECTION("Negative Select Multiple. Wrong ending of multiple select.") {
+    AddDeclaration(tokens, "stmt", {"s1", "BOOLEAN"});
+    AddDeclaration(tokens, "assign", {"a1", "a2"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"s1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"a1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"BOOLEAN"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddWordWord(tokens, "s1", "a2");
+    AddWordVector(tokens, {"pattern", "a2"});
+    AddWildWild(tokens);
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+}
+
+TEST_CASE("Such That And") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1, s2; Select s1 such that Follows*(_, s2) and Modifies(s2, _)") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Follows*"});
+    AddWildWord(tokens, "s2");
+    AddWordVector(tokens, {"and"});
+    AddWordVector(tokens, {"Modifies"});
+    AddWordWild(tokens, "s2");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive. Complex") {
+  }
+
+  SECTION ("Syntax Error") {
   }
 }
