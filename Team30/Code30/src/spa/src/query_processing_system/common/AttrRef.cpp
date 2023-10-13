@@ -23,45 +23,44 @@ const std::unordered_map<EntityType, AttrType> AttrRef::ATTR_TYPE_ALIASES = {
     {EntityType::PRINT, AttrType::VAR_NAME}
 };
 
-void AttrRef::checkTypeCombinationValidity() const {
-  EntityType entity_type = decl.getEntityType();
-  if (getDefaultAttrType() != attr_type && !isAttrTypeAnAlias()) {
+void AttrRef::CheckTypeCombinationValidity() const {
+  if (GetDefaultAttrType() != attr_type && !IsAttrTypeAnAlias()) {
     throw InvalidSemanticsException("Invalid combination of EntityType and AttrType");
   }
 }
 
 AttrRef::AttrRef(PqlDeclaration decl)
 :decl(std::move(decl)) {
-  this->attr_type = getDefaultAttrType();
-  checkTypeCombinationValidity();
+  this->attr_type = GetDefaultAttrType();
+  CheckTypeCombinationValidity();
 }
 
 AttrRef::AttrRef(PqlDeclaration decl, AttrType attr_type)
 : decl(std::move(decl)), attr_type(attr_type) {
-  checkTypeCombinationValidity();
+  CheckTypeCombinationValidity();
 }
 
-bool AttrRef::isAttrTypeAnAlias() const {
+bool AttrRef::IsAttrTypeAnAlias() const {
   auto entity_type = decl.getEntityType();
   return (ATTR_TYPE_ALIASES.count(entity_type) == 1 &&
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
 
-std::string AttrRef::getRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const {
-  if (isAttrTypeAnAlias()) {
+std::string AttrRef::GetRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const {
+  if (IsAttrTypeAnAlias()) {
     return pkb.convertEntityAttribute(default_value,
                                       decl.getEntityType(),
-                                      getDefaultAttrType(),
+                                      GetDefaultAttrType(),
                                       attr_type);
   } else {
     return default_value;
   }
 }
 
-PqlDeclaration AttrRef::getDecl() const {
+PqlDeclaration AttrRef::GetDecl() const {
   return decl;
 }
 
-AttrType AttrRef::getDefaultAttrType() const {
+AttrType AttrRef::GetDefaultAttrType() const {
   return DEFAULT_ATTR_TYPE.at(decl.getEntityType());
 }

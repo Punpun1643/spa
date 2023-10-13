@@ -14,17 +14,17 @@ class AttrRef {
   static const std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPE;
   static const std::unordered_map<EntityType, AttrType> ATTR_TYPE_ALIASES;
 
-  void checkTypeCombinationValidity() const;
-  AttrType getDefaultAttrType() const;
+  void CheckTypeCombinationValidity() const;
+  AttrType GetDefaultAttrType() const;
 
  public:
   explicit AttrRef(PqlDeclaration decl);
 
   AttrRef(PqlDeclaration decl, AttrType attr_type);
 
-  std::string getRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const;
+  std::string GetRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const;
 
-  bool isAttrTypeAnAlias() const;
+  bool IsAttrTypeAnAlias() const;
 
-  PqlDeclaration getDecl() const;
+  PqlDeclaration GetDecl() const;
 };

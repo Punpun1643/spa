@@ -26,7 +26,7 @@ bool QueryEvaluator::evaluateQuery(ClauseList clauses) {
 std::vector<PqlDeclaration> QueryEvaluator::unwrapAttrRefVector(std::vector<AttrRef> const& attr_refs) {
   std::vector<PqlDeclaration> decls = {};
   for (auto const& attr_ref: attr_refs) {
-    decls.push_back(attr_ref.getDecl());
+    decls.push_back(attr_ref.GetDecl());
   }
   return decls;
 }
@@ -52,7 +52,7 @@ bool QueryEvaluator::updateResultUsingAttrTypes(std::vector<std::vector<std::str
 
   std::vector<int> aliased_idx = {};
   for (int i = 0; i < attr_refs.size(); i++) {
-    if (attr_refs[i].isAttrTypeAnAlias()) {
+    if (attr_refs[i].IsAttrTypeAnAlias()) {
       aliased_idx.push_back(i);
     }
   }
@@ -64,7 +64,7 @@ bool QueryEvaluator::updateResultUsingAttrTypes(std::vector<std::vector<std::str
   for (auto& row: values) {
     for (auto i : aliased_idx) {
       const AttrRef& attr_ref = attr_refs[i];
-      row[i] = attr_ref.getRepresentationFromDefault(pkb, row[i]);
+      row[i] = attr_ref.GetRepresentationFromDefault(pkb, row[i]);
     }
   }
   return true;

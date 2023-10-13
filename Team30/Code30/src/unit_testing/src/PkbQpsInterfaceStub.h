@@ -10,12 +10,15 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
 
   // Select
   std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
+  std::string converted_entity = "";
 
   // SuchThat Clauses
   std::string last_value_passed;
   std::string last_value_2_passed;
   EntityType last_entity_type_passed = EntityType::IF;
   EntityType last_entity_type_2_passed = EntityType::IF;
+  AttrType last_attr_type_passed = AttrType::VALUE;
+  AttrType last_attr_type_2_passed = AttrType::VALUE;
 
   int valueValueCalls = 0;
   int valueWildCalls = 0;
