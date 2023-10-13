@@ -2,6 +2,7 @@
 #include <program_knowledge_base/PKBSPInterface.h>
 #include <source_processor/node/ProcedureNode.h>
 #include <source_processor/node/util_node/CFGNode.h>
+#include <unordered_map>
 
 class CFGGenerator {
  public:
@@ -11,6 +12,8 @@ class CFGGenerator {
 
  private:
   PKBSPInterface& pkb;
+
+  std::unordered_map<int, std::shared_ptr<CFGNode>> nodeMap;
 
   std::shared_ptr<CFGNode> GenerateCFG(
       std::vector<std::shared_ptr<StmtNode>> stmts,
