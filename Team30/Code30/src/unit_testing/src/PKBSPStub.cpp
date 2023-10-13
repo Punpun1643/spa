@@ -72,7 +72,7 @@ void PKBSPStub::insertPattern(std::string statement_number, std::string lhs,
   insertPatternCallCount++;
 };
 void PKBSPStub::insertPattern(PatternType type, std::string statement_number,
-                   std::string lhs, std::shared_ptr<TreeNode> rhs) {
+                              std::string lhs, std::shared_ptr<TreeNode> rhs) {
   insertPatternCallCount++;
 };
 
@@ -141,3 +141,6 @@ std::unordered_set<std::string> PKBSPStub::getProcedureModifies(
   }
   return result;
 }
+
+void PKBSPStub::insertCFGNode(std::string statement_num,
+                            std::shared_ptr<CFGNode> node){};

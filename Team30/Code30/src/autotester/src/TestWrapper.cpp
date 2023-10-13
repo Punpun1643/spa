@@ -28,7 +28,7 @@ TestWrapper::TestWrapper() {
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
-  this->sp_controller->parseAndExtract(*(this->pkb), filename);
+  this->sp_controller->ParseAndExtract(*(this->pkb), filename);
 }
 
 // method to evaluating a query

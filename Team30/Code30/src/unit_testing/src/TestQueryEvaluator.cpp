@@ -4,9 +4,7 @@
 #include "../../spa/src/query_processing_system/common/FollowsClause.h"
 #include "../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
-#include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "PkbQpsInterfaceStub.h"
-#include "PkbStub.h"
 #include "catch.hpp"
 
 class QeFactoryMethods {
@@ -31,6 +29,7 @@ TEST_CASE("Test Query Evaluator") {
 
 
   std::shared_ptr<Clause> follows_clause;
+  std::shared_ptr<TreeNode> rhs_expr = std::make_shared<TreeNode>("", nullptr, nullptr);
   std::shared_ptr<Clause> pattern_clause;
   std::vector<std::vector<std::string>> result;
 
@@ -47,7 +46,7 @@ TEST_CASE("Test Query Evaluator") {
 
     // bool query with no result
     pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(), MatchType::EXACT_MATCH, "blah");
+        a, EntRef(), MatchType::EXACT_MATCH, rhs_expr);
     REQUIRE_FALSE(qe.evaluateQuery({follows_clause, pattern_clause}));
   }
 
@@ -79,7 +78,7 @@ TEST_CASE("Test Query Evaluator") {
   SECTION("Evaluate query with multiple decls") {
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
     pattern_clause = std::make_shared<PatternClause>(
-        a, EntRef(v), MatchType::EXACT_MATCH, "blah");
+        a, EntRef(v), MatchType::EXACT_MATCH, rhs_expr);
     result = qe.evaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause});
     std::vector<std::vector<std::string>> expected_result = {
         {"x","x","123","345"},{"y","y", "123","345"},{"z", "z","123","345"}

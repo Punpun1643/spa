@@ -9,9 +9,9 @@ class CallNode : public StmtNode {
  public:
   explicit CallNode(int stmtIndex, StmtType stmtType, std::string procName);
 
-  void accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& designExtractor) override;
 
-  std::string const& getProcName() const;
+  std::string const& GetProcName() const;
 
   ~CallNode() = default;
 

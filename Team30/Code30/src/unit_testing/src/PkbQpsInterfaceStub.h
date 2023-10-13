@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
@@ -48,8 +50,9 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   int patternValueCalls = 0;
   int patternDeclCalls = 0;
   MatchType last_match_type_passed = MatchType::EXACT_MATCH;
-  std::string last_rhs_expr_passed = "";
+  std::shared_ptr<TreeNode> last_rhs_expr_passed;
 
+  // Select Clause
   std::vector<std::string> const patternWildValues = {"10", "20", "30"};
   std::vector<std::string> const patternValueValues = {"ab", "bb", "cb"};
   std::vector<std::string> const patternDeclValues1 = {"123"};
@@ -106,16 +109,18 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  // 2 paired values - one for the implicit assign declaration, paired with
+  // the variable declaration on the LHS of the assign stmt
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
 
+  // TO DELETE
   std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
       std::string rhs_expr, MatchType expr_match_type) override;
   std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
       std::string lhs_value, std::string rhs_expr,
       MatchType expr_match_type) override;
-  // 2 paired values - one for the implicit assign declaration, paired with
-  // the variable declaration on the LHS of the assign stmt
+
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesSynonymLhs(std::string rhs_expr,
                               MatchType expr_match_type) override;

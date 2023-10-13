@@ -12,22 +12,22 @@ AssignNode::AssignNode(int stmtIndex, StmtType stmtType,
       varName(varName),
       exprTreeRoot(exprTreeRoot) {}
 
-std::string const& AssignNode::getVarName() const { return varName; }
+std::string const& AssignNode::GetVarName() const { return varName; }
 
-std::shared_ptr<std::unordered_set<std::string>> AssignNode::getVariables()
+std::shared_ptr<std::unordered_set<std::string>> AssignNode::GetVariables()
     const {
   return variables;
 }
 
-std::shared_ptr<std::unordered_set<int>> AssignNode::getConstants() const {
+std::shared_ptr<std::unordered_set<int>> AssignNode::GetConstants() const {
   return constants;
 }
 
-std::shared_ptr<TreeNode> AssignNode::getRootOfTree() const {
+std::shared_ptr<TreeNode> AssignNode::GetRootOfTree() const {
   return exprTreeRoot;
 }
 
-void AssignNode::accept(IDesignExtractor& designExtractor) {
+void AssignNode::Accept(IDesignExtractor& designExtractor) {
   auto thisAssignNodePtr =
       std::dynamic_pointer_cast<AssignNode>(shared_from_this());
   designExtractor.extractFromAssign(thisAssignNodePtr);

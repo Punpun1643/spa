@@ -52,9 +52,9 @@ TEST_CASE("Test build binary tree from postfix expression",
         TestBuildExprTreeAndValidate::TestableParser::BuildExprTreeAndValidate(
             postFixQueue);
 
-    REQUIRE(treeNode->getVal() == "+");
-    REQUIRE(treeNode->getLeftSubTree()->getVal() == "x");
-    REQUIRE(treeNode->getRightSubTree()->getVal() == "y");
+    REQUIRE(treeNode->GetVal() == "+");
+    REQUIRE(treeNode->GetLeftSubTree()->GetVal() == "x");
+    REQUIRE(treeNode->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -72,11 +72,11 @@ TEST_CASE("Test build binary tree from postfix expression",
         TestBuildExprTreeAndValidate::TestableParser::BuildExprTreeAndValidate(
             postFixQueue);
 
-    REQUIRE(treeNode->getVal() == "+");
-    REQUIRE(treeNode->getLeftSubTree()->getVal() == "x");
-    REQUIRE(treeNode->getRightSubTree()->getVal() == "*");
-    REQUIRE(treeNode->getRightSubTree()->getLeftSubTree()->getVal() == "y");
-    REQUIRE(treeNode->getRightSubTree()->getRightSubTree()->getVal() == "z");
+    REQUIRE(treeNode->GetVal() == "+");
+    REQUIRE(treeNode->GetLeftSubTree()->GetVal() == "x");
+    REQUIRE(treeNode->GetRightSubTree()->GetVal() == "*");
+    REQUIRE(treeNode->GetRightSubTree()->GetLeftSubTree()->GetVal() == "y");
+    REQUIRE(treeNode->GetRightSubTree()->GetRightSubTree()->GetVal() == "z");
   }
 
   SECTION(
@@ -110,11 +110,11 @@ TEST_CASE("Test build binary tree from postfix expression",
         TestBuildExprTreeAndValidate::TestableParser::BuildExprTreeAndValidate(
             postFixQueue);
 
-    REQUIRE(treeNode->getVal() == "*");
-    REQUIRE(treeNode->getLeftSubTree()->getVal() == "+");
-    REQUIRE(treeNode->getRightSubTree()->getVal() == "5");
-    REQUIRE(treeNode->getLeftSubTree()->getLeftSubTree()->getVal() == "x");
-    REQUIRE(treeNode->getLeftSubTree()->getRightSubTree()->getVal() == "z");
+    REQUIRE(treeNode->GetVal() == "*");
+    REQUIRE(treeNode->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(treeNode->GetRightSubTree()->GetVal() == "5");
+    REQUIRE(treeNode->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "x");
+    REQUIRE(treeNode->GetLeftSubTree()->GetRightSubTree()->GetVal() == "z");
   }
 
   SECTION(

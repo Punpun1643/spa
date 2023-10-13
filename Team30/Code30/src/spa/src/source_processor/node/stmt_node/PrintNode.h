@@ -9,9 +9,9 @@ class PrintNode : public StmtNode {
  public:
   explicit PrintNode(int stmtIndex, StmtType stmtType, std::string varName);
 
-  void accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& designExtractor) override;
 
-  std::string const& getVarName() const;
+  std::string const& GetVarName() const;
 
   ~PrintNode() = default;
 
