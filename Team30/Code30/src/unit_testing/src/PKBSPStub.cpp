@@ -147,21 +147,6 @@ void PKBSPStub::insertCFGNode(std::string statement_num,
                               std::shared_ptr<CFGNode> node) {
   insertCFGCallCount++;
   CFGNodeMap.insert({statement_num, node});
-
-  //std::cout << " - INSERTED NODE " + statement_num + " contains: \n";
-
-  //std::cout << " - Incoming: ";
-  //for (std::shared_ptr<CFGNode> in : node->getIncomingNodes()) {
-  //  std::cout << std::to_string(in->getNode()->getStmtIndex()) + ", ";
-  //}
-  //std::cout << "\n";
-
-  //std::cout << " - Outgoing: ";
-  //for (std::shared_ptr<CFGNode> in : node->getOutgoingNodes()) {
-  //  std::cout << std::to_string(in->getNode()->getStmtIndex()) + ", ";
-  //}
-  //std::cout << "\n";
-  //std::cout << "\n";
 };
 
 bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
@@ -192,15 +177,6 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
     }
   }
   return (length == 0);
-  // if (length == 0) {
-  //   return true;
-  // } else {
-  //   std::cout << "SHOULD CONTAIN BUT DOESN'T: ";
-  //   for (std::string rem : outgoingStmtNos) {
-  //     std::cout << rem + ", ";
-  //   }
-  //   return false;
-  // }
 }
 
 bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
@@ -209,39 +185,6 @@ bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
   std::shared_ptr<CFGNode> node = CFGNodeMap.find(statement_num)->second;
   int length = node->getIncomingNodes().size();
   int expLength = incomingStmtNos.size();
-
-  //std::cout << "DISPLAYING STUB NODE MAP "
-  //             "------------------------------------\n";
-  //for (auto kv : CFGNodeMap) {
-  //  std::cout << "NODE " + kv.first + " contains: \n";
-
-  //  std::shared_ptr<CFGNode> node = kv.second;
-
-  //  std::cout << "Incoming: ";
-  //  for (std::shared_ptr<CFGNode> in : node->getIncomingNodes()) {
-  //    std::cout << std::to_string(in->getNode()->getStmtIndex()) + ", ";
-  //  }
-  //  std::cout << "\n";
-
-  //  std::cout << "Outgoing: ";
-  //  for (std::shared_ptr<CFGNode> in : node->getOutgoingNodes()) {
-  //    std::cout << std::to_string(in->getNode()->getStmtIndex()) + ", ";
-  //  }
-  //  std::cout << "\n";
-  //  std::cout << "\n";
-  //}
-
-  //std::cout
-  //    << "DISPLAYING STUB NODE MAP ------------------------------------\n";
-
-  //std::cout << std::to_string(node->getNode()->getStmtIndex()) +
-  //                 " has incoming nodes: ";
-  //for (std::shared_ptr<CFGNode> incomingNode : node->getIncomingNodes()) {
-  //  std::cout << std::to_string(incomingNode->getNode()->getStmtIndex()) + ", ";
-  //}
-  //std::cout << "\n";
-  //std::cout << "LENGTH: " + std::to_string(node->getIncomingNodes().size()) +
-  //                 "\n";
 
   if (length == 0 && expLength != 0) {
     std::cout << "INCOMING EMPTY\n";

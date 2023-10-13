@@ -18,7 +18,4 @@ class CFGGenerator {
   std::shared_ptr<CFGNode> GenerateCFG(
       std::vector<std::shared_ptr<StmtNode>> stmts,
       std::vector<std::shared_ptr<CFGNode>> lastNodePointsTo);
-
-  void CheckAndInsertNode(std::vector<std::shared_ptr<CFGNode>> nextNodes,
-                          std::shared_ptr<CFGNode> newNode);
 };
