@@ -11,12 +11,15 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
 
   // Select
   std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
+  std::string converted_entity = "a";
 
   // SuchThat Clauses
   std::string last_value_passed;
   std::string last_value_2_passed;
   EntityType last_entity_type_passed = EntityType::IF;
   EntityType last_entity_type_2_passed = EntityType::IF;
+  AttrType last_attr_type_passed = AttrType::VALUE;
+  AttrType last_attr_type_2_passed = AttrType::VALUE;
 
   int valueValueCalls = 0;
   int valueWildCalls = 0;
@@ -32,7 +35,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   bool const valueWildBool = false;
   bool const wildValueBool = true;
   bool const wildWildBool = true;
-  std::vector<std::string> const synonymWildValues = {"1", "2", "3"};
+  std::vector<std::string> const synonymWildValues = {"1", "1", "3"};
   std::vector<std::string> const wildSynonymValues = {"a", "b", "c"};
   std::vector<std::string> const synonymValueValues = {"4", "5", "6"};
   std::vector<std::string> const valueSynonymValues = {"d", "e", "f"};

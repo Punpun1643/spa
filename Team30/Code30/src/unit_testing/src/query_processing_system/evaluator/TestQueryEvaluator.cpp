@@ -22,9 +22,13 @@ TEST_CASE("Test Query Evaluator") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
   QueryEvaluator qe = QueryEvaluator(pkb);
   PqlDeclaration a = PqlDeclaration("a", EntityType::ASSIGN);
+  AttrRef a_attr_ref = AttrRef(a);
   PqlDeclaration if_decl = PqlDeclaration("if", EntityType::IF);
   PqlDeclaration s = PqlDeclaration("s", EntityType::STMT);
   PqlDeclaration v = PqlDeclaration("v", EntityType::VARIABLE);
+  PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
+  PqlDeclaration call = PqlDeclaration("call", EntityType::CALL);
+
 
   std::shared_ptr<Clause> follows_clause;
   std::shared_ptr<TreeNode> rhs_expr = std::make_shared<TreeNode>("", nullptr, nullptr);
@@ -36,40 +40,40 @@ TEST_CASE("Test Query Evaluator") {
 
   SECTION("Evaluate boolean query") {
     // bool query with no clauses is true
-    REQUIRE(qe.evaluateQuery({}));
+    REQUIRE(qe.EvaluateQuery({}));
 
     // bool query with a result
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
-    REQUIRE(qe.evaluateQuery({follows_clause}));
+    REQUIRE(qe.EvaluateQuery({follows_clause}));
 
     // bool query with no result
     pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(), MatchType::EXACT_MATCH, rhs_expr);
-    REQUIRE_FALSE(qe.evaluateQuery({follows_clause, pattern_clause}));
+    REQUIRE_FALSE(qe.EvaluateQuery({follows_clause, pattern_clause}));
   }
 
   SECTION("Evaluate query with one decl that is not in the clauses") {
-    result = qe.evaluateQuery({a}, {});
+    result = qe.EvaluateQuery({a_attr_ref}, {});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
 
     // negated by clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
-    result = qe.evaluateQuery({a}, {follows_clause});
+    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(result.empty());
 
     // clause has values
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
-    result = qe.evaluateQuery({a}, {follows_clause});
+    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
   }
 
   SECTION("Evaluate query with one decl, decl also in clauses") {
     // output values should follow existing clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
-    result = qe.evaluateQuery({a}, {follows_clause});
+    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.synonymValueValues);
     // Addition of empty clause -> no results
-    result = qe.evaluateQuery({a}, {follows_clause, negation_clause});
+    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause, negation_clause});
     REQUIRE(result.empty());
   }
 
@@ -77,7 +81,7 @@ TEST_CASE("Test Query Evaluator") {
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
     pattern_clause = std::make_shared<PatternClause>(
         a, EntRef(v), MatchType::EXACT_MATCH, rhs_expr);
-    result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause});
+    result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause});
     std::vector<std::vector<std::string>> expected_result = {
         {"x","x","123","345"},{"y","y", "123","345"},{"z", "z","123","345"}
     };
@@ -85,7 +89,22 @@ TEST_CASE("Test Query Evaluator") {
 
     // Addition of empty clause -> no results
 
-    result = qe.evaluateQuery({s, s, a, v}, {follows_clause, pattern_clause, negation_clause});
+    result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_clause});
+    REQUIRE(result.empty());
+  }
+
+  SECTION("Evaluate query with AttrRefs") {
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
+    AttrRef attr_ref = AttrRef(print, AttrType::VAR_NAME);
+
+    result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause});
+    std::vector<std::vector<std::string>> expected_result = {
+        {"a","1","a"},{"a","3","a"}
+    };
+    REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
+
+    // No results case
+    result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_clause});
     REQUIRE(result.empty());
   }
 }
