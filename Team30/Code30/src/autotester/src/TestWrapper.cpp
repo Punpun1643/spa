@@ -40,7 +40,6 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
     results.push_back("SemanticError");
   } catch (InvalidSyntaxException e) {
     results.clear();
-    results.push_back(e.what());
-    /* results.push_back("SyntaxError"); */
+    results.push_back("SyntaxError");
   }
 }

@@ -22,8 +22,12 @@ ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::shared_ptr<Context> context)
     : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
+<<<<<<< HEAD
   while (GetCurrTokenValue() != QpParser::SELECT ||
          GetPeekBackTokenValue() != ";") {
+=======
+  while (GetCurrTokenValue() != QpParser::SELECT || GetPeekBackTokenValue() != ";") {
+>>>>>>> origin/master
     NextToken();
   }
 }
