@@ -691,6 +691,9 @@ FodyWeavers.xsd
 # Docs generated from doxygen
 Team30/Code30/docs/html/
 
+# Specific path dependent unit test
+Team30/Code30/src/unit_testing/src/TestSpParserManager.cpp
+
 # End of https://www.toptal.com/developers/gitignore/api/qt,qtcreator,linux,windows,macos,visualstudio,visualstudiocode,clion,c++
 Team30/Code30/CppProperties.json
 Team30/Code30/CMakeSettings.json

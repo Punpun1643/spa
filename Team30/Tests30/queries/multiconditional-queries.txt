@@ -20,6 +20,6 @@ SyntaxError
 5000
 5 - Invalid, cannot have brackets for pattern matching
 assign a;
-Select a pattern a (_, _"(y)"_)
+Select a pattern a (_, "(y)")
 SyntaxError
 5000

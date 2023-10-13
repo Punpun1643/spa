@@ -7,6 +7,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseReadNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::ParseRead;
+
+  void parse() override {}
+};
+}  // namespace TestParseReadNode
+
 TEST_CASE("Test parse read", "[parseRead]") {
   SECTION("Test valid read stmt should not throw error (i.e. read variable;)") {
     std::vector<std::shared_ptr<Token>> tokens;
@@ -18,8 +30,9 @@ TEST_CASE("Test parse read", "[parseRead]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_NOTHROW(parser.parseRead());
+        TestParseReadNode::TestableParser parser =
+                TestParseReadNode::TestableParser(tokens);
+    REQUIRE_NOTHROW(parser.ParseRead());
   }
 
   SECTION("Test valid read stmt should have the correct procedure name (i.e. read variable;)") {
@@ -32,10 +45,11 @@ TEST_CASE("Test parse read", "[parseRead]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<ReadNode> readNode = parser.parseRead();
+    TestParseReadNode::TestableParser parser =
+        TestParseReadNode::TestableParser(tokens);
+    std::shared_ptr<ReadNode> readNode = parser.ParseRead();
 
-    REQUIRE(readNode->getVarName() == "variable");
+    REQUIRE(readNode->GetVarName() == "variable");
   }
 
   SECTION("Test invalid read stmt should throw error (i.e. read variable)") {
@@ -46,7 +60,8 @@ TEST_CASE("Test parse read", "[parseRead]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parseRead());
+    TestParseReadNode::TestableParser parser =
+        TestParseReadNode::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseRead());
   }
 }

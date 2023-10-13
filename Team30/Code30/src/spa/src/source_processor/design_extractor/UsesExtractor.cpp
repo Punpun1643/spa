@@ -10,32 +10,32 @@ UsesExtractor::UsesExtractor(PKBSPInterface& pkb,
       UsesModifiesTypeExtractor(pkb, callsManager) {}
 
 void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  callsManager->insertCallsStmt(actors[0], node->getProcName(), actors, node);
+  callsManager->insertCallsStmt(actors[0], node->GetProcName(), actors, node);
 }
 
 void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertRelation(RelationType::USES_S, std::to_string(node->getStmtIndex()),
-                     node->getVarName());
-  insertVarWithActors(node->getVarName());
+  pkb.insertRelation(RelationType::USES_S, std::to_string(node->GetStmtIndex()),
+                     node->GetVarName());
+  insertVarWithActors(node->GetVarName());
 }
 
 void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
-      *node->getCondExpr()->getVariables();
-  insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
-  actors.push_back(std::to_string(node->getStmtIndex()));
+      *node->GetCondExpr()->GetVariables();
+  insertMultipleVars(condVars, std::to_string(node->GetStmtIndex()));
+  actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
 void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
-      *node->getCondExpr()->getVariables();
-  insertMultipleVars(condVars, std::to_string(node->getStmtIndex()));
-  actors.push_back(std::to_string(node->getStmtIndex()));
+      *node->GetCondExpr()->GetVariables();
+  insertMultipleVars(condVars, std::to_string(node->GetStmtIndex()));
+  actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
 void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
-  std::unordered_set<std::string> rhsVars = *node->getVariables();
-  insertMultipleVars(rhsVars, std::to_string(node->getStmtIndex()));
+  std::unordered_set<std::string> rhsVars = *node->GetVariables();
+  insertMultipleVars(rhsVars, std::to_string(node->GetStmtIndex()));
 }
 
 //////////////////////////////

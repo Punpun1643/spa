@@ -20,7 +20,7 @@ TEST_CASE("Test SpController parses and extract nodes information successfully",
         "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_short.txt";
     PKBSPStub pkb = PKBSPStub();
-    spController.parseAndExtract(pkb, filePath);
+    spController.ParseAndExtract(pkb, filePath);
 
 //    REQUIRE(pkb.insertFollowsCallCount == 2); note: comment out because pkb updated their api
   }
@@ -33,7 +33,7 @@ TEST_CASE("Test SpController parses and extract nodes information successfully",
         "/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Tests30/"
         "Sample_source_w4_medium.txt";
     PKBSPStub pkb = PKBSPStub();
-    spController.parseAndExtract(pkb, filePath);
+    spController.ParseAndExtract(pkb, filePath);
 
 //    REQUIRE(pkb.insertFollowsCallCount == 10); note: comment out because pkb updated their api
   }

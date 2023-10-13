@@ -5,6 +5,18 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseProgramNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::ParseProgram;
+
+  void parse() override {}
+};
+}  // namespace TestParseProgramNode
+
 TEST_CASE("Parser parseProgram") {
   std::vector<std::shared_ptr<Token>> tokens;
 
@@ -16,8 +28,9 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseProgram(), std::invalid_argument);
   }
 
   SECTION("Valid program with one procedure has one procedure node") {
@@ -38,12 +51,13 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto programNode = parser.parseProgram();
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
+    auto programNode = parser.ParseProgram();
 
     REQUIRE(programNode != nullptr);
-    REQUIRE(programNode->getChildren().size() == 1);
-    REQUIRE(programNode->getChildren().at(0)->getProcedureName() == "main");
+    REQUIRE(programNode->GetChildren().size() == 1);
+    REQUIRE(programNode->GetChildren().at(0)->GetProcedureName() == "main");
   }
 
   SECTION("Valid program with 2 procedures") {
@@ -78,13 +92,14 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    auto programNode = parser.parseProgram();
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
+    auto programNode = parser.ParseProgram();
 
     REQUIRE(programNode != nullptr);
-    REQUIRE(programNode->getChildren().size() == 2);
-    REQUIRE(programNode->getChildren().at(0)->getProcedureName() == "main");
-    REQUIRE(programNode->getChildren().at(1)->getProcedureName() == "proc");
+    REQUIRE(programNode->GetChildren().size() == 2);
+    REQUIRE(programNode->GetChildren().at(0)->GetProcedureName() == "main");
+    REQUIRE(programNode->GetChildren().at(1)->GetProcedureName() == "proc");
   }
 
   SECTION(
@@ -116,7 +131,8 @@ TEST_CASE("Parser parseProgram") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS_AS(parser.parseProgram(), std::invalid_argument);
+    TestParseProgramNode::TestableParser parser =
+        TestParseProgramNode::TestableParser(tokens);
+    REQUIRE_THROWS_AS(parser.ParseProgram(), std::invalid_argument);
   }
 }

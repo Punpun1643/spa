@@ -10,6 +10,19 @@
 #include "../../spa/src/source_processor/parser/SpParser.h"
 #include "catch.hpp"
 
+namespace TestParseAssign {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::ParseAssign;
+  using SpParser::ParseStmtLst;
+
+  void parse() override {}
+};
+}  // namespace TestParseAssign
+
 TEST_CASE("Test parse assign", "[parseAssign]") {
   SECTION(
       "Test valid assign stmt is able to be parsed correctly by parseStmtLst") {
@@ -28,8 +41,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
         std::make_shared<SpecialCharToken>("}")));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_NOTHROW(parser.parseStmtLst());
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    REQUIRE_NOTHROW(parser.ParseStmtLst());
   }
 
   SECTION("Test valid assign stmt return the correct expression tree") {
@@ -44,13 +58,14 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<AssignNode> assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    std::shared_ptr<AssignNode> assignNode = parser.ParseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -71,11 +86,12 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("normSq");
-    REQUIRE(assignNode->getConstants()->size() == 0);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "normSq");
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("normSq");
+    REQUIRE(assignNode->GetConstants()->size() == 0);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "normSq");
   }
 
   SECTION(
@@ -96,20 +112,21 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<AssignNode> assignNode = parser.parseAssign("normSq");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    std::shared_ptr<AssignNode> assignNode = parser.ParseAssign("normSq");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "*");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() ==
             "cenX");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() ==
             "cenX");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getLeftSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetLeftSubTree()->GetVal() ==
             "cenY");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getRightSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetRightSubTree()->GetVal() ==
             "cenY");
   }
 
@@ -130,11 +147,12 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -154,15 +172,16 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -187,11 +206,12 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 2);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    REQUIRE(assignNode->GetConstants()->size() == 2);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -216,17 +236,18 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getLeftSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getRightSubTree()->getVal() ==
+    REQUIRE(exprTreeRoot->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetLeftSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetRightSubTree()->GetVal() ==
             "2");
   }
 
@@ -244,11 +265,12 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 1);
-    REQUIRE(assignNode->getVarName() == "x");
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 1);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -265,13 +287,14 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "/");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "/");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -290,11 +313,12 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -313,15 +337,16 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "*");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "/");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "*");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "/");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION(
@@ -340,11 +365,12 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    REQUIRE(assignNode->getConstants()->size() == 1);
-    REQUIRE(assignNode->getVariables()->size() == 2);
-    REQUIRE(assignNode->getVarName() == "x");
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    REQUIRE(assignNode->GetConstants()->size() == 1);
+    REQUIRE(assignNode->GetVariables()->size() == 2);
+    REQUIRE(assignNode->GetVarName() == "x");
   }
 
   SECTION(
@@ -363,15 +389,16 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    auto assignNode = parser.parseAssign("x");
-    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->getRootOfTree();
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    auto assignNode = parser.ParseAssign("x");
+    std::shared_ptr<TreeNode> exprTreeRoot = assignNode->GetRootOfTree();
 
-    REQUIRE(exprTreeRoot->getVal() == "+");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getVal() == "+");
-    REQUIRE(exprTreeRoot->getRightSubTree()->getVal() == "z");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getLeftSubTree()->getVal() == "1");
-    REQUIRE(exprTreeRoot->getLeftSubTree()->getRightSubTree()->getVal() == "y");
+    REQUIRE(exprTreeRoot->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetVal() == "+");
+    REQUIRE(exprTreeRoot->GetRightSubTree()->GetVal() == "z");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetLeftSubTree()->GetVal() == "1");
+    REQUIRE(exprTreeRoot->GetLeftSubTree()->GetRightSubTree()->GetVal() == "y");
   }
 
   SECTION("Test invalid assign stmt with extra operand should throw an error") {
@@ -387,8 +414,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 
   SECTION("Test invalid assign stmt with extra bracket should throw an error") {
@@ -412,8 +440,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 
   SECTION(
@@ -437,8 +466,9 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 
   SECTION(
@@ -456,7 +486,8 @@ TEST_CASE("Test parse assign", "[parseAssign]") {
     tokens.push_back(std::make_shared<SpecialCharToken>(";"));
     tokens.push_back(std::make_shared<EofToken>());
 
-    SpParser parser = SpParser(tokens);
-    REQUIRE_THROWS(parser.parseAssign("x"));
+    TestParseAssign::TestableParser parser =
+        TestParseAssign::TestableParser(tokens);
+    REQUIRE_THROWS(parser.ParseAssign("x"));
   }
 }
