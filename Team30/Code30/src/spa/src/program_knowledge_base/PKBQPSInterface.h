@@ -20,17 +20,18 @@ class PKBQPSInterface {
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;  // Returns all Entities in the default AttrType
 
-  virtual std::string ConvertEntityValueToAlias(
-      std::string value, EntityType type, AttrType curr_attr_type,
-      AttrType alias_attr_type) = 0;
+Ref  virtual std::string ConvertEntityValueToAlias(std::string value,
+                                                EntityType type,
+                                                AttrType curr_attr_type,
+                                                AttrType alias_attr_type) = 0;
 
   // ---------- WITH CLAUSES ----------
-  virtual std::vector<std::string> GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
-                                 std::string attr_value) = 0;
+  virtual std::vector<std::string> GetEntitiesMatchingAttrValue(
+      EntityType type, AttrType attr_type, std::string attr_value) = 0;
 
-  virtual std::vector<std::pair<std::string, std::string>> GetEntitiesWhereAttributesMatch(
-      EntityType type_1, AttrType attr_type_1, EntityType type_2,
-      AttrType attr_type_2) = 0;
+  virtual std::vector<std::pair<std::string, std::string>>
+  GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
+                                  EntityType type_2, AttrType attr_type_2) = 0;
 
   // ---------- RELATIONS ----------
   // 0 Declarations
