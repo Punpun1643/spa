@@ -16,8 +16,9 @@
 #include "../expression/UsesExpression.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
-    std::vector<std::shared_ptr<Token>> tokens)
-    : QpParser(tokens) {
+    std::vector<std::shared_ptr<Token>> tokens,
+    std::shared_ptr<Context> context)
+    : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
   while (GetCurrTokenValue() != QpParser::SELECT || GetPeekBackTokenValue() != ";") {
     NextToken();
@@ -31,9 +32,10 @@ std::shared_ptr<AExpression> ExpressionTreeBuilder::GetExpressionTree() {
 void ExpressionTreeBuilder::parse() {
   std::shared_ptr<SelectExpression> select_expression =
       this->CreateSelectExpression();
-  // stuff
+
   std::optional<std::shared_ptr<ClauseExpression>> clause_expression =
       this->CreateClauseExpression();
+
   select_expression->SetNextExpression(clause_expression);
   this->expression_tree = std::move(select_expression);
 }
@@ -42,10 +44,51 @@ std::shared_ptr<SelectExpression>
 ExpressionTreeBuilder ::CreateSelectExpression() {
   // After syntax checking & context building, currToken should be 'Select'
   assert(GetCurrTokenValue() == QpParser::SELECT);
+  NextToken();  // 'BOOLEAN' or '<' or elem
 
-  std::string synonym = NextToken()->getTokenVal();
+  std::shared_ptr<SelectExpression> select_head;
+
+  if (GetCurrTokenValue() == QpParser::BOOLEAN &&
+      !(this->context->CheckDeclarationExists(QpParser::BOOLEAN))) {
+    select_head = std::make_shared<SelectExpression>(GetCurrTokenValue(), true);
+  } else if (QpParser::IsSynonym(GetCurrTokenValue())) {
+    select_head =
+        std::make_shared<SelectExpression>(GetCurrTokenValue(), false);
+  } else if (GetCurrTokenValue() == "<") {
+    std::optional<std::shared_ptr<SelectExpression>> previous_select_expression;
+    std::optional<std::shared_ptr<SelectExpression>> current_select_expression;
+    bool is_first_run = true;
+
+    NextToken();  // elem
+    while (GetCurrTokenValue() != ">") {
+      if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+        throw std::runtime_error("ETB multiple select parsing hit eof");
+      }
+      current_select_expression =
+          std::make_optional<std::shared_ptr<SelectExpression>>(
+              std::make_shared<SelectExpression>(GetCurrTokenValue(), false));
+
+      if (previous_select_expression.has_value()) {
+        previous_select_expression.value()->SetNextExpression(
+            current_select_expression);
+      }
+
+      if (is_first_run) {
+        select_head = current_select_expression.value();
+      }
+
+      previous_select_expression = current_select_expression;
+      is_first_run = false;
+
+      NextToken();  // , or >
+      if (GetCurrTokenValue() == ",") {
+        NextToken();  // elem
+      }
+    }
+  }
+
   NextToken();
-  return std::make_shared<SelectExpression>(synonym);
+  return select_head;
 }
 
 std::optional<std::shared_ptr<ClauseExpression>>

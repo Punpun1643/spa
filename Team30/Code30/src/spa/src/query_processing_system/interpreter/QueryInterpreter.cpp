@@ -133,13 +133,15 @@ void QueryInterpreter::Interpret(
 void QueryInterpreter::Interpret(
     std::shared_ptr<SelectExpression> select_expression) {
   std::string synonym = select_expression->GetSynonym();
-  if (!this->IsSynonym(synonym)) {
-    throw InvalidSyntaxException(
-        "Synonym to be selected has not been declared");
+  if (!select_expression->IsBoolean()) {
+    if (!this->IsSynonym(synonym)) {
+      throw InvalidSyntaxException(
+          "Synonym to be selected has not been declared");
+    }
+    PqlDeclaration selected_declaration =
+        QueryInterpreter::GetMappedDeclaration(synonym);
+    this->context->AddSelectDeclaration(selected_declaration);
   }
-  PqlDeclaration selected_declaration =
-      QueryInterpreter::GetMappedDeclaration(synonym);
-  this->context->AddSelectDeclaration(selected_declaration);
   this->InterpretNext(select_expression);
 }
 
