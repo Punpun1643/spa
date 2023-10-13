@@ -20,7 +20,7 @@ class PKBQPSInterface {
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;  // Returns all Entities in the default AttrType
 
-Ref  virtual std::string ConvertEntityValueToAlias(std::string value,
+  virtual std::string ConvertEntityValueToAlias(std::string value,
                                                 EntityType type,
                                                 AttrType curr_attr_type,
                                                 AttrType alias_attr_type) = 0;
