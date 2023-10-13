@@ -40,7 +40,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs,
                      std::shared_ptr<TreeNode> rhs) override;
-                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
