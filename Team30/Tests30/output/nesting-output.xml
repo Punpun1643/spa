@@ -1,0 +1,64 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.527000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="positive, select all while loops">1</id><querystr><![CDATA[while w; Select w]]></querystr>
+<stuans>12,15,4,9</stuans>
+<correct>4,9,12,15</correct>
+<time_taken>1.117000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="positive, select all if containers">2</id><querystr><![CDATA[if i; Select i]]></querystr>
+<stuans>18,20,5</stuans>
+<correct>5,18,20</correct>
+<time_taken>1.160000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="positive, select if containers that directly follow a while loop.">3</id><querystr><![CDATA[if i; while w; Select i such that Follows (w, i)]]></querystr>
+<stuans>18</stuans>
+<correct>18</correct>
+<time_taken>1.378000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="positive, select while loops that directly or indirectly follow an if container.">4</id><querystr><![CDATA[if i; while w; Select w such that Follows* (i, w)]]></querystr>
+<stuans>15</stuans>
+<correct>15</correct>
+<time_taken>1.197000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="positive, select if containers that are a direct parent of another if container">5</id><querystr><![CDATA[if i, i1; Select i1 such that Parent (i, i1)]]></querystr>
+<stuans>20</stuans>
+<correct>20</correct>
+<time_taken>1.107000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="positive, select read statements that are a direct or indirect child of an if container">6</id><querystr><![CDATA[if i; read r; Select r such that Parent* (i, r)]]></querystr>
+<stuans>11,19</stuans>
+<correct>11,19</correct>
+<time_taken>1.242000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="positive, select while loops that are a direct child of another while loop">7</id><querystr><![CDATA[while w, w1; Select w1 such that Parent (w, w1)]]></querystr>
+<stuans>12,15</stuans>
+<correct>12,15</correct>
+<time_taken>1.232000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="negative, select statements which directly precede an if container">8</id><querystr><![CDATA[stmt s, if i; Select s such that Follows(s, i)]]></querystr>
+<stuans>SyntaxError</stuans>
+<correct>SyntaxError</correct>
+<time_taken>1.276000</time_taken>
+<passed/>
+</query>
+</queries>
+</test_results>
