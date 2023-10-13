@@ -162,7 +162,7 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
   for (std::shared_ptr<CFGNode> currNode : node->getOutgoingNodes()) {
     length--;
     std::string nodeStmtNo =
-        std::to_string(currNode->getNode()->getStmtIndex());
+        std::to_string(currNode->getNode()->GetStmtIndex());
 
     // std::cout << nodeStmtNo + "\n";
 
@@ -194,7 +194,7 @@ bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
   for (std::shared_ptr<CFGNode> currNode : node->getIncomingNodes()) {
     length--;
     std::string nodeStmtNo =
-        std::to_string(currNode->getNode()->getStmtIndex());
+        std::to_string(currNode->getNode()->GetStmtIndex());
 
     // std::cout << nodeStmtNo + "\n";
 

@@ -10,7 +10,7 @@ CFGGenerator::CFGGenerator(PKBSPInterface& pkb) : pkb(pkb) {}
 void CFGGenerator::ExecuteCFGGeneration(
     std::shared_ptr<ProcedureNode> procNode) {
   std::vector<std::shared_ptr<StmtNode>> stmts =
-      procNode->getChildren()[0]->getChildren();
+      procNode->GetChildren()[0]->GetChildren();
   std::vector<std::shared_ptr<CFGNode>> lastNodePointsTo;
   GenerateCFG(stmts, lastNodePointsTo);
 }
@@ -26,12 +26,12 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   // get the first node in the vector, check what kind, if normal control flow,
   // recursively call this and point to the result
   std::shared_ptr<StmtNode> currStmt = stmts.front();
-  StmtType currType = currStmt->getStmtType();
+  StmtType currType = currStmt->GetStmtType();
   std::shared_ptr<CFGNode> newNode = std::make_shared<CFGNode>(currStmt);
   stmts.erase(stmts.begin());
 
-  if (nodeMap.find(currStmt->getStmtIndex()) == nodeMap.end()) {
-    nodeMap.insert({currStmt->getStmtIndex(), newNode});
+  if (nodeMap.find(currStmt->GetStmtIndex()) == nodeMap.end()) {
+    nodeMap.insert({currStmt->GetStmtIndex(), newNode});
   }
 
   std::vector<std::shared_ptr<CFGNode>> localLastNodePointsTo =
@@ -50,7 +50,7 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
         std::dynamic_pointer_cast<WhileNode>(currStmt);
 
     std::vector<std::shared_ptr<StmtNode>> whileBodyStmts =
-        asWhile->getStmtLst()->getChildren();
+        asWhile->GetStmtLst()->GetChildren();
 
     lastNodePointsTo.push_back(newNode);
     lastNodePointsTo.insert(lastNodePointsTo.end(), nextNodes.begin(),
@@ -70,12 +70,12 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
                             nextNodes.end());
 
     std::vector<std::shared_ptr<StmtNode>> thenBodyStmts =
-        asIf->getThenStmtLst()->getChildren();
+        asIf->GetThenStmtLst()->GetChildren();
     std::shared_ptr<CFGNode> thenBodyCFG =
         GenerateCFG(thenBodyStmts, lastNodePointsTo);
 
     std::vector<std::shared_ptr<StmtNode>> elseBodyStmts =
-        asIf->getElseStmtLst()->getChildren();
+        asIf->GetElseStmtLst()->GetChildren();
     std::shared_ptr<CFGNode> elseBodyCFG =
         GenerateCFG(elseBodyStmts, lastNodePointsTo);
 
@@ -97,6 +97,6 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
     newNode->addOutgoingNode(nextNode);
   }
 
-  pkb.insertCFGNode(std::to_string(currStmt->getStmtIndex()), newNode);
+  pkb.insertCFGNode(std::to_string(currStmt->GetStmtIndex()), newNode);
   return newNode;
 }
