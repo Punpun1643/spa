@@ -23,6 +23,13 @@ const std::unordered_map<EntityType, AttrType> AttrRef::ATTR_TYPE_ALIASES = {
     {EntityType::PRINT, AttrType::VAR_NAME}
 };
 
+const std::unordered_map<AttrType, AttrRefOutputType> AttrRef::OUTPUT_TYPE_MAPPING = {
+    {AttrType:: PROC_NAME, AttrRefOutputType::NAME},
+    {AttrType:: VAR_NAME, AttrRefOutputType::NAME},
+    {AttrType:: VALUE, AttrRefOutputType::INTEGER},
+    {AttrType:: STMT_NUM, AttrRefOutputType::INTEGER},
+};
+
 void AttrRef::CheckTypeCombinationValidity() const {
   if (GetDefaultAttrType() != attr_type && !IsAttrTypeAnAlias()) {
     throw InvalidSemanticsException("Invalid combination of EntityType and AttrType");
@@ -63,4 +70,9 @@ PqlDeclaration AttrRef::GetDecl() const {
 
 AttrType AttrRef::GetDefaultAttrType() const {
   return DEFAULT_ATTR_TYPE.at(decl.getEntityType());
+}
+
+AttrRefOutputType AttrRef::getOutputType() const {
+  assert(OUTPUT_TYPE_MAPPING.count(attr_type) == 1);
+  return OUTPUT_TYPE_MAPPING.at(attr_type);
 }
