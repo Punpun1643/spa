@@ -26,6 +26,9 @@ TEST_CASE("Test Query Evaluator") {
   PqlDeclaration if_decl = PqlDeclaration("if", EntityType::IF);
   PqlDeclaration s = PqlDeclaration("s", EntityType::STMT);
   PqlDeclaration v = PqlDeclaration("v", EntityType::VARIABLE);
+  PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
+  PqlDeclaration call = PqlDeclaration("call", EntityType::CALL);
+
 
   std::shared_ptr<Clause> follows_clause;
   std::shared_ptr<Clause> pattern_clause;
@@ -86,6 +89,21 @@ TEST_CASE("Test Query Evaluator") {
     // Addition of empty clause -> no results
 
     result = qe.evaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_clause});
+    REQUIRE(result.empty());
+  }
+
+  SECTION("Evaluate query with AttrRefs") {
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
+    AttrRef attr_ref = AttrRef(print, AttrType::VAR_NAME);
+
+    result = qe.evaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause});
+    std::vector<std::vector<std::string>> expected_result = {
+        {"a","1","a"},{"a","3","a"}
+    };
+    REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
+
+    // No results case
+    result = qe.evaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_clause});
     REQUIRE(result.empty());
   }
 }
