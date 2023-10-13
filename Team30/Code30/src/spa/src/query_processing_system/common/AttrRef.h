@@ -6,6 +6,7 @@
 #include "program_knowledge_base/PKBQPSInterface.h"
 
 #include <unordered_map>
+#include <unordered_set>
 
 enum class AttrRefOutputType {NAME, INTEGER};
 
@@ -25,11 +26,17 @@ class AttrRef {
 
   AttrRef(PqlDeclaration decl, AttrType attr_type);
 
-  std::string GetRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const;
+  std::string GetAliasFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const;
+
+  std::unordered_set<std::string> GetDefaultsFromAlias(PKBQPSInterface& pkb, std::string const& alias_value) const;
 
   bool IsAttrTypeAnAlias() const;
 
-  AttrRefOutputType getOutputType() const;
+  AttrRefOutputType GetOutputType() const;
 
   PqlDeclaration GetDecl() const;
+
+  AttrType GetAttrType() const;
+
+  EntityType GetEntityType() const;
 };
