@@ -6,7 +6,6 @@
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
-#include "../../stub/PkbStub.h"
 #include "catch.hpp"
 
 class QeFactoryMethods {

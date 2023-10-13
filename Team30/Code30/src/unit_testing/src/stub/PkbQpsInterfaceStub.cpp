@@ -23,7 +23,7 @@ bool PkbQpsInterfaceStub::doesEntityExist(EntityType type, AttrType attr_type,
   return false;
 };
 
-std::vector<std::string> PkbQpsInterfaceStub::getMatchingEntities(
+std::vector<std::pair<std::string, std::string>> PkbQpsInterfaceStub::getMatchingValues(
     EntityType type_1, AttrType attr_type_1, EntityType type_2,
     AttrType attr_type_2) {
   return {};

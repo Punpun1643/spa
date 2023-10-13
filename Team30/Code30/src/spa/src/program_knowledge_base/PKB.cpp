@@ -86,7 +86,7 @@ bool PKB::doesEntityExist(EntityType type, AttrType attr_type,
   return false;
 };
 
-std::vector<std::string> PKB::getMatchingEntities(EntityType type_1,
+std::vector<std::pair<std::string, std::string>> PKB::getMatchingValues(EntityType type_1,
                                                   AttrType attr_type_1,
                                                   EntityType type_2,
                                                   AttrType attr_type_2) {

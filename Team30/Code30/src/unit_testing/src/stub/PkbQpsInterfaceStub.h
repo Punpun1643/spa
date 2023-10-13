@@ -71,7 +71,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   bool doesEntityExist(EntityType type, AttrType attr_type,
                        std::string value) override;
 
-  std::vector<std::string> getMatchingEntities(EntityType type_1,
+  std::vector<std::pair<std::string, std::string>> getMatchingValues(EntityType type_1,
                                                AttrType attr_type_1,
                                                EntityType type_2,
                                                AttrType attr_type_2) override;
