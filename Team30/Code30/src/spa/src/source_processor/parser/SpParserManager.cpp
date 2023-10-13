@@ -8,7 +8,7 @@
 
 SpParserManager::SpParserManager() {}
 
-std::shared_ptr<ProgramNode> SpParserManager::parseInputFile(
+std::shared_ptr<ProgramNode> SpParserManager::ParseInputFile(
     std::string filePath) {
   std::ifstream inputFileStream(filePath);
 
@@ -18,7 +18,7 @@ std::shared_ptr<ProgramNode> SpParserManager::parseInputFile(
 
   SpParser parser(tokens);
   parser.parse();
-  std::shared_ptr<ProgramNode> programNode = parser.getSourceProgramNode();
+  std::shared_ptr<ProgramNode> programNode = parser.GetSourceProgramNode();
 
   return programNode;
 }

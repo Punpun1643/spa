@@ -9,6 +9,18 @@
 
 using Catch::Matchers::Contains;
 
+namespace TestParseWhileNode {
+class TestableParser : public SpParser {
+ public:
+  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+      : SpParser(tokens) {}
+
+  using SpParser::ParseWhile;
+
+  void parse() override {}
+};
+}  // namespace TestParseWhileNode
+
 TEST_CASE("Test parseWhile", "[parseWhile]") {
   SECTION(
       "Test missing open bracket after while keyword throws invalid while as "
@@ -41,9 +53,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION(
@@ -79,9 +92,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION(
@@ -114,9 +128,11 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid condExpr"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(),
+                        Contains("Invalid condition expression!"));
   }
 
   SECTION(
@@ -153,9 +169,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION(
@@ -191,9 +208,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION("Test missing open brace throws invalid while as the error message") {
@@ -225,9 +243,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_WITH(parser.parseWhile(), Contains("Invalid while"));
+    REQUIRE_THROWS_WITH(parser.ParseWhile(), Contains("Invalid while"));
   }
 
   SECTION("Test missing braces throws invalid while as the error message") {
@@ -261,9 +280,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
 
-    REQUIRE_THROWS_AS(parser.parseWhile(), std::invalid_argument);
+    REQUIRE_THROWS_AS(parser.ParseWhile(), std::invalid_argument);
   }
 
   SECTION("Test correct while with 2 statments") {
@@ -297,10 +317,11 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
 
   SECTION("Test correct while with 3 statements") {
@@ -340,10 +361,11 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 
   SECTION("Test rel_expr i.e. i > 0") {
@@ -377,10 +399,11 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
 
   SECTION("Test 2 condExpr i.e. (i != 0) && (j == 10)") {
@@ -436,10 +459,11 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 
   SECTION("Test cond_expr i.e. (j == 10) || (k == 20)") {
@@ -489,10 +513,11 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 2);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 2);
   }
 
   SECTION("Test negation i.e. !(x == 0)") {
@@ -538,9 +563,10 @@ TEST_CASE("Test parseWhile", "[parseWhile]") {
     tokens.push_back(
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
-    SpParser parser = SpParser(tokens);
-    std::shared_ptr<WhileNode> whileNode = parser.parseWhile();
+    TestParseWhileNode::TestableParser parser =
+        TestParseWhileNode::TestableParser(tokens);
+    std::shared_ptr<WhileNode> whileNode = parser.ParseWhile();
 
-    REQUIRE(whileNode->getStmtLst()->getChildren().size() == 3);
+    REQUIRE(whileNode->GetStmtLst()->GetChildren().size() == 3);
   }
 }
