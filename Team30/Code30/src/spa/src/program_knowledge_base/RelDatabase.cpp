@@ -44,6 +44,16 @@ void RelDatabase::insert(RelationType type, std::string val1,
 };
 
 bool RelDatabase::isEmpty(RelationType type) {
+  if (cfgRelations.find(type) != cfgRelations.end()) {
+    // TODO: Optimise for NEXT, NEXT_STAR, AFFECTS
+    for (auto pair : cfgNodes) {
+      if (hasRelations(type, pair.first)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return relationships[type]->isEmpty();
 };
 
