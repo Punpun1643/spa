@@ -107,7 +107,8 @@ void QueryInterpreter::Interpret(
   std::string syn_assign = pattern_expression->GetSynAssign();
   std::string arg1 = pattern_expression->GetArg1();
   MatchType match_type = pattern_expression->GetMatchType();
-  std::shared_ptr<TreeNode> rhs_expr_tree = pattern_expression->GetRhsExprTree();
+  std::shared_ptr<TreeNode> rhs_expr_tree =
+      pattern_expression->GetRhsExprTree();
   PqlDeclaration assign_decl = this->GetMappedDeclaration(syn_assign);
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {

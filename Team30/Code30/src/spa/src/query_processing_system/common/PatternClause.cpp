@@ -5,8 +5,7 @@
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-PatternClause::PatternClause(PqlDeclaration assign_decl,
-                             EntRef lhs_ent_ref,
+PatternClause::PatternClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
                              MatchType rhs_expr_match_type,
                              std::shared_ptr<TreeNode> rhs_expr)
     : assign_decl(std::move(assign_decl)),
@@ -51,8 +50,8 @@ PatternClause::PatternClause(PqlDeclaration const& assign_decl,
 std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
   switch (lhs_ent_ref.getRefType()) {
     case (PqlRefType::DECLARATION): {
-      auto values = pkb.getPatternMatchesSynonymLhs(
-          rhs_tree_expr, rhs_expr_match_type);
+      auto values =
+          pkb.getPatternMatchesSynonymLhs(rhs_tree_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
           assign_decl, lhs_ent_ref.getDeclaration(), *values);
       break;
@@ -72,5 +71,4 @@ std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
     default:
       break;
   }
-
 }

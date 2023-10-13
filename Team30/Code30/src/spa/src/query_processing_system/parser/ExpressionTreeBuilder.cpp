@@ -1,9 +1,11 @@
 #include "ExpressionTreeBuilder.h"
 
 #include <assert.h>
+
 #include <iostream>
 #include <regex>
 
+#include "../../shared/parser/node/TreeNode.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/ClauseExpression.h"
@@ -14,14 +16,14 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
-#include "../../shared/parser/node/TreeNode.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens,
     std::shared_ptr<Context> context)
     : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
-  while (GetCurrTokenValue() != QpParser::SELECT || GetPeekBackTokenValue() != ";") {
+  while (GetCurrTokenValue() != QpParser::SELECT ||
+         GetPeekBackTokenValue() != ";") {
     NextToken();
   }
 }
@@ -227,7 +229,7 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
       NextToken();
     }
 
-    NextToken(); // start of arg2
+    NextToken();  // start of arg2
     int opening_brace_count = 0;
     while ((opening_brace_count >= 1) || GetCurrTokenValue() != ")") {
       std::string current_token_value = GetCurrTokenValue();
@@ -248,19 +250,21 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
     if (arg2 == "_") {
       match_type = MatchType::WILD_MATCH;
       rhs_expr_tree = nullptr;
-    } else if (std::regex_match(arg2, std::regex("_\".*\"_"))) {
-      match_type = MatchType::PARTIAL_MATCH;
-      std::queue<std::shared_ptr<std::string>> post_fix = AParser::ConvertInfixToPostfix(infix_tokens);
-      rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
     } else {
-      match_type = MatchType::EXACT_MATCH;
-      std::queue<std::shared_ptr<std::string>> post_fix = AParser::ConvertInfixToPostfix(infix_tokens);
+      if (std::regex_match(arg2, std::regex("_\".*\"_"))) {
+        match_type = MatchType::PARTIAL_MATCH;
+      } else {
+        match_type = MatchType::EXACT_MATCH;
+      }
+      std::queue<std::shared_ptr<std::string>> post_fix =
+          AParser::ConvertInfixToPostfix(infix_tokens);
       rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
     }
 
     current_pattern_expression =
         std::make_optional<std::shared_ptr<PatternExpression>>(
-            std::make_shared<PatternExpression>(syn_assign, arg1, arg2, match_type, rhs_expr_tree));
+            std::make_shared<PatternExpression>(syn_assign, arg1, arg2,
+                                                match_type, rhs_expr_tree));
 
     if (previous_pattern_expression.has_value()) {
       previous_pattern_expression.value()->SetNextExpression(

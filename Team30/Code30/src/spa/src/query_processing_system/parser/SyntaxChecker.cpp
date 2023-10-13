@@ -195,8 +195,7 @@ void SyntaxChecker::CheckModifies() {
 }
 
 void SyntaxChecker::CheckParent() {
-  assert(GetCurrTokenValue() == PARENT ||
-         GetCurrTokenValue() == PARENT_STAR);
+  assert(GetCurrTokenValue() == PARENT || GetCurrTokenValue() == PARENT_STAR);
 
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Parent/* clause");
@@ -438,8 +437,8 @@ void SyntaxChecker::CheckCurrentTokenStmtRef(
 void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
                                             std::string error_msg) {
   if (GetCurrTokenValue() != expected_value) {
-    throw InvalidSyntaxException(error_msg + ". Got " +
-                                 GetCurrTokenValue() + " instead.");
+    throw InvalidSyntaxException(error_msg + ". Got " + GetCurrTokenValue() +
+                                 " instead.");
   }
 }
 
@@ -454,8 +453,10 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
     NextToken();
   }
   try {
-    AParser::ConvertInfixToPostfix(infix_tokens);
-  } catch (std::invalid_argument& e) {
+    std::queue<std::shared_ptr<std::string>> post_fix =
+        AParser::ConvertInfixToPostfix(infix_tokens);
+    AParser::BuildExprTreeAndValidate(post_fix);
+  } catch (...) {
     throw InvalidSyntaxException(error_msg);
   }
 }
