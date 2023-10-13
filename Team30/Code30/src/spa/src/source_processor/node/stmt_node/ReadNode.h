@@ -9,9 +9,9 @@ class ReadNode : public StmtNode {
  public:
   explicit ReadNode(int stmtIndex, StmtType stmtType, std::string varName);
 
-  void accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& designExtractor) override;
 
-  std::string const& getVarName() const;
+  std::string const& GetVarName() const;
 
   ~ReadNode() = default;
 

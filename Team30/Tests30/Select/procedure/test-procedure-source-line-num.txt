@@ -1,0 +1,133 @@
+procedure triple {
+1    a = b + c;
+2    d = e + f;
+3    while ((g > 2) && (h > 3)) {
+4        i = j + k;
+5        if (l > 2) then {
+6            m = n * 4 - 3;
+7            if (o <= 11) then {
+8                p = q + r + 2 * 2;
+            } else {
+9                read s;
+10                call duo;
+            }
+11            print t;
+12            u = 15 + v + w + x / 9;
+13            while ((y / 11 * 10 + 12) < 12) {
+14               z = e + 2 + x + t + f;
+15                s = r;
+16                while (!(x == d + e)) {
+17                    if (18 % m != x) then {
+18                        d = e + 4;
+                    } else {
+19                        e = d + e + s + r - 8;
+                    }
+20                    read c;
+21                    d = c * (2 * 2 * 2);
+                }
+22                read d;
+23                print e;
+24                while (a == b) {
+25                    read c;
+                }
+            }
+26            call duo;
+27            read x;
+28            d = e - c % 25;
+        } else {
+29            while (x < 9) {
+30                x = (2 * 2 * 2) + d + e;
+31                x = x + m + (d + e * c) * 30 * 30;
+32                if (x >= 66666) then {
+33                    print x;
+34                    x = 2345678; }
+                else {
+35                    print x;
+36                    read m;
+37                    call kid2;
+38                    d = (2 * 2 * 2) + (13 / 14 % 15) % d - 37;
+                }
+            }
+        }
+39        read m;
+40        print x;
+41        while (!(x > 10)) {
+42            x = x + 1;
+43            while ((y != 2) || (z < 1)) {
+44                x = x + 1;
+            }
+45            print x;
+        }
+46        call kid;
+    }
+
+47    if ((!(m>=3))||(n>2)) then {
+48        d = d + 42;
+49        while (((a >= 5) && (b <= 3))) {
+50            read x;
+51            print x;
+        }
+52        var2 = var2 + (x + m) + d - (w / 3 - (w * 3));
+53        print var2;
+    } else {
+54        e = 65432 * 98 % c;
+55        while ((a + b) > c) {
+56            read x;
+57            print x;
+        }
+58        read e;
+59        if (!( (x == y) && (a == b) )) then {
+60            e = e + 48 - (w * 3);
+        } else {
+61            read = print;
+62            print = read + if - while * assign / call;
+63            while ((!(q < 0)) && (r + 1 > s)) {
+64                call kid;
+            }
+        }
+65        x = 12 + ((((13)))) % 14;
+66        if (10 <= (d - 5)) then {
+67            print x;
+        } else {
+68            read x;
+69            print x;
+        }
+70        while (!((x > temp)&&( (x == temp) || ((x != temp) && ((x < temp) || ((x <= temp) && (humpyty>= (0+(0-(0*(0/(0%(((0))))))))))))))) {
+71            read x;
+72            print x;
+        }
+73        m = 52*9-7%18;
+    }
+
+74    call duo;
+75    d = x * m + e;
+}
+
+procedure duo {
+76    read x;
+77    x = m * x + s + r - 66;
+78    if ((m>=3)||(!(n>2))) then {
+79        call kid;
+80        call kid2;
+    } else {
+81        while ((!(m>=3))||(!(n>2))) {
+82            read q;
+83            print p;
+        }
+84        print c;
+85        if ((t == 5 + u) || ((v <= w) && (x > 5))) then {
+86            print x;
+        } else {
+87            read x;
+88            print x;
+        }
+    }
+}
+
+procedure kid {
+89    read x;
+}
+
+procedure kid2 {
+90    print m;
+}
