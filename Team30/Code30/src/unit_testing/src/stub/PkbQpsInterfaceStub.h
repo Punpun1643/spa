@@ -112,15 +112,4 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   // the variable declaration on the LHS of the assign stmt
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
-
-  // TO DELETE
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
-      std::string lhs_value, std::string rhs_expr,
-      MatchType expr_match_type) override;
-
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::string rhs_expr,
-                              MatchType expr_match_type) override;
 };

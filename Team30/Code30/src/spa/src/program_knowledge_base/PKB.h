@@ -38,10 +38,8 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void insertPattern(PatternType type, std::string statement_number,
-                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
-
-  void insertPattern(std::string statement_number, std::string lhs,
-                     std::unordered_set<std::string> rhs) override;
+                     std::string lhs,
+                     std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
@@ -103,13 +101,4 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
-
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
-      std::string lhs_value, std::string rhs_expr,
-      MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::string rhs_expr,
-                              MatchType expr_match_type) override;
 };
