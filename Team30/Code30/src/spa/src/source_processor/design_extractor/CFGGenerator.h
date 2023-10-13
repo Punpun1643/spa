@@ -13,8 +13,6 @@ class CFGGenerator {
  private:
   PKBSPInterface& pkb;
 
-  std::unordered_map<int, std::shared_ptr<CFGNode>> nodeMap;
-
   std::shared_ptr<CFGNode> GenerateCFG(
       std::vector<std::shared_ptr<StmtNode>> stmts,
       std::vector<std::shared_ptr<CFGNode>> lastNodePointsTo);

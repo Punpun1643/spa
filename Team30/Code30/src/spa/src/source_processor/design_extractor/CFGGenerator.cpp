@@ -30,10 +30,6 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   std::shared_ptr<CFGNode> newNode = std::make_shared<CFGNode>(currStmt);
   stmts.erase(stmts.begin());
 
-  if (nodeMap.find(currStmt->GetStmtIndex()) == nodeMap.end()) {
-    nodeMap.insert({currStmt->GetStmtIndex(), newNode});
-  }
-
   std::vector<std::shared_ptr<CFGNode>> localLastNodePointsTo =
       lastNodePointsTo;
 
