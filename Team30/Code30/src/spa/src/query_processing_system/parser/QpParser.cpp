@@ -12,8 +12,7 @@
 #include "../common/StmtRef.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
-    : AParser(tokens){
-    };
+    : AParser(tokens){};
 
 // Constants
 std::string const QpParser::AND = "and";
@@ -23,6 +22,7 @@ std::string const QpParser::CALLS_STAR = "Calls*";
 std::string const QpParser::FOLLOWS = "Follows";
 std::string const QpParser::FOLLOWS_STAR = "Follows*";
 std::string const QpParser::MODIFIES = "Modifies";
+std::string const QpParser::NEXT = "Next";
 std::string const QpParser::PATTERN = "pattern";
 std::string const QpParser::PARENT = "Parent";
 std::string const QpParser::PARENT_STAR = "Parent*";
