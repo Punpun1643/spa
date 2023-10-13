@@ -75,10 +75,10 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
   return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
-std::string PKB::convertEntityAttribute(std::string value, EntityType type,
+std::unordered_set<std::string> PKB::convertEntityAttribute(std::string value, EntityType type,
                                         AttrType curr_attr_type,
                                         AttrType wanted_attr_type) {
-  return "";
+  return std::unordered_set<std::string>();
 };
 
 bool PKB::doesEntityExist(EntityType type, AttrType attr_type,
