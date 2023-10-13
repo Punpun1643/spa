@@ -13,25 +13,25 @@ std::shared_ptr<Context> ContextBuilder::GetContext() {
 }
 
 void ContextBuilder::parse() {
-  while (getCurrToken()->getTokenVal() != "Select") {
+  while (GetCurrToken()->getTokenVal() != "Select") {
     this->parseDeclaration();
   }
 }
 
 void ContextBuilder::parseDeclaration() {
   EntityType entity_type =
-      QpParser::StringToEntityType(getCurrToken()->getTokenVal());
+      QpParser::StringToEntityType(GetCurrToken()->getTokenVal());
   std::shared_ptr<std::vector<std::string>> synonym_list(
       std::make_shared<std::vector<std::string>>());
-  std::string synonym = nextToken()->getTokenVal();
+  std::string synonym = NextToken()->getTokenVal();
   this->addSynonym(synonym_list, synonym);
-  nextToken();  // ; OR ,
-  while (getCurrToken()->getTokenVal() == ",") {
-    synonym = nextToken()->getTokenVal();
+  NextToken();  // ; OR ,
+  while (GetCurrToken()->getTokenVal() == ",") {
+    synonym = NextToken()->getTokenVal();
     this->addSynonym(synonym_list, synonym);
-    nextToken();  // ; OR ,
+    NextToken();  // ; OR ,
   }
-  nextToken();  // entity type OR select
+  NextToken();  // entity type OR select
 
   this->context->addDeclarations(entity_type, *synonym_list);
 }

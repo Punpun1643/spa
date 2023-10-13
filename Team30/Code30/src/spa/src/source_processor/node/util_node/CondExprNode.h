@@ -8,8 +8,8 @@ class CondExprNode {
   explicit CondExprNode(std::unordered_set<std::string> vars,
                         std::unordered_set<int> consts);
 
-  std::shared_ptr<std::unordered_set<std::string>> getVariables() const;
-  std::shared_ptr<std::unordered_set<int>> getConstants() const;
+  std::shared_ptr<std::unordered_set<std::string>> GetVariables() const;
+  std::shared_ptr<std::unordered_set<int>> GetConstants() const;
 
   ~CondExprNode() = default;
 

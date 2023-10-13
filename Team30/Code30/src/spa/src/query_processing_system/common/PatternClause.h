@@ -12,7 +12,8 @@ class PatternClause : public Clause {
 
  public:
   PatternClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
-                MatchType rhs_expr_match_type, std::shared_ptr<TreeNode> rhs_expr);
+                MatchType rhs_expr_match_type,
+                std::shared_ptr<TreeNode> rhs_expr);
 
   std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface& pkb) override;
 };

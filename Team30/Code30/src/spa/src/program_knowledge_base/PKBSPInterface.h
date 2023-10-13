@@ -1,6 +1,7 @@
 #pragma once
 #include <source_processor/node/stmt_node/AssignNode.h>
 #include <source_processor/node/stmt_node/StmtNode.h>
+#include <source_processor/node/util_node/CFGNode.h>
 
 #include <memory>
 #include <optional>
@@ -26,4 +27,6 @@ class PKBSPInterface {
       std::string procName) = 0;
   virtual std::unordered_set<std::string> getProcedureUses(
       std::string procName) = 0;
+  virtual void insertCFGNode(std::string statement_num,
+                             std::shared_ptr<CFGNode> node) = 0;
 };

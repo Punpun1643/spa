@@ -26,13 +26,9 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
 
   // Helper functions
-  std::unordered_set<std::string> getAllRelatedToValue(
-      RelationType rel_type,
-      std::shared_ptr<std::unordered_set<std::string>> set, std::string value);
-
-  std::unordered_set<std::string> getAllRelatedToValue(
-      RelationType rel_type, std::string value,
-      std::shared_ptr<std::unordered_set<std::string>> set);
+  std::unordered_set<std::string> getIntersection(
+      std::unordered_set<std::string> set1,
+      std::unordered_set<std::string> set2);
 
  public:
   PKB();
@@ -44,6 +40,10 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs,
                      std::shared_ptr<TreeNode> rhs) override;
+                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
+  void insertCFGNode(std::string statement_num,
+                     std::shared_ptr<CFGNode> node) override;
+
   std::unordered_set<std::string> getProcedureModifies(
       std::string procName) override;
   std::unordered_set<std::string> getProcedureUses(
@@ -53,6 +53,18 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   // ---------- ENTITIES ----------
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
+
+  std::string convertEntityAttribute(std::string value, EntityType type,
+                                     AttrType curr_attr_type,
+                                     AttrType wanted_attr_type) override;
+
+  bool doesEntityExist(EntityType type, AttrType attr_type,
+                       std::string value) override;
+
+  std::vector<std::string> getMatchingEntities(EntityType type_1,
+                                               AttrType attr_type_1,
+                                               EntityType type_2,
+                                               AttrType attr_type_2) override;
 
   // ---------- RELATIONS ----------
   // 0 Declarations
