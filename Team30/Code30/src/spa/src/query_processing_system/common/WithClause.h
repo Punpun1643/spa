@@ -14,8 +14,9 @@ class WithClause : public Clause {
 
   std::unique_ptr<ClauseResult> EvaluateIntInt(PKBQPSInterface &pkb);
   std::unique_ptr<ClauseResult> EvaluateStrStr(PKBQPSInterface &pkb);
-  std::unique_ptr<ClauseResult> EvaluateIntRef(PKBQPSInterface &pkb, int int_ref_id);
-  std::unique_ptr<ClauseResult> EvaluateStrRef(PKBQPSInterface &pkb, int str_ref_id);
+  std::unique_ptr<ClauseResult> EvaluateIntAttrRef(PKBQPSInterface &pkb, int int_ref_id);
+  std::unique_ptr<ClauseResult> EvaluateStrAttrRef(PKBQPSInterface &pkb, int str_ref_id);
+  std::unique_ptr<ClauseResult> EvaluateValueAttrRef(PKBQPSInterface&pkb, std::string const& value, AttrRef const& attr_ref);
   std::unique_ptr<ClauseResult> EvaluateRefRef(PKBQPSInterface &pkb);
 
  public:

@@ -1,4 +1,5 @@
 #include "AttrRef.h"
+#include "../evaluator/ArrayUtility.h"
 
 #include <utility>
 
@@ -60,11 +61,7 @@ std::string AttrRef::GetAliasFromDefault(
   if (IsAttrTypeAnAlias()) {
     auto output = pkb.convertEntityAttribute(
         default_value, decl.getEntityType(), GetDefaultAttrType(), attr_type);
-    assert(output.size() == 1);
-    for (auto& elem : output) {
-      return elem;
-    }
-    assert(false);  // should not get here.
+    return ArrayUtility::GetElemFromSingletonSet(output);
   } else {
     return default_value;
   }
