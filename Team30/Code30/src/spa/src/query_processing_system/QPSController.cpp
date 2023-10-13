@@ -37,11 +37,11 @@ void QPSController::HandleQuery(
   std::vector<std::shared_ptr<Clause>> other_clauses = clauses.second;
 
   if (selected_attr_refs.empty()) {
-    bool query_results = query_evaluator->evaluateQuery(other_clauses);
+    bool query_results = query_evaluator->EvaluateQuery(other_clauses);
     results.push_back(query_results ? "TRUE" : "FALSE");
   } else {
     std::vector<std::vector<std::string>> query_results =
-        query_evaluator->evaluateQuery(selected_attr_refs, other_clauses);
+        query_evaluator->EvaluateQuery(selected_attr_refs, other_clauses);
     for (std::vector<std::string> result : query_results) {
       std::string result_string;
       for (std::vector<std::string>::iterator it = result.begin();
