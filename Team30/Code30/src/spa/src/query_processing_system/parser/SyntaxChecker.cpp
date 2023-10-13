@@ -251,14 +251,63 @@ void SyntaxChecker::CheckPattern() {
 
 void SyntaxChecker::CheckSelect() {
   if (GetCurrTokenValue() != QpParser::SELECT) {
-    throw InvalidSyntaxException("Select clause missing or invalid");
+    throw InvalidSyntaxException("Expected 'Select'");
   }
-  // Current token is already "Select"
-  NextToken();  // synonym
-  if (!IsSynonym(GetCurrTokenValue())) {
-    throw InvalidSyntaxException("Invalid synonym given for Select clause");
+
+  NextToken();  // BOOLEAN or synonym or <
+  if (GetCurrTokenValue() == QpParser::BOOLEAN) {
+    if (existing_declarations.find(QpParser::BOOLEAN) ==
+        existing_declarations.end()) {
+      CheckSelectBoolean();
+    } else {
+      CheckSelectSingle();
+    }
+  } else if (GetCurrTokenValue() == "<") {
+    CheckSelectMultiple();
+  } else {
+    CheckSelectSingle();
   }
   NextToken();
+}
+
+void SyntaxChecker::CheckSelectBoolean() {
+  assert(GetCurrTokenValue() == QpParser::BOOLEAN);
+}
+
+void SyntaxChecker::CheckSelectMultiple() {
+  assert(GetCurrTokenValue() == "<");
+
+  NextToken();  // synonym
+  while (GetCurrTokenValue() != ">") {
+    if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+      throw InvalidSyntaxException(
+          "Reached EOF before reaching '>' for multiple select elements");
+    }
+
+    CheckSelectSingle();
+
+    NextToken();  // , or >
+    if (GetCurrTokenValue() == ",") {
+      NextToken();  // element
+      if (GetCurrTokenValue() == ">") {
+        throw InvalidSyntaxException("Extra comma detected in multiple select");
+      }
+    }
+  }
+}
+
+void SyntaxChecker::CheckSelectSingle() {
+  if (GetCurrTokenValue() == QpParser::BOOLEAN) {
+    if (existing_declarations.find(QpParser::BOOLEAN) ==
+        existing_declarations.end()) {
+      throw InvalidSyntaxException(
+          "Expected 'BOOLEAN' to be a declared synonym, but has not been "
+          "declared");
+    }
+  }
+  if (!IsSynonym(GetCurrTokenValue())) {
+    throw InvalidSyntaxException("Expected synonym for single select clause");
+  }
 }
 
 void SyntaxChecker::CheckSuchThat(bool has_and) {

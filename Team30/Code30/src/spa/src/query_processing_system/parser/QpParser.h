@@ -11,6 +11,7 @@ class QpParser : public AParser {
 
   // Constants
   static std::string const AND;
+  static std::string const BOOLEAN;
   static std::string const CALLS;
   static std::string const CALLS_STAR;
   static std::string const FOLLOWS;
