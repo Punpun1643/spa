@@ -11,12 +11,11 @@ PkbQpsInterfaceStub::getEntitiesWithType(EntityType type) {
 std::unordered_set<std::string> PkbQpsInterfaceStub::convertEntityAttribute(
     std::string value, EntityType type, AttrType curr_attr_type,
     AttrType wanted_attr_type) {
-  return std::unordered_set<std::string>();
-  //last_value_passed = value;
-  //last_entity_type_passed = type;
-  //last_attr_type_passed = curr_attr_type;
-  //last_attr_type_2_passed = wanted_attr_type;
-  //return converted_entity;
+  last_value_passed = value;
+  last_entity_type_passed = type;
+  last_attr_type_passed = curr_attr_type;
+  last_attr_type_2_passed = wanted_attr_type;
+  return {converted_entity};
 };
 
 bool PkbQpsInterfaceStub::doesEntityExist(EntityType type, AttrType attr_type,

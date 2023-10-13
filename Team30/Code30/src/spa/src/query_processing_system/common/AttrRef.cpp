@@ -48,10 +48,15 @@ bool AttrRef::IsAttrTypeAnAlias() const {
 
 std::string AttrRef::GetRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const {
   if (IsAttrTypeAnAlias()) {
-    return pkb.convertEntityAttribute(default_value,
+    auto output =  pkb.convertEntityAttribute(default_value,
                                       decl.getEntityType(),
                                       GetDefaultAttrType(),
                                       attr_type);
+    assert(output.size() == 1);
+    for (auto& elem: output) {
+      return elem;
+    }
+    assert(false); // should not get here.
   } else {
     return default_value;
   }
