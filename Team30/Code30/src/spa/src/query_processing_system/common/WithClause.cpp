@@ -69,6 +69,35 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateStrAttrRef(PKBQPSInterface& pk
   return EvaluateValueAttrRef(pkb, value, attr_ref);
 }
 
+std::unique_ptr<ClauseResult> WithClause::EvaluateRefRef(PKBQPSInterface& pkb) {
+  AttrRef attr_ref_1 = std::get<AttrRef>(ref1);
+  AttrRef attr_ref_2 = std::get<AttrRef>(ref2);
+  auto matching = pkb.getMatchingEntities(attr_ref_1.GetEntityType(), attr_ref_1.GetAttrType(),
+                                          attr_ref_2.GetEntityType(), attr_ref_2.GetAttrType());
+  if (matching.empty()) {
+    return std::make_unique<ClauseResult>(false);
+  }
+
+  auto decl_1 = attr_ref_1.GetDecl();
+  auto decl_2 = attr_ref_2.GetDecl();
+  std::vector<std::string> decl_1_values;
+  std::vector<std::string> decl_2_values;
+
+  if (attr_ref_1.IsAttrTypeAnAlias() && attr_ref_2.IsAttrTypeAnAlias()) {
+
+  } else if (!attr_ref_1.IsAttrTypeAnAlias() && !attr_ref_2.IsAttrTypeAnAlias()) {
+    std::vector<std::
+    for ()
+
+
+    return std::make_unique<ClauseResult>(decl_1, decl_2, matching_pair);
+  } else if (!attr_ref_1.IsAttrTypeAnAlias() && attr_ref_2.IsAttrTypeAnAlias()) {
+
+  } else {
+
+  }
+}
+
 std::unique_ptr<ClauseResult> WithClause::evaluate(PKBQPSInterface& pkb) {
   if (std::holds_alternative<int>(ref1) && std::holds_alternative<int>(ref2)) {
     return EvaluateIntInt(pkb);
@@ -82,5 +111,9 @@ std::unique_ptr<ClauseResult> WithClause::evaluate(PKBQPSInterface& pkb) {
     return EvaluateStrAttrRef(pkb, 1);
   } else if (std::holds_alternative<AttrRef>(ref1) && std::holds_alternative<std::string>(ref2)) {
     return EvaluateStrAttrRef(pkb, 2);
+  } else if (std::holds_alternative<AttrRef>(ref1) && std::holds_alternative<AttrRef>(ref2)) {
+    return EvaluateRefRef(pkb);
+  } else {
+    assert(false); // shouldn't get here
   }
 }
