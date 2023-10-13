@@ -20,9 +20,9 @@ class PKBQPSInterface {
   virtual std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) = 0;  // Returns all Entities in the default AttrType
 
-  virtual std::string convertEntityAttribute(std::string value, EntityType type,
-                                             AttrType curr_attr_type,
-                                             AttrType wanted_attr_type) = 0;
+  virtual std::unordered_set<std::string> convertEntityAttribute(
+      std::string value, EntityType type, AttrType curr_attr_type,
+      AttrType wanted_attr_type) = 0;
 
   virtual bool doesEntityExist(EntityType type, AttrType attr_type,
                                std::string value) = 0;

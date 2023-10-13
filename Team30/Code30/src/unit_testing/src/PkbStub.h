@@ -38,7 +38,8 @@ class PkbStub : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
 
-  std::string convertEntityAttribute(std::string value, EntityType type,
+  std::unordered_set<std::string> convertEntityAttribute(
+      std::string value, EntityType type,
                                      AttrType curr_attr_type,
                                      AttrType wanted_attr_type) override;
 

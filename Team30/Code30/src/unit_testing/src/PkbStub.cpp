@@ -25,10 +25,11 @@ void PkbStub::insertEntity(EntityType type, std::string entity) {
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
 
-std::string PkbStub::convertEntityAttribute(std::string value, EntityType type,
+std::unordered_set<std::string> PkbStub::convertEntityAttribute(
+    std::string value, EntityType type,
                                             AttrType curr_attr_type,
                                             AttrType wanted_attr_type) {
-  return "";
+  return std::unordered_set<std::string>();
 };
 
 bool PkbStub::doesEntityExist(EntityType type, AttrType attr_type,

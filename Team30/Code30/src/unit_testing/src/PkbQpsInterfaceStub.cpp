@@ -8,10 +8,10 @@ PkbQpsInterfaceStub::getEntitiesWithType(EntityType type) {
   return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
 }
 
-std::string PkbQpsInterfaceStub::convertEntityAttribute(
+std::unordered_set<std::string> PkbQpsInterfaceStub::convertEntityAttribute(
     std::string value, EntityType type, AttrType curr_attr_type,
     AttrType wanted_attr_type) {
-  return "";
+  return std::unordered_set<std::string>();
 };
 
 bool PkbQpsInterfaceStub::doesEntityExist(EntityType type, AttrType attr_type,
