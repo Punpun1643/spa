@@ -159,7 +159,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
 
     if (type == RelationType::NEXT) {
       for (auto n : node->getOutgoingNodes()) {
-        output.insert(std::to_string(n->getNode()->getStmtIndex()));
+        output.insert(std::to_string(n->getNode()->GetStmtIndex()));
       };
     }
 
@@ -168,7 +168,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasPath(node, n)) {
-          output.insert(std::to_string(n->getNode()->getStmtIndex()));
+          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
         }
       }
     }
@@ -177,7 +177,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasAffectPath(node, n)) {
-          output.insert(std::to_string(n->getNode()->getStmtIndex()));
+          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
         }
       }
     }
@@ -196,7 +196,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
 
     if (type == RelationType::NEXT) {
       for (auto n : node->getIncomingNodes()) {
-        output.insert(std::to_string(n->getNode()->getStmtIndex()));
+        output.insert(std::to_string(n->getNode()->GetStmtIndex()));
       };
     }
 
@@ -205,7 +205,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasPath(n, node)) {
-          output.insert(std::to_string(n->getNode()->getStmtIndex()));
+          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
         }
       }
     }
@@ -214,7 +214,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasAffectPath(n, node)) {
-          output.insert(std::to_string(n->getNode()->getStmtIndex()));
+          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
         }
       }
     }
