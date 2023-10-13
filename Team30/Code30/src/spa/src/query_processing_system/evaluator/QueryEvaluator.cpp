@@ -64,7 +64,7 @@ bool QueryEvaluator::UpdateResultUsingAttrTypes(std::vector<std::vector<std::str
   for (auto& row: values) {
     for (auto i : aliased_idx) {
       const AttrRef& attr_ref = attr_refs[i];
-      row[i] = attr_ref.GetRepresentationFromDefault(pkb, row[i]);
+      row[i] = attr_ref.GetAliasFromDefault(pkb, row[i]);
     }
   }
   return true;
