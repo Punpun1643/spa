@@ -8,7 +8,7 @@ PkbQpsInterfaceStub::getEntitiesWithType(EntityType type) {
   return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
 }
 
-std::string PkbQpsInterfaceStub::convertEntityAttribute(
+std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
     std::string value, EntityType type, AttrType curr_attr_type,
     AttrType wanted_attr_type) {
   last_value_passed = value;
@@ -18,12 +18,12 @@ std::string PkbQpsInterfaceStub::convertEntityAttribute(
   return converted_entity;
 };
 
-bool PkbQpsInterfaceStub::doesEntityExist(EntityType type, AttrType attr_type,
+std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                                           std::string value) {
-  return false;
+  return {};
 };
 
-std::vector<std::string> PkbQpsInterfaceStub::getMatchingEntities(
+std::vector<std::pair<std::string, std::string>> PkbQpsInterfaceStub::GetEntitiesWhereAttributesMatch(
     EntityType type_1, AttrType attr_type_1, EntityType type_2,
     AttrType attr_type_2) {
   return {};

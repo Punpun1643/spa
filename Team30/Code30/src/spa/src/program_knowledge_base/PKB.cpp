@@ -70,18 +70,18 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
   return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
-std::string PKB::convertEntityAttribute(std::string value, EntityType type,
+std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
                                         AttrType curr_attr_type,
                                         AttrType wanted_attr_type) {
   return "";
 };
 
-bool PKB::doesEntityExist(EntityType type, AttrType attr_type,
+std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                           std::string value) {
-  return false;
+  return {};
 };
 
-std::vector<std::string> PKB::getMatchingEntities(EntityType type_1,
+std::vector<std::pair<std::string, std::string>> PKB::GetEntitiesWhereAttributesMatch(EntityType type_1,
                                                   AttrType attr_type_1,
                                                   EntityType type_2,
                                                   AttrType attr_type_2) {
