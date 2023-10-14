@@ -26,14 +26,22 @@ void QPSController::HandleQuery(
       clauses = this->TokensToClauses(tokens);
 
   std::vector<PqlDeclaration> selected_declarations = clauses.first;
+
+  // ---Temp addition to make it compile
+  std::vector<AttrRef> selected_attr_refs = {};
+  for (auto &decl: selected_declarations) {
+    selected_attr_refs.push_back(AttrRef(decl));
+  }
+  // ---
+
   std::vector<std::shared_ptr<Clause>> other_clauses = clauses.second;
 
-  if (selected_declarations.empty()) {
-    bool query_results = query_evaluator->evaluateQuery(other_clauses);
+  if (selected_attr_refs.empty()) {
+    bool query_results = query_evaluator->EvaluateQuery(other_clauses);
     results.push_back(query_results ? "TRUE" : "FALSE");
   } else {
     std::vector<std::vector<std::string>> query_results =
-        query_evaluator->evaluateQuery(selected_declarations, other_clauses);
+        query_evaluator->EvaluateQuery(selected_attr_refs, other_clauses);
     for (std::vector<std::string> result : query_results) {
       std::string result_string;
       for (std::vector<std::string>::iterator it = result.begin();
