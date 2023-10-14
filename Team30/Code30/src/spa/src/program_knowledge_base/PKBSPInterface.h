@@ -29,8 +29,4 @@ class PKBSPInterface {
       std::string procName) = 0;
   virtual void insertCFGNode(std::string statement_num,
                              std::shared_ptr<CFGNode> node) = 0;
-
-  // ----------- TO DELETE -------------
-  virtual void insertPattern(std::string statement_number, std::string lhs,
-                             std::unordered_set<std::string> rhs) = 0;
 };

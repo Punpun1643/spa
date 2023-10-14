@@ -48,11 +48,6 @@ void PKB::insertPattern(PatternType type, std::string statement_number,
   patData->insert(type, statement_number, lhs, rhs);
 };
 
-void PKB::insertPattern(std::string statement_number, std::string lhs,
-                        std::unordered_set<std::string> rhs) {
-  patData->insert(statement_number, lhs, rhs);
-};
-
 void PKB::insertCFGNode(std::string statement_number,
                         std::shared_ptr<CFGNode> node) {
   relData->insertCFGNode(statement_number, node);
@@ -75,18 +70,18 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
   return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
 };
 
-std::unordered_set<std::string> PKB::convertEntityAttribute(std::string value, EntityType type,
+std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
                                         AttrType curr_attr_type,
                                         AttrType wanted_attr_type) {
-  return std::unordered_set<std::string>();
+  return "";
 };
 
-bool PKB::doesEntityExist(EntityType type, AttrType attr_type,
+std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                           std::string value) {
-  return false;
+  return {};
 };
 
-std::vector<std::string> PKB::getMatchingEntities(EntityType type_1,
+std::vector<std::pair<std::string, std::string>> PKB::GetEntitiesWhereAttributesMatch(EntityType type_1,
                                                   AttrType attr_type_1,
                                                   EntityType type_2,
                                                   AttrType attr_type_2) {
@@ -281,71 +276,6 @@ PKB::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
       };
     }
   };
-
-  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
-      output.begin(), output.end());
-};
-
-std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
-    std::string rhs_expr, MatchType expr_match_type) {
-  // Wild match: pattern a(_, _), i.e. all statement numbers
-  if (expr_match_type == MatchType::WILD_MATCH) {
-    std::unordered_set<std::string> assignment_statements =
-        *entData->get(EntityType::ASSIGN);
-    return std::make_unique<std::vector<std::string>>(
-        assignment_statements.begin(), assignment_statements.end());
-  }
-
-  // Partial match: pattern a(_, "x")
-  // only works for single variables or constants
-  std::unordered_set<std::string> rhs_statements =
-      patData->getStatementNumbersGivenRHS(rhs_expr);
-  return std::make_unique<std::vector<std::string>>(rhs_statements.begin(),
-                                                    rhs_statements.end());
-};
-
-std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
-    std::string lhs_value, std::string rhs_expr, MatchType expr_match_type) {
-  std::unordered_set<std::string> lhs_statements =
-      patData->getStatementNumbersGivenLHS(lhs_value);
-
-  // Wild match: pattern a("x", _)
-  if (expr_match_type == MatchType::WILD_MATCH) {
-    return std::make_unique<std::vector<std::string>>(lhs_statements.begin(),
-                                                      lhs_statements.end());
-  };
-
-  // Partial match: pattern a("x", "_y_")
-  // only works for single variables or constants
-  std::unordered_set<std::string> rhs_statements =
-      patData->getStatementNumbersGivenRHS(rhs_expr);
-  std::unordered_set<std::string> intersection;
-  for (std::string val : rhs_statements) {
-    if (lhs_statements.find(val) != lhs_statements.end()) {
-      intersection.insert(val);
-    }
-  }
-
-  return std::make_unique<std::vector<std::string>>(intersection.begin(),
-                                                    intersection.end());
-};
-
-// return possible values of the LHS synonym
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PKB::getPatternMatchesSynonymLhs(std::string rhs_expr,
-                                 MatchType expr_match_type) {
-  std::unordered_set<std::string> statements;
-  if (expr_match_type == MatchType::WILD_MATCH) {
-    statements = *entData->get(EntityType::ASSIGN);
-  } else {
-    statements = patData->getStatementNumbersGivenRHS(rhs_expr);
-  }
-
-  std::vector<std::pair<std::string, std::string>> output;
-  for (std::string st_num : statements) {
-    output.push_back(
-        make_pair(st_num, patData->getVarGivenStatementNum(st_num)));
-  }
 
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       output.begin(), output.end());

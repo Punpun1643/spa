@@ -38,10 +38,8 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void insertPattern(PatternType type, std::string statement_number,
-                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
-
-  void insertPattern(std::string statement_number, std::string lhs,
-                     std::unordered_set<std::string> rhs) override;
+                     std::string lhs,
+                     std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
@@ -55,14 +53,14 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
 
-  std::unordered_set<std::string> convertEntityAttribute(std::string value, EntityType type,
+  std::string ConvertEntityValueToAlias(std::string value, EntityType type,
                                      AttrType curr_attr_type,
                                      AttrType wanted_attr_type) override;
 
-  bool doesEntityExist(EntityType type, AttrType attr_type,
+  std::vector<std::string> GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                        std::string value) override;
 
-  std::vector<std::string> getMatchingEntities(EntityType type_1,
+  std::vector<std::pair<std::string, std::string>> GetEntitiesWhereAttributesMatch(EntityType type_1,
                                                AttrType attr_type_1,
                                                EntityType type_2,
                                                AttrType attr_type_2) override;
@@ -103,13 +101,4 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
-
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
-      std::string lhs_value, std::string rhs_expr,
-      MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::string rhs_expr,
-                              MatchType expr_match_type) override;
 };

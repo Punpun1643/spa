@@ -52,16 +52,15 @@ bool AttrRef::IsAttrTypeAnAlias() const {
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
 
-std::string AttrRef::GetAliasFromDefault(
+std::string AttrRef::GetRepresentationFromDefault(
     PKBQPSInterface& pkb, std::string const& default_value) const {
   /**
    * If called on an AttrRef that is an alias, converts the default value into the alias type of the AttrRef. Otherwise,
    * does nothing to the value.
    */
   if (IsAttrTypeAnAlias()) {
-    auto output = pkb.convertEntityAttribute(
+    return pkb.ConvertEntityValueToAlias(
         default_value, decl.getEntityType(), GetDefaultAttrType(), attr_type);
-    return ArrayUtility::GetElemFromSingletonSet(output);
   } else {
     return default_value;
   }
