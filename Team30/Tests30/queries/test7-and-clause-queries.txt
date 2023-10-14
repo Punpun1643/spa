@@ -11,7 +11,7 @@ z, j, y, q
 3 - Such That AND Such That + Pattern
 assign a; stmt s; if i; while w; variable v;
 Select v such that Parent (i, w) and Uses (w, v) pattern a (v, _)
-z, q, v
+z, q
 5000
 4 - Pattern AND Pattern + Such That
 assign a, a1; while w; stmt s; variable v;
