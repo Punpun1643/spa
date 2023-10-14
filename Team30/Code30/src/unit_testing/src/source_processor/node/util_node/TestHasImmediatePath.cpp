@@ -10,7 +10,7 @@
 #include "catch.hpp"
 
 TEST_CASE("Test CFGNode has immediate path", "[hasImmediatePath]") {
-  SECTION("adsads") {
+  SECTION("Test immediate path without loop should extract correctly") {
     /*
      * 1 -> 2 -> 3 -> 4
      */
