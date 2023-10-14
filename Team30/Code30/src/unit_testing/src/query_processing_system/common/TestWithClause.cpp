@@ -22,8 +22,76 @@ TEST_CASE("Test WithClause") {
     REQUIRE_NOTHROW(WithClause(attr_ref_proc, attr_ref_var));
   }
 
-  SECTION("Evaluation logic") {
-    // Test each of the combinations in turn.
+  SECTION("Test Int-Int evaluation logic") {
+    with_clause = WithClause(42, 42);
+    auto result = with_clause.evaluate(pkb);
+    REQUIRE(result->isBooleanResult());
+    REQUIRE(result->getBooleanClauseValue());
+    REQUIRE(result->getDeclarations().empty());
+
+    with_clause = WithClause(2, 16);
+    result = with_clause.evaluate(pkb);
+    REQUIRE(result->isBooleanResult());
+    REQUIRE_FALSE(result->getBooleanClauseValue());
+    REQUIRE(result->getDeclarations().empty());
+  }
+
+  SECTION("Test Str-Str evaluation logic") {
+    with_clause = WithClause("varName", "varName");
+    auto result = with_clause.evaluate(pkb);
+    REQUIRE(result->isBooleanResult());
+    REQUIRE(result->getBooleanClauseValue());
+    REQUIRE(result->getDeclarations().empty());
+
+    with_clause = WithClause("abc", "def");
+    result = with_clause.evaluate(pkb);
+    REQUIRE(result->isBooleanResult());
+    REQUIRE_FALSE(result->getBooleanClauseValue());
+    REQUIRE(result->getDeclarations().empty());
+  }
+
+  SECTION("Test Int-AttrRef evaluation logic") {
+    with_clause = WithClause(52, attr_ref_stmt);
+    auto result = with_clause.evaluate(pkb);
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE(pkb.last_value_passed == "52");
+    REQUIRE(pkb.last_entity_type_passed == EntityType::STMT);
+    REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
+    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{attr_ref_stmt.GetDecl()});
+    REQUIRE(*(result->getValues(attr_ref_stmt.GetDecl())) == pkb.attr_value_matches);
+
+    with_clause = WithClause(attr_ref_const, 21);
+    result = with_clause.evaluate(pkb);
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE(pkb.last_value_passed == "21");
+    REQUIRE(pkb.last_entity_type_passed == EntityType::CONSTANT);
+    REQUIRE(pkb.last_attr_type_passed == AttrType::VALUE);
+    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{attr_ref_const.GetDecl()});
+    REQUIRE(*(result->getValues(attr_ref_const.GetDecl())) == pkb.attr_value_matches);
+  }
+
+  SECTION("Test String-AttrRef evaluation logic") {
+    with_clause = WithClause("abc", attr_ref_var);
+    auto result = with_clause.evaluate(pkb);
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE(pkb.last_value_passed == "abc");
+    REQUIRE(pkb.last_entity_type_passed == EntityType::VARIABLE);
+    REQUIRE(pkb.last_attr_type_passed == AttrType::VAR_NAME);
+    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{attr_ref_var.GetDecl()});
+    REQUIRE(*(result->getValues(attr_ref_var.GetDecl())) == pkb.attr_value_matches);
+
+    with_clause = WithClause(attr_ref_call_alias, "iamastring");
+    result = with_clause.evaluate(pkb);
+    REQUIRE(result->getNumDeclarations() == 1);
+    REQUIRE(pkb.last_value_passed == "iamastring");
+    REQUIRE(pkb.last_entity_type_passed == EntityType::CALL);
+    REQUIRE(pkb.last_attr_type_passed == AttrType::PROC_NAME);
+    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{attr_ref_call_alias.GetDecl()});
+    REQUIRE(*(result->getValues(attr_ref_call_alias.GetDecl())) == pkb.attr_value_matches);
+  }
+
+  SECTION("Test AttrRef-AttrRef evaluation logic") {
+
   }
 
   SECTION("Incompatible args should throw semantic error") {
