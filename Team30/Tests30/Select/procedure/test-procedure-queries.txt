@@ -1,0 +1,5 @@
+0 - Select procedure
+procedure p;
+Select p
+triple, duo, kid, kid2
+5000

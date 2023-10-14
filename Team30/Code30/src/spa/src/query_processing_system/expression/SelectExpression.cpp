@@ -1,4 +1,5 @@
 #include "SelectExpression.h"
+#include <cassert>
 
 #include <cassert>
 

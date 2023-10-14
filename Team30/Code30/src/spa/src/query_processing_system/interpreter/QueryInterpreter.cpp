@@ -106,7 +106,9 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<PatternExpression> pattern_expression) {
   std::string syn_assign = pattern_expression->GetSynAssign();
   std::string arg1 = pattern_expression->GetArg1();
-  std::string arg2 = pattern_expression->GetArg2();
+  MatchType match_type = pattern_expression->GetMatchType();
+  std::shared_ptr<TreeNode> rhs_expr_tree =
+      pattern_expression->GetRhsExprTree();
   PqlDeclaration assign_decl = this->GetMappedDeclaration(syn_assign);
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {
@@ -116,17 +118,8 @@ void QueryInterpreter::Interpret(
   } else if (this->IsSynonym(arg1)) {
     lhs_expr = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
   }
-  MatchType match_type;
-  std::string rhs_expr;
-  if (arg2 == "_") {
-    match_type = MatchType::WILD_MATCH;
-    rhs_expr = "_";
-  } else {
-    match_type = MatchType::PARTIAL_MATCH;
-    rhs_expr = arg2.substr(2, arg2.size() - 4);
-  }
   this->context->AddPatternClause(std::make_shared<PatternClause>(
-      assign_decl, *lhs_expr, match_type, rhs_expr));
+      assign_decl, *lhs_expr, match_type, rhs_expr_tree));
   this->InterpretNext(pattern_expression);
 }
 
