@@ -40,13 +40,7 @@ bool CFGNode::HasImmediatePath(std::shared_ptr<CFGNode> startNode,
 
 bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
                       std::shared_ptr<CFGNode> endNode) {
-  if (startNode == endNode) {
-    return false;
-  }
-
-  // visited nodes
   std::unordered_set<std::shared_ptr<CFGNode>> visitedNodes;
-  // nodes to visit
   std::queue<std::shared_ptr<CFGNode>> nodesToVisit;
 
   nodesToVisit.push(startNode);
@@ -56,7 +50,7 @@ bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
     nodesToVisit.pop();
     visitedNodes.insert(currNode);
 
-    if (currNode == endNode) {
+    if (currNode == endNode && currNode != startNode) {
       return true;
     }
 
@@ -66,6 +60,9 @@ bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
     for (std::shared_ptr<CFGNode> outgoingNode : outgoingNodes) {
       if (visitedNodes.find(outgoingNode) == visitedNodes.end()) {
         nodesToVisit.push(outgoingNode);
+      } else if (outgoingNode == endNode &&
+                 visitedNodes.find(outgoingNode) != visitedNodes.end()) {
+        return true;
       }
     }
   }
