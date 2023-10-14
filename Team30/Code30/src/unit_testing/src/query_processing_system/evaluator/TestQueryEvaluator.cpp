@@ -5,7 +5,6 @@
 #include "../../../../spa/src/query_processing_system/common/WithClause.h"
 #include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
-#include "../../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
 
@@ -36,8 +35,9 @@ TEST_CASE("Test Query Evaluator") {
   std::shared_ptr<Clause> with_clause;
   std::vector<std::vector<std::string>> result;
 
-  auto negation_clause =
+  auto negation_follows_clause =
       QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
+  std::shared_ptr<Clause> negation_with_clause = std::make_shared<WithClause>(2, 20);
 
   SECTION("Evaluate boolean query") {
     // bool query with no clauses is true
@@ -74,7 +74,7 @@ TEST_CASE("Test Query Evaluator") {
     result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
     REQUIRE(ArrayUtility::flattenVector(result) == pkb.synonymValueValues);
     // Addition of empty clause -> no results
-    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause, negation_clause});
+    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause, negation_follows_clause});
     REQUIRE(result.empty());
   }
 
@@ -90,7 +90,7 @@ TEST_CASE("Test Query Evaluator") {
 
     // Addition of empty clause -> no results
 
-    result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_clause});
+    result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_follows_clause});
     REQUIRE(result.empty());
   }
 
@@ -105,7 +105,7 @@ TEST_CASE("Test Query Evaluator") {
     REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
 
     // No results case
-    result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_clause});
+    result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_with_clause});
     REQUIRE(result.empty());
   }
 
