@@ -10,6 +10,7 @@ TEST_CASE("Test AttrRef") {
   PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
   PqlDeclaration call = PqlDeclaration("c", EntityType::CALL);
   PqlDeclaration a = PqlDeclaration("assign", EntityType::ASSIGN);
+  PqlDeclaration proc = PqlDeclaration("procedure", EntityType::PROCEDURE);
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
 
   SECTION("Test basic functionality") {
@@ -17,6 +18,9 @@ TEST_CASE("Test AttrRef") {
     auto ref = AttrRef(read);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
     REQUIRE(ref.GetDecl() == read);
+    REQUIRE(ref.GetEntityType() == read.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::STMT_NUM);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::INTEGER);
     REQUIRE_FALSE(ref.GetDecl() == print);
 
     ref = AttrRef(print);
@@ -26,12 +30,27 @@ TEST_CASE("Test AttrRef") {
 
     ref = AttrRef(con);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
+    REQUIRE(ref.GetEntityType() == con.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::VALUE);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::INTEGER);
     REQUIRE(ref.GetDecl() == con);
+    REQUIRE_FALSE(ref.GetDecl() == a);
+
+    ref = AttrRef(proc);
+    REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
+    REQUIRE(ref.GetEntityType() == proc.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::PROC_NAME);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::NAME);
+    REQUIRE(ref.GetDecl() == proc);
     REQUIRE_FALSE(ref.GetDecl() == a);
 
     // Two argument initialization
     ref = AttrRef(print, AttrType::VAR_NAME);
     REQUIRE(ref.IsAttrTypeAnAlias());
+    REQUIRE(ref.GetEntityType() == print.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::VAR_NAME);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::NAME);
+    REQUIRE_FALSE(ref.GetDecl() == a);
     REQUIRE(ref.GetDecl() == print);
 
     ref = AttrRef(call, AttrType::PROC_NAME);
