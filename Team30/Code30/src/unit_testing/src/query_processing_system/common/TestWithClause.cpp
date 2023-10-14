@@ -91,7 +91,17 @@ TEST_CASE("Test WithClause") {
   }
 
   SECTION("Test AttrRef-AttrRef evaluation logic") {
-
+    with_clause = WithClause(attr_ref_read_alias, attr_ref_proc);
+    auto result = with_clause.evaluate(pkb);
+    REQUIRE(result->getNumDeclarations() == 2);
+    REQUIRE(pkb.last_entity_type_passed == EntityType::READ);
+    REQUIRE(pkb.last_attr_type_passed == AttrType::VAR_NAME);
+    REQUIRE(pkb.last_entity_type_2_passed == EntityType::PROCEDURE);
+    REQUIRE(pkb.last_attr_type_2_passed == AttrType::PROC_NAME);
+    REQUIRE_THAT(result->getDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{attr_ref_read_alias.GetDecl(),
+                                                                                               attr_ref_proc.GetDecl()}));
+    REQUIRE(*(result->getValues(attr_ref_read_alias.GetDecl())) == pkb.attr_pair_matches_1);
+    REQUIRE(*(result->getValues(attr_ref_proc.GetDecl())) == pkb.attr_pair_matches_2);
   }
 
   SECTION("Incompatible args should throw semantic error") {
