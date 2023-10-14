@@ -1,0 +1,11 @@
+#include "../../../../../spa/src/source_processor/node/stmt_node/AssignNode.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/CallNode.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/IfNode.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/PrintNode.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/ReadNode.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/StmtNode.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/StmtType.h"
+#include "../../../../../spa/src/source_processor/node/stmt_node/WhileNode.h"
+#include "../../../../../spa/src/source_processor/node/util_node/CFGNode.h"
+#include "catch.hpp"
+

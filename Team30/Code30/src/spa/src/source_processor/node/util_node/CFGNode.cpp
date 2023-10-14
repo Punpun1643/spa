@@ -40,9 +40,9 @@ bool CFGNode::HasImmediatePath(std::shared_ptr<CFGNode> startNode,
 
 bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
                       std::shared_ptr<CFGNode> endNode) {
-  //  if (startNode == endNode) {
-  //    return true;
-  //  }
+  if (startNode == endNode) {
+    return false;
+  }
 
   // visited nodes
   std::unordered_set<std::shared_ptr<CFGNode>> visitedNodes;
