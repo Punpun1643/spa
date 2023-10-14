@@ -28,8 +28,6 @@ class AttrRef {
 
   std::string GetAliasFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const;
 
-//  std::unordered_set<std::string> GetDefaultsFromAlias(PKBQPSInterface& pkb, std::string const& alias_value) const;
-
   bool IsAttrTypeAnAlias() const;
 
   AttrRefOutputType GetOutputType() const;

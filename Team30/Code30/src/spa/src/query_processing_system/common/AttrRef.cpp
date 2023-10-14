@@ -64,17 +64,6 @@ std::string AttrRef::GetAliasFromDefault(
     return default_value;
   }
 }
-//
-//std::unordered_set<std::string> AttrRef::GetDefaultsFromAlias(PKBQPSInterface& pkb,
-//                                                      std::string const& alias_value) const {
-//  /**
-//   * Called on an AttrRef that is an alias, and converts the alias_value into the default representation for
-//   * this AttrRef's attr_type.
-//   */
-//  assert(IsAttrTypeAnAlias());
-//  return pkb.convertEntityAttribute(alias_value, decl.getEntityType(),
-//                                    attr_type, GetDefaultAttrType());
-//}
 
 PqlDeclaration AttrRef::GetDecl() const { return decl; }
 
