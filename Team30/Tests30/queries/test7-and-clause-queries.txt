@@ -9,12 +9,12 @@ Select v pattern a (v, _"x"_) and pattern a1 (v, _"y"_)
 z, j, y, q
 5000
 3 - Such That AND Such That + Pattern
-assign a; stmt s; if i; while w;
+assign a; stmt s; if i; while w; variable v;
 Select v such that Parent (i, w) and Uses (w, v) pattern a (v, _)
-z, q
+z, q, v
 5000
 4 - Pattern AND Pattern + Such That
-assign a, a1; while w; stmt s;
+assign a, a1; while w; stmt s; variable v;
 Select v pattern a ("x", _) and pattern a1 ("y", _) such that Parent* (w, s)
 None
 5000
