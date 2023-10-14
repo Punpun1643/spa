@@ -2,6 +2,7 @@
 
 #include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../../spa/src/query_processing_system/common/FollowsClause.h"
+#include "../../../../spa/src/query_processing_system/common/WithClause.h"
 #include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
@@ -32,6 +33,7 @@ TEST_CASE("Test Query Evaluator") {
   std::shared_ptr<Clause> follows_clause;
   std::shared_ptr<TreeNode> rhs_expr = std::make_shared<TreeNode>("", nullptr, nullptr);
   std::shared_ptr<Clause> pattern_clause;
+  std::shared_ptr<Clause> with_clause;
   std::vector<std::vector<std::string>> result;
 
   auto negation_clause =
@@ -105,5 +107,13 @@ TEST_CASE("Test Query Evaluator") {
     // No results case
     result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_clause});
     REQUIRE(result.empty());
+  }
+
+  SECTION("Evaluate query with a WithClause") {
+    with_clause = std::make_shared<WithClause>(3, AttrRef(print));
+    result = qe.EvaluateQuery({AttrRef(print), AttrRef(print, AttrType::VAR_NAME)}, {with_clause});
+    std::vector<std::vector<std::string>> expected_result = {
+        {"alpha","a"},{"beta","a"}, {"delta","a"}};
+    REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
   }
 }
