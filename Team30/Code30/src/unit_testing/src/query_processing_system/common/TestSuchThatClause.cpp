@@ -8,32 +8,10 @@
 #include "query_processing_system/common/ModifiesSClause.h"
 #include "query_processing_system/common/NextClause.h"
 #include "query_processing_system/common/ParentClause.h"
-#include "query_processing_system/common/PatternClause.h"
-#include "query_processing_system/common/SelectAllClause.h"
 #include "query_processing_system/common/UsesPClause.h"
 #include "query_processing_system/common/UsesSClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-TEST_CASE("Test SelectAll Clause") {
-  PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
-
-  PqlDeclaration a = PqlDeclaration("assign", EntityType::ASSIGN);
-  PqlDeclaration c = PqlDeclaration("const", EntityType::CONSTANT);
-
-  SelectAllClause select_all = SelectAllClause(a);
-  auto result = select_all.evaluate(pkb);
-  REQUIRE(pkb.last_entity_type_passed == a.getEntityType());
-  REQUIRE(result->getNumDeclarations() == 1);
-  REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{a});
-  REQUIRE(*(result->getValues(a)) == pkb.getAllOfTypeValues);
-
-  // Try a different example to be sure
-  auto select_all_2 = SelectAllClause(c);
-  result = select_all_2.evaluate(pkb);
-  REQUIRE(pkb.last_entity_type_passed == c.getEntityType());
-  REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{c});
-  REQUIRE(*(result->getValues(c)) == pkb.getAllOfTypeValues);
-}
 
 TEST_CASE("Test SuchThat Clauses") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
@@ -327,67 +305,5 @@ TEST_CASE("Test SuchThat Clauses") {
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>{a}));
     // AffectsClause accepts all types that StmtRef would accept. But only
     // returns values other than 'None' for Assign statements.
-  }
-}
-
-TEST_CASE("Pattern clauses") {
-  PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
-  // decl, partial
-  auto a = PqlDeclaration("a", EntityType::ASSIGN);
-  auto v = PqlDeclaration("v", EntityType::VARIABLE);
-
-  // create a simple tree x + y
-  auto baseTreeLeft =
-      std::make_shared<TreeNode>("x", nullptr, nullptr);
-  auto baseTreeRight =
-      std::make_shared<TreeNode>("y", nullptr, nullptr);
-  auto rhs_expr =
-      std::make_shared<TreeNode>("+", baseTreeLeft, baseTreeRight);
-  auto empty_rhs_expr =
-      std::make_shared<TreeNode>("", nullptr, nullptr);
-
-  SECTION("decl, wild") {
-    auto pattern_clause = PatternClause(
-        a, EntRef(v), MatchType::WILD_MATCH, rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
-    REQUIRE(pkb.last_match_type_passed == MatchType::WILD_MATCH);
-    REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
-    REQUIRE(pkb.patternDeclCalls == 1);
-    auto values = result->getValues(a);
-    REQUIRE(*values == pkb.patternDeclValues1);
-    values = result->getValues(v);
-    REQUIRE(*values == pkb.patternDeclValues2);
-  }
-
-  SECTION("value, partial") {
-    auto pattern_clause = PatternClause(
-        a, EntRef("varName"), MatchType::PARTIAL_MATCH, rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
-    REQUIRE(pkb.last_match_type_passed == MatchType::PARTIAL_MATCH);
-    REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
-    REQUIRE(pkb.last_value_passed == "varName");
-    REQUIRE(pkb.patternValueCalls == 1);
-    auto values = result->getValues(a);
-    REQUIRE(*values == pkb.patternValueValues);
-  }
-
-  SECTION("wild, exact") {
-    auto pattern_clause = PatternClause(
-        a, EntRef(), MatchType::EXACT_MATCH, empty_rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
-    REQUIRE(pkb.last_match_type_passed == MatchType::EXACT_MATCH);
-    REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, empty_rhs_expr));
-    REQUIRE(pkb.patternWildCalls == 1);
-    auto values = result->getValues(a);
-    REQUIRE(*values == pkb.patternWildValues);
-  }
-
-  SECTION("semantic errors") {
-    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(
-                          a, EntRef(a), MatchType::PARTIAL_MATCH, rhs_expr),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(
-                          v, EntRef(v), MatchType::PARTIAL_MATCH, empty_rhs_expr),
-                      InvalidSemanticsException);
   }
 }
