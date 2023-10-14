@@ -25,6 +25,19 @@ void CFGNode::addIncomingNode(std::shared_ptr<CFGNode> newNode) {
   incomingNodes.push_back(newNode);
 }
 
+bool CFGNode::HasImmediatePath(std::shared_ptr<CFGNode> startNode,
+                               std::shared_ptr<CFGNode> endNode) {
+  std::vector<std::shared_ptr<CFGNode>> outgoingNodes =
+      startNode->getOutgoingNodes();
+
+  for (std::shared_ptr<CFGNode> outgoingNode : outgoingNodes) {
+    if (outgoingNode == endNode) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
                       std::shared_ptr<CFGNode> endNode) {
   //  if (startNode == endNode) {
