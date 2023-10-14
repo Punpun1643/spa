@@ -1,5 +1,4 @@
 #include "AttrRef.h"
-#include "../evaluator/ArrayUtility.h"
 
 #include <utility>
 
@@ -52,7 +51,7 @@ bool AttrRef::IsAttrTypeAnAlias() const {
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
 
-std::string AttrRef::GetRepresentationFromDefault(
+std::string AttrRef::GetAliasFromDefault(
     PKBQPSInterface& pkb, std::string const& default_value) const {
   /**
    * If called on an AttrRef that is an alias, converts the default value into the alias type of the AttrRef. Otherwise,
@@ -65,17 +64,17 @@ std::string AttrRef::GetRepresentationFromDefault(
     return default_value;
   }
 }
-
-std::unordered_set<std::string> AttrRef::GetDefaultsFromAlias(PKBQPSInterface& pkb,
-                                                      std::string const& alias_value) const {
-  /**
-   * Called on an AttrRef that is an alias, and converts the alias_value into the default representation for
-   * this AttrRef's attr_type.
-   */
-  assert(IsAttrTypeAnAlias());
-  return pkb.convertEntityAttribute(alias_value, decl.getEntityType(),
-                                    attr_type, GetDefaultAttrType());
-}
+//
+//std::unordered_set<std::string> AttrRef::GetDefaultsFromAlias(PKBQPSInterface& pkb,
+//                                                      std::string const& alias_value) const {
+//  /**
+//   * Called on an AttrRef that is an alias, and converts the alias_value into the default representation for
+//   * this AttrRef's attr_type.
+//   */
+//  assert(IsAttrTypeAnAlias());
+//  return pkb.convertEntityAttribute(alias_value, decl.getEntityType(),
+//                                    attr_type, GetDefaultAttrType());
+//}
 
 PqlDeclaration AttrRef::GetDecl() const { return decl; }
 

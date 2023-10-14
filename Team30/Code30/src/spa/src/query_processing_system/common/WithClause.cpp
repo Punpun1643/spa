@@ -41,18 +41,8 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateStrStr(PKBQPSInterface& pkb) {
 }
 
 std::unique_ptr<ClauseResult> WithClause::EvaluateValueAttrRef(PKBQPSInterface&pkb, std::string const& value, AttrRef const& attr_ref) {
-  bool result = pkb.doesEntityExist(attr_ref.GetEntityType(), attr_ref.GetAttrType(), value);
-  if (result) {
-    auto decl = attr_ref.GetDecl();
-    if (attr_ref.IsAttrTypeAnAlias()) {
-      auto converted = attr_ref.GetDefaultsFromAlias(pkb, value);
-      return std::make_unique<ClauseResult>(decl, ArrayUtility::GetVectorFromSet(converted));
-    } else {
-      return std::make_unique<ClauseResult>(decl, std::vector<std::string>{value});
-    }
-  } else {
-    return std::make_unique<ClauseResult>(false);
-  }
+  std::vector result = pkb.GetEntitiesMatchingAttrValue(attr_ref.GetEntityType(), attr_ref.GetAttrType(), value);
+  return std::make_unique<ClauseResult>(attr_ref.GetDecl(), result);
 }
 
 std::unique_ptr<ClauseResult> WithClause::EvaluateIntAttrRef(PKBQPSInterface& pkb, int int_ref_id) {
@@ -72,30 +62,9 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateStrAttrRef(PKBQPSInterface& pk
 std::unique_ptr<ClauseResult> WithClause::EvaluateRefRef(PKBQPSInterface& pkb) {
   AttrRef attr_ref_1 = std::get<AttrRef>(ref1);
   AttrRef attr_ref_2 = std::get<AttrRef>(ref2);
-  auto matching = pkb.getMatchingEntities(attr_ref_1.GetEntityType(), attr_ref_1.GetAttrType(),
-                                          attr_ref_2.GetEntityType(), attr_ref_2.GetAttrType());
-  if (matching.empty()) {
-    return std::make_unique<ClauseResult>(false);
-  }
-
-  auto decl_1 = attr_ref_1.GetDecl();
-  auto decl_2 = attr_ref_2.GetDecl();
-  std::vector<std::string> decl_1_values;
-  std::vector<std::string> decl_2_values;
-
-  if (attr_ref_1.IsAttrTypeAnAlias() && attr_ref_2.IsAttrTypeAnAlias()) {
-
-  } else if (!attr_ref_1.IsAttrTypeAnAlias() && !attr_ref_2.IsAttrTypeAnAlias()) {
-    std::vector<std::
-    for ()
-
-
-    return std::make_unique<ClauseResult>(decl_1, decl_2, matching_pair);
-  } else if (!attr_ref_1.IsAttrTypeAnAlias() && attr_ref_2.IsAttrTypeAnAlias()) {
-
-  } else {
-
-  }
+  auto matching = pkb.GetEntitiesWhereAttributesMatch(attr_ref_1.GetEntityType(), attr_ref_1.GetAttrType(),
+                                                                attr_ref_2.GetEntityType(), attr_ref_2.GetAttrType());
+  return std::make_unique<ClauseResult>(attr_ref_1.GetDecl(), attr_ref_2.GetDecl(), matching);
 }
 
 std::unique_ptr<ClauseResult> WithClause::evaluate(PKBQPSInterface& pkb) {

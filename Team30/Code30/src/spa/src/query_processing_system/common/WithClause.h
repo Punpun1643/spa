@@ -20,8 +20,7 @@ class WithClause : public Clause {
   std::unique_ptr<ClauseResult> EvaluateRefRef(PKBQPSInterface &pkb);
 
  public:
-  WithClause(WithRef ref1,
-             WithRef ref2);
+  WithClause(WithRef ref1, WithRef ref2);
 
   std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface &pkb) override;
 };
