@@ -22,17 +22,3 @@ std::vector<std::string> ArrayUtility::flattenVector(
   }
   return output;
 }
-
-std::string ArrayUtility::GetElemFromSingletonSet(std::unordered_set<std::string> const& singleton_set) {
-  assert(singleton_set.size() == 1);
-  for (auto elem: singleton_set) {
-    return elem;
-  }
-  assert(false); // should not get here
-}
-
-std::vector<std::string> ArrayUtility::GetVectorFromSet(std::unordered_set<std::string> const& set) {
-  std::vector<std::string> output = {};
-  std::copy(set.begin(), set.end(), std::back_inserter(output));
-  return output;
-}

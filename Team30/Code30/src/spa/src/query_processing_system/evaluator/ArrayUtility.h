@@ -10,7 +10,4 @@ void removeDuplicates(std::vector<std::vector<std::string>>& vec);
 
 std::vector<std::string> flattenVector(
     std::vector<std::vector<std::string>>& vec);
-
-std::string GetElemFromSingletonSet(std::unordered_set<std::string> const& singleton_set);
-std::vector<std::string> GetVectorFromSet(std::unordered_set<std::string> const& set);
 }  // namespace ArrayUtility
