@@ -34,7 +34,7 @@ jobs:
           cmake --build . --target unit_testing
 
       - name: Run unit test
-        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build
+        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
           ./unit_testing
 
