@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build with Cmake
-        working-directory: /Users/papattaradaapithanangsiri/_work/cs3203-spa/cs3203-spa/23s1-cp-spa-team-30/Team30/Code30
+        working-directory: /Users/papattaradaapithanangsiri/cs3203-spa/23s1-cp-spa-team-30/Team30/Code30
         run: |
           pwd
           echo ${{runner.workspace}}
