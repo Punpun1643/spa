@@ -1,0 +1,41 @@
+name: codecov workflow
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [try-codecov]
+  workflow_dispatch:
+    branches:
+      - try-codecov
+      - master
+
+jobs:
+  get-code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build with Cmake
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" ..
+          make
+
+      - name: Build unit test
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30/build/
+        run: |
+          cmake --build . --target unit_testing
+
+      - name: Run unit test
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+        run: |
+          ./unit_testing
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/lcov.info
+          flags: unittests
