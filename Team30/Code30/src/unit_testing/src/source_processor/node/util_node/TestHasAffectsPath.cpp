@@ -209,5 +209,57 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE(CFGNode::HasAffectsPath(cfg8, cfg10));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg11));
     REQUIRE(CFGNode::HasAffectsPath(cfg8, cfg12));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg4));
+    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg6));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg7));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg8));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg9));
+    REQUIRE(CFGNode::HasAffectsPath(cfg9, cfg10));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg11));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg12));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg4));
+    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg6));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg7));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg8));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg9));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg10));
+    REQUIRE(CFGNode::HasAffectsPath(cfg10, cfg11));
+    REQUIRE(CFGNode::HasAffectsPath(cfg10, cfg12));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg4));
+    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg6));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg7));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg8));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg9));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg10));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg11));
+    REQUIRE(CFGNode::HasAffectsPath(cfg11, cfg12));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg4));
+    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg6));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg7));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg8));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg9));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg10));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg11));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg12));
   }
 }
