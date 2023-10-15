@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "../../../query_processing_system/common/EntityType.h"
-#include "../util_node/CFGNode.h"
-#include  "../stmt_node/StmtNode.h"
+#include "../stmt_node/StmtNode.h"
 #include "../stmt_node/StmtType.h"
+#include "../util_node/CFGNode.h"
 
 class CFGNode {
  public:
@@ -24,13 +24,14 @@ class CFGNode {
 
   void addIncomingNode(std::shared_ptr<CFGNode>);
 
-  static bool HasImmediatePath(std::shared_ptr<CFGNode> startNode, std::shared_ptr<CFGNode> endNode);
+  static bool HasImmediatePath(std::shared_ptr<CFGNode> startNode,
+                               std::shared_ptr<CFGNode> endNode);
 
   static bool HasPath(std::shared_ptr<CFGNode> startNode,
-                         std::shared_ptr<CFGNode> endNode);
+                      std::shared_ptr<CFGNode> endNode);
 
-  static bool HasAffectPath(std::shared_ptr<CFGNode> startNode,
-                                 std::shared_ptr<CFGNode> endNode);
+  static bool HasAffectsPath(std::shared_ptr<CFGNode> startNode,
+                             std::shared_ptr<CFGNode> endNode);
 
  private:
   std::vector<std::shared_ptr<CFGNode>> outgoingNodes;
