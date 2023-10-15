@@ -38,6 +38,12 @@ jobs:
         run: |
           ./unit_testing
 
+      - name: Export codecov report
+        run: |
+          llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
+          llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
+
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
