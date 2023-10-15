@@ -14,12 +14,12 @@ jobs:
   get-code-coverage:
     runs-on: [self-hosted]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Build with Cmake
-        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30
+        working-directory: ${{github.workspace}}/23s1-cp-spa-team-30/Team30/Code30
         run: |
           echo ${{runner.workspace}}
-          mkdir build
+          mkdir -p build
           cd build
           cmake -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" ..
           make
