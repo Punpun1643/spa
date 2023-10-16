@@ -28,8 +28,8 @@ stmt s;
 Select <"x", "y"> such that Follows (s, 17)
 SyntaxError
 5000
-7 - Invalid, 2 identical synonyms in tuple
+7 - Valid, 2 identical synonyms in tuple
 assign a;
-Select <a, a> such that pattern a (_, "x + 24")
-SyntaxError
+Select <a, a> pattern a (_, "x + 24")
+6 6
 5000
