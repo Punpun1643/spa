@@ -33,6 +33,10 @@ jobs:
         run: |
           cmake --build . --target unit_testing
 
+      - name: Set up environment for coverage
+        run: |
+          export LLVM_PROFILE_FILE="${{ runner.workspace }}/default.profraw"    
+
       - name: Run unit test
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
