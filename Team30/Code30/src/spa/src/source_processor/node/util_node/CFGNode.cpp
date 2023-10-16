@@ -14,6 +14,19 @@ std::shared_ptr<StmtNode> CFGNode::getNode() { return node; }
 
 StmtType CFGNode::getNodeType() { return node->GetStmtType(); }
 
+std::unordered_set<std::string> CFGNode::getUsesVars() { return uses_vars; }
+
+std::unordered_set<std::string> CFGNode::getModifiesVars() {
+  return modifies_vars;
+}
+
+bool CFGNode::UsesVar(std::string var) {
+  return uses_vars.find(var) == uses_vars.end();
+}
+bool CFGNode::ModifiesVar(std::string var) {
+  return modifies_vars.find(var) == modifies_vars.end();
+}
+
 void CFGNode::addOutgoingNode(std::shared_ptr<CFGNode> newNode) {
   outgoingNodes.push_back(newNode);
 }
