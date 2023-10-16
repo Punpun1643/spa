@@ -137,7 +137,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg3));
     REQUIRE(CFGNode::HasAffectsPath(cfg1, cfg4));
-    //        REQUIRE(CFGNode::HasAffectsPath(cfg1, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg7));
     REQUIRE(CFGNode::HasAffectsPath(cfg1, cfg8));
@@ -150,7 +150,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg5));
     REQUIRE(CFGNode::HasAffectsPath(cfg2, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg8));
@@ -163,7 +163,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg8));
@@ -176,7 +176,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg3));
     REQUIRE(CFGNode::HasAffectsPath(cfg4, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg7));
     REQUIRE(CFGNode::HasAffectsPath(cfg4, cfg8));
@@ -202,7 +202,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg6, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg6, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg6, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg6, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg6, cfg5));
     REQUIRE(CFGNode::HasAffectsPath(cfg6, cfg6));
 
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg6, cfg7));
@@ -216,7 +216,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg7, cfg8));
@@ -229,7 +229,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg8, cfg8));
@@ -242,7 +242,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg9, cfg8));
@@ -255,7 +255,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg10, cfg8));
@@ -268,7 +268,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg11, cfg8));
@@ -281,7 +281,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg2));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg3));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg4));
-    //        REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg5));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg5));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg6));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg7));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg8));
