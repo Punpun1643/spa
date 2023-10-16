@@ -46,6 +46,30 @@ class CFGNode {
   static bool HasAffectsPath(std::shared_ptr<CFGNode> startNode,
                              std::shared_ptr<CFGNode> endNode);
 
+  static bool IsAssignOrReadOutgoingNode(std::shared_ptr<CFGNode> node);
+
+  static bool IsCallOutgoingNode(std::shared_ptr<CFGNode> node);
+
+  static bool HandleAssignOrReadOutgoingNode(
+      std::shared_ptr<CFGNode> outgoingNode,
+      std::string const& varModifiedInStartNode);
+
+  static bool HandleCallOutgoingNode(std::shared_ptr<CFGNode> outgoingNode,
+                                     std::string const& varModifiedInStartNode);
+
+  static bool ValidateStartAndEndNodes(std::shared_ptr<CFGNode> startNode,
+                                       std::shared_ptr<CFGNode> endNode);
+
+  static std::string GetVarModifiedInStartNode(
+      std::shared_ptr<CFGNode> startNode);
+
+  static std::unordered_set<std::string> GetVarUsedInEndNode(
+      std::shared_ptr<CFGNode> endNode);
+
+  static bool ValidatePossibleAffectsRelationship(
+      std::string varModifiedInStartNode,
+      std::unordered_set<std::string> varsUsedInEndNode);
+
  private:
   std::vector<std::shared_ptr<CFGNode>> outgoingNodes;
   std::vector<std::shared_ptr<CFGNode>> incomingNodes;

@@ -7,7 +7,10 @@
 CFGNode::CFGNode(std::shared_ptr<StmtNode> node, StmtType stmtType,
                  std::unordered_set<std::string> uses_vars,
                  std::unordered_set<std::string> modifies_vars)
-    : node(node), stmtType(stmtType), uses_vars(uses_vars), modifies_vars(modifies_vars) {}
+    : node(node),
+      stmtType(stmtType),
+      uses_vars(uses_vars),
+      modifies_vars(modifies_vars) {}
 
 std::vector<std::shared_ptr<CFGNode>> CFGNode::getOutgoingNodes() {
   return outgoingNodes;
@@ -88,23 +91,73 @@ bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
   return false;
 }
 
-bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
-                             std::shared_ptr<CFGNode> endNode) {
-  if (startNode->getStmtType() != StmtType::ASSIGN_STMT ||
-      endNode->getStmtType() != StmtType::ASSIGN_STMT) {
-    return false;
-  }
+bool CFGNode::IsAssignOrReadOutgoingNode(std::shared_ptr<CFGNode> node) {
+  return node->getStmtType() == StmtType::ASSIGN_STMT ||
+         node->getStmtType() == StmtType::READ_STMT;
+}
 
+bool CFGNode::IsCallOutgoingNode(std::shared_ptr<CFGNode> node) {
+  return node->getStmtType() == StmtType::CALL_STMT;
+}
+
+bool CFGNode::HandleAssignOrReadOutgoingNode(
+    std::shared_ptr<CFGNode> outgoingNode,
+    std::string const& varModifiedInStartNode) {
+  std::unordered_set<std::string> varsModifiedInOutgoingNode =
+      outgoingNode->getModifiesVars();
+  std::string varModifiedInOutgoingNode = *varsModifiedInOutgoingNode.begin();
+
+  return varModifiedInStartNode != varModifiedInOutgoingNode;
+}
+
+bool CFGNode::HandleCallOutgoingNode(
+    std::shared_ptr<CFGNode> outgoingNode,
+    std::string const& varModifiedInStartNode) {
+  std::unordered_set<std::string> varsModifiedInCallOutgoingNode =
+      outgoingNode->getModifiesVars();
+
+  return varsModifiedInCallOutgoingNode.find(varModifiedInStartNode) ==
+         varsModifiedInCallOutgoingNode.end();
+}
+
+bool CFGNode::ValidateStartAndEndNodes(std::shared_ptr<CFGNode> startNode,
+                                       std::shared_ptr<CFGNode> endNode) {
+  return startNode->getStmtType() == StmtType::ASSIGN_STMT &&
+         endNode->getStmtType() == StmtType::ASSIGN_STMT;
+}
+
+std::string CFGNode::GetVarModifiedInStartNode(
+    std::shared_ptr<CFGNode> startNode) {
   std::unordered_set<std::string> varsModifiedInStartNode =
       startNode->getModifiesVars();
-  std::string varModifiedInStartNode = *varsModifiedInStartNode.begin();
+  return *varsModifiedInStartNode.begin();
+}
 
-  std::unordered_set<std::string> varUsedInEndNode = endNode->getUsesVars();
+std::unordered_set<std::string> CFGNode::GetVarUsedInEndNode(
+    std::shared_ptr<CFGNode> endNode) {
+  return endNode->getUsesVars();
+}
 
-  if (varUsedInEndNode.find(varModifiedInStartNode) == varUsedInEndNode.end()) {
+bool CFGNode::ValidatePossibleAffectsRelationship(
+    std::string varModifiedInStartNode,
+    std::unordered_set<std::string> varsUsedInEndNode) {
+  return varsUsedInEndNode.find(varModifiedInStartNode) !=
+         varsUsedInEndNode.end();
+}
+
+bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
+                             std::shared_ptr<CFGNode> endNode) {
+  if (!ValidateStartAndEndNodes(startNode, endNode)) {
     return false;
   }
+  std::string varModifiedInStartNode = GetVarModifiedInStartNode(startNode);
+  std::unordered_set<std::string> varsUsedInEndNode =
+      GetVarUsedInEndNode(endNode);
 
+  if (!ValidatePossibleAffectsRelationship(varModifiedInStartNode,
+                                           varsUsedInEndNode)) {
+    return false;
+  }
   std::queue<std::shared_ptr<CFGNode>> nodesToVisit;
   std::unordered_set<std::shared_ptr<CFGNode>> visitedNodes;
 
@@ -128,36 +181,19 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
       }
 
       if (visitedNodes.find(outgoingNode) == visitedNodes.end()) {
-        if (outgoingNode->getStmtType() == StmtType::ASSIGN_STMT) {
-          std::unordered_set<std::string> varsModifiedInAssignOutgoingNode =
-              outgoingNode->getModifiesVars();
-          std::string varModifiedInAssignOutgoingNode =
-              *varsModifiedInAssignOutgoingNode.begin();
+        bool shouldVisit = false;
 
-          if (varModifiedInStartNode != varModifiedInAssignOutgoingNode) {
-            nodesToVisit.push(outgoingNode);
-          }
-        } else if (outgoingNode->getStmtType() ==
-                   StmtType::READ_STMT) {
-          std::unordered_set<std::string> varsModifiedInReadOutgoingNode =
-              outgoingNode->getModifiesVars();
-          std::string varModifiedInReadOutgoingNode =
-              *varsModifiedInReadOutgoingNode.begin();
-
-          if (varModifiedInStartNode != varModifiedInReadOutgoingNode) {
-            nodesToVisit.push(outgoingNode);
-          }
-        } else if (outgoingNode->getStmtType() ==
-                   StmtType::CALL_STMT) {
-          std::unordered_set<std::string> varsModifiedInCallOutgoingNode =
-              outgoingNode->getModifiesVars();
-
-          if (varsModifiedInCallOutgoingNode.find(varModifiedInStartNode) ==
-              varsModifiedInCallOutgoingNode.end()) {
-            nodesToVisit.push(outgoingNode);
-          }
-
+        if (IsAssignOrReadOutgoingNode(outgoingNode)) {
+          shouldVisit = HandleAssignOrReadOutgoingNode(outgoingNode,
+                                                       varModifiedInStartNode);
+        } else if (IsCallOutgoingNode(outgoingNode)) {
+          shouldVisit =
+              HandleCallOutgoingNode(outgoingNode, varModifiedInStartNode);
         } else {
+          shouldVisit = true;
+        }
+
+        if (shouldVisit) {
           nodesToVisit.push(outgoingNode);
         }
       } else if (outgoingNode == endNode &&
