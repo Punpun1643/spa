@@ -1,9 +1,9 @@
 #include "CFGNode.h"
 
-CFGNode::CFGNode(std::shared_ptr<StmtNode> node,
+CFGNode::CFGNode(std::shared_ptr<StmtNode> node, StmtType stmtType,
                  std::unordered_set<std::string> uses_vars,
                  std::unordered_set<std::string> modifies_vars)
-    : node(node), uses_vars(uses_vars), modifies_vars(modifies_vars) {}
+    : node(node), stmtType(stmtType), uses_vars(uses_vars), modifies_vars(modifies_vars) {}
 
 std::vector<std::shared_ptr<CFGNode>> CFGNode::getOutgoingNodes() {
   return outgoingNodes;
@@ -22,6 +22,8 @@ std::unordered_set<std::string> CFGNode::getUsesVars() { return uses_vars; }
 std::unordered_set<std::string> CFGNode::getModifiesVars() {
   return modifies_vars;
 }
+
+StmtType CFGNode::getStmtType() { return stmtType; }
 
 bool CFGNode::UsesVar(std::string var) {
   return uses_vars.find(var) != uses_vars.end();

@@ -32,7 +32,7 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   std::unordered_set modifies_vars =
       pkb.getStatementModifies(std::to_string(currStmt->GetStmtIndex()));
   std::shared_ptr<CFGNode> newNode =
-      std::make_shared<CFGNode>(currStmt, uses_vars, modifies_vars);
+      std::make_shared<CFGNode>(currStmt, currType, uses_vars, modifies_vars);
   stmts.erase(stmts.begin());
 
   std::vector<std::shared_ptr<CFGNode>> localLastNodePointsTo =
