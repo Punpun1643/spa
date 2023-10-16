@@ -27,6 +27,10 @@ class PKBSPInterface {
       std::string procName) = 0;
   virtual std::unordered_set<std::string> getProcedureUses(
       std::string procName) = 0;
+  virtual std::unordered_set<std::string> getStatementModifies(
+      std::string stmt) = 0;
+  virtual std::unordered_set<std::string> getStatementUses(
+      std::string stmt) = 0;
   virtual void insertCFGNode(std::string statement_num,
                              std::shared_ptr<CFGNode> node) = 0;
 };

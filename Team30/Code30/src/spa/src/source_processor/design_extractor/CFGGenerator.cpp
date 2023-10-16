@@ -1,16 +1,16 @@
 #include "CFGGenerator.h"
 
-#include <source_processor/node/stmt_node/IfNode.h>
-#include <source_processor/node/stmt_node/WhileNode.h>
-
 #include <iostream>
+
+#include "../node/stmt_node/IfNode.h"
+#include "../node/stmt_node/WhileNode.h"
 
 CFGGenerator::CFGGenerator(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void CFGGenerator::ExecuteCFGGeneration(
     std::shared_ptr<ProcedureNode> procNode) {
-  std::vector<std::shared_ptr<StmtNode>> stmts =
-      procNode->GetChildren()[0]->GetChildren();
+  std::shared_ptr<StmtLstNode> stmtLst = procNode->GetChildren()[0];
+  std::vector<std::shared_ptr<StmtNode>> stmts = stmtLst->GetChildren();
   std::vector<std::shared_ptr<CFGNode>> lastNodePointsTo;
   GenerateCFG(stmts, lastNodePointsTo);
 }
@@ -27,7 +27,12 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   // recursively call this and point to the result
   std::shared_ptr<StmtNode> currStmt = stmts.front();
   StmtType currType = currStmt->GetStmtType();
-  std::shared_ptr<CFGNode> newNode = std::make_shared<CFGNode>(currStmt);
+  std::unordered_set uses_vars =
+      pkb.getStatementUses(std::to_string(currStmt->GetStmtIndex()));
+  std::unordered_set modifies_vars =
+      pkb.getStatementModifies(std::to_string(currStmt->GetStmtIndex()));
+  std::shared_ptr<CFGNode> newNode =
+      std::make_shared<CFGNode>(currStmt, uses_vars, modifies_vars);
   stmts.erase(stmts.begin());
 
   std::vector<std::shared_ptr<CFGNode>> localLastNodePointsTo =

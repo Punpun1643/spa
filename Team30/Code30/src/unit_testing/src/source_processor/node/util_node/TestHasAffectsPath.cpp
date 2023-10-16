@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "../../../../../spa/src/source_processor/node/stmt_node/AssignNode.h"
 #include "../../../../../spa/src/source_processor/node/stmt_node/CallNode.h"
 #include "../../../../../spa/src/source_processor/node/stmt_node/IfNode.h"
@@ -64,18 +66,42 @@ TEST_CASE("Test HasAffectPath for Affect") {
         std::unordered_set<std::string>{"x", "y", "z"},
         std::unordered_set<int>{}, "x", nullptr);
 
-    std::shared_ptr<CFGNode> cfg1 = std::make_shared<CFGNode>(stmt1);
-    std::shared_ptr<CFGNode> cfg2 = std::make_shared<CFGNode>(stmt2);
-    std::shared_ptr<CFGNode> cfg3 = std::make_shared<CFGNode>(stmt3);
-    std::shared_ptr<CFGNode> cfg4 = std::make_shared<CFGNode>(stmt4);
-    std::shared_ptr<CFGNode> cfg5 = std::make_shared<CFGNode>(stmt5);
-    std::shared_ptr<CFGNode> cfg6 = std::make_shared<CFGNode>(stmt6);
-    std::shared_ptr<CFGNode> cfg7 = std::make_shared<CFGNode>(stmt7);
-    std::shared_ptr<CFGNode> cfg8 = std::make_shared<CFGNode>(stmt8);
-    std::shared_ptr<CFGNode> cfg9 = std::make_shared<CFGNode>(stmt9);
-    std::shared_ptr<CFGNode> cfg10 = std::make_shared<CFGNode>(stmt10);
-    std::shared_ptr<CFGNode> cfg11 = std::make_shared<CFGNode>(stmt11);
-    std::shared_ptr<CFGNode> cfg12 = std::make_shared<CFGNode>(stmt12);
+    std::shared_ptr<CFGNode> cfg1 =
+        std::make_shared<CFGNode>(stmt1, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{"x"});
+    std::shared_ptr<CFGNode> cfg2 =
+        std::make_shared<CFGNode>(stmt2, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{"i"});
+    std::shared_ptr<CFGNode> cfg3 = std::make_shared<CFGNode>(
+        stmt3, std::unordered_set<std::string>{"i", "x", "y", "z", "v"},
+        std::unordered_set<std::string>{"x", "z", "v", "i"});
+    std::shared_ptr<CFGNode> cfg4 = std::make_shared<CFGNode>(
+        stmt4, std::unordered_set<std::string>{"x", "y"},
+        std::unordered_set<std::string>{"x"});
+    std::shared_ptr<CFGNode> cfg5 = std::make_shared<CFGNode>(
+        stmt5, std::unordered_set<std::string>{"z", "v"},
+        std::unordered_set<std::string>{"z", "v"});
+    std::shared_ptr<CFGNode> cfg6 =
+        std::make_shared<CFGNode>(stmt6, std::unordered_set<std::string>{"i"},
+                                  std::unordered_set<std::string>{"i"});
+    std::shared_ptr<CFGNode> cfg7 =
+        std::make_shared<CFGNode>(stmt7, std::unordered_set<std::string>{"x"},
+                                  std::unordered_set<std::string>{"x", "z"});
+    std::shared_ptr<CFGNode> cfg8 =
+        std::make_shared<CFGNode>(stmt8, std::unordered_set<std::string>{"x"},
+                                  std::unordered_set<std::string>{"x"});
+    std::shared_ptr<CFGNode> cfg9 =
+        std::make_shared<CFGNode>(stmt9, std::unordered_set<std::string>{"z"},
+                                  std::unordered_set<std::string>{});
+    std::shared_ptr<CFGNode> cfg10 = std::make_shared<CFGNode>(
+        stmt10, std::unordered_set<std::string>{"z", "x", "i"},
+        std::unordered_set<std::string>{"z"});
+    std::shared_ptr<CFGNode> cfg11 =
+        std::make_shared<CFGNode>(stmt11, std::unordered_set<std::string>{"z"},
+                                  std::unordered_set<std::string>{"y"});
+    std::shared_ptr<CFGNode> cfg12 = std::make_shared<CFGNode>(
+        stmt12, std::unordered_set<std::string>{"x", "y", "z"},
+        std::unordered_set<std::string>{"x"});
 
     cfg1->addOutgoingNode(cfg2);
     cfg2->addOutgoingNode(cfg3);

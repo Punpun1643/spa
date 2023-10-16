@@ -1,11 +1,12 @@
 #include "DesignExtractor.h"
 
-#include <program_knowledge_base/PKBSPInterface.h>
 #include <stdio.h>
 
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "../../program_knowledge_base/PKBSPInterface.h"
 
 DesignExtractor::DesignExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 

@@ -21,10 +21,18 @@ TEST_CASE("Test CFGNode has immediate path (i.e. Next)", "[hasImmediatePath]") {
         std::unordered_set<int>{}, "x", nullptr);
     auto stmt4 = std::make_shared<CallNode>(4, StmtType::CALL_STMT, "proc1");
 
-    std::shared_ptr<CFGNode> cfg1 = std::make_shared<CFGNode>(stmt1);
-    std::shared_ptr<CFGNode> cfg2 = std::make_shared<CFGNode>(stmt2);
-    std::shared_ptr<CFGNode> cfg3 = std::make_shared<CFGNode>(stmt3);
-    std::shared_ptr<CFGNode> cfg4 = std::make_shared<CFGNode>(stmt4);
+    std::shared_ptr<CFGNode> cfg1 =
+        std::make_shared<CFGNode>(stmt1, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{});
+    std::shared_ptr<CFGNode> cfg2 =
+        std::make_shared<CFGNode>(stmt2, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{});
+    std::shared_ptr<CFGNode> cfg3 =
+        std::make_shared<CFGNode>(stmt3, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{});
+    std::shared_ptr<CFGNode> cfg4 =
+        std::make_shared<CFGNode>(stmt4, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{});
 
     cfg1->addOutgoingNode(cfg2);
     cfg2->addOutgoingNode(cfg3);

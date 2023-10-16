@@ -1,5 +1,4 @@
 #pragma once
-#include <source_processor/node/stmt_node/CallNode.h>
 
 #include <memory>
 #include <queue>
@@ -7,9 +6,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../node/stmt_node/CallNode.h"
 #include "../node/util_node/CallsGraphProcNode.h"
-#include "relation_extractor/CallsExtractor.h"
 #include "CallsProcConnector.h"
+#include "relation_extractor/CallsExtractor.h"
 
 class CallsManager {
  public:

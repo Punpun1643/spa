@@ -1,9 +1,9 @@
 #include "CallsManager.h"
 
-#include <source_processor/exceptions/InvalidSourceSemanticsException.h>
-
 #include <iostream>
 #include <vector>
+
+#include "../exceptions/InvalidSourceSemanticsException.h"
 CallsManager::CallsManager(PKBSPInterface& pkb) : pkb(pkb) {
   callsExtractor = std::make_shared<CallsExtractor>(pkb);
   procConnector = std::make_shared<CallsProcConnector>(pkb);

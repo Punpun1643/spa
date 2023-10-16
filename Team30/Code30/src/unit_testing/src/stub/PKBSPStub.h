@@ -1,7 +1,7 @@
 #include <unordered_map>
 
-#include "../../spa/src/program_knowledge_base/PKBQPSInterface.h"
-#include "../../spa/src/program_knowledge_base/PKBSPInterface.h"
+#include "../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
+#include "../../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
 
 class PKBSPStub : public PKBSPInterface {
@@ -40,6 +40,12 @@ class PKBSPStub : public PKBSPInterface {
       std::string procName) override;
 
   std::unordered_set<std::string> getProcedureModifies(
+      std::string procName) override;
+
+  std::unordered_set<std::string> getStatementUses(
+      std::string procName) override;
+
+  std::unordered_set<std::string> getStatementModifies(
       std::string procName) override;
 
   void insertCFGNode(std::string statement_num,

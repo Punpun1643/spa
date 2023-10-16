@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_set>
+#include <string>
 
 #include "../../../query_processing_system/common/EntityType.h"
 #include "../stmt_node/StmtNode.h"
@@ -10,7 +12,9 @@
 
 class CFGNode {
  public:
-  CFGNode(std::shared_ptr<StmtNode> node);
+  CFGNode(std::shared_ptr<StmtNode> node,
+          std::unordered_set<std::string> uses_vars,
+          std::unordered_set<std::string> modifies_vars);
 
   std::vector<std::shared_ptr<CFGNode>> getOutgoingNodes();
 
@@ -19,6 +23,11 @@ class CFGNode {
   std::shared_ptr<StmtNode> getNode();
 
   StmtType getNodeType();
+  std::unordered_set<std::string> getUsesVars();
+  std::unordered_set<std::string> getModifiesVars();
+  
+  bool UsesVar(std::string var);
+  bool ModifiesVar(std::string var);
 
   void addOutgoingNode(std::shared_ptr<CFGNode>);
 
@@ -37,4 +46,7 @@ class CFGNode {
   std::vector<std::shared_ptr<CFGNode>> outgoingNodes;
   std::vector<std::shared_ptr<CFGNode>> incomingNodes;
   std::shared_ptr<StmtNode> node;
+
+  std::unordered_set<std::string> uses_vars;
+  std::unordered_set<std::string> modifies_vars;
 };

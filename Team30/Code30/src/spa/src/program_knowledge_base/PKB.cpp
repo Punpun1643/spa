@@ -62,6 +62,14 @@ std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
   return relData->getAllRelatedToValue(RelationType::USES_P, procName);
 };
 
+std::unordered_set<std::string> PKB::getStatementModifies(std::string stmt) {
+  return relData->getAllRelatedToValue(RelationType::MODIFIES_S, stmt);
+};
+
+std::unordered_set<std::string> PKB::getStatementUses(std::string stmt) {
+  return relData->getAllRelatedToValue(RelationType::USES_S, stmt);
+};
+
 // ********** QPS **********
 // ---------- ENTITIES ----------
 std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
@@ -71,20 +79,20 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
 };
 
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
-                                        AttrType curr_attr_type,
-                                        AttrType wanted_attr_type) {
+                                           AttrType curr_attr_type,
+                                           AttrType wanted_attr_type) {
   return "";
 };
 
-std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
-                          std::string value) {
+std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
+                                                           AttrType attr_type,
+                                                           std::string value) {
   return {};
 };
 
-std::vector<std::pair<std::string, std::string>> PKB::GetEntitiesWhereAttributesMatch(EntityType type_1,
-                                                  AttrType attr_type_1,
-                                                  EntityType type_2,
-                                                  AttrType attr_type_2) {
+std::vector<std::pair<std::string, std::string>>
+PKB::GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
+                                     EntityType type_2, AttrType attr_type_2) {
   return {};
 };
 
