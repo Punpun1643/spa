@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
-#include <source_processor/exceptions/InvalidSourceSemanticsException.h>
+
+#include "../exceptions/InvalidSourceSemanticsException.h"
 
 CallsProcConnector::CallsProcConnector(PKBSPInterface& pkb) : pkb(pkb) {}
 

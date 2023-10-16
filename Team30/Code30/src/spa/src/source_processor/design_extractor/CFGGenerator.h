@@ -1,8 +1,10 @@
 #pragma once
-#include <program_knowledge_base/PKBSPInterface.h>
-#include <source_processor/node/ProcedureNode.h>
-#include <source_processor/node/util_node/CFGNode.h>
+
 #include <unordered_map>
+
+#include "../../program_knowledge_base/PKBSPInterface.h"
+#include "../node/ProcedureNode.h"
+#include "../node/util_node/CFGNode.h"
 
 class CFGGenerator {
  public:

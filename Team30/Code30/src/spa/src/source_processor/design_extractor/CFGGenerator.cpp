@@ -1,16 +1,16 @@
 #include "CFGGenerator.h"
 
-#include <source_processor/node/stmt_node/IfNode.h>
-#include <source_processor/node/stmt_node/WhileNode.h>
-
 #include <iostream>
+
+#include "../node/stmt_node/IfNode.h"
+#include "../node/stmt_node/WhileNode.h"
 
 CFGGenerator::CFGGenerator(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void CFGGenerator::ExecuteCFGGeneration(
     std::shared_ptr<ProcedureNode> procNode) {
-  std::vector<std::shared_ptr<StmtNode>> stmts =
-      procNode->GetChildren()[0]->GetChildren();
+  std::shared_ptr<StmtLstNode> stmtLst = procNode->GetChildren()[0];
+  std::vector<std::shared_ptr<StmtNode>> stmts = stmtLst->GetChildren();
   std::vector<std::shared_ptr<CFGNode>> lastNodePointsTo;
   GenerateCFG(stmts, lastNodePointsTo);
 }

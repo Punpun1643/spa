@@ -1,7 +1,6 @@
-#include <program_knowledge_base/PKBSPInterface.h>
-
 #include <unordered_map>
 
+#include "../../program_knowledge_base/PKBSPInterface.h"
 #include "../node/util_node/CallsGraphProcNode.h"
 class CallsProcConnector {
  public:
