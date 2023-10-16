@@ -132,31 +132,34 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
 
       if (visitedNodes.find(outgoingNode) == visitedNodes.end()) {
         if (outgoingNode->getNode()->GetStmtType() == StmtType::ASSIGN_STMT) {
-          std::shared_ptr<AssignNode> assignOutgoingNode =
-              std::dynamic_pointer_cast<AssignNode>(outgoingNode->getNode());
+          std::unordered_set<std::string> varsModifiedInAssignOutgoingNode =
+              outgoingNode->getModifiesVars();
           std::string varModifiedInAssignOutgoingNode =
-              assignOutgoingNode->GetVarName();
+              *varsModifiedInAssignOutgoingNode.begin();
 
           if (varModifiedInStartNode != varModifiedInAssignOutgoingNode) {
             nodesToVisit.push(outgoingNode);
           }
         } else if (outgoingNode->getNode()->GetStmtType() ==
                    StmtType::READ_STMT) {
-          std::shared_ptr<ReadNode> readOutgoingNode =
-              std::dynamic_pointer_cast<ReadNode>(outgoingNode->getNode());
+          std::unordered_set<std::string> varsModifiedInReadOutgoingNode =
+              outgoingNode->getModifiesVars();
           std::string varModifiedInReadOutgoingNode =
-              readOutgoingNode->GetVarName();
+              *varsModifiedInReadOutgoingNode.begin();
 
           if (varModifiedInStartNode != varModifiedInReadOutgoingNode) {
             nodesToVisit.push(outgoingNode);
           }
         } else if (outgoingNode->getNode()->GetStmtType() ==
                    StmtType::CALL_STMT) {
-          std::shared_ptr<CallNode> callOutgoingNode =
-              std::dynamic_pointer_cast<CallNode>(outgoingNode->getNode());
+          std::unordered_set<std::string> varsModifiedInCallOutgoingNode =
+              outgoingNode->getModifiesVars();
 
-          // for now, testing
-          nodesToVisit.push(outgoingNode);
+          if (varsModifiedInCallOutgoingNode.find(varModifiedInStartNode) ==
+              varsModifiedInCallOutgoingNode.end()) {
+            nodesToVisit.push(outgoingNode);
+          }
+
         } else {
           nodesToVisit.push(outgoingNode);
         }
