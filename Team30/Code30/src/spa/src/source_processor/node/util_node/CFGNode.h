@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
-#include <vector>
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "../../../query_processing_system/common/EntityType.h"
 #include "../stmt_node/StmtNode.h"
@@ -12,7 +12,7 @@
 
 class CFGNode {
  public:
-  CFGNode(std::shared_ptr<StmtNode> node,
+  CFGNode(std::shared_ptr<StmtNode> node, StmtType stmtType,
           std::unordered_set<std::string> uses_vars,
           std::unordered_set<std::string> modifies_vars);
 
@@ -23,9 +23,13 @@ class CFGNode {
   std::shared_ptr<StmtNode> getNode();
 
   StmtType getNodeType();
+
   std::unordered_set<std::string> getUsesVars();
+
   std::unordered_set<std::string> getModifiesVars();
-  
+
+  StmtType getStmtType();
+
   bool UsesVar(std::string var);
   bool ModifiesVar(std::string var);
 
@@ -49,4 +53,5 @@ class CFGNode {
 
   std::unordered_set<std::string> uses_vars;
   std::unordered_set<std::string> modifies_vars;
+  StmtType stmtType;
 };
