@@ -1,4 +1,6 @@
 #include <memory>
+#include <string>
+#include <unordered_set>
 
 #include "../../../../../spa/src/source_processor/node/stmt_node/AssignNode.h"
 #include "../../../../../spa/src/source_processor/node/stmt_node/CallNode.h"
@@ -91,8 +93,8 @@ TEST_CASE("Test HasAffectPath for Affect") {
         std::make_shared<CFGNode>(stmt8, std::unordered_set<std::string>{"x"},
                                   std::unordered_set<std::string>{"x"});
     std::shared_ptr<CFGNode> cfg9 =
-        std::make_shared<CFGNode>(stmt9, std::unordered_set<std::string>{"z"},
-                                  std::unordered_set<std::string>{});
+        std::make_shared<CFGNode>(stmt9, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{"z"});
     std::shared_ptr<CFGNode> cfg10 = std::make_shared<CFGNode>(
         stmt10, std::unordered_set<std::string>{"z", "x", "i"},
         std::unordered_set<std::string>{"z"});

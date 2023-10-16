@@ -1,5 +1,6 @@
 #include "CFGNode.h"
 
+#include <iostream>
 #include <queue>
 #include <string>
 #include <unordered_set>
@@ -91,24 +92,19 @@ bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
 }
 
 bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
-                            std::shared_ptr<CFGNode> endNode) {
+                             std::shared_ptr<CFGNode> endNode) {
   if (startNode->getNode()->GetStmtType() != StmtType::ASSIGN_STMT ||
       endNode->getNode()->GetStmtType() != StmtType::ASSIGN_STMT) {
     return false;
   }
 
-  std::shared_ptr<AssignNode> assignStartNode =
-      std::dynamic_pointer_cast<AssignNode>(startNode->getNode());
-  std::shared_ptr<AssignNode> assignEndNode =
-      std::dynamic_pointer_cast<AssignNode>(endNode->getNode());
+  std::unordered_set<std::string> varsModifiedInStartNode =
+      startNode->getModifiesVars();
+  std::string varModifiedInStartNode = *varsModifiedInStartNode.begin();
 
-  std::string varModifiedInStartNode = assignStartNode->GetVarName();
-  std::shared_ptr<std::unordered_set<std::string>> varUsedInEndNode =
-      assignEndNode->GetVariables();
+  std::unordered_set<std::string> varUsedInEndNode = endNode->getUsesVars();
 
-  // check if varModifiedInStartNode is in varUsedInEndNode
-  if (varUsedInEndNode->find(varModifiedInStartNode) ==
-      varUsedInEndNode->end()) {
+  if (varUsedInEndNode.find(varModifiedInStartNode) == varUsedInEndNode.end()) {
     return false;
   }
 
