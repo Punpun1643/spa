@@ -38,6 +38,11 @@ jobs:
         run: |
           ./unit_testing
 
+      - name: Generate codecov report
+        run: |
+          llvm-profdata merge -sparse default.profraw -o default.profdata
+          llvm-cov show ./unit_testing -instr-profile=default.profdata > coverage.txt
+
 #      - name: Export codecov report
 #        run: |
 #          llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
@@ -55,4 +60,4 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-          
+
