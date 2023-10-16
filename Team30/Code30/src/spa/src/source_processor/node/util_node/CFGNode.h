@@ -10,7 +10,9 @@
 
 class CFGNode {
  public:
-  CFGNode(std::shared_ptr<StmtNode> node);
+  CFGNode(std::shared_ptr<StmtNode> node,
+          std::unordered_set<std::string> uses_vars,
+          std::unordered_set<std::string> modifies_vars);
 
   std::vector<std::shared_ptr<CFGNode>> getOutgoingNodes();
   std::vector<std::shared_ptr<CFGNode>> getIncomingNodes();

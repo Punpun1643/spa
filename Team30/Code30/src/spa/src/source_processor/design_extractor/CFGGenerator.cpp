@@ -27,7 +27,9 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   // recursively call this and point to the result
   std::shared_ptr<StmtNode> currStmt = stmts.front();
   StmtType currType = currStmt->GetStmtType();
-  std::shared_ptr<CFGNode> newNode = std::make_shared<CFGNode>(currStmt);
+  std::unordered_set uses_vars = pkb.getProcedureModifies("");
+  std::unordered_set modifies_vars = pkb.getProcedureModifies("");
+  std::shared_ptr<CFGNode> newNode = std::make_shared<CFGNode>(currStmt, uses_vars, modifies_vars);
   stmts.erase(stmts.begin());
 
   std::vector<std::shared_ptr<CFGNode>> localLastNodePointsTo =
