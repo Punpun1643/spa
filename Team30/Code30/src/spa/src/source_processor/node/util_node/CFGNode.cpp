@@ -90,8 +90,8 @@ bool CFGNode::HasPath(std::shared_ptr<CFGNode> startNode,
 
 bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
                              std::shared_ptr<CFGNode> endNode) {
-  if (startNode->getNode()->GetStmtType() != StmtType::ASSIGN_STMT ||
-      endNode->getNode()->GetStmtType() != StmtType::ASSIGN_STMT) {
+  if (startNode->getStmtType() != StmtType::ASSIGN_STMT ||
+      endNode->getStmtType() != StmtType::ASSIGN_STMT) {
     return false;
   }
 
@@ -128,7 +128,7 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
       }
 
       if (visitedNodes.find(outgoingNode) == visitedNodes.end()) {
-        if (outgoingNode->getNode()->GetStmtType() == StmtType::ASSIGN_STMT) {
+        if (outgoingNode->getStmtType() == StmtType::ASSIGN_STMT) {
           std::unordered_set<std::string> varsModifiedInAssignOutgoingNode =
               outgoingNode->getModifiesVars();
           std::string varModifiedInAssignOutgoingNode =
@@ -137,7 +137,7 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
           if (varModifiedInStartNode != varModifiedInAssignOutgoingNode) {
             nodesToVisit.push(outgoingNode);
           }
-        } else if (outgoingNode->getNode()->GetStmtType() ==
+        } else if (outgoingNode->getStmtType() ==
                    StmtType::READ_STMT) {
           std::unordered_set<std::string> varsModifiedInReadOutgoingNode =
               outgoingNode->getModifiesVars();
@@ -147,7 +147,7 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> startNode,
           if (varModifiedInStartNode != varModifiedInReadOutgoingNode) {
             nodesToVisit.push(outgoingNode);
           }
-        } else if (outgoingNode->getNode()->GetStmtType() ==
+        } else if (outgoingNode->getStmtType() ==
                    StmtType::CALL_STMT) {
           std::unordered_set<std::string> varsModifiedInCallOutgoingNode =
               outgoingNode->getModifiesVars();

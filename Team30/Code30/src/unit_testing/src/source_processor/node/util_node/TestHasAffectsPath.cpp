@@ -98,7 +98,7 @@ TEST_CASE("Test HasAffectPath for Affect") {
         stmt2, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{},
         std::unordered_set<std::string>{"i"});
     std::shared_ptr<CFGNode> cfg3 = std::make_shared<CFGNode>(
-        stmt3, StmtType::CALL_STMT,
+        stmt3, StmtType::WHILE_STMT,
         std::unordered_set<std::string>{"i", "x", "y", "z", "v"},
         std::unordered_set<std::string>{"x", "z", "v", "i"});
     std::shared_ptr<CFGNode> cfg4 = std::make_shared<CFGNode>(
