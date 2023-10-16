@@ -15,7 +15,8 @@
 
 TEST_CASE("Test HasAffectPath for Affect") {
   SECTION(
-      "Test valid affect path with no call stmt extraction should return "
+      "Test valid affect path without anything affected by procedure call,  "
+      "extraction should return "
       "correct result") {
     /*
      * assign 1 -> assign 2
@@ -31,6 +32,28 @@ TEST_CASE("Test HasAffectPath for Affect") {
      * assign 9 -> assign 10
      * assign 10 -> assign 11
      * assign 11 -> assign 12
+     */
+
+    /*
+     * procedure Second {
+01        x = 0;
+02        i = 5;
+03        while (i!=0) {
+04            x = x + 2*y;
+05            call Third;
+06            i = i - 1; }
+07        if (x==1) then {
+08            x = x+1; }
+          else {
+09            z = 1; }
+10        z = z + x + i;
+11        y = z + 2;
+12        x = x * y + z; }
+
+    procedure Third {
+      z = 5;
+      v = z;
+      print v; }
      */
 
     auto stmt1 = std::make_shared<AssignNode>(
@@ -289,5 +312,115 @@ TEST_CASE("Test HasAffectPath for Affect") {
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg10));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg11));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg12, cfg12));
+  }
+
+  SECTION(
+      "Test valid affect path with some path affected by procedure call should "
+      "extract correctly") {
+    /*
+     * procedure p
+     * assign 1 -> assign 2
+     * assign 2 -> assign 3
+     * assign 3 -> call 4
+     * call 4 -> assign 5
+     *
+     * procedure q (called at call 4)
+     */
+
+    /*
+     * procedure p {
+1.    x = 1;
+2.    y = 2;
+3.    z = y;
+4.    call q;
+5.    z = x + y + z; }
+
+     procedure q {
+6.    x = 5;
+7.    t = 4;
+8.    if ( z > 0 ) then {
+9.        t = x + 1; }
+  else {
+10.       y = z + x; }
+11.  x = t + 1; }
+     */
+
+    auto stmt1 = std::make_shared<AssignNode>(
+        1, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{},
+        std::unordered_set<int>{1}, "x", nullptr);
+    auto stmt2 = std::make_shared<AssignNode>(
+        2, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{},
+        std::unordered_set<int>{2}, "y", nullptr);
+    auto stmt3 = std::make_shared<AssignNode>(
+        3, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{"y"},
+        std::unordered_set<int>{}, "z", nullptr);
+    auto stmt4 = std::make_shared<CallNode>(4, StmtType::CALL_STMT, "q");
+    auto stmt5 = std::make_shared<AssignNode>(
+        5, StmtType::ASSIGN_STMT,
+        std::unordered_set<std::string>{"x", "y", "z"},
+        std::unordered_set<int>{}, "z", nullptr);
+
+    std::shared_ptr<CFGNode> cfg1 =
+        std::make_shared<CFGNode>(stmt1, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{"x"});
+    std::shared_ptr<CFGNode> cfg2 =
+        std::make_shared<CFGNode>(stmt2, std::unordered_set<std::string>{},
+                                  std::unordered_set<std::string>{"y"});
+    std::shared_ptr<CFGNode> cfg3 =
+        std::make_shared<CFGNode>(stmt3, std::unordered_set<std::string>{"y"},
+                                  std::unordered_set<std::string>{"z"});
+    std::shared_ptr<CFGNode> cfg4 = std::make_shared<CFGNode>(
+        stmt4, std::unordered_set<std::string>{"x", "z", "t"},
+        std::unordered_set<std::string>{"x", "y", "t"});
+    std::shared_ptr<CFGNode> cfg5 = std::make_shared<CFGNode>(
+        stmt5, std::unordered_set<std::string>{"x", "y", "z"},
+        std::unordered_set<std::string>{"z"});
+
+    std::shared_ptr<CFGNode> cfg10 = std::make_shared<CFGNode>(
+        stmt5, std::unordered_set<std::string>{"x", "z"},
+        std::unordered_set<std::string>{"y"});
+
+    cfg1->addOutgoingNode(cfg2);
+    cfg2->addOutgoingNode(cfg3);
+    cfg3->addOutgoingNode(cfg4);
+    cfg4->addOutgoingNode(cfg5);
+
+    cfg2->addIncomingNode(cfg1);
+    cfg3->addIncomingNode(cfg2);
+    cfg4->addIncomingNode(cfg3);
+    cfg5->addIncomingNode(cfg4);
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg4));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg5));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg2));
+    REQUIRE(CFGNode::HasAffectsPath(cfg2, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg4));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg2, cfg5));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg4));
+    REQUIRE(CFGNode::HasAffectsPath(cfg3, cfg5));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg4));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg4, cfg5));
+
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg5, cfg1));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg5, cfg2));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg5, cfg3));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg5, cfg4));
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg5, cfg5));
+
+    // test cfg node from a different procedure
+    REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg3, cfg10));
   }
 }
