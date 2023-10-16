@@ -4,7 +4,7 @@
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-const std::unordered_map<EntityType, AttrType> AttrRef::DEFAULT_ATTR_TYPE = {
+std::unordered_map<EntityType, AttrType> const AttrRef::DEFAULT_ATTR_TYPE = {
     {EntityType::PROCEDURE, AttrType::PROC_NAME},
     {EntityType::VARIABLE, AttrType::VAR_NAME},
     {EntityType::CONSTANT, AttrType::VALUE},
@@ -14,29 +14,27 @@ const std::unordered_map<EntityType, AttrType> AttrRef::DEFAULT_ATTR_TYPE = {
     {EntityType::WHILE, AttrType::STMT_NUM},
     {EntityType::PRINT, AttrType::STMT_NUM},
     {EntityType::READ, AttrType::STMT_NUM},
-    {EntityType::CALL, AttrType::STMT_NUM}
-};
+    {EntityType::CALL, AttrType::STMT_NUM}};
 
-const std::unordered_map<EntityType, AttrType> AttrRef::ATTR_TYPE_ALIASES = {
+std::unordered_map<EntityType, AttrType> const AttrRef::ATTR_TYPE_ALIASES = {
     {EntityType::CALL, AttrType::PROC_NAME},
     {EntityType::READ, AttrType::VAR_NAME},
-    {EntityType::PRINT, AttrType::VAR_NAME}
-};
+    {EntityType::PRINT, AttrType::VAR_NAME}};
 
 void AttrRef::CheckTypeCombinationValidity() const {
   if (GetDefaultAttrType() != attr_type && !IsAttrTypeAnAlias()) {
-    throw InvalidSemanticsException("Invalid combination of EntityType and AttrType");
+    throw InvalidSemanticsException(
+        "Invalid combination of EntityType and AttrType");
   }
 }
 
-AttrRef::AttrRef(PqlDeclaration decl)
-:decl(std::move(decl)) {
+AttrRef::AttrRef(PqlDeclaration decl) : decl(std::move(decl)) {
   this->attr_type = GetDefaultAttrType();
   CheckTypeCombinationValidity();
 }
 
 AttrRef::AttrRef(PqlDeclaration decl, AttrType attr_type)
-: decl(std::move(decl)), attr_type(attr_type) {
+    : decl(std::move(decl)), attr_type(attr_type) {
   CheckTypeCombinationValidity();
 }
 
@@ -46,20 +44,17 @@ bool AttrRef::IsAttrTypeAnAlias() const {
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
 
-std::string AttrRef::GetRepresentationFromDefault(PKBQPSInterface& pkb, std::string const& default_value) const {
+std::string AttrRef::GetRepresentationFromDefault(
+    PKBQPSInterface& pkb, std::string const& default_value) const {
   if (IsAttrTypeAnAlias()) {
-    return pkb.convertEntityAttribute(default_value,
-                                      decl.getEntityType(),
-                                      GetDefaultAttrType(),
-                                      attr_type);
+    return pkb.ConvertEntityValueToAlias(
+        default_value, decl.getEntityType(), GetDefaultAttrType(), attr_type);
   } else {
     return default_value;
   }
 }
 
-PqlDeclaration AttrRef::GetDecl() const {
-  return decl;
-}
+PqlDeclaration AttrRef::GetDecl() const { return decl; }
 
 AttrType AttrRef::GetDefaultAttrType() const {
   return DEFAULT_ATTR_TYPE.at(decl.getEntityType());

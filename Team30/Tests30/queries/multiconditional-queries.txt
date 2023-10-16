@@ -16,10 +16,10 @@ Select a pattern a (_, _"b"_)
 4 - Multiclause query
 assign a;
 Select a such that Modifies (a, "z") pattern a (_, "c")
-SyntaxError
+none
 5000
-5 - Invalid, cannot have brackets for pattern matching
+5 - Brackets for pattern matching
 assign a;
 Select a pattern a (_, "(y)")
-SyntaxError
+8
 5000
