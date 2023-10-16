@@ -439,6 +439,7 @@ void SyntaxChecker::CheckCurrentTokenPatternSecondArg(
         this->CheckUpcomingTokensAreQuotedExpr(
             "Expected quoted expr for pattern second arg");
 
+        NextToken();
         this->CheckCurrentTokenSyntax(
             "_", "Expected '_' at the ending of pattern second arg");
       }
@@ -480,8 +481,10 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
     NextToken();
   }
   try {
-    AParser::ConvertInfixToPostfix(infix_tokens);
-  } catch (std::invalid_argument e) {
+    std::queue<std::shared_ptr<std::string>> post_fix =
+        AParser::ConvertInfixToPostfix(infix_tokens);
+    AParser::BuildExprTreeAndValidate(post_fix);
+  } catch (...) {
     throw InvalidSyntaxException(error_msg);
   }
 }
@@ -523,6 +526,4 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
   this->CheckIsExpr(error_msg);
 
   CheckCurrentTokenSyntax("\"", error_msg);
-
-  NextToken();
 }

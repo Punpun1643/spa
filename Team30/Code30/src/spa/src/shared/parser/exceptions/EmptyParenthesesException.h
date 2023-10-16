@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 class EmptyParenthesesException : public std::invalid_argument {

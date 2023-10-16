@@ -3,7 +3,9 @@
 #include <assert.h>
 
 #include <iostream>
+#include <regex>
 
+#include "../../shared/parser/node/TreeNode.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/ClauseExpression.h"
@@ -227,6 +229,7 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
 
     std::string arg1 = "";
     std::string arg2 = "";
+    std::vector<std::shared_ptr<Token>> infix_tokens;
 
     NextToken();  // (
 
@@ -236,10 +239,13 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
       NextToken();
     }
 
-    NextToken();
+    NextToken();  // start of arg2
     int opening_brace_count = 0;
     while ((opening_brace_count >= 1) || GetCurrTokenValue() != ")") {
       std::string current_token_value = GetCurrTokenValue();
+      if (current_token_value != "_" && current_token_value != "\"") {
+        infix_tokens.push_back(GetCurrToken());
+      }
       if (current_token_value == "(") {
         opening_brace_count++;
       } else if (current_token_value == ")") {
@@ -249,9 +255,26 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
       NextToken();
     }
 
+    MatchType match_type;
+    std::shared_ptr<TreeNode> rhs_expr_tree;
+    if (arg2 == "_") {
+      match_type = MatchType::WILD_MATCH;
+      rhs_expr_tree = nullptr;
+    } else {
+      if (std::regex_match(arg2, std::regex("_\".*\"_"))) {
+        match_type = MatchType::PARTIAL_MATCH;
+      } else {
+        match_type = MatchType::EXACT_MATCH;
+      }
+      std::queue<std::shared_ptr<std::string>> post_fix =
+          AParser::ConvertInfixToPostfix(infix_tokens);
+      rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
+    }
+
     current_pattern_expression =
         std::make_optional<std::shared_ptr<PatternExpression>>(
-            std::make_shared<PatternExpression>(syn_assign, arg1, arg2));
+            std::make_shared<PatternExpression>(syn_assign, arg1, arg2,
+                                                match_type, rhs_expr_tree));
 
     if (previous_pattern_expression.has_value()) {
       previous_pattern_expression.value()->SetNextExpression(

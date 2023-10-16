@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 class UnmatchedParenthesesException : public std::invalid_argument {
