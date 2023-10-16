@@ -38,6 +38,12 @@ class PKBSPStub : public PKBSPInterface {
   std::unordered_set<std::string> getProcedureModifies(
       std::string procName) override;
 
+    std::unordered_set<std::string> getStatementUses(
+      std::string procName) override;
+
+  std::unordered_set<std::string> getStatementModifies(
+      std::string procName) override;
+
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 };

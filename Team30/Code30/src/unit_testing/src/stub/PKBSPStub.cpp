@@ -138,5 +138,16 @@ std::unordered_set<std::string> PKBSPStub::getProcedureModifies(
   return result;
 }
 
+std::unordered_set<std::string> PKBSPStub::getStatementModifies(
+    std::string stmt) {
+  std::unordered_set<std::string> result;
+  return result;
+}
+
+std::unordered_set<std::string> PKBSPStub::getStatementUses(std::string stmt) {
+  std::unordered_set<std::string> result;
+  return result;
+}
+
 void PKBSPStub::insertCFGNode(std::string statement_num,
-                            std::shared_ptr<CFGNode> node){};
+                              std::shared_ptr<CFGNode> node){};
