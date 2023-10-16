@@ -12,8 +12,7 @@
 #include "../common/StmtRef.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
-    : AParser(tokens){
-    };
+    : AParser(tokens){};
 
 // Constants
 std::string const QpParser::AND = "and";

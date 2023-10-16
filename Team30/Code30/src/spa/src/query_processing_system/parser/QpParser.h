@@ -8,7 +8,6 @@ class QpParser : public AParser {
  public:
   QpParser(std::vector<std::shared_ptr<Token>> tokens);
 
-
   // Constants
   static std::string const AND;
   static std::string const BOOLEAN;
