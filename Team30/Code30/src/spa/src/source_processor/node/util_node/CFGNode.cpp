@@ -24,10 +24,10 @@ std::unordered_set<std::string> CFGNode::getModifiesVars() {
 }
 
 bool CFGNode::UsesVar(std::string var) {
-  return uses_vars.find(var) == uses_vars.end();
+  return uses_vars.find(var) != uses_vars.end();
 }
 bool CFGNode::ModifiesVar(std::string var) {
-  return modifies_vars.find(var) == modifies_vars.end();
+  return modifies_vars.find(var) != modifies_vars.end();
 }
 
 void CFGNode::addOutgoingNode(std::shared_ptr<CFGNode> newNode) {
