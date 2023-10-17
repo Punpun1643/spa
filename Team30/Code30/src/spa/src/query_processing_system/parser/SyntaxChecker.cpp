@@ -338,7 +338,7 @@ void SyntaxChecker::CheckSelectSingle() {
     // check attrRef
     NextToken();  // .
     NextToken();  // attrName
-    CheckUpcomingTokensAreValidAttrName(synonym);
+    CheckUpcomingTokensAreValidAttrName();
   }
 }
 
@@ -536,53 +536,13 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
   CheckCurrentTokenSyntax("\"", error_msg);
 }
 
-void SyntaxChecker::CheckUpcomingTokensAreValidAttrName(std::string synonym) {
-  EntityType allowed_entity_types_for_stmt[7] = {
-      EntityType::STMT,  EntityType::READ, EntityType::PRINT, EntityType::CALL,
-      EntityType::WHILE, EntityType::IF,   EntityType::ASSIGN};
-  EntityType allowed_entity_types_for_value[1] = {EntityType::CONSTANT};
-  EntityType allowed_entity_types_for_procname[2] = {EntityType::PROCEDURE,
-                                                     EntityType::CALL};
-  EntityType allowed_entity_types_for_varname[3] = {
-      EntityType::VARIABLE, EntityType::READ, EntityType::PRINT};
-  EntityType entity_type = existing_declarations.at(synonym).getEntityType();
-  if (GetCurrTokenValue() == "stmt") {
-    if (NextToken()->getTokenVal() != "#") {
-      throw InvalidSyntaxException(
-          "Expected # as in 'stmt#' attrRef, for select clause");
-    }
-    if (std::find(std::begin(allowed_entity_types_for_stmt),
-                  std::end(allowed_entity_types_for_stmt),
-                  entity_type) == std::end(allowed_entity_types_for_stmt)) {
-      throw InvalidSyntaxException(
-          synonym +
-          " not an allowed synonym for stmt# attrRef in select clause");
-    }
-  } else if (GetCurrTokenValue() == "procName") {
-    if (std::find(std::begin(allowed_entity_types_for_procname),
-                  std::end(allowed_entity_types_for_procname),
-                  entity_type) == std::end(allowed_entity_types_for_procname)) {
-      throw InvalidSyntaxException(
-          synonym +
-          " not an allowed synonym for procName attrRef in select clause");
-    }
-  } else if (GetCurrTokenValue() == "varName") {
-    if (std::find(std::begin(allowed_entity_types_for_varname),
-                  std::end(allowed_entity_types_for_varname),
-                  entity_type) == std::end(allowed_entity_types_for_varname)) {
-      throw InvalidSyntaxException(
-          synonym +
-          " not an allowed synonym for varName attrRef in select clause");
-    }
-  } else if (GetCurrTokenValue() == "value") {
-    if (std::find(std::begin(allowed_entity_types_for_value),
-                  std::end(allowed_entity_types_for_value),
-                  entity_type) == std::end(allowed_entity_types_for_value)) {
-      throw InvalidSyntaxException(
-          synonym +
-          " not an allowed synonym for the value attrRef in select clause");
-    }
-  } else {
-    throw InvalidSyntaxException("Did not encounter expected attrRef");
+void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
+  std::string attr_name = GetCurrTokenValue();
+  if (attr_name == "stmt") {
+    attr_name += NextToken()->getTokenVal();
+  }
+
+  if (attr_name != "stmt#" && attr_name != "procName" && attr_name != "varName" && attr_name != "value") {
+    throw InvalidSyntaxException("Invalid attr name");
   }
 }

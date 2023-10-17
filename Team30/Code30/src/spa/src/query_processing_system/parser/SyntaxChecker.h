@@ -50,5 +50,5 @@ class SyntaxChecker : public QpParser {
   void CheckUpcomingTokensAreEntRef(std::string syntax_error_msg,
                                     std::string not_existing_error_msg);
   void CheckUpcomingTokensAreQuotedExpr(std::string error_msg);
-  void CheckUpcomingTokensAreValidAttrName(std::string synonym);
+  void CheckUpcomingTokensAreValidAttrName();
 };

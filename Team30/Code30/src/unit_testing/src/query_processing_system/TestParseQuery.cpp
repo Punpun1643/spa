@@ -513,18 +513,6 @@ TEST_CASE("Select clauses with attr ref") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Negative: stmt s1; Select s1.value such that Follows(s2, s1)") {
-    AddDeclaration(tokens, "stmt", {"s1"});
-    AddWordVector(tokens, {"Select", "s1"});
-    AddSpecialCharVector(tokens, {"."});
-    AddWordVector(tokens, {"value"});
-    AddWordVector(tokens, {"such", "that", "Follows"});
-    AddIntWord(tokens, "2", "s1");
-    AddEOF(tokens);
-
-    REQUIRE_THROWS(controller.TokensToClauses(tokens));
-  }
-
 }
 
 TEST_CASE("Next queries") {
