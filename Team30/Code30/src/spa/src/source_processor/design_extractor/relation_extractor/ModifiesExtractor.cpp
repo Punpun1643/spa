@@ -10,20 +10,20 @@ ModifiesExtractor::ModifiesExtractor(PKBSPInterface& pkb,
       callsManager(callsManager),
       UsesModifiesTypeExtractor(pkb, callsManager) {}
 
-void ModifiesExtractor::extractFromProgram(std::shared_ptr<ProgramNode> node) {
+void ModifiesExtractor::ExtractFromProgram(std::shared_ptr<ProgramNode> node) {
   // TODO
 }
 
-void ModifiesExtractor::extractFromRead(std::shared_ptr<ReadNode> node) {
+void ModifiesExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
   pkb.insertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());
-  insertVarWithActors(node->GetVarName());
+  InsertVarWithActors(node->GetVarName());
 }
 
-void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+void ModifiesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.insertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());
-  insertVarWithActors(node->GetVarName());
+  InsertVarWithActors(node->GetVarName());
 }
 
 //////////////////////////////
@@ -32,7 +32,7 @@ void ModifiesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
 //
 //////////////////////////////
 
-void ModifiesExtractor::insertVarWithActors(std::string var) {
+void ModifiesExtractor::InsertVarWithActors(std::string var) {
   for (std::string modifiesActor : actors) {
     // insertIntoPkb(modifiesActor, var);
     bool isStmtIndex =
