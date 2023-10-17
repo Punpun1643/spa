@@ -20,54 +20,54 @@ TEST_CASE("RelationalTable Tests") {
 
     // one decl constructor
     auto table = RelationalTable(a, NUM_VEC);
-    REQUIRE(table.getNumCols() == 1);
-    REQUIRE_FALSE(table.hasNoResults());
-    auto values = table.getTableCols({a});
-    REQUIRE(ArrayUtility::flattenVector(values) == NUM_VEC);
-    REQUIRE(table.getTableColNames() == std::vector<PqlDeclaration>({a}));
+    REQUIRE(table.GetNumCols() == 1);
+    REQUIRE_FALSE(table.HasNoResults());
+    auto values = table.GetTableCols({a});
+    REQUIRE(ArrayUtility::FlattenVector(values) == NUM_VEC);
+    REQUIRE(table.GetTableColNames() == std::vector<PqlDeclaration>({a}));
 
     // two decl constructor
     table = RelationalTable(a, s, NUM_VEC, WORD_VEC);
-    REQUIRE(table.getNumCols() == 2);
-    REQUIRE_FALSE(table.hasNoResults());
-    auto a_values = table.getTableCols({a});
-    auto s_values = table.getTableCols({s});
-    REQUIRE(ArrayUtility::flattenVector(a_values) == NUM_VEC);
-    REQUIRE_THAT(ArrayUtility::flattenVector(s_values), Catch::UnorderedEquals(WORD_VEC));
-    REQUIRE_THAT(table.getTableColNames(),
+    REQUIRE(table.GetNumCols() == 2);
+    REQUIRE_FALSE(table.HasNoResults());
+    auto a_values = table.GetTableCols({a});
+    auto s_values = table.GetTableCols({s});
+    REQUIRE(ArrayUtility::FlattenVector(a_values) == NUM_VEC);
+    REQUIRE_THAT(ArrayUtility::FlattenVector(s_values), Catch::UnorderedEquals(WORD_VEC));
+    REQUIRE_THAT(table.GetTableColNames(),
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>({a, s})));
 
     // empty lists
     table = RelationalTable(a, v, EMPTY_VEC, EMPTY_VEC);
-    REQUIRE(table.getNumCols() == 2);
-    REQUIRE(table.hasNoResults());
-    REQUIRE(table.getTableCols({a}).empty());
-    REQUIRE(table.getTableCols({v}).empty());
+    REQUIRE(table.GetNumCols() == 2);
+    REQUIRE(table.HasNoResults());
+    REQUIRE(table.GetTableCols({a}).empty());
+    REQUIRE(table.GetTableCols({v}).empty());
   }
 
-  SECTION ("Test getTableCols") {
+  SECTION ("Test GetTableCols") {
     std::vector<std::string> VEC_1 = {"1","2","3"};
     std::vector<std::string> VEC_2 = {"4","5","6"};
     std::vector<std::string> VEC_3 = {"7","8","9"};
     auto table = RelationalTable(a, b, VEC_1, VEC_2);
     auto table_2 = RelationalTable(b, c, VEC_2, VEC_3);
-    table.join(table_2);
+    table.Join(table_2);
 
     // Get multiple columns
     std::vector<std::vector<std::string>> expected = {{"4", "1"}, {"5","2"}, {"6","3"}};
-    REQUIRE(table.getTableCols({b, a}) == expected);
+    REQUIRE(table.GetTableCols({b, a}) == expected);
 
     // Get columns with repeated values
     expected = {{"4", "4", "1", "1", "1"}, {"5","5","2","2","2"}, {"6","6","3","3","3"}};
-    REQUIRE(table.getTableCols({b, b, a, a, a}) == expected);
+    REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
 
     // Make sure de-duplication is done
     auto table_3 = RelationalTable(v, VEC_3);
-    table.join(table_3, true);
-    REQUIRE(table.getTableCols({b, b, a, a, a}) == expected);
+    table.Join(table_3, true);
+    REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
   }
 
-  SECTION("Test join functionality") {
+  SECTION("Test Join functionality") {
     // TABLE 1
     std::vector<std::string> C_VEC_1 = {"1", "1", "2", "2", "2", "6", "1"};
     std::vector<std::string> S_VEC_1 = {"10", "12", "14", "14",
@@ -92,41 +92,41 @@ TEST_CASE("RelationalTable Tests") {
 
     auto table_1 = RelationalTable(c, v, C_VEC_1, V_VEC_1);
     auto table_1b = RelationalTable(v, s, V_VEC_1, S_VEC_1);
-    table_1.join(table_1b);
+    table_1.Join(table_1b);
 
-    REQUIRE(table_1.getNumCols() == 3);
-    REQUIRE_FALSE(table_1.hasNoResults());
-    auto v_values = table_1.getTableCols({v});
-    REQUIRE_THAT(ArrayUtility::flattenVector(v_values), Catch::UnorderedEquals(V_VEC_1));
+    REQUIRE(table_1.GetNumCols() == 3);
+    REQUIRE_FALSE(table_1.HasNoResults());
+    auto v_values = table_1.GetTableCols({v});
+    REQUIRE_THAT(ArrayUtility::FlattenVector(v_values), Catch::UnorderedEquals(V_VEC_1));
 
     auto table_2 = RelationalTable(a, b, A_VEC_2, B_VEC_2);
     auto table_2b = RelationalTable(a, c, A_VEC_2, C_VEC_2);
     auto table_2c = RelationalTable(b, s, B_VEC_2, S_VEC_2);
 
-    table_2.join(table_2b);
-    table_2.join(table_2c);
+    table_2.Join(table_2b);
+    table_2.Join(table_2c);
 
-    REQUIRE(table_2.getNumCols() == 4);
-    REQUIRE_FALSE(table_2.hasNoResults());
-    auto b_values = table_2.getTableCols({b});
-    REQUIRE_THAT(ArrayUtility::flattenVector(b_values), Catch::UnorderedEquals(B_VEC_2));
+    REQUIRE(table_2.GetNumCols() == 4);
+    REQUIRE_FALSE(table_2.HasNoResults());
+    auto b_values = table_2.GetTableCols({b});
+    REQUIRE_THAT(ArrayUtility::FlattenVector(b_values), Catch::UnorderedEquals(B_VEC_2));
 
-    table_1.join(table_2);
+    table_1.Join(table_2);
 
-    REQUIRE(table_1.getNumCols() == 5);
-    REQUIRE_FALSE(table_1.hasNoResults());
-    auto values = table_1.getTableCols({c, s, a, b, v});
+    REQUIRE(table_1.GetNumCols() == 5);
+    REQUIRE_FALSE(table_1.HasNoResults());
+    auto values = table_1.GetTableCols({c, s, a, b, v});
     REQUIRE_THAT(values, Catch::UnorderedEquals(CSABV_OUTPUT));
 
     // test join when result is empty table
     table_1 = RelationalTable(c, v, C_VEC_1, V_VEC_1);
     table_1b = RelationalTable(v, s, C_VEC_1, S_VEC_1);
 
-    table_1.join(table_1b);
-    REQUIRE(table_1.getNumCols() == 3);
-    REQUIRE(table_1.hasNoResults());
-    REQUIRE(table_1.getTableCols({c}).empty());
-    REQUIRE(table_1.getTableCols({v}).empty());
-    REQUIRE(table_1.getTableCols({s}).empty());
+    table_1.Join(table_1b);
+    REQUIRE(table_1.GetNumCols() == 3);
+    REQUIRE(table_1.HasNoResults());
+    REQUIRE(table_1.GetTableCols({c}).empty());
+    REQUIRE(table_1.GetTableCols({v}).empty());
+    REQUIRE(table_1.GetTableCols({s}).empty());
   }
 }

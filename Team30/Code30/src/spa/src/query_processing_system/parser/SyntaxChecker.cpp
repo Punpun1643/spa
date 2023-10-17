@@ -405,16 +405,16 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
              existing_declarations.end()) {
     throw InvalidSemanticsException(
         "Variable used for pattern has not been declared");
-  } else if (existing_declarations.at(token_value).getEntityType() !=
+  } else if (existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::ASSIGN &&
-             existing_declarations.at(token_value).getEntityType() !=
+             existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::WHILE &&
-             existing_declarations.at(token_value).getEntityType() !=
+             existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::IF) {
     throw InvalidSemanticsException(
         "Variable used for pattern is not an assign, while or if synonym");
   }
-  return existing_declarations.at(token_value).getEntityType();
+  return existing_declarations.at(token_value).GetEntityType();
 }
 
 void SyntaxChecker::CheckCurrentTokenPatternFirstArg(EntityType variable_type) {

@@ -18,7 +18,7 @@ TEST_CASE("Test AttrRef") {
     auto ref = AttrRef(read);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
     REQUIRE(ref.GetDecl() == read);
-    REQUIRE(ref.GetEntityType() == read.getEntityType());
+    REQUIRE(ref.GetEntityType() == read.GetEntityType());
     REQUIRE(ref.GetAttrType() == AttrType::STMT_NUM);
     REQUIRE(ref.GetOutputType() == AttrRefOutputType::INTEGER);
     REQUIRE_FALSE(ref.GetDecl() == print);
@@ -30,7 +30,7 @@ TEST_CASE("Test AttrRef") {
 
     ref = AttrRef(con);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
-    REQUIRE(ref.GetEntityType() == con.getEntityType());
+    REQUIRE(ref.GetEntityType() == con.GetEntityType());
     REQUIRE(ref.GetAttrType() == AttrType::VALUE);
     REQUIRE(ref.GetOutputType() == AttrRefOutputType::INTEGER);
     REQUIRE(ref.GetDecl() == con);
@@ -38,7 +38,7 @@ TEST_CASE("Test AttrRef") {
 
     ref = AttrRef(proc);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
-    REQUIRE(ref.GetEntityType() == proc.getEntityType());
+    REQUIRE(ref.GetEntityType() == proc.GetEntityType());
     REQUIRE(ref.GetAttrType() == AttrType::PROC_NAME);
     REQUIRE(ref.GetOutputType() == AttrRefOutputType::NAME);
     REQUIRE(ref.GetDecl() == proc);
@@ -47,7 +47,7 @@ TEST_CASE("Test AttrRef") {
     // Two argument initialization
     ref = AttrRef(print, AttrType::VAR_NAME);
     REQUIRE(ref.IsAttrTypeAnAlias());
-    REQUIRE(ref.GetEntityType() == print.getEntityType());
+    REQUIRE(ref.GetEntityType() == print.GetEntityType());
     REQUIRE(ref.GetAttrType() == AttrType::VAR_NAME);
     REQUIRE(ref.GetOutputType() == AttrRefOutputType::NAME);
     REQUIRE_FALSE(ref.GetDecl() == a);
@@ -70,7 +70,7 @@ TEST_CASE("Test AttrRef") {
     pkb.converted_entity = "random_name";
     auto output = ref.GetAliasFromDefault(pkb, "20");
     REQUIRE(pkb.last_value_passed == "20");
-    REQUIRE(pkb.last_entity_type_passed == read.getEntityType());
+    REQUIRE(pkb.last_entity_type_passed == read.GetEntityType());
     REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
     REQUIRE(pkb.last_attr_type_2_passed == AttrType::VAR_NAME);
     REQUIRE(output == "random_name");
@@ -79,7 +79,7 @@ TEST_CASE("Test AttrRef") {
     pkb.converted_entity = "blah";
     output = ref.GetAliasFromDefault(pkb, "12");
     REQUIRE(pkb.last_value_passed == "12");
-    REQUIRE(pkb.last_entity_type_passed == call.getEntityType());
+    REQUIRE(pkb.last_entity_type_passed == call.GetEntityType());
     REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
     REQUIRE(pkb.last_attr_type_2_passed == AttrType::PROC_NAME);
     REQUIRE(output == "blah");

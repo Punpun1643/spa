@@ -14,24 +14,24 @@ class IntermediateResultsTable {
   std::vector<RelationalTable> tables;
   std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> table_mapping;
 
-  void addBooleanClauseResult(bool result);
-  void addSingleDeclaration(PqlDeclaration const& d,
+  void AddBooleanClauseResult(bool result);
+  void AddSingleDeclaration(PqlDeclaration const& d,
                             std::vector<std::string> const& values);
-  void addPairedDeclarations(PqlDeclaration const& d1, PqlDeclaration const& d2,
+  void AddPairedDeclarations(PqlDeclaration const& d1, PqlDeclaration const& d2,
                              std::vector<std::string> const& new_d1_values,
                              std::vector<std::string> const& new_d2_values);
-  void mergeExistingTables(int table_to_keep_id, int table_to_merge_id,
+  void MergeExistingTables(int table_to_keep_id, int table_to_merge_id,
                            bool allow_cross_product = false);
 
  public:
   IntermediateResultsTable();
 
-  void addClauseResult(ClauseResult const& clause_result);
+  void AddClauseResult(ClauseResult const& clause_result);
 
-  bool hasNoResults() const;
+  bool HasNoResults() const;
 
-  bool hasDeclaration(PqlDeclaration const& declaration) const;
+  bool HasDeclaration(PqlDeclaration const& declaration) const;
 
-  std::vector<std::vector<std::string>> getValuesGivenDeclarations(
+  std::vector<std::vector<std::string>> GetValuesGivenDeclarations(
       std::vector<PqlDeclaration> const& decls);
 };

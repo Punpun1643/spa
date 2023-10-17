@@ -16,8 +16,7 @@ class PqlDeclaration {
 
  public:
   PqlDeclaration(std::string name, EntityType entity_type);
-  std::string getName() const;
-  EntityType getEntityType() const;
+  EntityType GetEntityType() const;
   bool operator==(PqlDeclaration const& other) const;
 };
 

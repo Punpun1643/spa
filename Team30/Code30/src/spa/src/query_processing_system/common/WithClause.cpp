@@ -67,7 +67,7 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateRefRef(PKBQPSInterface& pkb) {
   return std::make_unique<ClauseResult>(attr_ref_1.GetDecl(), attr_ref_2.GetDecl(), matching);
 }
 
-std::unique_ptr<ClauseResult> WithClause::evaluate(PKBQPSInterface& pkb) {
+std::unique_ptr<ClauseResult> WithClause::Evaluate(PKBQPSInterface& pkb) {
   if (std::holds_alternative<int>(ref1) && std::holds_alternative<int>(ref2)) {
     return EvaluateIntInt(pkb);
   } else if (std::holds_alternative<std::string>(ref1) && std::holds_alternative<std::string>(ref2)) {

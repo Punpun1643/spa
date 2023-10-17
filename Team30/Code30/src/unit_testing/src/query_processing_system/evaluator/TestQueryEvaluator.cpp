@@ -55,7 +55,7 @@ TEST_CASE("Test Query Evaluator") {
 
   SECTION("Evaluate query with one decl that is not in the clauses") {
     result = qe.EvaluateQuery({a_attr_ref}, {});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
+    REQUIRE(ArrayUtility::FlattenVector(result) == pkb.getAllOfTypeValues);
 
     // negated by clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
@@ -65,14 +65,14 @@ TEST_CASE("Test Query Evaluator") {
     // clause has values
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
     result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
+    REQUIRE(ArrayUtility::FlattenVector(result) == pkb.getAllOfTypeValues);
   }
 
   SECTION("Evaluate query with one decl, decl also in clauses") {
     // output values should follow existing clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
     result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.synonymValueValues);
+    REQUIRE(ArrayUtility::FlattenVector(result) == pkb.synonymValueValues);
     // Addition of empty clause -> no results
     result = qe.EvaluateQuery({a_attr_ref}, {follows_clause, negation_follows_clause});
     REQUIRE(result.empty());
