@@ -13,11 +13,15 @@
 #include "../query_processing_system/common/EntityType.h"
 #include "PatternType.h"
 #include "RelationType.h"
+#include "query_processing_system/common/AttrType.h"
 #include "query_processing_system/common/MatchType.h"
 
 class PKBSPInterface {
  public:
-  virtual void insertEntity(EntityType type, std::string entity) = 0;
+  virtual void InsertEntity(EntityType type, std::string value) = 0;
+  virtual void InsertEntity(EntityType type, AttrType attr_type,
+                            std::string statement_number,
+                            std::string attribute) = 0;
   virtual void insertRelation(RelationType rel_type, std::string s1_line_num,
                               std::string s2_line_num) = 0;
   virtual void insertPattern(PatternType type, std::string statement_number,

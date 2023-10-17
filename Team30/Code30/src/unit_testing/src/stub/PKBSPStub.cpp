@@ -15,7 +15,7 @@ PKBSPStub::PKBSPStub()
       insertPatternCallCount(0),
       insertCFGCallCount(0){};
 
-void PKBSPStub::insertEntity(EntityType type, std::string entity) {
+void PKBSPStub::InsertEntity(EntityType type, std::string entity) {
   if (type == EntityType::CONSTANT) {
     insertConstantCallCount++;
   } else if (type == EntityType::VARIABLE) {
@@ -26,6 +26,12 @@ void PKBSPStub::insertEntity(EntityType type, std::string entity) {
   entitiesSet.insert(entity);
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
+
+void PKBSPStub::InsertEntity(EntityType type, AttrType attr_type,
+                             std::string statement_number,
+                             std::string attribute) {
+  InsertEntity(type, statement_number);
+};
 
 void PKBSPStub::insertRelationCommon(RelationType type, std::string a,
                                      std::string b) {

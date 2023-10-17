@@ -1,5 +1,6 @@
 #include "AttrRef.h"
 
+#include <cassert>
 #include <utility>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
@@ -21,11 +22,12 @@ std::unordered_map<EntityType, AttrType> const AttrRef::ATTR_TYPE_ALIASES = {
     {EntityType::READ, AttrType::VAR_NAME},
     {EntityType::PRINT, AttrType::VAR_NAME}};
 
-const std::unordered_map<AttrType, AttrRefOutputType> AttrRef::OUTPUT_TYPE_MAPPING = {
-    {AttrType:: PROC_NAME, AttrRefOutputType::NAME},
-    {AttrType:: VAR_NAME, AttrRefOutputType::NAME},
-    {AttrType:: VALUE, AttrRefOutputType::INTEGER},
-    {AttrType:: STMT_NUM, AttrRefOutputType::INTEGER},
+const std::unordered_map<AttrType, AttrRefOutputType>
+    AttrRef::OUTPUT_TYPE_MAPPING = {
+        {AttrType::PROC_NAME, AttrRefOutputType::NAME},
+        {AttrType::VAR_NAME, AttrRefOutputType::NAME},
+        {AttrType::VALUE, AttrRefOutputType::INTEGER},
+        {AttrType::STMT_NUM, AttrRefOutputType::INTEGER},
 };
 
 void AttrRef::CheckTypeCombinationValidity() const {
@@ -54,12 +56,12 @@ bool AttrRef::IsAttrTypeAnAlias() const {
 std::string AttrRef::GetAliasFromDefault(
     PKBQPSInterface& pkb, std::string const& default_value) const {
   /**
-   * If called on an AttrRef that is an alias, converts the default value into the alias type of the AttrRef. Otherwise,
-   * does nothing to the value.
+   * If called on an AttrRef that is an alias, converts the default value into
+   * the alias type of the AttrRef. Otherwise, does nothing to the value.
    */
   if (IsAttrTypeAnAlias()) {
-    return pkb.ConvertEntityValueToAlias(
-        default_value, decl.getEntityType(), GetDefaultAttrType(), attr_type);
+    return pkb.ConvertEntityValueToAlias(default_value, decl.getEntityType(),
+                                         GetDefaultAttrType(), attr_type);
   } else {
     return default_value;
   }
@@ -76,10 +78,6 @@ AttrRefOutputType AttrRef::GetOutputType() const {
   return OUTPUT_TYPE_MAPPING.at(attr_type);
 }
 
-EntityType AttrRef::GetEntityType() const {
-  return decl.getEntityType();
-}
+EntityType AttrRef::GetEntityType() const { return decl.getEntityType(); }
 
-AttrType AttrRef::GetAttrType() const {
-  return attr_type;
-}
+AttrType AttrRef::GetAttrType() const { return attr_type; }
