@@ -7,8 +7,8 @@
 SelectAllClause::SelectAllClause(PqlDeclaration declaration)
     : declaration(std::move(declaration)) {}
 
-std::unique_ptr<ClauseResult> SelectAllClause::evaluate(PKBQPSInterface& pkb) {
-  EntityType entity_type = declaration.getEntityType();
+std::unique_ptr<ClauseResult> SelectAllClause::Evaluate(PKBQPSInterface& pkb) {
+  EntityType entity_type = declaration.GetEntityType();
 
   auto values = pkb.getEntitiesWithType(entity_type);
 

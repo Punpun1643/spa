@@ -20,13 +20,20 @@ std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
 
 std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                                           std::string value) {
-  return {};
+  last_entity_type_passed = type;
+  last_attr_type_passed = attr_type;
+  last_value_passed = value;
+  return attr_value_matches;
 };
 
 std::vector<std::pair<std::string, std::string>> PkbQpsInterfaceStub::GetEntitiesWhereAttributesMatch(
     EntityType type_1, AttrType attr_type_1, EntityType type_2,
     AttrType attr_type_2) {
-  return {};
+  last_entity_type_passed = type_1;
+  last_attr_type_passed = attr_type_1;
+  last_entity_type_2_passed = type_2;
+  last_attr_type_2_passed = attr_type_2;
+  return attr_pair_matches;
 };
 
 bool PkbQpsInterfaceStub::isRelationTrueValueValue(std::string value_1,

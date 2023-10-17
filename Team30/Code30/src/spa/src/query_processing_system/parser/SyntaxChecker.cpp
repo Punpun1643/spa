@@ -194,6 +194,31 @@ void SyntaxChecker::CheckModifies() {
   NextToken();
 }
 
+void SyntaxChecker::CheckNext() {
+  assert(GetCurrTokenValue() == NEXT || GetCurrTokenValue() == NEXT_STAR);
+
+  NextToken();
+  this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Next/* clause");
+
+  NextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for first argument of Next/* clause",
+      "Synonym in first arg of Next/* clause has not been declared");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(",", "Expected \',\' for Next/* clause");
+
+  NextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for second argument of Next/* clause",
+      "Synonym in second arg of Next/* clause has not been declared");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected \')\' for Next/* clause");
+
+  NextToken();
+}
+
 void SyntaxChecker::CheckParent() {
   assert(GetCurrTokenValue() == PARENT || GetCurrTokenValue() == PARENT_STAR);
 
@@ -318,16 +343,19 @@ void SyntaxChecker::CheckSuchThat(bool has_and) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
   std::string rel_ref = GetCurrTokenValue();
-  if (rel_ref == QpParser::FOLLOWS || rel_ref == QpParser::FOLLOWS_STAR) {
+  if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
+    this->CheckCalls();
+  } else if (rel_ref == QpParser::FOLLOWS ||
+             rel_ref == QpParser::FOLLOWS_STAR) {
     this->CheckFollows();
+  } else if (rel_ref == QpParser::MODIFIES) {
+    this->CheckModifies();
+  } else if (rel_ref == QpParser::NEXT || rel_ref == QpParser::NEXT_STAR) {
+    this->CheckNext();
   } else if (rel_ref == QpParser::PARENT || rel_ref == QpParser::PARENT_STAR) {
     this->CheckParent();
   } else if (rel_ref == QpParser::USES) {
     this->CheckUses();
-  } else if (rel_ref == QpParser::MODIFIES) {
-    this->CheckModifies();
-  } else if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
-    this->CheckCalls();
   }
 
   if (GetCurrTokenValue() == QpParser::AND) {
@@ -377,16 +405,16 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
              existing_declarations.end()) {
     throw InvalidSemanticsException(
         "Variable used for pattern has not been declared");
-  } else if (existing_declarations.at(token_value).getEntityType() !=
+  } else if (existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::ASSIGN &&
-             existing_declarations.at(token_value).getEntityType() !=
+             existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::WHILE &&
-             existing_declarations.at(token_value).getEntityType() !=
+             existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::IF) {
     throw InvalidSemanticsException(
         "Variable used for pattern is not an assign, while or if synonym");
   }
-  return existing_declarations.at(token_value).getEntityType();
+  return existing_declarations.at(token_value).GetEntityType();
 }
 
 void SyntaxChecker::CheckCurrentTokenPatternFirstArg(EntityType variable_type) {

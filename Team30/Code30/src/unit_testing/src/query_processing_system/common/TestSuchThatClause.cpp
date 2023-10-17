@@ -8,32 +8,10 @@
 #include "query_processing_system/common/ModifiesSClause.h"
 #include "query_processing_system/common/NextClause.h"
 #include "query_processing_system/common/ParentClause.h"
-#include "query_processing_system/common/PatternClause.h"
-#include "query_processing_system/common/SelectAllClause.h"
 #include "query_processing_system/common/UsesPClause.h"
 #include "query_processing_system/common/UsesSClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-TEST_CASE("Test SelectAll Clause") {
-  PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
-
-  PqlDeclaration a = PqlDeclaration("assign", EntityType::ASSIGN);
-  PqlDeclaration c = PqlDeclaration("const", EntityType::CONSTANT);
-
-  SelectAllClause select_all = SelectAllClause(a);
-  auto result = select_all.evaluate(pkb);
-  REQUIRE(pkb.last_entity_type_passed == a.getEntityType());
-  REQUIRE(result->getNumDeclarations() == 1);
-  REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{a});
-  REQUIRE(*(result->getValues(a)) == pkb.getAllOfTypeValues);
-
-  // Try a different example to be sure
-  auto select_all_2 = SelectAllClause(c);
-  result = select_all_2.evaluate(pkb);
-  REQUIRE(pkb.last_entity_type_passed == c.getEntityType());
-  REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{c});
-  REQUIRE(*(result->getValues(c)) == pkb.getAllOfTypeValues);
-}
 
 TEST_CASE("Test SuchThat Clauses") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
@@ -56,19 +34,19 @@ TEST_CASE("Test SuchThat Clauses") {
     FollowsClause follows_star = FollowsClause(
         std::make_unique<StmtRef>(4), std::make_unique<StmtRef>(), true);
     REQUIRE(pkb.wildWildCalls == 0);
-    result = follows.evaluate(pkb);
+    result = follows.Evaluate(pkb);
     REQUIRE(pkb.wildWildCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::FOLLOWS);
-    REQUIRE(result->isBooleanResult());
-    REQUIRE(result->getBooleanClauseValue() == pkb.wildWildBool);
+    REQUIRE(result->IsBooleanResult());
+    REQUIRE(result->GetBooleanClauseValue() == pkb.wildWildBool);
 
     REQUIRE(pkb.valueWildCalls == 0);
-    result = follows_star.evaluate(pkb);
+    result = follows_star.Evaluate(pkb);
     REQUIRE(pkb.valueWildCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::FOLLOWS_STAR);
     REQUIRE(pkb.last_value_passed == "4");
-    REQUIRE(result->isBooleanResult());
-    REQUIRE(result->getBooleanClauseValue() == pkb.valueWildBool);
+    REQUIRE(result->IsBooleanResult());
+    REQUIRE(result->GetBooleanClauseValue() == pkb.valueWildBool);
 
     REQUIRE_NOTHROW(FollowsClause(std::make_unique<StmtRef>(s),
                                   std::make_unique<StmtRef>(print), false));
@@ -81,21 +59,21 @@ TEST_CASE("Test SuchThat Clauses") {
     ParentClause parent_star = ParentClause(std::make_unique<StmtRef>(2),
                                             std::make_unique<StmtRef>(3), true);
     REQUIRE(pkb.wildValueCalls == 0);
-    result = parent.evaluate(pkb);
+    result = parent.Evaluate(pkb);
     REQUIRE(pkb.wildValueCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::PARENT);
     REQUIRE(pkb.last_value_passed == "1");
-    REQUIRE(result->isBooleanResult());
-    REQUIRE(result->getBooleanClauseValue() == pkb.wildValueBool);
+    REQUIRE(result->IsBooleanResult());
+    REQUIRE(result->GetBooleanClauseValue() == pkb.wildValueBool);
 
     REQUIRE(pkb.valueValueCalls == 0);
-    result = parent_star.evaluate(pkb);
+    result = parent_star.Evaluate(pkb);
     REQUIRE(pkb.valueValueCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::PARENT_STAR);
     REQUIRE(pkb.last_value_passed == "2");
     REQUIRE(pkb.last_value_2_passed == "3");
-    REQUIRE(result->isBooleanResult());
-    REQUIRE(result->getBooleanClauseValue() == pkb.valueValueBool);
+    REQUIRE(result->IsBooleanResult());
+    REQUIRE(result->GetBooleanClauseValue() == pkb.valueValueBool);
 
     REQUIRE_NOTHROW(ParentClause(std::make_unique<StmtRef>(re),
                                  std::make_unique<StmtRef>(print), false));
@@ -108,30 +86,30 @@ TEST_CASE("Test SuchThat Clauses") {
     CallsClause calls_star = CallsClause(std::make_unique<EntRef>(),
                                          std::make_unique<EntRef>(proc), true);
     REQUIRE(pkb.synonymSynonymCalls == 0);
-    result = calls.evaluate(pkb);
+    result = calls.Evaluate(pkb);
     REQUIRE(pkb.synonymSynonymCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::CALLS);
     REQUIRE(pkb.last_entity_type_passed == EntityType::PROCEDURE);
     REQUIRE(pkb.last_entity_type_2_passed == EntityType::PROCEDURE);
-    REQUIRE(result->getNumDeclarations() == 2);
+    REQUIRE(result->GetNumDeclarations() == 2);
     REQUIRE_THAT(
-        result->getDeclarations(),
+        result->GetDeclarations(),
         Catch::UnorderedEquals(std::vector<PqlDeclaration>{proc, proc2}));
-    auto values = result->getValues(proc);
+    auto values = result->GetValues(proc);
     REQUIRE(*values == pkb.synonymSynonymValues1);
-    values = result->getValues(proc2);
+    values = result->GetValues(proc2);
     REQUIRE(*values == pkb.synonymSynonymValues2);
 
     pkb.last_entity_type_passed = EntityType::IF;  // reset
     REQUIRE(pkb.wildSynonymCalls == 0);
-    result = calls_star.evaluate(pkb);
+    result = calls_star.Evaluate(pkb);
     REQUIRE(pkb.wildSynonymCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::CALLS_STAR);
     REQUIRE(pkb.last_entity_type_passed == EntityType::PROCEDURE);
-    REQUIRE(result->getNumDeclarations() == 1);
-    REQUIRE(result->contains(proc));
-    REQUIRE_FALSE(result->contains(proc2));
-    values = result->getValues(proc);
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE(result->Contains(proc));
+    REQUIRE_FALSE(result->Contains(proc2));
+    values = result->GetValues(proc);
     REQUIRE(*values == pkb.wildSynonymValues);
 
     // Test type checking for Calls/*
@@ -159,28 +137,28 @@ TEST_CASE("Test SuchThat Clauses") {
     ModifiesPClause modifies_p = ModifiesPClause(
         std::make_unique<EntRef>(proc), std::make_unique<EntRef>("var"));
     REQUIRE(pkb.synonymWildCalls == 0);
-    result = modifies_s.evaluate(pkb);
+    result = modifies_s.Evaluate(pkb);
     REQUIRE(pkb.synonymWildCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::MODIFIES_S);
     REQUIRE(pkb.last_entity_type_passed == EntityType::PRINT);
-    REQUIRE(result->getNumDeclarations() == 1);
-    REQUIRE(result->contains(print));
-    REQUIRE_FALSE(result->contains(proc));
-    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{print});
-    auto values = result->getValues(print);
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE(result->Contains(print));
+    REQUIRE_FALSE(result->Contains(proc));
+    REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{print});
+    auto values = result->GetValues(print);
     REQUIRE(*values == pkb.synonymWildValues);
 
     REQUIRE(pkb.synonymValueCalls == 0);
-    result = modifies_p.evaluate(pkb);
+    result = modifies_p.Evaluate(pkb);
     REQUIRE(pkb.synonymValueCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::MODIFIES_P);
     REQUIRE(pkb.last_entity_type_passed == EntityType::PROCEDURE);
     REQUIRE(pkb.last_value_passed == "var");
-    REQUIRE(result->getNumDeclarations() == 1);
-    REQUIRE(result->contains(proc));
-    REQUIRE_FALSE(result->contains(s));
-    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{proc});
-    values = result->getValues(proc);
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE(result->Contains(proc));
+    REQUIRE_FALSE(result->Contains(s));
+    REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{proc});
+    values = result->GetValues(proc);
     REQUIRE(*values == pkb.synonymValueValues);
 
     // first arg cannot be wild.
@@ -217,23 +195,23 @@ TEST_CASE("Test SuchThat Clauses") {
     UsesPClause uses_p = UsesPClause(std::make_unique<EntRef>("name"),
                                      std::make_unique<EntRef>());
     REQUIRE(pkb.valueSynonymCalls == 0);
-    result = uses_s.evaluate(pkb);
+    result = uses_s.Evaluate(pkb);
     REQUIRE(pkb.valueSynonymCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::USES_S);
     REQUIRE(pkb.last_value_passed == "2");
     REQUIRE(pkb.last_entity_type_passed == EntityType::VARIABLE);
-    REQUIRE(result->getNumDeclarations() == 1);
-    REQUIRE(result->contains(v));
-    REQUIRE(result->getDeclarations() == std::vector<PqlDeclaration>{v});
-    auto values = result->getValues(v);
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE(result->Contains(v));
+    REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{v});
+    auto values = result->GetValues(v);
     REQUIRE(*values == pkb.valueSynonymValues);
 
     REQUIRE(pkb.valueWildCalls == 0);
-    result = uses_p.evaluate(pkb);
+    result = uses_p.Evaluate(pkb);
     REQUIRE(pkb.valueWildCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::USES_P);
-    REQUIRE(result->getNumDeclarations() == 0);
-    REQUIRE(result->getBooleanClauseValue() == pkb.valueWildBool);
+    REQUIRE(result->GetNumDeclarations() == 0);
+    REQUIRE(result->GetBooleanClauseValue() == pkb.valueWildBool);
   }
 
   SECTION("Modifies_S/Uses_S error handling") {
@@ -296,20 +274,20 @@ TEST_CASE("Test SuchThat Clauses") {
                                  std::make_unique<StmtRef>(s), false);
     NextClause next_star = NextClause(std::make_unique<StmtRef>(),
                                       std::make_unique<StmtRef>(12), true);
-    result = next.evaluate(pkb);
+    result = next.Evaluate(pkb);
     REQUIRE(pkb.synonymSynonymCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::NEXT);
     REQUIRE(pkb.last_entity_type_passed == EntityType::WHILE);
     REQUIRE(pkb.last_entity_type_2_passed == EntityType::STMT);
-    REQUIRE(result->getNumDeclarations() == 2);
-    REQUIRE_THAT(result->getDeclarations(),
+    REQUIRE(result->GetNumDeclarations() == 2);
+    REQUIRE_THAT(result->GetDeclarations(),
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>{w, s}));
 
-    result = next_star.evaluate(pkb);
+    result = next_star.Evaluate(pkb);
     REQUIRE(pkb.wildValueCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::NEXT_STAR);
     REQUIRE(pkb.last_value_passed == "12");
-    REQUIRE(result->isBooleanResult());
+    REQUIRE(result->IsBooleanResult());
 
     // NextClause accepts all types that StmtRef would accept.
   }
@@ -317,77 +295,15 @@ TEST_CASE("Test SuchThat Clauses") {
   SECTION("Affects Clauses") {
     AffectsClause affects = AffectsClause(std::make_unique<StmtRef>(a),
                                           std::make_unique<StmtRef>(22));
-    result = affects.evaluate(pkb);
+    result = affects.Evaluate(pkb);
     REQUIRE(pkb.synonymValueCalls == 1);
     REQUIRE(pkb.last_rel_passed == RelationType::AFFECTS);
     REQUIRE(pkb.last_entity_type_passed == EntityType::ASSIGN);
     REQUIRE(pkb.last_value_passed == "22");
-    REQUIRE(result->getNumDeclarations() == 1);
-    REQUIRE_THAT(result->getDeclarations(),
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE_THAT(result->GetDeclarations(),
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>{a}));
     // AffectsClause accepts all types that StmtRef would accept. But only
     // returns values other than 'None' for Assign statements.
-  }
-}
-
-TEST_CASE("Pattern clauses") {
-  PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
-  // decl, partial
-  auto a = PqlDeclaration("a", EntityType::ASSIGN);
-  auto v = PqlDeclaration("v", EntityType::VARIABLE);
-
-  // create a simple tree x + y
-  auto baseTreeLeft =
-      std::make_shared<TreeNode>("x", nullptr, nullptr);
-  auto baseTreeRight =
-      std::make_shared<TreeNode>("y", nullptr, nullptr);
-  auto rhs_expr =
-      std::make_shared<TreeNode>("+", baseTreeLeft, baseTreeRight);
-  auto empty_rhs_expr =
-      std::make_shared<TreeNode>("", nullptr, nullptr);
-
-  SECTION("decl, wild") {
-    auto pattern_clause = PatternClause(
-        a, EntRef(v), MatchType::WILD_MATCH, rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
-    REQUIRE(pkb.last_match_type_passed == MatchType::WILD_MATCH);
-    REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
-    REQUIRE(pkb.patternDeclCalls == 1);
-    auto values = result->getValues(a);
-    REQUIRE(*values == pkb.patternDeclValues1);
-    values = result->getValues(v);
-    REQUIRE(*values == pkb.patternDeclValues2);
-  }
-
-  SECTION("value, partial") {
-    auto pattern_clause = PatternClause(
-        a, EntRef("varName"), MatchType::PARTIAL_MATCH, rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
-    REQUIRE(pkb.last_match_type_passed == MatchType::PARTIAL_MATCH);
-    REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
-    REQUIRE(pkb.last_value_passed == "varName");
-    REQUIRE(pkb.patternValueCalls == 1);
-    auto values = result->getValues(a);
-    REQUIRE(*values == pkb.patternValueValues);
-  }
-
-  SECTION("wild, exact") {
-    auto pattern_clause = PatternClause(
-        a, EntRef(), MatchType::EXACT_MATCH, empty_rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
-    REQUIRE(pkb.last_match_type_passed == MatchType::EXACT_MATCH);
-    REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, empty_rhs_expr));
-    REQUIRE(pkb.patternWildCalls == 1);
-    auto values = result->getValues(a);
-    REQUIRE(*values == pkb.patternWildValues);
-  }
-
-  SECTION("semantic errors") {
-    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(
-                          a, EntRef(a), MatchType::PARTIAL_MATCH, rhs_expr),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(std::make_shared<PatternClause>(
-                          v, EntRef(v), MatchType::PARTIAL_MATCH, empty_rhs_expr),
-                      InvalidSemanticsException);
   }
 }
