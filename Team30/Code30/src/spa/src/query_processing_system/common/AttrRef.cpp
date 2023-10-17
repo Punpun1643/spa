@@ -21,6 +21,13 @@ std::unordered_map<EntityType, AttrType> const AttrRef::ATTR_TYPE_ALIASES = {
     {EntityType::READ, AttrType::VAR_NAME},
     {EntityType::PRINT, AttrType::VAR_NAME}};
 
+const std::unordered_map<AttrType, AttrRefOutputType> AttrRef::OUTPUT_TYPE_MAPPING = {
+    {AttrType:: PROC_NAME, AttrRefOutputType::NAME},
+    {AttrType:: VAR_NAME, AttrRefOutputType::NAME},
+    {AttrType:: VALUE, AttrRefOutputType::INTEGER},
+    {AttrType:: STMT_NUM, AttrRefOutputType::INTEGER},
+};
+
 void AttrRef::CheckTypeCombinationValidity() const {
   if (GetDefaultAttrType() != attr_type && !IsAttrTypeAnAlias()) {
     throw InvalidSemanticsException(
@@ -44,8 +51,12 @@ bool AttrRef::IsAttrTypeAnAlias() const {
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
 
-std::string AttrRef::GetRepresentationFromDefault(
+std::string AttrRef::GetAliasFromDefault(
     PKBQPSInterface& pkb, std::string const& default_value) const {
+  /**
+   * If called on an AttrRef that is an alias, converts the default value into the alias type of the AttrRef. Otherwise,
+   * does nothing to the value.
+   */
   if (IsAttrTypeAnAlias()) {
     return pkb.ConvertEntityValueToAlias(
         default_value, decl.getEntityType(), GetDefaultAttrType(), attr_type);
@@ -58,4 +69,17 @@ PqlDeclaration AttrRef::GetDecl() const { return decl; }
 
 AttrType AttrRef::GetDefaultAttrType() const {
   return DEFAULT_ATTR_TYPE.at(decl.getEntityType());
+}
+
+AttrRefOutputType AttrRef::GetOutputType() const {
+  assert(OUTPUT_TYPE_MAPPING.count(attr_type) == 1);
+  return OUTPUT_TYPE_MAPPING.at(attr_type);
+}
+
+EntityType AttrRef::GetEntityType() const {
+  return decl.getEntityType();
+}
+
+AttrType AttrRef::GetAttrType() const {
+  return attr_type;
 }

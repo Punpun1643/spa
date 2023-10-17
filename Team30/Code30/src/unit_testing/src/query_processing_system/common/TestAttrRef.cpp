@@ -10,6 +10,7 @@ TEST_CASE("Test AttrRef") {
   PqlDeclaration print = PqlDeclaration("print", EntityType::PRINT);
   PqlDeclaration call = PqlDeclaration("c", EntityType::CALL);
   PqlDeclaration a = PqlDeclaration("assign", EntityType::ASSIGN);
+  PqlDeclaration proc = PqlDeclaration("procedure", EntityType::PROCEDURE);
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
 
   SECTION("Test basic functionality") {
@@ -17,6 +18,9 @@ TEST_CASE("Test AttrRef") {
     auto ref = AttrRef(read);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
     REQUIRE(ref.GetDecl() == read);
+    REQUIRE(ref.GetEntityType() == read.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::STMT_NUM);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::INTEGER);
     REQUIRE_FALSE(ref.GetDecl() == print);
 
     ref = AttrRef(print);
@@ -26,12 +30,27 @@ TEST_CASE("Test AttrRef") {
 
     ref = AttrRef(con);
     REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
+    REQUIRE(ref.GetEntityType() == con.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::VALUE);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::INTEGER);
     REQUIRE(ref.GetDecl() == con);
+    REQUIRE_FALSE(ref.GetDecl() == a);
+
+    ref = AttrRef(proc);
+    REQUIRE_FALSE(ref.IsAttrTypeAnAlias());
+    REQUIRE(ref.GetEntityType() == proc.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::PROC_NAME);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::NAME);
+    REQUIRE(ref.GetDecl() == proc);
     REQUIRE_FALSE(ref.GetDecl() == a);
 
     // Two argument initialization
     ref = AttrRef(print, AttrType::VAR_NAME);
     REQUIRE(ref.IsAttrTypeAnAlias());
+    REQUIRE(ref.GetEntityType() == print.getEntityType());
+    REQUIRE(ref.GetAttrType() == AttrType::VAR_NAME);
+    REQUIRE(ref.GetOutputType() == AttrRefOutputType::NAME);
+    REQUIRE_FALSE(ref.GetDecl() == a);
     REQUIRE(ref.GetDecl() == print);
 
     ref = AttrRef(call, AttrType::PROC_NAME);
@@ -39,17 +58,17 @@ TEST_CASE("Test AttrRef") {
     REQUIRE(ref.GetDecl() == call);
   }
 
-  SECTION("Test getRepresentationFromDefault") {
+  SECTION("Test GetAliasFromDefault") {
     // If attrRef is already of type 'default' value, does nothing
-    REQUIRE(AttrRef(read).GetRepresentationFromDefault(pkb, "25") == "25");
-    REQUIRE(AttrRef(print).GetRepresentationFromDefault(pkb, "42") == "42");
-    REQUIRE(AttrRef(con).GetRepresentationFromDefault(pkb, "23") == "23");
-    REQUIRE(AttrRef(call).GetRepresentationFromDefault(pkb, "1000") == "1000");
+    REQUIRE(AttrRef(read).GetAliasFromDefault(pkb, "25") == "25");
+    REQUIRE(AttrRef(print).GetAliasFromDefault(pkb, "42") == "42");
+    REQUIRE(AttrRef(con).GetAliasFromDefault(pkb, "23") == "23");
+    REQUIRE(AttrRef(call).GetAliasFromDefault(pkb, "1000") == "1000");
 
     // if non-default value is passed
     auto ref = AttrRef(read, AttrType::VAR_NAME);
     pkb.converted_entity = "random_name";
-    auto output = ref.GetRepresentationFromDefault(pkb, "20");
+    auto output = ref.GetAliasFromDefault(pkb, "20");
     REQUIRE(pkb.last_value_passed == "20");
     REQUIRE(pkb.last_entity_type_passed == read.getEntityType());
     REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
@@ -58,7 +77,7 @@ TEST_CASE("Test AttrRef") {
 
     ref = AttrRef(call, AttrType::PROC_NAME);
     pkb.converted_entity = "blah";
-    output = ref.GetRepresentationFromDefault(pkb, "12");
+    output = ref.GetAliasFromDefault(pkb, "12");
     REQUIRE(pkb.last_value_passed == "12");
     REQUIRE(pkb.last_entity_type_passed == call.getEntityType());
     REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
