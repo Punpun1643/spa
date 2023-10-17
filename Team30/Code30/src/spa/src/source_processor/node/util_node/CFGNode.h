@@ -1,13 +1,14 @@
 #pragma once
 
-#include <query_processing_system/common/EntityType.h>
-
 #include <memory>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
+#include "../../../query_processing_system/common/EntityType.h"
 #include "../stmt_node/StmtNode.h"
+#include "../stmt_node/StmtType.h"
+#include "../util_node/CFGNode.h"
 
 class CFGNode {
  public:
@@ -16,24 +17,58 @@ class CFGNode {
           std::unordered_set<std::string> modifies_vars);
 
   std::vector<std::shared_ptr<CFGNode>> getOutgoingNodes();
+
   std::vector<std::shared_ptr<CFGNode>> getIncomingNodes();
+
   std::shared_ptr<StmtNode> getNode();
+
   StmtType getNodeType();
+
   std::unordered_set<std::string> getUsesVars();
+
   std::unordered_set<std::string> getModifiesVars();
+
   StmtType getStmtType();
 
   bool UsesVar(std::string var);
   bool ModifiesVar(std::string var);
 
   void addOutgoingNode(std::shared_ptr<CFGNode>);
+
   void addIncomingNode(std::shared_ptr<CFGNode>);
+
+  static bool HasImmediatePath(std::shared_ptr<CFGNode> startNode,
+                               std::shared_ptr<CFGNode> endNode);
 
   static bool HasPath(std::shared_ptr<CFGNode> startNode,
                       std::shared_ptr<CFGNode> endNode);
 
-  static bool HasAffectPath(std::shared_ptr<CFGNode> startNode,
-                            std::shared_ptr<CFGNode> endNode);
+  static bool HasAffectsPath(std::shared_ptr<CFGNode> startNode,
+                             std::shared_ptr<CFGNode> endNode);
+
+  static bool IsAssignOrReadOutgoingNode(std::shared_ptr<CFGNode> node);
+
+  static bool IsCallOutgoingNode(std::shared_ptr<CFGNode> node);
+
+  static bool HandleAssignOrReadOutgoingNode(
+      std::shared_ptr<CFGNode> outgoingNode,
+      std::string const& varModifiedInStartNode);
+
+  static bool HandleCallOutgoingNode(std::shared_ptr<CFGNode> outgoingNode,
+                                     std::string const& varModifiedInStartNode);
+
+  static bool ValidateStartAndEndNodes(std::shared_ptr<CFGNode> startNode,
+                                       std::shared_ptr<CFGNode> endNode);
+
+  static std::string GetVarModifiedInStartNode(
+      std::shared_ptr<CFGNode> startNode);
+
+  static std::unordered_set<std::string> GetVarUsedInEndNode(
+      std::shared_ptr<CFGNode> endNode);
+
+  static bool ValidatePossibleAffectsRelationship(
+      std::string varModifiedInStartNode,
+      std::unordered_set<std::string> varsUsedInEndNode);
 
  private:
   std::vector<std::shared_ptr<CFGNode>> outgoingNodes;
