@@ -651,3 +651,86 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 }
+
+TEST_CASE("Get statement uses/modifies and get procedure uses/modifies") {
+  /*
+  procedure main {
+1.    a = b + c;
+2.    print a;
+3.    call sub
+  }
+
+  procedure sub {
+4.    read c;
+  }
+  */
+  PKB pkb = PKB();
+  pkb.insertEntity(EntityType::VARIABLE, "a");
+  pkb.insertEntity(EntityType::VARIABLE, "b");
+  pkb.insertEntity(EntityType::VARIABLE, "c");
+  pkb.insertEntity(EntityType::PROCEDURE, "main");
+  pkb.insertEntity(EntityType::PROCEDURE, "sub");
+  pkb.insertEntity(EntityType::ASSIGN, "1");
+  pkb.insertEntity(EntityType::PRINT, "2");
+  pkb.insertEntity(EntityType::CALL, "3");
+  pkb.insertEntity(EntityType::READ, "4");
+
+  pkb.insertRelation(RelationType::USES_S, "1", "b");
+  pkb.insertRelation(RelationType::USES_S, "1", "c");
+  pkb.insertRelation(RelationType::MODIFIES_S, "1", "a");
+  pkb.insertRelation(RelationType::USES_S, "2", "a");
+  pkb.insertRelation(RelationType::USES_P, "main", "b");
+  pkb.insertRelation(RelationType::USES_P, "main", "c");
+  pkb.insertRelation(RelationType::USES_P, "main", "a");
+  pkb.insertRelation(RelationType::MODIFIES_P, "main", "a");
+  pkb.insertRelation(RelationType::MODIFIES_P, "main", "c");
+  pkb.insertRelation(RelationType::MODIFIES_S, "3", "c");
+  pkb.insertRelation(RelationType::MODIFIES_S, "4", "c");
+  pkb.insertRelation(RelationType::MODIFIES_P, "sub", "c");
+
+  std::unordered_set<std::string> expected = {"a"};
+  std::unordered_set<std::string> actual = pkb.getStatementModifies("1");
+  REQUIRE(expected == actual);
+
+  expected = {"b", "c"};
+  actual = pkb.getStatementUses("1");
+  REQUIRE(expected == actual);
+
+  expected = {"a"};
+  actual = pkb.getStatementUses("2");
+  REQUIRE(expected == actual);
+
+  expected = {};
+  actual = pkb.getStatementModifies("2");
+  REQUIRE(expected == actual);
+
+  expected = {};
+  actual = pkb.getStatementUses("3");
+  REQUIRE(expected == actual);
+
+  expected = {"c"};
+  actual = pkb.getStatementModifies("3");
+  REQUIRE(expected == actual);
+
+  expected = {};
+  actual = pkb.getStatementUses("4");
+  REQUIRE(expected == actual);
+
+  expected = {"c"};
+  actual = pkb.getStatementModifies("4");
+  REQUIRE(expected == actual);
+
+  expected = {"a", "b", "c"};
+  actual = pkb.getProcedureUses("main");
+  REQUIRE(expected == actual);
+
+  
+  expected = {"a", "c"};
+  actual = pkb.getProcedureModifies("main");
+  REQUIRE(expected == actual);
+
+
+  expected = {"c"};
+  actual = pkb.getProcedureModifies("sub");
+  REQUIRE(expected == actual);
+}
