@@ -64,10 +64,7 @@ bool RelDatabase::isRelated(RelationType type, std::string val1,
     std::shared_ptr<CFGNode> node2 = cfgNodes[val2];
 
     if (type == RelationType::NEXT) {
-      std::vector<std::shared_ptr<CFGNode>> outgoing =
-          node1->getOutgoingNodes();
-      return std::find(outgoing.begin(), outgoing.end(), node2) !=
-             outgoing.end();
+      return CFGNode::HasImmediatePath(node1, node2);
     }
 
     else if (type == RelationType::NEXT_STAR) {
@@ -75,7 +72,7 @@ bool RelDatabase::isRelated(RelationType type, std::string val1,
     }
 
     else {
-      return CFGNode::HasAffectPath(node1, node2);
+      return CFGNode::HasAffectsPath(node1, node2);
     }
   }
 
@@ -92,7 +89,7 @@ bool RelDatabase::hasRelations(RelationType type, std::string val) {
     // TODO: Optimise for AFFECTS
     for (auto pair : cfgNodes) {
       std::shared_ptr<CFGNode> n = pair.second;
-      if (CFGNode::HasAffectPath(node, n)) {
+      if (CFGNode::HasAffectsPath(node, n)) {
         return true;
       };
     };
@@ -112,7 +109,7 @@ bool RelDatabase::hasInverseRelations(RelationType type, std::string val) {
     // TODO: Optimise for AFFECTS
     for (auto pair : cfgNodes) {
       std::shared_ptr<CFGNode> n = pair.second;
-      if (CFGNode::HasAffectPath(n, node)) {
+      if (CFGNode::HasAffectsPath(n, node)) {
         return true;
       };
     };
@@ -176,7 +173,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
     else {
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
-        if (CFGNode::HasAffectPath(node, n)) {
+        if (CFGNode::HasAffectsPath(node, n)) {
           output.insert(std::to_string(n->getNode()->GetStmtIndex()));
         }
       }
@@ -213,7 +210,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
     else {
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
-        if (CFGNode::HasAffectPath(n, node)) {
+        if (CFGNode::HasAffectsPath(n, node)) {
           output.insert(std::to_string(n->getNode()->GetStmtIndex()));
         }
       }
