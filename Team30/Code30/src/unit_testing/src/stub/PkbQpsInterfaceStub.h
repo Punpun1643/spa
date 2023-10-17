@@ -11,12 +11,15 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
 
   // Select
   std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
+  std::string converted_entity = "a";
 
   // SuchThat Clauses
   std::string last_value_passed;
   std::string last_value_2_passed;
   EntityType last_entity_type_passed = EntityType::IF;
   EntityType last_entity_type_2_passed = EntityType::IF;
+  AttrType last_attr_type_passed = AttrType::VALUE;
+  AttrType last_attr_type_2_passed = AttrType::VALUE;
 
   int valueValueCalls = 0;
   int valueWildCalls = 0;
@@ -32,7 +35,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   bool const valueWildBool = false;
   bool const wildValueBool = true;
   bool const wildWildBool = true;
-  std::vector<std::string> const synonymWildValues = {"1", "2", "3"};
+  std::vector<std::string> const synonymWildValues = {"1", "1", "3"};
   std::vector<std::string> const wildSynonymValues = {"a", "b", "c"};
   std::vector<std::string> const synonymValueValues = {"4", "5", "6"};
   std::vector<std::string> const valueSynonymValues = {"d", "e", "f"};
@@ -60,14 +63,15 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
       EntityType type) override;
 
-  std::string convertEntityAttribute(std::string value, EntityType type,
+  std::string ConvertEntityValueToAlias(
+      std::string value, EntityType type,
                                      AttrType curr_attr_type,
                                      AttrType wanted_attr_type) override;
 
-  bool doesEntityExist(EntityType type, AttrType attr_type,
+  std::vector<std::string> GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                        std::string value) override;
 
-  std::vector<std::string> getMatchingEntities(EntityType type_1,
+  std::vector<std::pair<std::string, std::string>> GetEntitiesWhereAttributesMatch(EntityType type_1,
                                                AttrType attr_type_1,
                                                EntityType type_2,
                                                AttrType attr_type_2) override;
@@ -109,15 +113,4 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   // the variable declaration on the LHS of the assign stmt
   getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
-
-  // TO DELETE
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
-      std::string rhs_expr, MatchType expr_match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
-      std::string lhs_value, std::string rhs_expr,
-      MatchType expr_match_type) override;
-
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::string rhs_expr,
-                              MatchType expr_match_type) override;
 };

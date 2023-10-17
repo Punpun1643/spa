@@ -8,18 +8,22 @@ PkbQpsInterfaceStub::getEntitiesWithType(EntityType type) {
   return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
 }
 
-std::string PkbQpsInterfaceStub::convertEntityAttribute(
+std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
     std::string value, EntityType type, AttrType curr_attr_type,
     AttrType wanted_attr_type) {
-  return "";
+  last_value_passed = value;
+  last_entity_type_passed = type;
+  last_attr_type_passed = curr_attr_type;
+  last_attr_type_2_passed = wanted_attr_type;
+  return converted_entity;
 };
 
-bool PkbQpsInterfaceStub::doesEntityExist(EntityType type, AttrType attr_type,
+std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
                                           std::string value) {
-  return false;
+  return {};
 };
 
-std::vector<std::string> PkbQpsInterfaceStub::getMatchingEntities(
+std::vector<std::pair<std::string, std::string>> PkbQpsInterfaceStub::GetEntitiesWhereAttributesMatch(
     EntityType type_1, AttrType attr_type_1, EntityType type_2,
     AttrType attr_type_2) {
   return {};
@@ -103,30 +107,6 @@ PkbQpsInterfaceStub::getRelationSynonymSynonym(EntityType entity_type_1,
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       synonymSynonymValues);
 }
-
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getPatternMatchesWildLhs(std::string rhs_expr,
-                                              MatchType expr_match_type) {
-  assert(false);
-  return nullptr;
-}
-
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getPatternMatchesValueLhs(std::string lhs_value,
-                                               std::string rhs_expr,
-                                               MatchType expr_match_type) {
-  assert(false);
-  return nullptr;
-};
-
-// 2 paired values - for the implicit assign declaration, and the values for the
-// given lhs_entity_type
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbQpsInterfaceStub::getPatternMatchesSynonymLhs(std::string rhs_expr,
-                                                 MatchType expr_match_type) {
-  assert(false);
-  return nullptr;
-};
 
 std::unique_ptr<std::vector<std::string>>
 PkbQpsInterfaceStub::getPatternMatchesWildLhs(

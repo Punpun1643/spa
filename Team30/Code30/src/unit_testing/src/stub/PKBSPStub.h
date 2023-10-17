@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include "../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../spa/src/program_knowledge_base/PKBSPInterface.h"
 #include "source_processor/node/stmt_node/StmtNode.h"
@@ -21,14 +23,14 @@ class PKBSPStub : public PKBSPInterface {
   int insertModifiesCallCount;
   int insertCallsCallCount;
   int insertPatternCallCount;
+  int insertCFGCallCount;
 
   std::unordered_set<std::string> entitiesSet;
+  std::unordered_map<std::string, std::shared_ptr<CFGNode>> CFGNodeMap;
 
   void insertEntity(EntityType type, std::string entity) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void insertPattern(std::string statement_number, std::string lhs,
-                     std::unordered_set<std::string> rhs) override;
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
 
@@ -40,6 +42,17 @@ class PKBSPStub : public PKBSPInterface {
   std::unordered_set<std::string> getProcedureModifies(
       std::string procName) override;
 
+  std::unordered_set<std::string> getStatementUses(
+      std::string procName) override;
+
+  std::unordered_set<std::string> getStatementModifies(
+      std::string procName) override;
+
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
+
+  bool checkCFGNodeOutgoing(std::string statement_num,
+                            std::vector<std::string> outgoingStmtNos);
+  bool checkCFGNodeIncoming(std::string statement_num,
+                            std::vector<std::string> incomingStmtNos);
 };

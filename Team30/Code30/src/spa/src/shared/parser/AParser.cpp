@@ -162,9 +162,6 @@ void AParser::HandleInfixOperatorToken(
 void AParser::HandleLeftParenthesisToken(
     std::shared_ptr<Token> token,
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
-  if (AParser::IsPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
-    throw EmptyParenthesesException();
-  }
   ++parenCount;
   operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
 }

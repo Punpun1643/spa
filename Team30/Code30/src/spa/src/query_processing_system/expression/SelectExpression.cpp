@@ -1,4 +1,7 @@
 #include "SelectExpression.h"
+#include <cassert>
+
+#include <cassert>
 
 SelectExpression::SelectExpression(std::string synonym, bool is_boolean) {
   if (is_boolean) {
