@@ -6,6 +6,6 @@
 
 class Clause {
  public:
-  virtual std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface& pkb) = 0;
+  virtual std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) = 0;
   virtual ~Clause();
 };

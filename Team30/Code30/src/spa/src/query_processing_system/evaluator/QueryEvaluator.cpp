@@ -9,7 +9,7 @@ QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 void QueryEvaluator::PopulateIntermediateResultsTable(
     IntermediateResultsTable& table, ClauseList clauses) {
   for (auto& clause : clauses) {
-    auto clause_result = clause->evaluate(pkb);
+    auto clause_result = clause->Evaluate(pkb);
     table.addClauseResult(*clause_result);
     if (table.hasNoResults()) {
       break;  // no point continuing

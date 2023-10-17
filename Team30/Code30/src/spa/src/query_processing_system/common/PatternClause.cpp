@@ -12,31 +12,31 @@ PatternClause::PatternClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
       lhs_ent_ref(std::move(lhs_ent_ref)),
       rhs_expr_match_type(rhs_expr_match_type),
       rhs_expr(std::move(rhs_expr)) {
-  if (this->assign_decl.getEntityType() != EntityType::ASSIGN) {
+  if (this->assign_decl.GetEntityType() != EntityType::ASSIGN) {
     throw InvalidSemanticsException(
         "Pattern Clause only accepts assign declarations");
   }
 
-  if (this->lhs_ent_ref.getRefType() == PqlRefType::DECLARATION &&
-      this->lhs_ent_ref.getDeclarationType() != EntityType::VARIABLE) {
+  if (this->lhs_ent_ref.GetRefType() == PqlRefType::DECLARATION &&
+      this->lhs_ent_ref.GetDeclarationType() != EntityType::VARIABLE) {
     throw InvalidSemanticsException(
         "If the entRef of the pattern clause is a declaration, it must be of "
         "type variable.");
   }
 }
 
-std::unique_ptr<ClauseResult> PatternClause::evaluate(PKBQPSInterface& pkb) {
-  switch (lhs_ent_ref.getRefType()) {
+std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
+  switch (lhs_ent_ref.GetRefType()) {
     case (PqlRefType::DECLARATION): {
       auto values =
           pkb.getPatternMatchesSynonymLhs(rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
-          assign_decl, lhs_ent_ref.getDeclaration(), *values);
+          assign_decl, lhs_ent_ref.GetDeclaration(), *values);
       break;
     }
     case (PqlRefType::VALUE): {
       auto values = pkb.getPatternMatchesValueLhs(
-          lhs_ent_ref.getValue(), rhs_expr, rhs_expr_match_type);
+          lhs_ent_ref.GetValue(), rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }

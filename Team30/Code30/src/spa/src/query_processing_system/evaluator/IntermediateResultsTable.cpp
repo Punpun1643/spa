@@ -12,25 +12,25 @@ void IntermediateResultsTable::addClauseResult(
     return;  // don't bother, stuck at false already
   }
 
-  switch (clause_result.getNumDeclarations()) {
+  switch (clause_result.GetNumDeclarations()) {
     case (0): {
-      bool result = clause_result.getBooleanClauseValue();
+      bool result = clause_result.GetBooleanClauseValue();
       addBooleanClauseResult(result);
       break;
     }
     case (1): {
-      auto declaration = clause_result.getDeclarations().front();
-      auto values = clause_result.getValues(declaration);
+      auto declaration = clause_result.GetDeclarations().front();
+      auto values = clause_result.GetValues(declaration);
       addSingleDeclaration(declaration, *values);
       break;
     }
     case (2): {
-      auto declarations = clause_result.getDeclarations();
+      auto declarations = clause_result.GetDeclarations();
       assert(declarations.size() == 2);
       auto d1 = declarations[0];
       auto d2 = declarations[1];
-      auto d1_values = clause_result.getValues(d1);
-      auto d2_values = clause_result.getValues(d2);
+      auto d1_values = clause_result.GetValues(d1);
+      auto d2_values = clause_result.GetValues(d2);
       addPairedDeclarations(d1, d2, *d1_values, *d2_values);
       break;
     }

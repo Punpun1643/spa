@@ -46,7 +46,7 @@ AttrRef::AttrRef(PqlDeclaration decl, AttrType attr_type)
 }
 
 bool AttrRef::IsAttrTypeAnAlias() const {
-  auto entity_type = decl.getEntityType();
+  auto entity_type = decl.GetEntityType();
   return (ATTR_TYPE_ALIASES.count(entity_type) == 1 &&
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
@@ -59,7 +59,7 @@ std::string AttrRef::GetAliasFromDefault(
    */
   if (IsAttrTypeAnAlias()) {
     return pkb.ConvertEntityValueToAlias(
-        default_value, decl.getEntityType(), GetDefaultAttrType(), attr_type);
+        default_value, decl.GetEntityType(), GetDefaultAttrType(), attr_type);
   } else {
     return default_value;
   }
@@ -68,7 +68,7 @@ std::string AttrRef::GetAliasFromDefault(
 PqlDeclaration AttrRef::GetDecl() const { return decl; }
 
 AttrType AttrRef::GetDefaultAttrType() const {
-  return DEFAULT_ATTR_TYPE.at(decl.getEntityType());
+  return DEFAULT_ATTR_TYPE.at(decl.GetEntityType());
 }
 
 AttrRefOutputType AttrRef::GetOutputType() const {
@@ -77,7 +77,7 @@ AttrRefOutputType AttrRef::GetOutputType() const {
 }
 
 EntityType AttrRef::GetEntityType() const {
-  return decl.getEntityType();
+  return decl.GetEntityType();
 }
 
 AttrType AttrRef::GetAttrType() const {
