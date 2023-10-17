@@ -23,6 +23,7 @@ void SyntaxChecker::parse() {
   }
   CheckSelect();
   CheckClauses();
+  CheckEOF();
 }
 
 void SyntaxChecker::CheckAnd(ClauseType clause_type) {
@@ -310,12 +311,11 @@ void SyntaxChecker::CheckSelectSingle() {
   }
   if (GetPeekTokenValue() == ".") {
     // check attrRef
-    NextToken(); // .
-    NextToken(); // attrName
+    NextToken();  // .
+    NextToken();  // attrName
     CheckUpcomingTokensAreValidAttrName(synonym);
   }
 }
-
 
 void SyntaxChecker::CheckSuchThat(bool has_and) {
   if (!has_and) {
@@ -509,32 +509,50 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
 }
 
 void SyntaxChecker::CheckUpcomingTokensAreValidAttrName(std::string synonym) {
-  std::string allowed_synonyms_for_stmt[7] = {"stmt", "read", "print", "call", "while", "if", "assign"};
-  std::string allowed_synonyms_for_value[1] = {"constant"};
-  std::string allowed_synonyms_for_procname[2] = {"procedure", "call"};
-  std::string allowed_synonyms_for_varname[3] = {"variable", "read", "print"};
+  EntityType allowed_entity_types_for_stmt[7] = {
+      EntityType::STMT,  EntityType::READ, EntityType::PRINT, EntityType::CALL,
+      EntityType::WHILE, EntityType::IF,   EntityType::ASSIGN};
+  EntityType allowed_entity_types_for_value[1] = {EntityType::CONSTANT};
+  EntityType allowed_entity_types_for_procname[2] = {EntityType::PROCEDURE,
+                                                     EntityType::CALL};
+  EntityType allowed_entity_types_for_varname[3] = {
+      EntityType::VARIABLE, EntityType::READ, EntityType::PRINT};
+  EntityType entity_type = existing_declarations.at(synonym).getEntityType();
   if (GetCurrTokenValue() == "stmt") {
     if (NextToken()->getTokenVal() != "#") {
-      throw InvalidSyntaxException("Expected # as in 'stmt#' attrRef, for select clause");
+      throw InvalidSyntaxException(
+          "Expected # as in 'stmt#' attrRef, for select clause");
     }
-    if (std::find(std::begin(allowed_synonyms_for_stmt), std::end(allowed_synonyms_for_stmt), synonym) ==
-        std::end(allowed_synonyms_for_stmt)) {
-      throw InvalidSyntaxException(synonym + " not an allowed synonym for stmt# attrRef in select clause");
+    if (std::find(std::begin(allowed_entity_types_for_stmt),
+                  std::end(allowed_entity_types_for_stmt),
+                  entity_type) == std::end(allowed_entity_types_for_stmt)) {
+      throw InvalidSyntaxException(
+          synonym +
+          " not an allowed synonym for stmt# attrRef in select clause");
     }
   } else if (GetCurrTokenValue() == "procName") {
-    if (std::find(std::begin(allowed_synonyms_for_procname), std::end(allowed_synonyms_for_procname), synonym) ==
-        std::end(allowed_synonyms_for_procname)) {
-      throw InvalidSyntaxException(synonym + " not an allowed synonym for procName attrRef in select clause");
+    if (std::find(std::begin(allowed_entity_types_for_procname),
+                  std::end(allowed_entity_types_for_procname),
+                  entity_type) == std::end(allowed_entity_types_for_procname)) {
+      throw InvalidSyntaxException(
+          synonym +
+          " not an allowed synonym for procName attrRef in select clause");
     }
   } else if (GetCurrTokenValue() == "varName") {
-    if (std::find(std::begin(allowed_synonyms_for_varname), std::end(allowed_synonyms_for_varname), synonym) ==
-        std::end(allowed_synonyms_for_varname)) {
-      throw InvalidSyntaxException(synonym + " not an allowed synonym for varName attrRef in select clause");
+    if (std::find(std::begin(allowed_entity_types_for_varname),
+                  std::end(allowed_entity_types_for_varname),
+                  entity_type) == std::end(allowed_entity_types_for_varname)) {
+      throw InvalidSyntaxException(
+          synonym +
+          " not an allowed synonym for varName attrRef in select clause");
     }
   } else if (GetCurrTokenValue() == "value") {
-    if (std::find(std::begin(allowed_synonyms_for_value), std::end(allowed_synonyms_for_value), synonym) ==
-        std::end(allowed_synonyms_for_value)) {
-      throw InvalidSyntaxException(synonym + " not an allowed synonym for the value attrRef in select clause");
+    if (std::find(std::begin(allowed_entity_types_for_value),
+                  std::end(allowed_entity_types_for_value),
+                  entity_type) == std::end(allowed_entity_types_for_value)) {
+      throw InvalidSyntaxException(
+          synonym +
+          " not an allowed synonym for the value attrRef in select clause");
     }
   } else {
     throw InvalidSyntaxException("Did not encounter expected attrRef");

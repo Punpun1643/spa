@@ -2,6 +2,7 @@
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
+#include "../common/AttrType.h"
 #include "../common/EntityType.h"
 
 class QpParser : public AParser {
@@ -34,5 +35,7 @@ class QpParser : public AParser {
   bool IsTransitiveRelRef(std::string const& name);
   bool IsRelRef(std::string const& name);
   bool IsWildcard(std::string const& name);
+  AttrType GetDefaultAttrTypeFromEntityType(EntityType entity_type);
+  AttrType StringToAttrType(std::string const& string);
   EntityType StringToEntityType(std::string const& entity_string);
 };

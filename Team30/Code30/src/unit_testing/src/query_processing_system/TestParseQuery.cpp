@@ -470,10 +470,59 @@ TEST_CASE("Such That And") {
 
     controller.TokensToClauses(tokens);
   }
+}
 
-  SECTION("Positive. Complex") {
+TEST_CASE("Select clauses with attr ref") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("Positive: stmt s1; Select s1.stmt# such that Follows(2, s1)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddIntWord(tokens, "2", "s1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
   }
 
-  SECTION ("Syntax Error") {
+  SECTION("Positive: procedure p1, p2; Select p1.procName such that Calls(p1, p2)") {
+    AddDeclaration(tokens, "procedure", {"p1", "p2"});
+    AddWordVector(tokens, {"Select", "p1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddWordVector(tokens, {"such", "that", "Calls"});
+    AddWordWord(tokens, "p1", "p2");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
   }
+
+  SECTION("Positive: read r1, r2; Select r1.varName such that Follows(2, r1)") {
+    AddDeclaration(tokens, "read", {"r1", "r2"});
+    AddWordVector(tokens, {"Select", "r1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"varName"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddIntWord(tokens, "2", "r1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Negative: stmt s1; Select s1.value such that Follows(s2, s1)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"value"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddIntWord(tokens, "2", "s1");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+
 }

@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "../common/AttrRef.h"
 #include "../common/CallsClause.h"
 #include "../common/FollowsClause.h"
 #include "../common/ModifiesPClause.h"
@@ -131,9 +132,11 @@ void QueryInterpreter::Interpret(
       throw InvalidSyntaxException(
           "Synonym to be selected has not been declared");
     }
-    PqlDeclaration selected_declaration =
+    AttrType attr_type = select_expression->GetAttrType();
+    PqlDeclaration declaration =
         QueryInterpreter::GetMappedDeclaration(synonym);
-    this->context->AddSelectDeclaration(selected_declaration);
+    AttrRef selected_attr_ref = AttrRef(declaration, attr_type);
+    this->context->AddAttrRefDeclaration(selected_attr_ref);
   }
   this->InterpretNext(select_expression);
 }
