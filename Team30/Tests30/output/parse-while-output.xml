@@ -1,0 +1,15 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>1.836000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Select while">0</id><querystr><![CDATA[while w; Select w]]></querystr>
+<stuans>13,16,24,29,3,41,43,49,55,63,70,81</stuans>
+<correct>3,13,16,24,29,41,43,49,55,63,70,81</correct>
+<time_taken>1.347000</time_taken>
+<passed/>
+</query>
+</queries>
+</test_results>
