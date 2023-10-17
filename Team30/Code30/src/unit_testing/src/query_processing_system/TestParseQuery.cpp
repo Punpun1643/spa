@@ -477,3 +477,26 @@ TEST_CASE("Such That And") {
   SECTION ("Syntax Error") {
   }
 }
+
+TEST_CASE("Next queries") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1, s2; Select s1 such that Next(3, s1)") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Next"});
+    AddIntWord(tokens, "3", "s1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("stmt s1, s2; Select s1 such that Next*(3, s1)") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Next"});
+    AddIntWord(tokens, "3", "s1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+}

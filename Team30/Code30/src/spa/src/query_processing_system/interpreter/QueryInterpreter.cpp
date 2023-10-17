@@ -7,6 +7,7 @@
 #include "../common/FollowsClause.h"
 #include "../common/ModifiesPClause.h"
 #include "../common/ModifiesSClause.h"
+#include "../common/NextClause.h"
 #include "../common/ParentClause.h"
 #include "../common/PatternClause.h"
 #include "../common/UsesPClause.h"
@@ -18,6 +19,8 @@
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
 #include "../expression/ModifiesExpression.h"
+#include "../expression/NextExpression.h"
+#include "../expression/NextTExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
 #include "../expression/PatternExpression.h"
@@ -82,6 +85,24 @@ void QueryInterpreter::Interpret(
         StringToEntRef(arg1), StringToEntRef(arg2)));
   }
   this->InterpretNext(modifies_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<NextExpression> next_expression) {
+  std::string arg1 = next_expression->GetArg1();
+  std::string arg2 = next_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<NextClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  this->InterpretNext(next_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<NextTExpression> next_t_expression) {
+  std::string arg1 = next_t_expression->GetArg1();
+  std::string arg2 = next_t_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<NextClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
+  this->InterpretNext(next_t_expression);
 }
 
 void QueryInterpreter::Interpret(

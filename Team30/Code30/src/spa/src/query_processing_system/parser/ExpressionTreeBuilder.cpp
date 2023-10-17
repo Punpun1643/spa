@@ -12,6 +12,8 @@
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
 #include "../expression/ModifiesExpression.h"
+#include "../expression/NextExpression.h"
+#include "../expression/NextTExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
@@ -153,7 +155,15 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       NextToken();
     }
 
-    if (clause_name == QpParser::FOLLOWS) {
+    if (clause_name == QpParser::CALLS) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<CallsExpression>>(
+              std::make_shared<CallsExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::CALLS_STAR) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<CallsTExpression>>(
+              std::make_shared<CallsTExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::FOLLOWS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<FollowsExpression>>(
               std::make_shared<FollowsExpression>(arg1, arg2));
@@ -161,6 +171,18 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<FollowsTExpression>>(
               std::make_shared<FollowsTExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::MODIFIES) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<ModifiesExpression>>(
+              std::make_shared<ModifiesExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::NEXT) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<NextExpression>>(
+              std::make_shared<NextExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::NEXT_STAR) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<NextTExpression>>(
+              std::make_shared<NextTExpression>(arg1, arg2));
     } else if (clause_name == QpParser::PARENT) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ParentExpression>>(
@@ -173,18 +195,6 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<UsesExpression>>(
               std::make_shared<UsesExpression>(arg1, arg2));
-    } else if (clause_name == QpParser::MODIFIES) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<ModifiesExpression>>(
-              std::make_shared<ModifiesExpression>(arg1, arg2));
-    } else if (clause_name == QpParser::CALLS) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<CallsExpression>>(
-              std::make_shared<CallsExpression>(arg1, arg2));
-    } else if (clause_name == QpParser::CALLS_STAR) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<CallsTExpression>>(
-              std::make_shared<CallsTExpression>(arg1, arg2));
     }
 
     if (previous_such_that_expression.has_value()) {
