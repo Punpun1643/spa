@@ -87,7 +87,6 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
   return true;
 }
 
-
 bool QpParser::IsValidInteger(std::string const& int_string) {
   try {
     stoi(int_string);

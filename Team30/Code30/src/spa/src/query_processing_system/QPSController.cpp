@@ -27,13 +27,6 @@ void QPSController::HandleQuery(
 
   std::vector<AttrRef> selected_attr_refs = clauses.first;
 
-  /* // ---Temp addition to make it compile */
-  /* std::vector<AttrRef> selected_attr_refs = {}; */
-  /* for (auto &decl: selected_declarations) { */
-  /*   selected_attr_refs.push_back(AttrRef(decl)); */
-  /* } */
-  /* // --- */
-
   std::vector<std::shared_ptr<Clause>> other_clauses = clauses.second;
 
   if (selected_attr_refs.empty()) {

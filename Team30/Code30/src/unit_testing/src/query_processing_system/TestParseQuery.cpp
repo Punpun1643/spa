@@ -513,6 +513,28 @@ TEST_CASE("Select clauses with attr ref") {
     controller.TokensToClauses(tokens);
   }
 
+  SECTION("Positive: stmt s; procedure p, q; Select <s.stmt#, p.procName> such that Calls (p, q) and Follows (3, s)") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddDeclaration(tokens, "procedure", {"p", "q"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"s"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#", ","});
+    AddWordVector(tokens, {"p"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddSpecialCharVector(tokens, {">"});
+    AddWordVector(tokens, {"such", "that", "Calls"});
+    AddWordWord(tokens, "p", "q");
+    AddWordVector(tokens, {"and", "Follows"});
+    AddIntWord(tokens, "3", "s");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
 }
 
 TEST_CASE("Next queries") {
