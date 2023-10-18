@@ -53,7 +53,7 @@ jobs:
           file: ./coverage.txt  # Adjusting to the correct file
           flags: unittests
 #          working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
-          working-directory: 23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+          working-directory: Team30/Code30/build/src/unit_testing
 
 
 
