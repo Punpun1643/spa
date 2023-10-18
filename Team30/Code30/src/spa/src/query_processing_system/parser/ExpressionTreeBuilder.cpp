@@ -69,7 +69,7 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
           std::make_shared<SelectExpression>(synonym, attr_type, false));
     } else {
       EntityType entity_type =
-          this->context->GetDeclaration(synonym).getEntityType();
+          this->context->GetDeclaration(synonym).GetEntityType();
       AttrType attr_type =
           QpParser::GetDefaultAttrTypeFromEntityType(entity_type);
       return std::make_optional<std::shared_ptr<SelectExpression>>(
