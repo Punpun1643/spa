@@ -1,5 +1,4 @@
 #pragma once
-#include <source_processor/node/stmt_node/CallNode.h>
 
 #include <memory>
 #include <queue>
@@ -7,9 +6,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../node/stmt_node/CallNode.h"
 #include "../node/util_node/CallsGraphProcNode.h"
-#include "CallsExtractor.h"
 #include "CallsProcConnector.h"
+#include "relation_extractor/CallsExtractor.h"
 
 class CallsManager {
  public:
@@ -18,12 +18,12 @@ class CallsManager {
   // procA: the procedure in which the call stmt is found
   // procB: the procedure that the call stmt calls
   // i.e. A calls B
-  void insertCallsStmt(std::string procA, std::string procB,
+  void InsertCallsStmt(std::string procA, std::string procB,
                        std::vector<std::string> actors,
                        std::shared_ptr<CallNode> callNode);
-  void insertProcNode(std::string procName);
-  void executeCallsExtraction();
-  void connectProcsAndUpdateRelations();
+  void InsertProcNode(std::string procName);
+  void ExecuteCallsExtraction();
+  void ConnectProcsAndUpdateRelations();
 
  private:
   // Key: string procedureName, Value: CallsGraphProcNode node

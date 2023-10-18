@@ -2,6 +2,7 @@
 
 #include <source_processor/node/util_node/CFGNode.h>
 
+#include <cassert>
 #include <memory>
 #include <unordered_map>
 
@@ -11,9 +12,13 @@
 #include "tables/LinkedListTable.h"
 
 class RelDatabase {
+ private:
   std::unordered_map<RelationType, std::shared_ptr<BaseTable>> relationships =
       {};
+  std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
+
   std::unordered_map<std::string, std::shared_ptr<CFGNode>> cfgNodes;
+  std::unordered_set<RelationType> cfgRelations;
 
  public:
   RelDatabase();

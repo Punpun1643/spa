@@ -27,16 +27,16 @@ class ClauseResult {
   ClauseResult(PqlDeclaration const& d1, PqlDeclaration const& d2,
                std::vector<std::pair<std::string, std::string>> const& values);
 
-  int getNumDeclarations() const;
+  int GetNumDeclarations() const;
 
-  bool isBooleanResult() const;
+  bool IsBooleanResult() const;
 
-  bool getBooleanClauseValue() const;
+  bool GetBooleanClauseValue() const;
 
-  std::vector<PqlDeclaration> getDeclarations() const;
+  std::vector<PqlDeclaration> GetDeclarations() const;
 
-  std::unique_ptr<std::vector<std::string>> getValues(
+  std::unique_ptr<std::vector<std::string>> GetValues(
       PqlDeclaration const& declaration) const;
 
-  bool contains(PqlDeclaration const& d) const;
+  bool Contains(PqlDeclaration const& d) const;
 };

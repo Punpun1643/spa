@@ -17,6 +17,8 @@ class QpParser : public AParser {
   static std::string const FOLLOWS;
   static std::string const FOLLOWS_STAR;
   static std::string const MODIFIES;
+  static std::string const NEXT;
+  static std::string const NEXT_STAR;
   static std::string const PATTERN;
   static std::string const PARENT;
   static std::string const PARENT_STAR;

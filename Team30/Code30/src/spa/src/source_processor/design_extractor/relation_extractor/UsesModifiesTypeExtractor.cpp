@@ -7,21 +7,21 @@ UsesModifiesTypeExtractor::UsesModifiesTypeExtractor(
     PKBSPInterface& pkb, std::shared_ptr<CallsManager> callsManager)
     : pkb(pkb), callsManager(callsManager), DesignExtractor(pkb) {}
 
-void UsesModifiesTypeExtractor::extractFromProcedure(
+void UsesModifiesTypeExtractor::ExtractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {
   actors.push_back(node->GetProcedureName());
 }
 
-void UsesModifiesTypeExtractor::extractFromWhile(
+void UsesModifiesTypeExtractor::ExtractFromWhile(
     std::shared_ptr<WhileNode> node) {
   actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
-void UsesModifiesTypeExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+void UsesModifiesTypeExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
   actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
-void UsesModifiesTypeExtractor::popActor() {
+void UsesModifiesTypeExtractor::PopActor() {
   if (!actors.empty()) {
     actors.pop_back();
   }

@@ -20,21 +20,21 @@ PqlReference::PqlReference(std::string ref_value)
       ref_declaration(std::nullopt),
       ref_value(std::move(ref_value)) {}
 
-PqlRefType PqlReference::getRefType() const { return ref_type; }
+PqlRefType PqlReference::GetRefType() const { return ref_type; }
 
-std::string PqlReference::getValue() const {
+std::string PqlReference::GetValue() const {
   assert(ref_type == PqlRefType::VALUE);
   return ref_value.value();
 }
 
-PqlDeclaration PqlReference::getDeclaration() const {
+PqlDeclaration PqlReference::GetDeclaration() const {
   assert(ref_type == PqlRefType::DECLARATION);
   return ref_declaration.value();
 }
 
-EntityType PqlReference::getDeclarationType() const {
+EntityType PqlReference::GetDeclarationType() const {
   assert(ref_type == PqlRefType::DECLARATION);
-  return ref_declaration->getEntityType();
+  return ref_declaration->GetEntityType();
 }
 
 PqlReference::~PqlReference() = default;

@@ -27,6 +27,7 @@ class SyntaxChecker : public QpParser {
   void CheckEOF();
   void CheckFollows();
   void CheckModifies();
+  void CheckNext();
   void CheckParent();
   void CheckPattern();
   void CheckSelect();

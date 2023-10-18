@@ -12,7 +12,7 @@ EntRef::EntRef(std::string entity_value)
 }
 
 EntRef::EntRef(PqlDeclaration const& declaration) : PqlReference(declaration) {
-  EntityType declaration_type = declaration.getEntityType();
+  EntityType declaration_type = declaration.GetEntityType();
   if (std::find(VALID_ENT_TYPES.begin(), VALID_ENT_TYPES.end(),
                 declaration_type) == VALID_ENT_TYPES.end()) {
     throw InvalidSemanticsException("Declaration is not an entity type");

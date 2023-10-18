@@ -9,12 +9,6 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
-
-  relatedTables = {
-      {RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
-      {RelationType::PARENT, {RelationType::PARENT_STAR}},
-      {RelationType::CALLS, {RelationType::CALLS_STAR}},
-  };
 };
 
 // ********** Private methods **********
@@ -31,16 +25,18 @@ std::unordered_set<std::string> PKB::getIntersection(
 }
 
 // ********** SP **********
-void PKB::insertEntity(EntityType type, std::string entity) {
-  entData->insert(type, entity);
+void PKB::InsertEntity(EntityType type, std::string value) {
+  entData->InsertEntity(type, value);
+};
+
+void PKB::InsertEntity(EntityType type, AttrType attr_type,
+                       std::string statement_number, std::string attribute) {
+  entData->InsertEntity(type, attr_type, statement_number, attribute);
 };
 
 void PKB::insertRelation(RelationType type, std::string input1,
                          std::string input2) {
   relData->insert(type, input1, input2);
-  for (RelationType rt : relatedTables[type]) {
-    relData->insert(rt, input1, input2);
-  }
 };
 
 void PKB::insertPattern(PatternType type, std::string statement_number,
@@ -81,19 +77,21 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
                                            AttrType curr_attr_type,
                                            AttrType wanted_attr_type) {
-  return "";
+  return entData->ConvertEntityValueToAlias(value, type, curr_attr_type,
+                                            wanted_attr_type);
 };
 
 std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
                                                            AttrType attr_type,
                                                            std::string value) {
-  return {};
+  return entData->GetEntitiesMatchingAttrValue(type, attr_type, value);
 };
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
                                      EntityType type_2, AttrType attr_type_2) {
-  return {};
+  return entData->GetEntitiesWhereAttributesMatch(type_1, attr_type_1, type_2,
+                                                  attr_type_2);
 };
 
 // ---------- RELATIONS ----------

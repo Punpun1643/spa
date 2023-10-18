@@ -9,33 +9,33 @@ UsesExtractor::UsesExtractor(PKBSPInterface& pkb,
       callsManager(callsManager),
       UsesModifiesTypeExtractor(pkb, callsManager) {}
 
-void UsesExtractor::extractFromCall(std::shared_ptr<CallNode> node) {
-  callsManager->insertCallsStmt(actors[0], node->GetProcName(), actors, node);
+void UsesExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {
+  callsManager->InsertCallsStmt(actors[0], node->GetProcName(), actors, node);
 }
 
-void UsesExtractor::extractFromPrint(std::shared_ptr<PrintNode> node) {
+void UsesExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {
   pkb.insertRelation(RelationType::USES_S, std::to_string(node->GetStmtIndex()),
                      node->GetVarName());
-  insertVarWithActors(node->GetVarName());
+  InsertVarWithActors(node->GetVarName());
 }
 
-void UsesExtractor::extractFromWhile(std::shared_ptr<WhileNode> node) {
+void UsesExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
   std::unordered_set<std::string> condVars =
       *node->GetCondExpr()->GetVariables();
-  insertMultipleVars(condVars, std::to_string(node->GetStmtIndex()));
+  InsertMultipleVars(condVars, std::to_string(node->GetStmtIndex()));
   actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
-void UsesExtractor::extractFromIf(std::shared_ptr<IfNode> node) {
+void UsesExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
   std::unordered_set<std::string> condVars =
       *node->GetCondExpr()->GetVariables();
-  insertMultipleVars(condVars, std::to_string(node->GetStmtIndex()));
+  InsertMultipleVars(condVars, std::to_string(node->GetStmtIndex()));
   actors.push_back(std::to_string(node->GetStmtIndex()));
 }
 
-void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
+void UsesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   std::unordered_set<std::string> rhsVars = *node->GetVariables();
-  insertMultipleVars(rhsVars, std::to_string(node->GetStmtIndex()));
+  InsertMultipleVars(rhsVars, std::to_string(node->GetStmtIndex()));
 }
 
 //////////////////////////////
@@ -44,15 +44,15 @@ void UsesExtractor::extractFromAssign(std::shared_ptr<AssignNode> node) {
 //
 //////////////////////////////
 
-void UsesExtractor::insertMultipleVars(std::unordered_set<std::string> vars,
+void UsesExtractor::InsertMultipleVars(std::unordered_set<std::string> vars,
                                        std::string stmtIndex) {
   for (std::string var : vars) {
     pkb.insertRelation(RelationType::USES_S, stmtIndex, var);
-    insertVarWithActors(var);
+    InsertVarWithActors(var);
   }
 }
 
-void UsesExtractor::insertVarWithActors(std::string var) {
+void UsesExtractor::InsertVarWithActors(std::string var) {
   for (std::string usesActor : actors) {
     bool isStmtIndex =
         !usesActor.empty() &&

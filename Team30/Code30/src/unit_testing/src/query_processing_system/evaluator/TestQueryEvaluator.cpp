@@ -2,9 +2,9 @@
 
 #include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../../spa/src/query_processing_system/common/FollowsClause.h"
+#include "../../../../spa/src/query_processing_system/common/WithClause.h"
 #include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
-#include "../../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
 
@@ -32,10 +32,12 @@ TEST_CASE("Test Query Evaluator") {
   std::shared_ptr<Clause> follows_clause;
   std::shared_ptr<TreeNode> rhs_expr = std::make_shared<TreeNode>("", nullptr, nullptr);
   std::shared_ptr<Clause> pattern_clause;
+  std::shared_ptr<Clause> with_clause;
   std::vector<std::vector<std::string>> result;
 
-  auto negation_clause =
+  auto negation_follows_clause =
       QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
+  std::shared_ptr<Clause> negation_with_clause = std::make_shared<WithClause>(2, 20);
 
   SECTION("Evaluate boolean query") {
     // bool query with no clauses is true
@@ -53,7 +55,7 @@ TEST_CASE("Test Query Evaluator") {
 
   SECTION("Evaluate query with one decl that is not in the clauses") {
     result = qe.EvaluateQuery({a_attr_ref}, {});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
+    REQUIRE(ArrayUtility::FlattenVector(result) == pkb.getAllOfTypeValues);
 
     // negated by clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(2), StmtRef());
@@ -63,16 +65,16 @@ TEST_CASE("Test Query Evaluator") {
     // clause has values
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(), StmtRef());
     result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.getAllOfTypeValues);
+    REQUIRE(ArrayUtility::FlattenVector(result) == pkb.getAllOfTypeValues);
   }
 
   SECTION("Evaluate query with one decl, decl also in clauses") {
     // output values should follow existing clauses
     follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(a), StmtRef(1));
     result = qe.EvaluateQuery({a_attr_ref}, {follows_clause});
-    REQUIRE(ArrayUtility::flattenVector(result) == pkb.synonymValueValues);
+    REQUIRE(ArrayUtility::FlattenVector(result) == pkb.synonymValueValues);
     // Addition of empty clause -> no results
-    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause, negation_clause});
+    result = qe.EvaluateQuery({a_attr_ref}, {follows_clause, negation_follows_clause});
     REQUIRE(result.empty());
   }
 
@@ -88,7 +90,7 @@ TEST_CASE("Test Query Evaluator") {
 
     // Addition of empty clause -> no results
 
-    result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_clause});
+    result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)}, {follows_clause, pattern_clause, negation_follows_clause});
     REQUIRE(result.empty());
   }
 
@@ -103,7 +105,15 @@ TEST_CASE("Test Query Evaluator") {
     REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
 
     // No results case
-    result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_clause});
+    result = qe.EvaluateQuery({attr_ref, AttrRef(if_decl), attr_ref}, {follows_clause, negation_with_clause});
     REQUIRE(result.empty());
+  }
+
+  SECTION("Evaluate query with a WithClause") {
+    with_clause = std::make_shared<WithClause>(3, AttrRef(print));
+    result = qe.EvaluateQuery({AttrRef(print), AttrRef(print, AttrType::VAR_NAME)}, {with_clause});
+    std::vector<std::vector<std::string>> expected_result = {
+        {"alpha","a"},{"beta","a"}, {"delta","a"}};
+    REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
   }
 }

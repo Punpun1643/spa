@@ -24,11 +24,11 @@ class PqlReference {
  public:
   virtual ~PqlReference();
 
-  PqlRefType getRefType() const;
+  PqlRefType GetRefType() const;
 
-  std::string getValue() const;
+  std::string GetValue() const;
 
-  PqlDeclaration getDeclaration() const;
+  PqlDeclaration GetDeclaration() const;
 
-  EntityType getDeclarationType() const;
+  EntityType GetDeclarationType() const;
 };

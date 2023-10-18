@@ -3,11 +3,11 @@
 
 TEST_CASE("Successful insert and retrieval") {
   EntityDatabase db = EntityDatabase();
-  db.insert(EntityType::PROCEDURE, "main");
-  db.insert(EntityType::IF, "1");
-  db.insert(EntityType::CALL, "2");
-  db.insert(EntityType::WHILE, "3");
-  db.insert(EntityType::CALL, "5");
+  db.InsertEntity(EntityType::PROCEDURE, "main");
+  db.InsertEntity(EntityType::IF, "1");
+  db.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "2", "sub");
+  db.InsertEntity(EntityType::WHILE, "3");
+  db.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "5", "sub");
 
   REQUIRE(db.get(EntityType::PROCEDURE)->size() == 1);
   REQUIRE(db.get(EntityType::CALL)->size() == 2);
