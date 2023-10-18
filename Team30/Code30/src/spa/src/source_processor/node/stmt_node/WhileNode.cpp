@@ -12,7 +12,7 @@ WhileNode::WhileNode(int stmtIndex, StmtType stmtType,
 void WhileNode::Accept(IDesignExtractor& designExtractor) {
   auto thisWhileNodePtr =
       std::dynamic_pointer_cast<WhileNode>(shared_from_this());
-  designExtractor.extractFromWhile(thisWhileNodePtr);
+  designExtractor.ExtractFromWhile(thisWhileNodePtr);
 }
 
 std::shared_ptr<CondExprNode> WhileNode::GetCondExpr() { return condExprNode; }

@@ -1,0 +1,89 @@
+procedure p1 {
+
+print v1;
+print v2;
+print v3;
+
+while (v3 == 3) {
+   v3 = v4 + v4;
+   v5 = v1 + v4;
+   v6 = v2 + v1; 
+} 
+
+read v4;
+call p2;
+read v5;
+
+
+if (v5 != 5) then {
+  v1 = 8 * 2;
+  v2 = v3 / v7;
+} else {
+  call p3;
+  v6 = v2 * v3;
+}
+
+print v7;
+
+}
+
+procedure p2 {
+
+  read v8;
+  read v9;
+  print v10;
+
+  if ((!(v9 < v8))) then {
+    print v8;
+  } else {
+
+    if (v9 == 0) then {
+      v7 = v5 + v4 + v3;
+
+      if (v8 == (v9 + v10)) then {
+        call p4;
+      } else {
+        v10 = v8 / v8; 
+      }
+
+    } else {
+      print v9;
+    } 
+    
+    print v4;
+  }
+
+  call p3;
+}
+
+
+procedure p3 {
+
+  v11 = v12 % v13;
+
+  while (v11 < 10) {
+    print v11;
+    read v11;
+    while (v12 >= v8) {
+      read v13;
+      print v12;
+    }
+  }
+
+  v13 = v10 + v1;
+}
+
+procedure p4 {
+  while (v11 < 8) {
+
+    if (v10 > 9) then {
+      read v9;
+    } else {
+      read v10;
+    }
+  
+    v7 = v8 - v9 * v10;
+  }
+  
+  print v11;
+}

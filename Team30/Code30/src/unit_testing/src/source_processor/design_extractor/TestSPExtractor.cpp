@@ -16,7 +16,7 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_1();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 8);
   }
@@ -47,13 +47,42 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
   SECTION("Pattern extraction functionality") {
     REQUIRE(pkb.insertPatternCallCount == 2);
   }
+  SECTION("CFG node insertion functionality") {
+    REQUIRE(pkb.insertCFGCallCount == 13);
+    REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("2", {"1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {"5"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
+     REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6", "8"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("5", {"4", "7"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("6", {"7"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("6", {"5"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("7", {"5", "8"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("7", {"6"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("8", {"9", "11"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("8", {"5", "7"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("9", {"10"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("9", {"8"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("10", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("10", {"9"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("11", {"12"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("11", {"8"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("12", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("12", {"11"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("13", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("13", {}));
+  }
 }
 
 TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_2();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 1);
   }
@@ -83,13 +112,24 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   SECTION("Pattern extraction functionality") {
     REQUIRE(pkb.insertPatternCallCount == 0);
   }
+  SECTION("CFG node insertion functionality") {
+    REQUIRE(pkb.insertCFGCallCount == 4);
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {"2", "4"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("2", {"1", "4"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3", "1"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {"2", "1"}));
+  }
 }
 
 TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_3();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 2);
   }
@@ -119,6 +159,18 @@ TEST_CASE("AST 3: Basic SPA, 2 procedures") {
   SECTION("Pattern extraction functionality") {
     REQUIRE(pkb.insertPatternCallCount == 0);
   }
+  SECTION("CFG node insertion functionality") {
+    REQUIRE(pkb.insertCFGCallCount == 4);
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("2", {"1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("3", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {}));
+
+  }
 }
 
 TEST_CASE(
@@ -127,7 +179,7 @@ TEST_CASE(
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_4();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 1);
   }
@@ -157,6 +209,25 @@ TEST_CASE(
   SECTION("Pattern extraction functionality") {
     REQUIRE(pkb.insertPatternCallCount == 1);
   }
+  SECTION("CFG node insertion functionality") {
+    REQUIRE(pkb.insertCFGCallCount == 8);
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2", "7"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("2", {"1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4", "5"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("5", {"3", "6"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("6", {"5"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("6", {"5"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("7", {"1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("7", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("8", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("8", {}));
+  }
 }
 
 // Hardcoded pkb stub returns not really working for this
@@ -164,7 +235,7 @@ TEST_CASE("AST 5: Three procedures, nested calls") {
   PKBSPStub pkb = PKBSPStub();
   std::shared_ptr<ProgramNode> ast = ManualASTBuilder::getAST_5();
   ExtractionController ec = ExtractionController(pkb);
-  ec.executeProgramExtraction(ast);
+  ec.ExecuteProgramExtraction(ast);
   SECTION("Follows extraction functionality") {
     REQUIRE(pkb.insertFollowsCallCount == 0);
   }
@@ -195,5 +266,16 @@ TEST_CASE("AST 5: Three procedures, nested calls") {
   }
   SECTION("Pattern extraction functionality") {
     REQUIRE(pkb.insertPatternCallCount == 1);
+  }
+  SECTION("CFG node insertion functionality") {
+    REQUIRE(pkb.insertCFGCallCount == 4);
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("1", {}));
+    REQUIRE(pkb.checkCFGNodeIncoming("2", {"3"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"2"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("4", {}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {}));
   }
 }

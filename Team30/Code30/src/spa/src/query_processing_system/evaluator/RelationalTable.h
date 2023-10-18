@@ -15,19 +15,19 @@ class RelationalTable {
   std::vector<std::vector<std::string>> table;
   std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> column_mapping;
 
-  std::vector<PqlDeclaration> getSharedColumns(
+  std::vector<PqlDeclaration> GetSharedColumns(
       RelationalTable& other_table) const;
-  std::vector<std::pair<PqlDeclaration, int>> getRenumberedColsAfterRemoval(
+  std::vector<std::pair<PqlDeclaration, int>> GetRenumberedColsAfterRemoval(
       std::vector<PqlDeclaration> const& to_remove) const;
 
-  bool checkIfRowsMatch(
+  bool CheckIfRowsMatch(
       std::vector<std::string> const& row,
       std::vector<std::string> const& other_row,
       std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> const&
           other_row_idx_mappings,
       std::vector<PqlDeclaration> const& values_to_compare) const;
 
-  static std::vector<std::string> getCombinedRows(
+  static std::vector<std::string> GetCombinedRows(
       std::vector<std::string> const& row_1,
       std::vector<std::string> const& row_2,
       std::unordered_set<int> const& skipped_idx_in_row_2);
@@ -39,14 +39,14 @@ class RelationalTable {
                   std::vector<std::string> const& d1_values,
                   std::vector<std::string> const& d2_values);
 
-  std::vector<std::vector<std::string>> getTableCols(
+  std::vector<std::vector<std::string>> GetTableCols(
       std::vector<PqlDeclaration> const& decls) const;
 
-  bool hasNoResults() const;
+  bool HasNoResults() const;
 
-  std::vector<PqlDeclaration> getTableColNames() const;
+  std::vector<PqlDeclaration> GetTableColNames() const;
 
-  int getNumCols() const;
+  int GetNumCols() const;
 
-  void join(RelationalTable& other_table, bool allow_cross_product = false);
+  void Join(RelationalTable& other_table, bool allow_cross_product = false);
 };
