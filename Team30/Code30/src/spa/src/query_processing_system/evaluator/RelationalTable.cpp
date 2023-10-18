@@ -29,7 +29,7 @@ RelationalTable::RelationalTable(PqlDeclaration const& d1,
   }
 }
 
-std::vector<std::vector<std::string>> RelationalTable::getTableCols(
+std::vector<std::vector<std::string>> RelationalTable::GetTableCols(
     std::vector<PqlDeclaration> const& decls) const {
   assert(!decls.empty());
   for (auto& d : decls) {
@@ -45,11 +45,11 @@ std::vector<std::vector<std::string>> RelationalTable::getTableCols(
     }
     output.push_back(output_row);
   }
-  ArrayUtility::removeDuplicates(output);
+  ArrayUtility::RemoveDuplicates(output);
   return output;
 }
 
-std::vector<PqlDeclaration> RelationalTable::getSharedColumns(
+std::vector<PqlDeclaration> RelationalTable::GetSharedColumns(
     RelationalTable& other_table) const {
   std::vector<PqlDeclaration> shared_cols = {};
   for (auto const& [key, value] : other_table.column_mapping) {
@@ -60,24 +60,24 @@ std::vector<PqlDeclaration> RelationalTable::getSharedColumns(
   return shared_cols;
 }
 
-int RelationalTable::getNumCols() const { return (int)column_mapping.size(); }
+int RelationalTable::GetNumCols() const { return (int)column_mapping.size(); }
 
-bool RelationalTable::checkIfRowsMatch(
+bool RelationalTable::CheckIfRowsMatch(
     std::vector<std::string> const& row,
     std::vector<std::string> const& other_row,
     std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> const&
-        other_table_idx_mappings,
-    std::vector<PqlDeclaration> const& cols_to_compare) const {
+        other_row_idx_mappings,
+    std::vector<PqlDeclaration> const& values_to_compare) const {
   bool all_match = true;
-  for (auto& value : cols_to_compare) {
+  for (auto& value : values_to_compare) {
     auto row_idx = column_mapping.at(value);
-    auto other_row_idx = other_table_idx_mappings.at(value);
+    auto other_row_idx = other_row_idx_mappings.at(value);
     all_match = all_match && (row[row_idx] == other_row[other_row_idx]);
   }
   return all_match;
 }
 
-std::vector<std::string> RelationalTable::getCombinedRows(
+std::vector<std::string> RelationalTable::GetCombinedRows(
     std::vector<std::string> const& row_1,
     std::vector<std::string> const& row_2,
     std::unordered_set<int> const& skipped_idx_in_row_2) {
@@ -100,7 +100,7 @@ std::vector<std::string> RelationalTable::getCombinedRows(
 }
 
 std::vector<std::pair<PqlDeclaration, int>>
-RelationalTable::getRenumberedColsAfterRemoval(
+RelationalTable::GetRenumberedColsAfterRemoval(
     std::vector<PqlDeclaration> const& to_remove) const {
   /**
    * Removes the given columns from the table, and returns the newly renumbered
@@ -128,13 +128,13 @@ RelationalTable::getRenumberedColsAfterRemoval(
   return table_mapping_vector;
 }
 
-void RelationalTable::join(RelationalTable& other_table,
+void RelationalTable::Join(RelationalTable& other_table,
                            bool allow_cross_product) {
   /**
    * Joins this table with the given table by all shared columns
    */
   // get shared columns
-  auto shared_cols = getSharedColumns(other_table);
+  auto shared_cols = GetSharedColumns(other_table);
   if (!allow_cross_product) {
     assert(!shared_cols.empty());  // block doing a cross-product
   }
@@ -143,7 +143,7 @@ void RelationalTable::join(RelationalTable& other_table,
   // For every pair of rows
   for (auto const& this_row : table) {
     for (auto const& other_row : other_table.table) {
-      bool all_match = checkIfRowsMatch(
+      bool all_match = CheckIfRowsMatch(
           this_row, other_row, other_table.column_mapping, shared_cols);
       if (!all_match) {
         continue;  // skip this one
@@ -153,23 +153,23 @@ void RelationalTable::join(RelationalTable& other_table,
       for (auto& shared_col : shared_cols) {
         row_idx_to_avoid.insert(other_table.column_mapping[shared_col]);
       }
-      auto new_row = getCombinedRows(this_row, other_row, row_idx_to_avoid);
+      auto new_row = GetCombinedRows(this_row, other_row, row_idx_to_avoid);
       new_table.push_back(new_row);
     }
   }
   table = new_table;
 
   // Update column mappings
-  auto renumbered_cols = other_table.getRenumberedColsAfterRemoval(shared_cols);
-  int original_num_cols = getNumCols();
+  auto renumbered_cols = other_table.GetRenumberedColsAfterRemoval(shared_cols);
+  int original_num_cols = GetNumCols();
   for (auto& [decl, idx] : renumbered_cols) {
     column_mapping[decl] = original_num_cols + idx;
   }
 }
 
-bool RelationalTable::hasNoResults() const { return table.empty(); }
+bool RelationalTable::HasNoResults() const { return table.empty(); }
 
-std::vector<PqlDeclaration> RelationalTable::getTableColNames() const {
+std::vector<PqlDeclaration> RelationalTable::GetTableColNames() const {
   std::vector<PqlDeclaration> table_col_names;
   for (auto& [key, value] : column_mapping) {
     table_col_names.push_back(key);

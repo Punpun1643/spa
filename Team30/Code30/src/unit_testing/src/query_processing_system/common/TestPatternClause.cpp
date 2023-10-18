@@ -23,36 +23,36 @@ TEST_CASE("Pattern clauses") {
   SECTION("decl, wild") {
     auto pattern_clause = PatternClause(
         a, EntRef(v), MatchType::WILD_MATCH, rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
+    auto result = pattern_clause.Evaluate(pkb);
     REQUIRE(pkb.last_match_type_passed == MatchType::WILD_MATCH);
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
     REQUIRE(pkb.patternDeclCalls == 1);
-    auto values = result->getValues(a);
+    auto values = result->GetValues(a);
     REQUIRE(*values == pkb.patternDeclValues1);
-    values = result->getValues(v);
+    values = result->GetValues(v);
     REQUIRE(*values == pkb.patternDeclValues2);
   }
 
   SECTION("value, partial") {
     auto pattern_clause = PatternClause(
         a, EntRef("varName"), MatchType::PARTIAL_MATCH, rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
+    auto result = pattern_clause.Evaluate(pkb);
     REQUIRE(pkb.last_match_type_passed == MatchType::PARTIAL_MATCH);
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
     REQUIRE(pkb.last_value_passed == "varName");
     REQUIRE(pkb.patternValueCalls == 1);
-    auto values = result->getValues(a);
+    auto values = result->GetValues(a);
     REQUIRE(*values == pkb.patternValueValues);
   }
 
   SECTION("wild, exact") {
     auto pattern_clause = PatternClause(
         a, EntRef(), MatchType::EXACT_MATCH, empty_rhs_expr);
-    auto result = pattern_clause.evaluate(pkb);
+    auto result = pattern_clause.Evaluate(pkb);
     REQUIRE(pkb.last_match_type_passed == MatchType::EXACT_MATCH);
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, empty_rhs_expr));
     REQUIRE(pkb.patternWildCalls == 1);
-    auto values = result->getValues(a);
+    auto values = result->GetValues(a);
     REQUIRE(*values == pkb.patternWildValues);
   }
 

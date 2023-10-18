@@ -15,5 +15,5 @@ class PatternClause : public Clause {
                 MatchType rhs_expr_match_type,
                 std::shared_ptr<TreeNode> rhs_expr);
 
-  std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
 };

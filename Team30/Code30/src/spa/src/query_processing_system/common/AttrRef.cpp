@@ -48,7 +48,7 @@ AttrRef::AttrRef(PqlDeclaration decl, AttrType attr_type)
 }
 
 bool AttrRef::IsAttrTypeAnAlias() const {
-  auto entity_type = decl.getEntityType();
+  auto entity_type = decl.GetEntityType();
   return (ATTR_TYPE_ALIASES.count(entity_type) == 1 &&
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
@@ -60,8 +60,13 @@ std::string AttrRef::GetAliasFromDefault(
    * the alias type of the AttrRef. Otherwise, does nothing to the value.
    */
   if (IsAttrTypeAnAlias()) {
+<<<<<<< HEAD
     return pkb.ConvertEntityValueToAlias(default_value, decl.getEntityType(),
                                          GetDefaultAttrType(), attr_type);
+    == == == = return pkb.ConvertEntityValueToAlias(
+                 default_value, decl.GetEntityType(), GetDefaultAttrType(),
+                 attr_type);
+>>>>>>> c97bc35e5d3bce9f924ab122c856b96426c25abf
   } else {
     return default_value;
   }
@@ -70,7 +75,7 @@ std::string AttrRef::GetAliasFromDefault(
 PqlDeclaration AttrRef::GetDecl() const { return decl; }
 
 AttrType AttrRef::GetDefaultAttrType() const {
-  return DEFAULT_ATTR_TYPE.at(decl.getEntityType());
+  return DEFAULT_ATTR_TYPE.at(decl.GetEntityType());
 }
 
 AttrRefOutputType AttrRef::GetOutputType() const {
@@ -78,6 +83,6 @@ AttrRefOutputType AttrRef::GetOutputType() const {
   return OUTPUT_TYPE_MAPPING.at(attr_type);
 }
 
-EntityType AttrRef::GetEntityType() const { return decl.getEntityType(); }
+EntityType AttrRef::GetEntityType() const { return decl.GetEntityType(); }
 
 AttrType AttrRef::GetAttrType() const { return attr_type; }

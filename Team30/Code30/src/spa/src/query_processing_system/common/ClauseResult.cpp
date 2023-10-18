@@ -55,26 +55,26 @@ ClauseResult::ClauseResult(
   }
 }
 
-int ClauseResult::getNumDeclarations() const { return num_declarations; }
+int ClauseResult::GetNumDeclarations() const { return num_declarations; }
 
-bool ClauseResult::isBooleanResult() const { return num_declarations == 0; }
+bool ClauseResult::IsBooleanResult() const { return num_declarations == 0; }
 
-bool ClauseResult::getBooleanClauseValue() const {
-  assert(isBooleanResult());
+bool ClauseResult::GetBooleanClauseValue() const {
+  assert(IsBooleanResult());
   return boolean_clause_value;
 }
 
-bool ClauseResult::contains(PqlDeclaration const& d) const {
+bool ClauseResult::Contains(PqlDeclaration const& d) const {
   return value_map.count(d) == 1;
 }
 
-std::vector<PqlDeclaration> ClauseResult::getDeclarations() const {
+std::vector<PqlDeclaration> ClauseResult::GetDeclarations() const {
   std::vector<PqlDeclaration> output = {};
   for (auto const& [key, value] : value_map) output.push_back(key);
   return output;
 }
 
-std::unique_ptr<std::vector<std::string>> ClauseResult::getValues(
+std::unique_ptr<std::vector<std::string>> ClauseResult::GetValues(
     PqlDeclaration const& declaration) const {
   if (value_map.count(declaration) == 0) {
     throw std::invalid_argument("Given declaration does not exist.");

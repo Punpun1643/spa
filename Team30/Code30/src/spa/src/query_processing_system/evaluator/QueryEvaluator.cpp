@@ -9,9 +9,9 @@ QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 void QueryEvaluator::PopulateIntermediateResultsTable(
     IntermediateResultsTable& table, ClauseList clauses) {
   for (auto& clause : clauses) {
-    auto clause_result = clause->evaluate(pkb);
-    table.addClauseResult(*clause_result);
-    if (table.hasNoResults()) {
+    auto clause_result = clause->Evaluate(pkb);
+    table.AddClauseResult(*clause_result);
+    if (table.HasNoResults()) {
       break;  // no point continuing
     }
   }
@@ -20,7 +20,7 @@ void QueryEvaluator::PopulateIntermediateResultsTable(
 bool QueryEvaluator::EvaluateQuery(ClauseList clauses) {
   auto table = IntermediateResultsTable();
   PopulateIntermediateResultsTable(table, clauses);
-  return !table.hasNoResults();
+  return !table.HasNoResults();
 }
 
 std::vector<PqlDeclaration> QueryEvaluator::UnwrapAttrRefVector(std::vector<AttrRef> const& attr_refs) {
@@ -34,7 +34,7 @@ std::vector<PqlDeclaration> QueryEvaluator::UnwrapAttrRefVector(std::vector<Attr
 void QueryEvaluator::FillMissingDecls(IntermediateResultsTable& table, std::vector<PqlDeclaration> const& decls_to_check) {
   std::vector<std::shared_ptr<Clause>> missing_decl_clauses = {};
   for (auto const& decl : decls_to_check) {
-    if (!table.hasDeclaration(decl)) {
+    if (!table.HasDeclaration(decl)) {
       auto select_all_clause = std::make_shared<SelectAllClause>(decl);
       missing_decl_clauses.push_back(select_all_clause);
     }
@@ -83,12 +83,12 @@ std::vector<std::vector<std::string>> QueryEvaluator::EvaluateQuery(
 
   std::vector<PqlDeclaration> selected_decls = UnwrapAttrRefVector(selected_attr_refs);
   FillMissingDecls(table, selected_decls);
-  auto values = table.getValuesGivenDeclarations(selected_decls);
+  auto values = table.GetValuesGivenDeclarations(selected_decls);
 
   // Some of the attr_refs might be asking for alternative attrTypes
   bool is_modified = UpdateResultUsingAttrTypes(values, selected_attr_refs);
   if (is_modified) {
-    ArrayUtility::removeDuplicates(values);
+    ArrayUtility::RemoveDuplicates(values);
   }
   return values;
 }
