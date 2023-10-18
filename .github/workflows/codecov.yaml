@@ -21,7 +21,7 @@ jobs:
       - name: Build with Cmake
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30
         run: |
-          mkdir build
+          mkdir -p build
           cd build
           cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" ..
 
