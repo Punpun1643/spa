@@ -27,6 +27,11 @@ void Context::AddSuchThatClause(
   this->such_that_clauses.push_back(such_that_clause);
 }
 
+void Context::AddWithClause(
+    std::shared_ptr<WithClause> with_clause) {
+  this->with_clauses.push_back(with_clause);
+}
+
 PqlDeclaration Context::GetDeclaration(std::string synonym) {
   return this->declarations.at(synonym);
 }
@@ -41,5 +46,7 @@ std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
                        this->such_that_clauses.end());
   other_clauses.insert(other_clauses.end(), this->pattern_clauses.begin(),
                        this->pattern_clauses.end());
+  other_clauses.insert(other_clauses.end(), this->with_clauses.begin(),
+                       this->with_clauses.end());
   return other_clauses;
 }

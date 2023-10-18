@@ -2,10 +2,12 @@
 
 #include <unordered_map>
 
+#include "../common/AttrType.h"
 #include "../common/Clause.h"
 #include "../common/EntRef.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
+#include "../common/WithClause.h"
 #include "../context/Context.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
@@ -63,6 +65,8 @@ class QueryInterpreter {
   bool IsSynonym(std::string const& argument);
   bool IsValidRelArg(std::string const& argument);
   bool IsWildcard(std::string const& argument);
+  AttrType StringToAttrType(std::string const& string);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
   std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
+  std::variant<int, std::string, AttrRef> StringToWithRef(std::string const& string);
 };

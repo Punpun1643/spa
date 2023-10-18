@@ -179,8 +179,13 @@ void QueryInterpreter::Interpret(
 
 void QueryInterpreter::Interpret(
     std::shared_ptr<WithExpression> with_expression) {
-  std::string first_ref = with_expression->GetArg1();
-  std::string second_ref = with_expression->GetArg2();
+  std::string arg1 = with_expression->GetArg1();
+  std::string arg2 = with_expression->GetArg2();
+  std::variant<int, std::string, AttrRef> ref1 = StringToWithRef(arg1);
+  std::variant<int, std::string, AttrRef> ref2 = StringToWithRef(arg2);
+  this->context->AddWithClause(std::make_shared<WithClause>(
+        ref1, ref2));
+  this->InterpretNext(with_expression);
 }
 
 void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
@@ -283,6 +288,20 @@ bool QueryInterpreter::IsWildcard(std::string const& argument) {
   return argument == "_";
 }
 
+AttrType QueryInterpreter::StringToAttrType(
+    std::string const& string) {
+  if (string == "stmt#") {
+    return AttrType::STMT_NUM;
+  } else if (string == "PROC_NAME") {
+    return AttrType::PROC_NAME;
+  } else if (string == "VAR_NAME") {
+    return AttrType::VAR_NAME;
+  } else if (string == "VALUE") {
+    return AttrType::VALUE;
+  }
+  throw std::invalid_argument("Failed conversion of string to attr type in QueryInterpreter");
+}
+
 std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
     std::string const& string) {
   if (IsSynonym(string)) {
@@ -308,5 +327,18 @@ std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
     return std::make_unique<StmtRef>(stoi(string));
   } else {
     throw InvalidSyntaxException("Invalid string to be converted into StmtRef");
+  }
+}
+
+std::variant<int, std::string, AttrRef> QueryInterpreter::StringToWithRef(std::string const& string) {
+  if (IsQuotedIdentifier(string)) {
+    return string.substr(1, string.size() - 2);
+  } else if (IsInteger(string)) {
+    return stoi(string);
+  } else {
+    PqlDeclaration declaration = GetMappedDeclaration(string.substr(0, string.find(".")));
+    string.erase(0, string.find(".") + 1  );
+    AttrType attr_type = StringToAttrType(string);
+    return AttrRef(declaration, attr_type);
   }
 }
