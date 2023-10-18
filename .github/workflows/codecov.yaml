@@ -35,7 +35,7 @@ jobs:
 
       - name: Set up environment for coverage
         run: |
-          export LLVM_PROFILE_FILE="${{ runner.workspace }}/default.profraw"    
+          export LLVM_PROFILE_FILE="${{ runner.workspace }}/default.profraw" >> $GITHUB_ENV  
 
       - name: Run unit test
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
@@ -44,25 +44,16 @@ jobs:
 
       - name: Generate codecov report
         run: |
-          llvm-profdata merge -sparse default.profraw -o code_coverage.profdata
-          llvm-cov show ./unit_testing -instr-profile=default.profdata > coverage.txt
-
-#      - name: Export codecov report
-#        run: |
-#          llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
-#          llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
-
+          llvm-profdata merge -sparse ${{ runner.workspace }}/default.profraw -o code_coverage.profdata
+          llvm-cov show /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/unit_testing -instr-profile=code_coverage.profdata > coverage.txt
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/lcov.info
+          file: ./coverage.txt  # Adjusting to the correct file
           flags: unittests
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing  # If the file is relative to this path
 
 
 
