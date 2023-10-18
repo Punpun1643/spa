@@ -39,7 +39,8 @@ jobs:
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
           llvm-profdata merge -sparse default.profraw -o code_coverage.profdata
-          llvm-cov export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=default.profdata ./unit_testing > coverage.info
+          llvm-cov show ./unit_testing -instr-profile=default.profdata
+#          llvm-cov export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=default.profdata ./unit_testing > coverage.info
 
 #      - name: Generate codecov report
 #        run: |
