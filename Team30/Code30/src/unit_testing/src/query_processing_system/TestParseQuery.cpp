@@ -559,3 +559,146 @@ TEST_CASE("Next queries") {
     controller.TokensToClauses(tokens);
   }
 }
+
+TEST_CASE("With queries") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("procedure p, q; Select p such that Calls (p, q) with q.procName = \"hello\"") {
+    AddDeclaration(tokens, "procedure", {"p", "q"});
+    AddWordVector(tokens, {"Select", "p", "such", "that", "Calls"});
+    AddWordWord(tokens, "p", "q");
+    AddWordVector(tokens, {"with", "q"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"hello"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("stmt s; constant c; Select s with s.stmt# = c.value") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddDeclaration(tokens, "constant", {"c"});
+    AddWordVector(tokens, {"Select", "s", "with", "s"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#", "="});
+    AddWordVector(tokens, {"c"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"value"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("procedure p; variable v; Select p with p.procName = v.varName") {
+    AddDeclaration(tokens, "procedure", {"p"});
+    AddDeclaration(tokens, "variable", {"v"});
+    AddWordVector(tokens, {"Select", "p", "with", "p"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddSpecialCharVector(tokens, {"="});
+    AddWordVector(tokens, {"v"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"varName"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("procedure p, q; variable v; stmt s; assign stmt; constant c; Select s with s.stmt# = c.value and p.procName = v.varName such that Calls (p, q) and Uses (s, v) pattern stmt (_, _) with q.procName = \"hello\"") {
+    AddDeclaration(tokens, "procedure", {"p", "q"});
+    AddDeclaration(tokens, "variable", {"v"});
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddDeclaration(tokens, "assign", {"stmt"});
+    AddDeclaration(tokens, "constant", {"c"});
+    AddWordVector(tokens, {"Select", "s", "with", "s"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#", "="});
+    AddWordVector(tokens, {"c"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"value", "and", "p"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddSpecialCharVector(tokens, {"="});
+    AddWordVector(tokens, {"v"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"varName", "such", "that", "Calls"});
+    AddWordWord(tokens, "p", "q");
+    AddWordVector(tokens, {"and", "Uses"});
+    AddWordWord(tokens, "s", "v");
+    AddWordVector(tokens, {"pattern", "stmt"});
+    AddWildWild(tokens);
+    AddWordVector(tokens, {"with", "q"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"hello"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with 5 = 5") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with"});
+    AddIntVector(tokens, {"5"});
+    AddSpecialCharVector(tokens, {"="});
+    AddIntVector(tokens, {"5"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with \"abc\" = \"abc\"") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddWordVector(tokens, {"abc"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddSpecialCharVector(tokens, {"="});
+    AddSpecialCharVector(tokens, {"\""});
+    AddWordVector(tokens, {"abc"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with s.stmt# = 20000 such that Follows (5, s)") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with", "s"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#", "="});
+    AddIntVector(tokens, {"20000"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddIntWord(tokens, "5", "s");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with 5 = \"s\"") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with"});
+    AddIntVector(tokens, {"5"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"s"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+  SECTION("procedure p; Select p with 5 = p.procName") {
+    AddDeclaration(tokens, "proedure", {"p"});
+    AddWordVector(tokens, {"Select", "p", "with"});
+    AddIntVector(tokens, {"5"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"p"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+}

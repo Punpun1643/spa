@@ -32,6 +32,7 @@ class QpParser : public AParser {
   static std::string const SELECT;
   static std::string const SUCH;
   static std::string const USES;
+  static std::string const WITH;
 
   virtual ~QpParser() = default;
 
@@ -40,9 +41,10 @@ class QpParser : public AParser {
   bool IsQuotedIdentifier(std::string const& name);
   bool IsStmtRef(std::string const& name);
   bool IsIdentifier(std::string const& name);
+  bool IsRelRef(std::string const& name);
   bool IsSynonym(std::string const& name);
   bool IsTransitiveRelRef(std::string const& name);
-  bool IsRelRef(std::string const& name);
+  bool IsValidInteger(std::string const& int_string);
   bool IsWildcard(std::string const& name);
   AttrType GetDefaultAttrTypeFromEntityType(EntityType entity_type);
   AttrType StringToAttrType(std::string const& string);

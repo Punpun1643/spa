@@ -17,7 +17,7 @@ class SyntaxChecker : public QpParser {
   ~SyntaxChecker() = default;
 
  private:
-  enum class ClauseType { such_that, pattern };
+  enum class ClauseType { such_that, pattern, with };
 
   // Checkers
   void CheckAnd(ClauseType clause_type);
@@ -36,6 +36,7 @@ class SyntaxChecker : public QpParser {
   void CheckSelectSingle();
   void CheckSuchThat(bool has_and);
   void CheckUses();
+  void CheckWith(bool has_and);
 
   // Helpers
   EntityType CheckCurrentTokenPatternEntity();
@@ -51,4 +52,5 @@ class SyntaxChecker : public QpParser {
                                     std::string not_existing_error_msg);
   void CheckUpcomingTokensAreQuotedExpr(std::string error_msg);
   void CheckUpcomingTokensAreValidAttrName();
+  void CheckUpcomingTokensAreWithRef();
 };
