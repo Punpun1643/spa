@@ -60,13 +60,8 @@ std::string AttrRef::GetAliasFromDefault(
    * the alias type of the AttrRef. Otherwise, does nothing to the value.
    */
   if (IsAttrTypeAnAlias()) {
-<<<<<<< HEAD
-    return pkb.ConvertEntityValueToAlias(default_value, decl.getEntityType(),
+    return pkb.ConvertEntityValueToAlias(default_value, decl.GetEntityType(),
                                          GetDefaultAttrType(), attr_type);
-    == == == = return pkb.ConvertEntityValueToAlias(
-                 default_value, decl.GetEntityType(), GetDefaultAttrType(),
-                 attr_type);
->>>>>>> c97bc35e5d3bce9f924ab122c856b96426c25abf
   } else {
     return default_value;
   }
