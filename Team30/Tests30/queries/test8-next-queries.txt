@@ -1,0 +1,70 @@
+1 - Next valid: Stmt to Stmt
+stmt s;
+Select s such that Next(s,3)
+2
+5000
+2 - Next valid: If control to if or else stmt
+stmt s;
+Select s such that Next(11, s) 
+12, 14
+5000
+3 - Next valid: While control to inside stmt or after while
+stmt s;
+Select s such that Next(4, s)
+5, 8
+5000
+4 - Next valid: Last stmt of while to while control
+stmt s;
+Select s such that Next(7, s)
+4
+5000
+5 - Next invalid: Last stmt of proc1 to first stmt of proc2
+stmt s;
+Select BOOLEAN such that Next(16,17)
+FALSE
+5000
+6 - Next valid: if stmt to after if container, not else stmt
+stmt s;
+Select s such that Next(13,s)
+16
+5000
+10 - Next valid: proc1 call -> following stmt in proc1, not proc2 stmt
+stmt s;
+Select s such that Next(9,s)
+10
+5000
+11 - Next syntax invalid: Cannot have string name in parameters
+stmt s;
+Select s such that Next("p1",s)
+SyntaxError
+5000
+12 - Next* valid: Stmt to Stmt (same proc)
+print pn;
+Select pn such that Next*(1,pn)
+2, 3, 16
+5000
+13 - Next* valid: if stmt -> else stmt -> else stmt
+stmt s; assign a;
+Select a such that Next*(20, a)
+23, 26
+5000
+14 - Next* valid: level 2 nested while -> level 1 nested while or prev stmt
+stmt s; 
+Select s such that Next*(s, 35)
+30, 31, 32, 33, 34, 35, 36
+5000
+15 - Next* valid: if stmt to else stmt in a while cont
+stmt s;
+Select BOOLEAN such that Next*(41, 40)
+TRUE
+5000
+16 - Next* invalid: stmt -> call -> call -> stmt 
+stmt s;
+Select BOOLEAN such that Next*(8, 38)
+FALSE
+5000
+17 - Next* syntax invalid: Cannot have string name in parameters
+stmt s;
+Select s such that Next*("p2", s)
+SyntaxError
+5000

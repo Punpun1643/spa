@@ -34,9 +34,12 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   PKB();
 
   // ********** SP **********
-  void insertEntity(EntityType type, std::string entity) override;
+  void InsertEntity(EntityType type, std::string value) override;
+  void InsertEntity(EntityType type, AttrType attr_type,
+                    std::string statement_number,
+                    std::string attribute) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
-                      std::string s2_line_num) override;
+                              std::string s2_line_num);
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,

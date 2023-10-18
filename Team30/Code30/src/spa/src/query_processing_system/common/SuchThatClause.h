@@ -16,30 +16,30 @@ class SuchThatClause : public Clause {
                  std::unique_ptr<PqlReference const> arg2,
                  RelationType relation_type);
 
-  virtual std::unique_ptr<ClauseResult> evaluateWildWild(PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateValueWild(PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateWildValue(PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateValueValue(
+  virtual std::unique_ptr<ClauseResult> EvaluateWildWild(PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> EvaluateValueWild(PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> EvaluateWildValue(PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> EvaluateValueValue(
       PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateDeclarationWild(
+  virtual std::unique_ptr<ClauseResult> EvaluateDeclarationWild(
       PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateWildDeclaration(
+  virtual std::unique_ptr<ClauseResult> EvaluateWildDeclaration(
       PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateDeclarationValue(
+  virtual std::unique_ptr<ClauseResult> EvaluateDeclarationValue(
       PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateValueDeclaration(
+  virtual std::unique_ptr<ClauseResult> EvaluateValueDeclaration(
       PKBQPSInterface& pkb);
-  virtual std::unique_ptr<ClauseResult> evaluateDeclarationDeclaration(
+  virtual std::unique_ptr<ClauseResult> EvaluateDeclarationDeclaration(
       PKBQPSInterface& pkb);
 
-  void checkDeclarationArgEntityType(
+  void CheckDeclarationArgEntityType(
       int arg_num, std::vector<EntityType> const& allowed_types,
       std::string const& error_msg);
-  void checkArgReferenceType(int arg_num,
+  void CheckArgReferenceType(int arg_num,
                              std::vector<PqlRefType> const& allowed_types,
                              std::string const& error_msg);
 
  public:
-  std::unique_ptr<ClauseResult> evaluate(PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
   virtual ~SuchThatClause();
 };
