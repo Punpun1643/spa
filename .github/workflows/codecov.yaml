@@ -19,24 +19,28 @@ jobs:
         run: |
           echo "PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH" >> $GITHUB_ENV
       - name: Build with Cmake
-        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30
+#        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30
         run: |
           mkdir -p build
           cd build
           cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" ..
 
       - name: Build unit test
-        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build
+#        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30/build
         run: |
           cmake --build . --target unit_testing
 
       - name: Run unit test
-        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+#        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
           ./unit_testing
 
       - name: Export Unit Testng Coverage Data
-        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+#        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+        working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
           llvm-profdata merge -sparse default.profraw -o default.profdata
           llvm-cov show ./unit_testing -instr-profile=default.profdata
@@ -48,7 +52,9 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.txt  # Adjusting to the correct file
           flags: unittests
-          working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing  # If the file is relative to this path
+#          working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+          working-directory: ${{runner.workspace}}/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+
 
 
 
