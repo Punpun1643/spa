@@ -31,9 +31,19 @@ std::string const QpParser::PARENT_STAR = "Parent*";
 std::string const QpParser::SELECT = "Select";
 std::string const QpParser::SUCH = "such";
 std::string const QpParser::USES = "Uses";
+std::string const QpParser::WITH = "with";
 
 bool QpParser::IsEntRef(std::string const& name) {
   return (IsSynonym(name) || IsWildcard(name) || IsQuotedIdentifier(name));
+}
+
+bool QpParser::IsInteger(std::string const& name) {
+  try {
+    stoi(name);
+  } catch(std::invalid_argument& e) {
+    return false;
+  }
+  return true;
 }
 
 bool QpParser::IsQuotedIdentifier(std::string const& name) {

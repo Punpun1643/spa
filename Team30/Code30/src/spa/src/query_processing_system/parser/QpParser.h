@@ -25,11 +25,13 @@ class QpParser : public AParser {
   static std::string const SELECT;
   static std::string const SUCH;
   static std::string const USES;
+  static std::string const WITH;
 
   virtual ~QpParser() = default;
 
  protected:
   bool IsEntRef(std::string const& name);
+  bool IsInteger(std::string const& string);
   bool IsQuotedIdentifier(std::string const& name);
   bool IsStmtRef(std::string const& name);
   bool IsIdentifier(std::string const& name);

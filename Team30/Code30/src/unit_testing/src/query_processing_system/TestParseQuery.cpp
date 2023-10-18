@@ -537,3 +537,24 @@ TEST_CASE("Next queries") {
     controller.TokensToClauses(tokens);
   }
 }
+
+TEST_CASE("With queries") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("procedure p, q; Select p such that Calls (p, q) with q.procName = \"hello\"") {
+    AddDeclaration(tokens, "procedure", {"p", "q"});
+    AddWordVector(tokens, {"Select", "p", "such", "that", "Calls"});
+    AddWordWord(tokens, "p", "q");
+    AddWordVector(tokens, {"with", "q"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"hello"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+}

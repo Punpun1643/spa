@@ -27,6 +27,7 @@
 #include "../expression/PatternExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
+#include "../expression/WithExpression.h"
 
 QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
                                    std::shared_ptr<AExpression> expression_tree)
@@ -176,6 +177,12 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(uses_expression);
 }
 
+void QueryInterpreter::Interpret(
+    std::shared_ptr<WithExpression> with_expression) {
+  std::string first_ref = with_expression->GetArg1();
+  std::string second_ref = with_expression->GetArg2();
+}
+
 void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
   std::optional<std::shared_ptr<AExpression>> next_expression =
       expression->GetNextExpression();
@@ -183,6 +190,7 @@ void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
     next_expression.value()->acceptInterpreter(*this);
   }
 }
+
 
 // ------- PRIVATE METHODS ----------
 

@@ -140,6 +140,10 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
       current_clause_expression =
           std::make_optional<std::shared_ptr<PatternExpression>>(
               this->CreatePatternExpression());
+    } else if (GetCurrTokenValue() == QpParser::WITH) {
+      current_clause_expression =
+        std::make_optional<std::shared_ptr<PatternExpression>>(
+            this->CreateWithExpression());
     }
     if (previous_clause_expression.has_value()) {
       previous_clause_expression.value()->SetNextExpression(
@@ -242,7 +246,7 @@ ExpressionTreeBuilder::CreateSuchThatExpression() {
 }
 
 std::shared_ptr<PatternExpression>
-ExpressionTreeBuilder ::CreatePatternExpression() {
+ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   bool is_first_run = true;
   std::shared_ptr<PatternExpression> pattern_expression_head;
   std::optional<std::shared_ptr<PatternExpression>> previous_pattern_expression;
@@ -319,4 +323,62 @@ ExpressionTreeBuilder ::CreatePatternExpression() {
     NextToken();  // and OR start of another clause OR EOF
   }
   return pattern_expression_head;
+}
+
+std::shared_ptr<WithExpression> CreateWithExpressionHead() {
+  bool is_first_run = true;
+  std::shared_ptr<WithExpression> with_expression_head;
+  std::optional<std::shared_ptr<WithExpression>> previous_with_expression;
+  std::optional<std::shared_ptr<WithExpression>> current_with_expression;
+
+  while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
+    if (GetCurrTokenValue() == QpParser::AND) {
+      NextToken(); // with
+    }
+
+    std::string first_ref = "";
+
+    while (GetCurrTokenValue() != "=") {
+      first_ref += GetCurrTokenValue();
+      NextToken(); // ref's component or '='
+    }
+
+    NextToken();
+
+    std::string second_ref = "";
+    if (GetCurrTokenValue() == "\"") {
+      second_ref += GetCurrTokenValue(); // "
+      second_ref += NextToken->getTokenValue(); // ident
+      second_ref += NextToken->getTokenValue(); // "
+    } else if (QpParser::IsInteger(GetCurrTokenValue())) {
+      second_ref += GetCurrTokenValue();
+    } else {
+      // is attrRef
+      second_ref += GetCurrTokenValue(); // synonym
+      second_ref += NextToken()->getTokenVal(); // .
+      std::string attrName = NextToken()->getTokenVal();
+      if (attrName == "stmt") {
+        attrName += NextToken()->getTokenVal(); // #
+      }
+      second_ref += attrName;
+    }
+
+    current_with_expression = std::make_optional<std::shared_ptr<WithExpression>>(
+        std::make_shared<WithExpression>(first_ref, second_ref)
+        );
+
+    if (previous_with_expression.has_value()) {
+      previous_with_expression.value()->SetNextExpression(current_with_expression);
+    }
+    previous_with_expression = current_with_expression;
+
+    if (is_first_run) {
+      with_expression_head = current_with_expression.value();
+    }
+
+    is_first_run = false;
+
+    NextToken();
+  }
+  return with_expression_head;
 }

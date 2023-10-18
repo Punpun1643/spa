@@ -24,6 +24,7 @@ class ParentExpression;
 class ParentTExpression;
 class SelectExpression;
 class UsesExpression;
+class WithExpression;
 
 class QueryInterpreter {
  public:
@@ -45,6 +46,7 @@ class QueryInterpreter {
   void Interpret(std::shared_ptr<PatternExpression> pattern_expression);
   void Interpret(std::shared_ptr<SelectExpression> select_expression);
   void Interpret(std::shared_ptr<UsesExpression> uses_expression);
+  void Interpret(std::shared_ptr<WithExpression> with_expression);
 
  private:
   std::shared_ptr<Context> context;
