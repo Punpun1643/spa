@@ -40,7 +40,7 @@ jobs:
         run: |
           llvm-profdata merge -sparse default.profraw -o default.profdata
           llvm-cov show ./unit_testing -instr-profile=default.profdata
-#          llvm-cov export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=default.profdata ./unit_testing > coverage.info
+          llvm-cov export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=default.profdata ./unit_testing > coverage.txt
 
 #      - name: Generate codecov report
 #        run: |
