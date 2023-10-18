@@ -9,6 +9,7 @@
 #include "../../../spa/src/shared/tokenizer/token/Token.h"
 #include "../../../spa/src/shared/tokenizer/token/WordToken.h"
 
+void AddIntVector(std::vector<std::shared_ptr<Token>>& tokens, std::vector<std::string> int_vector);
 void AddWordVector(std::vector<std::shared_ptr<Token>>& tokens,
                    std::vector<std::string> word_vector);
 void AddSpecialCharVector(std::vector<std::shared_ptr<Token>>& tokens,

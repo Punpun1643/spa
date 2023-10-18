@@ -619,4 +619,64 @@ TEST_CASE("With queries") {
 
     controller.TokensToClauses(tokens);
   }
+  SECTION("stmt s; Select s with 5 = 5") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with"});
+    AddIntVector(tokens, {"5"});
+    AddSpecialCharVector(tokens, {"="});
+    AddIntVector(tokens, {"5"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with \"abc\" = \"abc\"") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddWordVector(tokens, {"abc"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddSpecialCharVector(tokens, {"="});
+    AddSpecialCharVector(tokens, {"\""});
+    AddWordVector(tokens, {"abc"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with s.stmt# = 20000 such that Follows (5, s)") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with", "s"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#", "="});
+    AddIntVector(tokens, {"20000"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddIntWord(tokens, "5", "s");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+  SECTION("stmt s; Select s with 5 = \"s\"") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with"});
+    AddIntVector(tokens, {"5"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"s"});
+    AddSpecialCharVector(tokens, {"\""});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+  SECTION("procedure p; Select p with 5 = p.procName") {
+    AddDeclaration(tokens, "proedure", {"p"});
+    AddWordVector(tokens, {"Select", "p", "with"});
+    AddIntVector(tokens, {"5"});
+    AddSpecialCharVector(tokens, {"=", "\""});
+    AddWordVector(tokens, {"p"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"procName"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
 }
