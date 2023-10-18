@@ -530,7 +530,7 @@ TEST_CASE("Next queries") {
 
   SECTION("stmt s1, s2; Select s1 such that Next*(3, s1)") {
     AddDeclaration(tokens, "stmt", {"s1", "s2"});
-    AddWordVector(tokens, {"Select", "s1", "such", "that", "Next"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Next*"});
     AddIntWord(tokens, "3", "s1");
     AddEOF(tokens);
 

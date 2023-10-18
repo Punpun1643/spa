@@ -1,5 +1,7 @@
 #include "RelDatabase.h"
 
+#include <iostream>
+
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
       std::make_shared<DictionaryTable>(DictionaryTable());

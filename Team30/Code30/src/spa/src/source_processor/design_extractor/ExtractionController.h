@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../node/ANode.h"
+#include "CFGGenerator.h"
 #include "CallsManager.h"
 #include "IDesignExtractor.h"
 #include "IExtractionController.h"
@@ -12,10 +13,10 @@ class ExtractionController : public IExtractionController {
  public:
   explicit ExtractionController(PKBSPInterface& pkb);
 
-  void executeProgramExtraction(std::shared_ptr<ProgramNode> node);
-  void executeProcedureExtraction(std::shared_ptr<ProcedureNode> node);
-  void executeStmtLstExtraction(std::shared_ptr<StmtLstNode> node);
-  void executeStmtExtraction(std::shared_ptr<StmtNode> node);
+  void ExecuteProgramExtraction(std::shared_ptr<ProgramNode> node);
+  void ExecuteProcedureExtraction(std::shared_ptr<ProcedureNode> node);
+  void ExecuteStmtLstExtraction(std::shared_ptr<StmtLstNode> node);
+  void ExecuteStmtExtraction(std::shared_ptr<StmtNode> node);
 
   ~ExtractionController() = default;
 
@@ -23,8 +24,9 @@ class ExtractionController : public IExtractionController {
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
   PKBSPInterface& pkb;
   std::shared_ptr<CallsManager> callsManager;
+  std::shared_ptr<CFGGenerator> cfgGenerator;
 
-  void handleContainerStmts(std::shared_ptr<StmtNode> node);
-  void popActors();
-  void executePostProcessing();
+  void HandleContainerStmts(std::shared_ptr<StmtNode> node);
+  void PopActors();
+  void ExecutePostProcessing();
 };

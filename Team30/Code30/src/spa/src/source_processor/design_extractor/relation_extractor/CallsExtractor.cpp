@@ -2,7 +2,7 @@
 
 CallsExtractor::CallsExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 
-void CallsExtractor::extractCallAbstractions(
+void CallsExtractor::ExtractCallAbstractions(
     std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
         procNodeMap) {
   for (auto mapNameNode : procNodeMap) {

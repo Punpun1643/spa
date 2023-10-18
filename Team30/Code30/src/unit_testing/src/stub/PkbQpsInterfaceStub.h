@@ -12,14 +12,14 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   // Select
   std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
   std::string converted_entity = "a";
+  AttrType last_attr_type_passed = AttrType::VALUE;
+  AttrType last_attr_type_2_passed = AttrType::VALUE;
 
   // SuchThat Clauses
   std::string last_value_passed;
   std::string last_value_2_passed;
   EntityType last_entity_type_passed = EntityType::IF;
   EntityType last_entity_type_2_passed = EntityType::IF;
-  AttrType last_attr_type_passed = AttrType::VALUE;
-  AttrType last_attr_type_2_passed = AttrType::VALUE;
 
   int valueValueCalls = 0;
   int valueWildCalls = 0;
@@ -50,6 +50,14 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   int patternDeclCalls = 0;
   MatchType last_match_type_passed = MatchType::EXACT_MATCH;
   std::shared_ptr<TreeNode> last_rhs_expr_passed;
+
+  // With Clause
+  std::vector<std::string> const attr_value_matches = {"alpha", "beta", "delta"};
+  std::vector<std::string> const attr_pair_matches_1 = {"72"};
+  std::vector<std::string> const attr_pair_matches_2 = {"74"};
+  std::vector<std::pair<std::string, std::string>> const attr_pair_matches =
+      {std::make_pair(attr_pair_matches_1[0], attr_pair_matches_2[0])};
+
 
   // Select Clause
   std::vector<std::string> const patternWildValues = {"10", "20", "30"};

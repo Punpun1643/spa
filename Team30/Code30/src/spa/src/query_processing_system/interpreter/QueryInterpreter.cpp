@@ -196,7 +196,7 @@ void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
 
 EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
     std::string const& argument) {
-  return context->GetDeclaration(argument).getEntityType();
+  return context->GetDeclaration(argument).GetEntityType();
 }
 
 PqlDeclaration QueryInterpreter::GetMappedDeclaration(
