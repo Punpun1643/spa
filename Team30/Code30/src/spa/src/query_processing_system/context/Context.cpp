@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+void Context::AddAttrRefDeclaration(AttrRef attr_ref) {
+  this->selected_attr_refs.push_back(attr_ref);
+}
+
 void Context::addDeclarations(EntityType entity_type,
                               std::vector<std::string> synonyms) {
   for (std::string synonym : synonyms) {
@@ -12,10 +16,6 @@ void Context::addDeclarations(EntityType entity_type,
 
 void Context::AddPatternClause(std::shared_ptr<PatternClause> pattern_clause) {
   this->pattern_clauses.push_back(pattern_clause);
-}
-
-void Context::AddSelectDeclaration(PqlDeclaration declaration) {
-  this->selected_declarations.push_back(declaration);
 }
 
 bool Context::CheckDeclarationExists(std::string synonym) {
@@ -31,8 +31,8 @@ PqlDeclaration Context::GetDeclaration(std::string synonym) {
   return this->declarations.at(synonym);
 }
 
-std::vector<PqlDeclaration> Context::GetSelectedDeclarations() {
-  return this->selected_declarations;
+std::vector<AttrRef> Context::GetSelectedAttrRefs() {
+  return this->selected_attr_refs;
 }
 
 std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {

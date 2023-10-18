@@ -23,6 +23,7 @@ void SyntaxChecker::parse() {
   }
   CheckSelect();
   CheckClauses();
+  CheckEOF();
 }
 
 void SyntaxChecker::CheckAnd(ClauseType clause_type) {
@@ -278,7 +279,7 @@ void SyntaxChecker::CheckSelect() {
     throw InvalidSyntaxException("Expected 'Select'");
   }
 
-  NextToken();  // BOOLEAN or synonym or <
+  NextToken();  // result-cl
   if (GetCurrTokenValue() == QpParser::BOOLEAN) {
     if (existing_declarations.find(QpParser::BOOLEAN) ==
         existing_declarations.end()) {
@@ -321,7 +322,8 @@ void SyntaxChecker::CheckSelectMultiple() {
 }
 
 void SyntaxChecker::CheckSelectSingle() {
-  if (GetCurrTokenValue() == QpParser::BOOLEAN) {
+  std::string synonym = GetCurrTokenValue();
+  if (synonym == QpParser::BOOLEAN) {
     if (existing_declarations.find(QpParser::BOOLEAN) ==
         existing_declarations.end()) {
       throw InvalidSyntaxException(
@@ -329,8 +331,14 @@ void SyntaxChecker::CheckSelectSingle() {
           "declared");
     }
   }
-  if (!IsSynonym(GetCurrTokenValue())) {
-    throw InvalidSyntaxException("Expected synonym for single select clause");
+  if (!IsSynonym(synonym)) {
+    throw InvalidSyntaxException("Expected synonym for select clause");
+  }
+  if (GetPeekTokenValue() == ".") {
+    // check attrRef
+    NextToken();  // .
+    NextToken();  // attrName
+    CheckUpcomingTokensAreValidAttrName();
   }
 }
 
@@ -526,4 +534,16 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
   this->CheckIsExpr(error_msg);
 
   CheckCurrentTokenSyntax("\"", error_msg);
+}
+
+void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
+  std::string attr_name = GetCurrTokenValue();
+  if (attr_name == "stmt") {
+    attr_name += NextToken()->getTokenVal();
+  }
+
+  if (attr_name != attr_name::STMT_NUM && attr_name != attr_name::PROC_NAME &&
+      attr_name != attr_name::VAR_NAME && attr_name != attr_name::VALUE) {
+    throw InvalidSyntaxException("Invalid attr name");
+  }
 }

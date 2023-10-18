@@ -7,6 +7,7 @@
 #include <stdexcept>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
+#include "../common/AttrRef.h"
 #include "../common/FollowsClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
@@ -84,8 +85,8 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
-                       USES,    MODIFIES,     CALLS,       CALLS_STAR, NEXT, NEXT_STAR};
+  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
+                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;
@@ -94,6 +95,35 @@ bool QpParser::IsRelRef(std::string const& name) {
 }
 
 bool QpParser::IsWildcard(std::string const& name) { return (name == "_"); }
+
+AttrType QpParser::GetDefaultAttrTypeFromEntityType(EntityType entity_type) {
+  std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPES = {
+      {EntityType::PROCEDURE, AttrType::PROC_NAME},
+      {EntityType::VARIABLE, AttrType::VAR_NAME},
+      {EntityType::CONSTANT, AttrType::VALUE},
+      {EntityType::STMT, AttrType::STMT_NUM},
+      {EntityType::ASSIGN, AttrType::STMT_NUM},
+      {EntityType::IF, AttrType::STMT_NUM},
+      {EntityType::WHILE, AttrType::STMT_NUM},
+      {EntityType::PRINT, AttrType::STMT_NUM},
+      {EntityType::READ, AttrType::STMT_NUM},
+      {EntityType::CALL, AttrType::STMT_NUM}};
+  return DEFAULT_ATTR_TYPES.at(entity_type);
+}
+
+AttrType QpParser::StringToAttrType(std::string const& string) {
+  if (string == "procName") {
+    return AttrType::PROC_NAME;
+  } else if (string == "varName") {
+    return AttrType::VAR_NAME;
+  } else if (string == "value") {
+    return AttrType::VALUE;
+  } else if (string == "stmt#") {
+    return AttrType::STMT_NUM;
+  } else {
+    throw std::invalid_argument("String to be converted to attrType not valid");
+  }
+}
 
 EntityType QpParser::StringToEntityType(std::string const& entity_string) {
   if (entity_string == "stmt") {

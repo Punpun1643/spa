@@ -22,17 +22,10 @@ void QPSController::HandleQuery(
     throw InvalidSyntaxException("Invalid item to be tokenized");
   }
 
-  std::pair<std::vector<PqlDeclaration>, std::vector<std::shared_ptr<Clause>>>
+  std::pair<std::vector<AttrRef>, std::vector<std::shared_ptr<Clause>>>
       clauses = this->TokensToClauses(tokens);
 
-  std::vector<PqlDeclaration> selected_declarations = clauses.first;
-
-  // ---Temp addition to make it compile
-  std::vector<AttrRef> selected_attr_refs = {};
-  for (auto &decl: selected_declarations) {
-    selected_attr_refs.push_back(AttrRef(decl));
-  }
-  // ---
+  std::vector<AttrRef> selected_attr_refs = clauses.first;
 
   std::vector<std::shared_ptr<Clause>> other_clauses = clauses.second;
 
@@ -56,7 +49,7 @@ void QPSController::HandleQuery(
   }
 }
 
-std::pair<std::vector<PqlDeclaration>, std::vector<std::shared_ptr<Clause>>>
+std::pair<std::vector<AttrRef>, std::vector<std::shared_ptr<Clause>>>
 QPSController::TokensToClauses(std::vector<std::shared_ptr<Token>> tokens) {
   this->CheckSyntax(tokens);
 
@@ -67,11 +60,10 @@ QPSController::TokensToClauses(std::vector<std::shared_ptr<Token>> tokens) {
 
   this->InterpretContext(context, expression_tree);
 
-  std::vector<PqlDeclaration> selected_declarations =
-      context->GetSelectedDeclarations();
+  std::vector<AttrRef> selected_attr_refs = context->GetSelectedAttrRefs();
   std::vector<std::shared_ptr<Clause>> other_clauses =
       context->GetOtherClauses();
-  return std::make_pair(selected_declarations, other_clauses);
+  return std::make_pair(selected_attr_refs, other_clauses);
 }
 
 void QPSController::CheckSyntax(std::vector<std::shared_ptr<Token>> tokens) {

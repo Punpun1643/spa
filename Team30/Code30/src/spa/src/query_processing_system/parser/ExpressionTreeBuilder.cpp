@@ -6,6 +6,7 @@
 #include <regex>
 
 #include "../../shared/parser/node/TreeNode.h"
+#include "../common/EntityType.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/ClauseExpression.h"
@@ -36,30 +37,60 @@ std::shared_ptr<AExpression> ExpressionTreeBuilder::GetExpressionTree() {
 
 void ExpressionTreeBuilder::parse() {
   std::shared_ptr<SelectExpression> select_expression =
-      this->CreateSelectExpression();
+      this->CreateSelectExpressionHead();
+
+  NextToken();
 
   std::optional<std::shared_ptr<ClauseExpression>> clause_expression =
-      this->CreateClauseExpression();
+      this->CreateClauseExpressionHead();
 
   select_expression->SetNextExpression(clause_expression);
   this->expression_tree = std::move(select_expression);
 }
 
-std::shared_ptr<SelectExpression>
+std::optional<std::shared_ptr<SelectExpression>>
 ExpressionTreeBuilder ::CreateSelectExpression() {
+  if (GetCurrTokenValue() == QpParser::BOOLEAN &&
+      !(this->context->CheckDeclarationExists(QpParser::BOOLEAN))) {
+    return std::make_optional<std::shared_ptr<SelectExpression>>(
+        std::make_shared<SelectExpression>(true));
+
+  } else if (QpParser::IsSynonym(GetCurrTokenValue())) {
+    std::string synonym = GetCurrTokenValue();
+    if (GetPeekTokenValue() == ".") {
+      NextToken();  // .
+      std::string attr_type_string = NextToken()->getTokenVal();
+      if (attr_type_string == "stmt") {
+        attr_type_string += NextToken()->getTokenVal();
+        assert(attr_type_string == "stmt#");
+      }
+      AttrType attr_type = QpParser::StringToAttrType(attr_type_string);
+      return std::make_optional<std::shared_ptr<SelectExpression>>(
+          std::make_shared<SelectExpression>(synonym, attr_type, false));
+    } else {
+      EntityType entity_type =
+          this->context->GetDeclaration(synonym).GetEntityType();
+      AttrType attr_type =
+          QpParser::GetDefaultAttrTypeFromEntityType(entity_type);
+      return std::make_optional<std::shared_ptr<SelectExpression>>(
+          std::make_shared<SelectExpression>(synonym, attr_type, false));
+    }
+  } else {
+    return std::make_optional<std::shared_ptr<SelectExpression>>();
+  }
+}
+
+std::shared_ptr<SelectExpression>
+ExpressionTreeBuilder ::CreateSelectExpressionHead() {
   // After syntax checking & context building, currToken should be 'Select'
   assert(GetCurrTokenValue() == QpParser::SELECT);
   NextToken();  // 'BOOLEAN' or '<' or elem
 
-  std::shared_ptr<SelectExpression> select_head;
+  std::optional<std::shared_ptr<SelectExpression>> select_head;
 
-  if (GetCurrTokenValue() == QpParser::BOOLEAN &&
-      !(this->context->CheckDeclarationExists(QpParser::BOOLEAN))) {
-    select_head = std::make_shared<SelectExpression>(GetCurrTokenValue(), true);
-  } else if (QpParser::IsSynonym(GetCurrTokenValue())) {
-    select_head =
-        std::make_shared<SelectExpression>(GetCurrTokenValue(), false);
-  } else if (GetCurrTokenValue() == "<") {
+  if (GetCurrTokenValue() != "<") {
+    select_head = CreateSelectExpression();
+  } else {
     std::optional<std::shared_ptr<SelectExpression>> previous_select_expression;
     std::optional<std::shared_ptr<SelectExpression>> current_select_expression;
     bool is_first_run = true;
@@ -69,9 +100,7 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
       if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
         throw std::runtime_error("ETB multiple select parsing hit eof");
       }
-      current_select_expression =
-          std::make_optional<std::shared_ptr<SelectExpression>>(
-              std::make_shared<SelectExpression>(GetCurrTokenValue(), false));
+      current_select_expression = CreateSelectExpression();
 
       if (previous_select_expression.has_value()) {
         previous_select_expression.value()->SetNextExpression(
@@ -92,12 +121,11 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
     }
   }
 
-  NextToken();
-  return select_head;
+  return select_head.value();
 }
 
 std::optional<std::shared_ptr<ClauseExpression>>
-ExpressionTreeBuilder ::CreateClauseExpression() {
+ExpressionTreeBuilder ::CreateClauseExpressionHead() {
   std::optional<std::shared_ptr<ClauseExpression>> previous_clause_expression;
   std::optional<std::shared_ptr<ClauseExpression>> current_clause_expression;
   std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head;
