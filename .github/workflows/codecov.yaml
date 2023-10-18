@@ -59,9 +59,27 @@ jobs:
 #          token: ${{ secrets.CODECOV_TOKEN }}
 #          file: ./coverage/lcov.info
 #          flags: unittests
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+#      - name: Upload coverage reports to Codecov
+#        uses: codecov/codecov-action@v3
+#        env:
+#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Compile and Coverage Summary
+        working-directory: ./Team30/Code30/build
+        if: github.event.inputs.mode == 'summary'
+        run: make cov-report-unit_testing -j 4
+
+      - name: Compile and Coverage HTML
+        working-directory: ./Team30/Code30/build
+        if: github.event.inputs.mode == 'html'
+        run: make cov-unit_testing -j 4
+
+      - name: Upload HTML
+        if: github.event.inputs.mode == 'html'
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report-${{github.sha}}
+          path: ./Team30/Code30/build/coverage/unit_testing
+          retention-days: 1
 
 
