@@ -35,7 +35,8 @@ jobs:
 
       - name: Set up environment for coverage
         run: |
-          export LLVM_PROFILE_FILE="${{ runner.workspace }}/default.profraw" >> $GITHUB_ENV  
+#          export LLVM_PROFILE_FILE="${{ runner.workspace }}/default.profraw" >> $GITHUB_ENV
+          export LLVM_PROFILE_FILE="/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/default.profraw" >> $GITHUB_ENV
 
       - name: Run unit test
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
@@ -44,7 +45,7 @@ jobs:
 
       - name: Generate codecov report
         run: |
-          llvm-profdata merge -sparse ${{ runner.workspace }}/default.profraw -o code_coverage.profdata
+          llvm-profdata merge -sparse /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/default.profraw -o code_coverage.profdata
           llvm-cov show /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/unit_testing -instr-profile=code_coverage.profdata > coverage.txt
 
       - name: Upload coverage to Codecov
