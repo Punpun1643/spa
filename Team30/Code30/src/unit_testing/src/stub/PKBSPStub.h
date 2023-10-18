@@ -28,7 +28,10 @@ class PKBSPStub : public PKBSPInterface {
   std::unordered_set<std::string> entitiesSet;
   std::unordered_map<std::string, std::shared_ptr<CFGNode>> CFGNodeMap;
 
-  void insertEntity(EntityType type, std::string entity) override;
+  void InsertEntity(EntityType type, std::string value) override;
+  void InsertEntity(EntityType type, AttrType attr_type,
+                    std::string statement_number,
+                    std::string attribute) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void insertPattern(PatternType type, std::string statement_number,

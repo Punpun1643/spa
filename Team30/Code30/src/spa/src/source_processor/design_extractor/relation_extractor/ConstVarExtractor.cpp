@@ -11,11 +11,11 @@ void ConstVarExtractor::ExtractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {}
 
 void ConstVarExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertEntity(EntityType::VARIABLE, node->GetVarName());
+  pkb.InsertEntity(EntityType::VARIABLE, node->GetVarName());
 }
 
 void ConstVarExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.insertEntity(EntityType::VARIABLE, node->GetVarName());
+  pkb.InsertEntity(EntityType::VARIABLE, node->GetVarName());
 }
 
 void ConstVarExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
@@ -29,16 +29,16 @@ void ConstVarExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
 }
 
 void ConstVarExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
-  pkb.insertEntity(EntityType::VARIABLE, node->GetVarName());
+  pkb.InsertEntity(EntityType::VARIABLE, node->GetVarName());
   InsertConstsVars(*node->GetConstants(), *node->GetVariables());
 }
 
 void ConstVarExtractor::InsertConstsVars(std::unordered_set<int> consts,
                                          std::unordered_set<std::string> vars) {
   for (int num : consts) {
-    pkb.insertEntity(EntityType::CONSTANT, std::to_string(num));
+    pkb.InsertEntity(EntityType::CONSTANT, std::to_string(num));
   }
   for (std::string var : vars) {
-    pkb.insertEntity(EntityType::VARIABLE, var);
+    pkb.InsertEntity(EntityType::VARIABLE, var);
   }
 }
