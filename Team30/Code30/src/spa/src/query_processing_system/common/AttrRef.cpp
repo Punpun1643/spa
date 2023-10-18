@@ -53,6 +53,10 @@ bool AttrRef::IsAttrTypeAnAlias() const {
           ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
 }
 
+bool AttrRef::IsDefaultAttribute(EntityType ent_type, AttrType attr_type) {
+  return AttrRef::DEFAULT_ATTR_TYPE.at(ent_type) == attr_type;
+}
+
 std::string AttrRef::GetAliasFromDefault(
     PKBQPSInterface& pkb, std::string const& default_value) const {
   /**

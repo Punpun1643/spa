@@ -27,14 +27,9 @@ EntityDatabase::EntityDatabase() {
                     EntityType::IF};
 };
 
-bool EntityDatabase::IsDefaultAttribute(EntityType ent_type,
-                                        AttrType attr_type) {
-  return AttrRef::DEFAULT_ATTR_TYPE.at(ent_type) == attr_type;
-}
-
 std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
     EntityType ent_type, AttrType attr_type) {
-  if (IsDefaultAttribute(ent_type, attr_type)) {
+  if (AttrRef::IsDefaultAttribute(ent_type, attr_type)) {
     return *get(ent_type);
   }
   std::unordered_set<std::string> result;
@@ -75,7 +70,7 @@ std::string EntityDatabase::ConvertEntityValueToAlias(
 
 std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
     EntityType type, AttrType attr_type, std::string value) {
-  if (IsDefaultAttribute(type, attr_type)) {
+  if (AttrRef::IsDefaultAttribute(type, attr_type)) {
     std::shared_ptr<std::unordered_set<std::string>> ents = get(type);
     if (ents->find(value) != ents->end()) {
       return std::vector<std::string>({value});

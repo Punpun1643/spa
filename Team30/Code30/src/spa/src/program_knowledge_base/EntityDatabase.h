@@ -32,8 +32,6 @@ class EntityDatabase {
 
   std::unordered_set<EntityType> statementTypes;
 
-  bool IsDefaultAttribute(EntityType ent_type, AttrType attr_type);
-
   std::unordered_set<std::string> GetUniqueAttributes(EntityType ent_type,
                                                       AttrType attr_type);
 
