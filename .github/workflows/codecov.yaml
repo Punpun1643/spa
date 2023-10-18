@@ -65,7 +65,7 @@ jobs:
 #          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Compile and Coverage Summary
-        working-directory: ./Team30/Code30/build
+        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
 #        if: github.event.inputs.mode == 'summary'
         run: make cov-report-unit_testing -j 4
 
