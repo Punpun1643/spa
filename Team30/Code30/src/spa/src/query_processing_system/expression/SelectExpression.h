@@ -1,6 +1,8 @@
 #pragma once
 
 /* #include "AExpression.h" */
+#include <cassert>
+
 #include "SuchThatExpression.h"
 
 class SelectExpression : public AExpression {
