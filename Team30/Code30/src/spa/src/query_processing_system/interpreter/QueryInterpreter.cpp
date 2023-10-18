@@ -239,10 +239,10 @@ bool QueryInterpreter::IsIdentifier(std::string const& argument) {
 }
 
 bool QueryInterpreter::IsInteger(std::string const& argument) {
-  for (char const& c : argument) {
-    if (std::isdigit(c) == 0) {
-      return false;
-    }
+  try {
+    stoi(argument);
+  } catch (std::invalid_argument& e) {
+    return false;
   }
   return true;
 }

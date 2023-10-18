@@ -348,7 +348,7 @@ ExpressionTreeBuilder::CreateWithExpressionHead() {
       second_ref += GetCurrTokenValue();         // "
       second_ref += NextToken()->getTokenVal();  // ident
       second_ref += NextToken()->getTokenVal();  // "
-    } else if (QpParser::IsInteger(GetCurrTokenValue())) {
+    } else if (QpParser::IsValidInteger(GetCurrTokenValue())) {
       second_ref += GetCurrTokenValue();
     } else {
       // is attrRef

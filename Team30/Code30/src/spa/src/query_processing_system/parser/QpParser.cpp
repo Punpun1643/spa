@@ -36,15 +36,6 @@ bool QpParser::IsEntRef(std::string const& name) {
   return (IsSynonym(name) || IsWildcard(name) || IsQuotedIdentifier(name));
 }
 
-bool QpParser::IsInteger(std::string const& name) {
-  try {
-    stoi(name);
-  } catch (std::invalid_argument& e) {
-    return false;
-  }
-  return true;
-}
-
 bool QpParser::IsQuotedIdentifier(std::string const& name) {
   if (name.size() >= 3) {
     return (name.substr(0, 1) == "\"" &&
@@ -55,14 +46,7 @@ bool QpParser::IsQuotedIdentifier(std::string const& name) {
 }
 
 bool QpParser::IsStmtRef(std::string const& name) {
-  bool is_integer;
-  try {
-    stoi(name);
-    is_integer = true;
-  } catch (std::invalid_argument ex) {
-    is_integer = false;
-  }
-  if ((name != "_") && (!is_integer) && (!IsSynonym(name))) {
+  if ((name != "_") && (!IsValidInteger(name)) && (!IsSynonym(name))) {
     return false;
   }
   return true;
@@ -80,6 +64,16 @@ bool QpParser::IsIdentifier(std::string const& name) {
   return true;
 }
 
+bool QpParser::IsRelRef(std::string const& name) {
+  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
+                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
+  int arr_size = sizeof(arr) / sizeof(*arr);
+  if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
+    return false;
+  }
+  return true;
+}
+
 bool QpParser::IsSynonym(std::string const& name) {
   return this->IsIdentifier(name);
 }
@@ -93,11 +87,11 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
   return true;
 }
 
-bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
-                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
-  int arr_size = sizeof(arr) / sizeof(*arr);
-  if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
+
+bool QpParser::IsValidInteger(std::string const& int_string) {
+  try {
+    stoi(int_string);
+  } catch (std::invalid_argument& e) {
     return false;
   }
   return true;

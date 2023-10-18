@@ -31,13 +31,13 @@ class QpParser : public AParser {
 
  protected:
   bool IsEntRef(std::string const& name);
-  bool IsInteger(std::string const& string);
   bool IsQuotedIdentifier(std::string const& name);
   bool IsStmtRef(std::string const& name);
   bool IsIdentifier(std::string const& name);
+  bool IsRelRef(std::string const& name);
   bool IsSynonym(std::string const& name);
   bool IsTransitiveRelRef(std::string const& name);
-  bool IsRelRef(std::string const& name);
+  bool IsValidInteger(std::string const& int_string);
   bool IsWildcard(std::string const& name);
   AttrType GetDefaultAttrTypeFromEntityType(EntityType entity_type);
   AttrType StringToAttrType(std::string const& string);
