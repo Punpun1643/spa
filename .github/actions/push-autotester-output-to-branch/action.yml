@@ -41,6 +41,7 @@ runs:
         git checkout -b ${{ inputs.branch-name }}
         fi
     - name: Force pull to reset workspace in the current branch
+      shell: bash
       run: |
         git fetch origin
         git reset --hard origin/${{ inputs.branch-name }}
