@@ -20,11 +20,14 @@ class QueryEvaluator {
   void PopulateIntermediateResultsTable(IntermediateResultsTable& table,
                                         ClauseList clauses);
 
-  static std::vector<PqlDeclaration> UnwrapAttrRefVector(std::vector<AttrRef> const& attr_refs);
+  static std::vector<PqlDeclaration> UnwrapAttrRefVector(
+      std::vector<AttrRef> const& attr_refs);
 
-  void FillMissingDecls(IntermediateResultsTable& table, std::vector<PqlDeclaration> const& decls_to_check);
+  void FillMissingDecls(IntermediateResultsTable& table,
+                        std::vector<PqlDeclaration> const& decls_to_check);
 
-  bool UpdateResultUsingAttrTypes(std::vector<std::vector<std::string>> &values, std::vector<AttrRef> const& attr_refs);
+  bool UpdateResultUsingAttrTypes(std::vector<std::vector<std::string>>& values,
+                                  std::vector<AttrRef> const& attr_refs);
 
  public:
   explicit QueryEvaluator(PKBQPSInterface& pkb);

@@ -542,7 +542,8 @@ void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
     attr_name += NextToken()->getTokenVal();
   }
 
-  if (attr_name != "stmt#" && attr_name != "procName" && attr_name != "varName" && attr_name != "value") {
+  if (attr_name != attr_name::STMT_NUM && attr_name != attr_name::PROC_NAME &&
+      attr_name != attr_name::VAR_NAME && attr_name != attr_name::VALUE) {
     throw InvalidSyntaxException("Invalid attr name");
   }
 }

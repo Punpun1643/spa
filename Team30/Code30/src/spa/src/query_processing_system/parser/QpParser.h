@@ -5,6 +5,13 @@
 #include "../common/AttrType.h"
 #include "../common/EntityType.h"
 
+namespace attr_name {
+std::string const STMT_NUM = "stmt#";
+std::string const PROC_NAME = "procName";
+std::string const VAR_NAME = "varName";
+std::string const VALUE = "value";
+}  // namespace attr_name
+
 class QpParser : public AParser {
  public:
   QpParser(std::vector<std::shared_ptr<Token>> tokens);

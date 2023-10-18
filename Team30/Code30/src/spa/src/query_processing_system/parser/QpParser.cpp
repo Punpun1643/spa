@@ -85,8 +85,8 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
-                       USES,    MODIFIES,     CALLS,       CALLS_STAR, NEXT, NEXT_STAR};
+  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
+                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;
