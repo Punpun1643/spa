@@ -38,13 +38,13 @@ jobs:
       - name: Export Unit Testng Coverage Data
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
-          llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
-          llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
+          llvm-profdata merge -sparse default.profraw -o code_coverage.profdata
+          llvm-cov export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=default.profdata ./unit_testing > coverage.info
 
-      - name: Generate codecov report
-        run: |
-          llvm-profdata merge -sparse /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/default.profraw -o code_coverage.profdata
-          llvm-cov show /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/unit_testing -instr-profile=code_coverage.profdata > coverage.txt
+#      - name: Generate codecov report
+#        run: |
+#          llvm-profdata merge -sparse /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/default.profraw -o code_coverage.profdata
+#          llvm-cov show /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/unit_testing -instr-profile=code_coverage.profdata > coverage.txt
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
