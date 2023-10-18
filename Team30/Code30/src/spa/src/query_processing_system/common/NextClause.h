@@ -7,5 +7,5 @@
 class NextClause : public SuchThatClause {
  public:
   NextClause(std::unique_ptr<StmtRef> arg1, std::unique_ptr<StmtRef> arg2,
-               bool is_starred);
+             bool is_starred);
 };

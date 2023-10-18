@@ -6,7 +6,7 @@
 #include "Clause.h"
 
 class WithClause : public Clause {
- typedef std::variant<int, std::string, AttrRef> WithRef;
+  typedef std::variant<int, std::string, AttrRef> WithRef;
 
  private:
   WithRef ref1;

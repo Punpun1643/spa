@@ -27,6 +27,6 @@ class ExpressionTreeBuilder : public QpParser {
   std::shared_ptr<PatternExpression> CreatePatternExpressionHead();
   std::optional<std::shared_ptr<SelectExpression>> CreateSelectExpression();
   std::shared_ptr<SelectExpression> CreateSelectExpressionHead();
-  std::shared_ptr<SuchThatExpression> CreateSuchThatExpression();
+  std::shared_ptr<SuchThatExpression> CreateSuchThatExpressionHead();
   std::shared_ptr<WithExpression> CreateWithExpressionHead();
 };

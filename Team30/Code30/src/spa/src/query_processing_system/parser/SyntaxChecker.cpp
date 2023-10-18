@@ -45,12 +45,8 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
       throw InvalidSyntaxException("Expected 'pattern' after 'and'");
     }
   } else if (clause_type == ClauseType::with) {
-    if (GetCurrTokenValue() == QpParser::WITH) {
-      CheckWith();
-      return;
-    } else {
-      throw InvalidSyntaxException("Expected 'with' after 'and'");
-    }
+    CheckWith(true);
+    return;
   }
 
   throw InvalidSyntaxException(
@@ -91,8 +87,9 @@ void SyntaxChecker::CheckClauses() {
     } else if (clause_name == QpParser::PATTERN) {
       this->CheckPattern();
     } else if (clause_name == QpParser::WITH) {
-      this->CheckWith();
+      this->CheckWith(false);
     } else {
+      std::cout << "sc1: " << GetCurrTokenValue() << "\n";
       throw InvalidSyntaxException("Did not encounter expected clause");
     }
   }
@@ -412,10 +409,12 @@ void SyntaxChecker::CheckUses() {
   NextToken();
 }
 
-void SyntaxChecker::CheckWith() {
-  // current token: with
+void SyntaxChecker::CheckWith(bool has_and) {
+  if (!has_and) {
+    // current token: with
+    NextToken();
+  }
 
-  NextToken();
   CheckUpcomingTokensAreWithRef();
 
   if (NextToken()->getTokenVal() != "=") {
@@ -456,20 +455,21 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
 void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
   std::string ref = GetCurrTokenValue();
   if (ref == "\"") {
-    NextToken(); // ident
+    NextToken();  // ident
     if (IsIdentifier(GetCurrTokenValue())) {
       ref += GetCurrTokenValue();
     } else {
       throw InvalidSyntaxException("Expected valid identifier for with ref");
     }
 
-    NextToken(); // "
+    NextToken();  // "
     if (GetCurrTokenValue() != "\"") {
-      throw InvalidSyntaxException("Expected \" after indentifier for with ref");
+      throw InvalidSyntaxException(
+          "Expected \" after indentifier for with ref");
     }
     return;
   } else if (QpParser::IsSynonym(ref)) {
-    NextToken(); // .
+    NextToken();  // .
     if (GetCurrTokenValue() != ".") {
       throw InvalidSyntaxException("Expected . after synonym for with ref");
     }
@@ -606,7 +606,8 @@ void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
     attr_name += NextToken()->getTokenVal();
   }
 
-  if (attr_name != "stmt#" && attr_name != "procName" && attr_name != "varName" && attr_name != "value") {
+  if (attr_name != "stmt#" && attr_name != "procName" &&
+      attr_name != "varName" && attr_name != "value") {
     throw InvalidSyntaxException("Invalid attr name");
   }
 }

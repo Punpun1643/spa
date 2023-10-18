@@ -68,5 +68,6 @@ class QueryInterpreter {
   AttrType StringToAttrType(std::string const& string);
   std::unique_ptr<EntRef> StringToEntRef(std::string const& string);
   std::unique_ptr<StmtRef> StringToStmtRef(std::string const& string);
-  std::variant<int, std::string, AttrRef> StringToWithRef(std::string const& string);
+  std::variant<int, std::string, AttrRef> StringToWithRef(
+      std::string const& string);
 };

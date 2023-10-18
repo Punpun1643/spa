@@ -27,8 +27,7 @@ void Context::AddSuchThatClause(
   this->such_that_clauses.push_back(such_that_clause);
 }
 
-void Context::AddWithClause(
-    std::shared_ptr<WithClause> with_clause) {
+void Context::AddWithClause(std::shared_ptr<WithClause> with_clause) {
   this->with_clauses.push_back(with_clause);
 }
 

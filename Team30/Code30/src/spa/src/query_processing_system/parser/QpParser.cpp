@@ -1,7 +1,5 @@
 #include "QpParser.h"
 
-#include <query_processing_system/exceptions/InvalidSyntaxException.h>
-
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -11,6 +9,7 @@
 #include "../common/FollowsClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
+#include "../exceptions/InvalidSyntaxException.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};
@@ -40,7 +39,7 @@ bool QpParser::IsEntRef(std::string const& name) {
 bool QpParser::IsInteger(std::string const& name) {
   try {
     stoi(name);
-  } catch(std::invalid_argument& e) {
+  } catch (std::invalid_argument& e) {
     return false;
   }
   return true;
@@ -95,8 +94,8 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
-                       USES,    MODIFIES,     CALLS,       CALLS_STAR, NEXT, NEXT_STAR};
+  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
+                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;

@@ -36,7 +36,7 @@ class SyntaxChecker : public QpParser {
   void CheckSelectSingle();
   void CheckSuchThat(bool has_and);
   void CheckUses();
-  void CheckWith();
+  void CheckWith(bool has_and);
 
   // Helpers
   EntityType CheckCurrentTokenPatternEntity();
