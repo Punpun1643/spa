@@ -21,30 +21,29 @@ jobs:
       - name: Build with Cmake
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30
         run: |
-          pwd
-          echo ${{runner.workspace}}
-          mkdir -p build
+          mkdir build
           cd build
           cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" ..
-          make
 
       - name: Build unit test
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build
         run: |
           cmake --build . --target unit_testing
 
-      - name: Set up environment for coverage
-        run: |
-          export LLVM_PROFILE_FILE="/Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/default.profraw" >> $GITHUB_ENV
-
       - name: Run unit test
         working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
         run: |
           ./unit_testing
 
+      - name: Export Unit Testng Coverage Data
+        working-directory: /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing
+        run: |
+          llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
+          llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
+
       - name: Generate codecov report
         run: |
-          llvm-profdata merge -sparse /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/default.profraw -o code_coverage.profdata
+          llvm-profdata merge -sparse /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/default.profraw -o code_coverage.profdata
           llvm-cov show /Users/papattaradaapithanangsiri/23s1-cp-spa-team-30/Team30/Code30/build/src/unit_testing/unit_testing -instr-profile=code_coverage.profdata > coverage.txt
 
       - name: Upload coverage to Codecov
