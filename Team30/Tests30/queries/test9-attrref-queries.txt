@@ -1,17 +1,17 @@
 1 - AttrRef print stmt#
 print pn; variable v;
 Select pn.stmt# such that Uses (pn, v)
-12, 13, 16
+12, 13, 16, 21
 5000
 2 - AttrRef print varName
 print pn; variable v;
 Select pn.varName such that Uses (pn, v)
-v3, v4
+v3, v4, v2
 5000
 3 - AttrRef call different attrRef tyoes
 call c;
 Select <c.stmt#, c.procName>
-p2 11, p2 17, v3 11, v3 17
+11 p2, 17 v3
 5000
 4 - AttrRef constant attrRef type
 constant c1;
