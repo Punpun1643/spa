@@ -32,6 +32,11 @@ runs:
         ./build/src/autotester/autotester Team30/Tests30/Select/stmt/test-stmt-source.txt Team30/Tests30/Select/stmt/test-stmt-queries.txt Team30/Tests30/output/parse-stmt-output.xml
         ./build/src/autotester/autotester Team30/Tests30/Select/variable/test-variable-source.txt Team30/Tests30/Select/variable/test-variable-queries.txt Team30/Tests30/output/parse-variable-output.xml
         ./build/src/autotester/autotester Team30/Tests30/Select/while/test-while-source.txt Team30/Tests30/Select/while/test-while-queries.txt Team30/Tests30/output/parse-while-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test7-source.txt Team30/Tests30/queries/test7-and-clause-queries.txt Team30/Tests30/output/test7-and-clause-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test7-source.txt Team30/Tests30/queries/test7-multi-return-type-queries.txt Team30/Tests30/output/test7-multi-return-type-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test8-source.txt Team30/Tests30/queries/test8-next-queries.txt Team30/Tests30/output/test8-next-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test9-with-source.txt Team30/Tests30/queries/test9-with-queries.txt Team30/Tests30/output/test9-with-output.xml
+        ./build/src/autotester/autotester Team30/Tests30/source/test9-attrref-source.txt Team30/Tests30/queries/test9-attrref-queries.txt Team30/Tests30/output/test9-attrref-output.xml
     - name: start-index-file
       shell: bash
       run: |
@@ -54,13 +59,18 @@ runs:
           <a href="Team30/Tests30/output/test2-follows-output.xml">Test2-follows</a><br>
           <a href="Team30/Tests30/output/test2-uses-output.xml">Test2-uses</a><br>
           <a href="Team30/Tests30/output/test2-syntax-invalid-output.xml">Test2-syntax-invalid</a><br>
-          <a href="Team30/Tests30/output/nesting-output.xml">nesting</a><br>
-          <a href="Team30/Tests30/output/multiconditional-output.xml">multiconditional</a><br>
+          <a href="Team30/Tests30/output/nesting-output.xml">Nesting</a><br>
+          <a href="Team30/Tests30/output/multiconditional-output.xml">Multiconditional</a><br>
           <a href="Team30/Tests30/output/test3-complex-output.xml">Test3-complex</a><br>
           <a href="Team30/Tests30/output/multi-procedures-output.xml">Multi-procedures</a><br>
           <a href="Team30/Tests30/output/multi-procedures-and-calls-output.xml">Multi-procedures-and-calls</a><br>
           <a href="Team30/Tests30/output/multi-call-relation-output.xml">Multi-call-relation</a><br>
           <a href="Team30/Tests30/output/exact-pattern-output.xml">Exact-Pattern</a><br>
+          <a href="Team30/Tests30/output/test7-and-clause-output.xml">And-Clause</a><br>
+          <a href="Team30/Tests30/output/test7-multi-return-type-output.xml">Multi-Return-Types</a><br>
+          <a href="Team30/Tests30/output/test8-next-output.xml">Next-Relations</a><br>
+          <a href="Team30/Tests30/output/test9-with-output.xml">With-Clause</a><br>
+          <a href="Team30/Tests30/output/test9-attrref-output.xml">AttrRef-</a><br>
           ' >> index.html
     - name: end-index-file
       shell: bash
