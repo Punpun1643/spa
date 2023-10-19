@@ -43,19 +43,17 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   std::shared_ptr<CFGNode> generatedNode = GenerateCFG(stmts, lastNodePointsTo);
 
   if (currType == StmtType::WHILE_STMT) {
-    if (generatedNode != nullptr) {
-      nextNodes.push_back(generatedNode);
-    }
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(currStmt);
 
     std::vector<std::shared_ptr<StmtNode>> whileBodyStmts =
         asWhile->GetStmtLst()->GetChildren();
 
-    lastNodePointsTo.push_back(newNode);
+    std::vector<std::shared_ptr<CFGNode>> whileLastNodePointsTo;
+    whileLastNodePointsTo.push_back(newNode);
 
     std::shared_ptr<CFGNode> whileBodyCFG =
-        GenerateCFG(whileBodyStmts, lastNodePointsTo);
+        GenerateCFG(whileBodyStmts, whileLastNodePointsTo);
 
     if (whileBodyCFG != nullptr) {
       nextNodes.push_back(whileBodyCFG);
