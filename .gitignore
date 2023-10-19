@@ -691,6 +691,9 @@ FodyWeavers.xsd
 # Docs generated from doxygen
 Team30/Code30/docs/html/
 
+# Build dir
+Team30/Code30/build/
+
 # Specific path dependent unit test
 Team30/Code30/src/unit_testing/src/TestSpParserManager.cpp
 
