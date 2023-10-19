@@ -23,6 +23,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: git branch
+      - uses: ./.github/actions/remove-xml
       - uses: ./.github/actions/build
       - uses: ./.github/actions/unit-test
       - uses: ./.github/actions/autotest
