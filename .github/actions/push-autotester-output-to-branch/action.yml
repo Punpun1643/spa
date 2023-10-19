@@ -17,7 +17,6 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: |
-        git rm -rf ./Team30/Tests30/output/*
         if [ ${{ inputs.branch-name }} == 'master' ]; then
           git checkout ${{ inputs.branch-name }}
         else

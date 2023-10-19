@@ -9,6 +9,8 @@ on:
     branches:
       - try-codecov
       - master
+  schedule:
+    - cron: "0 23 * * *"
 
 jobs:
   get-code-coverage:
