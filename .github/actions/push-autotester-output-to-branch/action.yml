@@ -45,6 +45,10 @@ runs:
       run: |
         git fetch origin
         git reset --hard origin/${{ inputs.branch-name }}
+    - name: Clean untracked file
+      shell: bash
+      run: |
+          git clean -fd
     - name: Add autotester output
       shell: bash
       run: |
@@ -52,7 +56,7 @@ runs:
         git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
         git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}
-        rm -rf ./build
+
       env:
         GIT_PAT: ${{ inputs.git-pat }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
