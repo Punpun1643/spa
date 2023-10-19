@@ -24,7 +24,6 @@ runs:
         fi
         git config pull.rebase false
         git pull origin ${{ inputs.branch-name }}
-#        git checkout --ours Team30/Tests30/output/* || true
         git add ./index.html
         git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
