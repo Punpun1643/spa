@@ -2,11 +2,11 @@ name: Push Autotester Output to Branch
 
 inputs:
   branch-name:
-    require: true
+    required: true
   git-pat:
-    require: true
+    required: true
   GITHUB_TOKEN:
-    require: true
+    required: true
 
 runs:
   using: composite
