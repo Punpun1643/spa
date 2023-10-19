@@ -13,6 +13,9 @@ on:
 jobs:
   get-code-coverage:
     runs-on: [ macos-latest ]
+    timeout-minutes: 3
+    strategy:
+      fail-fast: true
     steps:
       - uses: actions/checkout@v2
       - name: Set up compiler path

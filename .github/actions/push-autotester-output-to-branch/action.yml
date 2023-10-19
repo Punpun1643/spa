@@ -17,13 +17,13 @@ runs:
         GIT_PAT: ${{ inputs.git-pat }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: |
+        git rm -rf ./Team30/Tests30/output/*
         if [ ${{ inputs.branch-name }} == 'master' ]; then
           git checkout ${{ inputs.branch-name }}
         else
           git checkout -b ${{ inputs.branch-name }}
         fi
         git config pull.rebase false
-        git rm -rf ./Team30/Tests30/output/
         git pull origin ${{ inputs.branch-name }}
         git add ./index.html
         git add -f Team30/Tests30/output/*

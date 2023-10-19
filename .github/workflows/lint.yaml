@@ -11,6 +11,9 @@ on:
 jobs:
   check-code-style:
     runs-on: [macos-latest]
+    timeout-minutes: 3
+    strategy:
+      fail-fast: true
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
