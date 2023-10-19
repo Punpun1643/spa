@@ -27,4 +27,4 @@ runs:
         git add ./index.html
         git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
-        git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}
+        git push --set-upstream --force-with-lease origin try-codecov
