@@ -1,0 +1,35 @@
+1 - AttrRef print stmt#
+print pn; variable v;
+Select pn.stmt# such that Uses (pn, v)
+12, 13, 16, 21
+5000
+2 - AttrRef print varName
+print pn; variable v;
+Select pn.varName such that Uses (pn, v)
+v3, v4, v2
+5000
+3 - AttrRef call different attrRef tyoes
+call c;
+Select <c.stmt#, c.procName>
+11 p2, 17 v3
+5000
+4 - AttrRef constant attrRef type
+constant c1;
+Select c1.value
+2, 99, 4, 7, 3, 1, 0
+5000
+5 - AttrRef Invalid, wrong attrRef for entity 
+call c; variable v;
+Select c.varName
+SemanticError 
+5000
+6 - AttrRef Invalid, cannot put AttrRef in Relation params
+stmt s, s1;
+Select s such that Follows(s, s1.stmt#)
+SyntaxError
+5000
+7 - AttrRef Invalid, cannot put AttrRef in Pattern params
+variable v; assign a;
+Select v pattern a (v.varName, _"v2"_)
+SyntaxError
+5000
