@@ -24,4 +24,3 @@ jobs:
       - uses: ./.github/actions/build
       - uses: ./.github/actions/unit-test
       - uses: ./.github/actions/autotest
-      - uses: ./.github/actions/push-autotester-output-to-branch
