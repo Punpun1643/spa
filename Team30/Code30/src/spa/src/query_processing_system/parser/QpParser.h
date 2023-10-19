@@ -2,7 +2,15 @@
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
+#include "../common/AttrType.h"
 #include "../common/EntityType.h"
+
+namespace attr_name {
+std::string const STMT_NUM = "stmt#";
+std::string const PROC_NAME = "procName";
+std::string const VAR_NAME = "varName";
+std::string const VALUE = "value";
+}  // namespace attr_name
 
 class QpParser : public AParser {
  public:
@@ -24,6 +32,7 @@ class QpParser : public AParser {
   static std::string const SELECT;
   static std::string const SUCH;
   static std::string const USES;
+  static std::string const WITH;
 
   virtual ~QpParser() = default;
 
@@ -32,9 +41,12 @@ class QpParser : public AParser {
   bool IsQuotedIdentifier(std::string const& name);
   bool IsStmtRef(std::string const& name);
   bool IsIdentifier(std::string const& name);
+  bool IsRelRef(std::string const& name);
   bool IsSynonym(std::string const& name);
   bool IsTransitiveRelRef(std::string const& name);
-  bool IsRelRef(std::string const& name);
+  bool IsValidInteger(std::string const& int_string);
   bool IsWildcard(std::string const& name);
+  AttrType GetDefaultAttrTypeFromEntityType(EntityType entity_type);
+  AttrType StringToAttrType(std::string const& string);
   EntityType StringToEntityType(std::string const& entity_string);
 };

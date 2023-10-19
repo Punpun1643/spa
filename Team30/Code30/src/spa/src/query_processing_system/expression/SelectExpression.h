@@ -1,11 +1,13 @@
 #pragma once
 
-/* #include "AExpression.h" */
-#include "SuchThatExpression.h"
+#include "../common/AttrType.h"
+#include "AExpression.h"
 
 class SelectExpression : public AExpression {
  public:
-  SelectExpression(std::string synonym, bool is_boolean);
+  SelectExpression(std::string synonym, AttrType attr_type, bool is_boolean);
+  SelectExpression(bool is_boolean);
+  AttrType GetAttrType();
   std::string GetSynonym();
   bool IsBoolean();
   void acceptInterpreter(QueryInterpreter& interpreter) override;
@@ -14,5 +16,6 @@ class SelectExpression : public AExpression {
 
  private:
   bool is_boolean;
+  AttrType attr_type;
   std::string synonym;
 };

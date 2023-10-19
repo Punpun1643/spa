@@ -1,5 +1,12 @@
 #include "ParserHelperFunctions.h"
 
+void AddIntVector(std::vector<std::shared_ptr<Token>>& tokens, std::vector<std::string> int_vector) {
+  for (std::string int_str : int_vector) {
+    tokens.push_back(
+        std::static_pointer_cast<Token>(std::make_shared<IntegerToken>(int_str)));
+  }
+}
+
 void AddWordVector(std::vector<std::shared_ptr<Token>>& tokens,
                    std::vector<std::string> word_vector) {
   for (std::string word : word_vector) {
