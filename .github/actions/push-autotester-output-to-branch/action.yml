@@ -48,6 +48,7 @@ runs:
     - name: Add autotester output
       shell: bash
       run: |
+        rm -rf ./build
         git add ./index.html
         git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
