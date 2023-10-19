@@ -6,7 +6,7 @@ Select r with r.stmt# = s.stmt#
 2 - With .Stmt# = .value
 assign a; constant c;
 Select a with a.stmt# = c.value
-2, 7
+2, 7, 1, 3
 5000
 3 - With .Stmt# = (raw value)
 while w; variable v; 
@@ -16,7 +16,7 @@ v3
 4 - With .value = .value
 constant c, c1;
 Select c with c.value = c1.value
-2
+0, 1, 2, 3, 4, 7, 99 
 5000
 5 - With .value = (raw value)
 constant c;
@@ -31,7 +31,7 @@ p2, v3
 7 - With .procName = .varName
 procedure p; variable v;
 Select p with p.procName = v.varName
-v3
+p1, v3
 5000
 8 - With .procName = (raw value)
 procedure p; variable v;
@@ -40,7 +40,7 @@ v5, v6, v4, v2
 5000
 9 - With .varName = .varName
 read r; print pn;
-Select r such that r.varName = pn.varName
+Select r with r.varName = pn.varName
 5, 18, 20
 5000
 10 - With .varName = (raw value)
@@ -48,27 +48,32 @@ assign a; variable v;
 Select a pattern a (v, _) with v.varName = "v3"
 3, 23
 5000
-11 - Multi With Clause
+11 - Multi With Clause + Such That
 stmt s; variable v;
 Select BOOLEAN such that Uses(s, v) with v.varName = "v3" and s.stmt# = 3
 FALSE
 5000
-12 - Multi With Clause 
-assign a; variable v; if i
+12 - With Clause, Such That and Pattern
+assign a; variable v; if i;
 Select BOOLEAN such that Parent(i, a) pattern a (v, _) with v.varName = "v1"  
 TRUE
 5000
-13 - With Invalid: Incorrect Value comparison with attrRef
+13 - 3+ With Clauses
+print pn; variable v; constant c; procedure p;
+Select pn.value with pn.stmt# = c.value and c.value = 4 and p.procName = v.varName
+v1
+5000
+14 - With Invalid: Incorrect Value comparison with attrRef
 read r;
 Select r with r.varName = 10
 SemanticError
 5000
-14 - With Invalid: Invalid Comparator Symbol
+15 - With Invalid: Invalid Comparator Symbol
 stmt s; 
 Select s with s.stmt# < 8
 SyntaxError
 5000
-15 - With Invalid: and keyword next to with keyword
+16 - With Invalid: and keyword next to with keyword
 if i; call c;
 Select <i, c> with i.stmt# = 8 and with c.stmt# = 11
 SyntaxError
