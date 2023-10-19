@@ -43,6 +43,7 @@ runs:
     - name: Force pull to reset workspace in the current branch
       shell: bash
       run: |
+        git config pull.rebase false
         git fetch origin
         git reset --hard origin/${{ inputs.branch-name }}
     - name: Clean untracked file
