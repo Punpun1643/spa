@@ -1,105 +1,105 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.709000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.562000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check specific variable used by procedure synonym">1</id><querystr><![CDATA[procedure p; Select p such that Uses(p, "q")]]></querystr>
 <stuans>Barricade,Bumblebee</stuans>
 <correct>Bumblebee,Barricade</correct>
-<time_taken>2.759000</time_taken>
+<time_taken>1.270000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="check variable synonym used by procedure synonym">2</id><querystr><![CDATA[procedure p; variable v; assign a; Select p such that Uses(p, v) pattern a (v, _"j"_) ]]></querystr>
 <stuans>Barricade,Bumblebee,IronHide</stuans>
 <correct>Bumblebee,IronHide,Barricade</correct>
-<time_taken>2.378000</time_taken>
+<time_taken>1.199000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="check variable wildcard used by procedure synonym">3</id><querystr><![CDATA[procedure p; Select p such that Uses(p, _)]]></querystr>
 <stuans>Barricade,Bumblebee,IronHide,Megatron</stuans>
 <correct>Bumblebee,Megatron,IronHide,Barricade</correct>
-<time_taken>1.459000</time_taken>
+<time_taken>1.043000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check specific variable used by specific procedures">4</id><querystr><![CDATA[read r; Select r such that Uses("IronHide", "p")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.331000</time_taken>
+<time_taken>1.074000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check variable synonym used by specific procedures">5</id><querystr><![CDATA[variable v; Select v such that Uses("Barricade", v)]]></querystr>
 <stuans>i,j,p,q,x,y</stuans>
 <correct>i,x,j,y,p,q</correct>
-<time_taken>1.910000</time_taken>
+<time_taken>1.055000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="check variable wildcard used by specific procedures">6</id><querystr><![CDATA[print pn; Select pn such that Uses("Megatron", _)]]></querystr>
 <stuans>15,23</stuans>
 <correct>15,23</correct>
-<time_taken>1.362000</time_taken>
+<time_taken>1.225000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="check specific variable modified by procedure synonym">7</id><querystr><![CDATA[procedure p; Select p such that Modifies(p, "q")]]></querystr>
 <stuans>Barricade,Megatron</stuans>
 <correct>Megatron,Barricade</correct>
-<time_taken>1.860000</time_taken>
+<time_taken>1.061000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="check variable synonym modified by procedure synonym">8</id><querystr><![CDATA[procedure p; variable v; assign a; Select p such that Modifies(p, v) pattern a (v, _"x"_)]]></querystr>
 <stuans>Barricade,Bumblebee,IronHide,Megatron</stuans>
 <correct>Megatron,Barricade,Bumblebee,IronHide</correct>
-<time_taken>1.370000</time_taken>
+<time_taken>1.156000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="check wildcard modified by procedure synonym">9</id><querystr><![CDATA[procedure p; Select p such that Modifies(p, _)]]></querystr>
 <stuans>Barricade,Bumblebee,IronHide,Megatron</stuans>
 <correct>Bumblebee,Megatron,IronHide,Barricade</correct>
-<time_taken>1.195000</time_taken>
+<time_taken>1.100000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="check specific variable modified by specific procedure">10</id><querystr><![CDATA[while w; Select w such that Modifies("Barricade", "p")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.200000</time_taken>
+<time_taken>1.113000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="check variable synonym modified by specific procedure">11</id><querystr><![CDATA[variable v; Select v such that Modifies("IronHide", v)]]></querystr>
 <stuans>i,j,x,y</stuans>
 <correct>i,j,x,y</correct>
-<time_taken>1.437000</time_taken>
+<time_taken>1.213000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="check wildcard modified by specific procedure">12</id><querystr><![CDATA[if i; Select i such that Modifies("Bumblebee", _)]]></querystr>
 <stuans>19,4</stuans>
 <correct>4,19</correct>
-<time_taken>1.256000</time_taken>
+<time_taken>1.150000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid, 2nd parameter for UsesP should not be a constant">13</id><querystr><![CDATA[procedure p; Select p such that Uses(p, "2") ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.324000</time_taken>
+<time_taken>1.231000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid, 2nd parameter for ModifiesP should not be a constant">14</id><querystr><![CDATA[procedure p; Select p such that Modifies(p, "1")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.258000</time_taken>
+<time_taken>1.141000</time_taken>
 <passed/>
 </query>
 </queries>
