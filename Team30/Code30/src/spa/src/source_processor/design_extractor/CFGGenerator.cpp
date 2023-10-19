@@ -42,11 +42,10 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   std::vector<std::shared_ptr<CFGNode>> nextNodes;
   std::shared_ptr<CFGNode> generatedNode = GenerateCFG(stmts, lastNodePointsTo);
 
-  if (generatedNode != nullptr) {
-    nextNodes.push_back(generatedNode);
-  }
-
   if (currType == StmtType::WHILE_STMT) {
+    if (generatedNode != nullptr) {
+      nextNodes.push_back(generatedNode);
+    }
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(currStmt);
 
@@ -54,8 +53,6 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
         asWhile->GetStmtLst()->GetChildren();
 
     lastNodePointsTo.push_back(newNode);
-    lastNodePointsTo.insert(lastNodePointsTo.end(), nextNodes.begin(),
-                            nextNodes.end());
 
     std::shared_ptr<CFGNode> whileBodyCFG =
         GenerateCFG(whileBodyStmts, lastNodePointsTo);
@@ -63,8 +60,15 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
     if (whileBodyCFG != nullptr) {
       nextNodes.push_back(whileBodyCFG);
     }
+    if (generatedNode != nullptr) {
+      nextNodes.push_back(generatedNode);
+    }
 
   } else if (currType == StmtType::IF_STMT) {
+    if (generatedNode != nullptr) {
+      lastNodePointsTo.push_back(generatedNode);
+    }
+
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(currStmt);
 
     lastNodePointsTo.insert(lastNodePointsTo.end(), nextNodes.begin(),
@@ -85,6 +89,10 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
     }
     if (elseBodyCFG != nullptr) {
       nextNodes.push_back(elseBodyCFG);
+    }
+  } else {
+    if (generatedNode != nullptr) {
+      nextNodes.push_back(generatedNode);
     }
   }
 
