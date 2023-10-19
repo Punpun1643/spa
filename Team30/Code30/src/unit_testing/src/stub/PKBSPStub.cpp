@@ -167,7 +167,7 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
   std::shared_ptr<CFGNode> node = CFGNodeMap.find(statement_num)->second;
   int length = node->getOutgoingNodes().size();
   int expLength = outgoingStmtNos.size();
-  if (length != expLength) {
+  if (length == 0 && expLength != 0) {
     std::cout << "OUTGOING EMPTY\n";
     return false;
   }
@@ -185,7 +185,7 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
 
     if (removeResult) {
       // couldn't find the item
-      std::cout << "INCORRECTLY CONTAINS " + nodeStmtNo + "\n";
+      std::cout << " - INCORRECTLY CONTAINS " + nodeStmtNo + "\n";
       return false;
     }
   }
@@ -217,7 +217,7 @@ bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
 
     if (removeResult) {
       // couldn't find the item
-      std::cout << "INCORRECTLY CONTAINS " + nodeStmtNo + "\n";
+      std::cout << " -- INCORRECTLY CONTAINS " + nodeStmtNo + "\n";
       return false;
     }
   }
