@@ -48,7 +48,7 @@ runs:
     - name: Clean untracked file
       shell: bash
       run: |
-          git clean -fd
+        git clean -fd
     - name: Add autotester output
       shell: bash
       run: |
