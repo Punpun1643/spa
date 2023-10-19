@@ -8,57 +8,24 @@ inputs:
   GITHUB_TOKEN:
     require: true
 
-#runs:
-#  using: composite
-#  steps:
-#    - name: push-to-branch
-#      shell: bash
-#      env:
-#        GIT_PAT: ${{ inputs.git-pat }}
-#        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-#      run: |
-#        if [ ${{ inputs.branch-name }} == 'master' ]; then
-#          git checkout ${{ inputs.branch-name }}
-#        else
-#          git checkout -b ${{ inputs.branch-name }}
-#        fi
-#        git config pull.rebase false
-#        git pull origin ${{ inputs.branch-name }}
-#        git add ./index.html
-#        git add -f Team30/Tests30/output/*
-#        git commit -m 'Github Actions Workflow: Add autotester output'
-#        git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}
-
 runs:
   using: composite
   steps:
-    - name: Checkout the appropriate branch
+    - name: push-to-branch
       shell: bash
+      env:
+        GIT_PAT: ${{ inputs.git-pat }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: |
         if [ ${{ inputs.branch-name }} == 'master' ]; then
-        git checkout ${{ inputs.branch-name }}
+          git checkout ${{ inputs.branch-name }}
         else
-        git checkout -b ${{ inputs.branch-name }}
+          git checkout -b ${{ inputs.branch-name }}
         fi
-    - name: Force pull to reset workspace in the current branch
-      shell: bash
-      run: |
         git config pull.rebase false
-        git fetch origin
-        git reset --hard origin/${{ inputs.branch-name }}
-    - name: Clean untracked file
-      shell: bash
-      run: |
-        git clean -fd
-    - name: Add autotester output
-      shell: bash
-      run: |
+        git rm -rf ./Team30/Tests30/output/
+        git pull origin ${{ inputs.branch-name }}
         git add ./index.html
         git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
         git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}
-
-      env:
-        GIT_PAT: ${{ inputs.git-pat }}
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-
