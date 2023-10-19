@@ -23,10 +23,10 @@ runs:
           git checkout -b ${{ inputs.branch-name }}
         fi
         git config pull.rebase false
-        git pull personal ${{ inputs.branch-name }}
+        git pull origin ${{ inputs.branch-name }}
         git checkout --ours Team30/Tests30/output/* || true
         git clean -fd
         git add ./index.html
         git add -f Team30/Tests30/output/*
         git commit -m 'Github Actions Workflow: Add autotester output'
-        git push --set-upstream --force-with-lease personal ${{ inputs.branch-name }}
+        git push --set-upstream --force-with-lease origin ${{ inputs.branch-name }}
