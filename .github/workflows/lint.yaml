@@ -11,7 +11,7 @@ on:
 jobs:
   check-code-style:
     runs-on: [macos-latest]
-    timeout-minutes: 3
+    timeout-minutes: 5
     strategy:
       fail-fast: true
     steps:
