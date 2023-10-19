@@ -1,0 +1,20 @@
+name: cpp lint
+
+on: [push, pull_request]
+
+jobs:
+  check-code-style:
+    runs-on: [macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install cpplint
+        run: pip install cpplint
+
+      - name: Run cpplint
+        run: |
+          cd Team30/Code30/src
+          cpplint --recursive --quiet --extensions=h,cpp .
