@@ -3,9 +3,6 @@ name: Autotest
 runs:
   using: composite
   steps:
-    - name: Remove old XML files
-      shell: bash
-      run: git rm -rf ./Team30/Tests30/output/*.xml
     - name: autotest
       shell: bash
       run: |
