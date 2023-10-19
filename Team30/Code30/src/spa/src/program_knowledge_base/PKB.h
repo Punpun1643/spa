@@ -23,8 +23,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;
 
-  std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
-
   // Helper functions
   std::unordered_set<std::string> getIntersection(
       std::unordered_set<std::string> set1,
@@ -39,7 +37,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
                     std::string statement_number,
                     std::string attribute) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
-                              std::string s2_line_num);
+                              std::string s2_line_num) override;
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,

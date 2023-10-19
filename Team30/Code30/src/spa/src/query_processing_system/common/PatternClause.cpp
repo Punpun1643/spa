@@ -41,8 +41,7 @@ std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
       break;
     }
     case (PqlRefType::WILD): {
-      auto values =
-          pkb.getPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
+      auto values = pkb.getPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(assign_decl, *values);
       break;
     }

@@ -2,6 +2,7 @@
 
 #include <list>
 
+#include "common/AttrRef.h"
 #include "common/Clause.h"
 #include "context/Context.h"
 #include "evaluator/QueryEvaluator.h"
@@ -15,7 +16,7 @@ class QPSController {
 
   void HandleQuery(std::string& query, std::list<std::string>& results,
                    std::shared_ptr<QueryEvaluator> query_evaluator);
-  std::pair<std::vector<PqlDeclaration>, std::vector<std::shared_ptr<Clause>>>
+  std::pair<std::vector<AttrRef>, std::vector<std::shared_ptr<Clause>>>
   TokensToClauses(std::vector<std::shared_ptr<Token>> tokens);
 
  private:
