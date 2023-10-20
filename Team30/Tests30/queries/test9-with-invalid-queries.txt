@@ -1,0 +1,80 @@
+14 - With Invalid: Incorrect Value comparison with attrRef
+read r;
+Select r with r.varName = 10
+SemanticError
+5000
+14 - With Invalid: Incorrect Value comparison with attrRef
+call c;
+Select c with "abc" = c.stmt#
+SemanticError
+5000
+14 - With Invalid: Incorrect Value comparison with attrRef
+read r;
+Select r with 1 = "wwd"
+SemanticError
+5000
+15 - With Invalid: Invalid Comparator Symbol
+stmt s;
+Select s with s.stmt# < 8
+SyntaxError
+5000
+16 - With Invalid: and keyword next to with keyword
+if i; call c;
+Select <i, c> with i.stmt# = 8 and with c.stmt# = 11
+SyntaxError
+5000
+16 - With Invalid: whitespace
+if i; call c;
+Select <i, c> with i.stmt # = 8
+SyntaxError
+5000
+18 - With Invalid: invalid attr type
+while w;
+Select w with 2 = w.procName
+SemanticError
+5000
+19 - With Invalid: non-existent attr type
+while w;
+Select w with 12 = w.attrType
+SyntaxError
+5000
+20 - With Invalid: invalid attrType
+constant c;
+Select c with c.stmt# = 213
+SemanticError
+5000
+20 - With Invalid: wrong equality symbol
+constant c;
+Select c with c.value == 213
+SyntaxError
+5000
+20 - With Invalid: int with leading zeros
+constant c;
+Select c with 0213 = c.stmt#
+SyntaxError
+5000
+20 - With Invalid: strange input
+constant c;
+Select c with 123.stmt# = 414
+SyntaxError
+5000
+20 - With Invalid: strange input
+while w;
+Select w with w.stmt# = "abc
+SyntaxError
+5000
+20 - With Invalid: strange input
+while w;
+Select w with w.stmt# = 123"
+SyntaxError
+5000
+20 - With Invalid: strange input
+while w;
+Select w with "w".stmt# = 123
+SyntaxError
+5000
+20 - With Invalid: synonym non-existent
+constant c;
+Select c with a.stmt# = 414
+SemanticError
+5000
