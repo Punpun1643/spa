@@ -36,7 +36,7 @@ SyntaxError
 8 - AttrRef procedure procName
 procedure p;
 Select <p, p.procName>
-p1 p1, p1 p2, p1 p3, p1 p4, p2 p1, p2 p2, p2 v3, p2 p4, v3 p1, v3 p2, v3 v3, v3 p4, p4 p1, p4 p2, p4 v3, p4 p4
+p1 p1, p2 p2, v3 v3, p4 p4
 5000
 9 - AttrRef variable varName and procedure procName with With clauses
 variable v; procedure p;
