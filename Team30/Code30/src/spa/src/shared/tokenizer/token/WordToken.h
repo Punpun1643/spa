@@ -1,4 +1,7 @@
 #pragma once
+
+#include <string>
+
 #include "Token.h"
 
 class WordToken : public Token {
