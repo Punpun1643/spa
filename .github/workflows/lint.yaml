@@ -26,4 +26,4 @@ jobs:
       - name: Run cpplint
         run: |
           cd Team30/Code30/src/spa
-          cpplint --recursive --filter=-legal/copyright,-runtime/references,-runtime/string --quiet --extensions=h,cpp .
+          cpplint --recursive --filter=-legal/copyright,-runtime/references,-runtime/string,build/c++11 --quiet --extensions=h,cpp .
