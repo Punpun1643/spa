@@ -33,7 +33,8 @@ std::shared_ptr<Token> Tokenizer::next() {
         word += c;
       }
 
-      if (keywords.find(word) != keywords.end() && input.peek() == '*') {
+      if ((keywords.find(word) != keywords.end() && input.peek() == '*') ||
+          (word == "stmt" && input.peek() == '#')) {
         input.get(c);
         word += c;
       }
