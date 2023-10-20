@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iterator>
+#include <string>
 
 CallsGraphProcNode::CallsGraphProcNode(std::string proc)
     : proc(proc), numProcsCalled(0) {}

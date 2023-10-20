@@ -25,7 +25,7 @@
 
 class SpParser : public AParser {
  public:
-  SpParser(std::vector<std::shared_ptr<Token>> tokens);
+  explicit SpParser(std::vector<std::shared_ptr<Token>> tokens);
 
   /**
    * @brief Get the Source Program Node object.

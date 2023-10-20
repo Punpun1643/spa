@@ -1,6 +1,9 @@
 #include "CallsGraphStmtNode.h"
 
 #include <iterator>
+#include <algorithm>
+#include <string>
+#include <vector>
 
 CallsGraphStmtNode::CallsGraphStmtNode(std::vector<std::string> actors,
                                        std::shared_ptr<CallNode> callNode)

@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <memory>
+#include <vector>
 
 #include "../../shared/tokenizer/Tokenizer.h"
 #include "SpParser.h"

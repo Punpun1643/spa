@@ -1,15 +1,15 @@
 #pragma once
 
 #include <source_processor/node/stmt_node/CallNode.h>
-
 #include <memory>
 #include <unordered_set>
+#include <string>
 
 #include "CallsGraphStmtNode.h"
 
 class CallsGraphProcNode {
  public:
-  CallsGraphProcNode(std::string proc);
+  explicit CallsGraphProcNode(std::string proc);
 
   void addStmtCalledBy(std::shared_ptr<CallsGraphStmtNode> stmtCalledBy);
 
