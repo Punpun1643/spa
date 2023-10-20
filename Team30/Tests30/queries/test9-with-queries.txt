@@ -1,3 +1,23 @@
+1 - Int Comparison which is False
+stmt s;
+Select s with 152 = 1231234
+none
+5000
+2 - Int Comparison which is True
+read r;
+Select r.varName with 4442 = 4442
+v1, v2, v4, v7, v6
+5000
+3 - String Comparison which is False
+call c;
+Select c.procName with "thisIsaVar231awd" = "a241bc"
+none
+5000
+4 - String Comparison which is True
+call c;
+Select c.procName with "aoibvoib10412oainaw2013" = "aoibvoib10412oainaw2013"
+p2, v3
+5000
 1 - .Stmt# to .Stmt#
 stmt s; read r;
 Select r with r.stmt# = s.stmt#
