@@ -1,13 +1,13 @@
 #pragma once
 
 #include <stdio.h>
-
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 
 #include "../query_processing_system/common/EntityType.h"
 #include "../source_processor/node/stmt_node/StmtNode.h"

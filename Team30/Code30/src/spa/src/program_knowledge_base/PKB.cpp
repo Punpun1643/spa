@@ -4,6 +4,7 @@
 #include <cassert>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   entData = std::make_unique<EntityDatabase>();
@@ -195,13 +196,13 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
   // Wild Wild
   if (match_type == MatchType::WILD_MATCH) {
     output = *entData->get(EntityType::ASSIGN);
-  } else if (match_type == MatchType::PARTIAL_MATCH) { // Wild Partial
+  } else if (match_type == MatchType::PARTIAL_MATCH) {  // Wild Partial
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
         output.insert(pair.first);
       }
     }
-  } else { // Wild Exact
+  } else {  // Wild Exact
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
         output.insert(pair.first);
@@ -221,14 +222,14 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
   // String Wild
   if (match_type == MatchType::WILD_MATCH) {
     output = patData->getStatementNumbersGivenLHS(lhs_value);
-  } else if (match_type == MatchType::PARTIAL_MATCH) { // String Partial
+  } else if (match_type == MatchType::PARTIAL_MATCH) {  // String Partial
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (pair.second.first == lhs_value &&
           TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
         output.insert(pair.first);
       }
     }
-  } else { // String Exact
+  } else {  // String Exact
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (pair.second.first == lhs_value &&
           TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
@@ -251,19 +252,19 @@ PKB::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
     for (auto& pair : patData->getAssignmentPatterns()) {
       output.push_back(make_pair(pair.first, pair.second.first));
     }
-  } else if (match_type == MatchType::PARTIAL_MATCH) { // Synonym Partial
+  } else if (match_type == MatchType::PARTIAL_MATCH) {  // Synonym Partial
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
         output.push_back(make_pair(pair.first, pair.second.first));
-      };
+      }
     }
-  } else { // Synonym Exact
+  } else {  // Synonym Exact
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
         output.push_back(make_pair(pair.first, pair.second.first));
-      };
+      }
     }
-  };
+  }
 
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       output.begin(), output.end());
