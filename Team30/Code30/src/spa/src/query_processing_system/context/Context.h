@@ -1,5 +1,10 @@
 #pragma once
 
+#include <unordered_map>
+#include <string>
+#include <memory>
+#include <vector>
+
 #include "../common/AttrRef.h"
 #include "../common/EntityType.h"
 #include "../common/PatternClause.h"

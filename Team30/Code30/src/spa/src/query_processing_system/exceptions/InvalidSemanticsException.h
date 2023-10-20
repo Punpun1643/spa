@@ -1,4 +1,6 @@
 #pragma once
+
+#include <string>
 #include <stdexcept>
 
 class InvalidSemanticsException : public std::invalid_argument {

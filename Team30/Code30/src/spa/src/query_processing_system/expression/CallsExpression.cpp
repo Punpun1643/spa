@@ -1,3 +1,5 @@
+#include <string>
+
 #include "CallsExpression.h"
 
 CallsExpression::CallsExpression(std::string arg1, std::string arg2)

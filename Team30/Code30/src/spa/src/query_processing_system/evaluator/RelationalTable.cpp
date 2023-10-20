@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <unordered_set>
+#include <utility>
 
 #include "ArrayUtility.h"
 
@@ -61,7 +62,7 @@ std::vector<PqlDeclaration> RelationalTable::GetSharedColumns(
 }
 
 int RelationalTable::GetNumCols() const {
-  return (int)column_mapping.size();
+  return static_cast<int>(column_mapping.size());
 }
 
 bool RelationalTable::CheckIfRowsMatch(
