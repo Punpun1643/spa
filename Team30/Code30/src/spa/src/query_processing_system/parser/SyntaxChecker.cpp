@@ -26,6 +26,30 @@ void SyntaxChecker::parse() {
   CheckEOF();
 }
 
+void SyntaxChecker::CheckAffects() {
+  assert(GetCurrTokenValue() == AFFECTS);
+
+  NextToken();
+  this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Affects clause");
+
+  NextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for first argument of Affects clause",
+      "Synonym in first arg of Affects clause has not been declared");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(",", "Expected \',\' for Affects clause");
+
+  NextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for second argument of Affects clause",
+      "Synonym in second arg of Affects clause has not been declared");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected \')\' for Affects clause");
+
+  NextToken();
+}
 void SyntaxChecker::CheckAnd(ClauseType clause_type) {
   assert(GetCurrTokenValue() == QpParser::AND);
   NextToken();
@@ -358,7 +382,9 @@ void SyntaxChecker::CheckSuchThat(bool has_and) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
   std::string rel_ref = GetCurrTokenValue();
-  if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
+  if (rel_ref == QpParser::AFFECTS) {
+    this->CheckAffects();
+  } else if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
     this->CheckCalls();
   } else if (rel_ref == QpParser::FOLLOWS ||
              rel_ref == QpParser::FOLLOWS_STAR) {

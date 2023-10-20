@@ -16,6 +16,7 @@ QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
 
 // Constants
 std::string const QpParser::AND = "and";
+std::string const QpParser::AFFECTS = "Affects";
 std::string const QpParser::BOOLEAN = "BOOLEAN";
 std::string const QpParser::CALLS = "Calls";
 std::string const QpParser::CALLS_STAR = "Calls*";
@@ -65,8 +66,9 @@ bool QpParser::IsIdentifier(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
-                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
+  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
+                       USES,    MODIFIES,     CALLS,       CALLS_STAR,
+                       NEXT,    NEXT_STAR,    AFFECTS};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;
