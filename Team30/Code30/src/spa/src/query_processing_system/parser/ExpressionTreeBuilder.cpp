@@ -258,10 +258,6 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    if (GetCurrTokenValue() == QpParser::AND) {
-      NextToken();  // pattern
-    }
-
     std::string syn_assign = NextToken()->getTokenVal();
 
     std::string arg1 = "";
