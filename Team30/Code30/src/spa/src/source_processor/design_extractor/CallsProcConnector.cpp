@@ -25,7 +25,7 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
     std::shared_ptr<CallsGraphProcNode> nodeWMinCalls;
     std::string procNameWMinCalls;
     for (auto mapNameNode : procNodeMap_copy) {
-      int currNumCalls = mapNameNode.second->getNumProcsCalled();
+      int currNumCalls = mapNameNode.second->GetNumProcsCalled();
       if (currNumCalls < minCalls) {
         minCalls = currNumCalls;
         nodeWMinCalls = mapNameNode.second;
@@ -51,9 +51,9 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
     // for each procCalledBy in procsCalls, insert into pkb the relevant uses /
     // modifies relation
     for (std::shared_ptr<CallsGraphStmtNode> stmtCalling :
-         nodeWMinCalls->getStmtsCalledBy()) {
-      std::shared_ptr<CallNode> node = stmtCalling->getCallNode();
-      std::vector<std::string> actors = stmtCalling->getActors();
+         nodeWMinCalls->GetStmtsCalledBy()) {
+      std::shared_ptr<CallNode> node = stmtCalling->GetCallNode();
+      std::vector<std::string> actors = stmtCalling->GetActors();
 
       // for each stmtCalledBy in stmtsCalledBy, insert into pkb the relevant
       // uses or modifies relation, and with all the actors
@@ -90,8 +90,8 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
 
     // remove this procNode from the procNodeMap
     for (std::shared_ptr<CallsGraphProcNode> procCalling :
-         nodeWMinCalls->getProcsCalledBy()) {
-      procCalling->removeProcCalled(nodeWMinCalls);
+         nodeWMinCalls->GetProcsCalledBy()) {
+      procCalling->RemoveProcCalled(nodeWMinCalls);
     }
 
     procNodeMap_copy.erase(procNameWMinCalls);

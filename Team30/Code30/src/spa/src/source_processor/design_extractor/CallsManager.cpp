@@ -5,15 +5,15 @@
 
 #include "../exceptions/InvalidSourceSemanticsException.h"
 CallsManager::CallsManager(PKBSPInterface& pkb) : pkb(pkb) {
-  callsExtractor = std::make_shared<CallsExtractor>(pkb);
-  procConnector = std::make_shared<CallsProcConnector>(pkb);
+  calls_extractor = std::make_shared<CallsExtractor>(pkb);
+  proc_connector = std::make_shared<CallsProcConnector>(pkb);
 }
 
 void CallsManager::InsertProcNode(std::string procName) {
-  if (procNodeMap.find(procName) == procNodeMap.end()) {
+  if (proc_node_map.find(procName) == proc_node_map.end()) {
     std::shared_ptr<CallsGraphProcNode> newNode =
         std::make_shared<CallsGraphProcNode>(procName);
-    procNodeMap.insert({procName, newNode});
+    proc_node_map.insert({procName, newNode});
   } else {
     // throw error: two procs with same name
     throw InvalidSourceSemanticsException(
@@ -29,8 +29,8 @@ void CallsManager::InsertCallsStmt(std::string procA, std::string procB,
                                    std::shared_ptr<CallNode> callNode) {
   std::shared_ptr<CallsGraphStmtNode> newStmtNode =
       std::make_shared<CallsGraphStmtNode>(actors, callNode);
-  std::shared_ptr<CallsGraphProcNode> procCalling = procNodeMap[procA];
-  std::shared_ptr<CallsGraphProcNode> procGettingCalled = procNodeMap[procB];
+  std::shared_ptr<CallsGraphProcNode> procCalling = proc_node_map[procA];
+  std::shared_ptr<CallsGraphProcNode> procGettingCalled = proc_node_map[procB];
 
   if (procCalling == nullptr) {
     // invalid proc
@@ -46,15 +46,15 @@ void CallsManager::InsertCallsStmt(std::string procA, std::string procB,
     throw InvalidSourceSemanticsException("Proceduce calls itself.");
   }
 
-  procGettingCalled->addStmtCalledBy(newStmtNode);
-  procGettingCalled->addProcCalledBy(procCalling);
-  procCalling->addProcCalled(procGettingCalled);
+  procGettingCalled->AddStmtCalledBy(newStmtNode);
+  procGettingCalled->AddProcCalledBy(procCalling);
+  procCalling->AddProcCalled(procGettingCalled);
 }
 
 void CallsManager::ExecuteCallsExtraction() {
-  callsExtractor->ExtractCallAbstractions(procNodeMap);
+  calls_extractor->ExtractCallAbstractions(proc_node_map);
 }
 
 void CallsManager::ConnectProcsAndUpdateRelations() {
-  procConnector->ConnectProcsAndUpdateRelations(procNodeMap);
+  proc_connector->ConnectProcsAndUpdateRelations(proc_node_map);
 }

@@ -6,11 +6,11 @@
 UsesExtractor::UsesExtractor(PKBSPInterface& pkb,
                              std::shared_ptr<CallsManager> callsManager)
     : pkb(pkb),
-      callsManager(callsManager),
+      calls_manager(callsManager),
       UsesModifiesTypeExtractor(pkb, callsManager) {}
 
 void UsesExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {
-  callsManager->InsertCallsStmt(actors[0], node->GetProcName(), actors, node);
+  calls_manager->InsertCallsStmt(actors[0], node->GetProcName(), actors, node);
 }
 
 void UsesExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {

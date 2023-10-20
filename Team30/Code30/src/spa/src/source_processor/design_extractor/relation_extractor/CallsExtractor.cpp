@@ -7,10 +7,10 @@ void CallsExtractor::ExtractCallAbstractions(
         procNodeMap) {
   for (auto mapNameNode : procNodeMap) {
     std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procsCalled =
-        mapNameNode.second->getProcsCalled();
+        mapNameNode.second->GetProcsCalled();
     std::string procCalling = mapNameNode.first;
     for (std::shared_ptr<CallsGraphProcNode> procCalled : procsCalled) {
-       pkb.insertRelation(RelationType::CALLS, procCalling, procCalled->getProcName());
+       pkb.insertRelation(RelationType::CALLS, procCalling, procCalled->GetProcName());
     }
   }
 }

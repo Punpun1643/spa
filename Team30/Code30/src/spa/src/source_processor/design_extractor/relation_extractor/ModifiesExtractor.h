@@ -18,8 +18,6 @@ class ModifiesExtractor : public UsesModifiesTypeExtractor {
   explicit ModifiesExtractor(PKBSPInterface& pkb,
                              std::shared_ptr<CallsManager> callsManager);
 
-  void ExtractFromProgram(std::shared_ptr<ProgramNode> node) override;
-
   void ExtractFromRead(std::shared_ptr<ReadNode> node) override;
 
   void ExtractFromAssign(std::shared_ptr<AssignNode> node) override;

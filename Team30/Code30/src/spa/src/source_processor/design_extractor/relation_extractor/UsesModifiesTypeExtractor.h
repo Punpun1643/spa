@@ -33,7 +33,7 @@ class UsesModifiesTypeExtractor : public DesignExtractor {
  private:
   PKBSPInterface& pkb;
 
-  std::shared_ptr<CallsManager> callsManager;
+  std::shared_ptr<CallsManager> calls_manager;
 
  protected:
   std::vector<std::string> actors;

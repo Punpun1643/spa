@@ -8,13 +8,13 @@
 #include "relation_extractor/UsesExtractor.h"
 
 ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
-  callsManager = std::make_shared<CallsManager>(pkb);
-  cfgGenerator = std::make_shared<CFGGenerator>(pkb);
+  calls_manager = std::make_shared<CallsManager>(pkb);
+  cfg_generator = std::make_shared<CFGGenerator>(pkb);
 
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
-  extractors.push_back(std::make_shared<UsesExtractor>(pkb, callsManager));
-  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb, callsManager));
+  extractors.push_back(std::make_shared<UsesExtractor>(pkb, calls_manager));
+  extractors.push_back(std::make_shared<ModifiesExtractor>(pkb, calls_manager));
   extractors.push_back(std::make_shared<EntityExtractor>(pkb));
   extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }
@@ -29,7 +29,7 @@ void ExtractionController::ExecuteProgramExtraction(
 
       // Support creation of the procedure calls graph
     for (std::shared_ptr<ProcedureNode> child : children) {
-      callsManager->InsertProcNode(child->GetProcedureName());
+      calls_manager->InsertProcNode(child->GetProcedureName());
     }
 
     // Carry out the DFS extraction 
@@ -39,7 +39,7 @@ void ExtractionController::ExecuteProgramExtraction(
 
     // Construct CFGs
     for (std::shared_ptr<ProcedureNode> child : children) {
-       cfgGenerator->ExecuteCFGGeneration(child);
+       cfg_generator->ExecuteCFGGeneration(child);
     }
   }
   ExecutePostProcessing();
@@ -108,6 +108,6 @@ void ExtractionController::PopActors() {
 }
 
 void ExtractionController::ExecutePostProcessing() {
-  callsManager->ExecuteCallsExtraction();
-  callsManager->ConnectProcsAndUpdateRelations();
+  calls_manager->ExecuteCallsExtraction();
+  calls_manager->ConnectProcsAndUpdateRelations();
 }

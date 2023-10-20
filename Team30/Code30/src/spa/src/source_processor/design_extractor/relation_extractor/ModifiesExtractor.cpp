@@ -10,10 +10,6 @@ ModifiesExtractor::ModifiesExtractor(PKBSPInterface& pkb,
       callsManager(callsManager),
       UsesModifiesTypeExtractor(pkb, callsManager) {}
 
-void ModifiesExtractor::ExtractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
-
 void ModifiesExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
   pkb.insertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());

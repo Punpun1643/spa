@@ -23,8 +23,8 @@ class ExtractionController : public IExtractionController {
  private:
   std::vector<std::shared_ptr<IDesignExtractor>> extractors;
   PKBSPInterface& pkb;
-  std::shared_ptr<CallsManager> callsManager;
-  std::shared_ptr<CFGGenerator> cfgGenerator;
+  std::shared_ptr<CallsManager> calls_manager;
+  std::shared_ptr<CFGGenerator> cfg_generator;
 
   void HandleContainerStmts(std::shared_ptr<StmtNode> node);
   void PopActors();

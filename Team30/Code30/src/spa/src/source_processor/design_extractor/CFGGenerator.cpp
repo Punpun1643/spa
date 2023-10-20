@@ -100,8 +100,8 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   }
 
   for (std::shared_ptr<CFGNode> nextNode : nextNodes) {
-    nextNode->addIncomingNode(newNode);
-    newNode->addOutgoingNode(nextNode);
+    nextNode->AddIncomingNode(newNode);
+    newNode->AddOutgoingNode(nextNode);
   }
 
   pkb.insertCFGNode(std::to_string(currStmt->GetStmtIndex()), newNode);

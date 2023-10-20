@@ -33,7 +33,7 @@ class UsesExtractor : public UsesModifiesTypeExtractor {
  private:
   PKBSPInterface& pkb;
 
-  std::shared_ptr<CallsManager> callsManager;
+  std::shared_ptr<CallsManager> calls_manager;
 
   void InsertMultipleVars(std::unordered_set<std::string> vars,
                           std::string stmtIndex);

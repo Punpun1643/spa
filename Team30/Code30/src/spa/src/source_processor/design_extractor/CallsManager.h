@@ -28,9 +28,9 @@ class CallsManager {
  private:
   // Key: string procedureName, Value: CallsGraphProcNode node
   std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
-      procNodeMap;
+      proc_node_map;
 
   PKBSPInterface& pkb;
-  std::shared_ptr<CallsExtractor> callsExtractor;
-  std::shared_ptr<CallsProcConnector> procConnector;
+  std::shared_ptr<CallsExtractor> calls_extractor;
+  std::shared_ptr<CallsProcConnector> proc_connector;
 };
