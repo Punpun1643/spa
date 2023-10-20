@@ -53,6 +53,11 @@ procedure p; call c;
 Select p with p.procName = c.procName
 p2, v3
 5000
+11 - With .procName = .procName and select c
+procedure p; call c;
+Select <c, p> with p.procName = c.procName
+11 p2, 17 v3
+5000
 12 - With .procName = .varName
 procedure p; variable v;
 Select p with p.procName = v.varName
