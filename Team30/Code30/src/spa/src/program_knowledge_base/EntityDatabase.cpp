@@ -63,7 +63,7 @@ std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::get(
   return results;
 }
 
-// TODO: Remove curr_attr_type
+// TODO(@tyanhan): Remove curr_attr_type
 std::string EntityDatabase::ConvertEntityValueToAlias(
     std::string value, EntityType type, AttrType curr_attr_type,
     AttrType wanted_attr_type) {

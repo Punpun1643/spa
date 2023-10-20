@@ -49,7 +49,7 @@ void RelDatabase::insert(RelationType type, std::string val1,
 
 bool RelDatabase::isEmpty(RelationType type) {
   if (cfgRelations.find(type) != cfgRelations.end()) {
-    // TODO: Optimise for NEXT, NEXT_STAR, AFFECTS
+    // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR, AFFECTS
     for (auto pair : cfgNodes) {
       if (hasRelations(type, pair.first)) {
         return true;
@@ -86,7 +86,7 @@ bool RelDatabase::hasRelations(RelationType type, std::string val) {
       return !node->getOutgoingNodes().empty();
     }
 
-    // TODO: Optimise for AFFECTS
+    // TODO(@tyanhan): Optimise for AFFECTS
     for (auto pair : cfgNodes) {
       std::shared_ptr<CFGNode> n = pair.second;
       if (CFGNode::HasAffectsPath(node, n)) {
@@ -106,7 +106,7 @@ bool RelDatabase::hasInverseRelations(RelationType type, std::string val) {
       return !node->getIncomingNodes().empty();
     }
 
-    // TODO: Optimise for AFFECTS
+    // TODO(@tyanhan): Optimise for AFFECTS
     for (auto pair : cfgNodes) {
       std::shared_ptr<CFGNode> n = pair.second;
       if (CFGNode::HasAffectsPath(n, node)) {
@@ -121,7 +121,7 @@ bool RelDatabase::hasInverseRelations(RelationType type, std::string val) {
 std::unordered_set<std::string> RelDatabase::getAllWithRelations(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
   if (cfgRelations.find(type) != cfgRelations.end()) {
-    // TODO: Optimise for NEXT, NEXT_STAR and AFFECTS
+    // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
     std::unordered_set<std::string> output;
     for (std::string val : *vals) {
       if (hasRelations(type, val)) {
@@ -136,7 +136,7 @@ std::unordered_set<std::string> RelDatabase::getAllWithRelations(
 std::unordered_set<std::string> RelDatabase::getAllWithInverseRelations(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
   if (cfgRelations.find(type) != cfgRelations.end()) {
-    // TODO: Optimise for NEXT, NEXT_STAR and AFFECTS
+    // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
     std::unordered_set<std::string> output;
     for (std::string val : *vals) {
       if (hasInverseRelations(type, val)) {
@@ -158,7 +158,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
       for (auto n : node->getOutgoingNodes()) {
         output.insert(std::to_string(n->getNode()->GetStmtIndex()));
       }
-    } else if (type == RelationType::NEXT_STAR) {  // TODO: Optimise for
+    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise for
                                                    // NEXT_STAR and AFFECTS
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
@@ -191,7 +191,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
       for (auto n : node->getIncomingNodes()) {
         output.insert(std::to_string(n->getNode()->GetStmtIndex()));
       }
-    } else if (type == RelationType::NEXT_STAR) {  // TODO: Optimise for
+    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise for
                                                    // NEXT_STAR and AFFECTS
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
