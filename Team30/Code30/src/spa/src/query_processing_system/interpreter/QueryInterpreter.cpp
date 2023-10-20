@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "../common/AffectsClause.h"
 #include "../common/AttrRef.h"
 #include "../common/CallsClause.h"
 #include "../common/FollowsClause.h"
@@ -15,6 +16,7 @@
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
 #include "../expression/AExpression.h"
+#include "../expression/AffectsExpression.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/FollowsExpression.h"
@@ -37,6 +39,15 @@ void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =
       std::move(this->expression_tree);
   expression_tree->acceptInterpreter(*this);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<AffectsExpression> affects_expression) {
+  std::string arg1 = affects_expression->GetArg1();
+  std::string arg2 = affects_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<AffectsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+  this->InterpretNext(affects_expression);
 }
 
 void QueryInterpreter::Interpret(
