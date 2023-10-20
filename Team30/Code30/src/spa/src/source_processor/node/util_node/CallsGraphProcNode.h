@@ -27,7 +27,7 @@ class CallsGraphProcNode {
 
   int getNumProcsCalled();
 
-  void removeProcCalled(std::shared_ptr<CallsGraphProcNode> proc); 
+  void removeProcCalled(std::shared_ptr<CallsGraphProcNode> proc);
 
   ~CallsGraphProcNode() = default;
 
@@ -42,6 +42,6 @@ class CallsGraphProcNode {
   // Procedures that this procedure calls
   std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procsCalled;
 
-  // Procedures that call this procedure 
+  // Procedures that call this procedure
   std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procsCalledBy;
 };

@@ -11,4 +11,6 @@ void PrintNode::Accept(IDesignExtractor& designExtractor) {
   designExtractor.extractFromPrint(thisPrintNodePtr);
 }
 
-std::string const& PrintNode::GetVarName() const { return varName; }
+std::string const& PrintNode::GetVarName() const {
+  return varName;
+}

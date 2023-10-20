@@ -41,7 +41,9 @@ CallsGraphProcNode::getProcsCalledBy() {
   return procsCalledBy;
 }
 
-int CallsGraphProcNode::getNumProcsCalled() { return numProcsCalled; }
+int CallsGraphProcNode::getNumProcsCalled() {
+  return numProcsCalled;
+}
 
 void CallsGraphProcNode::removeProcCalled(
     std::shared_ptr<CallsGraphProcNode> proc) {
@@ -49,4 +51,6 @@ void CallsGraphProcNode::removeProcCalled(
   numProcsCalled--;
 }
 
-std::string CallsGraphProcNode::getProcName() { return proc; }
+std::string CallsGraphProcNode::getProcName() {
+  return proc;
+}

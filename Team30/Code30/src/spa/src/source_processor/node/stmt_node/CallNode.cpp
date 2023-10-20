@@ -11,4 +11,6 @@ void CallNode::Accept(IDesignExtractor& designExtractor) {
   designExtractor.extractFromCall(thisCallNodePtr);
 }
 
-std::string const& CallNode::GetProcName() const { return procName; }
+std::string const& CallNode::GetProcName() const {
+  return procName;
+}

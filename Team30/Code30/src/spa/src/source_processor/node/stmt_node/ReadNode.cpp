@@ -11,4 +11,6 @@ void ReadNode::Accept(IDesignExtractor& designExtractor) {
   designExtractor.extractFromRead(thisReadNodePtr);
 }
 
-std::string const& ReadNode::GetVarName() const { return varName; }
+std::string const& ReadNode::GetVarName() const {
+  return varName;
+}

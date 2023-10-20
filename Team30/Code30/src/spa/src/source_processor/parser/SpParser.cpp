@@ -261,7 +261,9 @@ void SpParser::HandleOperatorsStackAndPostfixQueue(
   operatorStack.push(GetCurrToken());
 }
 
-void SpParser::TransferOperatorsToPostfixQueue(std::stack<std::shared_ptr<Token>>& operatorStack, std::queue<std::shared_ptr<Token>>& postFixQueue) {
+void SpParser::TransferOperatorsToPostfixQueue(
+    std::stack<std::shared_ptr<Token>>& operatorStack,
+    std::queue<std::shared_ptr<Token>>& postFixQueue) {
   while (!operatorStack.empty()) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
@@ -288,7 +290,8 @@ void SpParser::BuildCondExprPostFix(
     } else if (IsRightParenthesisToken(GetCurrToken())) {
       --parenCount;
       CondExprHandleRightParenthesisToken(operatorStack, postFixQueue);
-      if (parenCount == 0) break;
+      if (parenCount == 0)
+        break;
     } else if (IsOperator(GetCurrTokenValue())) {
       if (IsAndOrOrToken(GetCurrToken())) {
         ValidateCondExprAndOrOrTokenPosition();
@@ -615,7 +618,9 @@ std::shared_ptr<StmtLstNode> SpParser::ParseStmtLst() {
   return std::make_shared<StmtLstNode>(stmts);
 }
 
-void SpParser::parse() { sourceProgramNode = ParseProgram(); }
+void SpParser::parse() {
+  sourceProgramNode = ParseProgram();
+}
 
 std::shared_ptr<ProgramNode> SpParser::GetSourceProgramNode() {
   return sourceProgramNode;

@@ -9,6 +9,10 @@ CallsGraphStmtNode::CallsGraphStmtNode(std::vector<std::string> actors,
   this->callNode = callNode;
 }
 
-std::vector<std::string> CallsGraphStmtNode::getActors() { return actors; }
+std::vector<std::string> CallsGraphStmtNode::getActors() {
+  return actors;
+}
 
-std::shared_ptr<CallNode> CallsGraphStmtNode::getCallNode() { return callNode; }
+std::shared_ptr<CallNode> CallsGraphStmtNode::getCallNode() {
+  return callNode;
+}
