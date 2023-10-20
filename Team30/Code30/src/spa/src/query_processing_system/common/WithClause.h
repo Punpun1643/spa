@@ -1,6 +1,8 @@
 #pragma once
 
 #include <variant>
+#include <string>
+#include <memory>
 
 #include "AttrRef.h"
 #include "Clause.h"
