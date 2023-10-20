@@ -1,15 +1,17 @@
 #pragma once
 
-#include <source_processor/node/util_node/CFGNode.h>
-
 #include <cassert>
 #include <memory>
 #include <unordered_map>
+#include <vector>
+#include <unordered_set>
+#include <string>
 
 #include "RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
 #include "tables/LinkedListTable.h"
+#include "../source_processor/node/util_node/CFGNode.h"
 
 class RelDatabase {
  private:

@@ -1,6 +1,8 @@
 #include "RelDatabase.h"
 
 #include <iostream>
+#include <unordered_set>
+#include <string>
 
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
@@ -89,10 +91,10 @@ bool RelDatabase::hasRelations(RelationType type, std::string val) {
       std::shared_ptr<CFGNode> n = pair.second;
       if (CFGNode::HasAffectsPath(node, n)) {
         return true;
-      };
-    };
+      }
+    }
     return false;
-  };
+  }
 
   return relationships[type]->hasRelations(val);
 }

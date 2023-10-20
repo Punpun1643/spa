@@ -1,6 +1,6 @@
 #include "LinkedList.h"
 
-LinkedList::LinkedList(){};
+LinkedList::LinkedList() {}
 
 std::shared_ptr<Node> LinkedList::getNode(std::string val) {
   auto it = nodes.find(val);
@@ -8,7 +8,7 @@ std::shared_ptr<Node> LinkedList::getNode(std::string val) {
     std::shared_ptr<Node> new_node = std::make_shared<Node>(Node(val));
     nodes[val] = new_node;
     return new_node;
-  };
+  }
   return it->second;
 }
 

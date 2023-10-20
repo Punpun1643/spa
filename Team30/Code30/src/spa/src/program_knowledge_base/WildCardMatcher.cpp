@@ -30,12 +30,12 @@ WildCardMatcher::WildCardMatcher() {
   rhs_map[RelationType::NEXT] = EntityType::STMT;
   rhs_map[RelationType::NEXT_STAR] = EntityType::STMT;
   rhs_map[RelationType::AFFECTS] = EntityType::ASSIGN;
-};
+}
 
 EntityType WildCardMatcher::translateLHSWild(RelationType type) {
   return lhs_map[type];
-};
+}
 
 EntityType WildCardMatcher::translateRHSWild(RelationType type) {
   return rhs_map[type];
-};
+}
