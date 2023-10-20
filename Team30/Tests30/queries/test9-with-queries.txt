@@ -6,7 +6,7 @@ none
 2 - Int Comparison which is True
 read r;
 Select r.varName with 4442 = 4442
-v1, v2, v4, v7, v6
+v1, v2, v4, v7
 5000
 3 - String Comparison which is False
 call c;
@@ -75,8 +75,8 @@ v5, v6, v4, v2
 5000
 15 - With .varName = .varName
 read r; print pn;
-Select r with r.varName = pn.varName
-5, 18, 20
+Select <pn, r> with r.varName = pn.varName
+12 20, 16 20, 12 24, 16 24, 21 5, 21 18
 5000
 16 - With .varName = (raw value)
 assign a; variable v;

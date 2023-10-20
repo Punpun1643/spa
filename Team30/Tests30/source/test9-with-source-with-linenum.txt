@@ -42,5 +42,5 @@ procedure p4 {
 22    while (v4 <= 0) {
 23        v3 = v7 + v6 % 1;
     }
-24    read v6;
+24    read v4;
 }
