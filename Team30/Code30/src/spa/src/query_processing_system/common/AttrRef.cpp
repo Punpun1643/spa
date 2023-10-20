@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <utility>
+#include <string>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 

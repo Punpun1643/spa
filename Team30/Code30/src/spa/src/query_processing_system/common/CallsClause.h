@@ -1,7 +1,13 @@
 #pragma once
+
+#include <vector>
+#include <string>
+#include <memory>
+
 #include "EntRef.h"
 #include "EntityType.h"
 #include "SuchThatClause.h"
+
 
 class CallsClause : public SuchThatClause {
  private:

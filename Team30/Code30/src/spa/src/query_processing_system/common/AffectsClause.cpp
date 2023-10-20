@@ -1,6 +1,7 @@
 #include "AffectsClause.h"
 
 #include <string>
+#include <utility>
 
 AffectsClause::AffectsClause(std::unique_ptr<StmtRef> arg1,
                              std::unique_ptr<StmtRef> arg2)

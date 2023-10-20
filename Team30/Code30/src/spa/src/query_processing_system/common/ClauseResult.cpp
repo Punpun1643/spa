@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iterator>
 #include <stdexcept>
+#include <utility>
 
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}

@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <string>
 
 #include "AttrType.h"
 #include "EntityType.h"

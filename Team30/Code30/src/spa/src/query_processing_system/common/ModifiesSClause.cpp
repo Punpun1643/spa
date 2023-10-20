@@ -1,6 +1,7 @@
 #include "ModifiesSClause.h"
 
 #include <string>
+#include <utility>
 
 ModifiesSClause::ModifiesSClause(std::unique_ptr<StmtRef> arg1,
                                  std::unique_ptr<EntRef> arg2)

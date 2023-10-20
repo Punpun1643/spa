@@ -1,5 +1,10 @@
 #include "CallsClause.h"
 
+#include <vector>
+#include <string>
+#include <memory>
+#include <utility>
+
 std::vector<EntityType> const CallsClause::ALLOWED_DECL_TYPES = {
     EntityType::PROCEDURE};
 std::string const CallsClause::INVALID_DECL_TYPE_ERROR_MSG =
