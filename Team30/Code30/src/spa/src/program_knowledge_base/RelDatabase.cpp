@@ -1,8 +1,8 @@
 #include "RelDatabase.h"
 
 #include <iostream>
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
@@ -158,8 +158,8 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
       for (auto n : node->getOutgoingNodes()) {
         output.insert(std::to_string(n->getNode()->GetStmtIndex()));
       }
-    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise for
-                                                   // NEXT_STAR and AFFECTS
+    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise
+                                                   // for NEXT_STAR and AFFECTS
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasPath(node, n)) {
@@ -191,8 +191,8 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
       for (auto n : node->getIncomingNodes()) {
         output.insert(std::to_string(n->getNode()->GetStmtIndex()));
       }
-    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise for
-                                                   // NEXT_STAR and AFFECTS
+    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise
+                                                   // for NEXT_STAR and AFFECTS
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasPath(n, node)) {
