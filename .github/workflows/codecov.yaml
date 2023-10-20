@@ -1,13 +1,10 @@
 name: Codecov workflow
 
 on:
-#  pull_request:
-#    branches: [master]
-#  push:
-#    branches: [try-codecov]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
     branches:
-      - try-codecov
       - master
   schedule:
     - cron: "0 23 * * *"
