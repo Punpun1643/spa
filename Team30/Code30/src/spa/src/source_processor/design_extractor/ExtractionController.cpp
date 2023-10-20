@@ -26,20 +26,19 @@ void ExtractionController::ExecuteProgramExtraction(
   }
   std::vector<std::shared_ptr<ProcedureNode>> children = node->GetChildren();
   if (!children.empty()) {
-
-      // Support creation of the procedure calls graph
+    // Support creation of the procedure calls graph
     for (std::shared_ptr<ProcedureNode> child : children) {
       callsManager->InsertProcNode(child->GetProcedureName());
     }
 
-    // Carry out the DFS extraction 
+    // Carry out the DFS extraction
     for (std::shared_ptr<ProcedureNode> child : children) {
       ExecuteProcedureExtraction(child);
     }
 
     // Construct CFGs
     for (std::shared_ptr<ProcedureNode> child : children) {
-       cfgGenerator->ExecuteCFGGeneration(child);
+      cfgGenerator->ExecuteCFGGeneration(child);
     }
   }
   ExecutePostProcessing();

@@ -3,9 +3,9 @@
 #include <memory>
 #include <string>
 
+#include "../program_knowledge_base/PKBSPInterface.h"
 #include "node/ProgramNode.h"
 #include "parser/SpParserManager.h"
-#include "../program_knowledge_base/PKBSPInterface.h"
 
 class SpController {
  public:
