@@ -365,6 +365,9 @@ void SyntaxChecker::CheckSelectSingle() {
   if (!IsSynonym(synonym)) {
     throw InvalidSyntaxException("Expected synonym for select clause");
   }
+  if (existing_declarations.find(synonym) == existing_declarations.end()) {
+    throw InvalidSyntaxException("Synonym for select has not been declared");
+  }
   if (GetPeekTokenValue() == ".") {
     // check attrRef
     NextToken();  // .
