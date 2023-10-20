@@ -38,12 +38,8 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
       throw InvalidSyntaxException("Expected <relref> after 'and'");
     }
   } else if (clause_type == ClauseType::pattern) {
-    if (GetCurrTokenValue() == QpParser::PATTERN) {
-      CheckPattern();
-      return;
-    } else {
-      throw InvalidSyntaxException("Expected 'pattern' after 'and'");
-    }
+    CheckPattern(true);
+    return;
   } else if (clause_type == ClauseType::with) {
     CheckWith(true);
     return;
@@ -85,7 +81,7 @@ void SyntaxChecker::CheckClauses() {
     if (clause_name == QpParser::SUCH) {
       this->CheckSuchThat(false);
     } else if (clause_name == QpParser::PATTERN) {
-      this->CheckPattern();
+      this->CheckPattern(false);
     } else if (clause_name == QpParser::WITH) {
       this->CheckWith(false);
     } else {
@@ -252,12 +248,11 @@ void SyntaxChecker::CheckParent() {
   NextToken();
 }
 
-void SyntaxChecker::CheckPattern() {
-  if (!(GetCurrTokenValue() == QpParser::PATTERN)) {
-    return;
+void SyntaxChecker::CheckPattern(bool has_and) {
+  if (!has_and) {
+    NextToken();
   }
 
-  NextToken();
   EntityType entity_type = this->CheckCurrentTokenPatternEntity();
 
   NextToken();
