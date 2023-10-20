@@ -36,7 +36,7 @@ SemanticError
 8 - Invalid Partial matching, pattern variable synonym
 variable v; assign a;
 Select a pattern v ("q", _"p*5"_)
-SyntaxError
+SemanticError
 5000
 9 - Partial matching on exact match
 assign a;
