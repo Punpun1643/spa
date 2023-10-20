@@ -133,3 +133,13 @@ procedure p;
 Select p such that Calls* (p, p)
 none
 5000
+28 - 2-layered Calls
+procedure p, p1, p2;
+Select p such that Calls (p, p1) and Calls(p1, p2)
+A, B, C, D, E, F, G
+5000
+29 - 3-layered Calls
+procedure p, p1, p2, p3;
+Select p such that Calls (p, p1) and Calls(p1, p2) and Calls (p2, p3)
+A, B, C, E, F
+5000
