@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "../../node/ProcedureNode.h"
 #include "../../node/ProgramNode.h"

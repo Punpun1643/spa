@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <unordered_set>
+#include <vector>
+#include <string>
+#include <memory>
 
 #include "../exceptions/InvalidSourceSemanticsException.h"
 

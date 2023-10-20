@@ -1,8 +1,8 @@
 #include "ModifiesExtractor.h"
 
 #include <algorithm>
-#include <iostream>
 #include <vector>
+#include <string>
 
 ModifiesExtractor::ModifiesExtractor(PKBSPInterface& pkb,
                                      std::shared_ptr<CallsManager> callsManager)

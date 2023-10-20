@@ -1,6 +1,8 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
+#include <vector>
 
 #include "../../program_knowledge_base/PKBSPInterface.h"
 #include "../node/ProcedureNode.h"

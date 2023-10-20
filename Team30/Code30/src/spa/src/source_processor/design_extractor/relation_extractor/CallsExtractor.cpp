@@ -1,3 +1,6 @@
+#include <unordered_set>
+#include <string>
+
 #include "CallsExtractor.h"
 
 CallsExtractor::CallsExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
