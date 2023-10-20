@@ -7,6 +7,7 @@
 
 #include "../../shared/parser/node/TreeNode.h"
 #include "../common/EntityType.h"
+#include "../expression/AffectsExpression.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/ClauseExpression.h"
@@ -187,7 +188,11 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
       NextToken();
     }
 
-    if (clause_name == QpParser::CALLS) {
+    if (clause_name == QpParser::AFFECTS) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<AffectsExpression>>(
+              std::make_shared<AffectsExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::CALLS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<CallsExpression>>(
               std::make_shared<CallsExpression>(arg1, arg2));

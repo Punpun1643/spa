@@ -20,6 +20,7 @@ class SyntaxChecker : public QpParser {
   enum class ClauseType { such_that, pattern, with };
 
   // Checkers
+  void CheckAffects();
   void CheckAnd(ClauseType clause_type);
   void CheckCalls();
   void CheckClauses();
