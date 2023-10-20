@@ -98,7 +98,9 @@ bool QpParser::IsValidInteger(std::string const& int_string) {
   return true;
 }
 
-bool QpParser::IsWildcard(std::string const& name) { return (name == "_"); }
+bool QpParser::IsWildcard(std::string const& name) {
+  return (name == "_");
+}
 
 AttrType QpParser::GetDefaultAttrTypeFromEntityType(EntityType entity_type) {
   std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPES = {

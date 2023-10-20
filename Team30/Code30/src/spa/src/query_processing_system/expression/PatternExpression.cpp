@@ -13,8 +13,12 @@ void PatternExpression::acceptInterpreter(QueryInterpreter& interpreter) {
       std::dynamic_pointer_cast<PatternExpression>(shared_from_this()));
 }
 
-MatchType PatternExpression::GetMatchType() { return this->match_type; }
+MatchType PatternExpression::GetMatchType() {
+  return this->match_type;
+}
 std::shared_ptr<TreeNode> PatternExpression::GetRhsExprTree() {
   return this->rhs_expr_tree;
 }
-std::string PatternExpression::GetSynAssign() { return this->syn_assign; }
+std::string PatternExpression::GetSynAssign() {
+  return this->syn_assign;
+}

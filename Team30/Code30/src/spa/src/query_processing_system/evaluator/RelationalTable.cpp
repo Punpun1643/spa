@@ -60,7 +60,9 @@ std::vector<PqlDeclaration> RelationalTable::GetSharedColumns(
   return shared_cols;
 }
 
-int RelationalTable::GetNumCols() const { return (int)column_mapping.size(); }
+int RelationalTable::GetNumCols() const {
+  return (int)column_mapping.size();
+}
 
 bool RelationalTable::CheckIfRowsMatch(
     std::vector<std::string> const& row,
@@ -167,7 +169,9 @@ void RelationalTable::Join(RelationalTable& other_table,
   }
 }
 
-bool RelationalTable::HasNoResults() const { return table.empty(); }
+bool RelationalTable::HasNoResults() const {
+  return table.empty();
+}
 
 std::vector<PqlDeclaration> RelationalTable::GetTableColNames() const {
   std::vector<PqlDeclaration> table_col_names;

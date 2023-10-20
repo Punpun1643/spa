@@ -40,7 +40,9 @@ void IntermediateResultsTable::AddClauseResult(
   }
 }
 
-bool IntermediateResultsTable::HasNoResults() const { return has_no_results; }
+bool IntermediateResultsTable::HasNoResults() const {
+  return has_no_results;
+}
 
 std::vector<std::vector<std::string>>
 IntermediateResultsTable::GetValuesGivenDeclarations(

@@ -14,15 +14,15 @@ class AttrRef {
  private:
   PqlDeclaration decl;
   AttrType attr_type;
-  static const std::unordered_map<AttrType, AttrRefOutputType>
+  static std::unordered_map<AttrType, AttrRefOutputType> const
       OUTPUT_TYPE_MAPPING;
 
   void CheckTypeCombinationValidity() const;
   AttrType GetDefaultAttrType() const;
 
  public:
-  static const std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPE;
-  static const std::unordered_map<EntityType, AttrType> ATTR_TYPE_ALIASES;
+  static std::unordered_map<EntityType, AttrType> const DEFAULT_ATTR_TYPE;
+  static std::unordered_map<EntityType, AttrType> const ATTR_TYPE_ALIASES;
 
   explicit AttrRef(PqlDeclaration decl);
 

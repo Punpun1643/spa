@@ -22,7 +22,7 @@ std::unordered_map<EntityType, AttrType> const AttrRef::ATTR_TYPE_ALIASES = {
     {EntityType::READ, AttrType::VAR_NAME},
     {EntityType::PRINT, AttrType::VAR_NAME}};
 
-const std::unordered_map<AttrType, AttrRefOutputType>
+std::unordered_map<AttrType, AttrRefOutputType> const
     AttrRef::OUTPUT_TYPE_MAPPING = {
         {AttrType::PROC_NAME, AttrRefOutputType::NAME},
         {AttrType::VAR_NAME, AttrRefOutputType::NAME},
@@ -71,7 +71,9 @@ std::string AttrRef::GetAliasFromDefault(
   }
 }
 
-PqlDeclaration AttrRef::GetDecl() const { return decl; }
+PqlDeclaration AttrRef::GetDecl() const {
+  return decl;
+}
 
 AttrType AttrRef::GetDefaultAttrType() const {
   return DEFAULT_ATTR_TYPE.at(decl.GetEntityType());
@@ -82,6 +84,10 @@ AttrRefOutputType AttrRef::GetOutputType() const {
   return OUTPUT_TYPE_MAPPING.at(attr_type);
 }
 
-EntityType AttrRef::GetEntityType() const { return decl.GetEntityType(); }
+EntityType AttrRef::GetEntityType() const {
+  return decl.GetEntityType();
+}
 
-AttrType AttrRef::GetAttrType() const { return attr_type; }
+AttrType AttrRef::GetAttrType() const {
+  return attr_type;
+}
