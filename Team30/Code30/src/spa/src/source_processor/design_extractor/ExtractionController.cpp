@@ -1,14 +1,15 @@
 #include "ExtractionController.h"
 
-#include "ConstVarExtractor.h"
-#include "EntityExtractor.h"
-#include "FollowsExtractor.h"
-#include "ModifiesExtractor.h"
-#include "ParentExtractor.h"
-#include "UsesExtractor.h"
+#include "relation_extractor/ConstVarExtractor.h"
+#include "relation_extractor/EntityExtractor.h"
+#include "relation_extractor/FollowsExtractor.h"
+#include "relation_extractor/ModifiesExtractor.h"
+#include "relation_extractor/ParentExtractor.h"
+#include "relation_extractor/UsesExtractor.h"
 
 ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
   callsManager = std::make_shared<CallsManager>(pkb);
+  cfgGenerator = std::make_shared<CFGGenerator>(pkb);
 
   extractors.push_back(std::make_shared<FollowsExtractor>(pkb));
   extractors.push_back(std::make_shared<ParentExtractor>(pkb));
@@ -18,24 +19,33 @@ ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
   extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }
 
-void ExtractionController::executeProgramExtraction(
+void ExtractionController::ExecuteProgramExtraction(
     std::shared_ptr<ProgramNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->Accept(*e);
   }
   std::vector<std::shared_ptr<ProcedureNode>> children = node->GetChildren();
   if (!children.empty()) {
+
+      // Support creation of the procedure calls graph
     for (std::shared_ptr<ProcedureNode> child : children) {
-      callsManager->insertProcNode(child->GetProcedureName());
+      callsManager->InsertProcNode(child->GetProcedureName());
     }
+
+    // Carry out the DFS extraction 
     for (std::shared_ptr<ProcedureNode> child : children) {
-      executeProcedureExtraction(child);
+      ExecuteProcedureExtraction(child);
+    }
+
+    // Construct CFGs
+    for (std::shared_ptr<ProcedureNode> child : children) {
+       cfgGenerator->ExecuteCFGGeneration(child);
     }
   }
-  executePostProcessing();
+  ExecutePostProcessing();
 }
 
-void ExtractionController::executeProcedureExtraction(
+void ExtractionController::ExecuteProcedureExtraction(
     std::shared_ptr<ProcedureNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->Accept(*e);
@@ -43,13 +53,13 @@ void ExtractionController::executeProcedureExtraction(
   std::vector<std::shared_ptr<StmtLstNode>> children = node->GetChildren();
   if (!children.empty()) {
     for (std::shared_ptr<StmtLstNode> child : children) {
-      executeStmtLstExtraction(child);
+      ExecuteStmtLstExtraction(child);
     }
-    popActors();
+    PopActors();
   }
 }
 
-void ExtractionController::executeStmtLstExtraction(
+void ExtractionController::ExecuteStmtLstExtraction(
     std::shared_ptr<StmtLstNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->Accept(*e);
@@ -57,28 +67,28 @@ void ExtractionController::executeStmtLstExtraction(
   std::vector<std::shared_ptr<StmtNode>> children = node->GetChildren();
   if (!children.empty()) {
     for (std::shared_ptr<StmtNode> child : children) {
-      executeStmtExtraction(child);
+      ExecuteStmtExtraction(child);
     }
   }
 }
 
-void ExtractionController::executeStmtExtraction(
+void ExtractionController::ExecuteStmtExtraction(
     std::shared_ptr<StmtNode> node) {
   for (std::shared_ptr<IDesignExtractor> e : extractors) {
     node->Accept(*e);
   }
-  handleContainerStmts(node);
+  HandleContainerStmts(node);
 }
 
-void ExtractionController::handleContainerStmts(
+void ExtractionController::HandleContainerStmts(
     std::shared_ptr<StmtNode> node) {
   // Handle whileNodes
   if (node->GetStmtType() == StmtType::WHILE_STMT) {
     std::shared_ptr<WhileNode> asWhile =
         std::dynamic_pointer_cast<WhileNode>(node);
     std::shared_ptr<StmtLstNode> whileBody = asWhile->GetStmtLst();
-    executeStmtLstExtraction(whileBody);
-    popActors();
+    ExecuteStmtLstExtraction(whileBody);
+    PopActors();
   }
 
   // Handle ifNodes
@@ -86,53 +96,18 @@ void ExtractionController::handleContainerStmts(
     std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
     std::shared_ptr<StmtLstNode> thenBody = asIf->GetThenStmtLst();
     std::shared_ptr<StmtLstNode> elseBody = asIf->GetElseStmtLst();
-    executeStmtLstExtraction(thenBody);
-    executeStmtLstExtraction(elseBody);
-    popActors();
+    ExecuteStmtLstExtraction(thenBody);
+    ExecuteStmtLstExtraction(elseBody);
+    PopActors();
   }
 }
 
-// void ExtractionController::handleCallStmts() {
-//   std::vector<std::shared_ptr<CallStmtCacheObject>> usesCache =
-//       std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))
-//           ->getCallStmtCache();
-//   handleCallStmtsHelper(usesCache, RelationType::USES_S);
-//
-//   std::vector<std::shared_ptr<CallStmtCacheObject>> modifiesCache =
-//       std::dynamic_pointer_cast<UsesExtractor>(extractors.at(3))
-//           ->getCallStmtCache();
-//   handleCallStmtsHelper(modifiesCache, RelationType::MODIFIES_S);
-// }
-//
-// void ExtractionController::handleCallStmtsHelper(
-//     std::vector<std::shared_ptr<CallStmtCacheObject>> cache, RelationType
-//     rel) {
-//   bool isGettingUpdated = true;
-//   while (isGettingUpdated) {
-//     bool hasUpdateThisIteration = false;
-//     for (std::shared_ptr<CallStmtCacheObject> callStmt : cache) {
-//       std::vector<std::string> varsFromProc = *pkb.getRelationValues(
-//           callStmt->getCallNode()->getProcName(), EntityType::VARIABLE, rel);
-//
-//       bool hasUpdate = callStmt->updateVars(varsFromProc);
-//       bool hasUpdateThisIteration = hasUpdateThisIteration || hasUpdate;
-//
-//       for (std::string var : varsFromProc) {
-//         for (std::string actor : callStmt->getActors()) {
-//           pkb.insertRelation(rel, actor, var);
-//         }
-//       }
-//     }
-//     isGettingUpdated = hasUpdateThisIteration;
-//   }
-// }
-
-void ExtractionController::popActors() {
-  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->popActor();
-  std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->popActor();
+void ExtractionController::PopActors() {
+  std::dynamic_pointer_cast<UsesExtractor>(extractors.at(2))->PopActor();
+  std::dynamic_pointer_cast<ModifiesExtractor>(extractors.at(3))->PopActor();
 }
 
-void ExtractionController::executePostProcessing() {
-  callsManager->executeCallsExtraction();
-  callsManager->connectProcsAndUpdateRelations();
+void ExtractionController::ExecutePostProcessing() {
+  callsManager->ExecuteCallsExtraction();
+  callsManager->ConnectProcsAndUpdateRelations();
 }

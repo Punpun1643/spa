@@ -12,9 +12,10 @@ PKBSPStub::PKBSPStub()
       insertUsesCallCount(0),
       insertModifiesCallCount(0),
       insertCallsCallCount(0),
-      insertPatternCallCount(0){};
+      insertPatternCallCount(0),
+      insertCFGCallCount(0){};
 
-void PKBSPStub::insertEntity(EntityType type, std::string entity) {
+void PKBSPStub::InsertEntity(EntityType type, std::string entity) {
   if (type == EntityType::CONSTANT) {
     insertConstantCallCount++;
   } else if (type == EntityType::VARIABLE) {
@@ -25,6 +26,12 @@ void PKBSPStub::insertEntity(EntityType type, std::string entity) {
   entitiesSet.insert(entity);
   // std::cout << "(" + std::to_string(type) + ", " + entity + ")\n";
 }
+
+void PKBSPStub::InsertEntity(EntityType type, AttrType attr_type,
+                             std::string statement_number,
+                             std::string attribute) {
+  InsertEntity(type, statement_number);
+};
 
 void PKBSPStub::insertRelationCommon(RelationType type, std::string a,
                                      std::string b) {
@@ -138,5 +145,81 @@ std::unordered_set<std::string> PKBSPStub::getProcedureModifies(
   return result;
 }
 
+std::unordered_set<std::string> PKBSPStub::getStatementModifies(
+    std::string stmt) {
+  std::unordered_set<std::string> result;
+  return result;
+}
+
+std::unordered_set<std::string> PKBSPStub::getStatementUses(std::string stmt) {
+  std::unordered_set<std::string> result;
+  return result;
+}
+
 void PKBSPStub::insertCFGNode(std::string statement_num,
-                            std::shared_ptr<CFGNode> node){};
+                              std::shared_ptr<CFGNode> node) {
+  insertCFGCallCount++;
+  CFGNodeMap.insert({statement_num, node});
+};
+
+bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
+                                     std::vector<std::string> outgoingStmtNos) {
+  std::shared_ptr<CFGNode> node = CFGNodeMap.find(statement_num)->second;
+  int length = node->getOutgoingNodes().size();
+  int expLength = outgoingStmtNos.size();
+  if (length == 0 && expLength != 0) {
+    std::cout << "OUTGOING EMPTY\n";
+    return false;
+  }
+
+  for (std::shared_ptr<CFGNode> currNode : node->getOutgoingNodes()) {
+    length--;
+    std::string nodeStmtNo =
+        std::to_string(currNode->getNode()->GetStmtIndex());
+
+    // std::cout << nodeStmtNo + "\n";
+
+    bool removeResult =
+        std::remove(outgoingStmtNos.begin(), outgoingStmtNos.end(),
+                    nodeStmtNo) == outgoingStmtNos.end();
+
+    if (removeResult) {
+      // couldn't find the item
+      std::cout << " - INCORRECTLY CONTAINS " + nodeStmtNo + "\n";
+      return false;
+    }
+  }
+  return (length == 0);
+}
+
+bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
+                                     std::vector<std::string> incomingStmtNos) {
+  bool result = true;
+  std::shared_ptr<CFGNode> node = CFGNodeMap.find(statement_num)->second;
+  int length = node->getIncomingNodes().size();
+  int expLength = incomingStmtNos.size();
+
+  if (length == 0 && expLength != 0) {
+    std::cout << "INCOMING EMPTY\n";
+    return false;
+  }
+
+  for (std::shared_ptr<CFGNode> currNode : node->getIncomingNodes()) {
+    length--;
+    std::string nodeStmtNo =
+        std::to_string(currNode->getNode()->GetStmtIndex());
+
+    // std::cout << nodeStmtNo + "\n";
+
+    bool removeResult =
+        std::remove(incomingStmtNos.begin(), incomingStmtNos.end(),
+                    nodeStmtNo) == incomingStmtNos.end();
+
+    if (removeResult) {
+      // couldn't find the item
+      std::cout << " -- INCORRECTLY CONTAINS " + nodeStmtNo + "\n";
+      return false;
+    }
+  }
+  return (length == 0);
+}

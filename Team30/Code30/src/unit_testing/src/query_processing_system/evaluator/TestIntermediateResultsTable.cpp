@@ -78,197 +78,198 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   // BOOLEAN TESTS
   SECTION("Test only boolean clauses") {
-    irt.addClauseResult(TRUE_CLAUSE);
-    irt.addClauseResult(TRUE_CLAUSE);
-    irt.addClauseResult(FALSE_CLAUSE);
-    REQUIRE(irt.hasNoResults());
-    irt.addClauseResult(FALSE_CLAUSE);
-    REQUIRE(irt.hasNoResults());
+    irt.AddClauseResult(TRUE_CLAUSE);
+    irt.AddClauseResult(TRUE_CLAUSE);
+    irt.AddClauseResult(FALSE_CLAUSE);
+    REQUIRE(irt.HasNoResults());
+    irt.AddClauseResult(FALSE_CLAUSE);
+    REQUIRE(irt.HasNoResults());
   }
 
   SECTION("Test boolean + single clause") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    REQUIRE_FALSE(irt.hasNoResults());
-    irt.addClauseResult(TRUE_CLAUSE);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    irt.addClauseResult(FALSE_CLAUSE);
-    REQUIRE(irt.hasNoResults());
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    REQUIRE(irt.hasNoResults());
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    REQUIRE_FALSE(irt.HasNoResults());
+    irt.AddClauseResult(TRUE_CLAUSE);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    irt.AddClauseResult(FALSE_CLAUSE);
+    REQUIRE(irt.HasNoResults());
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    REQUIRE(irt.HasNoResults());
   }
 
   SECTION("Test boolean + paired clause") {
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    REQUIRE_FALSE(irt.hasNoResults());
-    irt.addClauseResult(TRUE_CLAUSE);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    irt.addClauseResult(FALSE_CLAUSE);
-    REQUIRE(irt.hasNoResults());
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    REQUIRE(irt.hasNoResults());
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    REQUIRE_FALSE(irt.HasNoResults());
+    irt.AddClauseResult(TRUE_CLAUSE);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    irt.AddClauseResult(FALSE_CLAUSE);
+    REQUIRE(irt.HasNoResults());
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    REQUIRE(irt.HasNoResults());
   }
 
   // SINGLE RESULT CLAUSE TESTS
   SECTION("Test single result clauses") {
-    irt.addClauseResult(SINGLE_CLAUSE_B);
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_B);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     // changes to A should not affect B
-    irt.addClauseResult(ClauseResult(a, LIST_A_PARTIAL));
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL));
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     // adding in a third unrelated clause should not affect the first two
-    irt.addClauseResult(SINGLE_CLAUSE_V);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({v}) == LIST_V_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_V);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({v}) == LIST_V_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
   }
 
   SECTION("Single result clauses that contradict") {
-    irt.addClauseResult(SINGLE_CLAUSE_B);
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(CONTRADICTING_CLAUSE_A);
-    REQUIRE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}).empty());
-    REQUIRE(irt.getValuesGivenDeclarations({b}).empty());
+    irt.AddClauseResult(SINGLE_CLAUSE_B);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(CONTRADICTING_CLAUSE_A);
+    REQUIRE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}).empty());
+    REQUIRE(irt.GetValuesGivenDeclarations({b}).empty());
     // adding in a new clause doesn't change things
-    irt.addClauseResult(SINGLE_CLAUSE_V);
-    REQUIRE(irt.getValuesGivenDeclarations({v}).empty());
+    irt.AddClauseResult(SINGLE_CLAUSE_V);
+    REQUIRE(irt.GetValuesGivenDeclarations({v}).empty());
   }
 
   // Full tests with at least 1 x single and 2 x paired clauses (for milestone
   // 1)
   SECTION("All synonyms different") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(PAIRED_CLAUSE_B_C);
-    irt.addClauseResult(PAIRED_CLAUSE_V_S);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({v}) == LIST_V_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(PAIRED_CLAUSE_B_C);
+    irt.AddClauseResult(PAIRED_CLAUSE_V_S);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({v}) == LIST_V_OUTPUT);
     // Check that none of the clauses are linked
-    irt.addClauseResult(PAIRED_CLAUSE_B_C_PARTIAL);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({v}) == LIST_V_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    irt.AddClauseResult(PAIRED_CLAUSE_B_C_PARTIAL);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({v}) == LIST_V_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
   }
 
   SECTION("Paired clauses that contradict should nullify all results") {
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    irt.addClauseResult(PAIRED_CLAUSE_V_S);
-    irt.addClauseResult(SINGLE_CLAUSE_C);
-    irt.addClauseResult(CONTRADICTING_CLAUSE_A_B);
-    REQUIRE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}).empty());
-    REQUIRE(irt.getValuesGivenDeclarations({c}).empty());
-    REQUIRE(irt.getValuesGivenDeclarations({v}).empty());
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    irt.AddClauseResult(PAIRED_CLAUSE_V_S);
+    irt.AddClauseResult(SINGLE_CLAUSE_C);
+    irt.AddClauseResult(CONTRADICTING_CLAUSE_A_B);
+    REQUIRE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}).empty());
+    REQUIRE(irt.GetValuesGivenDeclarations({c}).empty());
+    REQUIRE(irt.GetValuesGivenDeclarations({v}).empty());
   }
 
   SECTION("Clauses have 1 synonym in common + there are results") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    irt.addClauseResult(PAIRED_CLAUSE_A_C);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_C);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
     // Test that values are linked properly
-    irt.addClauseResult(ClauseResult(c, LIST_C_PARTIAL));
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    irt.AddClauseResult(ClauseResult(c, LIST_C_PARTIAL));
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
   }
 
   SECTION("Clauses have 1 synonym in common + no results") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(PAIRED_CLAUSE_A_C);
-    irt.addClauseResult(CONTRADICTING_CLAUSE_A_B);
-    REQUIRE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}).empty());
-    REQUIRE(irt.getValuesGivenDeclarations({b}).empty());
-    REQUIRE(irt.getValuesGivenDeclarations({c}).empty());
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_C);
+    irt.AddClauseResult(CONTRADICTING_CLAUSE_A_B);
+    REQUIRE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}).empty());
+    REQUIRE(irt.GetValuesGivenDeclarations({b}).empty());
+    REQUIRE(irt.GetValuesGivenDeclarations({c}).empty());
   }
 
   SECTION("2 common synonyms") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
   }
 
   SECTION("Chained synonyms") {
-    irt.addClauseResult(SINGLE_CLAUSE_V);
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    irt.addClauseResult(PAIRED_CLAUSE_B_C);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_V);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    irt.AddClauseResult(PAIRED_CLAUSE_B_C);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
 
     // Test that values are linked properly
-    irt.addClauseResult(ClauseResult(v, LIST_V_PARTIAL));
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
-    irt.addClauseResult(ClauseResult(a, LIST_A_PARTIAL));
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    irt.AddClauseResult(ClauseResult(v, LIST_V_PARTIAL));
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL));
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
   }
 
   SECTION("Separate tables that get later merged") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(PAIRED_CLAUSE_B_C);
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    REQUIRE_FALSE(irt.hasNoResults());
-    REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(PAIRED_CLAUSE_B_C);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
 
     SECTION("Check linking on a") {
-      irt.addClauseResult(ClauseResult(a, LIST_A_PARTIAL));
-      REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-      REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-      REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+      irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL));
+      REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+      REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+      REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
     }
 
     SECTION("Check paired joining") {
-      irt.addClauseResult(PAIRED_CLAUSE_B_C_PARTIAL);
-      REQUIRE(irt.getValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-      REQUIRE(irt.getValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-      REQUIRE(irt.getValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+      irt.AddClauseResult(PAIRED_CLAUSE_B_C_PARTIAL);
+      REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+      REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+      REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
     }
   }
 
   SECTION("Check results retrieval - unlinked") {
-    irt.addClauseResult(SINGLE_CLAUSE_A);
-    irt.addClauseResult(SINGLE_CLAUSE_C);
+    irt.AddClauseResult(SINGLE_CLAUSE_A);
+    irt.AddClauseResult(SINGLE_CLAUSE_C);
     std::vector<std::vector<std::string>> expected_output = {{"1","20"}, {"1","30"}, {"1","40"},
                                                             {"2","20"}, {"2","30"}, {"2","40"},
                                                              {"3","20"}, {"3","30"}, {"3","40"}};
-    REQUIRE_THAT(irt.getValuesGivenDeclarations({a,c}), Catch::UnorderedEquals(expected_output));
+    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c}), Catch::UnorderedEquals(expected_output));
   }
 
   SECTION("Check results retrieval - linked") {
-    irt.addClauseResult(PAIRED_CLAUSE_A_C);
+    irt.AddClauseResult(PAIRED_CLAUSE_A_C);
     std::vector<std::vector<std::string>> expected_output = {{"1","20", "1", "20"},
                                                              {"2","30", "2", "30"},
                                                              {"3","40", "3", "40"}};
-    REQUIRE_THAT(irt.getValuesGivenDeclarations({a,c,a,c}), Catch::UnorderedEquals(expected_output));
+    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c, a, c}), Catch::UnorderedEquals(expected_output));
   }
 
   SECTION("Check results retrieval - de-duplication") {
-    irt.addClauseResult(PAIRED_CLAUSE_A_B);
-    irt.addClauseResult(ClauseResult(a, c, IrtTestHelperMethods::makePairedVector({"2","2","2"}, LIST_C)));
-    REQUIRE_THAT(irt.getValuesGivenDeclarations({a}), Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B);
+    irt.AddClauseResult(ClauseResult(
+        a, c, IrtTestHelperMethods::makePairedVector({"2", "2", "2"}, LIST_C)));
+    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}), Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
   }
 }

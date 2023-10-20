@@ -6,9 +6,7 @@
 PqlDeclaration::PqlDeclaration(std::string name, EntityType entity_type)
     : name(std::move(name)), entity_type(entity_type) {}
 
-EntityType PqlDeclaration::getEntityType() const { return entity_type; }
-
-std::string PqlDeclaration::getName() const { return name; }
+EntityType PqlDeclaration::GetEntityType() const { return entity_type; }
 
 bool PqlDeclaration::operator==(PqlDeclaration const& other) const {
   return (name == other.name && entity_type == other.entity_type);

@@ -3,26 +3,33 @@
 #include <cassert>
 #include <iostream>
 
+#include "../common/AffectsClause.h"
+#include "../common/AttrRef.h"
 #include "../common/CallsClause.h"
 #include "../common/FollowsClause.h"
 #include "../common/ModifiesPClause.h"
 #include "../common/ModifiesSClause.h"
+#include "../common/NextClause.h"
 #include "../common/ParentClause.h"
 #include "../common/PatternClause.h"
 #include "../common/UsesPClause.h"
 #include "../common/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
 #include "../expression/AExpression.h"
+#include "../expression/AffectsExpression.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/FollowsExpression.h"
 #include "../expression/FollowsTExpression.h"
 #include "../expression/ModifiesExpression.h"
+#include "../expression/NextExpression.h"
+#include "../expression/NextTExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
+#include "../expression/WithExpression.h"
 
 QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
                                    std::shared_ptr<AExpression> expression_tree)
@@ -32,6 +39,15 @@ void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =
       std::move(this->expression_tree);
   expression_tree->acceptInterpreter(*this);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<AffectsExpression> affects_expression) {
+  std::string arg1 = affects_expression->GetArg1();
+  std::string arg2 = affects_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<AffectsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+  this->InterpretNext(affects_expression);
 }
 
 void QueryInterpreter::Interpret(
@@ -85,6 +101,24 @@ void QueryInterpreter::Interpret(
 }
 
 void QueryInterpreter::Interpret(
+    std::shared_ptr<NextExpression> next_expression) {
+  std::string arg1 = next_expression->GetArg1();
+  std::string arg2 = next_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<NextClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  this->InterpretNext(next_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<NextTExpression> next_t_expression) {
+  std::string arg1 = next_t_expression->GetArg1();
+  std::string arg2 = next_t_expression->GetArg2();
+  this->context->AddSuchThatClause(std::make_shared<NextClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
+  this->InterpretNext(next_t_expression);
+}
+
+void QueryInterpreter::Interpret(
     std::shared_ptr<ParentExpression> parent_expression) {
   std::string arg1 = parent_expression->GetArg1();
   std::string arg2 = parent_expression->GetArg2();
@@ -131,9 +165,11 @@ void QueryInterpreter::Interpret(
       throw InvalidSyntaxException(
           "Synonym to be selected has not been declared");
     }
-    PqlDeclaration selected_declaration =
+    AttrType attr_type = select_expression->GetAttrType();
+    PqlDeclaration declaration =
         QueryInterpreter::GetMappedDeclaration(synonym);
-    this->context->AddSelectDeclaration(selected_declaration);
+    AttrRef selected_attr_ref = AttrRef(declaration, attr_type);
+    this->context->AddAttrRefDeclaration(selected_attr_ref);
   }
   this->InterpretNext(select_expression);
 }
@@ -152,6 +188,16 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(uses_expression);
 }
 
+void QueryInterpreter::Interpret(
+    std::shared_ptr<WithExpression> with_expression) {
+  std::string arg1 = with_expression->GetArg1();
+  std::string arg2 = with_expression->GetArg2();
+  std::variant<int, std::string, AttrRef> ref1 = StringToWithRef(arg1);
+  std::variant<int, std::string, AttrRef> ref2 = StringToWithRef(arg2);
+  this->context->AddWithClause(std::make_shared<WithClause>(ref1, ref2));
+  this->InterpretNext(with_expression);
+}
+
 void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
   std::optional<std::shared_ptr<AExpression>> next_expression =
       expression->GetNextExpression();
@@ -164,7 +210,7 @@ void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
 
 EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
     std::string const& argument) {
-  return context->GetDeclaration(argument).getEntityType();
+  return context->GetDeclaration(argument).GetEntityType();
 }
 
 PqlDeclaration QueryInterpreter::GetMappedDeclaration(
@@ -204,10 +250,10 @@ bool QueryInterpreter::IsIdentifier(std::string const& argument) {
 }
 
 bool QueryInterpreter::IsInteger(std::string const& argument) {
-  for (char const& c : argument) {
-    if (std::isdigit(c) == 0) {
-      return false;
-    }
+  try {
+    stoi(argument);
+  } catch (std::invalid_argument& e) {
+    return false;
   }
   return true;
 }
@@ -251,6 +297,20 @@ bool QueryInterpreter::IsWildcard(std::string const& argument) {
   return argument == "_";
 }
 
+AttrType QueryInterpreter::StringToAttrType(std::string const& string) {
+  if (string == "stmt#") {
+    return AttrType::STMT_NUM;
+  } else if (string == "procName") {
+    return AttrType::PROC_NAME;
+  } else if (string == "varName") {
+    return AttrType::VAR_NAME;
+  } else if (string == "value") {
+    return AttrType::VALUE;
+  }
+  throw std::invalid_argument(
+      "Failed conversion of string to attr type in QueryInterpreter");
+}
+
 std::unique_ptr<EntRef> QueryInterpreter::StringToEntRef(
     std::string const& string) {
   if (IsSynonym(string)) {
@@ -276,5 +336,21 @@ std::unique_ptr<StmtRef> QueryInterpreter::StringToStmtRef(
     return std::make_unique<StmtRef>(stoi(string));
   } else {
     throw InvalidSyntaxException("Invalid string to be converted into StmtRef");
+  }
+}
+
+std::variant<int, std::string, AttrRef> QueryInterpreter::StringToWithRef(
+    std::string const& string) {
+  std::string str = string;
+  if (IsQuotedIdentifier(str)) {
+    return str.substr(1, str.size() - 2);
+  } else if (IsInteger(str)) {
+    return stoi(str);
+  } else {
+    PqlDeclaration declaration =
+        GetMappedDeclaration(str.substr(0, str.find(".")));
+    str.erase(0, str.find(".") + 1);
+    AttrType attr_type = StringToAttrType(str);
+    return AttrRef(declaration, attr_type);
   }
 }

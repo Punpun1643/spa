@@ -23,8 +23,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<RelDatabase> relData;
   std::unique_ptr<PatternDatabase> patData;
 
-  std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
-
   // Helper functions
   std::unordered_set<std::string> getIntersection(
       std::unordered_set<std::string> set1,
@@ -34,12 +32,14 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   PKB();
 
   // ********** SP **********
-  void insertEntity(EntityType type, std::string entity) override;
+  void InsertEntity(EntityType type, std::string value) override;
+  void InsertEntity(EntityType type, AttrType attr_type,
+                    std::string statement_number,
+                    std::string attribute) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
-                      std::string s2_line_num) override;
+                              std::string s2_line_num) override;
   void insertPattern(PatternType type, std::string statement_number,
-                     std::string lhs,
-                     std::shared_ptr<TreeNode> rhs) override;
+                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
@@ -47,6 +47,9 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
       std::string procName) override;
   std::unordered_set<std::string> getProcedureUses(
       std::string procName) override;
+  std::unordered_set<std::string> getStatementModifies(
+      std::string stmt) override;
+  std::unordered_set<std::string> getStatementUses(std::string stmt) override;
 
   // ********** QPS **********
   // ---------- ENTITIES ----------
@@ -54,16 +57,16 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
       EntityType type) override;
 
   std::string ConvertEntityValueToAlias(std::string value, EntityType type,
-                                     AttrType curr_attr_type,
-                                     AttrType wanted_attr_type) override;
+                                        AttrType curr_attr_type,
+                                        AttrType wanted_attr_type) override;
 
-  std::vector<std::string> GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
-                       std::string value) override;
+  std::vector<std::string> GetEntitiesMatchingAttrValue(
+      EntityType type, AttrType attr_type, std::string value) override;
 
-  std::vector<std::pair<std::string, std::string>> GetEntitiesWhereAttributesMatch(EntityType type_1,
-                                               AttrType attr_type_1,
-                                               EntityType type_2,
-                                               AttrType attr_type_2) override;
+  std::vector<std::pair<std::string, std::string>>
+  GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
+                                  EntityType type_2,
+                                  AttrType attr_type_2) override;
 
   // ---------- RELATIONS ----------
   // 0 Declarations

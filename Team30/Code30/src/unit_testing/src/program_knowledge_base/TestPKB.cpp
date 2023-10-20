@@ -193,19 +193,19 @@ std::shared_ptr<TreeNode> buildTree19() {
 
 TEST_CASE("Follows, Parent, Follows* and Parent*") {
   PKB pkb = PKB();
-  pkb.insertEntity(EntityType::PROCEDURE, "main");
-  pkb.insertEntity(EntityType::PROCEDURE, "sub");
-  pkb.insertEntity(EntityType::CONSTANT, "3");
-  pkb.insertEntity(EntityType::VARIABLE, "x");
-  pkb.insertEntity(EntityType::VARIABLE, "y");
+  pkb.InsertEntity(EntityType::PROCEDURE, "main");
+  pkb.InsertEntity(EntityType::PROCEDURE, "sub");
+  pkb.InsertEntity(EntityType::CONSTANT, "3");
+  pkb.InsertEntity(EntityType::VARIABLE, "x");
+  pkb.InsertEntity(EntityType::VARIABLE, "y");
 
-  pkb.insertEntity(EntityType::CALL, "1");
-  pkb.insertEntity(EntityType::CALL, "2");
-  pkb.insertEntity(EntityType::PRINT, "3");
-  pkb.insertEntity(EntityType::IF, "4");
-  pkb.insertEntity(EntityType::READ, "5");
-  pkb.insertEntity(EntityType::CALL, "6");
-  pkb.insertEntity(EntityType::ASSIGN, "7");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "1", "sub");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "2", "sub");
+  pkb.InsertEntity(EntityType::PRINT, AttrType::VAR_NAME, "3", "x");
+  pkb.InsertEntity(EntityType::IF, "4");
+  pkb.InsertEntity(EntityType::READ, AttrType::VAR_NAME, "5", "y");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "6", "sub");
+  pkb.InsertEntity(EntityType::ASSIGN, "7");
 
   pkb.insertRelation(RelationType::FOLLOWS, "1", "2");
   pkb.insertRelation(RelationType::FOLLOWS, "2", "3");
@@ -348,18 +348,18 @@ TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
 // UsesP holds for Procedures
 TEST_CASE("Uses and Modifies") {
   PKB pkb = PKB();
-  pkb.insertEntity(EntityType::PROCEDURE, "main");
-  pkb.insertEntity(EntityType::PROCEDURE, "sub");
-  pkb.insertEntity(EntityType::VARIABLE, "x");
-  pkb.insertEntity(EntityType::VARIABLE, "y");
+  pkb.InsertEntity(EntityType::PROCEDURE, "main");
+  pkb.InsertEntity(EntityType::PROCEDURE, "sub");
+  pkb.InsertEntity(EntityType::VARIABLE, "x");
+  pkb.InsertEntity(EntityType::VARIABLE, "y");
 
-  pkb.insertEntity(EntityType::CALL, "1");
-  pkb.insertEntity(EntityType::CALL, "2");
-  pkb.insertEntity(EntityType::PRINT, "3");
-  pkb.insertEntity(EntityType::IF, "4");
-  pkb.insertEntity(EntityType::READ, "5");
-  pkb.insertEntity(EntityType::CALL, "6");
-  pkb.insertEntity(EntityType::ASSIGN, "7");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "1", "sub");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "2", "sub");
+  pkb.InsertEntity(EntityType::PRINT, AttrType::VAR_NAME, "3", "x");
+  pkb.InsertEntity(EntityType::IF, "4");
+  pkb.InsertEntity(EntityType::READ, AttrType::VAR_NAME, "5", "y");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "6", "sub");
+  pkb.InsertEntity(EntityType::ASSIGN, "7");
 
   pkb.insertRelation(RelationType::USES_S, "3", "x");
   pkb.insertRelation(RelationType::USES_S, "4", "y");
@@ -452,24 +452,24 @@ TEST_CASE("PKB test1-source Parent*") {
 
 TEST_CASE("Test1-Source PKB") {
   PKB pkb = PKB();
-  pkb.insertEntity(EntityType::PROCEDURE, "Advanced");
-  pkb.insertEntity(EntityType::VARIABLE, "y");
-  pkb.insertEntity(EntityType::VARIABLE, "z");
-  pkb.insertEntity(EntityType::VARIABLE, "p");
-  pkb.insertEntity(EntityType::VARIABLE, "q");
-  pkb.insertEntity(EntityType::VARIABLE, "i");
-  pkb.insertEntity(EntityType::VARIABLE, "j");
-  pkb.insertEntity(EntityType::VARIABLE, "x");
-  pkb.insertEntity(EntityType::VARIABLE, "t");
-  pkb.insertEntity(EntityType::VARIABLE, "a");
-  pkb.insertEntity(EntityType::VARIABLE, "b");
-  pkb.insertEntity(EntityType::CONSTANT, "2");
-  pkb.insertEntity(EntityType::CONSTANT, "1");
-  pkb.insertEntity(EntityType::CONSTANT, "24");
-  pkb.insertEntity(EntityType::CONSTANT, "0");
-  pkb.insertEntity(EntityType::CONSTANT, "5");
-  pkb.insertEntity(EntityType::VARIABLE, "10");
-  pkb.insertEntity(EntityType::VARIABLE, "100");
+  pkb.InsertEntity(EntityType::PROCEDURE, "Advanced");
+  pkb.InsertEntity(EntityType::VARIABLE, "y");
+  pkb.InsertEntity(EntityType::VARIABLE, "z");
+  pkb.InsertEntity(EntityType::VARIABLE, "p");
+  pkb.InsertEntity(EntityType::VARIABLE, "q");
+  pkb.InsertEntity(EntityType::VARIABLE, "i");
+  pkb.InsertEntity(EntityType::VARIABLE, "j");
+  pkb.InsertEntity(EntityType::VARIABLE, "x");
+  pkb.InsertEntity(EntityType::VARIABLE, "t");
+  pkb.InsertEntity(EntityType::VARIABLE, "a");
+  pkb.InsertEntity(EntityType::VARIABLE, "b");
+  pkb.InsertEntity(EntityType::CONSTANT, "2");
+  pkb.InsertEntity(EntityType::CONSTANT, "1");
+  pkb.InsertEntity(EntityType::CONSTANT, "24");
+  pkb.InsertEntity(EntityType::CONSTANT, "0");
+  pkb.InsertEntity(EntityType::CONSTANT, "5");
+  pkb.InsertEntity(EntityType::VARIABLE, "10");
+  pkb.InsertEntity(EntityType::VARIABLE, "100");
 
   pkb.insertPattern(PatternType::ASSIGN, "2", "x", buildTree5());
   pkb.insertPattern(PatternType::ASSIGN, "3", "z", buildTree6());
@@ -537,15 +537,15 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
      Line 5: x = a + b;
   */
 
-  pkb.insertEntity(EntityType::ASSIGN, "3");
-  pkb.insertEntity(EntityType::ASSIGN, "4");
-  pkb.insertEntity(EntityType::ASSIGN, "5");
-  pkb.insertEntity(EntityType::VARIABLE, "x");
-  pkb.insertEntity(EntityType::VARIABLE, "y");
-  pkb.insertEntity(EntityType::VARIABLE, "a");
-  pkb.insertEntity(EntityType::VARIABLE, "b");
-  pkb.insertEntity(EntityType::VARIABLE, "c");
-  pkb.insertEntity(EntityType::VARIABLE, "d");
+  pkb.InsertEntity(EntityType::ASSIGN, "3");
+  pkb.InsertEntity(EntityType::ASSIGN, "4");
+  pkb.InsertEntity(EntityType::ASSIGN, "5");
+  pkb.InsertEntity(EntityType::VARIABLE, "x");
+  pkb.InsertEntity(EntityType::VARIABLE, "y");
+  pkb.InsertEntity(EntityType::VARIABLE, "a");
+  pkb.InsertEntity(EntityType::VARIABLE, "b");
+  pkb.InsertEntity(EntityType::VARIABLE, "c");
+  pkb.InsertEntity(EntityType::VARIABLE, "d");
 
   pkb.insertPattern(PatternType::ASSIGN, "3", "x", buildTree1());
   pkb.insertPattern(PatternType::ASSIGN, "4", "y", buildTree2());
@@ -650,4 +650,85 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   actual = *pkb.getPatternMatchesWildLhs(buildTree2(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
+}
+
+TEST_CASE("Get statement uses/modifies and get procedure uses/modifies") {
+  /*
+  procedure main {
+1.    a = b + c;
+2.    print a;
+3.    call sub
+  }
+
+  procedure sub {
+4.    read c;
+  }
+  */
+  PKB pkb = PKB();
+  pkb.InsertEntity(EntityType::VARIABLE, "a");
+  pkb.InsertEntity(EntityType::VARIABLE, "b");
+  pkb.InsertEntity(EntityType::VARIABLE, "c");
+  pkb.InsertEntity(EntityType::PROCEDURE, "main");
+  pkb.InsertEntity(EntityType::PROCEDURE, "sub");
+  pkb.InsertEntity(EntityType::ASSIGN, "1");
+  pkb.InsertEntity(EntityType::PRINT, AttrType::VAR_NAME, "2", "a");
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "3", "sub");
+  pkb.InsertEntity(EntityType::READ, AttrType::VAR_NAME, "4", "c");
+
+  pkb.insertRelation(RelationType::USES_S, "1", "b");
+  pkb.insertRelation(RelationType::USES_S, "1", "c");
+  pkb.insertRelation(RelationType::MODIFIES_S, "1", "a");
+  pkb.insertRelation(RelationType::USES_S, "2", "a");
+  pkb.insertRelation(RelationType::USES_P, "main", "b");
+  pkb.insertRelation(RelationType::USES_P, "main", "c");
+  pkb.insertRelation(RelationType::USES_P, "main", "a");
+  pkb.insertRelation(RelationType::MODIFIES_P, "main", "a");
+  pkb.insertRelation(RelationType::MODIFIES_P, "main", "c");
+  pkb.insertRelation(RelationType::MODIFIES_S, "3", "c");
+  pkb.insertRelation(RelationType::MODIFIES_S, "4", "c");
+  pkb.insertRelation(RelationType::MODIFIES_P, "sub", "c");
+
+  std::unordered_set<std::string> expected = {"a"};
+  std::unordered_set<std::string> actual = pkb.getStatementModifies("1");
+  REQUIRE(expected == actual);
+
+  expected = {"b", "c"};
+  actual = pkb.getStatementUses("1");
+  REQUIRE(expected == actual);
+
+  expected = {"a"};
+  actual = pkb.getStatementUses("2");
+  REQUIRE(expected == actual);
+
+  expected = {};
+  actual = pkb.getStatementModifies("2");
+  REQUIRE(expected == actual);
+
+  expected = {};
+  actual = pkb.getStatementUses("3");
+  REQUIRE(expected == actual);
+
+  expected = {"c"};
+  actual = pkb.getStatementModifies("3");
+  REQUIRE(expected == actual);
+
+  expected = {};
+  actual = pkb.getStatementUses("4");
+  REQUIRE(expected == actual);
+
+  expected = {"c"};
+  actual = pkb.getStatementModifies("4");
+  REQUIRE(expected == actual);
+
+  expected = {"a", "b", "c"};
+  actual = pkb.getProcedureUses("main");
+  REQUIRE(expected == actual);
+
+  expected = {"a", "c"};
+  actual = pkb.getProcedureModifies("main");
+  REQUIRE(expected == actual);
+
+  expected = {"c"};
+  actual = pkb.getProcedureModifies("sub");
+  REQUIRE(expected == actual);
 }

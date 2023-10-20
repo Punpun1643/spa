@@ -1,17 +1,18 @@
 #include "QueryEvaluator.h"
-#include "ArrayUtility.h"
 
 #include <algorithm>
 #include <cassert>
+
+#include "ArrayUtility.h"
 
 QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 
 void QueryEvaluator::PopulateIntermediateResultsTable(
     IntermediateResultsTable& table, ClauseList clauses) {
   for (auto& clause : clauses) {
-    auto clause_result = clause->evaluate(pkb);
-    table.addClauseResult(*clause_result);
-    if (table.hasNoResults()) {
+    auto clause_result = clause->Evaluate(pkb);
+    table.AddClauseResult(*clause_result);
+    if (table.HasNoResults()) {
       break;  // no point continuing
     }
   }
@@ -20,21 +21,24 @@ void QueryEvaluator::PopulateIntermediateResultsTable(
 bool QueryEvaluator::EvaluateQuery(ClauseList clauses) {
   auto table = IntermediateResultsTable();
   PopulateIntermediateResultsTable(table, clauses);
-  return !table.hasNoResults();
+  return !table.HasNoResults();
 }
 
-std::vector<PqlDeclaration> QueryEvaluator::UnwrapAttrRefVector(std::vector<AttrRef> const& attr_refs) {
+std::vector<PqlDeclaration> QueryEvaluator::UnwrapAttrRefVector(
+    std::vector<AttrRef> const& attr_refs) {
   std::vector<PqlDeclaration> decls = {};
-  for (auto const& attr_ref: attr_refs) {
+  for (auto const& attr_ref : attr_refs) {
     decls.push_back(attr_ref.GetDecl());
   }
   return decls;
 }
 
-void QueryEvaluator::FillMissingDecls(IntermediateResultsTable& table, std::vector<PqlDeclaration> const& decls_to_check) {
+void QueryEvaluator::FillMissingDecls(
+    IntermediateResultsTable& table,
+    std::vector<PqlDeclaration> const& decls_to_check) {
   std::vector<std::shared_ptr<Clause>> missing_decl_clauses = {};
   for (auto const& decl : decls_to_check) {
-    if (!table.hasDeclaration(decl)) {
+    if (!table.HasDeclaration(decl)) {
       auto select_all_clause = std::make_shared<SelectAllClause>(decl);
       missing_decl_clauses.push_back(select_all_clause);
     }
@@ -42,12 +46,14 @@ void QueryEvaluator::FillMissingDecls(IntermediateResultsTable& table, std::vect
   PopulateIntermediateResultsTable(table, missing_decl_clauses);
 }
 
-bool QueryEvaluator::UpdateResultUsingAttrTypes(std::vector<std::vector<std::string>> &values, std::vector<AttrRef> const& attr_refs) {
+bool QueryEvaluator::UpdateResultUsingAttrTypes(
+    std::vector<std::vector<std::string>>& values,
+    std::vector<AttrRef> const& attr_refs) {
   /**
    * Returns true if the 2D-vector was modified, and false otherwise
    */
   if (!values.empty()) {
-    assert(values[0].size() == attr_refs.size()); // assume not ragged 2D vec
+    assert(values[0].size() == attr_refs.size());  // assume not ragged 2D vec
   }
 
   std::vector<int> aliased_idx = {};
@@ -61,10 +67,10 @@ bool QueryEvaluator::UpdateResultUsingAttrTypes(std::vector<std::vector<std::str
     return false;
   }
 
-  for (auto& row: values) {
+  for (auto& row : values) {
     for (auto i : aliased_idx) {
-      const AttrRef& attr_ref = attr_refs[i];
-      row[i] = attr_ref.GetRepresentationFromDefault(pkb, row[i]);
+      AttrRef const& attr_ref = attr_refs[i];
+      row[i] = attr_ref.GetAliasFromDefault(pkb, row[i]);
     }
   }
   return true;
@@ -81,14 +87,15 @@ std::vector<std::vector<std::string>> QueryEvaluator::EvaluateQuery(
   auto table = IntermediateResultsTable();
   PopulateIntermediateResultsTable(table, clauses);
 
-  std::vector<PqlDeclaration> selected_decls = UnwrapAttrRefVector(selected_attr_refs);
+  std::vector<PqlDeclaration> selected_decls =
+      UnwrapAttrRefVector(selected_attr_refs);
   FillMissingDecls(table, selected_decls);
-  auto values = table.getValuesGivenDeclarations(selected_decls);
+  auto values = table.GetValuesGivenDeclarations(selected_decls);
 
   // Some of the attr_refs might be asking for alternative attrTypes
   bool is_modified = UpdateResultUsingAttrTypes(values, selected_attr_refs);
   if (is_modified) {
-    ArrayUtility::removeDuplicates(values);
+    ArrayUtility::RemoveDuplicates(values);
   }
   return values;
 }

@@ -1,33 +1,37 @@
 #include "QpParser.h"
 
-#include <query_processing_system/exceptions/InvalidSyntaxException.h>
-
 #include <iostream>
 #include <map>
 #include <stdexcept>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
+#include "../common/AttrRef.h"
 #include "../common/FollowsClause.h"
 #include "../common/PqlDeclaration.h"
 #include "../common/StmtRef.h"
+#include "../exceptions/InvalidSyntaxException.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens){};
 
 // Constants
 std::string const QpParser::AND = "and";
+std::string const QpParser::AFFECTS = "Affects";
 std::string const QpParser::BOOLEAN = "BOOLEAN";
 std::string const QpParser::CALLS = "Calls";
 std::string const QpParser::CALLS_STAR = "Calls*";
 std::string const QpParser::FOLLOWS = "Follows";
 std::string const QpParser::FOLLOWS_STAR = "Follows*";
 std::string const QpParser::MODIFIES = "Modifies";
+std::string const QpParser::NEXT = "Next";
+std::string const QpParser::NEXT_STAR = "Next*";
 std::string const QpParser::PATTERN = "pattern";
 std::string const QpParser::PARENT = "Parent";
 std::string const QpParser::PARENT_STAR = "Parent*";
 std::string const QpParser::SELECT = "Select";
 std::string const QpParser::SUCH = "such";
 std::string const QpParser::USES = "Uses";
+std::string const QpParser::WITH = "with";
 
 bool QpParser::IsEntRef(std::string const& name) {
   return (IsSynonym(name) || IsWildcard(name) || IsQuotedIdentifier(name));
@@ -43,14 +47,7 @@ bool QpParser::IsQuotedIdentifier(std::string const& name) {
 }
 
 bool QpParser::IsStmtRef(std::string const& name) {
-  bool is_integer;
-  try {
-    stoi(name);
-    is_integer = true;
-  } catch (std::invalid_argument ex) {
-    is_integer = false;
-  }
-  if ((name != "_") && (!is_integer) && (!IsSynonym(name))) {
+  if ((name != "_") && (!IsValidInteger(name)) && (!IsSynonym(name))) {
     return false;
   }
   return true;
@@ -68,6 +65,17 @@ bool QpParser::IsIdentifier(std::string const& name) {
   return true;
 }
 
+bool QpParser::IsRelRef(std::string const& name) {
+  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
+                       USES,    MODIFIES,     CALLS,       CALLS_STAR,
+                       NEXT,    NEXT_STAR,    AFFECTS};
+  int arr_size = sizeof(arr) / sizeof(*arr);
+  if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
+    return false;
+  }
+  return true;
+}
+
 bool QpParser::IsSynonym(std::string const& name) {
   return this->IsIdentifier(name);
 }
@@ -81,17 +89,45 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
   return true;
 }
 
-bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
-                       USES,    MODIFIES,     CALLS,       CALLS_STAR};
-  int arr_size = sizeof(arr) / sizeof(*arr);
-  if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
+bool QpParser::IsValidInteger(std::string const& int_string) {
+  try {
+    stoi(int_string);
+  } catch (std::invalid_argument& e) {
     return false;
   }
   return true;
 }
 
 bool QpParser::IsWildcard(std::string const& name) { return (name == "_"); }
+
+AttrType QpParser::GetDefaultAttrTypeFromEntityType(EntityType entity_type) {
+  std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPES = {
+      {EntityType::PROCEDURE, AttrType::PROC_NAME},
+      {EntityType::VARIABLE, AttrType::VAR_NAME},
+      {EntityType::CONSTANT, AttrType::VALUE},
+      {EntityType::STMT, AttrType::STMT_NUM},
+      {EntityType::ASSIGN, AttrType::STMT_NUM},
+      {EntityType::IF, AttrType::STMT_NUM},
+      {EntityType::WHILE, AttrType::STMT_NUM},
+      {EntityType::PRINT, AttrType::STMT_NUM},
+      {EntityType::READ, AttrType::STMT_NUM},
+      {EntityType::CALL, AttrType::STMT_NUM}};
+  return DEFAULT_ATTR_TYPES.at(entity_type);
+}
+
+AttrType QpParser::StringToAttrType(std::string const& string) {
+  if (string == "procName") {
+    return AttrType::PROC_NAME;
+  } else if (string == "varName") {
+    return AttrType::VAR_NAME;
+  } else if (string == "value") {
+    return AttrType::VALUE;
+  } else if (string == "stmt#") {
+    return AttrType::STMT_NUM;
+  } else {
+    throw std::invalid_argument("String to be converted to attrType not valid");
+  }
+}
 
 EntityType QpParser::StringToEntityType(std::string const& entity_string) {
   if (entity_string == "stmt") {

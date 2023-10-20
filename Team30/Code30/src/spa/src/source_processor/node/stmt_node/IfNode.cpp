@@ -13,7 +13,7 @@ IfNode::IfNode(int stmtIndex, StmtType stmtType,
 
 void IfNode::Accept(IDesignExtractor& designExtractor) {
   auto thisIfNodePtr = std::dynamic_pointer_cast<IfNode>(shared_from_this());
-  designExtractor.extractFromIf(thisIfNodePtr);
+  designExtractor.ExtractFromIf(thisIfNodePtr);
 }
 
 std::shared_ptr<StmtLstNode> const IfNode::GetThenStmtLst() const {
