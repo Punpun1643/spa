@@ -84,20 +84,20 @@ void ExtractionController::HandleContainerStmts(
     std::shared_ptr<StmtNode> node) {
   // Handle whileNodes
   if (node->GetStmtType() == StmtType::WHILE_STMT) {
-    std::shared_ptr<WhileNode> asWhile =
+    std::shared_ptr<WhileNode> as_while =
         std::dynamic_pointer_cast<WhileNode>(node);
-    std::shared_ptr<StmtLstNode> whileBody = asWhile->GetStmtLst();
-    ExecuteStmtLstExtraction(whileBody);
+    std::shared_ptr<StmtLstNode> while_body = as_while->GetStmtLst();
+    ExecuteStmtLstExtraction(while_body);
     PopActors();
   }
 
   // Handle ifNodes
   if (node->GetStmtType() == StmtType::IF_STMT) {
-    std::shared_ptr<IfNode> asIf = std::dynamic_pointer_cast<IfNode>(node);
-    std::shared_ptr<StmtLstNode> thenBody = asIf->GetThenStmtLst();
-    std::shared_ptr<StmtLstNode> elseBody = asIf->GetElseStmtLst();
-    ExecuteStmtLstExtraction(thenBody);
-    ExecuteStmtLstExtraction(elseBody);
+    std::shared_ptr<IfNode> as_if = std::dynamic_pointer_cast<IfNode>(node);
+    std::shared_ptr<StmtLstNode> then_body = as_if->GetThenStmtLst();
+    std::shared_ptr<StmtLstNode> else_body = as_if->GetElseStmtLst();
+    ExecuteStmtLstExtraction(then_body);
+    ExecuteStmtLstExtraction(else_body);
     PopActors();
   }
 }

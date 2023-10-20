@@ -18,10 +18,10 @@ class CallsManager {
   // procA: the procedure in which the call stmt is found
   // procB: the procedure that the call stmt calls
   // i.e. A calls B
-  void InsertCallsStmt(std::string procA, std::string procB,
+  void InsertCallsStmt(std::string proc_a, std::string proc_b,
                        std::vector<std::string> actors,
-                       std::shared_ptr<CallNode> callNode);
-  void InsertProcNode(std::string procName);
+                       std::shared_ptr<CallNode> call_node);
+  void InsertProcNode(std::string proc_name);
   void ExecuteCallsExtraction();
   void ConnectProcsAndUpdateRelations();
 

@@ -11,11 +11,11 @@ class CallsGraphProcNode {
  public:
   CallsGraphProcNode(std::string proc);
 
-  void AddStmtCalledBy(std::shared_ptr<CallsGraphStmtNode> stmtCalledBy);
+  void AddStmtCalledBy(std::shared_ptr<CallsGraphStmtNode> stmt_called_by);
 
-  void AddProcCalled(std::shared_ptr<CallsGraphProcNode> procCalled);
+  void AddProcCalled(std::shared_ptr<CallsGraphProcNode> proc_called);
 
-  void AddProcCalledBy(std::shared_ptr<CallsGraphProcNode> procCalledBy);
+  void AddProcCalledBy(std::shared_ptr<CallsGraphProcNode> proc_called_by);
 
   std::unordered_set<std::shared_ptr<CallsGraphProcNode>> GetProcsCalled();
 

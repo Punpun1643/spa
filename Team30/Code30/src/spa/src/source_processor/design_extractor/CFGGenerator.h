@@ -10,12 +10,12 @@ class CFGGenerator {
  public:
   explicit CFGGenerator(PKBSPInterface& pkb);
 
-  void ExecuteCFGGeneration(std::shared_ptr<ProcedureNode> procNode);
+  void ExecuteCFGGeneration(std::shared_ptr<ProcedureNode> proc_node);
 
  private:
   PKBSPInterface& pkb;
 
   std::shared_ptr<CFGNode> GenerateCFG(
       std::vector<std::shared_ptr<StmtNode>> stmts,
-      std::vector<std::shared_ptr<CFGNode>> lastNodePointsTo);
+      std::vector<std::shared_ptr<CFGNode>> last_node_points_to);
 };

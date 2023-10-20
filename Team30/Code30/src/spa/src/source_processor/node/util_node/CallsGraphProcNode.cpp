@@ -7,23 +7,23 @@ CallsGraphProcNode::CallsGraphProcNode(std::string proc)
     : proc(proc), num_procs_called(0) {}
 
 void CallsGraphProcNode::AddStmtCalledBy(
-    std::shared_ptr<CallsGraphStmtNode> stmtCalledBy) {
-  if (stmts_called_by.find(stmtCalledBy) == stmts_called_by.end()) {
-    stmts_called_by.insert(stmtCalledBy);
+    std::shared_ptr<CallsGraphStmtNode> stmt_called_by) {
+  if (stmts_called_by.find(stmt_called_by) == stmts_called_by.end()) {
+    stmts_called_by.insert(stmt_called_by);
   }
 }
 
 void CallsGraphProcNode::AddProcCalled(
-    std::shared_ptr<CallsGraphProcNode> procCalled) {
-  if (procs_called.find(procCalled) == procs_called.end()) {
-    procs_called.insert(procCalled);
+    std::shared_ptr<CallsGraphProcNode> proc_called) {
+  if (procs_called.find(proc_called) == procs_called.end()) {
+    procs_called.insert(proc_called);
     num_procs_called++;
   }
 }
 
 void CallsGraphProcNode::AddProcCalledBy(
-    std::shared_ptr<CallsGraphProcNode> procCalledBy) {
-  procs_called_by.insert(procCalledBy);
+    std::shared_ptr<CallsGraphProcNode> proc_called_by) {
+  procs_called_by.insert(proc_called_by);
 }
 
 std::unordered_set<std::shared_ptr<CallsGraphProcNode>>
