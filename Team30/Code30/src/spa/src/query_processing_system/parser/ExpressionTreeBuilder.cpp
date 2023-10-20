@@ -1,9 +1,13 @@
 #include "ExpressionTreeBuilder.h"
 
 #include <assert.h>
-
 #include <iostream>
 #include <regex>
+#include <utility>
+#include <vector>
+#include <queue>
+#include <string>
+#include <memory>
 
 #include "../../shared/parser/node/TreeNode.h"
 #include "../common/EntityType.h"

@@ -4,12 +4,17 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_map>
+#include <utility>
+#include <vector>
+#include <queue>
+#include <memory>
+#include <string>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
-    : QpParser(tokens){};
+    : QpParser(tokens) {}
 
 void SyntaxChecker::parse() {
   std::shared_ptr<Token> current_token = GetCurrToken();
