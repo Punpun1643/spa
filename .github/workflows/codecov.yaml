@@ -1,10 +1,10 @@
 name: Codecov workflow
 
 on:
-  pull_request:
-    branches: [master]
-  push:
-    branches: [try-codecov]
+#  pull_request:
+#    branches: [master]
+#  push:
+#    branches: [try-codecov]
   workflow_dispatch:
     branches:
       - try-codecov
@@ -15,7 +15,7 @@ on:
 jobs:
   get-code-coverage:
     runs-on: [ macos-latest ]
-    timeout-minutes: 5
+    timeout-minutes: 8
     strategy:
       fail-fast: true
     steps:
