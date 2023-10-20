@@ -83,3 +83,8 @@ assign a;
 Select a pattern a ("h", "a + a - a * a/ a% a"")
 SyntaxError
 5000
+18 - Invalid - missing inverted commas
+assign a;
+Select a pattern a ("h", a + a - a * a/ a% a)
+SyntaxError
+5000
