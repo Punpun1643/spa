@@ -359,9 +359,8 @@ void SyntaxChecker::CheckSelectSingle() {
   }
   if (!IsSynonym(synonym)) {
     throw InvalidSyntaxException("Expected synonym for select clause");
-  }
-  if (existing_declarations.find(synonym) == existing_declarations.end()) {
-    throw InvalidSyntaxException("Synonym for select has not been declared");
+  } else {
+    CheckSynonymExists(synonym, "Undeclared synonym used for select clause");
   }
   if (GetPeekTokenValue() == ".") {
     // check attrRef
@@ -457,14 +456,13 @@ void SyntaxChecker::CheckWith(bool has_and) {
 
 EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
   std::string token_value = GetCurrTokenValue();
-  if (!QpParser::IsSynonym(token_value)) {
+  if (!IsSynonym(token_value)) {
     throw InvalidSyntaxException(
-        "Variable used for pattern does not have an identifier's syntax");
-  } else if (existing_declarations.find(token_value) ==
-             existing_declarations.end()) {
-    throw InvalidSemanticsException(
-        "Variable used for pattern has not been declared");
-  } else if (existing_declarations.at(token_value).GetEntityType() !=
+        "Invalid synonym used for pattern");
+  } else {
+    CheckSynonymExists(token_value, "Variable used for pattern has not been declared");
+  }
+  if (existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::ASSIGN &&
              existing_declarations.at(token_value).GetEntityType() !=
                  EntityType::WHILE &&
@@ -493,6 +491,8 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
     }
     return;
   } else if (QpParser::IsSynonym(ref)) {
+    CheckSynonymExists(ref, "Variable used for 'with' clause has not been declared");
+
     NextToken();  // .
     if (GetCurrTokenValue() != ".") {
       throw InvalidSyntaxException("Expected . after synonym for with ref");

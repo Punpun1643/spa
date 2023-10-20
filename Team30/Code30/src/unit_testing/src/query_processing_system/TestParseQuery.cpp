@@ -324,6 +324,7 @@ TEST_CASE("Parse Select + Uses(stmtref, entref)") {
 
 TEST_CASE("Pattern") {
   std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
 
   SECTION("Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (\"count\", _)") {
     AddDeclaration(tokens, "stmt", {"s1"});
@@ -336,7 +337,6 @@ TEST_CASE("Pattern") {
     AddSpecialCharVector(tokens, {"\"", ",", "_", ")"});
     AddEOF(tokens);
 
-    QPSController controller = QPSController();
     controller.TokensToClauses(tokens);
   }
 
@@ -351,7 +351,6 @@ TEST_CASE("Pattern") {
     AddSpecialCharVector(tokens, {"\"", "_", ")"});
     AddEOF(tokens);
 
-    QPSController controller = QPSController();
     controller.TokensToClauses(tokens);
   }
 
@@ -369,8 +368,16 @@ TEST_CASE("Pattern") {
     AddSpecialCharVector(tokens, {"\"", "_", ")"});
     AddEOF(tokens);
 
-    QPSController controller = QPSController();
     controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Negative, undeclared synonym: assign a; Select a such that pattern b (\"x\", _)") {
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select", "a", "such", "that", "pattern", "b"});
+    AddIdentWild(tokens, "x");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
   }
 }
 
@@ -712,6 +719,19 @@ TEST_CASE("With queries") {
     AddWordVector(tokens, {"p"});
     AddSpecialCharVector(tokens, {"."});
     AddWordVector(tokens, {"procName"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+  SECTION("Negative: stmt s; Select s with s1.stmt# = 20000 such that Follows (5, s)") {
+    AddDeclaration(tokens, "stmt", {"s"});
+    AddWordVector(tokens, {"Select", "s", "with", "s1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"#", "="});
+    AddIntVector(tokens, {"20000"});
+    AddWordVector(tokens, {"such", "that", "Follows"});
+    AddIntWord(tokens, "5", "s");
     AddEOF(tokens);
 
     REQUIRE_THROWS(controller.TokensToClauses(tokens));
