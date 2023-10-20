@@ -108,3 +108,28 @@ procedure p;
 Select p such that Calls* (p, "y")
 none
 5000
+23 - Invalid - calls synonym as the first argument, throws semantic error
+procedure p; call c;
+Select p such that Calls* (c, p)
+SemanticError
+5000
+24 - Invalid - calls synonym as the second argument, throws semantic error
+procedure p; call c;
+Select p such that Calls* (p, c)
+SemanticError
+5000
+25 - Invalid - statement synonym as first argument, throws semantic error
+assign a; procedure p;
+Select p such that Calls* (a, p)
+SemanticError
+5000
+26 - Invalid - statement synonym as second argument, throws semantic error
+print pn; procedure p;
+Select p such that Calls (p, pn)
+SemanticError
+5000
+27 - Select procedures that Calls* itself should return none
+procedure p;
+Select p such that Calls* (p, p)
+none
+5000
