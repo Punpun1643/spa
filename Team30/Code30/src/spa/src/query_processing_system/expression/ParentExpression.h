@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "../interpreter/QueryInterpreter.h"
 #include "SuchThatExpression.h"
 

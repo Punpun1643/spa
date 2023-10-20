@@ -1,3 +1,5 @@
+#include <string>
+
 #include "FollowsTExpression.h"
 
 FollowsTExpression::FollowsTExpression(std::string arg1, std::string arg2)

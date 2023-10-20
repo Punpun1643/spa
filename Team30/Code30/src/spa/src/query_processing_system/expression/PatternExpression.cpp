@@ -1,3 +1,6 @@
+#include <memory>
+#include <string>
+
 #include "PatternExpression.h"
 
 PatternExpression::PatternExpression(std::string syn_assign, std::string arg1,
@@ -6,7 +9,7 @@ PatternExpression::PatternExpression(std::string syn_assign, std::string arg1,
     : ClauseExpression(arg1, arg2),
       syn_assign(syn_assign),
       match_type(match_type),
-      rhs_expr_tree(rhs_expr_tree){};
+      rhs_expr_tree(rhs_expr_tree) {}
 
 void PatternExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(

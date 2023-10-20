@@ -1,6 +1,7 @@
 #include "SelectExpression.h"
 
 #include <cassert>
+#include <string>
 
 SelectExpression::SelectExpression(std::string synonym, AttrType attr_type,
                                    bool is_boolean) {
@@ -8,7 +9,7 @@ SelectExpression::SelectExpression(std::string synonym, AttrType attr_type,
   this->synonym = synonym;
   this->attr_type = attr_type;
   this->is_boolean = is_boolean;
-};
+}
 
 SelectExpression::SelectExpression(bool is_boolean) {
   this->is_boolean = is_boolean;
