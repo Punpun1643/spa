@@ -1,7 +1,7 @@
 #include "LinkedListTable.h"
 
-#include <queue>
 #include <iostream>
+#include <queue>
 
 LinkedListTable::LinkedListTable() : BaseTable() {}
 
@@ -9,7 +9,9 @@ void LinkedListTable::insert(std::string i, std::string j) {
   relations.addEdge(i, j);
 };
 
-bool LinkedListTable::isEmpty() { return relations.isEmpty(); }
+bool LinkedListTable::isEmpty() {
+  return relations.isEmpty();
+}
 
 bool LinkedListTable::isRelated(std::string i, std::string j) {
   std::shared_ptr<Node> target = relations.getNode(i);

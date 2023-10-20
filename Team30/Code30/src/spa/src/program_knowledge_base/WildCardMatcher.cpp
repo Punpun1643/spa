@@ -32,12 +32,10 @@ WildCardMatcher::WildCardMatcher() {
   rhs_map[RelationType::AFFECTS] = EntityType::ASSIGN;
 };
 
-EntityType WildCardMatcher::translateLHSWild(
-    RelationType type) {
+EntityType WildCardMatcher::translateLHSWild(RelationType type) {
   return lhs_map[type];
 };
 
-EntityType WildCardMatcher::translateRHSWild(
-    RelationType type) {
+EntityType WildCardMatcher::translateRHSWild(RelationType type) {
   return rhs_map[type];
 };

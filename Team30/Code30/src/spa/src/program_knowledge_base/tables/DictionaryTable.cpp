@@ -18,7 +18,9 @@ void DictionaryTable::insert(std::string i, std::string j) {
   };
 };
 
-bool DictionaryTable::isEmpty() { return relations.size() == 0; }
+bool DictionaryTable::isEmpty() {
+  return relations.size() == 0;
+}
 
 bool DictionaryTable::isRelated(std::string i, std::string j) {
   auto it = relations.find(i);
@@ -60,7 +62,7 @@ std::unordered_set<std::string> DictionaryTable::getAllWithInverseRelations(
 };
 
 std::unordered_set<std::string> DictionaryTable::getAllRelatedToValue(
-    std::string val){
+    std::string val) {
   return relations[val];
 };
 
