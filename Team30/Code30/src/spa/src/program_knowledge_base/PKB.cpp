@@ -9,7 +9,7 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
   entData = std::make_unique<EntityDatabase>();
   relData = std::make_unique<RelDatabase>();
   patData = std::make_unique<PatternDatabase>();
-};
+}
 
 // ********** Private methods **********
 std::unordered_set<std::string> PKB::getIntersection(
@@ -27,44 +27,44 @@ std::unordered_set<std::string> PKB::getIntersection(
 // ********** SP **********
 void PKB::InsertEntity(EntityType type, std::string value) {
   entData->InsertEntity(type, value);
-};
+}
 
 void PKB::InsertEntity(EntityType type, AttrType attr_type,
                        std::string statement_number, std::string attribute) {
   entData->InsertEntity(type, attr_type, statement_number, attribute);
-};
+}
 
 void PKB::insertRelation(RelationType type, std::string input1,
                          std::string input2) {
   relData->insert(type, input1, input2);
-};
+}
 
 void PKB::insertPattern(PatternType type, std::string statement_number,
                         std::string lhs, std::shared_ptr<TreeNode> rhs) {
   patData->insert(type, statement_number, lhs, rhs);
-};
+}
 
 void PKB::insertCFGNode(std::string statement_number,
                         std::shared_ptr<CFGNode> node) {
   relData->insertCFGNode(statement_number, node);
-};
+}
 
 std::unordered_set<std::string> PKB::getProcedureModifies(
     std::string procName) {
   return relData->getAllRelatedToValue(RelationType::MODIFIES_P, procName);
-};
+}
 
 std::unordered_set<std::string> PKB::getProcedureUses(std::string procName) {
   return relData->getAllRelatedToValue(RelationType::USES_P, procName);
-};
+}
 
 std::unordered_set<std::string> PKB::getStatementModifies(std::string stmt) {
   return relData->getAllRelatedToValue(RelationType::MODIFIES_S, stmt);
-};
+}
 
 std::unordered_set<std::string> PKB::getStatementUses(std::string stmt) {
   return relData->getAllRelatedToValue(RelationType::USES_S, stmt);
-};
+}
 
 // ********** QPS **********
 // ---------- ENTITIES ----------
@@ -72,27 +72,27 @@ std::unique_ptr<std::vector<std::string>> PKB::getEntitiesWithType(
     EntityType type) {
   std::shared_ptr<std::unordered_set<std::string>> e = entData->get(type);
   return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
-};
+}
 
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
                                            AttrType curr_attr_type,
                                            AttrType wanted_attr_type) {
   return entData->ConvertEntityValueToAlias(value, type, curr_attr_type,
                                             wanted_attr_type);
-};
+}
 
 std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
                                                            AttrType attr_type,
                                                            std::string value) {
   return entData->GetEntitiesMatchingAttrValue(type, attr_type, value);
-};
+}
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
                                      EntityType type_2, AttrType attr_type_2) {
   return entData->GetEntitiesWhereAttributesMatch(type_1, attr_type_1, type_2,
                                                   attr_type_2);
-};
+}
 
 // ---------- RELATIONS ----------
 // 0 Declarations
@@ -100,7 +100,7 @@ PKB::GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
 bool PKB::isRelationTrueValueValue(std::string value_1, std::string value_2,
                                    RelationType rel_type) {
   return relData->isRelated(rel_type, value_1, value_2);
-};
+}
 
 // example Follows(1, _)
 bool PKB::isRelationTrueValueWild(std::string value, RelationType rel_type) {
@@ -134,7 +134,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationWildSynonym(
       relData->getAllWithInverseRelations(rel_type, entData->get(entity_type));
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
-};
+}
 
 // example Follows(s, 3), FolowsStar(s, 3)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
@@ -185,7 +185,7 @@ PKB::getRelationSynonymSynonym(EntityType entity_type_1,
   }
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       output);
-};
+}
 
 // ---------- PATTERNS ----------
 std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
@@ -195,19 +195,13 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
   // Wild Wild
   if (match_type == MatchType::WILD_MATCH) {
     output = *entData->get(EntityType::ASSIGN);
-  }
-
-  // Wild Partial
-  else if (match_type == MatchType::PARTIAL_MATCH) {
+  } else if (match_type == MatchType::PARTIAL_MATCH) { // Wild Partial
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
         output.insert(pair.first);
       }
     }
-  }
-
-  // Wild Exact
-  else {
+  } else { // Wild Exact
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
         output.insert(pair.first);
@@ -217,7 +211,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesWildLhs(
 
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
-};
+}
 
 std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
@@ -227,20 +221,14 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
   // String Wild
   if (match_type == MatchType::WILD_MATCH) {
     output = patData->getStatementNumbersGivenLHS(lhs_value);
-  }
-
-  // String Partial
-  else if (match_type == MatchType::PARTIAL_MATCH) {
+  } else if (match_type == MatchType::PARTIAL_MATCH) { // String Partial
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (pair.second.first == lhs_value &&
           TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
         output.insert(pair.first);
       }
     }
-  }
-
-  // String Exact
-  else {
+  } else { // String Exact
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (pair.second.first == lhs_value &&
           TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
@@ -251,7 +239,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getPatternMatchesValueLhs(
 
   return std::make_unique<std::vector<std::string>>(output.begin(),
                                                     output.end());
-};
+}
 
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
 PKB::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
@@ -263,19 +251,13 @@ PKB::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
     for (auto& pair : patData->getAssignmentPatterns()) {
       output.push_back(make_pair(pair.first, pair.second.first));
     }
-  }
-
-  // Synonym Partial
-  else if (match_type == MatchType::PARTIAL_MATCH) {
+  } else if (match_type == MatchType::PARTIAL_MATCH) { // Synonym Partial
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
         output.push_back(make_pair(pair.first, pair.second.first));
       };
     }
-  }
-
-  // Synonym Exact
-  else {
+  } else { // Synonym Exact
     for (auto& pair : patData->getAssignmentPatterns()) {
       if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
         output.push_back(make_pair(pair.first, pair.second.first));
@@ -285,4 +267,4 @@ PKB::getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
 
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       output.begin(), output.end());
-};
+}
