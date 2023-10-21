@@ -184,6 +184,7 @@ PKB::getRelationSynonymSynonym(EntityType entity_type_1,
       }
     }
   }
+
   return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
       output);
 }
