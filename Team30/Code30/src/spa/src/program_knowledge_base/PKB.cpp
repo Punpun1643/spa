@@ -140,6 +140,7 @@ std::unique_ptr<std::vector<std::string>> PKB::getRelationWildSynonym(
 // example Follows(s, 3), FolowsStar(s, 3)
 std::unique_ptr<std::vector<std::string>> PKB::getRelationSynonymValue(
     EntityType entity_type, std::string value, RelationType rel_type) {
+
   std::unordered_set<std::string> allInverseRelated =
       relData->getAllInverseRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = *entData->get(entity_type);
