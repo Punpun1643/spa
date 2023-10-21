@@ -40,7 +40,8 @@ RelDatabase::RelDatabase() {
 }
 
 bool RelDatabase::IsValidStatementNumber(std::string val) {
-  return 0 < std::stoi(val) < size + 1;
+  int v = std::stoi(val);
+  return 0 < v && v < size + 1;
 }
 
 bool RelDatabase::IsCFGRelation(RelationType type) {
