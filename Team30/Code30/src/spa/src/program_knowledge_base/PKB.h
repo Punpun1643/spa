@@ -1,13 +1,14 @@
 #pragma once
 
 #include <stdio.h>
+
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
-#include <unordered_set>
 
 #include "../query_processing_system/common/EntityType.h"
 #include "../source_processor/node/stmt_node/StmtNode.h"
@@ -53,8 +54,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   // ********** QPS **********
   // ---------- ENTITIES ----------
-  std::unique_ptr<std::vector<std::string>> GetEntitiesWithType(
-      EntityType type) override;
+  std::vector<std::string> GetEntitiesWithType(EntityType type) override;
 
   std::string ConvertEntityValueToAlias(std::string value, EntityType type,
                                         AttrType curr_attr_type,
@@ -79,29 +79,28 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   bool IsRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations
-  std::unique_ptr<std::vector<std::string>> GetRelationSynonymWild(
+  std::vector<std::string> GetRelationSynonymWild(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> GetRelationWildSynonym(
+  std::vector<std::string> GetRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> GetRelationSynonymValue(
+  std::vector<std::string> GetRelationSynonymValue(
       EntityType entity_type, std::string value,
       RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> GetRelationValueSynonym(
+  std::vector<std::string> GetRelationValueSynonym(
       std::string value, EntityType entity_type,
       RelationType rel_type) override;
 
   // 2 Declarations
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  GetRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
-                            RelationType rel_type) override;
+  std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
+      EntityType entity_type_1, EntityType entity_type_2,
+      RelationType rel_type) override;
 
   // ---------- PATTERNS ----------
-  std::unique_ptr<std::vector<std::string>> GetPatternMatchesWildLhs(
+  std::vector<std::string> GetPatternMatchesWildLhs(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
-  std::unique_ptr<std::vector<std::string>> GetPatternMatchesValueLhs(
+  std::vector<std::string> GetPatternMatchesValueLhs(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
-  std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
-                              MatchType match_type) override;
+  std::vector<std::pair<std::string, std::string>> GetPatternMatchesSynonymLhs(
+      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
 };
