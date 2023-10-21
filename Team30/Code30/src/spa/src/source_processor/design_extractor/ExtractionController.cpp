@@ -36,12 +36,13 @@ void ExtractionController::ExecuteProgramExtraction(
       ExecuteProcedureExtraction(child);
     }
 
+    ExecutePostProcessing();
+
     // Construct CFGs
     for (std::shared_ptr<ProcedureNode> child : children) {
        cfg_generator->ExecuteCFGGeneration(child);
     }
   }
-  ExecutePostProcessing();
 }
 
 void ExtractionController::ExecuteProcedureExtraction(

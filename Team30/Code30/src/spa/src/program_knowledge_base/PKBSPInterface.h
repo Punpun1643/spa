@@ -28,9 +28,9 @@ class PKBSPInterface {
                              std::string lhs,
                              std::shared_ptr<TreeNode> rhs) = 0;
   virtual std::unordered_set<std::string> GetProcedureModifies(
-      std::string procName) = 0;
+      std::string proc_name) = 0;
   virtual std::unordered_set<std::string> GetProcedureUses(
-      std::string procName) = 0;
+      std::string proc_name) = 0;
   virtual std::unordered_set<std::string> GetStatementModifies(
       std::string stmt) = 0;
   virtual std::unordered_set<std::string> GetStatementUses(
