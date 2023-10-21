@@ -1,27 +1,23 @@
 #include "ModifiesExtractor.h"
 
 #include <algorithm>
-#include <iostream>
+#include <string>
 #include <vector>
 
-ModifiesExtractor::ModifiesExtractor(PKBSPInterface& pkb,
-                                     std::shared_ptr<CallsManager> callsManager)
+ModifiesExtractor::ModifiesExtractor(
+    PKBSPInterface& pkb, std::shared_ptr<CallsManager> calls_manager)
     : pkb(pkb),
-      callsManager(callsManager),
-      UsesModifiesTypeExtractor(pkb, callsManager) {}
-
-void ModifiesExtractor::ExtractFromProgram(std::shared_ptr<ProgramNode> node) {
-  // TODO
-}
+      calls_manager(calls_manager),
+      UsesModifiesTypeExtractor(pkb, calls_manager) {}
 
 void ModifiesExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.insertRelation(RelationType::MODIFIES_S,
+  pkb.InsertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());
   InsertVarWithActors(node->GetVarName());
 }
 
 void ModifiesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
-  pkb.insertRelation(RelationType::MODIFIES_S,
+  pkb.InsertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());
   InsertVarWithActors(node->GetVarName());
 }
@@ -33,15 +29,15 @@ void ModifiesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
 //////////////////////////////
 
 void ModifiesExtractor::InsertVarWithActors(std::string var) {
-  for (std::string modifiesActor : actors) {
+  for (std::string modifies_actor : actors) {
     // insertIntoPkb(modifiesActor, var);
-    bool isStmtIndex =
-        !modifiesActor.empty() &&
-        std::all_of(modifiesActor.begin(), modifiesActor.end(), ::isdigit);
-    if (isStmtIndex) {
-      pkb.insertRelation(RelationType::MODIFIES_S, modifiesActor, var);
+    bool is_stmt_index =
+        !modifies_actor.empty() &&
+        std::all_of(modifies_actor.begin(), modifies_actor.end(), ::isdigit);
+    if (is_stmt_index) {
+      pkb.InsertRelation(RelationType::MODIFIES_S, modifies_actor, var);
     } else {
-      pkb.insertRelation(RelationType::MODIFIES_P, modifiesActor, var);
+      pkb.InsertRelation(RelationType::MODIFIES_P, modifies_actor, var);
     }
   }
 }

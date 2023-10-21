@@ -3,6 +3,10 @@
 #include <iostream>
 #include <map>
 #include <stdexcept>
+#include <memory>
+#include <vector>
+#include <string>
+#include <unordered_map>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
 #include "../common/AttrRef.h"
@@ -12,10 +16,11 @@
 #include "../exceptions/InvalidSyntaxException.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
-    : AParser(tokens){};
+    : AParser(tokens) {}
 
 // Constants
 std::string const QpParser::AND = "and";
+std::string const QpParser::AFFECTS = "Affects";
 std::string const QpParser::BOOLEAN = "BOOLEAN";
 std::string const QpParser::CALLS = "Calls";
 std::string const QpParser::CALLS_STAR = "Calls*";
@@ -65,8 +70,9 @@ bool QpParser::IsIdentifier(std::string const& name) {
 }
 
 bool QpParser::IsRelRef(std::string const& name) {
-  std::string arr[] = {FOLLOWS,  FOLLOWS_STAR, PARENT_STAR, PARENT, USES,
-                       MODIFIES, CALLS,        CALLS_STAR,  NEXT,   NEXT_STAR};
+  std::string arr[] = {FOLLOWS, FOLLOWS_STAR, PARENT_STAR, PARENT,
+                       USES,    MODIFIES,     CALLS,       CALLS_STAR,
+                       NEXT,    NEXT_STAR,    AFFECTS};
   int arr_size = sizeof(arr) / sizeof(*arr);
   if (std::find(arr, arr + arr_size, name) == arr + arr_size) {
     return false;
@@ -96,7 +102,9 @@ bool QpParser::IsValidInteger(std::string const& int_string) {
   return true;
 }
 
-bool QpParser::IsWildcard(std::string const& name) { return (name == "_"); }
+bool QpParser::IsWildcard(std::string const& name) {
+  return (name == "_");
+}
 
 AttrType QpParser::GetDefaultAttrTypeFromEntityType(EntityType entity_type) {
   std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPES = {

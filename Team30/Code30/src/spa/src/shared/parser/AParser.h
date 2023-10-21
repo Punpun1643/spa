@@ -12,7 +12,7 @@
 
 class AParser {
  public:
-  AParser(std::vector<std::shared_ptr<Token>> tokens);
+  explicit AParser(std::vector<std::shared_ptr<Token>> tokens);
 
   /**
    * @brief Moves the pointer to the next token.

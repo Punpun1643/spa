@@ -1,0 +1,29 @@
+name: cpp lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check-code-style:
+    runs-on: [macos-latest]
+    timeout-minutes: 5
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install cpplint
+        run: pip install cpplint
+
+      - name: Run cpplint
+        run: |
+          cd Team30/Code30/src/spa
+          cpplint --recursive --filter=-legal/copyright,-runtime/references,-runtime/string,-build/c++11 --quiet --extensions=h,cpp .

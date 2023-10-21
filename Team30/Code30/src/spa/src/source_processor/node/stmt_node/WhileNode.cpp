@@ -1,5 +1,6 @@
-#include "WhileNode.h"
+#include <utility>
 
+#include "WhileNode.h"
 #include "../../design_extractor/IDesignExtractor.h"
 
 WhileNode::WhileNode(int stmtIndex, StmtType stmtType,
@@ -15,6 +16,10 @@ void WhileNode::Accept(IDesignExtractor& designExtractor) {
   designExtractor.ExtractFromWhile(thisWhileNodePtr);
 }
 
-std::shared_ptr<CondExprNode> WhileNode::GetCondExpr() { return condExprNode; }
+std::shared_ptr<CondExprNode> WhileNode::GetCondExpr() {
+  return condExprNode;
+}
 
-std::shared_ptr<StmtLstNode> WhileNode::GetStmtLst() { return stmtLstNode; }
+std::shared_ptr<StmtLstNode> WhileNode::GetStmtLst() {
+  return stmtLstNode;
+}

@@ -3,7 +3,7 @@
 
 class EofToken : public Token {
  public:
-  explicit EofToken();
+  EofToken();
   ~EofToken() = default;
   TokenType getTokenType();
 };

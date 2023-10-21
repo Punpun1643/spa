@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include <utility>
+#include <memory>
+#include <string>
 
 #include "../evaluator/ArrayUtility.h"
 #include "../exceptions/InvalidSemanticsException.h"

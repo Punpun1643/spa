@@ -1,0 +1,8 @@
+name: Remove XML files
+runs:
+  using: composite
+  steps:
+    - name: Remove current branch XML files
+      shell: bash
+      run: |
+        rm -f Team30/Tests30/output/*.xml

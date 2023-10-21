@@ -22,19 +22,19 @@ class PKBSPInterface {
   virtual void InsertEntity(EntityType type, AttrType attr_type,
                             std::string statement_number,
                             std::string attribute) = 0;
-  virtual void insertRelation(RelationType rel_type, std::string s1_line_num,
+  virtual void InsertRelation(RelationType rel_type, std::string s1_line_num,
                               std::string s2_line_num) = 0;
-  virtual void insertPattern(PatternType type, std::string statement_number,
+  virtual void InsertPattern(PatternType type, std::string statement_number,
                              std::string lhs,
                              std::shared_ptr<TreeNode> rhs) = 0;
-  virtual std::unordered_set<std::string> getProcedureModifies(
+  virtual std::unordered_set<std::string> GetProcedureModifies(
       std::string procName) = 0;
-  virtual std::unordered_set<std::string> getProcedureUses(
+  virtual std::unordered_set<std::string> GetProcedureUses(
       std::string procName) = 0;
-  virtual std::unordered_set<std::string> getStatementModifies(
+  virtual std::unordered_set<std::string> GetStatementModifies(
       std::string stmt) = 0;
-  virtual std::unordered_set<std::string> getStatementUses(
+  virtual std::unordered_set<std::string> GetStatementUses(
       std::string stmt) = 0;
-  virtual void insertCFGNode(std::string statement_num,
+  virtual void InsertCFGNode(std::string statement_num,
                              std::shared_ptr<CFGNode> node) = 0;
 };

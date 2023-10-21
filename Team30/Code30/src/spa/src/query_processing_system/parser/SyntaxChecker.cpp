@@ -4,12 +4,17 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_map>
+#include <utility>
+#include <vector>
+#include <queue>
+#include <memory>
+#include <string>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
-    : QpParser(tokens){};
+    : QpParser(tokens) {}
 
 void SyntaxChecker::parse() {
   std::shared_ptr<Token> current_token = GetCurrToken();
@@ -26,6 +31,30 @@ void SyntaxChecker::parse() {
   CheckEOF();
 }
 
+void SyntaxChecker::CheckAffects() {
+  assert(GetCurrTokenValue() == AFFECTS);
+
+  NextToken();
+  this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Affects clause");
+
+  NextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for first argument of Affects clause",
+      "Synonym in first arg of Affects clause has not been declared");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(",", "Expected \',\' for Affects clause");
+
+  NextToken();
+  this->CheckCurrentTokenStmtRef(
+      "Expected stmtref for second argument of Affects clause",
+      "Synonym in second arg of Affects clause has not been declared");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected \')\' for Affects clause");
+
+  NextToken();
+}
 void SyntaxChecker::CheckAnd(ClauseType clause_type) {
   assert(GetCurrTokenValue() == QpParser::AND);
   NextToken();
@@ -38,12 +67,8 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
       throw InvalidSyntaxException("Expected <relref> after 'and'");
     }
   } else if (clause_type == ClauseType::pattern) {
-    if (GetCurrTokenValue() == QpParser::PATTERN) {
-      CheckPattern();
-      return;
-    } else {
-      throw InvalidSyntaxException("Expected 'pattern' after 'and'");
-    }
+    CheckPattern(true);
+    return;
   } else if (clause_type == ClauseType::with) {
     CheckWith(true);
     return;
@@ -85,7 +110,7 @@ void SyntaxChecker::CheckClauses() {
     if (clause_name == QpParser::SUCH) {
       this->CheckSuchThat(false);
     } else if (clause_name == QpParser::PATTERN) {
-      this->CheckPattern();
+      this->CheckPattern(false);
     } else if (clause_name == QpParser::WITH) {
       this->CheckWith(false);
     } else {
@@ -252,12 +277,11 @@ void SyntaxChecker::CheckParent() {
   NextToken();
 }
 
-void SyntaxChecker::CheckPattern() {
-  if (!(GetCurrTokenValue() == QpParser::PATTERN)) {
-    return;
+void SyntaxChecker::CheckPattern(bool has_and) {
+  if (!has_and) {
+    NextToken();
   }
 
-  NextToken();
   EntityType entity_type = this->CheckCurrentTokenPatternEntity();
 
   NextToken();
@@ -341,6 +365,9 @@ void SyntaxChecker::CheckSelectSingle() {
   if (!IsSynonym(synonym)) {
     throw InvalidSyntaxException("Expected synonym for select clause");
   }
+  if (existing_declarations.find(synonym) == existing_declarations.end()) {
+    throw InvalidSyntaxException("Synonym for select has not been declared");
+  }
   if (GetPeekTokenValue() == ".") {
     // check attrRef
     NextToken();  // .
@@ -358,7 +385,9 @@ void SyntaxChecker::CheckSuchThat(bool has_and) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
   std::string rel_ref = GetCurrTokenValue();
-  if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
+  if (rel_ref == QpParser::AFFECTS) {
+    this->CheckAffects();
+  } else if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
     this->CheckCalls();
   } else if (rel_ref == QpParser::FOLLOWS ||
              rel_ref == QpParser::FOLLOWS_STAR) {

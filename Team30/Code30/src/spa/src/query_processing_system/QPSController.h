@@ -1,6 +1,10 @@
 #pragma once
 
 #include <list>
+#include <utility>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "common/AttrRef.h"
 #include "common/Clause.h"

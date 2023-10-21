@@ -1,6 +1,9 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
+#include <vector>
+#include <string>
 
 #include "../../shared/tokenizer/token/Token.h"
 #include "../common/PqlDeclaration.h"
@@ -10,7 +13,7 @@ class SyntaxChecker : public QpParser {
   std::unordered_map<std::string, PqlDeclaration> existing_declarations;
 
  public:
-  SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens);
+  explicit SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens);
 
   void parse() override;
 
@@ -20,6 +23,7 @@ class SyntaxChecker : public QpParser {
   enum class ClauseType { such_that, pattern, with };
 
   // Checkers
+  void CheckAffects();
   void CheckAnd(ClauseType clause_type);
   void CheckCalls();
   void CheckClauses();
@@ -29,7 +33,7 @@ class SyntaxChecker : public QpParser {
   void CheckModifies();
   void CheckNext();
   void CheckParent();
-  void CheckPattern();
+  void CheckPattern(bool has_and);
   void CheckSelect();
   void CheckSelectBoolean();
   void CheckSelectMultiple();
@@ -46,7 +50,7 @@ class SyntaxChecker : public QpParser {
                                 std::string not_existing_error_msg);
   void CheckCurrentTokenSyntax(std::string expected_value,
                                std::string error_msg);
-  void CheckIsExpr(std::string error_msg);  // TODO
+  void CheckIsExpr(std::string error_msg);  // TODO(@lkwlkww): implement
   void CheckSynonymExists(std::string synonym, std::string error_msg);
   void CheckUpcomingTokensAreEntRef(std::string syntax_error_msg,
                                     std::string not_existing_error_msg);

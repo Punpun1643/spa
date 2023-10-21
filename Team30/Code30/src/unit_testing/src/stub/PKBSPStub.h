@@ -32,26 +32,26 @@ class PKBSPStub : public PKBSPInterface {
   void InsertEntity(EntityType type, AttrType attr_type,
                     std::string statement_number,
                     std::string attribute) override;
-  void insertRelation(RelationType rel_type, std::string s1_line_num,
+  void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void insertPattern(PatternType type, std::string statement_number,
+  void InsertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
 
-  void insertRelationCommon(RelationType type, std::string a, std::string b);
+  void InsertRelationCommon(RelationType type, std::string a, std::string b);
 
-  std::unordered_set<std::string> getProcedureUses(
+  std::unordered_set<std::string> GetProcedureUses(
       std::string procName) override;
 
-  std::unordered_set<std::string> getProcedureModifies(
+  std::unordered_set<std::string> GetProcedureModifies(
       std::string procName) override;
 
-  std::unordered_set<std::string> getStatementUses(
+  std::unordered_set<std::string> GetStatementUses(
       std::string procName) override;
 
-  std::unordered_set<std::string> getStatementModifies(
+  std::unordered_set<std::string> GetStatementModifies(
       std::string procName) override;
 
-  void insertCFGNode(std::string statement_num,
+  void InsertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
   bool checkCFGNodeOutgoing(std::string statement_num,

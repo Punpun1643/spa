@@ -10,22 +10,22 @@ void ParentExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
   std::vector<std::shared_ptr<StmtNode>> children =
       node->GetStmtLst()->GetChildren();
   for (int i = 0; i < children.size(); i++) {
-    pkb.insertRelation(RelationType::PARENT,
+    pkb.InsertRelation(RelationType::PARENT,
                        std::to_string(node->GetStmtIndex()),
                        std::to_string(children[i]->GetStmtIndex()));
   }
 }
 
 void ParentExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
-  int parentIndex = node->GetStmtIndex();
+  int parent_index = node->GetStmtIndex();
   std::vector<std::shared_ptr<StmtNode>> children =
       node->GetThenStmtLst()->GetChildren();
-  std::vector<std::shared_ptr<StmtNode>> elseChildren =
+  std::vector<std::shared_ptr<StmtNode>> else_children =
       node->GetElseStmtLst()->GetChildren();
-  children.insert(std::end(children), std::begin(elseChildren),
-                  std::end(elseChildren));
+  children.insert(std::end(children), std::begin(else_children),
+                  std::end(else_children));
   for (int i = 0; i < children.size(); i++) {
-    pkb.insertRelation(RelationType::PARENT,
+    pkb.InsertRelation(RelationType::PARENT,
                        std::to_string(node->GetStmtIndex()),
                        std::to_string(children[i]->GetStmtIndex()));
   }

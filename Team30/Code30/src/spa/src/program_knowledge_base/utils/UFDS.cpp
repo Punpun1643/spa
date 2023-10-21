@@ -39,7 +39,8 @@ void UFDS::unionSets(int i, int j) {
     } else {
       sizes[findSet(y)] += sizes[findSet(x)];
       parent[x] = y;
-      if (rank[x] == rank[y]) rank[y]++;
+      if (rank[x] == rank[y])
+        rank[y]++;
     }
   }
 }

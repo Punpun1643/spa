@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iterator>
 #include <unordered_set>
+#include <string>
 
 ConstVarExtractor::ConstVarExtractor(PKBSPInterface& pkb)
     : pkb(pkb), DesignExtractor(pkb) {}

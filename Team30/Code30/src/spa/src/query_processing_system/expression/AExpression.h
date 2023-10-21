@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <utility>
 
 #include "../interpreter/QueryInterpreter.h"
 

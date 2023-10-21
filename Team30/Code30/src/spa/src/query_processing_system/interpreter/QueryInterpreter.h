@@ -1,6 +1,9 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
+#include <memory>
+#include <string>
 
 #include "../common/AttrType.h"
 #include "../common/Clause.h"
@@ -14,6 +17,7 @@ typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;
 
 class AExpression;
+class AffectsExpression;
 class CallsExpression;
 class CallsTExpression;
 class FollowsExpression;
@@ -36,6 +40,7 @@ class QueryInterpreter {
   void Interpret();
   void InterpretNext(std::shared_ptr<AExpression> expression);
 
+  void Interpret(std::shared_ptr<AffectsExpression> affects_expression);
   void Interpret(std::shared_ptr<CallsExpression> calls_expression);
   void Interpret(std::shared_ptr<CallsTExpression> calls_t_expression);
   void Interpret(std::shared_ptr<FollowsExpression> follows_expression);

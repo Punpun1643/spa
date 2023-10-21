@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <unordered_set>
+#include <string>
 
 #include "../../node/ProcedureNode.h"
 #include "../../node/ProgramNode.h"
@@ -16,7 +18,7 @@
 class UsesExtractor : public UsesModifiesTypeExtractor {
  public:
   explicit UsesExtractor(PKBSPInterface& pkb,
-                         std::shared_ptr<CallsManager> callsManager);
+                         std::shared_ptr<CallsManager> calls_manager);
 
   void ExtractFromPrint(std::shared_ptr<PrintNode> node) override;
 
@@ -33,10 +35,10 @@ class UsesExtractor : public UsesModifiesTypeExtractor {
  private:
   PKBSPInterface& pkb;
 
-  std::shared_ptr<CallsManager> callsManager;
+  std::shared_ptr<CallsManager> calls_manager;
 
   void InsertMultipleVars(std::unordered_set<std::string> vars,
-                          std::string stmtIndex);
+                          std::string stmt_index);
 
   void InsertVarWithActors(std::string var);
 };

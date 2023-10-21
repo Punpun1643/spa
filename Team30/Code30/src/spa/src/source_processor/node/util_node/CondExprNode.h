@@ -14,6 +14,6 @@ class CondExprNode {
   ~CondExprNode() = default;
 
  private:
-  std::shared_ptr < std::unordered_set<std::string>> variables;
-  std::shared_ptr < std::unordered_set<int>> constants;
+  std::shared_ptr<std::unordered_set<std::string>> variables;
+  std::shared_ptr<std::unordered_set<int>> constants;
 };

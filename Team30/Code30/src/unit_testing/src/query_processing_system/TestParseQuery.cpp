@@ -22,6 +22,21 @@ static void AddDeclaration(std::vector<std::shared_ptr<Token>>& tokens,
   AddSpecialCharVector(tokens, {";"});
 }
 
+static void AddIdentWild(std::vector<std::shared_ptr<Token>>& tokens, std::string arg1) {
+  AddSpecialCharVector(tokens, {"(", "\""});
+  AddWordVector(tokens, {arg1});
+  AddSpecialCharVector(tokens, {"\"", ",", "_", ")"});
+}
+
+static void AddIdentIdent(std::vector<std::shared_ptr<Token>>& tokens, std::string arg1, std::string arg2) {
+  AddSpecialCharVector(tokens, {"(", "\""});
+  AddWordVector(tokens, {arg1});
+  AddSpecialCharVector(tokens, {"\"", ",", "\""});
+  AddWordVector(tokens, {arg2});
+  AddSpecialCharVector(tokens, {"\"", ")"});
+}
+
+
 static void AddIntWord(std::vector<std::shared_ptr<Token>>& tokens, std::string arg1, std::string arg2) {
   AddSpecialCharVector(tokens, {"("});
   AddInteger(tokens, arg1);
@@ -238,7 +253,7 @@ TEST_CASE("Parse Select + Parent query") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("assign a; Select a such that parent (_, a)") {
+  SECTION("assign a; Select a such that Parent (_, a)") {
     AddDeclaration(tokens, "assign", {"a"});
     AddWordVector(tokens, {"Select", "a", "such", "that", "Parent"});
     AddWildWord(tokens, "a");
@@ -700,5 +715,36 @@ TEST_CASE("With queries") {
     AddEOF(tokens);
 
     REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+}
+
+TEST_CASE("pattern and") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1; assign a; Select a pattern a (\"v\", _) and a (\"v\", \"x\")") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select", "a", "pattern", "a"});
+    AddIdentWild(tokens, "v");
+    AddWordVector(tokens, {"and", "a"});
+    AddIdentIdent(tokens, "v", "x");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+}
+
+TEST_CASE("Affects") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1, st; Select s1 such that Affects(s1, s2)") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Affects"});
+    AddWordWord(tokens, "s1", "s2");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
   }
 }

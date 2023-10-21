@@ -1,13 +1,13 @@
 #pragma once
 
 #include <stdio.h>
-
 #include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <utility>
 
 #include "../query_processing_system/common/AttrRef.h"
 #include "../query_processing_system/common/EntityType.h"
@@ -30,7 +30,7 @@ class EntityDatabase {
       PairHash>
       attr_ent_map;
 
-  std::unordered_set<EntityType> statementTypes;
+  std::unordered_set<EntityType> statement_types;
 
   std::unordered_set<std::string> GetUniqueAttributes(EntityType ent_type,
                                                       AttrType attr_type);

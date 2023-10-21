@@ -1,5 +1,6 @@
-#include "AParser.h"
+#include <utility>
 
+#include "AParser.h"
 #include "exceptions/EmptyParenthesesException.h"
 #include "exceptions/EndOfFileException.h"
 #include "exceptions/InvalidExprException.h"
@@ -40,7 +41,9 @@ std::string AParser::GetCurrTokenValue() {
   return GetCurrToken()->getTokenVal();
 }
 
-std::string AParser::GetPeekTokenValue() { return PeekToken()->getTokenVal(); }
+std::string AParser::GetPeekTokenValue() {
+  return PeekToken()->getTokenVal();
+}
 
 std::string AParser::GetPeekBackTokenValue() {
   return PeekBackToken()->getTokenVal();

@@ -39,9 +39,7 @@ std::shared_ptr<Token> Tokenizer::next() {
         word += c;
       }
       return std::make_shared<WordToken>(word);
-    }
-
-    else if (std::isdigit(c)) {
+    } else if (std::isdigit(c)) {
       std::string number;
       number += c;
       while (std::isdigit(input.peek())) {
@@ -54,18 +52,12 @@ std::shared_ptr<Token> Tokenizer::next() {
       }
 
       return std::make_shared<IntegerToken>(number);
-    }
-
-    else if (c == '&' || c == '|' || c == '!' || c == '=' || c == '>' ||
-             c == '<') {
+    } else if (c == '&' || c == '|' || c == '!' || c == '=' || c == '>' ||
+               c == '<') {
       return handleSpecialChar(c);
-    }
-
-    else if (std::isspace(c)) {
+    } else if (std::isspace(c)) {
       continue;
-    }
-
-    else {
+    } else {
       return std::make_shared<SpecialCharToken>(std::string(1, c));
     }
   }
@@ -78,14 +70,10 @@ std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
   if (c == '|' && next_c == '|') {
     input.get(next_c);
     return std::make_shared<SpecialCharToken>("||");
-  }
-
-  else if (c == '&' && next_c == '&') {
+  } else if (c == '&' && next_c == '&') {
     input.get(next_c);
     return std::make_shared<SpecialCharToken>("&&");
-  }
-
-  else if (c == '!' || c == '=' || c == '>' || c == '<') {
+  } else if (c == '!' || c == '=' || c == '>' || c == '<') {
     if (next_c == '=') {
       input.get(next_c);
       return std::make_shared<SpecialCharToken>(std::string(1, c) +

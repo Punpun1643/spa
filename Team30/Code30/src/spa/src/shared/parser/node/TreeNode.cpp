@@ -4,7 +4,9 @@ TreeNode::TreeNode(std::string val, std::shared_ptr<TreeNode> leftSubTree,
                    std::shared_ptr<TreeNode> rightSubTree)
     : val(val), leftSubTree(leftSubTree), rightSubTree(rightSubTree) {}
 
-std::string TreeNode::GetVal() const { return val; }
+std::string TreeNode::GetVal() const {
+  return val;
+}
 
 std::shared_ptr<TreeNode> TreeNode::GetLeftSubTree() const {
   return leftSubTree;

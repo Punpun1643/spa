@@ -1,7 +1,9 @@
+#include <string>
+
 #include "WithExpression.h"
 
 WithExpression::WithExpression(std::string first_ref, std::string second_ref)
-    : ClauseExpression(first_ref, second_ref){};
+    : ClauseExpression(first_ref, second_ref) {}
 
 void WithExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(

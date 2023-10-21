@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iterator>
 #include <stdexcept>
+#include <utility>
 
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
@@ -55,9 +56,13 @@ ClauseResult::ClauseResult(
   }
 }
 
-int ClauseResult::GetNumDeclarations() const { return num_declarations; }
+int ClauseResult::GetNumDeclarations() const {
+  return num_declarations;
+}
 
-bool ClauseResult::IsBooleanResult() const { return num_declarations == 0; }
+bool ClauseResult::IsBooleanResult() const {
+  return num_declarations == 0;
+}
 
 bool ClauseResult::GetBooleanClauseValue() const {
   assert(IsBooleanResult());
@@ -70,7 +75,8 @@ bool ClauseResult::Contains(PqlDeclaration const& d) const {
 
 std::vector<PqlDeclaration> ClauseResult::GetDeclarations() const {
   std::vector<PqlDeclaration> output = {};
-  for (auto const& [key, value] : value_map) output.push_back(key);
+  for (auto const& [key, value] : value_map)
+    output.push_back(key);
   return output;
 }
 

@@ -1,5 +1,7 @@
 #pragma once
+
 #include <stdexcept>
+#include <string>
 
 class InvalidSyntaxException : public std::invalid_argument {
   /**

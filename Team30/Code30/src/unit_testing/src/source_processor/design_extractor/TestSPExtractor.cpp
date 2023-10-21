@@ -57,14 +57,14 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("4", {"5"}));
     REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
-     REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6", "8"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6", "8"}));
     REQUIRE(pkb.checkCFGNodeIncoming("5", {"4", "7"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("6", {"7"}));
     REQUIRE(pkb.checkCFGNodeIncoming("6", {"5"}));
-    REQUIRE(pkb.checkCFGNodeOutgoing("7", {"5", "8"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("7", {"5"}));
     REQUIRE(pkb.checkCFGNodeIncoming("7", {"6"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("8", {"9", "11"}));
-    REQUIRE(pkb.checkCFGNodeIncoming("8", {"5", "7"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("8", {"5"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("9", {"10"}));
     REQUIRE(pkb.checkCFGNodeIncoming("9", {"8"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("10", {}));
@@ -114,14 +114,14 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
   }
   SECTION("CFG node insertion functionality") {
     REQUIRE(pkb.insertCFGCallCount == 4);
-    REQUIRE(pkb.checkCFGNodeIncoming("1", {"2", "4"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("1", {"2"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2"}));
     REQUIRE(pkb.checkCFGNodeIncoming("2", {"1", "4"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3", "1"}));
     REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4"}));
     REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
-    REQUIRE(pkb.checkCFGNodeOutgoing("4", {"2", "1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("4", {"2"}));
   }
 }
 

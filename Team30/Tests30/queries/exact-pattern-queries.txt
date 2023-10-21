@@ -1,22 +1,22 @@
 1 - Exact Match single term
 assign a;
 Select a pattern a (_, "5")
-1
+1, 15
 5000
 2 - Exact Match entire RHS
 assign a;
 Select a pattern a (_, "5 + y + z")
-2
+3
 5000
 3 - Exact Match without brackets 
 assign a;
 Select a pattern a (_, "a + a - a * a / a % a")
-10, 12
+2, 12, 14, 16
 5000
 4 - Exact Match with brackets
 assign a;
 Select a pattern a (_, "(b + c) / (c * a)")
-5
+6
 5000
 5 - Invalid Exact Match RHS
 assign a;
@@ -26,10 +26,65 @@ SyntaxError
 6 - Partial Match substring RHS
 assign a;
 Select a pattern a (_, _"c/c"_)
-7
+9
 5000
 7 - Partial Match substring RHS
 assign a;
 Select a pattern a (_, _"a * a / a"_)
-10, 12
+2, 12, 14, 16
+5000
+8 - Variable synonym LHS, Exact matching RHS
+assign a; variable v;
+Select a pattern a (v, "(a + (a - a) * a / (a % a))")
+13
+5000
+9 - Variable synonym LHS, Exact matching RHS, multiple answers
+assign a; variable v;
+Select a pattern a (v, "(7 - (11 + a - c) * d - (z * y * a))")
+7, 8
+5000
+10 - String LHS, Exact matching RHS
+assign a;
+Select a pattern a ("a", "5")
+15
+5000
+11 - String LHS, Exact matching RHS, multiple answers
+assign a;
+Select a pattern a ("h", "a + a - a * a/ a% a")
+12, 16
+5000
+12 - Invalid - non variable synonym LHS, exact match RHS
+assign a; constant c;
+Select a pattern a (c, "5 + y + z")
+SemanticError
+5000
+13 - Non existent variable RHS exact match
+assign a;
+Select a pattern a (_, "zz")
+none
+5000
+14 - Existent partial match but non existent exact match
+assign a;
+Select a pattern a ("y", "8/6")
+none
+5000
+15 - Invalid - procedure attrRef LHS, exact match RHS
+assign a; procedure p;
+Select a pattern a (p.procName, "x * 5 + 8 / 6")
+SyntaxError
+5000
+16 - Invalid - variable attrRef LHS, exact match RHS
+assign a; variable v;
+Select a pattern a (v.varName, "x * 5 + 8 / 6")
+SyntaxError
+5000
+17 - Invalid - extra inverted commas
+assign a;
+Select a pattern a ("h", "a + a - a * a/ a% a"")
+SyntaxError
+5000
+18 - Invalid - missing inverted commas
+assign a;
+Select a pattern a ("h", a + a - a * a/ a% a)
+SyntaxError
 5000

@@ -18,19 +18,19 @@ class CallsManager {
   // procA: the procedure in which the call stmt is found
   // procB: the procedure that the call stmt calls
   // i.e. A calls B
-  void InsertCallsStmt(std::string procA, std::string procB,
+  void InsertCallsStmt(std::string proc_a, std::string proc_b,
                        std::vector<std::string> actors,
-                       std::shared_ptr<CallNode> callNode);
-  void InsertProcNode(std::string procName);
+                       std::shared_ptr<CallNode> call_node);
+  void InsertProcNode(std::string proc_name);
   void ExecuteCallsExtraction();
   void ConnectProcsAndUpdateRelations();
 
  private:
   // Key: string procedureName, Value: CallsGraphProcNode node
   std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
-      procNodeMap;
+      proc_node_map;
 
   PKBSPInterface& pkb;
-  std::shared_ptr<CallsExtractor> callsExtractor;
-  std::shared_ptr<CallsProcConnector> procConnector;
+  std::shared_ptr<CallsExtractor> calls_extractor;
+  std::shared_ptr<CallsProcConnector> proc_connector;
 };

@@ -1,5 +1,10 @@
 #include "ContextBuilder.h"
 
+#include <utility>
+#include <memory>
+#include <vector>
+#include <string>
+
 #include "../common/EntityType.h"
 #include "../exceptions/InvalidSyntaxException.h"
 

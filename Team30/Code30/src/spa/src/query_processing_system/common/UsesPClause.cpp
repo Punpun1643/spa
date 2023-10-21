@@ -1,6 +1,8 @@
 #include "UsesPClause.h"
 
 #include <string>
+#include <utility>
+#include <vector>
 
 UsesPClause::UsesPClause(std::unique_ptr<EntRef> arg1,
                          std::unique_ptr<EntRef> arg2)

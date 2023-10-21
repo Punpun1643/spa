@@ -1,6 +1,9 @@
 #pragma once
 
 #include <set>
+#include <memory>
+#include <vector>
+#include <string>
 
 #include "../context/Context.h"
 #include "QpParser.h"
@@ -15,7 +18,7 @@
  */
 class ContextBuilder : public QpParser {
  public:
-  ContextBuilder(std::vector<std::shared_ptr<Token>> tokens);
+  explicit ContextBuilder(std::vector<std::shared_ptr<Token>> tokens);
 
   void parse() override;
   std::shared_ptr<Context> GetContext();

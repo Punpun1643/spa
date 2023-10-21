@@ -3,6 +3,9 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
+#include <memory>
+#include <vector>
+#include <string>
 
 #include "../shared/tokenizer/Tokenizer.h"
 #include "common/SuchThatClause.h"
@@ -10,7 +13,7 @@
 #include "exceptions/InvalidSyntaxException.h"
 #include "parser/ContextBuilder.h"
 
-QPSController::QPSController(){};
+QPSController::QPSController() {}
 
 void QPSController::HandleQuery(
     std::string& query, std::list<std::string>& results,

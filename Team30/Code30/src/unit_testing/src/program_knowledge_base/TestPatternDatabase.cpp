@@ -47,23 +47,23 @@ TEST_CASE("Pattern Database insertion and retrieval") {
    Line 4: y = c - a;
    Line 5: x = b * c - a;
   */
-  db.insert(PatternType::ASSIGN, "2", "x", buildTree20());
-  db.insert(PatternType::ASSIGN, "3", "x", buildTree21());
-  db.insert(PatternType::ASSIGN, "4", "y", buildTree22());
-  db.insert(PatternType::ASSIGN, "5", "x", buildTree23());
+  db.Insert(PatternType::ASSIGN, "2", "x", buildTree20());
+  db.Insert(PatternType::ASSIGN, "3", "x", buildTree21());
+  db.Insert(PatternType::ASSIGN, "4", "y", buildTree22());
+  db.Insert(PatternType::ASSIGN, "5", "x", buildTree23());
 
   // x = _
   std::unordered_set<std::string> expected = {"2", "3", "5"};
-  std::unordered_set<std::string> actual = db.getStatementNumbersGivenLHS("x");
+  std::unordered_set<std::string> actual = db.GetStatementNumbersGivenLHS("x");
   REQUIRE(expected == actual);
 
   // y = _
   expected = {"4"};
-  actual = db.getStatementNumbersGivenLHS("y");
+  actual = db.GetStatementNumbersGivenLHS("y");
   REQUIRE(expected == actual);
 
   // z = _
   expected = {};
-  actual = db.getStatementNumbersGivenLHS("z");
+  actual = db.GetStatementNumbersGivenLHS("z");
   REQUIRE(expected == actual);
 }

@@ -1,12 +1,17 @@
 #include "ExpressionTreeBuilder.h"
 
 #include <assert.h>
-
 #include <iostream>
 #include <regex>
+#include <utility>
+#include <vector>
+#include <queue>
+#include <string>
+#include <memory>
 
 #include "../../shared/parser/node/TreeNode.h"
 #include "../common/EntityType.h"
+#include "../expression/AffectsExpression.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
 #include "../expression/ClauseExpression.h"
@@ -187,7 +192,11 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
       NextToken();
     }
 
-    if (clause_name == QpParser::CALLS) {
+    if (clause_name == QpParser::AFFECTS) {
+      current_such_that_expression =
+          std::make_optional<std::shared_ptr<AffectsExpression>>(
+              std::make_shared<AffectsExpression>(arg1, arg2));
+    } else if (clause_name == QpParser::CALLS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<CallsExpression>>(
               std::make_shared<CallsExpression>(arg1, arg2));
@@ -253,10 +262,6 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    if (GetCurrTokenValue() == QpParser::AND) {
-      NextToken();  // pattern
-    }
-
     std::string syn_assign = NextToken()->getTokenVal();
 
     std::string arg1 = "";
