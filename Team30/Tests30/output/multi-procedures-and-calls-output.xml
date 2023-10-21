@@ -1,49 +1,49 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.684000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.812000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows Call synonym/stmt num">1</id><querystr><![CDATA[call c; stmt s; Select s such that Follows (c, s)]]></querystr>
 <stuans>4</stuans>
 <correct>4</correct>
-<time_taken>1.427000</time_taken>
+<time_taken>1.559000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows* Call synonym/stmt num">2</id><querystr><![CDATA[call c; read r; Select r such that Follows* (r, c)]]></querystr>
 <stuans>1,24</stuans>
 <correct>1,24</correct>
-<time_taken>1.248000</time_taken>
+<time_taken>1.270000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent Call synonym/stmt num">3</id><querystr><![CDATA[call c; if i; Select c such that Parent (i, c)]]></querystr>
 <stuans>25,7</stuans>
 <correct>7,25</correct>
-<time_taken>1.144000</time_taken>
+<time_taken>1.269000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent* Call synonym/stmt num">4</id><querystr><![CDATA[call c; if i; Select c such that Parent* (i, c)]]></querystr>
 <stuans>11,25,7</stuans>
 <correct>7,11,25</correct>
-<time_taken>1.177000</time_taken>
+<time_taken>1.272000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses Call synonym/stmt num">5</id><querystr><![CDATA[call c; Select c such that Uses (c, "x")]]></querystr>
 <stuans>11,14,25,3,7</stuans>
 <correct>3,7,11,14,25</correct>
-<time_taken>1.132000</time_taken>
+<time_taken>1.425000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies Call synonym/stmt num">6</id><querystr><![CDATA[call c; Select c such that Modifies (c, "q")]]></querystr>
 <stuans>11,14,25,3,7</stuans>
 <correct>3,7,11,14,25</correct>
-<time_taken>1.153000</time_taken>
+<time_taken>1.362000</time_taken>
 <passed/>
 </query>
 </queries>
