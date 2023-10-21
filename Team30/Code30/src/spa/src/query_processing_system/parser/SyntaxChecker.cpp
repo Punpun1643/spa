@@ -457,17 +457,16 @@ void SyntaxChecker::CheckWith(bool has_and) {
 EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
   std::string token_value = GetCurrTokenValue();
   if (!IsSynonym(token_value)) {
-    throw InvalidSyntaxException(
-        "Invalid synonym used for pattern");
+    throw InvalidSyntaxException("Invalid synonym used for pattern");
   } else {
-    CheckSynonymExists(token_value, "Variable used for pattern has not been declared");
+    CheckSynonymExists(token_value,
+                       "Variable used for pattern has not been declared");
   }
   if (existing_declarations.at(token_value).GetEntityType() !=
-                 EntityType::ASSIGN &&
-             existing_declarations.at(token_value).GetEntityType() !=
-                 EntityType::WHILE &&
-             existing_declarations.at(token_value).GetEntityType() !=
-                 EntityType::IF) {
+          EntityType::ASSIGN &&
+      existing_declarations.at(token_value).GetEntityType() !=
+          EntityType::WHILE &&
+      existing_declarations.at(token_value).GetEntityType() != EntityType::IF) {
     throw InvalidSemanticsException(
         "Variable used for pattern is not an assign, while or if synonym");
   }
@@ -491,7 +490,8 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
     }
     return;
   } else if (QpParser::IsSynonym(ref)) {
-    CheckSynonymExists(ref, "Variable used for 'with' clause has not been declared");
+    CheckSynonymExists(ref,
+                       "Variable used for 'with' clause has not been declared");
 
     NextToken();  // .
     if (GetCurrTokenValue() != ".") {
