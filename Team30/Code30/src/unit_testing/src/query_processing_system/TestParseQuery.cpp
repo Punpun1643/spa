@@ -173,6 +173,18 @@ TEST_CASE("Parse select query") {
 
     REQUIRE_THROWS(controller.TokensToClauses(tokens));
   }
+  SECTION("Negative: Select a") {
+    AddWordVector(tokens, {"Select", "a"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+  SECTION("Select BOOLEAN") {
+    AddWordVector(tokens, {"Select", "BOOLEAN"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
 }
 
 TEST_CASE("Parse Select + Follows query") {

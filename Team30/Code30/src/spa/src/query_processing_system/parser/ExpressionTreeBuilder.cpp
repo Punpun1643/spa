@@ -20,14 +20,18 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
+#include "../../shared/parser/exceptions/StartOfFileException.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens,
     std::shared_ptr<Context> context)
     : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
-  while (GetCurrTokenValue() != QpParser::SELECT ||
-         GetPeekBackTokenValue() != ";") {
+  while (
+      (GetCurrTokenValue() != QpParser::SELECT) ||
+      (GetCurrTokenValue() == QpParser::SELECT &&
+       std::find(tokens.begin(), tokens.end(), GetCurrToken()) != tokens.begin() &&
+       GetPeekBackTokenValue() != ";")) {
     NextToken();
   }
 }
