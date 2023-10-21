@@ -24,7 +24,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::unique_ptr<PatternDatabase> patData;
 
   // Helper functions
-  std::unordered_set<std::string> getIntersection(
+  std::unordered_set<std::string> GetIntersection(
       std::unordered_set<std::string> set1,
       std::unordered_set<std::string> set2);
 
@@ -36,24 +36,24 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void InsertEntity(EntityType type, AttrType attr_type,
                     std::string statement_number,
                     std::string attribute) override;
-  void insertRelation(RelationType rel_type, std::string s1_line_num,
+  void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void insertPattern(PatternType type, std::string statement_number,
+  void InsertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
-  void insertCFGNode(std::string statement_num,
+  void InsertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
-  std::unordered_set<std::string> getProcedureModifies(
-      std::string procName) override;
-  std::unordered_set<std::string> getProcedureUses(
-      std::string procName) override;
-  std::unordered_set<std::string> getStatementModifies(
+  std::unordered_set<std::string> GetProcedureModifies(
+      std::string proc_name) override;
+  std::unordered_set<std::string> GetProcedureUses(
+      std::string proc_name) override;
+  std::unordered_set<std::string> GetStatementModifies(
       std::string stmt) override;
-  std::unordered_set<std::string> getStatementUses(std::string stmt) override;
+  std::unordered_set<std::string> GetStatementUses(std::string stmt) override;
 
   // ********** QPS **********
   // ---------- ENTITIES ----------
-  std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
+  std::unique_ptr<std::vector<std::string>> GetEntitiesWithType(
       EntityType type) override;
 
   std::string ConvertEntityValueToAlias(std::string value, EntityType type,
@@ -70,38 +70,38 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   // ---------- RELATIONS ----------
   // 0 Declarations
-  bool isRelationTrueValueValue(std::string value_1, std::string value_2,
+  bool IsRelationTrueValueValue(std::string value_1, std::string value_2,
                                 RelationType rel_type) override;
-  bool isRelationTrueValueWild(std::string value,
+  bool IsRelationTrueValueWild(std::string value,
                                RelationType rel_type) override;
-  bool isRelationTrueWildValue(std::string value,
+  bool IsRelationTrueWildValue(std::string value,
                                RelationType rel_type) override;
-  bool isRelationTrueWildWild(RelationType relation_type) override;
+  bool IsRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations
-  std::unique_ptr<std::vector<std::string>> getRelationSynonymWild(
+  std::unique_ptr<std::vector<std::string>> GetRelationSynonymWild(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationWildSynonym(
+  std::unique_ptr<std::vector<std::string>> GetRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationSynonymValue(
+  std::unique_ptr<std::vector<std::string>> GetRelationSynonymValue(
       EntityType entity_type, std::string value,
       RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValueSynonym(
+  std::unique_ptr<std::vector<std::string>> GetRelationValueSynonym(
       std::string value, EntityType entity_type,
       RelationType rel_type) override;
 
   // 2 Declarations
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
+  GetRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
                             RelationType rel_type) override;
 
   // ---------- PATTERNS ----------
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+  std::unique_ptr<std::vector<std::string>> GetPatternMatchesWildLhs(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+  std::unique_ptr<std::vector<std::string>> GetPatternMatchesValueLhs(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+  GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
 };

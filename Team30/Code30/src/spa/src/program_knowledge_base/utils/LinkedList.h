@@ -14,7 +14,7 @@ class LinkedList {
   LinkedList();
   ~LinkedList() = default;
 
-  std::shared_ptr<Node> getNode(std::string val);
-  void addEdge(std::string val1, std::string val2);
-  bool isEmpty();
+  std::shared_ptr<Node> GetNode(std::string val);
+  void AddEdge(std::string val1, std::string val2);
+  bool IsEmpty();
 };

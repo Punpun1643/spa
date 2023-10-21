@@ -68,7 +68,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
 
   // Entities
-  std::unique_ptr<std::vector<std::string>> getEntitiesWithType(
+  std::unique_ptr<std::vector<std::string>> GetEntitiesWithType(
       EntityType type) override;
 
   std::string ConvertEntityValueToAlias(
@@ -85,40 +85,40 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
                                                AttrType attr_type_2) override;
 
   // 0 Declarations - SuchThatClauses
-  bool isRelationTrueValueValue(std::string value_1, std::string value_2,
+  bool IsRelationTrueValueValue(std::string value_1, std::string value_2,
                                 RelationType rel_type) override;
-  bool isRelationTrueValueWild(std::string value,
+  bool IsRelationTrueValueWild(std::string value,
                                RelationType rel_type) override;
-  bool isRelationTrueWildValue(std::string value,
+  bool IsRelationTrueWildValue(std::string value,
                                RelationType rel_type) override;
-  bool isRelationTrueWildWild(RelationType relation_type) override;
+  bool IsRelationTrueWildWild(RelationType relation_type) override;
 
   // 1 Declarations - SuchThatClauses
-  std::unique_ptr<std::vector<std::string>> getRelationSynonymWild(
+  std::unique_ptr<std::vector<std::string>> GetRelationSynonymWild(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationWildSynonym(
+  std::unique_ptr<std::vector<std::string>> GetRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationSynonymValue(
+  std::unique_ptr<std::vector<std::string>> GetRelationSynonymValue(
       EntityType entity_type, std::string value,
       RelationType rel_type) override;
-  std::unique_ptr<std::vector<std::string>> getRelationValueSynonym(
+  std::unique_ptr<std::vector<std::string>> GetRelationValueSynonym(
       std::string value, EntityType entity_type,
       RelationType rel_type) override;
 
   // 2 Declarations - SuchThatClauses
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-  getRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
+  GetRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
                             RelationType rel_type) override;
 
   // Pattern clause
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesWildLhs(
+  std::unique_ptr<std::vector<std::string>> GetPatternMatchesWildLhs(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
-  std::unique_ptr<std::vector<std::string>> getPatternMatchesValueLhs(
+  std::unique_ptr<std::vector<std::string>> GetPatternMatchesValueLhs(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
   // 2 paired values - one for the implicit assign declaration, paired with
   // the variable declaration on the LHS of the assign stmt
-  getPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+  GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
 };

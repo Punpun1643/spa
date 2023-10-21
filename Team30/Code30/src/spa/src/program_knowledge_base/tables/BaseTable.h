@@ -10,19 +10,19 @@ class BaseTable {
   BaseTable();
   ~BaseTable() = default;
 
-  virtual void insert(std::string i, std::string j) = 0;
-  virtual bool isEmpty() = 0;
+  virtual void Insert(std::string i, std::string j) = 0;
+  virtual bool IsEmpty() = 0;
 
-  virtual bool isRelated(std::string i, std::string j) = 0;
-  virtual bool hasRelations(std::string val) = 0;
-  virtual bool hasInverseRelations(std::string val) = 0;
+  virtual bool IsRelated(std::string i, std::string j) = 0;
+  virtual bool HasRelations(std::string val) = 0;
+  virtual bool HasInverseRelations(std::string val) = 0;
 
-  virtual std::unordered_set<std::string> getAllWithRelations(
+  virtual std::unordered_set<std::string> GetAllWithRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) = 0;
-  virtual std::unordered_set<std::string> getAllWithInverseRelations(
+  virtual std::unordered_set<std::string> GetAllWithInverseRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) = 0;
-  virtual std::unordered_set<std::string> getAllRelatedToValue(
+  virtual std::unordered_set<std::string> GetAllRelatedToValue(
       std::string val) = 0;
-  virtual std::unordered_set<std::string> getAllInverseRelatedToValue(
+  virtual std::unordered_set<std::string> GetAllInverseRelatedToValue(
       std::string val) = 0;
 };

@@ -10,7 +10,7 @@ SelectAllClause::SelectAllClause(PqlDeclaration declaration)
 std::unique_ptr<ClauseResult> SelectAllClause::Evaluate(PKBQPSInterface& pkb) {
   EntityType entity_type = declaration.GetEntityType();
 
-  auto values = pkb.getEntitiesWithType(entity_type);
+  auto values = pkb.GetEntitiesWithType(entity_type);
 
   return std::make_unique<ClauseResult>(declaration, *values);
 }

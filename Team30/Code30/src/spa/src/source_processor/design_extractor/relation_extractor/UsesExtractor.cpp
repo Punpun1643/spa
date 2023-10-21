@@ -15,7 +15,7 @@ void UsesExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {
 }
 
 void UsesExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.insertRelation(RelationType::USES_S, std::to_string(node->GetStmtIndex()),
+  pkb.InsertRelation(RelationType::USES_S, std::to_string(node->GetStmtIndex()),
                      node->GetVarName());
   InsertVarWithActors(node->GetVarName());
 }
@@ -48,7 +48,7 @@ void UsesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
 void UsesExtractor::InsertMultipleVars(std::unordered_set<std::string> vars,
                                        std::string stmt_index) {
   for (std::string var : vars) {
-    pkb.insertRelation(RelationType::USES_S, stmt_index, var);
+    pkb.InsertRelation(RelationType::USES_S, stmt_index, var);
     InsertVarWithActors(var);
   }
 }
@@ -59,9 +59,9 @@ void UsesExtractor::InsertVarWithActors(std::string var) {
         !uses_actor.empty() &&
         std::all_of(uses_actor.begin(), uses_actor.end(), ::isdigit);
     if (is_stmt_index) {
-      pkb.insertRelation(RelationType::USES_S, uses_actor, var);
+      pkb.InsertRelation(RelationType::USES_S, uses_actor, var);
     } else {
-      pkb.insertRelation(RelationType::USES_P, uses_actor, var);
+      pkb.InsertRelation(RelationType::USES_P, uses_actor, var);
     }
     // std::cout << "(" + usesActor + ", " + var + ")\n";
   }

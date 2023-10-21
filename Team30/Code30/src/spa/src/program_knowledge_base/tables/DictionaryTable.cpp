@@ -5,7 +5,7 @@
 
 DictionaryTable::DictionaryTable() : BaseTable() {}
 
-void DictionaryTable::insert(std::string i, std::string j) {
+void DictionaryTable::Insert(std::string i, std::string j) {
   auto it = relations.find(i);
   if (it != relations.end()) {
     relations[i].insert(j);
@@ -21,11 +21,11 @@ void DictionaryTable::insert(std::string i, std::string j) {
   }
 }
 
-bool DictionaryTable::isEmpty() {
+bool DictionaryTable::IsEmpty() {
   return relations.size() == 0;
 }
 
-bool DictionaryTable::isRelated(std::string i, std::string j) {
+bool DictionaryTable::IsRelated(std::string i, std::string j) {
   auto it = relations.find(i);
   if (it == relations.end()) {
     return false;
@@ -33,43 +33,43 @@ bool DictionaryTable::isRelated(std::string i, std::string j) {
   return relations[i].find(j) != relations[i].end();
 }
 
-bool DictionaryTable::hasRelations(std::string val) {
+bool DictionaryTable::HasRelations(std::string val) {
   return relations.find(val) != relations.end() && relations[val].size() > 0;
 }
 
-bool DictionaryTable::hasInverseRelations(std::string val) {
+bool DictionaryTable::HasInverseRelations(std::string val) {
   return inverse_relations.find(val) != inverse_relations.end() &&
          inverse_relations[val].size() > 0;
 }
 
-std::unordered_set<std::string> DictionaryTable::getAllWithRelations(
+std::unordered_set<std::string> DictionaryTable::GetAllWithRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
-    if (hasRelations(val)) {
+    if (HasRelations(val)) {
       output.insert(val);
     }
   }
   return output;
 }
 
-std::unordered_set<std::string> DictionaryTable::getAllWithInverseRelations(
+std::unordered_set<std::string> DictionaryTable::GetAllWithInverseRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
-    if (hasInverseRelations(val)) {
+    if (HasInverseRelations(val)) {
       output.insert(val);
     }
   }
   return output;
 }
 
-std::unordered_set<std::string> DictionaryTable::getAllRelatedToValue(
+std::unordered_set<std::string> DictionaryTable::GetAllRelatedToValue(
     std::string val) {
   return relations[val];
 }
 
-std::unordered_set<std::string> DictionaryTable::getAllInverseRelatedToValue(
+std::unordered_set<std::string> DictionaryTable::GetAllInverseRelatedToValue(
     std::string val) {
   return inverse_relations[val];
 }

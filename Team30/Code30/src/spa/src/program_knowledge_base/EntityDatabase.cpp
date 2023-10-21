@@ -24,7 +24,7 @@ EntityDatabase::EntityDatabase() {
   entities[EntityType::CONSTANT] =
       std::make_shared<std::unordered_set<std::string>>();
 
-  statementTypes = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
+  statement_types = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
                     EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
                     EntityType::IF};
 }
@@ -45,7 +45,7 @@ std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
 
 void EntityDatabase::InsertEntity(EntityType type, std::string value) {
   (entities[type])->insert(value);
-  if (statementTypes.find(type) != statementTypes.end()) {
+  if (statement_types.find(type) != statement_types.end()) {
     (entities[EntityType::STMT])->insert(value);
   }
 }
