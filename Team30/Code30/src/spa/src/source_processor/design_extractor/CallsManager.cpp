@@ -30,7 +30,8 @@ void CallsManager::InsertCallsStmt(std::string proc_a, std::string proc_b,
   std::shared_ptr<CallsGraphStmtNode> new_stmt_node =
       std::make_shared<CallsGraphStmtNode>(actors, call_node);
   std::shared_ptr<CallsGraphProcNode> proc_calling = proc_node_map[proc_a];
-  std::shared_ptr<CallsGraphProcNode> proc_getting_called = proc_node_map[proc_b];
+  std::shared_ptr<CallsGraphProcNode> proc_getting_called =
+      proc_node_map[proc_b];
 
   if (proc_calling == nullptr) {
     // invalid proc

@@ -1,7 +1,7 @@
 #include "CallsGraphStmtNode.h"
 
-#include <iterator>
 #include <algorithm>
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -12,6 +12,10 @@ CallsGraphStmtNode::CallsGraphStmtNode(std::vector<std::string> actors,
   this->call_node = call_node;
 }
 
-std::vector<std::string> CallsGraphStmtNode::GetActors() { return actors; }
+std::vector<std::string> CallsGraphStmtNode::GetActors() {
+  return actors;
+}
 
-std::shared_ptr<CallNode> CallsGraphStmtNode::GetCallNode() { return call_node; }
+std::shared_ptr<CallNode> CallsGraphStmtNode::GetCallNode() {
+  return call_node;
+}

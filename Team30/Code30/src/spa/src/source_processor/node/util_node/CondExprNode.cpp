@@ -1,6 +1,6 @@
-#include <utility>
-
 #include "CondExprNode.h"
+
+#include <utility>
 
 CondExprNode::CondExprNode(std::unordered_set<std::string> vars,
                            std::unordered_set<int> consts)

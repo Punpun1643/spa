@@ -1,11 +1,11 @@
 #include "ModifiesExtractor.h"
 
 #include <algorithm>
-#include <vector>
 #include <string>
+#include <vector>
 
-ModifiesExtractor::ModifiesExtractor(PKBSPInterface& pkb,
-                                     std::shared_ptr<CallsManager> calls_manager)
+ModifiesExtractor::ModifiesExtractor(
+    PKBSPInterface& pkb, std::shared_ptr<CallsManager> calls_manager)
     : pkb(pkb),
       calls_manager(calls_manager),
       UsesModifiesTypeExtractor(pkb, calls_manager) {}

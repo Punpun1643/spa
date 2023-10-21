@@ -3,10 +3,10 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <memory>
+#include <string>
 #include <unordered_set>
 #include <vector>
-#include <string>
-#include <memory>
 
 #include "../exceptions/InvalidSourceSemanticsException.h"
 
@@ -19,7 +19,6 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
       proc_node_map_copy = proc_node_map;
 
   while (!proc_node_map_copy.empty()) {
-
     // traverse procNodeMap to find the proc with the smallest size of
     // procsCalled (should be 0)
     int min_calls = INT_MAX;
@@ -62,8 +61,9 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
         pkb.insertRelation(RelationType::USES_S,
                            std::to_string(node->GetStmtIndex()), uses_relation);
         for (std::string actor : actors) {
-          bool is_stmt_index = !actor.empty() &&
-                             std::all_of(actor.begin(), actor.end(), ::isdigit);
+          bool is_stmt_index =
+              !actor.empty() &&
+              std::all_of(actor.begin(), actor.end(), ::isdigit);
           if (is_stmt_index) {
             pkb.insertRelation(RelationType::USES_S, actor, uses_relation);
           } else {
@@ -76,8 +76,9 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
                            std::to_string(node->GetStmtIndex()),
                            modifies_relation);
         for (std::string actor : actors) {
-          bool is_stmt_index = !actor.empty() &&
-                             std::all_of(actor.begin(), actor.end(), ::isdigit);
+          bool is_stmt_index =
+              !actor.empty() &&
+              std::all_of(actor.begin(), actor.end(), ::isdigit);
           if (is_stmt_index) {
             pkb.insertRelation(RelationType::MODIFIES_S, actor,
                                modifies_relation);

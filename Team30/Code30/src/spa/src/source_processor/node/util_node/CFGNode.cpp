@@ -20,17 +20,25 @@ std::vector<std::shared_ptr<CFGNode>> CFGNode::GetIncomingNodes() {
   return incoming_nodes;
 }
 
-std::shared_ptr<StmtNode> CFGNode::GetNode() { return node; }
+std::shared_ptr<StmtNode> CFGNode::GetNode() {
+  return node;
+}
 
-StmtType CFGNode::GetNodeType() { return node->GetStmtType(); }
+StmtType CFGNode::GetNodeType() {
+  return node->GetStmtType();
+}
 
-std::unordered_set<std::string> CFGNode::GetUsesVars() { return uses_vars; }
+std::unordered_set<std::string> CFGNode::GetUsesVars() {
+  return uses_vars;
+}
 
 std::unordered_set<std::string> CFGNode::GetModifiesVars() {
   return modifies_vars;
 }
 
-StmtType CFGNode::GetStmtType() { return stmt_type; }
+StmtType CFGNode::GetStmtType() {
+  return stmt_type;
+}
 
 bool CFGNode::UsesVar(std::string var) {
   return uses_vars.find(var) != uses_vars.end();
@@ -150,7 +158,8 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> start_node,
   if (!ValidateStartAndEndNodes(start_node, end_node)) {
     return false;
   }
-  std::string var_modified_in_start_node = GetVarModifiedInStartNode(start_node);
+  std::string var_modified_in_start_node =
+      GetVarModifiedInStartNode(start_node);
   std::unordered_set<std::string> var_used_in_end_node =
       GetVarUsedInEndNode(end_node);
 
@@ -184,8 +193,8 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> start_node,
         bool should_visit = false;
 
         if (IsAssignOrReadOutgoingNode(outgoing_node)) {
-          should_visit = HandleAssignOrReadOutgoingNode(outgoing_node,
-                                                       var_modified_in_start_node);
+          should_visit = HandleAssignOrReadOutgoingNode(
+              outgoing_node, var_modified_in_start_node);
         } else if (IsCallOutgoingNode(outgoing_node)) {
           should_visit =
               HandleCallOutgoingNode(outgoing_node, var_modified_in_start_node);
