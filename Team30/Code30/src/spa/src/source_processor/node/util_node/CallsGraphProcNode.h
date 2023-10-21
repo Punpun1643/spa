@@ -11,37 +11,37 @@ class CallsGraphProcNode {
  public:
   explicit CallsGraphProcNode(std::string proc);
 
-  void addStmtCalledBy(std::shared_ptr<CallsGraphStmtNode> stmtCalledBy);
+  void AddStmtCalledBy(std::shared_ptr<CallsGraphStmtNode> stmt_called_by);
 
-  void addProcCalled(std::shared_ptr<CallsGraphProcNode> procCalled);
+  void AddProcCalled(std::shared_ptr<CallsGraphProcNode> proc_called);
 
-  void addProcCalledBy(std::shared_ptr<CallsGraphProcNode> procCalledBy);
+  void AddProcCalledBy(std::shared_ptr<CallsGraphProcNode> proc_called_by);
 
-  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> getProcsCalled();
+  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> GetProcsCalled();
 
-  std::unordered_set<std::shared_ptr<CallsGraphStmtNode>> getStmtsCalledBy();
+  std::unordered_set<std::shared_ptr<CallsGraphStmtNode>> GetStmtsCalledBy();
 
-  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> getProcsCalledBy();
+  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> GetProcsCalledBy();
 
-  std::string getProcName();
+  std::string GetProcName();
 
-  int getNumProcsCalled();
+  int GetNumProcsCalled();
 
-  void removeProcCalled(std::shared_ptr<CallsGraphProcNode> proc);
+  void RemoveProcCalled(std::shared_ptr<CallsGraphProcNode> proc); 
 
   ~CallsGraphProcNode() = default;
 
  private:
   std::string proc;
 
-  int numProcsCalled;
+  int num_procs_called;
 
   // Call stmts that call this procedure
-  std::unordered_set<std::shared_ptr<CallsGraphStmtNode>> stmtsCalledBy;
+  std::unordered_set<std::shared_ptr<CallsGraphStmtNode>> stmts_called_by;
 
   // Procedures that this procedure calls
-  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procsCalled;
+  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procs_called;
 
-  // Procedures that call this procedure
-  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procsCalledBy;
+  // Procedures that call this procedure 
+  std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procs_called_by;
 };

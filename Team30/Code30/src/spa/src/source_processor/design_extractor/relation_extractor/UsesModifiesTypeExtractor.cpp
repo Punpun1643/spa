@@ -4,8 +4,8 @@
 #include <iostream>
 
 UsesModifiesTypeExtractor::UsesModifiesTypeExtractor(
-    PKBSPInterface& pkb, std::shared_ptr<CallsManager> callsManager)
-    : pkb(pkb), callsManager(callsManager), DesignExtractor(pkb) {}
+    PKBSPInterface& pkb, std::shared_ptr<CallsManager> calls_manager)
+    : pkb(pkb), calls_manager(calls_manager), DesignExtractor(pkb) {}
 
 void UsesModifiesTypeExtractor::ExtractFromProcedure(
     std::shared_ptr<ProcedureNode> node) {

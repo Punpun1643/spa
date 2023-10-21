@@ -18,9 +18,7 @@
 class ModifiesExtractor : public UsesModifiesTypeExtractor {
  public:
   explicit ModifiesExtractor(PKBSPInterface& pkb,
-                             std::shared_ptr<CallsManager> callsManager);
-
-  void ExtractFromProgram(std::shared_ptr<ProgramNode> node) override;
+                             std::shared_ptr<CallsManager> calls_manager);
 
   void ExtractFromRead(std::shared_ptr<ReadNode> node) override;
 
@@ -31,10 +29,10 @@ class ModifiesExtractor : public UsesModifiesTypeExtractor {
  private:
   PKBSPInterface& pkb;
 
-  std::shared_ptr<CallsManager> callsManager;
+  std::shared_ptr<CallsManager> calls_manager;
 
-  void InsertCondVars(std::unordered_set<std::string> condVars,
-                      std::string stmtIndex);
+  void InsertCondVars(std::unordered_set<std::string> cond_vars,
+                      std::string stmt_index);
 
   void InsertVarWithActors(std::string var);
 };

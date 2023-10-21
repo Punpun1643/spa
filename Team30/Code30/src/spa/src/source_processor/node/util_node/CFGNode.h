@@ -12,70 +12,70 @@
 
 class CFGNode {
  public:
-  CFGNode(std::shared_ptr<StmtNode> node, StmtType stmtType,
+  CFGNode(std::shared_ptr<StmtNode> node, StmtType stmt_type,
           std::unordered_set<std::string> uses_vars,
           std::unordered_set<std::string> modifies_vars);
 
-  std::vector<std::shared_ptr<CFGNode>> getOutgoingNodes();
+  std::vector<std::shared_ptr<CFGNode>> GetOutgoingNodes();
 
-  std::vector<std::shared_ptr<CFGNode>> getIncomingNodes();
+  std::vector<std::shared_ptr<CFGNode>> GetIncomingNodes();
 
-  std::shared_ptr<StmtNode> getNode();
+  std::shared_ptr<StmtNode> GetNode();
 
-  StmtType getNodeType();
+  StmtType GetNodeType();
 
-  std::unordered_set<std::string> getUsesVars();
+  std::unordered_set<std::string> GetUsesVars();
 
-  std::unordered_set<std::string> getModifiesVars();
+  std::unordered_set<std::string> GetModifiesVars();
 
-  StmtType getStmtType();
+  StmtType GetStmtType();
 
   bool UsesVar(std::string var);
   bool ModifiesVar(std::string var);
 
-  void addOutgoingNode(std::shared_ptr<CFGNode>);
+  void AddOutgoingNode(std::shared_ptr<CFGNode>);
 
-  void addIncomingNode(std::shared_ptr<CFGNode>);
+  void AddIncomingNode(std::shared_ptr<CFGNode>);
 
-  static bool HasImmediatePath(std::shared_ptr<CFGNode> startNode,
-                               std::shared_ptr<CFGNode> endNode);
+  static bool HasImmediatePath(std::shared_ptr<CFGNode> start_node,
+                               std::shared_ptr<CFGNode> end_node);
 
-  static bool HasPath(std::shared_ptr<CFGNode> startNode,
-                      std::shared_ptr<CFGNode> endNode);
+  static bool HasPath(std::shared_ptr<CFGNode> start_node,
+                      std::shared_ptr<CFGNode> end_node);
 
-  static bool HasAffectsPath(std::shared_ptr<CFGNode> startNode,
-                             std::shared_ptr<CFGNode> endNode);
+  static bool HasAffectsPath(std::shared_ptr<CFGNode> start_node,
+                             std::shared_ptr<CFGNode> end_node);
 
   static bool IsAssignOrReadOutgoingNode(std::shared_ptr<CFGNode> node);
 
   static bool IsCallOutgoingNode(std::shared_ptr<CFGNode> node);
 
   static bool HandleAssignOrReadOutgoingNode(
-      std::shared_ptr<CFGNode> outgoingNode,
-      std::string const& varModifiedInStartNode);
+      std::shared_ptr<CFGNode> outgoing_node,
+      std::string const& var_modified_in_start_node);
 
-  static bool HandleCallOutgoingNode(std::shared_ptr<CFGNode> outgoingNode,
-                                     std::string const& varModifiedInStartNode);
+  static bool HandleCallOutgoingNode(std::shared_ptr<CFGNode> outgoing_node,
+                                     std::string const& var_modified_in_start_node);
 
-  static bool ValidateStartAndEndNodes(std::shared_ptr<CFGNode> startNode,
-                                       std::shared_ptr<CFGNode> endNode);
+  static bool ValidateStartAndEndNodes(std::shared_ptr<CFGNode> start_node,
+                                       std::shared_ptr<CFGNode> end_node);
 
   static std::string GetVarModifiedInStartNode(
-      std::shared_ptr<CFGNode> startNode);
+      std::shared_ptr<CFGNode> start_node);
 
   static std::unordered_set<std::string> GetVarUsedInEndNode(
-      std::shared_ptr<CFGNode> endNode);
+      std::shared_ptr<CFGNode> end_node);
 
   static bool ValidatePossibleAffectsRelationship(
-      std::string varModifiedInStartNode,
-      std::unordered_set<std::string> varsUsedInEndNode);
+      std::string var_modified_in_start_node,
+      std::unordered_set<std::string> var_used_in_end_node);
 
  private:
-  std::vector<std::shared_ptr<CFGNode>> outgoingNodes;
-  std::vector<std::shared_ptr<CFGNode>> incomingNodes;
+  std::vector<std::shared_ptr<CFGNode>> outgoing_nodes;
+  std::vector<std::shared_ptr<CFGNode>> incoming_nodes;
   std::shared_ptr<StmtNode> node;
 
   std::unordered_set<std::string> uses_vars;
   std::unordered_set<std::string> modifies_vars;
-  StmtType stmtType;
+  StmtType stmt_type;
 };

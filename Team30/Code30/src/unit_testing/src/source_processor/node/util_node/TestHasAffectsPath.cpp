@@ -131,33 +131,33 @@ TEST_CASE("Test HasAffectPath for Affect") {
         std::unordered_set<std::string>{"x", "y", "z"},
         std::unordered_set<std::string>{"x"});
 
-    cfg1->addOutgoingNode(cfg2);
-    cfg2->addOutgoingNode(cfg3);
-    cfg3->addOutgoingNode(cfg4);
-    cfg4->addOutgoingNode(cfg5);
-    cfg5->addOutgoingNode(cfg6);
-    cfg6->addOutgoingNode(cfg3);
-    cfg3->addOutgoingNode(cfg7);
-    cfg7->addOutgoingNode(cfg8);
-    cfg7->addOutgoingNode(cfg9);
-    cfg8->addOutgoingNode(cfg10);
-    cfg9->addOutgoingNode(cfg10);
-    cfg10->addOutgoingNode(cfg11);
-    cfg11->addOutgoingNode(cfg12);
+    cfg1->AddOutgoingNode(cfg2);
+    cfg2->AddOutgoingNode(cfg3);
+    cfg3->AddOutgoingNode(cfg4);
+    cfg4->AddOutgoingNode(cfg5);
+    cfg5->AddOutgoingNode(cfg6);
+    cfg6->AddOutgoingNode(cfg3);
+    cfg3->AddOutgoingNode(cfg7);
+    cfg7->AddOutgoingNode(cfg8);
+    cfg7->AddOutgoingNode(cfg9);
+    cfg8->AddOutgoingNode(cfg10);
+    cfg9->AddOutgoingNode(cfg10);
+    cfg10->AddOutgoingNode(cfg11);
+    cfg11->AddOutgoingNode(cfg12);
 
-    cfg2->addIncomingNode(cfg1);
-    cfg3->addIncomingNode(cfg2);
-    cfg4->addIncomingNode(cfg3);
-    cfg5->addIncomingNode(cfg4);
-    cfg6->addIncomingNode(cfg5);
-    cfg3->addIncomingNode(cfg6);
-    cfg7->addIncomingNode(cfg3);
-    cfg8->addIncomingNode(cfg7);
-    cfg9->addIncomingNode(cfg7);
-    cfg10->addIncomingNode(cfg8);
-    cfg10->addIncomingNode(cfg9);
-    cfg11->addIncomingNode(cfg10);
-    cfg12->addIncomingNode(cfg11);
+    cfg2->AddIncomingNode(cfg1);
+    cfg3->AddIncomingNode(cfg2);
+    cfg4->AddIncomingNode(cfg3);
+    cfg5->AddIncomingNode(cfg4);
+    cfg6->AddIncomingNode(cfg5);
+    cfg3->AddIncomingNode(cfg6);
+    cfg7->AddIncomingNode(cfg3);
+    cfg8->AddIncomingNode(cfg7);
+    cfg9->AddIncomingNode(cfg7);
+    cfg10->AddIncomingNode(cfg8);
+    cfg10->AddIncomingNode(cfg9);
+    cfg11->AddIncomingNode(cfg10);
+    cfg12->AddIncomingNode(cfg11);
 
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg1));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg2));
@@ -385,15 +385,15 @@ TEST_CASE("Test HasAffectPath for Affect") {
         stmt5, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{"x", "z"},
         std::unordered_set<std::string>{"y"});
 
-    cfg1->addOutgoingNode(cfg2);
-    cfg2->addOutgoingNode(cfg3);
-    cfg3->addOutgoingNode(cfg4);
-    cfg4->addOutgoingNode(cfg5);
+    cfg1->AddOutgoingNode(cfg2);
+    cfg2->AddOutgoingNode(cfg3);
+    cfg3->AddOutgoingNode(cfg4);
+    cfg4->AddOutgoingNode(cfg5);
 
-    cfg2->addIncomingNode(cfg1);
-    cfg3->addIncomingNode(cfg2);
-    cfg4->addIncomingNode(cfg3);
-    cfg5->addIncomingNode(cfg4);
+    cfg2->AddIncomingNode(cfg1);
+    cfg3->AddIncomingNode(cfg2);
+    cfg4->AddIncomingNode(cfg3);
+    cfg5->AddIncomingNode(cfg4);
 
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg1));
     REQUIRE_FALSE(CFGNode::HasAffectsPath(cfg1, cfg2));

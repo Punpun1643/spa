@@ -34,13 +34,13 @@ TEST_CASE("Test CFGNode has immediate path (i.e. Next)", "[hasImmediatePath]") {
         stmt4, StmtType::CALL_STMT, std::unordered_set<std::string>{},
         std::unordered_set<std::string>{});
 
-    cfg1->addOutgoingNode(cfg2);
-    cfg2->addOutgoingNode(cfg3);
-    cfg3->addOutgoingNode(cfg4);
+    cfg1->AddOutgoingNode(cfg2);
+    cfg2->AddOutgoingNode(cfg3);
+    cfg3->AddOutgoingNode(cfg4);
 
-    cfg2->addIncomingNode(cfg1);
-    cfg3->addIncomingNode(cfg2);
-    cfg4->addIncomingNode(cfg3);
+    cfg2->AddIncomingNode(cfg1);
+    cfg3->AddIncomingNode(cfg2);
+    cfg4->AddIncomingNode(cfg3);
 
     REQUIRE(CFGNode::HasImmediatePath(cfg1, cfg2));
     REQUIRE(CFGNode::HasImmediatePath(cfg2, cfg3));

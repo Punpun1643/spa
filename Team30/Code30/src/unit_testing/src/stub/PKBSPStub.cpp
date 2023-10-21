@@ -165,17 +165,17 @@ void PKBSPStub::insertCFGNode(std::string statement_num,
 bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
                                      std::vector<std::string> outgoingStmtNos) {
   std::shared_ptr<CFGNode> node = CFGNodeMap.find(statement_num)->second;
-  int length = node->getOutgoingNodes().size();
+  int length = node->GetOutgoingNodes().size();
   int expLength = outgoingStmtNos.size();
   if (length == 0 && expLength != 0) {
     std::cout << "OUTGOING EMPTY\n";
     return false;
   }
 
-  for (std::shared_ptr<CFGNode> currNode : node->getOutgoingNodes()) {
+  for (std::shared_ptr<CFGNode> currNode : node->GetOutgoingNodes()) {
     length--;
     std::string nodeStmtNo =
-        std::to_string(currNode->getNode()->GetStmtIndex());
+        std::to_string(currNode->GetNode()->GetStmtIndex());
 
     // std::cout << nodeStmtNo + "\n";
 
@@ -196,7 +196,7 @@ bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
                                      std::vector<std::string> incomingStmtNos) {
   bool result = true;
   std::shared_ptr<CFGNode> node = CFGNodeMap.find(statement_num)->second;
-  int length = node->getIncomingNodes().size();
+  int length = node->GetIncomingNodes().size();
   int expLength = incomingStmtNos.size();
 
   if (length == 0 && expLength != 0) {
@@ -204,10 +204,10 @@ bool PKBSPStub::checkCFGNodeIncoming(std::string statement_num,
     return false;
   }
 
-  for (std::shared_ptr<CFGNode> currNode : node->getIncomingNodes()) {
+  for (std::shared_ptr<CFGNode> currNode : node->GetIncomingNodes()) {
     length--;
     std::string nodeStmtNo =
-        std::to_string(currNode->getNode()->GetStmtIndex());
+        std::to_string(currNode->GetNode()->GetStmtIndex());
 
     // std::cout << nodeStmtNo + "\n";
 

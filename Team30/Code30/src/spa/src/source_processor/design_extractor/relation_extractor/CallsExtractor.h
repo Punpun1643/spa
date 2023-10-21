@@ -12,7 +12,7 @@ class CallsExtractor {
 
   void ExtractCallAbstractions(
       std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
-          procNodeMap);
+          proc_node_map);
 
  private:
   PKBSPInterface& pkb;

@@ -6,16 +6,12 @@
 #include <vector>
 
 CallsGraphStmtNode::CallsGraphStmtNode(std::vector<std::string> actors,
-                                       std::shared_ptr<CallNode> callNode)
-    : callNode(callNode) {
+                                       std::shared_ptr<CallNode> call_node)
+    : call_node(call_node) {
   copy(actors.begin(), actors.end(), back_inserter(this->actors));
-  this->callNode = callNode;
+  this->call_node = call_node;
 }
 
-std::vector<std::string> CallsGraphStmtNode::getActors() {
-  return actors;
-}
+std::vector<std::string> CallsGraphStmtNode::GetActors() { return actors; }
 
-std::shared_ptr<CallNode> CallsGraphStmtNode::getCallNode() {
-  return callNode;
-}
+std::shared_ptr<CallNode> CallsGraphStmtNode::GetCallNode() { return call_node; }

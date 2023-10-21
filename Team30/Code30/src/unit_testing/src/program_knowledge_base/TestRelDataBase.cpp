@@ -69,8 +69,8 @@ std::shared_ptr<CFGNode> node8 = std::make_shared<CFGNode>(
             std::unordered_set<std::string>({"b"})));
 
 void addEdge(std::shared_ptr<CFGNode> n1, std::shared_ptr<CFGNode> n2) {
-  n1->addOutgoingNode(n2);
-  n2->addIncomingNode(n1);
+  n1->AddOutgoingNode(n2);
+  n2->AddIncomingNode(n1);
 }
 
 TEST_CASE("Next/Next* and Affects") {
