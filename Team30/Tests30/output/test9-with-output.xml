@@ -1,119 +1,119 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.474000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.607000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment=".Stmt# to .Stmt#">1</id><querystr><![CDATA[stmt s; read r; Select r with r.stmt# = s.stmt#]]></querystr>
 <stuans>18,19,20,24,4,5</stuans>
 <correct>4,5,18,19,20,24</correct>
-<time_taken>1.538000</time_taken>
+<time_taken>1.464000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With .Stmt# = .value">2</id><querystr><![CDATA[assign a; constant c; Select a with a.stmt# = c.value]]></querystr>
 <stuans>1,2,3,7</stuans>
 <correct>2,7,1,3</correct>
-<time_taken>1.203000</time_taken>
+<time_taken>1.227000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" With="1" CondNum="4" RelNum="1" comment="With .Stmt# = (raw value)">3</id><querystr><![CDATA[while w; variable v;  Select v such that Modifies (w, v) with w.stmt# = 22]]></querystr>
 <stuans>v3</stuans>
 <correct>v3</correct>
-<time_taken>1.314000</time_taken>
+<time_taken>1.317000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With .value = .value">4</id><querystr><![CDATA[constant c, c1; Select c with c.value = c1.value]]></querystr>
 <stuans>0,1,2,3,4,7,99</stuans>
 <correct>0,1,2,3,4,7,99</correct>
-<time_taken>1.204000</time_taken>
+<time_taken>1.254000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With .value = (raw value)">5</id><querystr><![CDATA[constant c; Select c with c.value = 7]]></querystr>
 <stuans>7</stuans>
 <correct>7</correct>
-<time_taken>1.263000</time_taken>
+<time_taken>1.199000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With .procName = .procName">6</id><querystr><![CDATA[procedure p; call c; Select p with p.procName = c.procName]]></querystr>
 <stuans>p2,v3</stuans>
 <correct>p2,v3</correct>
-<time_taken>1.215000</time_taken>
+<time_taken>1.230000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With .procName = .varName">7</id><querystr><![CDATA[procedure p; variable v; Select p with p.procName = v.varName]]></querystr>
 <stuans>p1,v3</stuans>
 <correct>p1,v3</correct>
-<time_taken>1.122000</time_taken>
+<time_taken>1.213000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" With="1" CondNum="4" RelNum="1" comment="With .procName = (raw value)">8</id><querystr><![CDATA[procedure p; variable v; Select v such that Uses (p, v) with p.procName = "p2"]]></querystr>
 <stuans>v2,v4,v5,v6</stuans>
 <correct>v5,v6,v4,v2</correct>
-<time_taken>1.121000</time_taken>
+<time_taken>1.268000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With .varName = .varName">9</id><querystr><![CDATA[read r; print pn; Select r with r.varName = pn.varName]]></querystr>
 <stuans>18,20,5</stuans>
 <correct>5,18,20</correct>
-<time_taken>1.030000</time_taken>
+<time_taken>1.298000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" With="1" CondNum="4" RelNum="0" comment="With .varName = (raw value)">10</id><querystr><![CDATA[assign a; variable v; Select a pattern a (v, _) with v.varName = "v3"]]></querystr>
 <stuans>23,3</stuans>
 <correct>3,23</correct>
-<time_taken>1.169000</time_taken>
+<time_taken>1.254000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnBoolean="1" Uses="1" SuchThat="1" With="1" CondNum="4" RelNum="1" comment="Multi With Clause + Such That">11</id><querystr><![CDATA[stmt s; variable v; Select BOOLEAN such that Uses(s, v) with v.varName = "v3" and s.stmt# = 3]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.228000</time_taken>
+<time_taken>1.269000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnBoolean="1" Parent="1" UnnamedVar="1" Pattern="1" SuchThat="1" With="1" CondNum="6" RelNum="1" comment="With Clause, Such That and Pattern">12</id><querystr><![CDATA[assign a; variable v; if i; Select BOOLEAN such that Parent(i, a) pattern a (v, _) with v.varName = "v1"  ]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.189000</time_taken>
+<time_taken>1.263000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="3+ With Clauses">13</id><querystr><![CDATA[read r; variable v; constant c; procedure p; Select r.varName with r.stmt# = c.value and c.value = 4 and p.procName = v.varName]]></querystr>
 <stuans>v1</stuans>
 <correct>v1</correct>
-<time_taken>1.191000</time_taken>
+<time_taken>1.413000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With Invalid: Incorrect Value comparison with attrRef">14</id><querystr><![CDATA[read r; Select r with r.varName = 10]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.344000</time_taken>
+<time_taken>1.337000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="With Invalid: Invalid Comparator Symbol">15</id><querystr><![CDATA[stmt s;  Select s with s.stmt# < 8]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.317000</time_taken>
+<time_taken>1.208000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="2" CondNum="3" RelNum="0" comment="With Invalid: and keyword next to with keyword">16</id><querystr><![CDATA[if i; call c; Select <i, c> with i.stmt# = 8 and with c.stmt# = 11]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.173000</time_taken>
+<time_taken>1.285000</time_taken>
 <passed/>
 </query>
 </queries>
