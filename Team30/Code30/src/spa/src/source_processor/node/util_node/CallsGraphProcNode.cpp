@@ -4,49 +4,49 @@
 #include <iterator>
 
 CallsGraphProcNode::CallsGraphProcNode(std::string proc)
-    : proc(proc), numProcsCalled(0) {}
+    : proc(proc), num_procs_called(0) {}
 
-void CallsGraphProcNode::addStmtCalledBy(
-    std::shared_ptr<CallsGraphStmtNode> stmtCalledBy) {
-  if (stmtsCalledBy.find(stmtCalledBy) == stmtsCalledBy.end()) {
-    stmtsCalledBy.insert(stmtCalledBy);
+void CallsGraphProcNode::AddStmtCalledBy(
+    std::shared_ptr<CallsGraphStmtNode> stmt_called_by) {
+  if (stmts_called_by.find(stmt_called_by) == stmts_called_by.end()) {
+    stmts_called_by.insert(stmt_called_by);
   }
 }
 
-void CallsGraphProcNode::addProcCalled(
-    std::shared_ptr<CallsGraphProcNode> procCalled) {
-  if (procsCalled.find(procCalled) == procsCalled.end()) {
-    procsCalled.insert(procCalled);
-    numProcsCalled++;
+void CallsGraphProcNode::AddProcCalled(
+    std::shared_ptr<CallsGraphProcNode> proc_called) {
+  if (procs_called.find(proc_called) == procs_called.end()) {
+    procs_called.insert(proc_called);
+    num_procs_called++;
   }
 }
 
-void CallsGraphProcNode::addProcCalledBy(
-    std::shared_ptr<CallsGraphProcNode> procCalledBy) {
-  procsCalledBy.insert(procCalledBy);
+void CallsGraphProcNode::AddProcCalledBy(
+    std::shared_ptr<CallsGraphProcNode> proc_called_by) {
+  procs_called_by.insert(proc_called_by);
 }
 
 std::unordered_set<std::shared_ptr<CallsGraphProcNode>>
-CallsGraphProcNode::getProcsCalled() {
-  return procsCalled;
+CallsGraphProcNode::GetProcsCalled() {
+  return procs_called;
 }
 
 std::unordered_set<std::shared_ptr<CallsGraphStmtNode>>
-CallsGraphProcNode::getStmtsCalledBy() {
-  return stmtsCalledBy;
+CallsGraphProcNode::GetStmtsCalledBy() {
+  return stmts_called_by;
 }
 
 std::unordered_set<std::shared_ptr<CallsGraphProcNode>>
-CallsGraphProcNode::getProcsCalledBy() {
-  return procsCalledBy;
+CallsGraphProcNode::GetProcsCalledBy() {
+  return procs_called_by;
 }
 
-int CallsGraphProcNode::getNumProcsCalled() { return numProcsCalled; }
+int CallsGraphProcNode::GetNumProcsCalled() { return num_procs_called; }
 
-void CallsGraphProcNode::removeProcCalled(
+void CallsGraphProcNode::RemoveProcCalled(
     std::shared_ptr<CallsGraphProcNode> proc) {
-  procsCalled.erase(proc);
-  numProcsCalled--;
+  procs_called.erase(proc);
+  num_procs_called--;
 }
 
-std::string CallsGraphProcNode::getProcName() { return proc; }
+std::string CallsGraphProcNode::GetProcName() { return proc; }

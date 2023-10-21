@@ -85,7 +85,7 @@ bool RelDatabase::hasRelations(RelationType type, std::string val) {
   if (cfgRelations.find(type) != cfgRelations.end()) {
     std::shared_ptr<CFGNode> node = cfgNodes[val];
     if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
-      return !node->getOutgoingNodes().empty();
+      return !node->GetOutgoingNodes().empty();
     }
 
     // TODO: Optimise for AFFECTS
@@ -105,7 +105,7 @@ bool RelDatabase::hasInverseRelations(RelationType type, std::string val) {
   if (cfgRelations.find(type) != cfgRelations.end()) {
     std::shared_ptr<CFGNode> node = cfgNodes[val];
     if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
-      return !node->getIncomingNodes().empty();
+      return !node->GetIncomingNodes().empty();
     }
 
     // TODO: Optimise for AFFECTS
@@ -157,8 +157,8 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
     std::unordered_set<std::string> output;
 
     if (type == RelationType::NEXT) {
-      for (auto n : node->getOutgoingNodes()) {
-        output.insert(std::to_string(n->getNode()->GetStmtIndex()));
+      for (auto n : node->GetOutgoingNodes()) {
+        output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
       };
     }
 
@@ -167,7 +167,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasPath(node, n)) {
-          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
+          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
         }
       }
     }
@@ -176,7 +176,7 @@ std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasAffectsPath(node, n)) {
-          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
+          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
         }
       }
     }
@@ -194,8 +194,8 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
     std::unordered_set<std::string> output;
 
     if (type == RelationType::NEXT) {
-      for (auto n : node->getIncomingNodes()) {
-        output.insert(std::to_string(n->getNode()->GetStmtIndex()));
+      for (auto n : node->GetIncomingNodes()) {
+        output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
       };
     }
 
@@ -204,7 +204,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasPath(n, node)) {
-          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
+          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
         }
       }
     }
@@ -213,7 +213,7 @@ std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
       for (auto pair : cfgNodes) {
         std::shared_ptr<CFGNode> n = pair.second;
         if (CFGNode::HasAffectsPath(n, node)) {
-          output.insert(std::to_string(n->getNode()->GetStmtIndex()));
+          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
         }
       }
     }
