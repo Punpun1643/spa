@@ -1,9 +1,9 @@
 #include "RelDatabase.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <unordered_set>
-#include <algorithm>
 
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
@@ -30,12 +30,12 @@ RelDatabase::RelDatabase() {
       std::make_shared<LinkedListTable>(LinkedListTable());
 
   related_tables = {{RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
-                   {RelationType::PARENT, {RelationType::PARENT_STAR}},
-                   {RelationType::CALLS, {RelationType::CALLS_STAR}},
-                   {RelationType::NEXT, {RelationType::NEXT_STAR}}};
+                    {RelationType::PARENT, {RelationType::PARENT_STAR}},
+                    {RelationType::CALLS, {RelationType::CALLS_STAR}},
+                    {RelationType::NEXT, {RelationType::NEXT_STAR}}};
 
   cfg_relations = {RelationType::NEXT, RelationType::NEXT_STAR,
-                  RelationType::AFFECTS};
+                   RelationType::AFFECTS};
 
   size = 0;
 }
