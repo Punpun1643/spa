@@ -1,7 +1,7 @@
-#include <unordered_set>
-#include <string>
-
 #include "CallsExtractor.h"
+
+#include <string>
+#include <unordered_set>
 
 CallsExtractor::CallsExtractor(PKBSPInterface& pkb) : pkb(pkb) {}
 
@@ -13,7 +13,8 @@ void CallsExtractor::ExtractCallAbstractions(
         map_name_node.second->GetProcsCalled();
     std::string proc_calling = map_name_node.first;
     for (std::shared_ptr<CallsGraphProcNode> proc_called : procs_called) {
-       pkb.insertRelation(RelationType::CALLS, proc_calling, proc_called->GetProcName());
+      pkb.insertRelation(RelationType::CALLS, proc_calling,
+                         proc_called->GetProcName());
     }
   }
 }
