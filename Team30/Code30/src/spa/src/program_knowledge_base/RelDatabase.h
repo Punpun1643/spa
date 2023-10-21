@@ -51,6 +51,20 @@ class RelDatabase {
   std::unordered_set<std::string> GetAllInverseRelatedToValueCFG(
       RelationType type, std::string val);
 
+  bool isRelatedCFG(RelationType type, std::string val1, std::string val2);
+  bool hasRelationsCFG(RelationType type, std::string val);
+  bool hasInverseRelationsCFG(RelationType type, std::string val);
+
+  std::unordered_set<std::string> getAllWithRelationsCFG(
+      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+  std::unordered_set<std::string> getAllWithInverseRelationsCFG(
+      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+
+  std::unordered_set<std::string> getAllRelatedToValueCFG(RelationType type,
+                                                       std::string val);
+  std::unordered_set<std::string> getAllInverseRelatedToValueCFG(RelationType type,
+                                                              std::string val);
+
  public:
   RelDatabase();
   ~RelDatabase() = default;

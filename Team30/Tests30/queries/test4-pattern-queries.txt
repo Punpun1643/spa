@@ -1,0 +1,65 @@
+1 - Partial matching involving multiple operators
+assign a;
+Select a pattern a (_, _"x + y*z"_)
+9
+5000
+2 - Partial match, wild LHS, involving multiple consective multiplication operators
+assign a;
+Select a pattern a (_, _"x*j"_)
+none
+5000
+3 - Partial matching, wild LHS, involving multiple consective multiplication operators
+assign a;
+Select a pattern a (_, _"i*x"_)
+22
+5000
+4 - Partial matching, wild LHS, swap order of variables
+assign a;
+Select a pattern a (_, _"x*i"_)
+none
+5000
+5 - Partial matching, variable synonym LHS, multiple operators
+assign a; variable v;
+Select a pattern a (v, _"p*q"_)
+9, 22
+5000
+6 - Partial matching, string LHS, multiple operators
+assign a;
+Select a pattern a ("q", _"p*5"_)
+16
+5000
+7 - Invalid Partial matching, constant synonym LHS
+assign a; constant c;
+Select a pattern a (c, _"p*5"_)
+SemanticError
+5000
+8 - Invalid Partial matching, pattern variable synonym
+variable v; assign a;
+Select a pattern v ("q", _"p*5"_)
+SemanticError
+5000
+9 - Partial matching on exact match
+assign a;
+Select a pattern a ("q", _"i * x * j + y + p * q"_)
+22
+5000
+10 - Partial matching on addition of a product and a value
+assign a;
+Select a pattern a (_, _"j + y"_)
+none
+5000
+11 - Partial matching on addition of 2 products
+assign a;
+Select a pattern a (_, _"z + p"_)
+none
+5000
+12 - Partial matching on addition of a product, a value, and a product
+assign a;
+Select a pattern a (_, _"i * x * j + y"_)
+22
+5000
+13 - Partial matching on addition of a product, a value, and a product
+assign a;
+Select a pattern a (_, _"y + p * q"_)
+none
+5000
