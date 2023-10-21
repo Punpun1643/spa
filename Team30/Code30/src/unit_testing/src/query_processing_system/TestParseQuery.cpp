@@ -764,12 +764,50 @@ TEST_CASE("Affects") {
   std::vector<std::shared_ptr<Token>> tokens;
   QPSController controller = QPSController();
 
-  SECTION("stmt s1, st; Select s1 such that Affects(s1, s2)") {
+  SECTION("stmt s1, s2; Select s1 such that Affects(s1, s2)") {
     AddDeclaration(tokens, "stmt", {"s1", "s2"});
     AddWordVector(tokens, {"Select", "s1", "such", "that", "Affects"});
     AddWordWord(tokens, "s1", "s2");
     AddEOF(tokens);
 
     controller.TokensToClauses(tokens);
+  }
+}
+
+TEST_CASE("Valid/Invalid Integer") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1; Select s1 such that Follows(01, s1)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "Follows"});
+    AddIntWord(tokens, "01", "s1");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+
+  SECTION("constant c; Select c with c.value = 0") {
+    AddDeclaration(tokens, "constant", {"c"});
+    AddWordVector(tokens, {"Select", "c", "with", "c"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"value"});
+    AddSpecialCharVector(tokens, {"="});
+    AddIntVector(tokens, {"0"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("stmt s1; constant c; Select c with c.value = 01") {
+    AddDeclaration(tokens, "constant", {"c"});
+    AddWordVector(tokens, {"Select", "c", "with", "c"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"value"});
+    AddSpecialCharVector(tokens, {"="});
+    AddIntVector(tokens, {"01"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
   }
 }

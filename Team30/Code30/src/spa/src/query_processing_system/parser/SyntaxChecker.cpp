@@ -502,11 +502,8 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
     CheckUpcomingTokensAreValidAttrName();
     return;
   } else {
-    try {
-      // integer
-      stoi(ref);
-    } catch (std::invalid_argument& e) {
-      throw InvalidSyntaxException("Expected integer for with ref");
+    if (!QpParser::IsValidInteger(ref)) {
+      throw InvalidSyntaxException("Expected valid integer for with ref");
     }
     return;
   }
