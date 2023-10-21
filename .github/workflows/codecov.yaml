@@ -1,0 +1,58 @@
+name: Codecov workflow
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+    branches:
+      - master
+  schedule:
+    - cron: "0 23 * * *"
+
+jobs:
+  get-code-coverage:
+    runs-on: [ macos-latest ]
+    timeout-minutes: 8
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up compiler path
+        run: |
+          echo "PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH" >> $GITHUB_ENV
+      - name: Build with Cmake
+        working-directory: Team30/Code30
+        run: |
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" ..
+
+      - name: Build unit test
+        working-directory: Team30/Code30/build
+        run: |
+          cmake --build . --target unit_testing
+
+      - name: Run unit test
+        working-directory: Team30/Code30/build/src/unit_testing
+        run: |
+          ./unit_testing
+
+      - name: Export Unit Testng Coverage Data
+        working-directory: Team30/Code30/build/src/unit_testing
+        run: |
+          llvm-profdata merge -sparse default.profraw -o default.profdata
+          llvm-cov show ./unit_testing -instr-profile=default.profdata
+          llvm-cov export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=default.profdata ./unit_testing > coverage.txt
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt  # Adjusting to the correct file
+          flags: unittests
+          working-directory: Team30/Code30/build/src/unit_testing
+
+
+
+
+

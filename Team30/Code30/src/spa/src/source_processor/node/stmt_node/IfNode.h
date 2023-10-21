@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "../StmtLstNode.h"
 #include "../util_node/CondExprNode.h"
 #include "StmtNode.h"

@@ -1,3 +1,7 @@
+#include <unordered_set>
+#include <utility>
+#include <string>
+
 #include "PatternDatabase.h"
 
 PatternDatabase::PatternDatabase() {}
@@ -17,4 +21,4 @@ std::unordered_map<std::string,
                    std::pair<std::string, std::shared_ptr<TreeNode>>>
 PatternDatabase::getAssignmentPatterns() {
   return assignments;
-};
+}

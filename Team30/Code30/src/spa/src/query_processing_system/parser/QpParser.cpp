@@ -3,6 +3,10 @@
 #include <iostream>
 #include <map>
 #include <stdexcept>
+#include <memory>
+#include <vector>
+#include <string>
+#include <unordered_map>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
 #include "../common/AttrRef.h"
@@ -12,7 +16,7 @@
 #include "../exceptions/InvalidSyntaxException.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
-    : AParser(tokens){};
+    : AParser(tokens) {}
 
 // Constants
 std::string const QpParser::AND = "and";
@@ -98,7 +102,9 @@ bool QpParser::IsValidInteger(std::string const& int_string) {
   return true;
 }
 
-bool QpParser::IsWildcard(std::string const& name) { return (name == "_"); }
+bool QpParser::IsWildcard(std::string const& name) {
+  return (name == "_");
+}
 
 AttrType QpParser::GetDefaultAttrTypeFromEntityType(EntityType entity_type) {
   std::unordered_map<EntityType, AttrType> DEFAULT_ATTR_TYPES = {

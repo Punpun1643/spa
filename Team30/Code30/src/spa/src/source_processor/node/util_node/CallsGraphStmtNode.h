@@ -1,9 +1,11 @@
 #pragma once
 
-#include <source_processor/node/stmt_node/CallNode.h>
-
 #include <memory>
+#include <string>
 #include <unordered_set>
+#include <vector>
+
+#include "../stmt_node/CallNode.h"
 
 class CallsGraphStmtNode {
  public:

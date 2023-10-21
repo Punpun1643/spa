@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <memory>
+
 #include "../../shared/parser/node/TreeNode.h"
 #include "../common/MatchType.h"
 #include "../interpreter/QueryInterpreter.h"

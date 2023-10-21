@@ -1,5 +1,9 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+#include <string>
+
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
 #include "../common/AttrType.h"
@@ -14,7 +18,7 @@ std::string const VALUE = "value";
 
 class QpParser : public AParser {
  public:
-  QpParser(std::vector<std::shared_ptr<Token>> tokens);
+  explicit QpParser(std::vector<std::shared_ptr<Token>> tokens);
 
   // Constants
   static std::string const AND;

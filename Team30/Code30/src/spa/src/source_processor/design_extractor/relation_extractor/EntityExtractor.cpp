@@ -13,15 +13,18 @@ void EntityExtractor::ExtractFromProcedure(
 }
 
 void EntityExtractor::ExtractFromCall(std::shared_ptr<CallNode> node) {
-  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, std::to_string(node->GetStmtIndex()), node->GetProcName());
+  pkb.InsertEntity(EntityType::CALL, AttrType::PROC_NAME,
+                   std::to_string(node->GetStmtIndex()), node->GetProcName());
 }
 
 void EntityExtractor::ExtractFromPrint(std::shared_ptr<PrintNode> node) {
-  pkb.InsertEntity(EntityType::PRINT, AttrType::VAR_NAME, std::to_string(node->GetStmtIndex()), node->GetVarName());
+  pkb.InsertEntity(EntityType::PRINT, AttrType::VAR_NAME,
+                   std::to_string(node->GetStmtIndex()), node->GetVarName());
 }
 
 void EntityExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.InsertEntity(EntityType::READ, AttrType::VAR_NAME, std::to_string(node->GetStmtIndex()), node->GetVarName());
+  pkb.InsertEntity(EntityType::READ, AttrType::VAR_NAME,
+                   std::to_string(node->GetStmtIndex()), node->GetVarName());
 }
 
 void EntityExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
@@ -36,6 +39,6 @@ void EntityExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.InsertEntity(EntityType::ASSIGN, std::to_string(node->GetStmtIndex()));
 
   // Pattern insertion
-  pkb.insertPattern(PatternType::ASSIGN, std::to_string(node->GetStmtIndex()), node->GetVarName(),
-                    node->GetRootOfTree());
+  pkb.insertPattern(PatternType::ASSIGN, std::to_string(node->GetStmtIndex()),
+                    node->GetVarName(), node->GetRootOfTree());
 }

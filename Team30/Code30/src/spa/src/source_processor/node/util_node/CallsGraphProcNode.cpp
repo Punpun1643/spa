@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iterator>
+#include <string>
 
 CallsGraphProcNode::CallsGraphProcNode(std::string proc)
     : proc(proc), num_procs_called(0) {}
@@ -41,7 +42,9 @@ CallsGraphProcNode::GetProcsCalledBy() {
   return procs_called_by;
 }
 
-int CallsGraphProcNode::GetNumProcsCalled() { return num_procs_called; }
+int CallsGraphProcNode::GetNumProcsCalled() {
+  return num_procs_called;
+}
 
 void CallsGraphProcNode::RemoveProcCalled(
     std::shared_ptr<CallsGraphProcNode> proc) {
@@ -49,4 +52,6 @@ void CallsGraphProcNode::RemoveProcCalled(
   num_procs_called--;
 }
 
-std::string CallsGraphProcNode::GetProcName() { return proc; }
+std::string CallsGraphProcNode::GetProcName() {
+  return proc;
+}

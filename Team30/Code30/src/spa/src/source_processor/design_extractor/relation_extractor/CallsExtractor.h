@@ -1,5 +1,8 @@
+#pragma once
+
 #include <memory>
 #include <unordered_map>
+#include <string>
 
 #include "../../../program_knowledge_base/PKBSPInterface.h"
 #include "../../node/util_node/CallsGraphProcNode.h"

@@ -1,6 +1,8 @@
 #include "ModifiesPClause.h"
 
 #include <string>
+#include <utility>
+#include <vector>
 
 ModifiesPClause::ModifiesPClause(std::unique_ptr<EntRef> arg1,
                                  std::unique_ptr<EntRef> arg2)

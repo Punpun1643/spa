@@ -9,9 +9,9 @@
 class LinkedList {
  private:
   std::unordered_map<std::string, std::shared_ptr<Node>> nodes;
-  
+
  public:
-  explicit LinkedList();
+  LinkedList();
   ~LinkedList() = default;
 
   std::shared_ptr<Node> getNode(std::string val);

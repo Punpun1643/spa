@@ -1,6 +1,8 @@
 #include "IntermediateResultsTable.h"
 
 #include <cassert>
+#include <string>
+#include <vector>
 
 #include "ArrayUtility.h"
 
@@ -40,7 +42,9 @@ void IntermediateResultsTable::AddClauseResult(
   }
 }
 
-bool IntermediateResultsTable::HasNoResults() const { return has_no_results; }
+bool IntermediateResultsTable::HasNoResults() const {
+  return has_no_results;
+}
 
 std::vector<std::vector<std::string>>
 IntermediateResultsTable::GetValuesGivenDeclarations(
@@ -83,7 +87,7 @@ void IntermediateResultsTable::AddSingleDeclaration(
   // Declaration doesn't exist
   if (table_mapping.count(d) == 0) {
     tables.push_back(new_table);
-    table_mapping[d] = (int)tables.size() - 1;
+    table_mapping[d] = static_cast<int>(tables.size()) - 1;
   } else {
     int table_idx = table_mapping[d];
     tables[table_idx].Join(new_table);
@@ -104,8 +108,8 @@ void IntermediateResultsTable::AddPairedDeclarations(
   // Both declarations not in table
   if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 0) {
     tables.push_back(new_table);
-    table_mapping[d1] = (int)tables.size() - 1;
-    table_mapping[d2] = (int)tables.size() - 1;
+    table_mapping[d1] = static_cast<int>(tables.size()) - 1;
+    table_mapping[d2] = static_cast<int>(tables.size()) - 1;
 
   } else if (table_mapping.count(d1) == 1 && table_mapping.count(d2) == 0) {
     int d1_table_idx = table_mapping[d1];

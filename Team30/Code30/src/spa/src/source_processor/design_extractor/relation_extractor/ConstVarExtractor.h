@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include <unordered_set>
 
 #include "../../node/ProcedureNode.h"
 #include "../../node/ProgramNode.h"

@@ -1,5 +1,8 @@
 #pragma once
+
 #include <vector>
+#include <string>
+#include <memory>
 
 #include "Clause.h"
 #include "PqlReference.h"

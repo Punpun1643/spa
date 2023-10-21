@@ -3,7 +3,7 @@
 #include "../../design_extractor/IDesignExtractor.h"
 
 ReadNode::ReadNode(int stmtIndex, StmtType stmtType, std::string varName)
-    : StmtNode(stmtIndex, StmtType::READ_STMT), varName(varName){};
+    : StmtNode(stmtIndex, StmtType::READ_STMT), varName(varName) {}
 
 void ReadNode::Accept(IDesignExtractor& designExtractor) {
   auto thisReadNodePtr =
@@ -11,4 +11,6 @@ void ReadNode::Accept(IDesignExtractor& designExtractor) {
   designExtractor.ExtractFromRead(thisReadNodePtr);
 }
 
-std::string const& ReadNode::GetVarName() const { return varName; }
+std::string const& ReadNode::GetVarName() const {
+  return varName;
+}

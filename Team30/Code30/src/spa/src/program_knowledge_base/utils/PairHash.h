@@ -1,3 +1,7 @@
+#pragma once
+
+#include <utility>
+
 struct PairHash {
   template <class T1, class T2>
   std::size_t operator()(std::pair<T1, T2> const& p) const {

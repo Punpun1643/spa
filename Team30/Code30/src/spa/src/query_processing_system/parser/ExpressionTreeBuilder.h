@@ -1,6 +1,8 @@
 #pragma once
 
 #include <optional>
+#include <vector>
+#include <memory>
 
 #include "../context/Context.h"
 #include "../expression/ClauseExpression.h"

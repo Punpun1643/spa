@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "EntityDatabase.h"
 
 EntityDatabase::EntityDatabase() {
@@ -25,7 +27,7 @@ EntityDatabase::EntityDatabase() {
   statementTypes = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
                     EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
                     EntityType::IF};
-};
+}
 
 std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
     EntityType ent_type, AttrType attr_type) {
@@ -45,28 +47,28 @@ void EntityDatabase::InsertEntity(EntityType type, std::string value) {
   (entities[type])->insert(value);
   if (statementTypes.find(type) != statementTypes.end()) {
     (entities[EntityType::STMT])->insert(value);
-  };
-};
+  }
+}
 
 void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
                                   std::string ent, std::string attribute) {
   InsertEntity(type, ent);
   entity_attr_map[std::make_pair(type, attr_type)][ent] = attribute;
   attr_ent_map[std::make_pair(type, attr_type)][attribute].insert(ent);
-};
+}
 
 std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::get(
     EntityType type) {
   std::shared_ptr<std::unordered_set<std::string>> results = entities[type];
   return results;
-};
+}
 
-// TODO: Remove curr_attr_type
+// TODO(@tyanhan): Remove curr_attr_type
 std::string EntityDatabase::ConvertEntityValueToAlias(
     std::string value, EntityType type, AttrType curr_attr_type,
     AttrType wanted_attr_type) {
   return entity_attr_map[std::make_pair(type, wanted_attr_type)][value];
-};
+}
 
 std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
     EntityType type, AttrType attr_type, std::string value) {
@@ -114,4 +116,4 @@ EntityDatabase::GetEntitiesWhereAttributesMatch(EntityType type_1,
     }
   }
   return res;
-};
+}

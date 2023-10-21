@@ -54,8 +54,9 @@ class CFGNode {
       std::shared_ptr<CFGNode> outgoing_node,
       std::string const& var_modified_in_start_node);
 
-  static bool HandleCallOutgoingNode(std::shared_ptr<CFGNode> outgoing_node,
-                                     std::string const& var_modified_in_start_node);
+  static bool HandleCallOutgoingNode(
+      std::shared_ptr<CFGNode> outgoing_node,
+      std::string const& var_modified_in_start_node);
 
   static bool ValidateStartAndEndNodes(std::shared_ptr<CFGNode> start_node,
                                        std::shared_ptr<CFGNode> end_node);

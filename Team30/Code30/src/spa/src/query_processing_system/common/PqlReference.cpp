@@ -20,7 +20,9 @@ PqlReference::PqlReference(std::string ref_value)
       ref_declaration(std::nullopt),
       ref_value(std::move(ref_value)) {}
 
-PqlRefType PqlReference::GetRefType() const { return ref_type; }
+PqlRefType PqlReference::GetRefType() const {
+  return ref_type;
+}
 
 std::string PqlReference::GetValue() const {
   assert(ref_type == PqlRefType::VALUE);

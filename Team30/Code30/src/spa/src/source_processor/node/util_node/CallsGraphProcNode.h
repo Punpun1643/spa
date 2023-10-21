@@ -3,13 +3,14 @@
 #include <source_processor/node/stmt_node/CallNode.h>
 
 #include <memory>
+#include <string>
 #include <unordered_set>
 
 #include "CallsGraphStmtNode.h"
 
 class CallsGraphProcNode {
  public:
-  CallsGraphProcNode(std::string proc);
+  explicit CallsGraphProcNode(std::string proc);
 
   void AddStmtCalledBy(std::shared_ptr<CallsGraphStmtNode> stmt_called_by);
 
@@ -27,7 +28,7 @@ class CallsGraphProcNode {
 
   int GetNumProcsCalled();
 
-  void RemoveProcCalled(std::shared_ptr<CallsGraphProcNode> proc); 
+  void RemoveProcCalled(std::shared_ptr<CallsGraphProcNode> proc);
 
   ~CallsGraphProcNode() = default;
 
@@ -42,6 +43,6 @@ class CallsGraphProcNode {
   // Procedures that this procedure calls
   std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procs_called;
 
-  // Procedures that call this procedure 
+  // Procedures that call this procedure
   std::unordered_set<std::shared_ptr<CallsGraphProcNode>> procs_called_by;
 };

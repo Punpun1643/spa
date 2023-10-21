@@ -1,3 +1,5 @@
+#include <string>
+
 #include "InvalidSemanticsException.h"
 InvalidSemanticsException::InvalidSemanticsException(
     std::string const& what_arg)

@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <memory>
+#include <string>
 
 #include "../utils/UFDS.h"
 #include "BaseTable.h"

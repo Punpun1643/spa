@@ -1,6 +1,8 @@
 #pragma once
 
 #include <unordered_map>
+#include <string>
+#include <vector>
 
 #include "RelationalTable.h"
 #include "query_processing_system/common/ClauseResult.h"

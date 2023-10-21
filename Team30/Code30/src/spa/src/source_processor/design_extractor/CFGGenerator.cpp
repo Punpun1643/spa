@@ -1,6 +1,7 @@
 #include "CFGGenerator.h"
 
-#include <iostream>
+#include <vector>
+#include <memory>
 
 #include "../node/stmt_node/IfNode.h"
 #include "../node/stmt_node/WhileNode.h"

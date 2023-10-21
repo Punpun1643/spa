@@ -2,6 +2,9 @@
 
 #include <cassert>
 #include <iostream>
+#include <utility>
+#include <memory>
+#include <string>
 
 #include "../common/AffectsClause.h"
 #include "../common/AttrRef.h"
@@ -33,7 +36,7 @@
 
 QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
                                    std::shared_ptr<AExpression> expression_tree)
-    : context(context), expression_tree(expression_tree){};
+    : context(context), expression_tree(expression_tree) {}
 
 void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =

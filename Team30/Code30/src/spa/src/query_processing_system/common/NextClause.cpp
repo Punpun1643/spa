@@ -1,6 +1,7 @@
 #include "NextClause.h"
 
 #include <string>
+#include <utility>
 
 NextClause::NextClause(std::unique_ptr<StmtRef> arg1,
                        std::unique_ptr<StmtRef> arg2, bool is_starred)

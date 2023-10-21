@@ -1,13 +1,13 @@
 #pragma once
 
 #include <stdio.h>
-
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 
 #include "../query_processing_system/common/EntityType.h"
 #include "../source_processor/node/stmt_node/StmtNode.h"
@@ -37,7 +37,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
                     std::string statement_number,
                     std::string attribute) override;
   void insertRelation(RelationType rel_type, std::string s1_line_num,
-                              std::string s2_line_num) override;
+                      std::string s2_line_num) override;
   void insertPattern(PatternType type, std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
   void insertCFGNode(std::string statement_num,
