@@ -69,10 +69,9 @@ std::unordered_set<std::string> PKB::GetStatementUses(std::string stmt) {
 
 // ********** QPS **********
 // ---------- ENTITIES ----------
-std::unique_ptr<std::vector<std::string>> PKB::GetEntitiesWithType(
-    EntityType type) {
+std::vector<std::string> PKB::GetEntitiesWithType(EntityType type) {
   std::shared_ptr<std::unordered_set<std::string>> e = entData->get(type);
-  return std::make_unique<std::vector<std::string>>(e->begin(), e->end());
+  return std::vector<std::string>(e->begin(), e->end());
 }
 
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
@@ -120,27 +119,25 @@ bool PKB::IsRelationTrueWildWild(RelationType relation_type) {
 
 // 1 Declarations
 // example Parent(s, _), ParentsStar(s, _)
-std::unique_ptr<std::vector<std::string>> PKB::GetRelationSynonymWild(
-    EntityType entity_type, RelationType rel_type) {
+std::vector<std::string> PKB::GetRelationSynonymWild(EntityType entity_type,
+                                                     RelationType rel_type) {
   std::unordered_set<std::string> output =
       relData->GetAllWithRelations(rel_type, entData->get(entity_type));
-  return std::make_unique<std::vector<std::string>>(output.begin(),
-                                                    output.end());
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
 // example Follows(_, s), FolowsStar(_, s)
-std::unique_ptr<std::vector<std::string>> PKB::GetRelationWildSynonym(
-    EntityType entity_type, RelationType rel_type) {
+std::vector<std::string> PKB::GetRelationWildSynonym(EntityType entity_type,
+                                                     RelationType rel_type) {
   std::unordered_set<std::string> output =
       relData->GetAllWithInverseRelations(rel_type, entData->get(entity_type));
-  return std::make_unique<std::vector<std::string>>(output.begin(),
-                                                    output.end());
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
 // example Follows(s, 3), FolowsStar(s, 3)
-std::unique_ptr<std::vector<std::string>> PKB::GetRelationSynonymValue(
-    EntityType entity_type, std::string value, RelationType rel_type) {
-
+std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
+                                                      std::string value,
+                                                      RelationType rel_type) {
   std::unordered_set<std::string> allInverseRelated =
       relData->GetAllInverseRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = *entData->get(entity_type);
@@ -148,13 +145,13 @@ std::unique_ptr<std::vector<std::string>> PKB::GetRelationSynonymValue(
   std::unordered_set<std::string> output =
       GetIntersection(allInverseRelated, entities);
 
-  return std::make_unique<std::vector<std::string>>(output.begin(),
-                                                    output.end());
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
 // example Follows(3, s)
-std::unique_ptr<std::vector<std::string>> PKB::GetRelationValueSynonym(
-    std::string value, EntityType entity_type, RelationType rel_type) {
+std::vector<std::string> PKB::GetRelationValueSynonym(std::string value,
+                                                      EntityType entity_type,
+                                                      RelationType rel_type) {
   std::unordered_set<std::string> allRelated =
       relData->GetAllRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = *entData->get(entity_type);
@@ -162,16 +159,13 @@ std::unique_ptr<std::vector<std::string>> PKB::GetRelationValueSynonym(
   std::unordered_set<std::string> output =
       GetIntersection(allRelated, entities);
 
-  return std::make_unique<std::vector<std::string>>(output.begin(),
-                                                    output.end());
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
 //// 2 Declarations
 // example Follows(s1, s2), FollowsStar(s1, s2)
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PKB::GetRelationSynonymSynonym(EntityType entity_type_1,
-                               EntityType entity_type_2,
-                               RelationType rel_type) {
+std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
+    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
   std::vector<std::pair<std::string, std::string>> output;
   std::shared_ptr<std::unordered_set<std::string>> ents1 =
       PKB::entData->get(entity_type_1);
@@ -186,12 +180,11 @@ PKB::GetRelationSynonymSynonym(EntityType entity_type_1,
     }
   }
 
-  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
-      output);
+  return std::vector<std::pair<std::string, std::string>>(output);
 }
 
 // ---------- PATTERNS ----------
-std::unique_ptr<std::vector<std::string>> PKB::GetPatternMatchesWildLhs(
+std::vector<std::string> PKB::GetPatternMatchesWildLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   std::unordered_set<std::string> output;
 
@@ -212,11 +205,10 @@ std::unique_ptr<std::vector<std::string>> PKB::GetPatternMatchesWildLhs(
     }
   }
 
-  return std::make_unique<std::vector<std::string>>(output.begin(),
-                                                    output.end());
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
-std::unique_ptr<std::vector<std::string>> PKB::GetPatternMatchesValueLhs(
+std::vector<std::string> PKB::GetPatternMatchesValueLhs(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
   std::unordered_set<std::string> output;
@@ -240,11 +232,10 @@ std::unique_ptr<std::vector<std::string>> PKB::GetPatternMatchesValueLhs(
     }
   }
 
-  return std::make_unique<std::vector<std::string>>(output.begin(),
-                                                    output.end());
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+std::vector<std::pair<std::string, std::string>>
 PKB::GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                                  MatchType match_type) {
   std::vector<std::pair<std::string, std::string>> output;
@@ -268,6 +259,6 @@ PKB::GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
     }
   }
 
-  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
-      output.begin(), output.end());
+  return std::vector<std::pair<std::string, std::string>>(output.begin(),
+                                                          output.end());
 }

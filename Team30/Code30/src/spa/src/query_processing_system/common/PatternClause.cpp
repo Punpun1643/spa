@@ -1,8 +1,8 @@
 #include "PatternClause.h"
 
 #include <cassert>
-#include <utility>
 #include <memory>
+#include <utility>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
@@ -32,18 +32,18 @@ std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
       auto values =
           pkb.GetPatternMatchesSynonymLhs(rhs_expr, rhs_expr_match_type);
       return std::make_unique<ClauseResult>(
-          assign_decl, lhs_ent_ref.GetDeclaration(), *values);
+          assign_decl, lhs_ent_ref.GetDeclaration(), values);
       break;
     }
     case (PqlRefType::VALUE): {
       auto values = pkb.GetPatternMatchesValueLhs(
           lhs_ent_ref.GetValue(), rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(assign_decl, *values);
+      return std::make_unique<ClauseResult>(assign_decl, values);
       break;
     }
     case (PqlRefType::WILD): {
       auto values = pkb.GetPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(assign_decl, *values);
+      return std::make_unique<ClauseResult>(assign_decl, values);
       break;
     }
     default:
