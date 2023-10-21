@@ -1,0 +1,90 @@
+1 - Affects Wildcard, Wildcard
+procedure p;
+Select p such that Affects(_,_)
+p1, p2, p3, p4, p5
+5000
+2 - Affects Wildcard, Stmt#
+stmt s;
+Select BOOLEAN such that Affects (_, 2) 
+FALSE
+5000
+3 - Affects Stmt#, Wildcard
+stmt s;
+Select BOOLEAN such that Affects (3 , _)
+TRUE
+5000
+4 - Affects syn, wildcard
+assign a;
+Select BOOLEAN such that Affects(a, _)
+TRUE
+5000
+5 - Affects wildcard, syn
+assign a;
+Select BOOLEAN such that Affects (_, a)
+TRUE
+5000
+6 - Affects same assign stmt (that modifies itself)
+assign a;
+Select a such that Affects(a, a) 
+33
+5000
+7 - Affects two assigns different proc
+assign a;
+Select BOOLEAN such that Affects (17, 25)
+FALSE
+5000
+8 - Affects two assigns within same proc, no if/while/call
+assign a;
+Select BOOLEAN such that Affects (3, 5)
+TRUE
+5000
+9 - Affects with while container between
+assign a;
+Select BOOLEAN such that Affects (5, 10)
+TRUE
+5000
+10 - Affects if container between
+assign a;
+Select BOOLEAN such that Affects (10, 17) 
+TRUE
+5000
+11 - Affects while with nested if container
+assign a;
+Select BOOLEAN such that Affects (39, 37)
+TRUE
+5000
+12 - Affects 1 stmt in if block, 1 stmt in else block
+assign a;
+Select BOOLEAN such that Affects (12, 14)
+FALSE
+5000
+13 - Affects call stmt between two assigns, called proc does not modify v
+assign a;
+Select BOOLEAN such that Affects (17, 19)
+TRUE
+5000
+14 - Affects call stmt between two assigns, called proc has stmt that modifies v
+assign a;
+Select BOOLEAN such that Affects (19, 21)
+FALSE
+5000
+15 - Affects multiple calls between two assigns  
+assign a;
+Select BOOLEAN such that Affects (21, 24)
+FALSE
+5000
+16 - Invalid Semantics: Wrong synonym param (not assign)
+read r; 
+Select BOOLEAN such that Affects (5, r)
+SemanticError
+5000
+17 - Invalid Semantics: Wrong synonym param (not assign)
+stmt s;
+Select BOOLEAN such that Affects (s, 10)
+SemanticError
+5000
+18 - Invalid Syntax: No strings for affects param
+assign a;
+Select BOOLEAN such that Affects ("x", 8)
+SyntaxError
+5000
