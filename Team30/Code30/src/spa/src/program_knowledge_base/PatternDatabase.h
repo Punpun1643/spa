@@ -27,10 +27,10 @@ class PatternDatabase {
   PatternDatabase();
   ~PatternDatabase() = default;
 
-  void insert(PatternType type, std::string line_num, std::string lhs,
+  void Insert(PatternType type, std::string line_num, std::string lhs,
               std::shared_ptr<TreeNode> rhs);
-  std::unordered_set<std::string> getStatementNumbersGivenLHS(std::string v);
+  std::unordered_set<std::string> GetStatementNumbersGivenLHS(std::string v);
   std::unordered_map<std::string,
                      std::pair<std::string, std::shared_ptr<TreeNode>>>
-  getAssignmentPatterns();
+  GetAssignmentPatterns();
 };

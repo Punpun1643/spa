@@ -3,7 +3,7 @@
 PkbQpsInterfaceStub::PkbQpsInterfaceStub(){};
 
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getEntitiesWithType(EntityType type) {
+PkbQpsInterfaceStub::GetEntitiesWithType(EntityType type) {
   last_entity_type_passed = type;
   return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
 }
@@ -36,7 +36,7 @@ std::vector<std::pair<std::string, std::string>> PkbQpsInterfaceStub::GetEntitie
   return attr_pair_matches;
 };
 
-bool PkbQpsInterfaceStub::isRelationTrueValueValue(std::string value_1,
+bool PkbQpsInterfaceStub::IsRelationTrueValueValue(std::string value_1,
                                                    std::string value_2,
                                                    RelationType rel_type) {
   valueValueCalls++;
@@ -45,28 +45,28 @@ bool PkbQpsInterfaceStub::isRelationTrueValueValue(std::string value_1,
   last_value_2_passed = value_2;
   return valueValueBool;
 }
-bool PkbQpsInterfaceStub::isRelationTrueValueWild(std::string value,
+bool PkbQpsInterfaceStub::IsRelationTrueValueWild(std::string value,
                                                   RelationType rel_type) {
   valueWildCalls++;
   last_rel_passed = rel_type;
   last_value_passed = value;
   return valueWildBool;
 }
-bool PkbQpsInterfaceStub::isRelationTrueWildValue(std::string value,
+bool PkbQpsInterfaceStub::IsRelationTrueWildValue(std::string value,
                                                   RelationType rel_type) {
   wildValueCalls++;
   last_rel_passed = rel_type;
   last_value_passed = value;
   return wildValueBool;
 }
-bool PkbQpsInterfaceStub::isRelationTrueWildWild(RelationType rel_type) {
+bool PkbQpsInterfaceStub::IsRelationTrueWildWild(RelationType rel_type) {
   wildWildCalls++;
   last_rel_passed = rel_type;
   return wildWildBool;
 }
 
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getRelationSynonymWild(EntityType entity_type,
+PkbQpsInterfaceStub::GetRelationSynonymWild(EntityType entity_type,
                                             RelationType rel_type) {
   synonymWildCalls++;
   last_entity_type_passed = entity_type;
@@ -74,7 +74,7 @@ PkbQpsInterfaceStub::getRelationSynonymWild(EntityType entity_type,
   return std::make_unique<std::vector<std::string>>(synonymWildValues);
 }
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getRelationWildSynonym(EntityType entity_type,
+PkbQpsInterfaceStub::GetRelationWildSynonym(EntityType entity_type,
                                             RelationType rel_type) {
   wildSynonymCalls++;
   last_entity_type_passed = entity_type;
@@ -83,7 +83,7 @@ PkbQpsInterfaceStub::getRelationWildSynonym(EntityType entity_type,
 }
 
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getRelationSynonymValue(EntityType entity_type,
+PkbQpsInterfaceStub::GetRelationSynonymValue(EntityType entity_type,
                                              std::string value,
                                              RelationType rel_type) {
   synonymValueCalls++;
@@ -93,7 +93,7 @@ PkbQpsInterfaceStub::getRelationSynonymValue(EntityType entity_type,
   return std::make_unique<std::vector<std::string>>(synonymValueValues);
 }
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getRelationValueSynonym(std::string value,
+PkbQpsInterfaceStub::GetRelationValueSynonym(std::string value,
                                              EntityType entity_type,
                                              RelationType rel_type) {
   valueSynonymCalls++;
@@ -104,7 +104,7 @@ PkbQpsInterfaceStub::getRelationValueSynonym(std::string value,
 }
 
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbQpsInterfaceStub::getRelationSynonymSynonym(EntityType entity_type_1,
+PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
                                                EntityType entity_type_2,
                                                RelationType rel_type) {
   synonymSynonymCalls++;
@@ -116,7 +116,7 @@ PkbQpsInterfaceStub::getRelationSynonymSynonym(EntityType entity_type_1,
 }
 
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getPatternMatchesWildLhs(
+PkbQpsInterfaceStub::GetPatternMatchesWildLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternWildCalls++;
   last_match_type_passed = match_type;
@@ -125,7 +125,7 @@ PkbQpsInterfaceStub::getPatternMatchesWildLhs(
 };
 
 std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::getPatternMatchesValueLhs(
+PkbQpsInterfaceStub::GetPatternMatchesValueLhs(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
   patternValueCalls++;
@@ -136,7 +136,7 @@ PkbQpsInterfaceStub::getPatternMatchesValueLhs(
 };
 
 std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
-PkbQpsInterfaceStub::getPatternMatchesSynonymLhs(
+PkbQpsInterfaceStub::GetPatternMatchesSynonymLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternDeclCalls++;
   last_match_type_passed = match_type;

@@ -1,5 +1,6 @@
 #include "RelDatabase.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <unordered_set>
@@ -28,193 +29,281 @@ RelDatabase::RelDatabase() {
   relationships[RelationType::CALLS_STAR] =
       std::make_shared<LinkedListTable>(LinkedListTable());
 
-  relatedTables = {{RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
-                   {RelationType::PARENT, {RelationType::PARENT_STAR}},
-                   {RelationType::CALLS, {RelationType::CALLS_STAR}},
-                   {RelationType::NEXT, {RelationType::NEXT_STAR}}};
+  related_tables = {{RelationType::FOLLOWS, {RelationType::FOLLOWS_STAR}},
+                    {RelationType::PARENT, {RelationType::PARENT_STAR}},
+                    {RelationType::CALLS, {RelationType::CALLS_STAR}},
+                    {RelationType::NEXT, {RelationType::NEXT_STAR}}};
 
-  cfgRelations = {RelationType::NEXT, RelationType::NEXT_STAR,
-                  RelationType::AFFECTS};
+  cfg_relations = {RelationType::NEXT, RelationType::NEXT_STAR,
+                   RelationType::AFFECTS};
+
+  size = 0;
 }
 
-void RelDatabase::insert(RelationType type, std::string val1,
+bool RelDatabase::IsValidStatementNumber(std::string val) {
+  int v = std::stoi(val);
+  return 0 < v && v < size + 1;
+}
+
+bool RelDatabase::IsCFGRelation(RelationType type) {
+  return cfg_relations.find(type) != cfg_relations.end();
+}
+
+bool RelDatabase::IsEmptyCFG(RelationType type) {
+  // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR, AFFECTS
+  for (auto pair : cfg_nodes) {
+    if (HasRelations(type, pair.first)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool RelDatabase::IsRelatedCFG(RelationType type, std::string val1,
+                               std::string val2) {
+  if (!IsValidStatementNumber(val1) || !IsValidStatementNumber(val2)) {
+    return false;
+  }
+
+  std::shared_ptr<CFGNode> node1 = cfg_nodes[val1];
+  std::shared_ptr<CFGNode> node2 = cfg_nodes[val2];
+
+  if (type == RelationType::NEXT) {
+    return CFGNode::HasImmediatePath(node1, node2);
+  } else if (type == RelationType::NEXT_STAR) {
+    return CFGNode::HasPath(node1, node2);
+  } else {
+    return CFGNode::HasAffectsPath(node1, node2);
+  }
+}
+
+bool RelDatabase::HasRelationsCFG(RelationType type, std::string val) {
+  if (!IsValidStatementNumber(val)) {
+    return false;
+  }
+
+  std::shared_ptr<CFGNode> node = cfg_nodes[val];
+  if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
+    return !node->GetOutgoingNodes().empty();
+  }
+
+  // TODO(@tyanhan): Optimise for AFFECTS
+  for (auto pair : cfg_nodes) {
+    std::shared_ptr<CFGNode> n = pair.second;
+    if (CFGNode::HasAffectsPath(node, n)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
+  if (!IsValidStatementNumber(val)) {
+    return false;
+  }
+
+  std::shared_ptr<CFGNode> node = cfg_nodes[val];
+  if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
+    return !node->GetIncomingNodes().empty();
+  }
+
+  // TODO(@tyanhan): Optimise for AFFECTS
+  for (auto pair : cfg_nodes) {
+    std::shared_ptr<CFGNode> n = pair.second;
+    if (CFGNode::HasAffectsPath(n, node)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
+    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+  // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
+  std::unordered_set<std::string> output;
+  for (std::string val : *vals) {
+    if (HasRelations(type, val)) {
+      output.insert(val);
+    }
+  }
+  return output;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
+    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+  // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
+  std::unordered_set<std::string> output;
+  for (std::string val : *vals) {
+    if (HasInverseRelations(type, val)) {
+      output.insert(val);
+    }
+  }
+  return output;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllWithPathFrom(
+    std::shared_ptr<CFGNode> node) {
+  std::unordered_set<std::string> output;
+  for (auto pair : cfg_nodes) {
+    std::shared_ptr<CFGNode> n = pair.second;
+    if (CFGNode::HasPath(node, n)) {
+      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+    }
+  }
+  return output;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathFrom(
+    std::shared_ptr<CFGNode> node) {
+  std::unordered_set<std::string> output;
+  for (auto pair : cfg_nodes) {
+    std::shared_ptr<CFGNode> n = pair.second;
+    if (CFGNode::HasAffectsPath(node, n)) {
+      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+    }
+  }
+  return output;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
+    RelationType type, std::string val) {
+  if (!IsValidStatementNumber(val)) {
+    return std::unordered_set<std::string>();
+  }
+
+  std::shared_ptr<CFGNode> node = cfg_nodes[val];
+
+  if (type == RelationType::NEXT) {
+    std::unordered_set<std::string> output;
+    for (auto n : node->GetOutgoingNodes()) {
+      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+    }
+    return output;
+  } else if (type == RelationType::NEXT_STAR) {
+    // TODO(@tyanhan): Optimise for NEXT_STAR and AFFECTS
+    return GetAllWithPathFrom(node);
+  } else {
+    return GetAllWithAffectsPathFrom(node);
+  }
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllWithPathTo(
+    std::shared_ptr<CFGNode> node) {
+  std::unordered_set<std::string> output;
+  for (auto pair : cfg_nodes) {
+    std::shared_ptr<CFGNode> n = pair.second;
+    if (CFGNode::HasPath(n, node)) {
+      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+    }
+  }
+  return output;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathTo(
+    std::shared_ptr<CFGNode> node) {
+  std::unordered_set<std::string> output;
+  for (auto pair : cfg_nodes) {
+    std::shared_ptr<CFGNode> n = pair.second;
+    if (CFGNode::HasAffectsPath(n, node)) {
+      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+    }
+  }
+  return output;
+}
+
+std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
+    RelationType type, std::string val) {
+  if (!IsValidStatementNumber(val)) {
+    return std::unordered_set<std::string>();
+  }
+
+  std::shared_ptr<CFGNode> node = cfg_nodes[val];
+
+  if (type == RelationType::NEXT) {
+    std::unordered_set<std::string> output;
+    for (auto n : node->GetIncomingNodes()) {
+      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+    }
+    return output;
+  } else if (type == RelationType::NEXT_STAR) {
+    // TODO(@tyanhan): Optimise for NEXT_STAR and AFFECTS
+    return GetAllWithPathTo(node);
+  } else {
+    return GetAllWithAffectsPathTo(node);
+  }
+}
+
+void RelDatabase::Insert(RelationType type, std::string val1,
                          std::string val2) {
-  assert(cfgRelations.find(type) == cfgRelations.end());
-
-  relationships[type]->insert(val1, val2);
-  for (RelationType rt : relatedTables[type]) {
-    relationships[rt]->insert(val1, val2);
+  relationships[type]->Insert(val1, val2);
+  for (RelationType rt : related_tables[type]) {
+    relationships[rt]->Insert(val1, val2);
   }
 }
 
-bool RelDatabase::isEmpty(RelationType type) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR, AFFECTS
-    for (auto pair : cfgNodes) {
-      if (hasRelations(type, pair.first)) {
-        return true;
-      }
-    }
-    return false;
+bool RelDatabase::IsEmpty(RelationType type) {
+  if (IsCFGRelation(type)) {
+    return IsEmptyCFG(type);
   }
-
-  return relationships[type]->isEmpty();
+  return relationships[type]->IsEmpty();
 }
 
-bool RelDatabase::isRelated(RelationType type, std::string val1,
+bool RelDatabase::IsRelated(RelationType type, std::string val1,
                             std::string val2) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    std::shared_ptr<CFGNode> node1 = cfgNodes[val1];
-    std::shared_ptr<CFGNode> node2 = cfgNodes[val2];
-
-    if (type == RelationType::NEXT) {
-      return CFGNode::HasImmediatePath(node1, node2);
-    } else if (type == RelationType::NEXT_STAR) {
-      return CFGNode::HasPath(node1, node2);
-    } else {
-      return CFGNode::HasAffectsPath(node1, node2);
-    }
+  if (IsCFGRelation(type)) {
+    return IsRelatedCFG(type, val1, val2);
   }
-
-  return relationships[type]->isRelated(val1, val2);
+  return relationships[type]->IsRelated(val1, val2);
 }
 
-bool RelDatabase::hasRelations(RelationType type, std::string val) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    std::shared_ptr<CFGNode> node = cfgNodes[val];
-    if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
-      return !node->GetOutgoingNodes().empty();
-    }
-
-    // TODO(@tyanhan): Optimise for AFFECTS
-    for (auto pair : cfgNodes) {
-      std::shared_ptr<CFGNode> n = pair.second;
-      if (CFGNode::HasAffectsPath(node, n)) {
-        return true;
-      }
-    }
-    return false;
+bool RelDatabase::HasRelations(RelationType type, std::string val) {
+  if (IsCFGRelation(type)) {
+    return HasRelationsCFG(type, val);
   }
-
-  return relationships[type]->hasRelations(val);
+  return relationships[type]->HasRelations(val);
 }
 
-bool RelDatabase::hasInverseRelations(RelationType type, std::string val) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    std::shared_ptr<CFGNode> node = cfgNodes[val];
-    if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
-      return !node->GetIncomingNodes().empty();
-    }
-
-    // TODO(@tyanhan): Optimise for AFFECTS
-    for (auto pair : cfgNodes) {
-      std::shared_ptr<CFGNode> n = pair.second;
-      if (CFGNode::HasAffectsPath(n, node)) {
-        return true;
-      }
-    }
-    return false;
+bool RelDatabase::HasInverseRelations(RelationType type, std::string val) {
+  if (IsCFGRelation(type)) {
+    return HasInverseRelationsCFG(type, val);
   }
-  return relationships[type]->hasInverseRelations(val);
+  return relationships[type]->HasInverseRelations(val);
 }
 
-std::unordered_set<std::string> RelDatabase::getAllWithRelations(
+std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
-    std::unordered_set<std::string> output;
-    for (std::string val : *vals) {
-      if (hasRelations(type, val)) {
-        output.insert(val);
-      }
-    }
-    return output;
+  if (IsCFGRelation(type)) {
+    return GetAllWithRelationsCFG(type, vals);
   }
-  return relationships[type]->getAllWithRelations(vals);
+  return relationships[type]->GetAllWithRelations(vals);
 }
 
-std::unordered_set<std::string> RelDatabase::getAllWithInverseRelations(
+std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelations(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
-    std::unordered_set<std::string> output;
-    for (std::string val : *vals) {
-      if (hasInverseRelations(type, val)) {
-        output.insert(val);
-      }
-    }
-    return output;
+  if (IsCFGRelation(type)) {
+    return GetAllWithInverseRelationsCFG(type, vals);
   }
-  return relationships[type]->getAllWithInverseRelations(vals);
+  return relationships[type]->GetAllWithInverseRelations(vals);
 }
 
-std::unordered_set<std::string> RelDatabase::getAllRelatedToValue(
+std::unordered_set<std::string> RelDatabase::GetAllRelatedToValue(
     RelationType type, std::string val) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    std::shared_ptr<CFGNode> node = cfgNodes[val];
-    std::unordered_set<std::string> output;
-
-    if (type == RelationType::NEXT) {
-      for (auto n : node->GetOutgoingNodes()) {
-        output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-      }
-    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise
-                                                   // for NEXT_STAR and AFFECTS
-      for (auto pair : cfgNodes) {
-        std::shared_ptr<CFGNode> n = pair.second;
-        if (CFGNode::HasPath(node, n)) {
-          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-        }
-      }
-    } else {
-      for (auto pair : cfgNodes) {
-        std::shared_ptr<CFGNode> n = pair.second;
-        if (CFGNode::HasAffectsPath(node, n)) {
-          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-        }
-      }
-    }
-
-    return output;
+  if (IsCFGRelation(type)) {
+    return GetAllRelatedToValueCFG(type, val);
   }
-
-  return relationships[type]->getAllRelatedToValue(val);
+  return relationships[type]->GetAllRelatedToValue(val);
 }
 
-std::unordered_set<std::string> RelDatabase::getAllInverseRelatedToValue(
+std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValue(
     RelationType type, std::string val) {
-  if (cfgRelations.find(type) != cfgRelations.end()) {
-    std::shared_ptr<CFGNode> node = cfgNodes[val];
-    std::unordered_set<std::string> output;
-
-    if (type == RelationType::NEXT) {
-      for (auto n : node->GetIncomingNodes()) {
-        output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-      }
-    } else if (type == RelationType::NEXT_STAR) {  // TODO(@tyanhan): Optimise
-                                                   // for NEXT_STAR and AFFECTS
-      for (auto pair : cfgNodes) {
-        std::shared_ptr<CFGNode> n = pair.second;
-        if (CFGNode::HasPath(n, node)) {
-          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-        }
-      }
-    } else {
-      for (auto pair : cfgNodes) {
-        std::shared_ptr<CFGNode> n = pair.second;
-        if (CFGNode::HasAffectsPath(n, node)) {
-          output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-        }
-      }
-    }
-
-    return output;
+  if (IsCFGRelation(type)) {
+    return GetAllInverseRelatedToValueCFG(type, val);
   }
-
-  return relationships[type]->getAllInverseRelatedToValue(val);
+  return relationships[type]->GetAllInverseRelatedToValue(val);
 }
 
-void RelDatabase::insertCFGNode(std::string statement_num,
+void RelDatabase::InsertCFGNode(std::string statement_num,
                                 std::shared_ptr<CFGNode> node) {
-  cfgNodes.insert({statement_num, node});
+  size = std::max(size, std::stoi(statement_num));
+  cfg_nodes.insert({statement_num, node});
 }

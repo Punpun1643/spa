@@ -18,19 +18,19 @@ class DictionaryTable : public BaseTable {
   DictionaryTable();
   ~DictionaryTable() = default;
 
-  void insert(std::string i, std::string j) override;
-  bool isEmpty() override;
+  void Insert(std::string i, std::string j) override;
+  bool IsEmpty() override;
 
-  bool isRelated(std::string i, std::string j) override;
-  bool hasRelations(std::string val) override;
-  bool hasInverseRelations(std::string val) override;
+  bool IsRelated(std::string i, std::string j) override;
+  bool HasRelations(std::string val) override;
+  bool HasInverseRelations(std::string val) override;
 
-  std::unordered_set<std::string> getAllWithRelations(
+  std::unordered_set<std::string> GetAllWithRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
-  std::unordered_set<std::string> getAllWithInverseRelations(
+  std::unordered_set<std::string> GetAllWithInverseRelations(
       std::shared_ptr<std::unordered_set<std::string>> vals) override;
-  std::unordered_set<std::string> getAllRelatedToValue(
+  std::unordered_set<std::string> GetAllRelatedToValue(
       std::string val) override;
-  std::unordered_set<std::string> getAllInverseRelatedToValue(
+  std::unordered_set<std::string> GetAllInverseRelatedToValue(
       std::string val) override;
 };

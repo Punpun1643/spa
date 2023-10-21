@@ -7,17 +7,17 @@
 
 LinkedListTable::LinkedListTable() : BaseTable() {}
 
-void LinkedListTable::insert(std::string i, std::string j) {
-  relations.addEdge(i, j);
+void LinkedListTable::Insert(std::string i, std::string j) {
+  relations.AddEdge(i, j);
 }
 
-bool LinkedListTable::isEmpty() {
-  return relations.isEmpty();
+bool LinkedListTable::IsEmpty() {
+  return relations.IsEmpty();
 }
 
-bool LinkedListTable::isRelated(std::string i, std::string j) {
-  std::shared_ptr<Node> target = relations.getNode(i);
-  std::shared_ptr<Node> curr = relations.getNode(j);
+bool LinkedListTable::IsRelated(std::string i, std::string j) {
+  std::shared_ptr<Node> target = relations.GetNode(i);
+  std::shared_ptr<Node> curr = relations.GetNode(j);
 
   std::queue<std::shared_ptr<Node>> q;
   for (std::shared_ptr<Node> n : curr->prev) {
@@ -38,43 +38,43 @@ bool LinkedListTable::isRelated(std::string i, std::string j) {
   return false;
 }
 
-bool LinkedListTable::hasRelations(std::string val) {
-  std::shared_ptr<Node> node = relations.getNode(val);
+bool LinkedListTable::HasRelations(std::string val) {
+  std::shared_ptr<Node> node = relations.GetNode(val);
   return !node->next.empty();
 }
 
-bool LinkedListTable::hasInverseRelations(std::string val) {
-  std::shared_ptr<Node> node = relations.getNode(val);
+bool LinkedListTable::HasInverseRelations(std::string val) {
+  std::shared_ptr<Node> node = relations.GetNode(val);
   return !node->prev.empty();
 }
 
-std::unordered_set<std::string> LinkedListTable::getAllWithRelations(
+std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
 
   for (std::string val : *vals) {
-    if (hasRelations(val)) {
+    if (HasRelations(val)) {
       output.insert(val);
     }
   }
   return output;
 }
 
-std::unordered_set<std::string> LinkedListTable::getAllWithInverseRelations(
+std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
     std::shared_ptr<std::unordered_set<std::string>> vals) {
   std::unordered_set<std::string> output;
 
   for (std::string val : *vals) {
-    if (hasInverseRelations(val)) {
+    if (HasInverseRelations(val)) {
       output.insert(val);
     }
   }
   return output;
 }
 
-std::unordered_set<std::string> LinkedListTable::getAllRelatedToValue(
+std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
     std::string val) {
-  std::shared_ptr<Node> curr = relations.getNode(val);
+  std::shared_ptr<Node> curr = relations.GetNode(val);
   std::queue<std::shared_ptr<Node>> q;
   std::unordered_set<std::string> output;
 
@@ -95,9 +95,9 @@ std::unordered_set<std::string> LinkedListTable::getAllRelatedToValue(
   return output;
 }
 
-std::unordered_set<std::string> LinkedListTable::getAllInverseRelatedToValue(
+std::unordered_set<std::string> LinkedListTable::GetAllInverseRelatedToValue(
     std::string val) {
-  std::shared_ptr<Node> curr = relations.getNode(val);
+  std::shared_ptr<Node> curr = relations.GetNode(val);
   std::queue<std::shared_ptr<Node>> q;
   std::unordered_set<std::string> output;
 

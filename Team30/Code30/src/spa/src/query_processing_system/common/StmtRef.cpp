@@ -6,9 +6,7 @@
 
 StmtRef::StmtRef() : PqlReference() {}
 
-StmtRef::StmtRef(int stmt_num) : PqlReference(std::to_string(stmt_num)) {
-  assert(stmt_num >= 1);  // should have been caught at syntax checker stage
-}
+StmtRef::StmtRef(int stmt_num) : PqlReference(std::to_string(stmt_num)) {}
 
 StmtRef::StmtRef(PqlDeclaration const& declaration)
     : PqlReference(declaration) {

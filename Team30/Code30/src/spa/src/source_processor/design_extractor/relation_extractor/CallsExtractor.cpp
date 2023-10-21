@@ -13,7 +13,7 @@ void CallsExtractor::ExtractCallAbstractions(
         map_name_node.second->GetProcsCalled();
     std::string proc_calling = map_name_node.first;
     for (std::shared_ptr<CallsGraphProcNode> proc_called : procs_called) {
-      pkb.insertRelation(RelationType::CALLS, proc_calling,
+      pkb.InsertRelation(RelationType::CALLS, proc_calling,
                          proc_called->GetProcName());
     }
   }

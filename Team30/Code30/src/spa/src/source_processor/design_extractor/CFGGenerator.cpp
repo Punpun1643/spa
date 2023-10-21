@@ -29,9 +29,9 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
   std::shared_ptr<StmtNode> curr_stmt = stmts.front();
   StmtType curr_type = curr_stmt->GetStmtType();
   std::unordered_set uses_vars =
-      pkb.getStatementUses(std::to_string(curr_stmt->GetStmtIndex()));
+      pkb.GetStatementUses(std::to_string(curr_stmt->GetStmtIndex()));
   std::unordered_set modifies_vars =
-      pkb.getStatementModifies(std::to_string(curr_stmt->GetStmtIndex()));
+      pkb.GetStatementModifies(std::to_string(curr_stmt->GetStmtIndex()));
   std::shared_ptr<CFGNode> new_node =
       std::make_shared<CFGNode>(curr_stmt, curr_type, uses_vars, modifies_vars);
   stmts.erase(stmts.begin());
@@ -109,7 +109,7 @@ std::shared_ptr<CFGNode> CFGGenerator::GenerateCFG(
     new_node->AddOutgoingNode(next_node);
   }
 
-  pkb.insertCFGNode(std::to_string(curr_stmt->GetStmtIndex()), new_node);
+  pkb.InsertCFGNode(std::to_string(curr_stmt->GetStmtIndex()), new_node);
   return new_node;
 }
 

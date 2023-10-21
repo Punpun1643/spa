@@ -33,7 +33,7 @@ void PKBSPStub::InsertEntity(EntityType type, AttrType attr_type,
   InsertEntity(type, statement_number);
 };
 
-void PKBSPStub::insertRelationCommon(RelationType type, std::string a,
+void PKBSPStub::InsertRelationCommon(RelationType type, std::string a,
                                      std::string b) {
   // if (type == RelationType::USES_P || type == RelationType::USES_S) {
   //    std::cout << REL_TYPE_STRINGS[type] + "(" + a + ", " + b + ")\n";
@@ -68,18 +68,18 @@ void PKBSPStub::insertRelationCommon(RelationType type, std::string a,
 }
 
 // Relation (integer, integer)
-void PKBSPStub::insertRelation(RelationType rel_type, std::string s1_line_num,
+void PKBSPStub::InsertRelation(RelationType rel_type, std::string s1_line_num,
                                std::string s2_line_num) {
-  insertRelationCommon(rel_type, s1_line_num, s2_line_num);
+  InsertRelationCommon(rel_type, s1_line_num, s2_line_num);
 }
 
 // Pattern clause
-void PKBSPStub::insertPattern(PatternType type, std::string statement_number,
+void PKBSPStub::InsertPattern(PatternType type, std::string statement_number,
                               std::string lhs, std::shared_ptr<TreeNode> rhs) {
   insertPatternCallCount++;
 };
 
-std::unordered_set<std::string> PKBSPStub::getProcedureUses(
+std::unordered_set<std::string> PKBSPStub::GetProcedureUses(
     std::string procName) {
   std::unordered_set<std::string> result;
   if (procName == "proc_AST1_A") {
@@ -112,7 +112,7 @@ std::unordered_set<std::string> PKBSPStub::getProcedureUses(
   return result;
 }
 
-std::unordered_set<std::string> PKBSPStub::getProcedureModifies(
+std::unordered_set<std::string> PKBSPStub::GetProcedureModifies(
     std::string procName) {
   std::unordered_set<std::string> result;
   if (procName == "proc_AST1_A") {
@@ -145,18 +145,18 @@ std::unordered_set<std::string> PKBSPStub::getProcedureModifies(
   return result;
 }
 
-std::unordered_set<std::string> PKBSPStub::getStatementModifies(
+std::unordered_set<std::string> PKBSPStub::GetStatementModifies(
     std::string stmt) {
   std::unordered_set<std::string> result;
   return result;
 }
 
-std::unordered_set<std::string> PKBSPStub::getStatementUses(std::string stmt) {
+std::unordered_set<std::string> PKBSPStub::GetStatementUses(std::string stmt) {
   std::unordered_set<std::string> result;
   return result;
 }
 
-void PKBSPStub::insertCFGNode(std::string statement_num,
+void PKBSPStub::InsertCFGNode(std::string statement_num,
                               std::shared_ptr<CFGNode> node) {
   insertCFGCallCount++;
   CFGNodeMap.insert({statement_num, node});

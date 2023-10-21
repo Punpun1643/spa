@@ -11,13 +11,13 @@ ModifiesExtractor::ModifiesExtractor(
       UsesModifiesTypeExtractor(pkb, calls_manager) {}
 
 void ModifiesExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
-  pkb.insertRelation(RelationType::MODIFIES_S,
+  pkb.InsertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());
   InsertVarWithActors(node->GetVarName());
 }
 
 void ModifiesExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
-  pkb.insertRelation(RelationType::MODIFIES_S,
+  pkb.InsertRelation(RelationType::MODIFIES_S,
                      std::to_string(node->GetStmtIndex()), node->GetVarName());
   InsertVarWithActors(node->GetVarName());
 }
@@ -35,9 +35,9 @@ void ModifiesExtractor::InsertVarWithActors(std::string var) {
         !modifies_actor.empty() &&
         std::all_of(modifies_actor.begin(), modifies_actor.end(), ::isdigit);
     if (is_stmt_index) {
-      pkb.insertRelation(RelationType::MODIFIES_S, modifies_actor, var);
+      pkb.InsertRelation(RelationType::MODIFIES_S, modifies_actor, var);
     } else {
-      pkb.insertRelation(RelationType::MODIFIES_P, modifies_actor, var);
+      pkb.InsertRelation(RelationType::MODIFIES_P, modifies_actor, var);
     }
   }
 }

@@ -44,9 +44,9 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
     // by the proc
 
     std::unordered_set<std::string> uses_relations =
-        pkb.getProcedureUses(proc_name_w_min_calls);
+        pkb.GetProcedureUses(proc_name_w_min_calls);
     std::unordered_set<std::string> modifies_relations =
-        pkb.getProcedureModifies(proc_name_w_min_calls);
+        pkb.GetProcedureModifies(proc_name_w_min_calls);
 
     // for each procCalledBy in procsCalls, insert into pkb the relevant uses /
     // modifies relation
@@ -58,21 +58,21 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
       // for each stmtCalledBy in stmtsCalledBy, insert into pkb the relevant
       // uses or modifies relation, and with all the actors
       for (std::string uses_relation : uses_relations) {
-        pkb.insertRelation(RelationType::USES_S,
+        pkb.InsertRelation(RelationType::USES_S,
                            std::to_string(node->GetStmtIndex()), uses_relation);
         for (std::string actor : actors) {
           bool is_stmt_index =
               !actor.empty() &&
               std::all_of(actor.begin(), actor.end(), ::isdigit);
           if (is_stmt_index) {
-            pkb.insertRelation(RelationType::USES_S, actor, uses_relation);
+            pkb.InsertRelation(RelationType::USES_S, actor, uses_relation);
           } else {
-            pkb.insertRelation(RelationType::USES_P, actor, uses_relation);
+            pkb.InsertRelation(RelationType::USES_P, actor, uses_relation);
           }
         }
       }
       for (std::string modifies_relation : modifies_relations) {
-        pkb.insertRelation(RelationType::MODIFIES_S,
+        pkb.InsertRelation(RelationType::MODIFIES_S,
                            std::to_string(node->GetStmtIndex()),
                            modifies_relation);
         for (std::string actor : actors) {
@@ -80,10 +80,10 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
               !actor.empty() &&
               std::all_of(actor.begin(), actor.end(), ::isdigit);
           if (is_stmt_index) {
-            pkb.insertRelation(RelationType::MODIFIES_S, actor,
+            pkb.InsertRelation(RelationType::MODIFIES_S, actor,
                                modifies_relation);
           } else {
-            pkb.insertRelation(RelationType::MODIFIES_P, actor,
+            pkb.InsertRelation(RelationType::MODIFIES_P, actor,
                                modifies_relation);
           }
         }

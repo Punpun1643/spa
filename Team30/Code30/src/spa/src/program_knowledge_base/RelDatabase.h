@@ -2,59 +2,74 @@
 
 #include <cassert>
 #include <memory>
-#include <unordered_map>
-#include <vector>
-#include <unordered_set>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
+#include "../source_processor/node/util_node/CFGNode.h"
 #include "RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
 #include "tables/LinkedListTable.h"
-#include "../source_processor/node/util_node/CFGNode.h"
 
 class RelDatabase {
  private:
   std::unordered_map<RelationType, std::shared_ptr<BaseTable>> relationships =
       {};
-  std::unordered_map<RelationType, std::vector<RelationType>> relatedTables;
+  std::unordered_map<RelationType, std::vector<RelationType>> related_tables;
 
-  std::unordered_map<std::string, std::shared_ptr<CFGNode>> cfgNodes;
-  std::unordered_set<RelationType> cfgRelations;
+  std::unordered_map<std::string, std::shared_ptr<CFGNode>> cfg_nodes;
+  std::unordered_set<RelationType> cfg_relations;
 
-  bool isRelatedCFG(RelationType type, std::string val1, std::string val2);
-  bool hasRelationsCFG(RelationType type, std::string val);
-  bool hasInverseRelationsCFG(RelationType type, std::string val);
+  int size;
 
-  std::unordered_set<std::string> getAllWithRelationsCFG(
+  // helper functions
+  bool IsCFGRelation(RelationType type);
+  bool IsValidStatementNumber(std::string val);
+  std::unordered_set<std::string> GetAllWithPathFrom(
+      std::shared_ptr<CFGNode> node);
+  std::unordered_set<std::string> GetAllWithAffectsPathFrom(
+      std::shared_ptr<CFGNode> node);
+  std::unordered_set<std::string> GetAllWithPathTo(
+      std::shared_ptr<CFGNode> node);
+  std::unordered_set<std::string> GetAllWithAffectsPathTo(
+      std::shared_ptr<CFGNode> node);
+
+  bool IsEmptyCFG(RelationType type);
+  bool IsRelatedCFG(RelationType type, std::string val1, std::string val2);
+  bool HasRelationsCFG(RelationType type, std::string val);
+  bool HasInverseRelationsCFG(RelationType type, std::string val);
+
+  std::unordered_set<std::string> GetAllWithRelationsCFG(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
-  std::unordered_set<std::string> getAllWithInverseRelationsCFG(
+  std::unordered_set<std::string> GetAllWithInverseRelationsCFG(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
 
-  std::unordered_set<std::string> getAllRelatedToValueCFG(RelationType type,
-                                                       std::string val);
-  std::unordered_set<std::string> getAllInverseRelatedToValueCFG(RelationType type,
-                                                              std::string val);
+  std::unordered_set<std::string> GetAllRelatedToValueCFG(RelationType type,
+                                                          std::string val);
+  std::unordered_set<std::string> GetAllInverseRelatedToValueCFG(
+      RelationType type, std::string val);
 
  public:
   RelDatabase();
   ~RelDatabase() = default;
-  void insert(RelationType type, std::string val1, std::string val2);
-  bool isEmpty(RelationType type);
+  void Insert(RelationType type, std::string val1, std::string val2);
 
-  bool isRelated(RelationType type, std::string val1, std::string val2);
-  bool hasRelations(RelationType type, std::string val);
-  bool hasInverseRelations(RelationType type, std::string val);
+  bool IsEmpty(RelationType type);
+  bool IsRelated(RelationType type, std::string val1, std::string val2);
+  bool HasRelations(RelationType type, std::string val);
+  bool HasInverseRelations(RelationType type, std::string val);
 
-  std::unordered_set<std::string> getAllWithRelations(
+  std::unordered_set<std::string> GetAllWithRelations(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
-  std::unordered_set<std::string> getAllWithInverseRelations(
+  std::unordered_set<std::string> GetAllWithInverseRelations(
       RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
 
-  std::unordered_set<std::string> getAllRelatedToValue(RelationType type,
+  std::unordered_set<std::string> GetAllRelatedToValue(RelationType type,
                                                        std::string val);
-  std::unordered_set<std::string> getAllInverseRelatedToValue(RelationType type,
+  std::unordered_set<std::string> GetAllInverseRelatedToValue(RelationType type,
                                                               std::string val);
 
-  void insertCFGNode(std::string statement_num, std::shared_ptr<CFGNode> node);
+  void InsertCFGNode(std::string statement_num, std::shared_ptr<CFGNode> node);
 };
