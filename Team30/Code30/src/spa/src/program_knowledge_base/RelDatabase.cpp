@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_set>
+#include <algorithm>
 
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
