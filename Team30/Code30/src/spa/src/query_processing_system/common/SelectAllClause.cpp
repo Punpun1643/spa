@@ -12,5 +12,5 @@ std::unique_ptr<ClauseResult> SelectAllClause::Evaluate(PKBQPSInterface& pkb) {
 
   auto values = pkb.GetEntitiesWithType(entity_type);
 
-  return std::make_unique<ClauseResult>(declaration, *values);
+  return std::make_unique<ClauseResult>(declaration, values);
 }

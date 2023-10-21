@@ -279,61 +279,61 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
   // Returns all s such that Relation(s, _)
   // there are no assignment statements that are followed by any other
   // statements
-  REQUIRE(*pkb.GetRelationSynonymWild(EntityType::ASSIGN,
-                                      RelationType::FOLLOWS) == empty_vector);
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::ASSIGN,
+                                     RelationType::FOLLOWS) == empty_vector);
   // statement 4 is the only if statement that is a parent
   std::vector<std::string> tmp = {"4"};
-  REQUIRE(*pkb.GetRelationSynonymWild(EntityType::IF,
-                                      RelationType::PARENT_STAR) == tmp);
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::IF,
+                                     RelationType::PARENT_STAR) == tmp);
   // there are no while statements
-  REQUIRE(*pkb.GetRelationSynonymWild(EntityType::WHILE,
-                                      RelationType::PARENT) == empty_vector);
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::WHILE, RelationType::PARENT) ==
+          empty_vector);
 
   // Returns all s such that Relation(s, int)
   // statement 3 follows 1 and 2
   tmp = {"1", "2"};
-  std::vector<std::string> actual = *pkb.GetRelationSynonymValue(
+  std::vector<std::string> actual = pkb.GetRelationSynonymValue(
       EntityType::STMT, "3", RelationType::FOLLOWS_STAR);
   std::sort(actual.begin(), actual.end());
 
   REQUIRE(actual == tmp);
   // statement 4 is the only if statement that is a parent of 7
   tmp = {"4"};
-  REQUIRE(*pkb.GetRelationSynonymValue(EntityType::IF, "7",
-                                       RelationType::PARENT_STAR) == tmp);
+  REQUIRE(pkb.GetRelationSynonymValue(EntityType::IF, "7",
+                                      RelationType::PARENT_STAR) == tmp);
   // statement 2 is the only CALL statement that is followed by 3
   tmp = {"2"};
-  REQUIRE(*pkb.GetRelationSynonymValue(EntityType::CALL, "3",
-                                       RelationType::FOLLOWS) == tmp);
+  REQUIRE(pkb.GetRelationSynonymValue(EntityType::CALL, "3",
+                                      RelationType::FOLLOWS) == tmp);
   // no call statements followed by 4
-  REQUIRE(*pkb.GetRelationSynonymValue(EntityType::CALL, "4",
-                                       RelationType::FOLLOWS) == empty_vector);
+  REQUIRE(pkb.GetRelationSynonymValue(EntityType::CALL, "4",
+                                      RelationType::FOLLOWS) == empty_vector);
 
   // Returns all s such that Relation(int, s)
   // 3 and 4 follows* 2
   tmp = {"3", "4"};
-  actual = *pkb.GetRelationValueSynonym("2", EntityType::STMT,
-                                        RelationType::FOLLOWS_STAR);
+  actual = pkb.GetRelationValueSynonym("2", EntityType::STMT,
+                                       RelationType::FOLLOWS_STAR);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == tmp);
 
   // 4 is a parent of 5, 6, 7
   tmp = {"5", "6", "7"};
-  actual = *pkb.GetRelationValueSynonym("4", EntityType::STMT,
-                                        RelationType::PARENT_STAR);
+  actual = pkb.GetRelationValueSynonym("4", EntityType::STMT,
+                                       RelationType::PARENT_STAR);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == tmp);
 
   //// 3 is not a parent
-  REQUIRE(*pkb.GetRelationValueSynonym("3", EntityType::STMT,
-                                       RelationType::PARENT) == empty_vector);
+  REQUIRE(pkb.GetRelationValueSynonym("3", EntityType::STMT,
+                                      RelationType::PARENT) == empty_vector);
 
   // Returns all s1, s2 such that Relation(s1, s2)
   std::vector<std::pair<std::string, std::string>> tmp_pair;
   tmp_pair = {{"4", "5"}, {"4", "6"}, {"6", "7"}};
   std::vector<std::pair<std::string, std::string>> actual_pairs =
-      *pkb.GetRelationSynonymSynonym(EntityType::STMT, EntityType::STMT,
-                                     RelationType::PARENT);
+      pkb.GetRelationSynonymSynonym(EntityType::STMT, EntityType::STMT,
+                                    RelationType::PARENT);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == tmp_pair);
 }
@@ -399,14 +399,14 @@ TEST_CASE("Uses and Modifies") {
 
   std::vector<std::string> tmp = {"main"};
   // Select p such that Modifies(p, _)
-  REQUIRE(*pkb.GetRelationSynonymWild(EntityType::PROCEDURE,
-                                      RelationType::MODIFIES_P) == tmp);
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::PROCEDURE,
+                                     RelationType::MODIFIES_P) == tmp);
   tmp = {"5", "7"};
   // Select s such that Modifies(s, _)
-  REQUIRE(*pkb.GetRelationSynonymWild(EntityType::STMT,
-                                      RelationType::MODIFIES_S) == tmp);
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::STMT,
+                                     RelationType::MODIFIES_S) == tmp);
   // Query from wrong table
-  REQUIRE(*pkb.GetRelationSynonymWild(EntityType::STMT, RelationType::USES_P) ==
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::STMT, RelationType::USES_P) ==
           empty_vector);
 
   // Select Uses(pn, v)
@@ -415,15 +415,13 @@ TEST_CASE("Uses and Modifies") {
   std::vector<std::pair<std::string, std::string>> tmp1 = {
       std::make_pair("3", "x")};
 
-  REQUIRE(*pkb.GetRelationSynonymSynonym(EntityType::PRINT,
-                                         EntityType::VARIABLE,
-                                         RelationType::USES_S) == tmp1);
+  REQUIRE(pkb.GetRelationSynonymSynonym(EntityType::PRINT, EntityType::VARIABLE,
+                                        RelationType::USES_S) == tmp1);
 
   // Modifies(c, v)
   // No procedure call that modifies a variable
-  REQUIRE(*pkb.GetRelationSynonymSynonym(EntityType::CALL, EntityType::VARIABLE,
-                                         RelationType::MODIFIES_S) ==
-          emptyPair);
+  REQUIRE(pkb.GetRelationSynonymSynonym(EntityType::CALL, EntityType::VARIABLE,
+                                        RelationType::MODIFIES_S) == emptyPair);
 }
 
 TEST_CASE("PKB test1-source Parent*") {
@@ -493,7 +491,7 @@ TEST_CASE("Test1-Source PKB") {
 
   std::vector<std::string> expected_res = {"8", "15", "17"};
   std::vector<std::string> actual;
-  actual = *pkb.GetPatternMatchesWildLhs(
+  actual = pkb.GetPatternMatchesWildLhs(
       std::make_shared<TreeNode>("5", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
 
@@ -504,7 +502,7 @@ TEST_CASE("Test1-Source PKB") {
   std::vector<std::pair<std::string, std::string>> expected_pairs = {
       {"9", "z"}, {"22", "x"}, {"25", "x"}};
   std::vector<std::pair<std::string, std::string>> actual_pairs;
-  actual_pairs = *pkb.GetPatternMatchesSynonymLhs(
+  actual_pairs = pkb.GetPatternMatchesSynonymLhs(
       std::make_shared<TreeNode>("1", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
@@ -512,7 +510,7 @@ TEST_CASE("Test1-Source PKB") {
   REQUIRE(actual_pairs == expected_pairs);
 
   expected_res = {"8", "10"};
-  actual = *pkb.GetPatternMatchesWildLhs(
+  actual = pkb.GetPatternMatchesWildLhs(
       std::make_shared<TreeNode>("q", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
@@ -520,7 +518,7 @@ TEST_CASE("Test1-Source PKB") {
   REQUIRE(actual == expected_res);
 
   expected_pairs = {{"26", "a"}};
-  actual_pairs = *pkb.GetPatternMatchesSynonymLhs(
+  actual_pairs = pkb.GetPatternMatchesSynonymLhs(
       std::make_shared<TreeNode>("b", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
@@ -558,7 +556,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected_pairs.push_back({"4", "y"});
   expected_pairs.push_back({"5", "x"});
   auto actual_pairs =
-      *pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::WILD_MATCH);
+      pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::WILD_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
@@ -567,21 +565,21 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected_pairs.push_back({"3", "x"});
   expected_pairs.push_back({"4", "y"});
   actual_pairs =
-      *pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::PARTIAL_MATCH);
+      pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::PARTIAL_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
   // syn = b * c
   expected_pairs.clear();
   actual_pairs =
-      *pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::EXACT_MATCH);
+      pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::EXACT_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
   // syn = a + b
   expected_pairs.push_back({"5", "x"});
   actual_pairs =
-      *pkb.GetPatternMatchesSynonymLhs(buildTree3(), MatchType::EXACT_MATCH);
+      pkb.GetPatternMatchesSynonymLhs(buildTree3(), MatchType::EXACT_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
@@ -590,23 +588,23 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.push_back("3");
   expected.push_back("5");
   auto actual =
-      *pkb.GetPatternMatchesValueLhs("x", buildTree4(), MatchType::WILD_MATCH);
+      pkb.GetPatternMatchesValueLhs("x", buildTree4(), MatchType::WILD_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
   // x = _b * c_
   expected.clear();
   expected.push_back("3");
-  actual = *pkb.GetPatternMatchesValueLhs("x", buildTree4(),
-                                          MatchType::PARTIAL_MATCH);
+  actual = pkb.GetPatternMatchesValueLhs("x", buildTree4(),
+                                         MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
   // x = _a + b_
   expected.clear();
   expected.push_back("5");
-  actual = *pkb.GetPatternMatchesValueLhs("x", buildTree3(),
-                                          MatchType::PARTIAL_MATCH);
+  actual = pkb.GetPatternMatchesValueLhs("x", buildTree3(),
+                                         MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
@@ -614,14 +612,14 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.clear();
   expected.push_back("3");
   actual =
-      *pkb.GetPatternMatchesValueLhs("x", buildTree1(), MatchType::EXACT_MATCH);
+      pkb.GetPatternMatchesValueLhs("x", buildTree1(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
   // y = a + b * c % d;
   expected.clear();
   actual =
-      *pkb.GetPatternMatchesValueLhs("y", buildTree1(), MatchType::EXACT_MATCH);
+      pkb.GetPatternMatchesValueLhs("y", buildTree1(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
@@ -630,7 +628,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.push_back("3");
   expected.push_back("4");
   expected.push_back("5");
-  actual = *pkb.GetPatternMatchesWildLhs(buildTree1(), MatchType::WILD_MATCH);
+  actual = pkb.GetPatternMatchesWildLhs(buildTree1(), MatchType::WILD_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
@@ -638,7 +636,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.clear();
   expected.push_back("3");
   expected.push_back("5");
-  actual = *pkb.GetPatternMatchesWildLhs(
+  actual = pkb.GetPatternMatchesWildLhs(
       std::make_shared<TreeNode>("a", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
@@ -647,7 +645,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   // _ = _a_
   expected.clear();
   expected.push_back("4");
-  actual = *pkb.GetPatternMatchesWildLhs(buildTree2(), MatchType::EXACT_MATCH);
+  actual = pkb.GetPatternMatchesWildLhs(buildTree2(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 }

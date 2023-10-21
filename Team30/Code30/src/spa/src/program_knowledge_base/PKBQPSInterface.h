@@ -17,7 +17,7 @@
 class PKBQPSInterface {
  public:
   // ---------- ENTITIES ----------
-  virtual std::unique_ptr<std::vector<std::string>> GetEntitiesWithType(
+  virtual std::vector<std::string> GetEntitiesWithType(
       EntityType type) = 0;  // Returns all Entities in the default AttrType
 
   virtual std::string ConvertEntityValueToAlias(std::string value,
@@ -50,33 +50,33 @@ class PKBQPSInterface {
 
   // 1 Declarations
   // Relation(syn, _)
-  virtual std::unique_ptr<std::vector<std::string>> GetRelationSynonymWild(
+  virtual std::vector<std::string> GetRelationSynonymWild(
       EntityType entity_type, RelationType rel_type) = 0;
   // Relation(_, syn)
-  virtual std::unique_ptr<std::vector<std::string>> GetRelationWildSynonym(
+  virtual std::vector<std::string> GetRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) = 0;
   // Relation(syn, int)
-  virtual std::unique_ptr<std::vector<std::string>> GetRelationSynonymValue(
+  virtual std::vector<std::string> GetRelationSynonymValue(
       EntityType entity_type, std::string value, RelationType rel_type) = 0;
   // Relation(int, syn)
-  virtual std::unique_ptr<std::vector<std::string>> GetRelationValueSynonym(
+  virtual std::vector<std::string> GetRelationValueSynonym(
       std::string value, EntityType entity_type, RelationType rel_type) = 0;
 
   // 2 Declarations
   // Relation(syn1, syn2)
-  virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  virtual std::vector<std::pair<std::string, std::string>>
   GetRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
                             RelationType rel_type) = 0;
 
   // ---------- PATTERNS ----------
-  virtual std::unique_ptr<std::vector<std::string>> GetPatternMatchesWildLhs(
+  virtual std::vector<std::string> GetPatternMatchesWildLhs(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) = 0;
-  virtual std::unique_ptr<std::vector<std::string>> GetPatternMatchesValueLhs(
+  virtual std::vector<std::string> GetPatternMatchesValueLhs(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) = 0;
   // 2 paired values - one for the implicit assign declaration, paired with
   // the variable declaration on the LHS of the assign stmt
-  virtual std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+  virtual std::vector<std::pair<std::string, std::string>>
   GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) = 0;
 };

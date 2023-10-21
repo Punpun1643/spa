@@ -1,9 +1,9 @@
 #include "SuchThatClause.h"
 
 #include <cassert>
-#include <utility>
-#include <string>
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 SuchThatClause::~SuchThatClause() = default;
@@ -74,7 +74,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationWild(
   EntityType entity_type = arg1->GetDeclarationType();
   PqlDeclaration declaration = arg1->GetDeclaration();
   auto possible_values = pkb.GetRelationSynonymWild(entity_type, relation_type);
-  return std::make_unique<ClauseResult>(declaration, *possible_values);
+  return std::make_unique<ClauseResult>(declaration, possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::EvaluateWildDeclaration(
@@ -82,7 +82,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateWildDeclaration(
   EntityType entity_type = arg2->GetDeclarationType();
   PqlDeclaration declaration = arg2->GetDeclaration();
   auto possible_values = pkb.GetRelationWildSynonym(entity_type, relation_type);
-  return std::make_unique<ClauseResult>(declaration, *possible_values);
+  return std::make_unique<ClauseResult>(declaration, possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationValue(
@@ -92,7 +92,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationValue(
   std::string second_value = arg2->GetValue();
   auto possible_values =
       pkb.GetRelationSynonymValue(entity_type, second_value, relation_type);
-  return std::make_unique<ClauseResult>(declaration, *possible_values);
+  return std::make_unique<ClauseResult>(declaration, possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::EvaluateValueDeclaration(
@@ -102,7 +102,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateValueDeclaration(
   std::string first_value = arg1->GetValue();
   auto possible_values =
       pkb.GetRelationValueSynonym(first_value, entity_type, relation_type);
-  return std::make_unique<ClauseResult>(declaration, *possible_values);
+  return std::make_unique<ClauseResult>(declaration, possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
@@ -115,7 +115,7 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
   auto possible_values = pkb.GetRelationSynonymSynonym(
       entity_type_1, entity_type_2, relation_type);
   return std::make_unique<ClauseResult>(declaration_1, declaration_2,
-                                        *possible_values);
+                                        possible_values);
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::Evaluate(PKBQPSInterface& pkb) {
