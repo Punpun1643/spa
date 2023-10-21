@@ -5,15 +5,15 @@
 
 #include "../exceptions/InvalidSourceSemanticsException.h"
 CallsManager::CallsManager(PKBSPInterface& pkb) : pkb(pkb) {
-  callsExtractor = std::make_shared<CallsExtractor>(pkb);
-  procConnector = std::make_shared<CallsProcConnector>(pkb);
+  calls_extractor = std::make_shared<CallsExtractor>(pkb);
+  proc_connector = std::make_shared<CallsProcConnector>(pkb);
 }
 
-void CallsManager::InsertProcNode(std::string procName) {
-  if (procNodeMap.find(procName) == procNodeMap.end()) {
-    std::shared_ptr<CallsGraphProcNode> newNode =
-        std::make_shared<CallsGraphProcNode>(procName);
-    procNodeMap.insert({procName, newNode});
+void CallsManager::InsertProcNode(std::string proc_name) {
+  if (proc_node_map.find(proc_name) == proc_node_map.end()) {
+    std::shared_ptr<CallsGraphProcNode> new_node =
+        std::make_shared<CallsGraphProcNode>(proc_name);
+    proc_node_map.insert({proc_name, new_node});
   } else {
     // throw error: two procs with same name
     throw InvalidSourceSemanticsException(
@@ -24,37 +24,37 @@ void CallsManager::InsertProcNode(std::string procName) {
 // procA: the procedure in which the call stmt is found
 // procB: the procedure that the call stmt calls
 // i.e. A calls B
-void CallsManager::InsertCallsStmt(std::string procA, std::string procB,
+void CallsManager::InsertCallsStmt(std::string proc_a, std::string proc_b,
                                    std::vector<std::string> actors,
-                                   std::shared_ptr<CallNode> callNode) {
-  std::shared_ptr<CallsGraphStmtNode> newStmtNode =
-      std::make_shared<CallsGraphStmtNode>(actors, callNode);
-  std::shared_ptr<CallsGraphProcNode> procCalling = procNodeMap[procA];
-  std::shared_ptr<CallsGraphProcNode> procGettingCalled = procNodeMap[procB];
+                                   std::shared_ptr<CallNode> call_node) {
+  std::shared_ptr<CallsGraphStmtNode> new_stmt_node =
+      std::make_shared<CallsGraphStmtNode>(actors, call_node);
+  std::shared_ptr<CallsGraphProcNode> proc_calling = proc_node_map[proc_a];
+  std::shared_ptr<CallsGraphProcNode> proc_getting_called = proc_node_map[proc_b];
 
-  if (procCalling == nullptr) {
+  if (proc_calling == nullptr) {
     // invalid proc
     throw InvalidSourceSemanticsException("Proceduce calling does not exist.");
   }
-  if (procGettingCalled == nullptr) {
+  if (proc_getting_called == nullptr) {
     // throw error: call to non-existant procedure
     throw InvalidSourceSemanticsException(
         "Proceduce getting called does not exist.");
   }
-  if (procCalling == procGettingCalled) {
+  if (proc_calling == proc_getting_called) {
     // throw error: cyclic call detected
     throw InvalidSourceSemanticsException("Proceduce calls itself.");
   }
 
-  procGettingCalled->addStmtCalledBy(newStmtNode);
-  procGettingCalled->addProcCalledBy(procCalling);
-  procCalling->addProcCalled(procGettingCalled);
+  proc_getting_called->AddStmtCalledBy(new_stmt_node);
+  proc_getting_called->AddProcCalledBy(proc_calling);
+  proc_calling->AddProcCalled(proc_getting_called);
 }
 
 void CallsManager::ExecuteCallsExtraction() {
-  callsExtractor->ExtractCallAbstractions(procNodeMap);
+  calls_extractor->ExtractCallAbstractions(proc_node_map);
 }
 
 void CallsManager::ConnectProcsAndUpdateRelations() {
-  procConnector->ConnectProcsAndUpdateRelations(procNodeMap);
+  proc_connector->ConnectProcsAndUpdateRelations(proc_node_map);
 }

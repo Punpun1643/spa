@@ -10,90 +10,87 @@ CallsProcConnector::CallsProcConnector(PKBSPInterface& pkb) : pkb(pkb) {}
 
 void CallsProcConnector::ConnectProcsAndUpdateRelations(
     std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
-        procNodeMap) {
+        proc_node_map) {
   std::unordered_map<std::string, std::shared_ptr<CallsGraphProcNode>>
-      procNodeMap_copy = procNodeMap;
+      proc_node_map_copy = proc_node_map;
 
-  while (!procNodeMap_copy.empty()) {
-    // for (auto m : procNodeMap_copy) {
-    // std::cout << m.first + "\n";
-    // }
+  while (!proc_node_map_copy.empty()) {
 
     // traverse procNodeMap to find the proc with the smallest size of
     // procsCalled (should be 0)
-    int minCalls = INT_MAX;
-    std::shared_ptr<CallsGraphProcNode> nodeWMinCalls;
-    std::string procNameWMinCalls;
-    for (auto mapNameNode : procNodeMap_copy) {
-      int currNumCalls = mapNameNode.second->getNumProcsCalled();
-      if (currNumCalls < minCalls) {
-        minCalls = currNumCalls;
-        nodeWMinCalls = mapNameNode.second;
-        procNameWMinCalls = mapNameNode.first;
+    int min_calls = INT_MAX;
+    std::shared_ptr<CallsGraphProcNode> node_w_min_calls;
+    std::string proc_name_w_min_calls;
+    for (auto map_name_node : proc_node_map_copy) {
+      int curr_num_calls = map_name_node.second->GetNumProcsCalled();
+      if (curr_num_calls < min_calls) {
+        min_calls = curr_num_calls;
+        node_w_min_calls = map_name_node.second;
+        proc_name_w_min_calls = map_name_node.first;
       }
     }
 
-    assert(nodeWMinCalls != NULL);
+    assert(node_w_min_calls != NULL);
 
     // checks for cyclic calls
-    if (minCalls != 0) {
+    if (min_calls != 0) {
       throw InvalidSourceSemanticsException("Cyclic call detected.");
     }
 
     // from the pkb, get all the variables that are used / modified
     // by the proc
 
-    std::unordered_set<std::string> usesRelations =
-        pkb.getProcedureUses(procNameWMinCalls);
-    std::unordered_set<std::string> modifiesRelations =
-        pkb.getProcedureModifies(procNameWMinCalls);
+    std::unordered_set<std::string> uses_relations =
+        pkb.getProcedureUses(proc_name_w_min_calls);
+    std::unordered_set<std::string> modifies_relations =
+        pkb.getProcedureModifies(proc_name_w_min_calls);
 
     // for each procCalledBy in procsCalls, insert into pkb the relevant uses /
     // modifies relation
-    for (std::shared_ptr<CallsGraphStmtNode> stmtCalling :
-         nodeWMinCalls->getStmtsCalledBy()) {
-      std::shared_ptr<CallNode> node = stmtCalling->getCallNode();
-      std::vector<std::string> actors = stmtCalling->getActors();
+    for (std::shared_ptr<CallsGraphStmtNode> stmt_calling :
+         node_w_min_calls->GetStmtsCalledBy()) {
+      std::shared_ptr<CallNode> node = stmt_calling->GetCallNode();
+      std::vector<std::string> actors = stmt_calling->GetActors();
 
       // for each stmtCalledBy in stmtsCalledBy, insert into pkb the relevant
       // uses or modifies relation, and with all the actors
-      for (std::string usesRelation : usesRelations) {
+      for (std::string uses_relation : uses_relations) {
         pkb.insertRelation(RelationType::USES_S,
-                           std::to_string(node->GetStmtIndex()), usesRelation);
+                           std::to_string(node->GetStmtIndex()), uses_relation);
         for (std::string actor : actors) {
-          bool isStmtIndex = !actor.empty() &&
+          bool is_stmt_index = !actor.empty() &&
                              std::all_of(actor.begin(), actor.end(), ::isdigit);
-          if (isStmtIndex) {
-            pkb.insertRelation(RelationType::USES_S, actor, usesRelation);
+          if (is_stmt_index) {
+            pkb.insertRelation(RelationType::USES_S, actor, uses_relation);
           } else {
-            pkb.insertRelation(RelationType::USES_P, actor, usesRelation);
+            pkb.insertRelation(RelationType::USES_P, actor, uses_relation);
           }
         }
       }
-      for (std::string modifiesRelation : modifiesRelations) {
+      for (std::string modifies_relation : modifies_relations) {
         pkb.insertRelation(RelationType::MODIFIES_S,
                            std::to_string(node->GetStmtIndex()),
-                           modifiesRelation);
+                           modifies_relation);
         for (std::string actor : actors) {
-          bool isStmtIndex = !actor.empty() &&
+          bool is_stmt_index = !actor.empty() &&
                              std::all_of(actor.begin(), actor.end(), ::isdigit);
-          if (isStmtIndex) {
+          if (is_stmt_index) {
             pkb.insertRelation(RelationType::MODIFIES_S, actor,
-                               modifiesRelation);
+                               modifies_relation);
           } else {
             pkb.insertRelation(RelationType::MODIFIES_P, actor,
-                               modifiesRelation);
+                               modifies_relation);
           }
         }
       }
     }
 
     // remove this procNode from the procNodeMap
-    for (std::shared_ptr<CallsGraphProcNode> procCalling :
-         nodeWMinCalls->getProcsCalledBy()) {
-      procCalling->removeProcCalled(nodeWMinCalls);
+    for (std::shared_ptr<CallsGraphProcNode> proc_calling :
+         node_w_min_calls->GetProcsCalledBy()) {
+      proc_calling->RemoveProcCalled(node_w_min_calls);
     }
 
-    procNodeMap_copy.erase(procNameWMinCalls);
+    proc_node_map_copy.erase(proc_name_w_min_calls);
   }
 }
