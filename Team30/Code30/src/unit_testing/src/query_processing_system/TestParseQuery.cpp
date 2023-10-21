@@ -495,8 +495,7 @@ TEST_CASE("Select clauses with attr ref") {
     AddDeclaration(tokens, "stmt", {"s1"});
     AddWordVector(tokens, {"Select", "s1"});
     AddSpecialCharVector(tokens, {"."});
-    AddWordVector(tokens, {"stmt"});
-    AddSpecialCharVector(tokens, {"#"});
+    AddWordVector(tokens, {"stmt#"});
     AddWordVector(tokens, {"such", "that", "Follows"});
     AddIntWord(tokens, "2", "s1");
     AddEOF(tokens);
@@ -535,8 +534,8 @@ TEST_CASE("Select clauses with attr ref") {
     AddSpecialCharVector(tokens, {"<"});
     AddWordVector(tokens, {"s"});
     AddSpecialCharVector(tokens, {"."});
-    AddWordVector(tokens, {"stmt"});
-    AddSpecialCharVector(tokens, {"#", ","});
+    AddWordVector(tokens, {"stmt#"});
+    AddSpecialCharVector(tokens, {","});
     AddWordVector(tokens, {"p"});
     AddSpecialCharVector(tokens, {"."});
     AddWordVector(tokens, {"procName"});
@@ -599,8 +598,8 @@ TEST_CASE("With queries") {
     AddDeclaration(tokens, "constant", {"c"});
     AddWordVector(tokens, {"Select", "s", "with", "s"});
     AddSpecialCharVector(tokens, {"."});
-    AddWordVector(tokens, {"stmt"});
-    AddSpecialCharVector(tokens, {"#", "="});
+    AddWordVector(tokens, {"stmt#"});
+    AddSpecialCharVector(tokens, {"="});
     AddWordVector(tokens, {"c"});
     AddSpecialCharVector(tokens, {"."});
     AddWordVector(tokens, {"value"});
@@ -630,8 +629,8 @@ TEST_CASE("With queries") {
     AddDeclaration(tokens, "constant", {"c"});
     AddWordVector(tokens, {"Select", "s", "with", "s"});
     AddSpecialCharVector(tokens, {"."});
-    AddWordVector(tokens, {"stmt"});
-    AddSpecialCharVector(tokens, {"#", "="});
+    AddWordVector(tokens, {"stmt#"});
+    AddSpecialCharVector(tokens, {"="});
     AddWordVector(tokens, {"c"});
     AddSpecialCharVector(tokens, {"."});
     AddWordVector(tokens, {"value", "and", "p"});
@@ -684,8 +683,8 @@ TEST_CASE("With queries") {
     AddDeclaration(tokens, "stmt", {"s"});
     AddWordVector(tokens, {"Select", "s", "with", "s"});
     AddSpecialCharVector(tokens, {"."});
-    AddWordVector(tokens, {"stmt"});
-    AddSpecialCharVector(tokens, {"#", "="});
+    AddWordVector(tokens, {"stmt#"});
+    AddSpecialCharVector(tokens, {"="});
     AddIntVector(tokens, {"20000"});
     AddWordVector(tokens, {"such", "that", "Follows"});
     AddIntWord(tokens, "5", "s");

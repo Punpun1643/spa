@@ -65,10 +65,6 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
     if (GetPeekTokenValue() == ".") {
       NextToken();  // .
       std::string attr_type_string = NextToken()->getTokenVal();
-      if (attr_type_string == "stmt") {
-        attr_type_string += NextToken()->getTokenVal();
-        assert(attr_type_string == "stmt#");
-      }
       AttrType attr_type = QpParser::StringToAttrType(attr_type_string);
       return std::make_optional<std::shared_ptr<SelectExpression>>(
           std::make_shared<SelectExpression>(synonym, attr_type, false));
