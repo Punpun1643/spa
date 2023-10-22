@@ -1,7 +1,7 @@
 #include "PqlReference.h"
 
-#include <cassert>
 #include <utility>
+#include <stdexcept>
 
 #include "shared/types/EntityType.h"
 
@@ -25,17 +25,23 @@ PqlRefType PqlReference::GetRefType() const {
 }
 
 std::string PqlReference::GetValue() const {
-  assert(ref_type == PqlRefType::VALUE);
+  if (ref_type != PqlRefType::VALUE) {
+    throw std::logic_error("PqlRef does not contain a value.");
+  }
   return ref_value.value();
 }
 
 PqlDeclaration PqlReference::GetDeclaration() const {
-  assert(ref_type == PqlRefType::DECLARATION);
+  if (ref_type != PqlRefType::DECLARATION) {
+    throw std::logic_error("PqlRef does not contain a declaration.");
+  }
   return ref_declaration.value();
 }
 
 EntityType PqlReference::GetDeclarationType() const {
-  assert(ref_type == PqlRefType::DECLARATION);
+  if (ref_type != PqlRefType::DECLARATION) {
+    throw std::logic_error("PqlRef does not contain a value.");
+  }
   return ref_declaration->GetEntityType();
 }
 

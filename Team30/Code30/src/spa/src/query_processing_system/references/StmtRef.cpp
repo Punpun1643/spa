@@ -1,7 +1,5 @@
 #include "StmtRef.h"
 
-#include <cassert>
-
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
 StmtRef::StmtRef() : PqlReference() {}

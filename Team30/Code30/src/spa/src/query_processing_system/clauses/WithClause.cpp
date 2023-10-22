@@ -1,12 +1,11 @@
 #include "WithClause.h"
 
-#include <cassert>
 #include <memory>
 #include <string>
 #include <utility>
+#include <stdexcept>
 
 #include "../exceptions/InvalidSemanticsException.h"
-#include "shared/ArrayUtility.h"
 
 WithClause::WithClause(WithRef ref1, WithRef ref2)
     : ref1(std::move(ref1)), ref2(std::move(ref2)) {
@@ -22,7 +21,7 @@ AttrRefOutputType WithClause::GetRefOutputType(WithRef ref) {
     auto attr_ref = std::get<AttrRef>(ref);
     return attr_ref.GetOutputType();
   } else {
-    assert(false);
+    throw std::runtime_error("Unexpected argument");
   }
 }
 
@@ -54,7 +53,9 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateValueAttrRef(
 
 std::unique_ptr<ClauseResult> WithClause::EvaluateIntAttrRef(
     PKBQPSInterface& pkb, int int_ref_id) {
-  assert(int_ref_id == 1 || int_ref_id == 2);
+  if (int_ref_id != 1 && int_ref_id != 2) {
+    throw std::invalid_argument("int_ref_id must be either 1 or 2!");
+  }
   AttrRef attr_ref =
       (int_ref_id == 1 ? std::get<AttrRef>(ref2) : std::get<AttrRef>(ref1));
   std::string value = std::to_string(int_ref_id == 1 ? std::get<int>(ref1)
@@ -64,7 +65,9 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateIntAttrRef(
 
 std::unique_ptr<ClauseResult> WithClause::EvaluateStrAttrRef(
     PKBQPSInterface& pkb, int str_ref_id) {
-  assert(str_ref_id == 1 || str_ref_id == 2);
+  if (str_ref_id != 1 && str_ref_id != 2) {
+    throw std::invalid_argument("str_ref_id must be either 1 or 2!");
+  }
   AttrRef attr_ref =
       (str_ref_id == 1 ? std::get<AttrRef>(ref2) : std::get<AttrRef>(ref1));
   auto value = str_ref_id == 1 ? std::get<std::string>(ref1)
@@ -104,6 +107,6 @@ std::unique_ptr<ClauseResult> WithClause::Evaluate(PKBQPSInterface& pkb) {
              std::holds_alternative<AttrRef>(ref2)) {
     return EvaluateRefRef(pkb);
   } else {
-    assert(false);  // shouldn't get here
+    throw std::runtime_error("Unexpected argument");
   }
 }
