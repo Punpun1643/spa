@@ -5,7 +5,7 @@ Select s such that Parent* (i, s) and Follows*(s, 10)
 5000
 2 - 2 Pattern Clauses
 variable v; assign a, a1;
-Select v pattern a (v, _"x"_) and pattern a1 (v, _"y"_)
+Select v pattern a (v, _"x"_) and a1 (v, _"y"_)
 z, j, y, q
 5000
 3 - Such That AND Such That + Pattern
@@ -15,7 +15,7 @@ z, q, i, j, p, y
 5000
 4 - Pattern AND Pattern + Such That
 assign a, a1; while w; stmt s; variable v;
-Select v pattern a ("x", _) and pattern a1 ("y", _) such that Parent* (w, s)
+Select v pattern a ("x", _) and a1 ("y", _) such that Parent* (w, s)
 none
 5000
 5 - 2 identical Clauses
@@ -25,7 +25,7 @@ Select pn such that Uses (pn, "y") and Uses (pn, "y")
 5000
 6 - 5 chain clause
 read r; variable v, v1; assign a, a1; stmt s;
-Select r pattern a (v, _"i"_) and pattern a1 (v1, _"j"_) such that Follows* (15, 20) and Parent(8, s) and Modifies (a, v)
+Select r pattern a (v, _"i"_) and a1 (v1, _"j"_) such that Follows* (15, 20) and Parent(8, s) and Modifies (a, v)
 1, 24
 5000
 7 - Invalid 'and' cannot be adjacent to 'such that' keyword
@@ -35,6 +35,6 @@ SyntaxError
 5000
 8 - Invalid 'and' cannot connect 2 different clause types
 assign a; variable v;
-Select v such that Modifies (a, "j") and pattern a (v, _)
+Select v such that Modifies (a, "j") and a (v, _)
 SyntaxError
 5000
