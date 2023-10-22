@@ -10,16 +10,16 @@
 SpParserManager::SpParserManager() {}
 
 std::shared_ptr<ProgramNode> SpParserManager::ParseInputFile(
-    std::string filePath) {
-  std::ifstream inputFileStream(filePath);
+    std::string file_path) {
+  std::ifstream input_file_stream(file_path);
 
-  Tokenizer tokenizer = Tokenizer(inputFileStream);
+  Tokenizer tokenizer = Tokenizer(input_file_stream);
 
   std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
 
   SpParser parser(tokens);
   parser.parse();
-  std::shared_ptr<ProgramNode> programNode = parser.GetSourceProgramNode();
+  std::shared_ptr<ProgramNode> program_node = parser.GetSourceProgramNode();
 
-  return programNode;
+  return program_node;
 }
