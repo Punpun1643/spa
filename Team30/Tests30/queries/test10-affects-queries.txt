@@ -84,7 +84,7 @@ Select BOOLEAN such that Affects (s, 10)
 TRUE
 5000
 18 - Wrong synonym param (not a stmt)
-stmt s;
+variable v;
 Select BOOLEAN such that Affects (v, 5)
 SemanticError
 5000
