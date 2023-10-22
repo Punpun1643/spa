@@ -1,4 +1,0 @@
-procedure Example {
-    call c;
-    read r;
-    print p; }
