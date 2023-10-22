@@ -10,7 +10,7 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: macos-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     strategy:
       fail-fast: true
     env:
