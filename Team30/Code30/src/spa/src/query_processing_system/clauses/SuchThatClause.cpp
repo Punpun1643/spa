@@ -1,7 +1,7 @@
 #include "SuchThatClause.h"
 
-#include <cassert>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -18,7 +18,9 @@ SuchThatClause::SuchThatClause(std::unique_ptr<PqlReference const> arg1,
 void SuchThatClause::CheckDeclarationArgEntityType(
     int arg_num, std::vector<EntityType> const& allowed_types,
     std::string const& error_msg) {
-  assert(arg_num == 1 || arg_num == 2);
+  if (arg_num != 1 && arg_num != 2) {
+    throw std::invalid_argument("arg_num must be either 1 or 2!");
+  }
   PqlReference arg((arg_num == 1) ? *arg1 : *arg2);
 
   if (arg.GetRefType() == PqlRefType::DECLARATION &&
@@ -31,7 +33,9 @@ void SuchThatClause::CheckDeclarationArgEntityType(
 void SuchThatClause::CheckArgReferenceType(
     int arg_num, std::vector<PqlRefType> const& allowed_types,
     std::string const& error_msg) {
-  assert(arg_num == 1 || arg_num == 2);
+  if (arg_num != 1 && arg_num != 2) {
+    throw std::invalid_argument("arg_num must be either 1 or 2!");
+  }
   PqlReference arg((arg_num == 1) ? *arg1 : *arg2);
 
   if (std::find(allowed_types.begin(), allowed_types.end(), arg.GetRefType()) ==

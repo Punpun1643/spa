@@ -1,10 +1,8 @@
 #include "IntermediateResultsTable.h"
 
-#include <cassert>
+#include <stdexcept>
 #include <string>
 #include <vector>
-
-#include "shared/ArrayUtility.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 
@@ -28,7 +26,6 @@ void IntermediateResultsTable::AddClauseResult(
     }
     case (2): {
       auto declarations = clause_result.GetDeclarations();
-      assert(declarations.size() == 2);
       auto d1 = declarations[0];
       auto d2 = declarations[1];
       auto d1_values = clause_result.GetValues(d1);
@@ -49,24 +46,24 @@ bool IntermediateResultsTable::HasNoResults() const {
 std::vector<std::vector<std::string>>
 IntermediateResultsTable::GetValuesGivenDeclarations(
     std::vector<PqlDeclaration> const& decls) {
-  assert(!decls.empty());
-
   // This check must come first, because decls are technically
   // not added to a table that already has no results.
-  if (has_no_results) {
+  if (decls.empty() || has_no_results) {
     return {};  // empty values
   }
 
   for (auto& decl : decls) {
-    assert(HasDeclaration(decl));
+    if (!HasDeclaration(decl)) {
+      throw std::invalid_argument("Given decl not in table.");
+    }
   }
 
   // Merge all the declarations into a single table: possible source of future
   // optimisation.
-  int table_idx = table_mapping[decls[0]];
+  int table_idx = table_mapping.at(decls[0]);
   for (auto& decl : decls) {
-    if (table_mapping[decl] != table_idx) {
-      MergeExistingTables(table_idx, table_mapping[decl], true);
+    if (table_mapping.at(decl) != table_idx) {
+      MergeExistingTables(table_idx, table_mapping.at(decl), true);
     }
   }
 
@@ -89,7 +86,7 @@ void IntermediateResultsTable::AddSingleDeclaration(
     tables.push_back(new_table);
     table_mapping[d] = static_cast<int>(tables.size()) - 1;
   } else {
-    int table_idx = table_mapping[d];
+    int table_idx = table_mapping.at(d);
     tables[table_idx].Join(new_table);
     if (tables[table_idx].HasNoResults()) {
       has_no_results = true;
@@ -112,31 +109,29 @@ void IntermediateResultsTable::AddPairedDeclarations(
     table_mapping[d2] = static_cast<int>(tables.size()) - 1;
 
   } else if (table_mapping.count(d1) == 1 && table_mapping.count(d2) == 0) {
-    int d1_table_idx = table_mapping[d1];
+    int d1_table_idx = table_mapping.at(d1);
     tables[d1_table_idx].Join(new_table);
     table_mapping[d2] = d1_table_idx;
 
   } else if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 1) {
-    int d2_table_idx = table_mapping[d2];
+    int d2_table_idx = table_mapping.at(d2);
     tables[d2_table_idx].Join(new_table);
     table_mapping[d1] = d2_table_idx;
 
   } else {
     // case 1: d1 and d2 in same table already
-    if (table_mapping[d1] == table_mapping[d2]) {
-      int table_idx = table_mapping[d1];
+    if (table_mapping.at(d1) == table_mapping.at(d2)) {
+      int table_idx = table_mapping.at(d1);
       tables[table_idx].Join(new_table);
     } else {
       // case 2: d1 and d2 are in different tables
-      int d1_table_idx = table_mapping[d1];
-      int d2_table_idx = table_mapping[d2];
+      int d1_table_idx = table_mapping.at(d1);
+      int d2_table_idx = table_mapping.at(d2);
       tables[d1_table_idx].Join(new_table);
       MergeExistingTables(d1_table_idx, d2_table_idx);
     }
   }
-  assert(table_mapping.count(d1) ==
-         1);  // otherwise, doing [] will insert a default key-value pair.
-  if (tables[table_mapping[d1]].HasNoResults()) {
+  if (tables[table_mapping.at(d1)].HasNoResults()) {
     has_no_results = true;
     return;
   }

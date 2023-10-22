@@ -1,6 +1,5 @@
 #include "PatternClause.h"
 
-#include <cassert>
 #include <memory>
 #include <utility>
 

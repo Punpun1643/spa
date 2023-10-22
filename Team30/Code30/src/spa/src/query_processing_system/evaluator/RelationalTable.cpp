@@ -1,7 +1,7 @@
 #include "RelationalTable.h"
 
 #include <algorithm>
-#include <cassert>
+#include <stdexcept>
 #include <unordered_set>
 #include <utility>
 
@@ -19,8 +19,12 @@ RelationalTable::RelationalTable(PqlDeclaration const& d1,
                                  PqlDeclaration const& d2,
                                  std::vector<std::string> const& d1_values,
                                  std::vector<std::string> const& d2_values) {
-  assert(!(d1 == d2));
-  assert(d1_values.size() == d2_values.size());
+  if (d1 == d2) {
+    throw std::invalid_argument("Error: Declarations are identical");
+  }
+  if (d1_values.size() != d2_values.size()) {
+    throw std::invalid_argument("Error: Decl values have different lengths.");
+  }
 
   column_mapping[d1] = 0;
   column_mapping[d2] = 1;
@@ -32,9 +36,13 @@ RelationalTable::RelationalTable(PqlDeclaration const& d1,
 
 std::vector<std::vector<std::string>> RelationalTable::GetTableCols(
     std::vector<PqlDeclaration> const& decls) const {
-  assert(!decls.empty());
+  if (decls.empty()) {
+    return {};
+  }
   for (auto& d : decls) {
-    assert(column_mapping.count(d) == 1);
+    if (column_mapping.count(d) == 0) {
+      throw std::invalid_argument("Given declaration not in table.");
+    }
   }
   std::vector<std::vector<std::string>> output = {};
   // Construct row by row
@@ -138,8 +146,10 @@ void RelationalTable::Join(RelationalTable& other_table,
    */
   // get shared columns
   auto shared_cols = GetSharedColumns(other_table);
-  if (!allow_cross_product) {
-    assert(!shared_cols.empty());  // block doing a cross-product
+  if (!allow_cross_product && shared_cols.empty()) {
+    throw std::invalid_argument(
+        "Given table has no shared cols with existing table and cross-products "
+        "are not allowed");
   }
 
   std::vector<std::vector<std::string>> new_table;

@@ -1,7 +1,7 @@
 #include "QueryEvaluator.h"
 
 #include <algorithm>
-#include <cassert>
+#include <stdexcept>
 
 #include "shared/ArrayUtility.h"
 
@@ -52,8 +52,9 @@ bool QueryEvaluator::UpdateResultUsingAttrTypes(
   /**
    * Returns true if the 2D-vector was modified, and false otherwise
    */
-  if (!values.empty()) {
-    assert(values[0].size() == attr_refs.size());  // assume not ragged 2D vec
+  if (!values.empty() && values[0].size() != attr_refs.size()) {
+    throw std::invalid_argument(
+        "Number of attr_refs does not match number of values");
   }
 
   std::vector<int> aliased_idx = {};
@@ -83,7 +84,9 @@ std::vector<std::vector<std::string>> QueryEvaluator::EvaluateQuery(
    * in the form of a 2D vector. Each row represents one set of possible values
    * (e.g. a = 2, b = 3, c = 4 will be {{"2", "3", "4"}})
    */
-  assert(!selected_attr_refs.empty());
+  if (selected_attr_refs.empty()) {
+    throw std::invalid_argument("AttrRef vector cannot be empty.");
+  }
   auto table = IntermediateResultsTable();
   PopulateIntermediateResultsTable(table, clauses);
 

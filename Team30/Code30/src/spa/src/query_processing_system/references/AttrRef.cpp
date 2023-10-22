@@ -1,6 +1,5 @@
 #include "AttrRef.h"
 
-#include <cassert>
 #include <string>
 #include <utility>
 
@@ -58,7 +57,6 @@ AttrType AttrRef::GetDefaultAttrType() const {
 }
 
 AttrRefOutputType AttrRef::GetOutputType() const {
-  assert(OUTPUT_TYPE_MAPPING.count(attr_type) == 1);
   return OUTPUT_TYPE_MAPPING.at(attr_type);
 }
 
