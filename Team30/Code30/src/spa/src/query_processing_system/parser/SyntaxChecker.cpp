@@ -628,9 +628,6 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
 
 void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
   std::string attr_name = GetCurrTokenValue();
-  if (attr_name == "stmt") {
-    attr_name += NextToken()->getTokenVal();
-  }
 
   if (attr_name != attr_name::STMT_NUM && attr_name != attr_name::PROC_NAME &&
       attr_name != attr_name::VAR_NAME && attr_name != attr_name::VALUE) {
