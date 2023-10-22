@@ -9,6 +9,7 @@
 #include <string>
 #include <memory>
 
+#include "../../shared/parser/exceptions/StartOfFileException.h"
 #include "../../shared/parser/node/TreeNode.h"
 #include "../common/EntityType.h"
 #include "../expression/AffectsExpression.h"
@@ -30,8 +31,11 @@ ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::shared_ptr<Context> context)
     : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
-  while (GetCurrTokenValue() != QpParser::SELECT ||
-         GetPeekBackTokenValue() != ";") {
+  while ((GetCurrTokenValue() != QpParser::SELECT) ||
+         (GetCurrTokenValue() == QpParser::SELECT &&
+          std::find(tokens.begin(), tokens.end(), GetCurrToken()) !=
+              tokens.begin() &&
+          GetPeekBackTokenValue() != ";")) {
     NextToken();
   }
 }

@@ -96,7 +96,13 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 bool QpParser::IsValidInteger(std::string const& int_string) {
   try {
     stoi(int_string);
+    if (stoi(int_string) < 0) {
+      return false;
+    }
   } catch (std::invalid_argument& e) {
+    return false;
+  }
+  if (int_string.front() == '0' && int_string.size() > 1) {
     return false;
   }
   return true;
