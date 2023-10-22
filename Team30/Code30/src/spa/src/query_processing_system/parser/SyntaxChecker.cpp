@@ -30,7 +30,8 @@ void SyntaxChecker::parse() {
   CheckClauses();
   CheckEOF();
   if (has_semantic_exception) {
-    throw InvalidSemanticsException("Semantic exception found by SyntaxChecker");
+    throw InvalidSemanticsException(
+        "Semantic exception found by SyntaxChecker");
   }
 }
 
@@ -380,7 +381,7 @@ void SyntaxChecker::CheckSelectSingle() {
 
 void SyntaxChecker::CheckSuchThat(bool has_and) {
   if (!has_and) {
-    if (NextToken() -> getTokenVal() != "that") {
+    if (NextToken()->getTokenVal() != "that") {
       std::cout << "Expected 'that' in such that clause";
     }
     NextToken();  // relRef

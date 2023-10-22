@@ -51,7 +51,7 @@ class SyntaxChecker : public QpParser {
                                 std::string not_existing_error_msg);
   void CheckCurrentTokenSyntax(std::string expected_value,
                                std::string error_msg);
-  void CheckIsExpr(std::string error_msg);  // TODO(@lkwlkww): implement
+  void CheckIsExpr(std::string error_msg);
   void CheckSynonymExists(std::string synonym, std::string error_msg);
   void CheckUpcomingTokensAreEntRef(std::string syntax_error_msg,
                                     std::string not_existing_error_msg);
