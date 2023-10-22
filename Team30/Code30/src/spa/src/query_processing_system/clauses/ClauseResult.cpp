@@ -1,6 +1,5 @@
 #include "ClauseResult.h"
 
-#include <cassert>
 #include <stdexcept>
 #include <utility>
 
@@ -64,8 +63,11 @@ bool ClauseResult::IsBooleanResult() const {
 }
 
 bool ClauseResult::GetBooleanClauseValue() const {
-  assert(IsBooleanResult());
-  return boolean_clause_value;
+  if (IsBooleanResult()) {
+    return boolean_clause_value;
+  } else {
+    return true; // contains values
+  }
 }
 
 bool ClauseResult::Contains(PqlDeclaration const& d) const {
