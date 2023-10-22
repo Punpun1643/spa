@@ -10,10 +10,10 @@
 
 class ProcedureNode : public ANode {
  public:
-  explicit ProcedureNode(std::string procedureName,
-                         std::shared_ptr<StmtLstNode> stmtLstNode);
+  explicit ProcedureNode(std::string procedure_name,
+                         std::shared_ptr<StmtLstNode> stmt_lst_node);
 
-  void Accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& design_extractor) override;
 
   std::vector<std::shared_ptr<StmtLstNode>> GetChildren() const;
 
@@ -22,6 +22,6 @@ class ProcedureNode : public ANode {
   ~ProcedureNode() = default;
 
  private:
-  std::string const procedureName;
-  std::shared_ptr<StmtLstNode> const stmtLstNode;
+  std::string const procedure_name;
+  std::shared_ptr<StmtLstNode> const stmt_lst_node;
 };

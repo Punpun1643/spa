@@ -1,6 +1,7 @@
+#include "ProgramNode.h"
+
 #include <utility>
 
-#include "ProgramNode.h"
 #include "../design_extractor/IDesignExtractor.h"
 #include "ProcedureNode.h"
 

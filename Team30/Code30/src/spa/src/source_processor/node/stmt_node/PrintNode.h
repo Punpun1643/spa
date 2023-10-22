@@ -7,14 +7,14 @@
 
 class PrintNode : public StmtNode {
  public:
-  explicit PrintNode(int stmtIndex, StmtType stmtType, std::string varName);
+  explicit PrintNode(int stmt_index, StmtType stmt_type, std::string var_name);
 
-  void Accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& design_extractor) override;
 
   std::string const& GetVarName() const;
 
   ~PrintNode() = default;
 
  private:
-  std::string const varName;
+  std::string const var_name;
 };

@@ -2,15 +2,15 @@
 
 #include "../../design_extractor/IDesignExtractor.h"
 
-PrintNode::PrintNode(int stmtIndex, StmtType stmtType, std::string varName)
-    : StmtNode(stmtIndex, StmtType::PRINT_STMT), varName(varName) {}
+PrintNode::PrintNode(int stmt_index, StmtType stmt_type, std::string var_name)
+    : StmtNode(stmt_index, StmtType::PRINT_STMT), var_name(var_name) {}
 
-void PrintNode::Accept(IDesignExtractor& designExtractor) {
-  auto thisPrintNodePtr =
+void PrintNode::Accept(IDesignExtractor& design_extractor) {
+  auto this_print_node_ptr =
       std::dynamic_pointer_cast<PrintNode>(shared_from_this());
-  designExtractor.ExtractFromPrint(thisPrintNodePtr);
+  design_extractor.ExtractFromPrint(this_print_node_ptr);
 }
 
 std::string const& PrintNode::GetVarName() const {
-  return varName;
+  return var_name;
 }

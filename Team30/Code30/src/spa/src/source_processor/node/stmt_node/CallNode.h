@@ -7,14 +7,14 @@
 
 class CallNode : public StmtNode {
  public:
-  explicit CallNode(int stmtIndex, StmtType stmtType, std::string procName);
+  explicit CallNode(int stmt_index, StmtType stmt_type, std::string proc_name);
 
-  void Accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& design_extractor) override;
 
   std::string const& GetProcName() const;
 
   ~CallNode() = default;
 
  private:
-  std::string const procName;
+  std::string const proc_name;
 };

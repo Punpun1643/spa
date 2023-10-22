@@ -5,6 +5,6 @@
 
 void SPA::process() {
   PKB pkb = PKB();
-  SpController spController = SpController();
-  spController.ParseAndExtract(pkb, filePath);
+  SpController sp_controller = SpController();
+  sp_controller.ParseAndExtract(pkb, file_path);
 }

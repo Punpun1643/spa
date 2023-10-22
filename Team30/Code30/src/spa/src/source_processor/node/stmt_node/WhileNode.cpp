@@ -1,25 +1,26 @@
+#include "WhileNode.h"
+
 #include <utility>
 
-#include "WhileNode.h"
 #include "../../design_extractor/IDesignExtractor.h"
 
-WhileNode::WhileNode(int stmtIndex, StmtType stmtType,
-                     std::shared_ptr<CondExprNode> condExprNode,
-                     std::shared_ptr<StmtLstNode> stmtLstNode)
-    : StmtNode(stmtIndex, StmtType::WHILE_STMT),
-      condExprNode(std::move(condExprNode)),
-      stmtLstNode(std::move(stmtLstNode)) {}
+WhileNode::WhileNode(int stmt_index, StmtType stmt_type,
+                     std::shared_ptr<CondExprNode> cond_expr_node,
+                     std::shared_ptr<StmtLstNode> stmt_lst_node)
+    : StmtNode(stmt_index, StmtType::WHILE_STMT),
+      cond_expr_node(std::move(cond_expr_node)),
+      stmt_lst_node(std::move(stmt_lst_node)) {}
 
-void WhileNode::Accept(IDesignExtractor& designExtractor) {
-  auto thisWhileNodePtr =
+void WhileNode::Accept(IDesignExtractor& design_extractor) {
+  auto this_while_node_ptr =
       std::dynamic_pointer_cast<WhileNode>(shared_from_this());
-  designExtractor.ExtractFromWhile(thisWhileNodePtr);
+  design_extractor.ExtractFromWhile(this_while_node_ptr);
 }
 
 std::shared_ptr<CondExprNode> WhileNode::GetCondExpr() {
-  return condExprNode;
+  return cond_expr_node;
 }
 
 std::shared_ptr<StmtLstNode> WhileNode::GetStmtLst() {
-  return stmtLstNode;
+  return stmt_lst_node;
 }

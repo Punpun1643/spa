@@ -40,7 +40,7 @@ void ExtractionController::ExecuteProgramExtraction(
 
     // Construct CFGs
     for (std::shared_ptr<ProcedureNode> child : children) {
-       cfg_generator->ExecuteCFGGeneration(child);
+      cfg_generator->ExecuteCFGGeneration(child);
     }
   }
 }
