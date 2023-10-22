@@ -28,9 +28,9 @@ TEST_CASE("Pattern clauses") {
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
     REQUIRE(pkb.patternDeclCalls == 1);
     auto values = result->GetValues(a);
-    REQUIRE(*values == pkb.patternDeclValues1);
+    REQUIRE(values == pkb.patternDeclValues1);
     values = result->GetValues(v);
-    REQUIRE(*values == pkb.patternDeclValues2);
+    REQUIRE(values == pkb.patternDeclValues2);
   }
 
   SECTION("value, partial") {
@@ -42,7 +42,7 @@ TEST_CASE("Pattern clauses") {
     REQUIRE(pkb.last_value_passed == "varName");
     REQUIRE(pkb.patternValueCalls == 1);
     auto values = result->GetValues(a);
-    REQUIRE(*values == pkb.patternValueValues);
+    REQUIRE(values == pkb.patternValueValues);
   }
 
   SECTION("wild, exact") {
@@ -53,7 +53,7 @@ TEST_CASE("Pattern clauses") {
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, empty_rhs_expr));
     REQUIRE(pkb.patternWildCalls == 1);
     auto values = result->GetValues(a);
-    REQUIRE(*values == pkb.patternWildValues);
+    REQUIRE(values == pkb.patternWildValues);
   }
 
   SECTION("semantic errors") {

@@ -23,7 +23,7 @@ void IntermediateResultsTable::AddClauseResult(
     case (1): {
       auto declaration = clause_result.GetDeclarations().front();
       auto values = clause_result.GetValues(declaration);
-      AddSingleDeclaration(declaration, *values);
+      AddSingleDeclaration(declaration, values);
       break;
     }
     case (2): {
@@ -33,7 +33,7 @@ void IntermediateResultsTable::AddClauseResult(
       auto d2 = declarations[1];
       auto d1_values = clause_result.GetValues(d1);
       auto d2_values = clause_result.GetValues(d2);
-      AddPairedDeclarations(d1, d2, *d1_values, *d2_values);
+      AddPairedDeclarations(d1, d2, d1_values, d2_values);
       break;
     }
     default: {

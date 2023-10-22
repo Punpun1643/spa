@@ -1,8 +1,6 @@
 #include "ClauseResult.h"
 
-#include <algorithm>
 #include <cassert>
-#include <iterator>
 #include <stdexcept>
 #include <utility>
 
@@ -81,10 +79,10 @@ std::vector<PqlDeclaration> ClauseResult::GetDeclarations() const {
   return output;
 }
 
-std::unique_ptr<std::vector<std::string>> ClauseResult::GetValues(
+std::vector<std::string> ClauseResult::GetValues(
     PqlDeclaration const& declaration) const {
   if (value_map.count(declaration) == 0) {
     throw std::invalid_argument("Given declaration does not exist.");
   }
-  return std::make_unique<std::vector<std::string>>(value_map.at(declaration));
+  return value_map.at(declaration);
 }
