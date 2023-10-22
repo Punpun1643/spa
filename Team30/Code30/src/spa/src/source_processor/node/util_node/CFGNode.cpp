@@ -160,18 +160,13 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> start_node,
   if (!ValidateStartAndEndNodes(start_node, end_node)) {
     return false;
   }
-  std::string var_modified_in_start_node =
-      GetVarModifiedInStartNode(start_node);
-  std::unordered_set<std::string> var_used_in_end_node =
-      GetVarUsedInEndNode(end_node);
-
-  if (!ValidatePossibleAffectsRelationship(var_modified_in_start_node,
-                                           var_used_in_end_node)) {
+  if (!ValidatePossibleAffectsRelationship(
+          GetVarModifiedInStartNode(start_node),
+          GetVarUsedInEndNode(end_node))) {
     return false;
   }
   std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
   std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
-
   nodes_to_visit.push(start_node);
 
   while (!nodes_to_visit.empty()) {
@@ -182,33 +177,26 @@ bool CFGNode::HasAffectsPath(std::shared_ptr<CFGNode> start_node,
     if (curr_node == end_node && curr_node != start_node) {
       return true;
     }
-
-    std::vector<std::shared_ptr<CFGNode>> outgoing_nodes =
-        curr_node->GetOutgoingNodes();
-
-    for (std::shared_ptr<CFGNode> outgoing_node : outgoing_nodes) {
+    for (std::shared_ptr<CFGNode> outgoing_node :
+         curr_node->GetOutgoingNodes()) {
       if (outgoing_node == end_node) {
         return true;
       }
 
-      if (visited_nodes.find(outgoing_node) == visited_nodes.end()) {
-        bool should_visit = false;
-
+      if (!visited_nodes.count(outgoing_node)) {
+        bool should_visit = true;
         if (IsAssignOrReadOutgoingNode(outgoing_node)) {
           should_visit = HandleAssignOrReadOutgoingNode(
-              outgoing_node, var_modified_in_start_node);
+              outgoing_node, GetVarModifiedInStartNode(start_node));
         } else if (IsCallOutgoingNode(outgoing_node)) {
-          should_visit =
-              HandleCallOutgoingNode(outgoing_node, var_modified_in_start_node);
-        } else {
-          should_visit = true;
+          should_visit = HandleCallOutgoingNode(
+              outgoing_node, GetVarModifiedInStartNode(start_node));
         }
-
         if (should_visit) {
           nodes_to_visit.push(outgoing_node);
         }
       } else if (outgoing_node == end_node &&
-                 visited_nodes.find(outgoing_node) != visited_nodes.end()) {
+                 visited_nodes.count(outgoing_node)) {
         return true;
       }
     }
