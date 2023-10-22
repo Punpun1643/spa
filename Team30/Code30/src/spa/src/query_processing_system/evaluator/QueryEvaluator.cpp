@@ -53,7 +53,8 @@ bool QueryEvaluator::UpdateResultUsingAttrTypes(
    * Returns true if the 2D-vector was modified, and false otherwise
    */
   if (!values.empty() && values[0].size() != attr_refs.size()) {
-    throw std::invalid_argument("Number of attr_refs does not match number of values");
+    throw std::invalid_argument(
+        "Number of attr_refs does not match number of values");
   }
 
   std::vector<int> aliased_idx = {};

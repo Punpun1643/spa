@@ -1,9 +1,9 @@
 #include "SuchThatClause.h"
 
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <utility>
-#include <stdexcept>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 SuchThatClause::~SuchThatClause() = default;
@@ -38,8 +38,8 @@ void SuchThatClause::CheckArgReferenceType(
   }
   PqlReference arg((arg_num == 1) ? *arg1 : *arg2);
 
-  if (std::find(allowed_types.begin(), allowed_types.end(),
-                arg.GetRefType()) == allowed_types.end()) {
+  if (std::find(allowed_types.begin(), allowed_types.end(), arg.GetRefType()) ==
+      allowed_types.end()) {
     throw InvalidSemanticsException(error_msg);
   }
 }

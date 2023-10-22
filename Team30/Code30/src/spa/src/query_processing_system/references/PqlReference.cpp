@@ -1,7 +1,7 @@
 #include "PqlReference.h"
 
-#include <utility>
 #include <stdexcept>
+#include <utility>
 
 #include "shared/types/EntityType.h"
 

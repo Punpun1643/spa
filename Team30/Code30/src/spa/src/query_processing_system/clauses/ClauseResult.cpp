@@ -66,7 +66,7 @@ bool ClauseResult::GetBooleanClauseValue() const {
   if (IsBooleanResult()) {
     return boolean_clause_value;
   } else {
-    return true; // contains values
+    return true;  // contains values
   }
 }
 

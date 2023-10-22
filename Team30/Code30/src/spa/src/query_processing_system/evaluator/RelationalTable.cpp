@@ -1,9 +1,9 @@
 #include "RelationalTable.h"
 
 #include <algorithm>
+#include <stdexcept>
 #include <unordered_set>
 #include <utility>
-#include <stdexcept>
 
 #include "shared/ArrayUtility.h"
 
@@ -147,7 +147,9 @@ void RelationalTable::Join(RelationalTable& other_table,
   // get shared columns
   auto shared_cols = GetSharedColumns(other_table);
   if (!allow_cross_product && shared_cols.empty()) {
-    throw std::invalid_argument("Given table has no shared cols with existing table and cross-products are not allowed");
+    throw std::invalid_argument(
+        "Given table has no shared cols with existing table and cross-products "
+        "are not allowed");
   }
 
   std::vector<std::vector<std::string>> new_table;
