@@ -5,10 +5,10 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../../../query_processing_system/common/EntityType.h"
 #include "../stmt_node/StmtNode.h"
 #include "../stmt_node/StmtType.h"
 #include "../util_node/CFGNode.h"
+#include "query_processing_system/types/EntityType.h"
 
 class CFGNode {
  public:

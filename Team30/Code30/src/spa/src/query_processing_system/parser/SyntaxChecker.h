@@ -1,13 +1,13 @@
 #pragma once
 
-#include <unordered_map>
 #include <memory>
-#include <vector>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "../../shared/tokenizer/token/Token.h"
-#include "../common/PqlDeclaration.h"
 #include "QpParser.h"
+#include "query_processing_system/references/PqlDeclaration.h"
 
 class SyntaxChecker : public QpParser {
   std::unordered_map<std::string, PqlDeclaration> existing_declarations;

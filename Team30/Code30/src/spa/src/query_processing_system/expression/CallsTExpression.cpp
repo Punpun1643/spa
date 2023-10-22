@@ -1,6 +1,6 @@
-#include <string>
-
 #include "CallsTExpression.h"
+
+#include <string>
 
 CallsTExpression::CallsTExpression(std::string arg1, std::string arg2)
     : SuchThatExpression(arg1, arg2) {}

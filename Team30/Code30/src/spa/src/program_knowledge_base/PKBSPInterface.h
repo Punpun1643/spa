@@ -10,11 +10,11 @@
 #include <utility>
 #include <vector>
 
-#include "../query_processing_system/common/EntityType.h"
 #include "PatternType.h"
 #include "RelationType.h"
-#include "query_processing_system/common/AttrType.h"
-#include "query_processing_system/common/MatchType.h"
+#include "query_processing_system/types/AttrType.h"
+#include "query_processing_system/types/EntityType.h"
+#include "query_processing_system/types/MatchType.h"
 
 class PKBSPInterface {
  public:

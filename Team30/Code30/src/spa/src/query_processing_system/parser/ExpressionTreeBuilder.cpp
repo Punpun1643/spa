@@ -1,17 +1,17 @@
 #include "ExpressionTreeBuilder.h"
 
 #include <assert.h>
+
 #include <iostream>
+#include <memory>
+#include <queue>
 #include <regex>
+#include <string>
 #include <utility>
 #include <vector>
-#include <queue>
-#include <string>
-#include <memory>
 
 #include "../../shared/parser/exceptions/StartOfFileException.h"
 #include "../../shared/parser/node/TreeNode.h"
-#include "../common/EntityType.h"
 #include "../expression/AffectsExpression.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
@@ -25,6 +25,7 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
+#include "query_processing_system/types/EntityType.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens,

@@ -1,12 +1,12 @@
 #include "ContextBuilder.h"
 
-#include <utility>
 #include <memory>
-#include <vector>
 #include <string>
+#include <utility>
+#include <vector>
 
-#include "../common/EntityType.h"
 #include "../exceptions/InvalidSyntaxException.h"
+#include "query_processing_system/types/EntityType.h"
 
 ContextBuilder::ContextBuilder(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens) {

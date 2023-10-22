@@ -1,10 +1,10 @@
 #include "Context.h"
 
 #include <iostream>
-#include <utility>
-#include <string>
-#include <vector>
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 void Context::AddAttrRefDeclaration(AttrRef attr_ref) {
   this->selected_attr_refs.push_back(attr_ref);

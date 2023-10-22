@@ -1,13 +1,13 @@
 #pragma once
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
-#include "../common/AttrType.h"
-#include "../common/EntityType.h"
+#include "query_processing_system/types/AttrType.h"
+#include "query_processing_system/types/EntityType.h"
 
 namespace attr_name {
 std::string const STMT_NUM = "stmt#";

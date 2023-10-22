@@ -1,6 +1,6 @@
-#include <string>
-
 #include "FollowsExpression.h"
+
+#include <string>
 
 FollowsExpression::FollowsExpression(std::string arg1, std::string arg2)
     : SuchThatExpression(arg1, arg2) {}

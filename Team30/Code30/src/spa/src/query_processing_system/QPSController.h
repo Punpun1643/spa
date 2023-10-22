@@ -1,18 +1,18 @@
 #pragma once
 
 #include <list>
-#include <utility>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "common/AttrRef.h"
-#include "common/Clause.h"
+#include "clauses/Clause.h"
 #include "context/Context.h"
 #include "evaluator/QueryEvaluator.h"
 #include "expression/AExpression.h"
 #include "parser/ExpressionTreeBuilder.h"
 #include "parser/SyntaxChecker.h"
+#include "query_processing_system/references/AttrRef.h"
 
 class QPSController {
  public:

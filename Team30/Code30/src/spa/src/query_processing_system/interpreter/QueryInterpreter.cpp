@@ -2,21 +2,20 @@
 
 #include <cassert>
 #include <iostream>
-#include <utility>
 #include <memory>
 #include <string>
+#include <utility>
 
-#include "../common/AffectsClause.h"
-#include "../common/AttrRef.h"
-#include "../common/CallsClause.h"
-#include "../common/FollowsClause.h"
-#include "../common/ModifiesPClause.h"
-#include "../common/ModifiesSClause.h"
-#include "../common/NextClause.h"
-#include "../common/ParentClause.h"
-#include "../common/PatternClause.h"
-#include "../common/UsesPClause.h"
-#include "../common/UsesSClause.h"
+#include "../clauses/AffectsClause.h"
+#include "../clauses/CallsClause.h"
+#include "../clauses/FollowsClause.h"
+#include "../clauses/ModifiesPClause.h"
+#include "../clauses/ModifiesSClause.h"
+#include "../clauses/NextClause.h"
+#include "../clauses/ParentClause.h"
+#include "../clauses/PatternClause.h"
+#include "../clauses/UsesPClause.h"
+#include "../clauses/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
 #include "../expression/AExpression.h"
 #include "../expression/AffectsExpression.h"
@@ -33,6 +32,7 @@
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
 #include "../expression/WithExpression.h"
+#include "query_processing_system/references/AttrRef.h"
 
 QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
                                    std::shared_ptr<AExpression> expression_tree)
