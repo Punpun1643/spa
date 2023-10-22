@@ -16,4 +16,4 @@ class EntityAttrPairings {
   static bool IsAliasPair(EntityType ent_type, AttrType attr_type);
   static AttrType GetDefaultAttrType(EntityType ent_type);
 };
-;
+
