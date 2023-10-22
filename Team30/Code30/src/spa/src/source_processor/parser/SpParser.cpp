@@ -34,48 +34,48 @@ std::shared_ptr<ProcedureNode> SpParser::ParseProcedure() {
     throw InvalidProcedureException();
   }
 
-  std::string procedureName = GetCurrTokenValue();
+  std::string procedure_name = GetCurrTokenValue();
   NextToken();
 
   AParser::CheckAndAdvanceCurrToken<InvalidProcedureException>(
       SpParserConstant::START_PROCEDURE);
 
-  std::shared_ptr<StmtLstNode> stmtLst = ParseStmtLst();
+  std::shared_ptr<StmtLstNode> stmt_lst = ParseStmtLst();
 
   AParser::CheckAndAdvanceCurrToken<InvalidProcedureException>(
       SpParserConstant::END_PROCEDURE);
-  return std::make_shared<ProcedureNode>(procedureName, stmtLst);
+  return std::make_shared<ProcedureNode>(procedure_name, stmt_lst);
 }
 
 std::shared_ptr<PrintNode> SpParser::ParsePrint() {
-  std::string varName =
+  std::string var_name =
       AParser::ParseAndValidateVarName<InvalidPrintException>();
-  return std::make_shared<PrintNode>(currStmtIndex++, StmtType::PRINT_STMT,
-                                     varName);
+  return std::make_shared<PrintNode>(curr_stmt_index++, StmtType::PRINT_STMT,
+                                     var_name);
 }
 
 std::shared_ptr<ReadNode> SpParser::ParseRead() {
-  std::string varName =
+  std::string var_name =
       AParser::ParseAndValidateVarName<InvalidReadException>();
-  return std::make_shared<ReadNode>(currStmtIndex++, StmtType::READ_STMT,
-                                    varName);
+  return std::make_shared<ReadNode>(curr_stmt_index++, StmtType::READ_STMT,
+                                    var_name);
 }
 
 std::shared_ptr<CallNode> SpParser::ParseCall() {
-  std::string varName =
+  std::string var_name =
       AParser::ParseAndValidateVarName<InvalidCallException>();
-  return std::make_shared<CallNode>(currStmtIndex++, StmtType::CALL_STMT,
-                                    varName);
+  return std::make_shared<CallNode>(curr_stmt_index++, StmtType::CALL_STMT,
+                                    var_name);
 }
 
 std::shared_ptr<IfNode> SpParser::ParseIf() {
-  int ifStmtIndex = currStmtIndex++;
+  int if_stmt_index = curr_stmt_index++;
 
   AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::START_COND_EXPR,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
-  std::shared_ptr<CondExprNode> condExpr = ParseCondExpr();
+  std::shared_ptr<CondExprNode> cond_expr = ParseCondExpr();
 
   AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_COND_EXPR,
@@ -92,7 +92,7 @@ std::shared_ptr<IfNode> SpParser::ParseIf() {
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   NextToken();
-  std::shared_ptr<StmtLstNode> thenStmtLst = ParseStmtLst();
+  std::shared_ptr<StmtLstNode> then_stmt_lst = ParseStmtLst();
 
   AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_THEN_STMTLST,
@@ -109,19 +109,19 @@ std::shared_ptr<IfNode> SpParser::ParseIf() {
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   NextToken();
-  std::shared_ptr<StmtLstNode> elseStmtLst = ParseStmtLst();
+  std::shared_ptr<StmtLstNode> else_stmt_lst = ParseStmtLst();
 
   AssertCurrTokenTypeAndValue(TokenType::SPECIAL_CHAR_TOKEN,
                               SpParserConstant::END_ELSE_STMTLST,
                               ExceptionMessage::INVALID_IF_EXCEPTION_MESSAGE);
 
   NextToken();
-  return std::make_shared<IfNode>(ifStmtIndex, StmtType::IF_STMT, condExpr,
-                                  thenStmtLst, elseStmtLst);
+  return std::make_shared<IfNode>(if_stmt_index, StmtType::IF_STMT, cond_expr,
+                                  then_stmt_lst, else_stmt_lst);
 }
 
 std::shared_ptr<WhileNode> SpParser::ParseWhile() {
-  int whileStmtIndex = currStmtIndex++;
+  int while_stmt_index = curr_stmt_index++;
 
   AssertCurrTokenTypeAndValue(
       TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::START_COND_EXPR,
@@ -139,15 +139,15 @@ std::shared_ptr<WhileNode> SpParser::ParseWhile() {
       ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   NextToken();
-  std::shared_ptr<StmtLstNode> stmtLst = ParseStmtLst();
+  std::shared_ptr<StmtLstNode> stmt_lst = ParseStmtLst();
 
   AssertCurrTokenTypeAndValue(
       TokenType::SPECIAL_CHAR_TOKEN, SpParserConstant::END_WHILE_STMTLST,
       ExceptionMessage::INVALID_WHILE_EXCEPTION_MESSAGE);
 
   NextToken();
-  return std::make_shared<WhileNode>(whileStmtIndex, StmtType::WHILE_STMT,
-                                     condExpr, stmtLst);
+  return std::make_shared<WhileNode>(while_stmt_index, StmtType::WHILE_STMT,
+                                     condExpr, stmt_lst);
 }
 
 void SpParser::HandleWordOrIntegerToken(
@@ -161,84 +161,84 @@ void SpParser::HandleWordOrIntegerToken(
 }
 
 void SpParser::HandleOperatorToken(
-    std::stack<std::shared_ptr<std::string>>& operatorStack,
-    std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  while (!operatorStack.empty() &&
-         AParser::IsGreaterOrEqualPrecedence(operatorStack.top()->c_str(),
+    std::stack<std::shared_ptr<std::string>>& operator_stack,
+    std::queue<std::shared_ptr<std::string>>& postfix_queue) {
+  while (!operator_stack.empty() &&
+         AParser::IsGreaterOrEqualPrecedence(operator_stack.top()->c_str(),
                                              GetCurrTokenValue())) {
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
+    postfix_queue.push(operator_stack.top());
+    operator_stack.pop();
   }
-  operatorStack.push(std::make_shared<std::string>(GetCurrTokenValue()));
+  operator_stack.push(std::make_shared<std::string>(GetCurrTokenValue()));
 }
 
 void SpParser::HandleLeftParenthesisToken(
-    std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
+    std::stack<std::shared_ptr<std::string>>& operator_stack, int& paren_count) {
   if (AParser::IsPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw EmptyParenthesesException();
   }
-  ++parenCount;
-  operatorStack.push(std::make_shared<std::string>(GetCurrTokenValue()));
+  ++paren_count;
+  operator_stack.push(std::make_shared<std::string>(GetCurrTokenValue()));
 }
 
 void SpParser::HandleCondExprLeftParenthesisToken(
-    std::shared_ptr<Token> const& currToken,
-    std::stack<std::shared_ptr<Token>>& operatorStack, int& parenCount) {
+    std::shared_ptr<Token> const& curr_token,
+    std::stack<std::shared_ptr<Token>>& operator_stack, int& paren_count) {
   if (IsPeekTokenValue(AParserConstant::RIGHT_PARENTHESIS)) {
     throw EmptyParenthesesException();
   }
-  ++parenCount;
-  operatorStack.push(currToken);
+  ++paren_count;
+  operator_stack.push(curr_token);
 }
 
 void SpParser::CondExprHandleRightParenthesisToken(
-    std::stack<std::shared_ptr<Token>>& operatorStack,
-    std::queue<std::shared_ptr<Token>>& postFixQueue) {
-  bool isParseRelExpr = false;
+    std::stack<std::shared_ptr<Token>>& operator_stack,
+    std::queue<std::shared_ptr<Token>>& postfix_queue) {
+  bool is_parse_rel_expr = false;
 
-  while (!(IsLeftParenthesisToken(operatorStack.top()))) {
-    if (IsComparisonOperator(operatorStack.top()->getTokenVal())) {
-      isParseRelExpr = true;  // closing relExpr
+  while (!(IsLeftParenthesisToken(operator_stack.top()))) {
+    if (IsComparisonOperator(operator_stack.top()->getTokenVal())) {
+      is_parse_rel_expr = true;  // closing rel_expr
     }
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
+    postfix_queue.push(operator_stack.top());
+    operator_stack.pop();
   }
 
-  if (!operatorStack.empty()) {
-    operatorStack.pop();
+  if (!operator_stack.empty()) {
+    operator_stack.pop();
   } else {
     throw InvalidRelExprException();
   }
 
   // check valid relExpr
-  if (isParseRelExpr && !operatorStack.empty() &&
+  if (is_parse_rel_expr && !operator_stack.empty() &&
       !(IsAndOrOrToken(PeekToken())) &&
-      IsLeftParenthesisToken(operatorStack.top())) {
+      IsLeftParenthesisToken(operator_stack.top())) {
     throw InvalidRelExprException();
   }
 }
 
 void SpParser::AssignHandleRightParenthesisToken(
-    std::stack<std::shared_ptr<std::string>>& operatorStack,
-    std::queue<std::shared_ptr<std::string>>& postFixQueue, int& parenCount) {
-  if (parenCount <= 0) {
+    std::stack<std::shared_ptr<std::string>>& operator_stack,
+    std::queue<std::shared_ptr<std::string>>& postfix_queue, int& paren_count) {
+  if (paren_count <= 0) {
     throw UnmatchedParenthesesException();
   }
-  while (operatorStack.top()->compare(AParserConstant::LEFT_PARENTHESIS) != 0) {
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
+  while (operator_stack.top()->compare(AParserConstant::LEFT_PARENTHESIS) != 0) {
+    postfix_queue.push(operator_stack.top());
+    operator_stack.pop();
   }
-  --parenCount;
-  operatorStack.pop();
+  --paren_count;
+  operator_stack.pop();
 }
 
 void SpParser::TrackOperatorAndOperand(
-    std::vector<int>& constAppearances,
-    std::vector<std::string>& varAppearances) {
+    std::vector<int>& const_appearances,
+    std::vector<std::string>& var_appearances) {
   if (AParser::IsWordToken(GetCurrToken())) {
-    varAppearances.push_back(GetCurrTokenValue());
+    var_appearances.push_back(GetCurrTokenValue());
   } else {
-    constAppearances.push_back(std::stoi(GetCurrTokenValue()));
+    const_appearances.push_back(std::stoi(GetCurrTokenValue()));
   }
 }
 
@@ -250,53 +250,53 @@ void SpParser::ValidateCondExprAndOrOrTokenPosition() {
 }
 
 void SpParser::HandleOperatorsStackAndPostfixQueue(
-    std::stack<std::shared_ptr<Token>>& operatorStack,
-    std::queue<std::shared_ptr<Token>>& postFixQueue) {
-  while (!operatorStack.empty() &&
-         AParser::IsGreaterOrEqualPrecedence(operatorStack.top()->getTokenVal(),
+    std::stack<std::shared_ptr<Token>>& operator_stack,
+    std::queue<std::shared_ptr<Token>>& postfix_queue) {
+  while (!operator_stack.empty() &&
+         AParser::IsGreaterOrEqualPrecedence(operator_stack.top()->getTokenVal(),
                                              GetCurrTokenValue())) {
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
+    postfix_queue.push(operator_stack.top());
+    operator_stack.pop();
   }
-  operatorStack.push(GetCurrToken());
+  operator_stack.push(GetCurrToken());
 }
 
 void SpParser::TransferOperatorsToPostfixQueue(
-    std::stack<std::shared_ptr<Token>>& operatorStack,
-    std::queue<std::shared_ptr<Token>>& postFixQueue) {
-  while (!operatorStack.empty()) {
-    postFixQueue.push(operatorStack.top());
-    operatorStack.pop();
+    std::stack<std::shared_ptr<Token>>& operator_stack,
+    std::queue<std::shared_ptr<Token>>& postfix_queue) {
+  while (!operator_stack.empty()) {
+    postfix_queue.push(operator_stack.top());
+    operator_stack.pop();
   }
 }
 
-void SpParser::ValidateBalanceParentheses(int& parenCount) {
-  if (parenCount != 0) {
+void SpParser::ValidateBalanceParentheses(int& paren_count) {
+  if (paren_count != 0) {
     throw UnmatchedParenthesesException();
   }
 }
 
 void SpParser::BuildCondExprPostFix(
-    std::queue<std::shared_ptr<Token>>& postFixQueue) {
-  std::stack<std::shared_ptr<Token>> operatorStack;
-  int parenCount = 0;
+    std::queue<std::shared_ptr<Token>>& postfix_queue) {
+  std::stack<std::shared_ptr<Token>> operator_stack;
+  int paren_count = 0;
 
   while (!IsCurrTokenType(TokenType::EOF_TOKEN)) {
-    std::shared_ptr<Token> currToken = GetCurrToken();
-    if (AParser::IsWordOrIntegerToken(currToken)) {
-      postFixQueue.push(GetCurrToken());
-    } else if (IsLeftParenthesisToken(currToken)) {
-      HandleCondExprLeftParenthesisToken(currToken, operatorStack, parenCount);
+    std::shared_ptr<Token> curr_token = GetCurrToken();
+    if (AParser::IsWordOrIntegerToken(curr_token)) {
+      postfix_queue.push(GetCurrToken());
+    } else if (IsLeftParenthesisToken(curr_token)) {
+      HandleCondExprLeftParenthesisToken(curr_token, operator_stack, paren_count);
     } else if (IsRightParenthesisToken(GetCurrToken())) {
-      --parenCount;
-      CondExprHandleRightParenthesisToken(operatorStack, postFixQueue);
-      if (parenCount == 0)
+      --paren_count;
+      CondExprHandleRightParenthesisToken(operator_stack, postfix_queue);
+      if (paren_count == 0)
         break;
     } else if (IsOperator(GetCurrTokenValue())) {
       if (IsAndOrOrToken(GetCurrToken())) {
         ValidateCondExprAndOrOrTokenPosition();
       }
-      HandleOperatorsStackAndPostfixQueue(operatorStack, postFixQueue);
+      HandleOperatorsStackAndPostfixQueue(operator_stack, postfix_queue);
     } else {
       throw InvalidCondExprException();
     }
@@ -304,44 +304,44 @@ void SpParser::BuildCondExprPostFix(
     NextToken();
   }
 
-  ValidateBalanceParentheses(parenCount);
-  TransferOperatorsToPostfixQueue(operatorStack, postFixQueue);
+  ValidateBalanceParentheses(paren_count);
+  TransferOperatorsToPostfixQueue(operator_stack, postfix_queue);
 }
 
 void SpParser::HandleCondExprWordToken(
-    std::shared_ptr<Token> const& currToken,
+    std::shared_ptr<Token> const& curr_token,
     std::unordered_set<std::string>& variables,
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  variables.insert(currToken->getTokenVal());
-  tokenStack.push(currToken);
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  variables.insert(curr_token->getTokenVal());
+  token_stack.push(curr_token);
 }
 
 void SpParser::HandleCondExprIntegerToken(
-    std::shared_ptr<Token> const& currToken, std::unordered_set<int>& constants,
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  constants.insert(std::stoi(currToken->getTokenVal()));
-  tokenStack.push(currToken);
+    std::shared_ptr<Token> const& curr_token, std::unordered_set<int>& constants,
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  constants.insert(std::stoi(curr_token->getTokenVal()));
+  token_stack.push(curr_token);
 }
 
 void SpParser::ValidateTokenStackSize(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  if (tokenStack.size() < AParserConstant::MINIMUM_OPERATOR_SIZE) {
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  if (token_stack.size() < AParserConstant::MINIMUM_OPERATOR_SIZE) {
     throw InvalidCondExprException();
   }
 }
 
 void SpParser::ValidateWordOrIntegerToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  if (AParser::IsWordOrIntegerToken(tokenStack.top())) {
-    tokenStack.pop();
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  if (AParser::IsWordOrIntegerToken(token_stack.top())) {
+    token_stack.pop();
   } else {
     throw InvalidCondExprException();
   }
 }
 
 void SpParser::IsTopStackNotWordOrIntegerToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  if (!AParser::IsWordOrIntegerToken(tokenStack.top())) {
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  if (!AParser::IsWordOrIntegerToken(token_stack.top())) {
     throw InvalidCondExprException();
   }
 }
@@ -356,163 +356,163 @@ void SpParser::ValidateComparisonOperatorToken(
 }
 
 void SpParser::IsTopStackNotComparisonOperatorToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  if (!IsComparisonOperator(tokenStack.top()->getTokenVal())) {
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  if (!IsComparisonOperator(token_stack.top()->getTokenVal())) {
     throw InvalidCondExprException();
   }
 }
 
 void SpParser::ValidateCondExprMathematicalOperatorToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  ValidateTokenStackSize(tokenStack);
-  ValidateWordOrIntegerToken(tokenStack);
-  IsTopStackNotWordOrIntegerToken(tokenStack);
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  ValidateTokenStackSize(token_stack);
+  ValidateWordOrIntegerToken(token_stack);
+  IsTopStackNotWordOrIntegerToken(token_stack);
 }
 
 void SpParser::ValidateCondExprNotToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  IsTopStackNotComparisonOperatorToken(tokenStack);
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  IsTopStackNotComparisonOperatorToken(token_stack);
 }
 
 void SpParser::ValidateCondExprAndOrOrToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  ValidateTokenStackSize(tokenStack);
-  ValidateComparisonOperatorToken(tokenStack);
-  ValidateComparisonOperatorToken(tokenStack);
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  ValidateTokenStackSize(token_stack);
+  ValidateComparisonOperatorToken(token_stack);
+  ValidateComparisonOperatorToken(token_stack);
 }
 
 void SpParser::ValidateCondExprComparisonOperatorToken(
-    std::stack<std::shared_ptr<Token>>& tokenStack,
+    std::stack<std::shared_ptr<Token>>& token_stack,
     std::shared_ptr<Token> const& token) {
-  ValidateTokenStackSize(tokenStack);
-  ValidateWordOrIntegerToken(tokenStack);
-  ValidateWordOrIntegerToken(tokenStack);
-  tokenStack.push(token);
+  ValidateTokenStackSize(token_stack);
+  ValidateWordOrIntegerToken(token_stack);
+  ValidateWordOrIntegerToken(token_stack);
+  token_stack.push(token);
 }
 
 void SpParser::ValidateCondExprFinalTokenStackState(
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
-  if (tokenStack.empty() || AParser::IsWordOrIntegerToken(tokenStack.top())) {
+    std::stack<std::shared_ptr<Token>>& token_stack) {
+  if (token_stack.empty() || AParser::IsWordOrIntegerToken(token_stack.top())) {
     throw InvalidCondExprException();
   }
 }
 
 void SpParser::HandleCondExprOperatorToken(
     std::shared_ptr<Token> const& token,
-    std::stack<std::shared_ptr<Token>>& tokenStack) {
+    std::stack<std::shared_ptr<Token>>& token_stack) {
   if (AParser::IsMathematicalOperator(token->getTokenVal())) {
-    ValidateCondExprMathematicalOperatorToken(tokenStack);
+    ValidateCondExprMathematicalOperatorToken(token_stack);
   } else if (IsNotToken(token)) {
-    ValidateCondExprNotToken(tokenStack);
+    ValidateCondExprNotToken(token_stack);
   } else if (IsAndOrOrToken(token)) {
-    ValidateCondExprAndOrOrToken(tokenStack);
+    ValidateCondExprAndOrOrToken(token_stack);
   } else if (IsComparisonOperator(token->getTokenVal())) {
-    ValidateCondExprComparisonOperatorToken(tokenStack, token);
+    ValidateCondExprComparisonOperatorToken(token_stack, token);
   } else {
     throw InvalidCondExprException();
   }
 }
 
 void SpParser::ValidateTokenStack(
-    std::queue<std::shared_ptr<Token>>& postFixQueue,
-    std::stack<std::shared_ptr<Token>>& tokenStack,
+    std::queue<std::shared_ptr<Token>>& postfix_queue,
+    std::stack<std::shared_ptr<Token>>& token_stack,
     std::unordered_set<std::string>& variables,
     std::unordered_set<int>& constants) {
   // check postFix
-  while (!postFixQueue.empty()) {
-    std::shared_ptr<Token> currToken = postFixQueue.front();
-    postFixQueue.pop();
+  while (!postfix_queue.empty()) {
+    std::shared_ptr<Token> curr_token = postfix_queue.front();
+    postfix_queue.pop();
 
-    if (AParser::IsWordToken(currToken)) {
-      HandleCondExprWordToken(currToken, variables, tokenStack);
-    } else if (AParser::IsIntegerToken(currToken)) {
-      HandleCondExprIntegerToken(currToken, constants, tokenStack);
-    } else if (IsOperator(currToken->getTokenVal())) {
-      HandleCondExprOperatorToken(currToken, tokenStack);
+    if (AParser::IsWordToken(curr_token)) {
+      HandleCondExprWordToken(curr_token, variables, token_stack);
+    } else if (AParser::IsIntegerToken(curr_token)) {
+      HandleCondExprIntegerToken(curr_token, constants, token_stack);
+    } else if (IsOperator(curr_token->getTokenVal())) {
+      HandleCondExprOperatorToken(curr_token, token_stack);
     } else {
       throw InvalidCondExprException();
     }
   }
-  ValidateCondExprFinalTokenStackState(tokenStack);
+  ValidateCondExprFinalTokenStackState(token_stack);
 }
 
 std::shared_ptr<CondExprNode> SpParser::ParseCondExpr() {
-  std::queue<std::shared_ptr<Token>> postFixQueue;
+  std::queue<std::shared_ptr<Token>> postfix_queue;
   std::unordered_set<std::string> variables;
   std::unordered_set<int> constants;
-  std::stack<std::shared_ptr<Token>> tokenStack;
+  std::stack<std::shared_ptr<Token>> token_stack;
 
-  BuildCondExprPostFix(postFixQueue);
-  ValidateTokenStack(postFixQueue, tokenStack, variables, constants);
+  BuildCondExprPostFix(postfix_queue);
+  ValidateTokenStack(postfix_queue, token_stack, variables, constants);
 
   return std::make_shared<CondExprNode>(variables, constants);
 }
 
-std::shared_ptr<AssignNode> SpParser::ParseAssign(std::string const& varName) {
+std::shared_ptr<AssignNode> SpParser::ParseAssign(std::string const& var_name) {
   std::unordered_set<std::string> variables = std::unordered_set<std::string>();
   std::unordered_set<int> constants = std::unordered_set<int>();
 
-  std::vector<std::shared_ptr<Token>> infixTokens;
+  std::vector<std::shared_ptr<Token>> infix_tokens;
 
   while (!IsCurrTokenValue(AParserConstant::STMT_TERMINATOR)) {
     if (AParser::IsWordOrIntegerToken(GetCurrToken())) {
       HandleWordOrIntegerToken(variables, constants);
     }
-    infixTokens.push_back(GetCurrToken());
+    infix_tokens.push_back(GetCurrToken());
     NextToken();
   }
 
-  std::queue<std::shared_ptr<std::string>> postFixQueue =
-      AParser::ConvertInfixToPostfix(infixTokens);
+  std::queue<std::shared_ptr<std::string>> postfix_queue =
+      AParser::ConvertInfixToPostfix(infix_tokens);
   NextToken();
 
   try {
-    std::shared_ptr<TreeNode> exprTreeRoot =
-        AParser::BuildExprTreeAndValidate(postFixQueue);
-    return std::make_shared<AssignNode>(currStmtIndex++, StmtType::ASSIGN_STMT,
-                                        variables, constants, varName,
-                                        exprTreeRoot);
+    std::shared_ptr<TreeNode> expr_tree_root =
+        AParser::BuildExprTreeAndValidate(postfix_queue);
+    return std::make_shared<AssignNode>(curr_stmt_index++, StmtType::ASSIGN_STMT,
+                                        variables, constants, var_name,
+                                        expr_tree_root);
   } catch (std::invalid_argument& e) {
     throw InvalidAssignException();
   }
 }
 
-bool SpParser::IsOperator(std::string const& tokenVal) {
-  return tokenVal == AParserConstant::PLUS ||
-         tokenVal == AParserConstant::MINUS ||
-         tokenVal == AParserConstant::MULTIPLY ||
-         tokenVal == AParserConstant::DIVIDE ||
-         tokenVal == AParserConstant::MODULO ||
-         tokenVal == SpParserConstant::EQUAL ||
-         tokenVal == SpParserConstant::NOT_EQUAL ||
-         tokenVal == SpParserConstant::LESS_THAN ||
-         tokenVal == SpParserConstant::LESS_THAN_EQUAL ||
-         tokenVal == SpParserConstant::GREATER_THAN ||
-         tokenVal == SpParserConstant::GREATER_THAN_EQUAL ||
-         tokenVal == SpParserConstant::AND ||
-         tokenVal == SpParserConstant::OR || tokenVal == SpParserConstant::NOT;
+bool SpParser::IsOperator(std::string const& token_val) {
+  return token_val == AParserConstant::PLUS ||
+         token_val == AParserConstant::MINUS ||
+         token_val == AParserConstant::MULTIPLY ||
+         token_val == AParserConstant::DIVIDE ||
+         token_val == AParserConstant::MODULO ||
+         token_val == SpParserConstant::EQUAL ||
+         token_val == SpParserConstant::NOT_EQUAL ||
+         token_val == SpParserConstant::LESS_THAN ||
+         token_val == SpParserConstant::LESS_THAN_EQUAL ||
+         token_val == SpParserConstant::GREATER_THAN ||
+         token_val == SpParserConstant::GREATER_THAN_EQUAL ||
+         token_val == SpParserConstant::AND ||
+         token_val == SpParserConstant::OR || token_val == SpParserConstant::NOT;
 }
 
-bool SpParser::IsComparisonOperator(std::string const& tokenVal) {
-  return tokenVal == SpParserConstant::EQUAL ||
-         tokenVal == SpParserConstant::NOT_EQUAL ||
-         tokenVal == SpParserConstant::LESS_THAN ||
-         tokenVal == SpParserConstant::LESS_THAN_EQUAL ||
-         tokenVal == SpParserConstant::GREATER_THAN ||
-         tokenVal == SpParserConstant::GREATER_THAN_EQUAL;
+bool SpParser::IsComparisonOperator(std::string const& token_val) {
+  return token_val == SpParserConstant::EQUAL ||
+         token_val == SpParserConstant::NOT_EQUAL ||
+         token_val == SpParserConstant::LESS_THAN ||
+         token_val == SpParserConstant::LESS_THAN_EQUAL ||
+         token_val == SpParserConstant::GREATER_THAN ||
+         token_val == SpParserConstant::GREATER_THAN_EQUAL;
 }
 
-bool SpParser::IsLogicalOperator(std::string const& tokenVal) {
-  return tokenVal == SpParserConstant::AND ||
-         tokenVal == SpParserConstant::OR || tokenVal == SpParserConstant::NOT;
+bool SpParser::IsLogicalOperator(std::string const& token_val) {
+  return token_val == SpParserConstant::AND ||
+         token_val == SpParserConstant::OR || token_val == SpParserConstant::NOT;
 }
 
-bool SpParser::IsMathematicalOperator(std::string const& tokenVal) {
-  return tokenVal == AParserConstant::PLUS ||
-         tokenVal == AParserConstant::MINUS ||
-         tokenVal == AParserConstant::MULTIPLY ||
-         tokenVal == AParserConstant::DIVIDE ||
-         tokenVal == AParserConstant::MODULO;
+bool SpParser::IsMathematicalOperator(std::string const& token_val) {
+  return token_val == AParserConstant::PLUS ||
+         token_val == AParserConstant::MINUS ||
+         token_val == AParserConstant::MULTIPLY ||
+         token_val == AParserConstant::DIVIDE ||
+         token_val == AParserConstant::MODULO;
 }
 
 bool SpParser::IsPossibleRelFactor(std::shared_ptr<Token> token) {
@@ -568,39 +568,39 @@ bool SpParser::IsAssignStmt() {
 }
 
 std::shared_ptr<StmtNode> SpParser::ParseAssignStmt() {
-  std::shared_ptr<Token> currToken = GetCurrToken();
+  std::shared_ptr<Token> curr_token = GetCurrToken();
   NextToken();  // move to assign symbol
   NextToken();
-  return ParseAssign(currToken->getTokenVal());
+  return ParseAssign(curr_token->getTokenVal());
 }
 
 std::shared_ptr<StmtNode> SpParser::ParseNonAssignStmt() {
-  std::shared_ptr<StmtNode> stmtNode;
+  std::shared_ptr<StmtNode> stmt_node;
   if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                               SpParserConstant::PRINT_KEYWORD)) {
     NextToken();
-    stmtNode = ParsePrint();
+    stmt_node = ParsePrint();
   } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                      SpParserConstant::READ_KEYWORD)) {
     NextToken();
-    stmtNode = ParseRead();
+    stmt_node = ParseRead();
   } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                      SpParserConstant::CALL_KEYWORD)) {
     NextToken();
-    stmtNode = ParseCall();
+    stmt_node = ParseCall();
   } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                      SpParserConstant::WHILE_KEYWORD)) {
     NextToken();
-    stmtNode = ParseWhile();
+    stmt_node = ParseWhile();
   } else if (IsCurrTokenTypeAndValue(TokenType::WORD_TOKEN,
                                      SpParserConstant::IF_KEYWORD)) {
     NextToken();
-    stmtNode = ParseIf();
+    stmt_node = ParseIf();
   } else {
     throw InvalidStmtLstException();
   }
 
-  return stmtNode;
+  return stmt_node;
 }
 
 std::shared_ptr<StmtLstNode> SpParser::ParseStmtLst() {
@@ -619,9 +619,9 @@ std::shared_ptr<StmtLstNode> SpParser::ParseStmtLst() {
 }
 
 void SpParser::parse() {
-  sourceProgramNode = ParseProgram();
+  source_program_node = ParseProgram();
 }
 
 std::shared_ptr<ProgramNode> SpParser::GetSourceProgramNode() {
-  return sourceProgramNode;
+  return source_program_node;
 }

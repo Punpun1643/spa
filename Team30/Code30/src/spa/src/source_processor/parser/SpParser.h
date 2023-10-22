@@ -60,9 +60,9 @@ class SpParser : public AParser {
   std::shared_ptr<AssignNode> ParseAssign(std::string const& varName);
 
  private:
-  int currStmtIndex = 1;
+  int curr_stmt_index = 1;
 
-  std::shared_ptr<ProgramNode> sourceProgramNode;
+  std::shared_ptr<ProgramNode> source_program_node;
 
   int Precedence(std::string const& op) override;
 
