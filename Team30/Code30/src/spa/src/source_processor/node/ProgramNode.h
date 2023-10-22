@@ -10,7 +10,7 @@ class ProgramNode : public ANode {
  public:
   explicit ProgramNode(std::vector<std::shared_ptr<ProcedureNode>> procedures);
 
-  void Accept(IDesignExtractor& designExtractor) override;
+  void Accept(IDesignExtractor& design_extractor) override;
 
   std::vector<std::shared_ptr<ProcedureNode>> GetChildren() const;
 
