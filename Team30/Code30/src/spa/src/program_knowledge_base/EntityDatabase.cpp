@@ -32,7 +32,7 @@ EntityDatabase::EntityDatabase() {
 std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
     EntityType ent_type, AttrType attr_type) {
   if (EntityAttrPairings::IsDefaultPair(ent_type, attr_type)) {
-    return *get(ent_type);
+    return *Get(ent_type);
   }
   std::unordered_set<std::string> result;
   std::unordered_map<std::string, std::string> ent_attr =
@@ -57,7 +57,7 @@ void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
   attr_ent_map[std::make_pair(type, attr_type)][attribute].insert(ent);
 }
 
-std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::get(
+std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::Get(
     EntityType type) {
   std::shared_ptr<std::unordered_set<std::string>> results = entities[type];
   return results;
@@ -73,7 +73,7 @@ std::string EntityDatabase::ConvertEntityValueToAlias(
 std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
     EntityType type, AttrType attr_type, std::string value) {
   if (EntityAttrPairings::IsDefaultPair(type, attr_type)) {
-    std::shared_ptr<std::unordered_set<std::string>> ents = get(type);
+    std::shared_ptr<std::unordered_set<std::string>> ents = Get(type);
     if (ents->find(value) != ents->end()) {
       return std::vector<std::string>({value});
     }

@@ -9,16 +9,16 @@ TEST_CASE("Successful insert and retrieval") {
   db.InsertEntity(EntityType::WHILE, "3");
   db.InsertEntity(EntityType::CALL, AttrType::PROC_NAME, "5", "sub");
 
-  REQUIRE(db.get(EntityType::PROCEDURE)->size() == 1);
-  REQUIRE(db.get(EntityType::CALL)->size() == 2);
-  REQUIRE(db.get(EntityType::CONSTANT)->size() == 0);
+  REQUIRE(db.Get(EntityType::PROCEDURE)->size() == 1);
+  REQUIRE(db.Get(EntityType::CALL)->size() == 2);
+  REQUIRE(db.Get(EntityType::CONSTANT)->size() == 0);
 
   std::shared_ptr<std::unordered_set<std::string>> if_set =
-      db.get(EntityType::IF);
+      db.Get(EntityType::IF);
   REQUIRE(if_set->find("1") != if_set->end());
   REQUIRE(if_set->find("3") == if_set->end());
 
   std::shared_ptr<std::unordered_set<std::string>> while_set =
-      db.get(EntityType::WHILE);
+      db.Get(EntityType::WHILE);
   REQUIRE(while_set->find("3") != while_set->end());
 }

@@ -20,9 +20,9 @@
 
 class PKB : public PKBQPSInterface, public PKBSPInterface {
  private:
-  std::unique_ptr<EntityDatabase> entData;
-  std::unique_ptr<RelDatabase> relData;
-  std::unique_ptr<PatternDatabase> patData;
+  std::unique_ptr<EntityDatabase> ent_data;
+  std::unique_ptr<RelDatabase> rel_data;
+  std::unique_ptr<PatternDatabase> pat_data;
 
   // Helper functions
   std::unordered_set<std::string> GetIntersection(
