@@ -6,15 +6,18 @@
 #include <stdexcept>
 #include <utility>
 
+void ClauseResult::SetResultToFalse() {
+  num_declarations = 0;
+  boolean_clause_value = false;
+}
+
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
 ClauseResult::ClauseResult(PqlDeclaration const& d,
                            std::vector<std::string> const& values) {
   if (values.empty()) {
-    // Entire clause becomes false because no possible values
-    num_declarations = 0;
-    boolean_clause_value = false;
+    SetResultToFalse();
     return;
   }
   // Create clause result with 1 declaration
@@ -26,9 +29,7 @@ ClauseResult::ClauseResult(
     PqlDeclaration const& d1, PqlDeclaration const& d2,
     std::vector<std::pair<std::string, std::string>> const& values) {
   if (values.empty()) {
-    // Entire clause becomes false because no possible values
-    num_declarations = 0;
-    boolean_clause_value = false;
+    SetResultToFalse();
     return;
   }
 
@@ -41,7 +42,11 @@ ClauseResult::ClauseResult(
         intersecting.push_back(pair.first);
       }
     }
-    value_map[d1] = intersecting;
+    if (intersecting.empty()) {
+      SetResultToFalse();
+    } else {
+      value_map[d1] = intersecting;
+    }
   } else {
     num_declarations = 2;
     // separate out the paired vectors

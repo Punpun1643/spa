@@ -306,4 +306,21 @@ TEST_CASE("Test SuchThat Clauses") {
     // AffectsClause accepts all types that StmtRef would accept. But only
     // returns values other than 'None' for Assign statements.
   }
+
+  SECTION("Test clause with Same Synonym in Both Args") {
+    NextClause next = NextClause(std::make_unique<StmtRef>(s),
+        std::make_unique<StmtRef>(s), false);
+    result = next.Evaluate(pkb);
+    REQUIRE(result->GetNumDeclarations() == 0);
+    REQUIRE(result->IsBooleanResult());
+    REQUIRE_FALSE(result->GetBooleanClauseValue());
+
+    pkb.synonymSynonymValues = {std::make_pair("42","42")};
+    NextClause next_2 = NextClause(std::make_unique<StmtRef>(a),
+                                 std::make_unique<StmtRef>(a), false);
+    result = next_2.Evaluate(pkb);
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE_FALSE(result->IsBooleanResult());
+    REQUIRE(*(result->GetValues(a)) == std::vector<std::string>{"42"});
+  }
 }

@@ -17,6 +17,8 @@ class ClauseResult {
                      PqlDeclarationHash>
       value_map;
 
+  void SetResultToFalse();
+
  public:
   // Constructor for zero declaration clauses
   explicit ClauseResult(bool is_valid);
