@@ -9,10 +9,10 @@
 
 class IfNode : public StmtNode {
  public:
-  IfNode(int stmtIndex, StmtType stmtType,
-         std::shared_ptr<CondExprNode> condExprNode,
-         std::shared_ptr<StmtLstNode> thenStmtLstNode,
-         std::shared_ptr<StmtLstNode> elseStmtLstNode);
+  IfNode(int stmt_index, StmtType stmt_type,
+         std::shared_ptr<CondExprNode> cond_expr_node,
+         std::shared_ptr<StmtLstNode> then_stmt_lst_node,
+         std::shared_ptr<StmtLstNode> else_stmt_lst_node);
 
   void Accept(IDesignExtractor& extractor) override;
 
@@ -23,7 +23,7 @@ class IfNode : public StmtNode {
   ~IfNode() = default;
 
  private:
-  std::shared_ptr<StmtLstNode> const thenStmtLstNode;
-  std::shared_ptr<StmtLstNode> const elseStmtLstNode;
-  std::shared_ptr<CondExprNode> const condExprNode;
+  std::shared_ptr<StmtLstNode> const then_stmt_lst_node;
+  std::shared_ptr<StmtLstNode> const else_stmt_lst_node;
+  std::shared_ptr<CondExprNode> const cond_expr_node;
 };
