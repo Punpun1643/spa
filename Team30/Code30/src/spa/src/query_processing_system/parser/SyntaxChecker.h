@@ -21,6 +21,7 @@ class SyntaxChecker : public QpParser {
 
  private:
   enum class ClauseType { such_that, pattern, with };
+  bool has_semantic_exception;
 
   // Checkers
   void CheckAffects();
@@ -44,8 +45,8 @@ class SyntaxChecker : public QpParser {
 
   // Helpers
   EntityType CheckCurrentTokenPatternEntity();
-  void CheckCurrentTokenPatternFirstArg(EntityType variable_type);
-  void CheckCurrentTokenPatternSecondArg(EntityType variable_type);
+  void CheckCurrentTokenPatternFirstArg();
+  void CheckCurrentTokenPatternSecondArg();
   void CheckCurrentTokenStmtRef(std::string syntax_error_msg,
                                 std::string not_existing_error_msg);
   void CheckCurrentTokenSyntax(std::string expected_value,
