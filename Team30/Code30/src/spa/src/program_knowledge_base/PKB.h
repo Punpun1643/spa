@@ -10,13 +10,13 @@
 #include <utility>
 #include <vector>
 
-#include "../query_processing_system/common/EntityType.h"
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "PKBQPSInterface.h"
 #include "PKBSPInterface.h"
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
+#include "shared/types/EntityType.h"
 
 class PKB : public PKBQPSInterface, public PKBSPInterface {
  private:

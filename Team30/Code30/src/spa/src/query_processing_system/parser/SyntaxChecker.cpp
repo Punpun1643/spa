@@ -2,13 +2,13 @@
 
 #include <cassert>
 #include <iostream>
+#include <memory>
+#include <queue>
 #include <stdexcept>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <queue>
-#include <memory>
-#include <string>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"

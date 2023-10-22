@@ -9,10 +9,10 @@
 #include <utility>
 #include <vector>
 
-#include "../query_processing_system/common/EntityType.h"
 #include "RelationType.h"
-#include "query_processing_system/common/AttrType.h"
-#include "query_processing_system/common/MatchType.h"
+#include "shared/types/AttrType.h"
+#include "shared/types/EntityType.h"
+#include "shared/types/MatchType.h"
 
 class PKBQPSInterface {
  public:

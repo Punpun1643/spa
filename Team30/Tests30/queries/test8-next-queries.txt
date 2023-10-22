@@ -68,3 +68,13 @@ stmt s;
 Select s such that Next*("p2", s)
 SyntaxError
 5000
+18 - test
+stmt s;
+Select s such that Next(10000, 100001)
+none
+5000
+19 - test
+stmt s;
+Select s such that Next(-1000, 5)
+SyntaxError
+5000

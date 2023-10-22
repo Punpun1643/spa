@@ -1,16 +1,16 @@
 #pragma once
 
-#include <unordered_map>
-#include <string>
 #include <memory>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
-#include "../common/AttrRef.h"
-#include "../common/EntityType.h"
-#include "../common/PatternClause.h"
-#include "../common/PqlDeclaration.h"
-#include "../common/SuchThatClause.h"
-#include "../common/WithClause.h"
+#include "../clauses/PatternClause.h"
+#include "../clauses/SuchThatClause.h"
+#include "../clauses/WithClause.h"
+#include "query_processing_system/references/AttrRef.h"
+#include "query_processing_system/references/PqlDeclaration.h"
+#include "shared/types/EntityType.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "../../shared/parser/node/TreeNode.h"
-#include "../common/MatchType.h"
 #include "../interpreter/QueryInterpreter.h"
 #include "ClauseExpression.h"
+#include "shared/types/MatchType.h"
 
 class PatternExpression : public ClauseExpression {
  public:

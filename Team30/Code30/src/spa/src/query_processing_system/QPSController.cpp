@@ -1,15 +1,15 @@
 #include "QPSController.h"
 
 #include <iostream>
-#include <sstream>
-#include <utility>
 #include <memory>
-#include <vector>
+#include <sstream>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "../shared/tokenizer/Tokenizer.h"
-#include "common/SuchThatClause.h"
-#include "common/UsesSClause.h"
+#include "clauses/SuchThatClause.h"
+#include "clauses/UsesSClause.h"
 #include "exceptions/InvalidSyntaxException.h"
 #include "parser/ContextBuilder.h"
 

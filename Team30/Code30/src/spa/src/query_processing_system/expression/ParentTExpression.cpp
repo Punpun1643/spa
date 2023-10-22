@@ -1,6 +1,6 @@
-#include <string>
-
 #include "ParentTExpression.h"
+
+#include <string>
 
 ParentTExpression::ParentTExpression(std::string arg1, std::string arg2)
     : SuchThatExpression(arg1, arg2) {}

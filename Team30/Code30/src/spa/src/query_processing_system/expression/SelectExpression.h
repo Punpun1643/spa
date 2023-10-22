@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "../common/AttrType.h"
 #include "AExpression.h"
+#include "shared/types/AttrType.h"
 
 class SelectExpression : public AExpression {
  public:

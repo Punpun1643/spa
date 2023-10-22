@@ -2,18 +2,18 @@
 
 #include <iostream>
 #include <map>
-#include <stdexcept>
 #include <memory>
-#include <vector>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
-#include "../common/AttrRef.h"
-#include "../common/FollowsClause.h"
-#include "../common/PqlDeclaration.h"
-#include "../common/StmtRef.h"
+#include "../clauses/FollowsClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
+#include "query_processing_system/references/AttrRef.h"
+#include "query_processing_system/references/PqlDeclaration.h"
+#include "query_processing_system/references/StmtRef.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}

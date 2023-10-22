@@ -1,7 +1,7 @@
+#include "PatternExpression.h"
+
 #include <memory>
 #include <string>
-
-#include "PatternExpression.h"
 
 PatternExpression::PatternExpression(std::string syn_assign, std::string arg1,
                                      std::string arg2, MatchType match_type,
