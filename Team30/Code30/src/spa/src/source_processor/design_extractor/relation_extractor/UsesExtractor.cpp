@@ -1,8 +1,8 @@
 #include "UsesExtractor.h"
 
 #include <algorithm>
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 
 UsesExtractor::UsesExtractor(PKBSPInterface& pkb,
                              std::shared_ptr<CallsManager> calls_manager)
