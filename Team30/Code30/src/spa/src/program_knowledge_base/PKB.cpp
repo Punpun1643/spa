@@ -78,7 +78,7 @@ std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
                                            AttrType curr_attr_type,
                                            AttrType wanted_attr_type) {
   return ent_data->ConvertEntityValueToAlias(value, type, curr_attr_type,
-                                            wanted_attr_type);
+                                             wanted_attr_type);
 }
 
 std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
@@ -91,7 +91,7 @@ std::vector<std::pair<std::string, std::string>>
 PKB::GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
                                      EntityType type_2, AttrType attr_type_2) {
   return ent_data->GetEntitiesWhereAttributesMatch(type_1, attr_type_1, type_2,
-                                                  attr_type_2);
+                                                   attr_type_2);
 }
 
 // ---------- RELATIONS ----------
@@ -129,8 +129,8 @@ std::vector<std::string> PKB::GetRelationSynonymWild(EntityType entity_type,
 // example Follows(_, s), FolowsStar(_, s)
 std::vector<std::string> PKB::GetRelationWildSynonym(EntityType entity_type,
                                                      RelationType rel_type) {
-  std::unordered_set<std::string> output =
-      rel_data->GetAllWithInverseRelations(rel_type, ent_data->Get(entity_type));
+  std::unordered_set<std::string> output = rel_data->GetAllWithInverseRelations(
+      rel_type, ent_data->Get(entity_type));
   return std::vector<std::string>(output.begin(), output.end());
 }
 
