@@ -42,8 +42,8 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::vector<std::string> const valueSynonymValues = {"d", "e", "f"};
   std::vector<std::string> const synonymSynonymValues1 = {"42"};
   std::vector<std::string> const synonymSynonymValues2 = {"43"};
-  std::vector<std::pair<std::string, std::string>> synonymSynonymValues =
-      {std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
+  std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {
+      std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
 
   // Pattern Clauses
   int patternWildCalls = 0;

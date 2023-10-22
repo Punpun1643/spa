@@ -12,7 +12,6 @@
 #include "query_processing_system/clauses/UsesSClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-
 TEST_CASE("Test SuchThat Clauses") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
   std::unique_ptr<ClauseResult> result;
@@ -309,15 +308,15 @@ TEST_CASE("Test SuchThat Clauses") {
 
   SECTION("Test clause with Same Synonym in Both Args") {
     NextClause next = NextClause(std::make_unique<StmtRef>(s),
-        std::make_unique<StmtRef>(s), false);
+                                 std::make_unique<StmtRef>(s), false);
     result = next.Evaluate(pkb);
     REQUIRE(result->GetNumDeclarations() == 0);
     REQUIRE(result->IsBooleanResult());
     REQUIRE_FALSE(result->GetBooleanClauseValue());
 
-    pkb.synonymSynonymValues = {std::make_pair("42","42")};
+    pkb.synonymSynonymValues = {std::make_pair("42", "42")};
     NextClause next_2 = NextClause(std::make_unique<StmtRef>(a),
-                                 std::make_unique<StmtRef>(a), false);
+                                   std::make_unique<StmtRef>(a), false);
     result = next_2.Evaluate(pkb);
     REQUIRE(result->GetNumDeclarations() == 1);
     REQUIRE_FALSE(result->IsBooleanResult());

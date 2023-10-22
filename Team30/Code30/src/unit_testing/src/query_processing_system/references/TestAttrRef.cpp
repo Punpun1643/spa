@@ -86,27 +86,34 @@ TEST_CASE("Test AttrRef") {
   }
 
   SECTION("Test invalid entity-type attr-type combinations") {
-    std::vector<EntityType> stmt_types = {EntityType::READ, EntityType::PRINT,
+    std::vector<EntityType> stmt_types = {EntityType::READ,   EntityType::PRINT,
                                           EntityType::ASSIGN, EntityType::IF,
-                                          EntityType::WHILE, EntityType::CALL,
+                                          EntityType::WHILE,  EntityType::CALL,
                                           EntityType::STMT};
-    for (EntityType type: stmt_types) {
-      REQUIRE_THROWS_AS(AttrRef(PqlDeclaration("blah", type), AttrType::VALUE), InvalidSemanticsException);
+    for (EntityType type : stmt_types) {
+      REQUIRE_THROWS_AS(AttrRef(PqlDeclaration("blah", type), AttrType::VALUE),
+                        InvalidSemanticsException);
       if (type != EntityType::CALL) {
-        REQUIRE_THROWS_AS(AttrRef(PqlDeclaration("blah", type), AttrType::PROC_NAME), InvalidSemanticsException);
+        REQUIRE_THROWS_AS(
+            AttrRef(PqlDeclaration("blah", type), AttrType::PROC_NAME),
+            InvalidSemanticsException);
       } else {
-        REQUIRE_NOTHROW(AttrRef(PqlDeclaration("blah", type), AttrType::PROC_NAME));
+        REQUIRE_NOTHROW(
+            AttrRef(PqlDeclaration("blah", type), AttrType::PROC_NAME));
       }
       if (type != EntityType::READ && type != EntityType::PRINT) {
-        REQUIRE_THROWS_AS(AttrRef(PqlDeclaration("blah", type), AttrType::VAR_NAME), InvalidSemanticsException);
+        REQUIRE_THROWS_AS(
+            AttrRef(PqlDeclaration("blah", type), AttrType::VAR_NAME),
+            InvalidSemanticsException);
       } else {
-        REQUIRE_NOTHROW(AttrRef(PqlDeclaration("b",type), AttrType::VAR_NAME));
+        REQUIRE_NOTHROW(AttrRef(PqlDeclaration("b", type), AttrType::VAR_NAME));
       }
-      REQUIRE_NOTHROW(AttrRef(PqlDeclaration("blah", type), AttrType::STMT_NUM));
+      REQUIRE_NOTHROW(
+          AttrRef(PqlDeclaration("blah", type), AttrType::STMT_NUM));
     }
     // Just try out another to make sure the logic works
     REQUIRE_NOTHROW(AttrRef(con, AttrType::VALUE));
-    REQUIRE_THROWS_AS(AttrRef(con, AttrType::VAR_NAME), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(AttrRef(con, AttrType::VAR_NAME),
+                      InvalidSemanticsException);
   }
 }
-

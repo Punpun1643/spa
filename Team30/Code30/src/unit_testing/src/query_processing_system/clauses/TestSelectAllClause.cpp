@@ -1,6 +1,6 @@
-#include "query_processing_system/clauses/SelectAllClause.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
+#include "query_processing_system/clauses/SelectAllClause.h"
 
 TEST_CASE("Test SelectAll Clause") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
