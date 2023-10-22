@@ -11,8 +11,8 @@
 
 class ClauseResult {
  private:
-  int num_declarations{};
-  bool boolean_clause_value{};
+  int num_declarations;
+  bool boolean_clause_value;
   std::unordered_map<PqlDeclaration, std::vector<std::string>,
                      PqlDeclarationHash>
       value_map;
