@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "program_knowledge_base/PKB.h"
-#include "program_knowledge_base/RelationType.h"
+#include "shared/types/RelationType.h"
 
 std::shared_ptr<TreeNode> buildTree1() {
   // a + b * c % d;

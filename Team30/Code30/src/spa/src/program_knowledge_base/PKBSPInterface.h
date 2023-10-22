@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "PatternType.h"
-#include "RelationType.h"
 #include "shared/types/AttrType.h"
 #include "shared/types/EntityType.h"
 #include "shared/types/MatchType.h"
+#include "shared/types/RelationType.h"
 
 class PKBSPInterface {
  public:

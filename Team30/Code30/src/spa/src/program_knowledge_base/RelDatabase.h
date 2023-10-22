@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "../source_processor/node/util_node/CFGNode.h"
-#include "RelationType.h"
+#include "shared/types/RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
 #include "tables/LinkedListTable.h"
