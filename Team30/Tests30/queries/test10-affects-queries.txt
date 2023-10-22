@@ -26,7 +26,7 @@ TRUE
 6 - Affects same assign stmt (that modifies itself)
 assign a;
 Select a such that Affects(a, a) 
-33
+34
 5000
 7 - Affects two assigns different proc
 assign a;
@@ -73,17 +73,22 @@ assign a;
 Select BOOLEAN such that Affects (21, 24)
 FALSE
 5000
-16 - Invalid Semantics: Wrong synonym param (not assign)
+16 - Wrong synonym param (Affects should auto evaluate to None)
 read r; 
 Select BOOLEAN such that Affects (5, r)
-SemanticError
+FALSE
 5000
-17 - Invalid Semantics: Wrong synonym param (not assign)
+17 - Wrong synonym param (stmt superset of assign)
 stmt s;
 Select BOOLEAN such that Affects (s, 10)
+TRUE
+5000
+18 - Wrong synonym param (not a stmt)
+stmt s;
+Select BOOLEAN such that Affects (v, 5)
 SemanticError
 5000
-18 - Invalid Syntax: No strings for affects param
+19 - Invalid Syntax: No strings for affects param
 assign a;
 Select BOOLEAN such that Affects ("x", 8)
 SyntaxError
