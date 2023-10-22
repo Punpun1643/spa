@@ -5,11 +5,11 @@
 
 #include "../stmt_node/AssignNode.h"
 
-CFGNode::CFGNode(std::shared_ptr<StmtNode> node, StmtType stmtType,
+CFGNode::CFGNode(std::shared_ptr<StmtNode> node, StmtType stmt_type,
                  std::unordered_set<std::string> uses_vars,
                  std::unordered_set<std::string> modifies_vars)
     : node(node),
-      stmt_type(stmtType),
+      stmt_type(stmt_type),
       uses_vars(uses_vars),
       modifies_vars(modifies_vars) {}
 
@@ -88,11 +88,11 @@ bool CFGNode::HasPath(std::shared_ptr<CFGNode> start_node,
     std::vector<std::shared_ptr<CFGNode>> outgoing_nodes =
         curr_node->GetOutgoingNodes();
 
-    for (std::shared_ptr<CFGNode> outgoingNode : outgoing_nodes) {
-      if (visited_nodes.find(outgoingNode) == visited_nodes.end()) {
-        nodes_to_visit.push(outgoingNode);
-      } else if (outgoingNode == end_node &&
-                 visited_nodes.find(outgoingNode) != visited_nodes.end()) {
+    for (std::shared_ptr<CFGNode> out_going_node : outgoing_nodes) {
+      if (visited_nodes.find(out_going_node) == visited_nodes.end()) {
+        nodes_to_visit.push(out_going_node);
+      } else if (out_going_node == end_node &&
+                 visited_nodes.find(out_going_node) != visited_nodes.end()) {
         return true;
       }
     }
@@ -112,11 +112,12 @@ bool CFGNode::IsCallOutgoingNode(std::shared_ptr<CFGNode> node) {
 bool CFGNode::HandleAssignOrReadOutgoingNode(
     std::shared_ptr<CFGNode> outgoing_node,
     std::string const& var_modified_in_start_node) {
-  std::unordered_set<std::string> varsModifiedInOutgoingNode =
+  std::unordered_set<std::string> vars_modified_in_outgoing_node =
       outgoing_node->GetModifiesVars();
-  std::string varModifiedInOutgoingNode = *varsModifiedInOutgoingNode.begin();
+  std::string var_modified_in_outgoing_node =
+      *vars_modified_in_outgoing_node.begin();
 
-  return var_modified_in_start_node != varModifiedInOutgoingNode;
+  return var_modified_in_start_node != var_modified_in_outgoing_node;
 }
 
 bool CFGNode::HandleCallOutgoingNode(
