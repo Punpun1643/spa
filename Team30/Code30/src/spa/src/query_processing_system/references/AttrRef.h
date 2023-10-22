@@ -7,8 +7,8 @@
 #include "PqlDeclaration.h"
 #include "program_knowledge_base/PKBQPSInterface.h"
 #include "shared/types/AttrType.h"
-#include "shared/types/EntityType.h"
 #include "shared/types/EntityAttrPairings.h"
+#include "shared/types/EntityType.h"
 
 enum class AttrRefOutputType { NAME, INTEGER };
 
