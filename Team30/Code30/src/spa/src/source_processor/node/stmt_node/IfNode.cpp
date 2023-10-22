@@ -1,7 +1,8 @@
-#include <utility>
-#include <memory>
-
 #include "IfNode.h"
+
+#include <memory>
+#include <utility>
+
 #include "../../design_extractor/IDesignExtractor.h"
 
 IfNode::IfNode(int stmt_index, StmtType stmt_type,
