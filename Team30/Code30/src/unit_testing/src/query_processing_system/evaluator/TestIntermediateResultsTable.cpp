@@ -18,7 +18,7 @@ std::vector<std::pair<std::string, std::string>> makePairedVector(
 
 std::vector<std::vector<std::string>> addDim(std::vector<std::string>& vec) {
   std::vector<std::vector<std::string>> output = {};
-  for (auto const& value: vec) {
+  for (auto const& value : vec) {
     output.push_back({value});
   }
   return output;
@@ -252,24 +252,26 @@ TEST_CASE("Intermediate Results Table Tests") {
   SECTION("Check results retrieval - unlinked") {
     irt.AddClauseResult(SINGLE_CLAUSE_A);
     irt.AddClauseResult(SINGLE_CLAUSE_C);
-    std::vector<std::vector<std::string>> expected_output = {{"1","20"}, {"1","30"}, {"1","40"},
-                                                            {"2","20"}, {"2","30"}, {"2","40"},
-                                                             {"3","20"}, {"3","30"}, {"3","40"}};
-    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c}), Catch::UnorderedEquals(expected_output));
+    std::vector<std::vector<std::string>> expected_output = {
+        {"1", "20"}, {"1", "30"}, {"1", "40"}, {"2", "20"}, {"2", "30"},
+        {"2", "40"}, {"3", "20"}, {"3", "30"}, {"3", "40"}};
+    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c}),
+                 Catch::UnorderedEquals(expected_output));
   }
 
   SECTION("Check results retrieval - linked") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_C);
-    std::vector<std::vector<std::string>> expected_output = {{"1","20", "1", "20"},
-                                                             {"2","30", "2", "30"},
-                                                             {"3","40", "3", "40"}};
-    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c, a, c}), Catch::UnorderedEquals(expected_output));
+    std::vector<std::vector<std::string>> expected_output = {
+        {"1", "20", "1", "20"}, {"2", "30", "2", "30"}, {"3", "40", "3", "40"}};
+    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c, a, c}),
+                 Catch::UnorderedEquals(expected_output));
   }
 
   SECTION("Check results retrieval - de-duplication") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B);
     irt.AddClauseResult(ClauseResult(
         a, c, IrtTestHelperMethods::makePairedVector({"2", "2", "2"}, LIST_C)));
-    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}), Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
+    REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}),
+                 Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
   }
 }

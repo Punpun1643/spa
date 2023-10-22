@@ -22,13 +22,15 @@ static void AddDeclaration(std::vector<std::shared_ptr<Token>>& tokens,
   AddSpecialCharVector(tokens, {";"});
 }
 
-static void AddIdentWild(std::vector<std::shared_ptr<Token>>& tokens, std::string arg1) {
+static void AddIdentWild(std::vector<std::shared_ptr<Token>>& tokens,
+                         std::string arg1) {
   AddSpecialCharVector(tokens, {"(", "\""});
   AddWordVector(tokens, {arg1});
   AddSpecialCharVector(tokens, {"\"", ",", "_", ")"});
 }
 
-static void AddIdentIdent(std::vector<std::shared_ptr<Token>>& tokens, std::string arg1, std::string arg2) {
+static void AddIdentIdent(std::vector<std::shared_ptr<Token>>& tokens,
+                          std::string arg1, std::string arg2) {
   AddSpecialCharVector(tokens, {"(", "\""});
   AddWordVector(tokens, {arg1});
   AddSpecialCharVector(tokens, {"\"", ",", "\""});
@@ -36,8 +38,8 @@ static void AddIdentIdent(std::vector<std::shared_ptr<Token>>& tokens, std::stri
   AddSpecialCharVector(tokens, {"\"", ")"});
 }
 
-
-static void AddIntWord(std::vector<std::shared_ptr<Token>>& tokens, std::string arg1, std::string arg2) {
+static void AddIntWord(std::vector<std::shared_ptr<Token>>& tokens,
+                       std::string arg1, std::string arg2) {
   AddSpecialCharVector(tokens, {"("});
   AddInteger(tokens, arg1);
   AddSpecialCharVector(tokens, {","});
@@ -55,7 +57,7 @@ static void AddWordWord(std::vector<std::shared_ptr<Token>>& tokens,
 }
 
 static void AddWordIdent(std::vector<std::shared_ptr<Token>>& tokens,
-    std::string arg1, std::string arg2) {
+                         std::string arg1, std::string arg2) {
   AddSpecialCharVector(tokens, {"("});
   AddWordVector(tokens, {arg1});
   AddSpecialCharVector(tokens, {",", "\""});
@@ -85,7 +87,6 @@ static void AddWildWild(std::vector<std::shared_ptr<Token>>& tokens) {
   AddSpecialCharVector(tokens, {"_"});
   AddSpecialCharVector(tokens, {")"});
 }
-
 
 TEST_CASE("Parse select query") {
   std::vector<std::shared_ptr<Token>> tokens;
@@ -123,25 +124,21 @@ TEST_CASE("Parse select query") {
     AddDeclaration(tokens, "while", {"wh"});
     AddWordVector(tokens, {"Select", "wh"});
     AddEOF(tokens);
-
   }
   SECTION("1 if declaration; Select Clause") {
     AddDeclaration(tokens, "if", {"if"});
     AddWordVector(tokens, {"Select", "if"});
     AddEOF(tokens);
-
   }
   SECTION("1 assign declaration; Select Clause") {
     AddDeclaration(tokens, "assign", {"as"});
     AddWordVector(tokens, {"Select", "as"});
     AddEOF(tokens);
-
   }
   SECTION("1 variable declaration; Select Clause") {
     AddDeclaration(tokens, "variable", {"v"});
     AddWordVector(tokens, {"Select", "v"});
     AddEOF(tokens);
-
   }
   SECTION("1 constant declaration; Select Clause") {
     AddDeclaration(tokens, "constant", {"c"});
@@ -149,7 +146,6 @@ TEST_CASE("Parse select query") {
     AddEOF(tokens);
 
     controller.TokensToClauses(tokens);
-
   }
   SECTION("1 procedure declaration; Select Clause") {
     AddDeclaration(tokens, "procedure", {"pr"});
@@ -331,7 +327,9 @@ TEST_CASE("Pattern") {
   std::vector<std::shared_ptr<Token>> tokens;
   QPSController controller = QPSController();
 
-  SECTION("Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (\"count\", _)") {
+  SECTION(
+      "Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") "
+      "pattern a (\"count\", _)") {
     AddDeclaration(tokens, "stmt", {"s1"});
     AddDeclaration(tokens, "assign", {"a"});
     AddWordVector(tokens, {"Select", "s1", "such", "that", "Uses"});
@@ -345,7 +343,9 @@ TEST_CASE("Pattern") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (_, _\"x\"_)") {
+  SECTION(
+      "Positive. stmt s1, assign a; Select s1 such that Uses(s1, \"count\") "
+      "pattern a (_, _\"x\"_)") {
     AddDeclaration(tokens, "stmt", {"s1"});
     AddDeclaration(tokens, "assign", {"a"});
     AddWordVector(tokens, {"Select", "s1", "such", "that", "Uses"});
@@ -359,7 +359,9 @@ TEST_CASE("Pattern") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Positive. variable v, stmt s1, assign a; Select s1 such that Uses(s1, \"count\") pattern a (v, _\"x\"_)") {
+  SECTION(
+      "Positive. variable v, stmt s1, assign a; Select s1 such that Uses(s1, "
+      "\"count\") pattern a (v, _\"x\"_)") {
     AddDeclaration(tokens, "variable", {"v"});
     AddDeclaration(tokens, "stmt", {"s1"});
     AddDeclaration(tokens, "assign", {"a"});
@@ -376,7 +378,9 @@ TEST_CASE("Pattern") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Negative, undeclared synonym: assign a; Select a such that pattern b (\"x\", _)") {
+  SECTION(
+      "Negative, undeclared synonym: assign a; Select a such that pattern b "
+      "(\"x\", _)") {
     AddDeclaration(tokens, "assign", {"a"});
     AddWordVector(tokens, {"Select", "a", "such", "that", "pattern", "b"});
     AddIdentWild(tokens, "x");
@@ -486,7 +490,8 @@ TEST_CASE("Such That And") {
   std::vector<std::shared_ptr<Token>> tokens;
   QPSController controller = QPSController();
 
-  SECTION("stmt s1, s2; Select s1 such that Follows*(_, s2) and Modifies(s2, _)") {
+  SECTION(
+      "stmt s1, s2; Select s1 such that Follows*(_, s2) and Modifies(s2, _)") {
     AddDeclaration(tokens, "stmt", {"s1", "s2"});
     AddWordVector(tokens, {"Select", "s1", "such", "that", "Follows*"});
     AddWildWord(tokens, "s2");
@@ -515,7 +520,9 @@ TEST_CASE("Select clauses with attr ref") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Positive: procedure p1, p2; Select p1.procName such that Calls(p1, p2)") {
+  SECTION(
+      "Positive: procedure p1, p2; Select p1.procName such that Calls(p1, "
+      "p2)") {
     AddDeclaration(tokens, "procedure", {"p1", "p2"});
     AddWordVector(tokens, {"Select", "p1"});
     AddSpecialCharVector(tokens, {"."});
@@ -539,7 +546,9 @@ TEST_CASE("Select clauses with attr ref") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Positive: stmt s; procedure p, q; Select <s.stmt#, p.procName> such that Calls (p, q) and Follows (3, s)") {
+  SECTION(
+      "Positive: stmt s; procedure p, q; Select <s.stmt#, p.procName> such "
+      "that Calls (p, q) and Follows (3, s)") {
     AddDeclaration(tokens, "stmt", {"s"});
     AddDeclaration(tokens, "procedure", {"p", "q"});
     AddWordVector(tokens, {"Select"});
@@ -560,7 +569,6 @@ TEST_CASE("Select clauses with attr ref") {
 
     controller.TokensToClauses(tokens);
   }
-
 }
 
 TEST_CASE("Next queries") {
@@ -590,7 +598,9 @@ TEST_CASE("With queries") {
   std::vector<std::shared_ptr<Token>> tokens;
   QPSController controller = QPSController();
 
-  SECTION("procedure p, q; Select p such that Calls (p, q) with q.procName = \"hello\"") {
+  SECTION(
+      "procedure p, q; Select p such that Calls (p, q) with q.procName = "
+      "\"hello\"") {
     AddDeclaration(tokens, "procedure", {"p", "q"});
     AddWordVector(tokens, {"Select", "p", "such", "that", "Calls"});
     AddWordWord(tokens, "p", "q");
@@ -633,7 +643,10 @@ TEST_CASE("With queries") {
 
     controller.TokensToClauses(tokens);
   }
-  SECTION("procedure p, q; variable v; stmt s; assign stmt; constant c; Select s with s.stmt# = c.value and p.procName = v.varName such that Calls (p, q) and Uses (s, v) pattern stmt (_, _) with q.procName = \"hello\"") {
+  SECTION(
+      "procedure p, q; variable v; stmt s; assign stmt; constant c; Select s "
+      "with s.stmt# = c.value and p.procName = v.varName such that Calls (p, "
+      "q) and Uses (s, v) pattern stmt (_, _) with q.procName = \"hello\"") {
     AddDeclaration(tokens, "procedure", {"p", "q"});
     AddDeclaration(tokens, "variable", {"v"});
     AddDeclaration(tokens, "stmt", {"s"});
@@ -727,7 +740,9 @@ TEST_CASE("With queries") {
 
     REQUIRE_THROWS(controller.TokensToClauses(tokens));
   }
-  SECTION("Negative: stmt s; Select s with s1.stmt# = 20000 such that Follows (5, s)") {
+  SECTION(
+      "Negative: stmt s; Select s with s1.stmt# = 20000 such that Follows (5, "
+      "s)") {
     AddDeclaration(tokens, "stmt", {"s"});
     AddWordVector(tokens, {"Select", "s", "with", "s1"});
     AddSpecialCharVector(tokens, {"."});
@@ -746,7 +761,8 @@ TEST_CASE("pattern and") {
   std::vector<std::shared_ptr<Token>> tokens;
   QPSController controller = QPSController();
 
-  SECTION("stmt s1; assign a; Select a pattern a (\"v\", _) and a (\"v\", \"x\")") {
+  SECTION(
+      "stmt s1; assign a; Select a pattern a (\"v\", _) and a (\"v\", \"x\")") {
     AddDeclaration(tokens, "stmt", {"s1"});
     AddDeclaration(tokens, "assign", {"a"});
     AddWordVector(tokens, {"Select", "a", "pattern", "a"});

@@ -16,8 +16,7 @@ TEST_CASE("Tests on PqlReferences") {
   SECTION("StmtRef") {
     auto wild_stmt_ref = std::make_shared<PqlReference>(StmtRef());
     auto value_stmt_ref = std::make_shared<PqlReference>(StmtRef(42));
-    auto decl_stmt_ref = std::make_shared<PqlReference>(
-        StmtRef(a));
+    auto decl_stmt_ref = std::make_shared<PqlReference>(StmtRef(a));
 
     REQUIRE(wild_stmt_ref->GetRefType() == PqlRefType::WILD);
     REQUIRE(value_stmt_ref->GetRefType() == PqlRefType::VALUE);
@@ -35,19 +34,15 @@ TEST_CASE("Tests on PqlReferences") {
     auto copied_ref_2 = ref_2;
 
     // Invalid input declaration types
-    REQUIRE_THROWS_AS(StmtRef(c),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(StmtRef(v),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(StmtRef(proc),
-                      InvalidSemanticsException);
+    REQUIRE_THROWS_AS(StmtRef(c), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(StmtRef(v), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(StmtRef(proc), InvalidSemanticsException);
   }
 
   SECTION("EntRef") {
     auto wild_ent_ref = std::make_shared<PqlReference>(EntRef());
     auto value_ent_ref = std::make_shared<PqlReference>(EntRef("variable"));
-    auto decl_ent_ref = std::make_shared<PqlReference>(
-        EntRef(v));
+    auto decl_ent_ref = std::make_shared<PqlReference>(EntRef(v));
 
     REQUIRE(wild_ent_ref->GetRefType() == PqlRefType::WILD);
     REQUIRE(value_ent_ref->GetRefType() == PqlRefType::VALUE);
@@ -65,11 +60,8 @@ TEST_CASE("Tests on PqlReferences") {
     auto copied_ref_2 = ref_2;
 
     // Invalid input declaration types
-    REQUIRE_THROWS_AS(EntRef(a),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(EntRef(s),
-                      InvalidSemanticsException);
-    REQUIRE_THROWS_AS(EntRef(print),
-                      InvalidSemanticsException);
+    REQUIRE_THROWS_AS(EntRef(a), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(EntRef(s), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(EntRef(print), InvalidSemanticsException);
   }
 }

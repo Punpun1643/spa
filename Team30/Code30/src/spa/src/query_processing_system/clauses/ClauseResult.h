@@ -17,6 +17,11 @@ class ClauseResult {
                      PqlDeclarationHash>
       value_map;
 
+  void SetResultToFalse();
+
+  void ConstructSingleDeclResult(PqlDeclaration const& d,
+                                 std::vector<std::string> const& values);
+
  public:
   // Constructor for zero declaration clauses
   explicit ClauseResult(bool is_valid);
@@ -37,8 +42,7 @@ class ClauseResult {
 
   std::vector<PqlDeclaration> GetDeclarations() const;
 
-  std::unique_ptr<std::vector<std::string>> GetValues(
-      PqlDeclaration const& declaration) const;
+  std::vector<std::string> GetValues(PqlDeclaration const& declaration) const;
 
   bool Contains(PqlDeclaration const& d) const;
 };
