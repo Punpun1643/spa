@@ -1,7 +1,7 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>2.534000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>1.847000</parsing_time_taken>
 </info>
 <queries>
 <query>
