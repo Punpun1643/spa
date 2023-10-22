@@ -4,10 +4,10 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 #include <utility>
+#include <vector>
 
-#include "query_processing_system/common/PqlDeclaration.h"
+#include "query_processing_system/references/PqlDeclaration.h"
 
 class RelationalTable {
   /**

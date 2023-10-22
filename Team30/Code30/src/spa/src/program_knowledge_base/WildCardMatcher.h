@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "../program_knowledge_base/RelationType.h"
-#include "../query_processing_system/common/EntityType.h"
+#include "shared/types/EntityType.h"
 
 class WildCardMatcher {
   std::unordered_map<RelationType, EntityType> lhs_map;

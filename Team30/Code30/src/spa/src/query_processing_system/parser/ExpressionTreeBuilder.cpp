@@ -1,16 +1,17 @@
 #include "ExpressionTreeBuilder.h"
 
 #include <assert.h>
+
 #include <iostream>
+#include <memory>
+#include <queue>
 #include <regex>
+#include <string>
 #include <utility>
 #include <vector>
-#include <queue>
-#include <string>
-#include <memory>
 
+#include "../../shared/parser/exceptions/StartOfFileException.h"
 #include "../../shared/parser/node/TreeNode.h"
-#include "../common/EntityType.h"
 #include "../expression/AffectsExpression.h"
 #include "../expression/CallsExpression.h"
 #include "../expression/CallsTExpression.h"
@@ -24,14 +25,18 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
+#include "shared/types/EntityType.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens,
     std::shared_ptr<Context> context)
     : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
-  while (GetCurrTokenValue() != QpParser::SELECT ||
-         GetPeekBackTokenValue() != ";") {
+  while ((GetCurrTokenValue() != QpParser::SELECT) ||
+         (GetCurrTokenValue() == QpParser::SELECT &&
+          std::find(tokens.begin(), tokens.end(), GetCurrToken()) !=
+              tokens.begin() &&
+          GetPeekBackTokenValue() != ";")) {
     NextToken();
   }
 }
@@ -65,10 +70,6 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
     if (GetPeekTokenValue() == ".") {
       NextToken();  // .
       std::string attr_type_string = NextToken()->getTokenVal();
-      if (attr_type_string == "stmt") {
-        attr_type_string += NextToken()->getTokenVal();
-        assert(attr_type_string == "stmt#");
-      }
       AttrType attr_type = QpParser::StringToAttrType(attr_type_string);
       return std::make_optional<std::shared_ptr<SelectExpression>>(
           std::make_shared<SelectExpression>(synonym, attr_type, false));

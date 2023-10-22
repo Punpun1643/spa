@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "ArrayUtility.h"
+#include "shared/ArrayUtility.h"
 
 QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "RelationalTable.h"
-#include "query_processing_system/common/ClauseResult.h"
+#include "query_processing_system/clauses/ClauseResult.h"
 class IntermediateResultsTable {
   /**
    * Encapsulates the values that different declarations

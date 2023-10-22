@@ -2,10 +2,10 @@
 
 PkbQpsInterfaceStub::PkbQpsInterfaceStub(){};
 
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetEntitiesWithType(EntityType type) {
+std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesWithType(
+    EntityType type) {
   last_entity_type_passed = type;
-  return std::make_unique<std::vector<std::string>>(getAllOfTypeValues);
+  return std::vector<std::string>(getAllOfTypeValues);
 }
 
 std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
@@ -18,17 +18,19 @@ std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
   return converted_entity;
 };
 
-std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesMatchingAttrValue(EntityType type, AttrType attr_type,
-                                          std::string value) {
+std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesMatchingAttrValue(
+    EntityType type, AttrType attr_type, std::string value) {
   last_entity_type_passed = type;
   last_attr_type_passed = attr_type;
   last_value_passed = value;
   return attr_value_matches;
 };
 
-std::vector<std::pair<std::string, std::string>> PkbQpsInterfaceStub::GetEntitiesWhereAttributesMatch(
-    EntityType type_1, AttrType attr_type_1, EntityType type_2,
-    AttrType attr_type_2) {
+std::vector<std::pair<std::string, std::string>>
+PkbQpsInterfaceStub::GetEntitiesWhereAttributesMatch(EntityType type_1,
+                                                     AttrType attr_type_1,
+                                                     EntityType type_2,
+                                                     AttrType attr_type_2) {
   last_entity_type_passed = type_1;
   last_attr_type_passed = attr_type_1;
   last_entity_type_2_passed = type_2;
@@ -65,45 +67,39 @@ bool PkbQpsInterfaceStub::IsRelationTrueWildWild(RelationType rel_type) {
   return wildWildBool;
 }
 
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetRelationSynonymWild(EntityType entity_type,
-                                            RelationType rel_type) {
+std::vector<std::string> PkbQpsInterfaceStub::GetRelationSynonymWild(
+    EntityType entity_type, RelationType rel_type) {
   synonymWildCalls++;
   last_entity_type_passed = entity_type;
   last_rel_passed = rel_type;
-  return std::make_unique<std::vector<std::string>>(synonymWildValues);
+  return std::vector<std::string>(synonymWildValues);
 }
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetRelationWildSynonym(EntityType entity_type,
-                                            RelationType rel_type) {
+std::vector<std::string> PkbQpsInterfaceStub::GetRelationWildSynonym(
+    EntityType entity_type, RelationType rel_type) {
   wildSynonymCalls++;
   last_entity_type_passed = entity_type;
   last_rel_passed = rel_type;
-  return std::make_unique<std::vector<std::string>>(wildSynonymValues);
+  return std::vector<std::string>(wildSynonymValues);
 }
 
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetRelationSynonymValue(EntityType entity_type,
-                                             std::string value,
-                                             RelationType rel_type) {
+std::vector<std::string> PkbQpsInterfaceStub::GetRelationSynonymValue(
+    EntityType entity_type, std::string value, RelationType rel_type) {
   synonymValueCalls++;
   last_entity_type_passed = entity_type;
   last_value_passed = value;
   last_rel_passed = rel_type;
-  return std::make_unique<std::vector<std::string>>(synonymValueValues);
+  return std::vector<std::string>(synonymValueValues);
 }
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetRelationValueSynonym(std::string value,
-                                             EntityType entity_type,
-                                             RelationType rel_type) {
+std::vector<std::string> PkbQpsInterfaceStub::GetRelationValueSynonym(
+    std::string value, EntityType entity_type, RelationType rel_type) {
   valueSynonymCalls++;
   last_entity_type_passed = entity_type;
   last_value_passed = value;
   last_rel_passed = rel_type;
-  return std::make_unique<std::vector<std::string>>(valueSynonymValues);
+  return std::vector<std::string>(valueSynonymValues);
 }
 
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
                                                EntityType entity_type_2,
                                                RelationType rel_type) {
@@ -111,36 +107,32 @@ PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
   last_entity_type_passed = entity_type_1;
   last_entity_type_2_passed = entity_type_2;
   last_rel_passed = rel_type;
-  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
-      synonymSynonymValues);
+  return std::vector<std::pair<std::string, std::string>>(synonymSynonymValues);
 }
 
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetPatternMatchesWildLhs(
+std::vector<std::string> PkbQpsInterfaceStub::GetPatternMatchesWildLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternWildCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
-  return std::make_unique<std::vector<std::string>>(patternWildValues);
+  return std::vector<std::string>(patternWildValues);
 };
 
-std::unique_ptr<std::vector<std::string>>
-PkbQpsInterfaceStub::GetPatternMatchesValueLhs(
+std::vector<std::string> PkbQpsInterfaceStub::GetPatternMatchesValueLhs(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
   patternValueCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
   last_value_passed = lhs_value;
-  return std::make_unique<std::vector<std::string>>(patternValueValues);
+  return std::vector<std::string>(patternValueValues);
 };
 
-std::unique_ptr<std::vector<std::pair<std::string, std::string>>>
+std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetPatternMatchesSynonymLhs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternDeclCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
-  return std::make_unique<std::vector<std::pair<std::string, std::string>>>(
-      patternDeclValues);
+  return std::vector<std::pair<std::string, std::string>>(patternDeclValues);
 };

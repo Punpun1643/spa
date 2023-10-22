@@ -1,17 +1,17 @@
 #pragma once
 
-#include <unordered_map>
-#include <vector>
 #include <memory>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
-#include "../common/AttrType.h"
-#include "../common/Clause.h"
-#include "../common/EntRef.h"
-#include "../common/PqlDeclaration.h"
-#include "../common/StmtRef.h"
-#include "../common/WithClause.h"
+#include "../clauses/Clause.h"
+#include "../clauses/WithClause.h"
 #include "../context/Context.h"
+#include "query_processing_system/references/EntRef.h"
+#include "query_processing_system/references/PqlDeclaration.h"
+#include "query_processing_system/references/StmtRef.h"
+#include "shared/types/AttrType.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;

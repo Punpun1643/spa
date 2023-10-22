@@ -130,7 +130,6 @@ TEST_CASE("Tokenizer") {
   REQUIRE(tokens[12]->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
   REQUIRE(tokens[13]->getTokenType() == TokenType::EOF_TOKEN);
 
-
   test_str = "Select s such that Follows*(1, 2) and Parent *(1, 3)";
   std::istringstream test_stream7(test_str);
   Tokenizer tokenizer7 = Tokenizer(test_stream7);
@@ -151,4 +150,30 @@ TEST_CASE("Tokenizer") {
   REQUIRE(tokens[12]->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
   REQUIRE(tokens[13]->getTokenVal() == "(");
   REQUIRE(tokens[13]->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
+
+  // stmt.stmt#
+  test_str = "stmt.stmt#";
+  std::istringstream test_stream8(test_str);
+  Tokenizer tokenizer8 = Tokenizer(test_stream8);
+  tokens = tokenizer8.tokenize();
+  REQUIRE(tokens.size() == 4);
+  REQUIRE(tokens[0]->getTokenVal() == "stmt");
+  REQUIRE(tokens[1]->getTokenVal() == ".");
+  REQUIRE(tokens[2]->getTokenVal() == "stmt#");
+  REQUIRE(tokens[2]->getTokenType() == TokenType::WORD_TOKEN);
+  REQUIRE(tokens[3]->getTokenType() == TokenType::EOF_TOKEN);
+
+  // stmt.stmt #
+  test_str = "stmt.stmt #";
+  std::istringstream test_stream9(test_str);
+  Tokenizer tokenizer9 = Tokenizer(test_stream9);
+  tokens = tokenizer9.tokenize();
+  REQUIRE(tokens.size() == 5);
+  REQUIRE(tokens[0]->getTokenVal() == "stmt");
+  REQUIRE(tokens[1]->getTokenVal() == ".");
+  REQUIRE(tokens[2]->getTokenVal() == "stmt");
+  REQUIRE(tokens[2]->getTokenType() == TokenType::WORD_TOKEN);
+  REQUIRE(tokens[3]->getTokenVal() == "#");
+  REQUIRE(tokens[3]->getTokenType() == TokenType::SPECIAL_CHAR_TOKEN);
+  REQUIRE(tokens[4]->getTokenType() == TokenType::EOF_TOKEN);
 }

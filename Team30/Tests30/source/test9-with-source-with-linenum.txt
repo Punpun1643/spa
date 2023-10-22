@@ -1,0 +1,46 @@
+procedure p1 {
+
+1    p1 = v1 + v2;
+2    v2 = 2;
+3    v3 = 99 + v4;
+
+4    read v1;
+5    read v2;
+
+6    while (v5 >= v4 * 4) {
+7        v5 = v5 + 7;
+    } 
+
+8    if ( (v4 == 2) || (v1 < 3)) then {
+9       v4 = v1 + v2 - v3;
+    } else {
+10        v1 = v2 + v3;
+    }
+
+11    call p2;
+12    print v4;
+13    print v3;
+
+}
+
+procedure p2 {
+14    v6 = 1 + v5;
+15    v7 = v6 % 0;
+16    print v4;
+17    call v3;
+18    read v2;
+}
+
+procedure v3 {
+19    read v7;
+20    read v4;
+21    print v2;
+
+}
+
+procedure p4 {
+22    while (v4 <= 0) {
+23        v3 = v7 + v6 % 1;
+    }
+24    read v4;
+}

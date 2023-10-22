@@ -2,18 +2,18 @@
 
 #include <iostream>
 #include <map>
-#include <stdexcept>
 #include <memory>
-#include <vector>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
-#include "../common/AttrRef.h"
-#include "../common/FollowsClause.h"
-#include "../common/PqlDeclaration.h"
-#include "../common/StmtRef.h"
+#include "../clauses/FollowsClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
+#include "query_processing_system/references/AttrRef.h"
+#include "query_processing_system/references/PqlDeclaration.h"
+#include "query_processing_system/references/StmtRef.h"
 
 QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
@@ -96,7 +96,13 @@ bool QpParser::IsTransitiveRelRef(std::string const& name) {
 bool QpParser::IsValidInteger(std::string const& int_string) {
   try {
     stoi(int_string);
+    if (stoi(int_string) < 0) {
+      return false;
+    }
   } catch (std::invalid_argument& e) {
+    return false;
+  }
+  if (int_string.front() == '0' && int_string.size() > 1) {
     return false;
   }
   return true;

@@ -1,6 +1,6 @@
-#include <string>
-
 #include "CallsExpression.h"
+
+#include <string>
 
 CallsExpression::CallsExpression(std::string arg1, std::string arg2)
     : SuchThatExpression(arg1, arg2) {}

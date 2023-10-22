@@ -5,11 +5,11 @@
 #include <vector>
 
 #include "../../program_knowledge_base/PKBQPSInterface.h"
-#include "../common/SelectAllClause.h"
-#include "../common/SuchThatClause.h"
+#include "../clauses/SelectAllClause.h"
+#include "../clauses/SuchThatClause.h"
 #include "IntermediateResultsTable.h"
-#include "query_processing_system/common/AttrRef.h"
-#include "query_processing_system/common/PatternClause.h"
+#include "query_processing_system/clauses/PatternClause.h"
+#include "query_processing_system/references/AttrRef.h"
 
 class QueryEvaluator {
   typedef std::vector<std::shared_ptr<Clause>> const& ClauseList;

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include "../../spa/src/shared/tokenizer/Tokenizer.h"
-#include "../../spa/src/query_processing_system/common/SuchThatClause.h"
+#include "../../spa/src/query_processing_system/clauses/SuchThatClause.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "../../spa/src/query_processing_system/exceptions/InvalidSyntaxException.h"
 

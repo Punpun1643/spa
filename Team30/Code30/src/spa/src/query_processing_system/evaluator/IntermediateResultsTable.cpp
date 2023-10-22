@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "ArrayUtility.h"
+#include "shared/ArrayUtility.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 

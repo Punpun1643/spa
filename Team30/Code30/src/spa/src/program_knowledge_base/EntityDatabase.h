@@ -1,17 +1,18 @@
 #pragma once
 
 #include <stdio.h>
+
 #include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 #include <utility>
+#include <vector>
 
-#include "../query_processing_system/common/AttrRef.h"
-#include "../query_processing_system/common/EntityType.h"
-#include "query_processing_system/common/AttrType.h"
+#include "shared/types/AttrType.h"
+#include "shared/types/EntityAttrPairings.h"
+#include "shared/types/EntityType.h"
 #include "utils/PairHash.h"
 
 class EntityDatabase {

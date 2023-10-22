@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 class InvalidSemanticsException : public std::invalid_argument {
   /**

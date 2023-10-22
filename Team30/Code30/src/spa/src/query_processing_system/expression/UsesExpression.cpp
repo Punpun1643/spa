@@ -1,6 +1,6 @@
-#include <string>
-
 #include "UsesExpression.h"
+
+#include <string>
 
 UsesExpression::UsesExpression(std::string arg1, std::string arg2)
     : SuchThatExpression(arg1, arg2) {}

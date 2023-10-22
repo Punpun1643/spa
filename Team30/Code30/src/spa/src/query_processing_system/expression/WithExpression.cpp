@@ -1,6 +1,6 @@
-#include <string>
-
 #include "WithExpression.h"
+
+#include <string>
 
 WithExpression::WithExpression(std::string first_ref, std::string second_ref)
     : ClauseExpression(first_ref, second_ref) {}
