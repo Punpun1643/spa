@@ -11,17 +11,17 @@ Tokenizer::Tokenizer(std::istream& input) : input(input) {
   keywords = {"Follows", "Parent", "Calls", "Next"};
 }
 
-std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
+std::vector<std::shared_ptr<Token>> Tokenizer::Tokenize() {
   std::vector<std::shared_ptr<Token>> tokens;
-  while (hasNext()) {
-    std::shared_ptr<Token> token = next();
+  while (HasNext()) {
+    std::shared_ptr<Token> token = Next();
     tokens.push_back(token);
   }
   tokens.push_back(std::make_shared<EofToken>());
   return tokens;
 }
 
-std::shared_ptr<Token> Tokenizer::next() {
+std::shared_ptr<Token> Tokenizer::Next() {
   char c;
 
   while (input.get(c)) {
@@ -54,7 +54,7 @@ std::shared_ptr<Token> Tokenizer::next() {
       return std::make_shared<IntegerToken>(number);
     } else if (c == '&' || c == '|' || c == '!' || c == '=' || c == '>' ||
                c == '<') {
-      return handleSpecialChar(c);
+      return HandleSpecialChar(c);
     } else if (std::isspace(c)) {
       continue;
     } else {
@@ -64,7 +64,7 @@ std::shared_ptr<Token> Tokenizer::next() {
   throw std::runtime_error("Unexpected end of input in Tokenizer::next");
 }
 
-std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
+std::shared_ptr<Token> Tokenizer::HandleSpecialChar(char c) {
   char next_c = input.peek();
 
   if (c == '|' && next_c == '|') {
@@ -84,7 +84,7 @@ std::shared_ptr<Token> Tokenizer::handleSpecialChar(char c) {
   return std::make_shared<SpecialCharToken>(std::string(1, c));
 }
 
-bool Tokenizer::hasNext() {
+bool Tokenizer::HasNext() {
   char c;
   while (std::isspace(input.peek())) {
     input.get(c);

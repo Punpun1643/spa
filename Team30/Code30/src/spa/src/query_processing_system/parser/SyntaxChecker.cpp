@@ -105,7 +105,7 @@ void SyntaxChecker::CheckCalls() {
 }
 
 void SyntaxChecker::CheckClauses() {
-  while (GetCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+  while (GetCurrToken()->GetTokenType() != TokenType::EOF_TOKEN) {
     std::string clause_name = GetCurrTokenValue();
     if (clause_name == QpParser::SUCH) {
       this->CheckSuchThat(false);
@@ -335,7 +335,7 @@ void SyntaxChecker::CheckSelectMultiple() {
 
   NextToken();  // synonym
   while (GetCurrTokenValue() != ">") {
-    if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+    if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
       throw InvalidSyntaxException(
           "Reached EOF before reaching '>' for multiple select elements");
     }
@@ -445,14 +445,14 @@ void SyntaxChecker::CheckWith(bool has_and) {
 
   CheckUpcomingTokensAreWithRef();
 
-  if (NextToken()->getTokenVal() != "=") {
+  if (NextToken()->GetTokenVal() != "=") {
     throw InvalidSyntaxException("Expected '=' within 'with' clause");
   }
 
   NextToken();
   CheckUpcomingTokensAreWithRef();
 
-  if (NextToken()->getTokenVal() == QpParser::AND) {
+  if (NextToken()->GetTokenVal() == QpParser::AND) {
     CheckAnd(ClauseType::with);
   }
 }
@@ -572,7 +572,7 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
   std::vector<std::shared_ptr<Token>> infix_tokens;
 
   while (GetCurrTokenValue() != "\"") {
-    if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+    if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
       throw InvalidSyntaxException(error_msg);
     }
     infix_tokens.push_back(GetCurrToken());
@@ -606,7 +606,7 @@ void SyntaxChecker::CheckUpcomingTokensAreEntRef(
     value += GetCurrTokenValue();
   }
   if (GetPeekTokenValue() == "\"") {
-    value += NextToken()->getTokenVal();
+    value += NextToken()->GetTokenVal();
   }
   if (!QpParser::IsEntRef(value)) {
     throw InvalidSyntaxException(syntax_error_msg);

@@ -38,19 +38,19 @@ std::shared_ptr<Token> AParser::GetCurrToken() {
 }
 
 std::string AParser::GetCurrTokenValue() {
-  return GetCurrToken()->getTokenVal();
+  return GetCurrToken()->GetTokenVal();
 }
 
 std::string AParser::GetPeekTokenValue() {
-  return PeekToken()->getTokenVal();
+  return PeekToken()->GetTokenVal();
 }
 
 std::string AParser::GetPeekBackTokenValue() {
-  return PeekBackToken()->getTokenVal();
+  return PeekBackToken()->GetTokenVal();
 }
 
 bool AParser::IsTokenType(std::shared_ptr<Token> token, TokenType token_type) {
-  if (token->getTokenType() != token_type) {
+  if (token->GetTokenType() != token_type) {
     return false;
   }
   return true;
@@ -78,7 +78,7 @@ bool AParser::IsEOFToken(std::shared_ptr<Token> token) {
 
 bool AParser::IsTokenValue(std::shared_ptr<Token> token,
                            std::string const& tokenValue) {
-  return tokenValue == token->getTokenVal();
+  return tokenValue == token->GetTokenVal();
 }
 
 bool AParser::IsMathematicalOperator(std::string const& tokenValue) {
@@ -94,21 +94,21 @@ bool AParser::IsCurrTokenType(TokenType tokenType) {
 }
 
 bool AParser::IsCurrTokenValue(std::string const& tokenValue) {
-  return tokenValue == GetCurrToken()->getTokenVal();
+  return tokenValue == GetCurrToken()->GetTokenVal();
 }
 
 bool AParser::IsPeekTokenValue(std::string const& tokenValue) {
-  return tokenValue == PeekToken()->getTokenVal();
+  return tokenValue == PeekToken()->GetTokenVal();
 }
 
 bool AParser::IsPeekBackTokenValue(std::string const& tokenValue) {
-  return tokenValue == PeekBackToken()->getTokenVal();
+  return tokenValue == PeekBackToken()->GetTokenVal();
 }
 
 bool AParser::IsCurrTokenTypeAndValue(TokenType tokenType,
                                       std::string const& tokenValue) {
   return IsTokenType(GetCurrToken(), tokenType) &&
-         tokenValue == GetCurrToken()->getTokenVal();
+         tokenValue == GetCurrToken()->GetTokenVal();
 }
 
 void AParser::AssertCurrTokenTypeAndValue(TokenType expectedType,
@@ -128,7 +128,7 @@ std::string AParser::GetCurrTokenValueAndAdvance() {
 void AParser::HandleInfixWordOrIntegerToken(
     std::shared_ptr<Token> token,
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
-  postFixQueue.push(std::make_shared<std::string>(token->getTokenVal()));
+  postFixQueue.push(std::make_shared<std::string>(token->GetTokenVal()));
 }
 
 int AParser::Precedence(std::string const& operatorValue) {
@@ -155,18 +155,18 @@ void AParser::HandleInfixOperatorToken(
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
   while (!operatorStack.empty() &&
          IsGreaterOrEqualPrecedence(operatorStack.top()->c_str(),
-                                    token->getTokenVal())) {
+                                    token->GetTokenVal())) {
     postFixQueue.push(operatorStack.top());
     operatorStack.pop();
   }
-  operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
+  operatorStack.push(std::make_shared<std::string>(token->GetTokenVal()));
 }
 
 void AParser::HandleLeftParenthesisToken(
     std::shared_ptr<Token> token,
     std::stack<std::shared_ptr<std::string>>& operatorStack, int& parenCount) {
   ++parenCount;
-  operatorStack.push(std::make_shared<std::string>(token->getTokenVal()));
+  operatorStack.push(std::make_shared<std::string>(token->GetTokenVal()));
 }
 
 void AParser::HandleRightParenthesisToken(
@@ -195,7 +195,7 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
   for (auto const& token : infixTokens) {
     if (IsWordOrIntegerToken(token)) {
       HandleInfixWordOrIntegerToken(token, postFixQueue);
-    } else if (IsMathematicalOperator(token->getTokenVal())) {
+    } else if (IsMathematicalOperator(token->GetTokenVal())) {
       HandleInfixOperatorToken(token, operatorStack, postFixQueue);
     } else if (IsTokenValue(token, AParserConstant::LEFT_PARENTHESIS)) {
       HandleLeftParenthesisToken(token, operatorStack, parenCount);

@@ -4,6 +4,6 @@
 
 SpecialCharToken::SpecialCharToken(std::string val) : Token(val) {}
 
-TokenType SpecialCharToken::getTokenType() {
+TokenType SpecialCharToken::GetTokenType() {
   return TokenType::SPECIAL_CHAR_TOKEN;
 }

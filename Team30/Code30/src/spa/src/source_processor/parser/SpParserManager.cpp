@@ -15,7 +15,7 @@ std::shared_ptr<ProgramNode> SpParserManager::ParseInputFile(
 
   Tokenizer tokenizer = Tokenizer(input_file_stream);
 
-  std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
+  std::vector<std::shared_ptr<Token>> tokens = tokenizer.Tokenize();
 
   SpParser parser(tokens);
   parser.parse();
