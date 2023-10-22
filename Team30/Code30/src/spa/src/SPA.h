@@ -8,5 +8,5 @@ class SPA {
   ~SPA() = default;
 
  private:
-  std::string filePath;
+  std::string file_path;
 };
