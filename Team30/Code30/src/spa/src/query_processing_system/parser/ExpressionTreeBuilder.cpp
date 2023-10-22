@@ -25,7 +25,7 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::vector<std::shared_ptr<Token>> tokens,

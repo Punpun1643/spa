@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 struct PqlDeclarationHash;
 

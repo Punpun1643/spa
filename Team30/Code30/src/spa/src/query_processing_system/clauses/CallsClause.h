@@ -6,7 +6,7 @@
 
 #include "SuchThatClause.h"
 #include "query_processing_system/references/EntRef.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 class CallsClause : public SuchThatClause {
  private:

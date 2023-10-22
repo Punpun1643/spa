@@ -8,7 +8,7 @@
 #include "../../spa/src/source_processor/node/stmt_node/StmtNode.h"
 #include "../stub/PKBSPStub.h"
 #include "catch.hpp"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 TEST_CASE("Test SpController parses and extract nodes information successfully",
           "[parseAndExtract]") {

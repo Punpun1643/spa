@@ -16,7 +16,7 @@
 #include "program_knowledge_base/EntityDatabase.h"
 #include "program_knowledge_base/PatternDatabase.h"
 #include "program_knowledge_base/RelDatabase.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 class PKB : public PKBQPSInterface, public PKBSPInterface {
  private:

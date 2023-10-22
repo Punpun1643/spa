@@ -8,7 +8,7 @@
 #include "../stmt_node/StmtNode.h"
 #include "../stmt_node/StmtType.h"
 #include "../util_node/CFGNode.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 class CFGNode {
  public:

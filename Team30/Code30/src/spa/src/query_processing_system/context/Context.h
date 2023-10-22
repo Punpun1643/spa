@@ -10,7 +10,7 @@
 #include "../clauses/WithClause.h"
 #include "query_processing_system/references/AttrRef.h"
 #include "query_processing_system/references/PqlDeclaration.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 

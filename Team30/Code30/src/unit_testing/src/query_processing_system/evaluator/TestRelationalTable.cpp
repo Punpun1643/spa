@@ -1,7 +1,7 @@
-#include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../../../spa/src/query_processing_system/evaluator/RelationalTable.h"
 #include "catch.hpp"
 #include "query_processing_system/references/PqlDeclaration.h"
+#include "shared/ArrayUtility.h"
 
 TEST_CASE("RelationalTable Tests") {
   // Declarations

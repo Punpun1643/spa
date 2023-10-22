@@ -6,23 +6,6 @@
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-std::unordered_map<EntityType, AttrType> const AttrRef::DEFAULT_ATTR_TYPE = {
-    {EntityType::PROCEDURE, AttrType::PROC_NAME},
-    {EntityType::VARIABLE, AttrType::VAR_NAME},
-    {EntityType::CONSTANT, AttrType::VALUE},
-    {EntityType::STMT, AttrType::STMT_NUM},
-    {EntityType::ASSIGN, AttrType::STMT_NUM},
-    {EntityType::IF, AttrType::STMT_NUM},
-    {EntityType::WHILE, AttrType::STMT_NUM},
-    {EntityType::PRINT, AttrType::STMT_NUM},
-    {EntityType::READ, AttrType::STMT_NUM},
-    {EntityType::CALL, AttrType::STMT_NUM}};
-
-std::unordered_map<EntityType, AttrType> const AttrRef::ATTR_TYPE_ALIASES = {
-    {EntityType::CALL, AttrType::PROC_NAME},
-    {EntityType::READ, AttrType::VAR_NAME},
-    {EntityType::PRINT, AttrType::VAR_NAME}};
-
 std::unordered_map<AttrType, AttrRefOutputType> const
     AttrRef::OUTPUT_TYPE_MAPPING = {
         {AttrType::PROC_NAME, AttrRefOutputType::NAME},
@@ -49,13 +32,7 @@ AttrRef::AttrRef(PqlDeclaration decl, AttrType attr_type)
 }
 
 bool AttrRef::IsAttrTypeAnAlias() const {
-  auto entity_type = decl.GetEntityType();
-  return (ATTR_TYPE_ALIASES.count(entity_type) == 1 &&
-          ATTR_TYPE_ALIASES.at(entity_type) == attr_type);
-}
-
-bool AttrRef::IsDefaultAttribute(EntityType ent_type, AttrType attr_type) {
-  return AttrRef::DEFAULT_ATTR_TYPE.at(ent_type) == attr_type;
+  return EntityAttrPairings::IsAliasPair(decl.GetEntityType(), attr_type);
 }
 
 std::string AttrRef::GetAliasFromDefault(
@@ -77,7 +54,7 @@ PqlDeclaration AttrRef::GetDecl() const {
 }
 
 AttrType AttrRef::GetDefaultAttrType() const {
-  return DEFAULT_ATTR_TYPE.at(decl.GetEntityType());
+  return EntityAttrPairings::GetDefaultAttrType(decl.GetEntityType());
 }
 
 AttrRefOutputType AttrRef::GetOutputType() const {

@@ -6,7 +6,7 @@
 
 #include "UsesOrModifiesClause.h"
 #include "query_processing_system/references/EntRef.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 class UsesPClause : public UsesOrModifiesClause {
  private:

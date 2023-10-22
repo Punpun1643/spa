@@ -4,7 +4,7 @@
 
 #include "PqlDeclaration.h"
 #include "PqlReference.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 class StmtRef : public PqlReference {
  private:

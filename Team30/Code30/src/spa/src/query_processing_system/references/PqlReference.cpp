@@ -3,7 +3,7 @@
 #include <cassert>
 #include <utility>
 
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 PqlReference::PqlReference()
     : ref_type(PqlRefType::WILD),

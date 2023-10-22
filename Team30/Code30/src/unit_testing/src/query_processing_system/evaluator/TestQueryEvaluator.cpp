@@ -3,10 +3,10 @@
 #include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../../spa/src/query_processing_system/clauses/FollowsClause.h"
 #include "../../../../spa/src/query_processing_system/clauses/WithClause.h"
-#include "../../../../spa/src/query_processing_system/evaluator/ArrayUtility.h"
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
+#include "shared/ArrayUtility.h"
 
 class QeFactoryMethods {
  public:

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../exceptions/InvalidSyntaxException.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 ContextBuilder::ContextBuilder(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens) {

@@ -11,7 +11,7 @@
 #include "query_processing_system/references/EntRef.h"
 #include "query_processing_system/references/PqlDeclaration.h"
 #include "query_processing_system/references/StmtRef.h"
-#include "query_processing_system/types/AttrType.h"
+#include "shared/types/AttrType.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 typedef std::vector<std::shared_ptr<Clause>> ClauseList;

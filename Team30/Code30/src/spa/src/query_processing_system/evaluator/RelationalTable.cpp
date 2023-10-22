@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <utility>
 
-#include "ArrayUtility.h"
+#include "shared/ArrayUtility.h"
 
 RelationalTable::RelationalTable(PqlDeclaration const& d,
                                  std::vector<std::string> const& values) {

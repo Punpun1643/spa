@@ -3,7 +3,7 @@
 #include <string>
 
 #include "AExpression.h"
-#include "query_processing_system/types/AttrType.h"
+#include "shared/types/AttrType.h"
 
 class SelectExpression : public AExpression {
  public:

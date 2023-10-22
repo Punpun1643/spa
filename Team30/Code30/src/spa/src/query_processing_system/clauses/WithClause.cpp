@@ -5,8 +5,8 @@
 #include <string>
 #include <utility>
 
-#include "../evaluator/ArrayUtility.h"
 #include "../exceptions/InvalidSemanticsException.h"
+#include "shared/ArrayUtility.h"
 
 WithClause::WithClause(WithRef ref1, WithRef ref2)
     : ref1(std::move(ref1)), ref2(std::move(ref2)) {

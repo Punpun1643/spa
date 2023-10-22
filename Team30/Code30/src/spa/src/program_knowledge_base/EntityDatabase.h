@@ -10,9 +10,9 @@
 #include <utility>
 #include <vector>
 
-#include "query_processing_system/references/AttrRef.h"
-#include "query_processing_system/types/AttrType.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/AttrType.h"
+#include "shared/types/EntityAttrPairings.h"
+#include "shared/types/EntityType.h"
 #include "utils/PairHash.h"
 
 class EntityDatabase {

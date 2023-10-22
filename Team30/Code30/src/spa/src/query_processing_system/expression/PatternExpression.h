@@ -6,7 +6,7 @@
 #include "../../shared/parser/node/TreeNode.h"
 #include "../interpreter/QueryInterpreter.h"
 #include "ClauseExpression.h"
-#include "query_processing_system/types/MatchType.h"
+#include "shared/types/MatchType.h"
 
 class PatternExpression : public ClauseExpression {
  public:

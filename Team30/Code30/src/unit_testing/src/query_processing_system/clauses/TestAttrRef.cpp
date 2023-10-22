@@ -2,7 +2,7 @@
 #include "catch.hpp"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 #include "query_processing_system/references/AttrRef.h"
-#include "query_processing_system/types/AttrType.h"
+#include "shared/types/AttrType.h"
 
 TEST_CASE("Test AttrRef") {
   PqlDeclaration con = PqlDeclaration("const", EntityType::CONSTANT);

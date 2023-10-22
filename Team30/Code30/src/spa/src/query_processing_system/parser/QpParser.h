@@ -6,8 +6,8 @@
 
 #include "../../shared/parser/AParser.h"
 #include "../../shared/tokenizer/token/Token.h"
-#include "query_processing_system/types/AttrType.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/AttrType.h"
+#include "shared/types/EntityType.h"
 
 namespace attr_name {
 std::string const STMT_NUM = "stmt#";

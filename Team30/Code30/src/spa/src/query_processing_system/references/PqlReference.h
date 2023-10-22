@@ -4,7 +4,7 @@
 #include <string>
 
 #include "PqlDeclaration.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/EntityType.h"
 
 enum class PqlRefType { WILD, VALUE, DECLARATION };
 

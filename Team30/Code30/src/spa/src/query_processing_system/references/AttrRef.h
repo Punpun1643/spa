@@ -6,8 +6,9 @@
 
 #include "PqlDeclaration.h"
 #include "program_knowledge_base/PKBQPSInterface.h"
-#include "query_processing_system/types/AttrType.h"
-#include "query_processing_system/types/EntityType.h"
+#include "shared/types/AttrType.h"
+#include "shared/types/EntityType.h"
+#include "shared/types/EntityAttrPairings.h"
 
 enum class AttrRefOutputType { NAME, INTEGER };
 
@@ -22,14 +23,9 @@ class AttrRef {
   AttrType GetDefaultAttrType() const;
 
  public:
-  static std::unordered_map<EntityType, AttrType> const DEFAULT_ATTR_TYPE;
-  static std::unordered_map<EntityType, AttrType> const ATTR_TYPE_ALIASES;
-
   explicit AttrRef(PqlDeclaration decl);
 
   AttrRef(PqlDeclaration decl, AttrType attr_type);
-
-  static bool IsDefaultAttribute(EntityType ent_type, AttrType attr_type);
 
   std::string GetAliasFromDefault(PKBQPSInterface& pkb,
                                   std::string const& default_value) const;
