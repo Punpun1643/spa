@@ -42,8 +42,7 @@ class ClauseResult {
 
   std::vector<PqlDeclaration> GetDeclarations() const;
 
-  std::vector<std::string> GetValues(
-      PqlDeclaration const& declaration) const;
+  std::vector<std::string> GetValues(PqlDeclaration const& declaration) const;
 
   bool Contains(PqlDeclaration const& d) const;
 };

@@ -11,8 +11,8 @@ void ClauseResult::SetResultToFalse() {
   boolean_clause_value = false;
 }
 
-void ClauseResult::ConstructSingleDeclResult(PqlDeclaration const& d,
-                                             std::vector<std::string> const& values) {
+void ClauseResult::ConstructSingleDeclResult(
+    PqlDeclaration const& d, std::vector<std::string> const& values) {
   if (values.empty()) {
     SetResultToFalse();
   } else {

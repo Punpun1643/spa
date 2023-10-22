@@ -24,7 +24,8 @@ std::vector<std::string> ArrayUtility::FlattenVector(
 }
 
 std::pair<std::vector<std::string>, std::vector<std::string>>
-ArrayUtility::SplitPairVector(std::vector<std::pair<std::string, std::string>> const& vec) {
+ArrayUtility::SplitPairVector(
+    std::vector<std::pair<std::string, std::string>> const& vec) {
   std::vector<std::string> v1;
   std::vector<std::string> v2;
   for (auto& pair : vec) {
