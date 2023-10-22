@@ -1,161 +1,161 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.576000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.605000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows stmt syn LHS and stmt syn RHS">1</id><querystr><![CDATA[stmt s; while w; Select s such that Follows (s, w)]]></querystr>
 <stuans>14,4</stuans>
 <correct>4,14</correct>
-<time_taken>1.822000</time_taken>
+<time_taken>1.314000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows line num LHS and stmt syn RHS">2</id><querystr><![CDATA[stmt s;  Select s such that Follows (4, s)]]></querystr>
 <stuans>5</stuans>
 <correct>5</correct>
-<time_taken>1.359000</time_taken>
+<time_taken>1.050000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows wildcard LHS and stmt syn RHS">3</id><querystr><![CDATA[assign a;  Select a such that Follows (_, a)]]></querystr>
 <stuans>11,13,2,3,4,9</stuans>
 <correct>2,3,4,9,11,13</correct>
-<time_taken>1.242000</time_taken>
+<time_taken>1.082000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows stmt syn LHS and line num RHS">4</id><querystr><![CDATA[stmt s; Select s such that Follows (s, 7)]]></querystr>
 <stuans>6</stuans>
 <correct>6</correct>
-<time_taken>1.242000</time_taken>
+<time_taken>1.066000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows line num LHS and line num RHS">5</id><querystr><![CDATA[read r; Select r such that Follows (7, 8)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.279000</time_taken>
+<time_taken>1.036000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows wildcard LHS and line num RHS">6</id><querystr><![CDATA[print pn; Select pn such that Follows (_, 7)]]></querystr>
 <stuans>1</stuans>
 <correct>1</correct>
-<time_taken>1.239000</time_taken>
+<time_taken>0.967000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows stmt syn LHS and wildcard RHS">7</id><querystr><![CDATA[while w; Select w such that Follows (w, _)]]></querystr>
 <stuans>5</stuans>
 <correct>5</correct>
-<time_taken>1.272000</time_taken>
+<time_taken>1.102000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows line num LHS and wildcard RHS">8</id><querystr><![CDATA[constant c; Select c such that Follows (1, _)]]></querystr>
 <stuans>1,16,2,4,8</stuans>
 <correct>8,2,4,1,16</correct>
-<time_taken>1.207000</time_taken>
+<time_taken>1.080000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="Follows wildcard LHS, wildcard RHS">9</id><querystr><![CDATA[variable v; Select v such that Follows (_, _)]]></querystr>
 <stuans>a,b,c,gloria,sasha</stuans>
 <correct>sasha,gloria,b,c,a</correct>
-<time_taken>1.201000</time_taken>
+<time_taken>1.085000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows* stmt syn LHS and stmt syn RHS">10</id><querystr><![CDATA[while w; assign a; Select a such that Follows* (w, a)]]></querystr>
 <stuans>13</stuans>
 <correct>13</correct>
-<time_taken>1.285000</time_taken>
+<time_taken>1.016000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows* line num LHS and stmt syn RHS">11</id><querystr><![CDATA[stmt s; Select s such that Follows* (6, s)]]></querystr>
 <stuans>11,7</stuans>
 <correct>7,11</correct>
-<time_taken>1.219000</time_taken>
+<time_taken>1.068000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows* wildcard LHS and stmt syn RHS">12</id><querystr><![CDATA[read r; Select r such that Follows* (_, r)]]></querystr>
 <stuans>12</stuans>
 <correct>12</correct>
-<time_taken>1.144000</time_taken>
+<time_taken>1.106000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows* stmt syn LHS and line num RHS">13</id><querystr><![CDATA[while w; Select w such that Follows* (w, 9)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.300000</time_taken>
+<time_taken>1.194000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Follows* line num LHS and line num RHS">14</id><querystr><![CDATA[while w; Select w such that Follows* (15, 16)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.164000</time_taken>
+<time_taken>1.012000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows* wildcard LHS and line num RHS">15</id><querystr><![CDATA[if i; Select i such that Follows* (_, 2)]]></querystr>
 <stuans>14,7</stuans>
 <correct>7,14</correct>
-<time_taken>1.240000</time_taken>
+<time_taken>1.067000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows* stmt syn LHS and wildcard RHS">16</id><querystr><![CDATA[print pn; Select pn such that Follows* (pn, _)]]></querystr>
 <stuans>1</stuans>
 <correct>1</correct>
-<time_taken>1.501000</time_taken>
+<time_taken>1.113000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Follows* line num LHS and wildcard RHS">17</id><querystr><![CDATA[constant c; Select c such that Follows* (11, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.322000</time_taken>
+<time_taken>1.154000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="Follows* wildcard LHS, wildcard RHS">18</id><querystr><![CDATA[variable v; Select v such that Follows* (_, _)]]></querystr>
 <stuans>a,b,c,gloria,sasha</stuans>
 <correct>sasha,gloria,b,c,a</correct>
-<time_taken>1.365000</time_taken>
+<time_taken>1.074000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Invalid cannot have var/constant as 1st param of Follows">19</id><querystr><![CDATA[read r; Select r such that Follows ("r", _) ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.571000</time_taken>
+<time_taken>1.121000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid cannot have var/constant as 2nd param of Follows">20</id><querystr><![CDATA[assign a; Select a such that Follows (13, "x") ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.286000</time_taken>
+<time_taken>1.056000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Invalid cannot have var/constant as 1st param of Follows*">21</id><querystr><![CDATA[read r; Select r such that Follows* ("x", _) ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.262000</time_taken>
+<time_taken>1.124000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid cannot have var/constant as 2nd param of Follows*">22</id><querystr><![CDATA[assign a; Select a such that Follows* (13, "4") ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.900000</time_taken>
+<time_taken>1.055000</time_taken>
 <passed/>
 </query>
 </queries>
