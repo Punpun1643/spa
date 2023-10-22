@@ -39,7 +39,7 @@ class EntityDatabase {
  public:
   EntityDatabase();
   ~EntityDatabase() = default;
-  std::shared_ptr<std::unordered_set<std::string>> get(EntityType type);
+  std::shared_ptr<std::unordered_set<std::string>> Get(EntityType type);
 
   void InsertEntity(EntityType type, std::string value);
 
