@@ -1,16 +1,16 @@
 #pragma once
 
-#include <unordered_set>
 #include <memory>
-#include <unordered_map>
-#include <utility>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
 
+#include "../shared/parser/node/TreeNode.h"
 #include "PatternType.h"
-#include "RelationType.h"
+#include "shared/types/RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
-#include "../shared/parser/node/TreeNode.h"
 
 class PatternDatabase {
  private:

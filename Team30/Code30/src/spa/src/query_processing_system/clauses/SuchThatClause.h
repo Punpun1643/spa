@@ -6,6 +6,7 @@
 
 #include "Clause.h"
 #include "query_processing_system/references/PqlReference.h"
+#include "shared/types/RelationType.h"
 
 class SuchThatClause : public Clause {
   // Template Method design pattern
