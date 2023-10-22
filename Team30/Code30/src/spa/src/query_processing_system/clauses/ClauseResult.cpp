@@ -6,9 +6,21 @@
 #include <stdexcept>
 #include <utility>
 
+#include "shared/ArrayUtility.h"
+
 void ClauseResult::SetResultToFalse() {
   num_declarations = 0;
   boolean_clause_value = false;
+}
+
+void ClauseResult::ConstructSingleDeclResult(PqlDeclaration const& d,
+                                             std::vector<std::string> const& values) {
+  if (values.empty()) {
+    SetResultToFalse();
+  } else {
+    num_declarations = 1;
+    value_map[d] = values;
+  }
 }
 
 ClauseResult::ClauseResult(bool is_valid)
@@ -16,13 +28,7 @@ ClauseResult::ClauseResult(bool is_valid)
 
 ClauseResult::ClauseResult(PqlDeclaration const& d,
                            std::vector<std::string> const& values) {
-  if (values.empty()) {
-    SetResultToFalse();
-    return;
-  }
-  // Create clause result with 1 declaration
-  num_declarations = 1;
-  value_map[d] = values;
+  ConstructSingleDeclResult(d, values);
 }
 
 ClauseResult::ClauseResult(
@@ -35,29 +41,19 @@ ClauseResult::ClauseResult(
 
   /* Create a clause result with paired declarations */
   if (d1 == d2) {
-    num_declarations = 1;
     std::vector<std::string> intersecting;
     for (auto& pair : values) {
       if (pair.first == pair.second) {
         intersecting.push_back(pair.first);
       }
     }
-    if (intersecting.empty()) {
-      SetResultToFalse();
-    } else {
-      value_map[d1] = intersecting;
-    }
+    ConstructSingleDeclResult(d1, intersecting);
   } else {
     num_declarations = 2;
     // separate out the paired vectors
-    std::vector<std::string> v1;
-    std::vector<std::string> v2;
-    for (auto& pair : values) {
-      v1.push_back(pair.first);
-      v2.push_back(pair.second);
-    }
-    value_map[d1] = v1;
-    value_map[d2] = v2;
+    auto result = ArrayUtility::SplitPairVector(values);
+    value_map[d1] = result.first;
+    value_map[d2] = result.second;
   }
 }
 

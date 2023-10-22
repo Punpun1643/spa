@@ -11,13 +11,16 @@
 
 class ClauseResult {
  private:
-  int num_declarations;
-  bool boolean_clause_value;
+  int num_declarations{};
+  bool boolean_clause_value{};
   std::unordered_map<PqlDeclaration, std::vector<std::string>,
                      PqlDeclarationHash>
       value_map;
 
   void SetResultToFalse();
+
+  void ConstructSingleDeclResult(PqlDeclaration const& d,
+                                 std::vector<std::string> const& values);
 
  public:
   // Constructor for zero declaration clauses
