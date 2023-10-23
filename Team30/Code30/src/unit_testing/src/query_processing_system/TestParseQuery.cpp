@@ -185,6 +185,16 @@ TEST_CASE("Parse select query") {
 
 TEST_CASE("Parse Select + Follows query") {
   std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("Invalid such that") {
+    AddDeclaration(tokens, "stmt", {"s123"});
+    AddWordVector(tokens, {"Select", "s123", "such", "tht", "Follows"});
+    AddIntWord(tokens, "1", "s123");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
 
   SECTION("1 stmt declaration; Select + Follows") {
     AddDeclaration(tokens, "stmt", {"s123"});
@@ -196,7 +206,6 @@ TEST_CASE("Parse Select + Follows query") {
     AddSpecialCharVector(tokens, {")"});
     AddEOF(tokens);
 
-    QPSController controller = QPSController();
     controller.TokensToClauses(tokens);
   }
   SECTION("1 stmt; 1 print; 3 read declaration; Select + Follows(read, print") {
@@ -207,7 +216,6 @@ TEST_CASE("Parse Select + Follows query") {
     AddWordWord(tokens, "r1", "pr1");
     AddEOF(tokens);
 
-    QPSController controller = QPSController();
     controller.TokensToClauses(tokens);
   }
   SECTION("2 variable; 1 constant, 1 stmt; Select + Follows(_, variable") {
@@ -218,7 +226,6 @@ TEST_CASE("Parse Select + Follows query") {
     AddWildWord(tokens, "s1");
     AddEOF(tokens);
 
-    QPSController controller = QPSController();
     controller.TokensToClauses(tokens);
   }
 }

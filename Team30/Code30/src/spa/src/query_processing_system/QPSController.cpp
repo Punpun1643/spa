@@ -103,5 +103,5 @@ std::vector<std::shared_ptr<Token>> QPSController::TokenizeQuery(
     std::string& query) {
   std::istringstream string_stream(query);
   Tokenizer tokenizer = Tokenizer(string_stream);
-  return tokenizer.tokenize();
+  return tokenizer.Tokenize();
 }

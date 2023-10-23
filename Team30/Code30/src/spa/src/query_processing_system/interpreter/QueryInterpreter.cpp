@@ -1,6 +1,5 @@
 #include "QueryInterpreter.h"
 
-#include <cassert>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -218,7 +217,6 @@ EntityType QueryInterpreter::GetEntityTypeAsDeclaration(
 
 PqlDeclaration QueryInterpreter::GetMappedDeclaration(
     std::string const& synonym) {
-  assert(this->context->CheckDeclarationExists(synonym));
   return (this->context->GetDeclaration(synonym));
 }
 

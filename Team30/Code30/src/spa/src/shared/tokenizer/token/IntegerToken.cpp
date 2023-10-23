@@ -4,6 +4,6 @@
 
 IntegerToken::IntegerToken(std::string val) : Token(val) {}
 
-TokenType IntegerToken::getTokenType() {
+TokenType IntegerToken::GetTokenType() {
   return TokenType::INTEGER_TOKEN;
 }

@@ -36,7 +36,6 @@ class SyntaxChecker : public QpParser {
   void CheckParent();
   void CheckPattern(bool has_and);
   void CheckSelect();
-  void CheckSelectBoolean();
   void CheckSelectMultiple();
   void CheckSelectSingle();
   void CheckSuchThat(bool has_and);

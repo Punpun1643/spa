@@ -1,11 +1,9 @@
 #include "SelectExpression.h"
 
-#include <cassert>
 #include <string>
 
 SelectExpression::SelectExpression(std::string synonym, AttrType attr_type,
                                    bool is_boolean) {
-  assert(!is_boolean);  // the other constructor shouldve been called
   this->synonym = synonym;
   this->attr_type = attr_type;
   this->is_boolean = is_boolean;

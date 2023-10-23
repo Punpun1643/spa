@@ -5,5 +5,5 @@ class EofToken : public Token {
  public:
   EofToken();
   ~EofToken() = default;
-  TokenType getTokenType();
+  TokenType GetTokenType();
 };

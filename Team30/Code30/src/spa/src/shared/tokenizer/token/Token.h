@@ -11,6 +11,6 @@ class Token {
   explicit Token(std::string val = "");
   virtual ~Token() = default;
 
-  std::string getTokenVal();
-  virtual TokenType getTokenType() = 0;
+  std::string GetTokenVal();
+  virtual TokenType GetTokenType() = 0;
 };

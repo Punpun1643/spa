@@ -4,6 +4,6 @@
 
 WordToken::WordToken(std::string val) : Token(val) {}
 
-TokenType WordToken::getTokenType() {
+TokenType WordToken::GetTokenType() {
   return TokenType::WORD_TOKEN;
 }

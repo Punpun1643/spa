@@ -1,7 +1,5 @@
 #include "ExpressionTreeBuilder.h"
 
-#include <assert.h>
-
 #include <iostream>
 #include <memory>
 #include <queue>
@@ -69,7 +67,7 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
     std::string synonym = GetCurrTokenValue();
     if (GetPeekTokenValue() == ".") {
       NextToken();  // .
-      std::string attr_type_string = NextToken()->getTokenVal();
+      std::string attr_type_string = NextToken()->GetTokenVal();
       AttrType attr_type = QpParser::StringToAttrType(attr_type_string);
       return std::make_optional<std::shared_ptr<SelectExpression>>(
           std::make_shared<SelectExpression>(synonym, attr_type, false));
@@ -89,7 +87,6 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 std::shared_ptr<SelectExpression>
 ExpressionTreeBuilder ::CreateSelectExpressionHead() {
   // After syntax checking & context building, currToken should be 'Select'
-  assert(GetCurrTokenValue() == QpParser::SELECT);
   NextToken();  // 'BOOLEAN' or '<' or elem
 
   std::optional<std::shared_ptr<SelectExpression>> select_head;
@@ -103,7 +100,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
 
     NextToken();  // elem
     while (GetCurrTokenValue() != ">") {
-      if (GetCurrToken()->getTokenType() == TokenType::EOF_TOKEN) {
+      if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
         throw std::runtime_error("ETB multiple select parsing hit eof");
       }
       current_select_expression = CreateSelectExpression();
@@ -137,7 +134,7 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
   std::optional<std::shared_ptr<ClauseExpression>> clause_expression_head;
 
   bool is_first_run = true;
-  while (GetCurrToken()->getTokenType() != TokenType::EOF_TOKEN) {
+  while (GetCurrToken()->GetTokenType() != TokenType::EOF_TOKEN) {
     if (GetCurrTokenValue() == QpParser::SUCH) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<SuchThatExpression>>(
@@ -166,7 +163,6 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
 
 std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
-  assert(GetCurrTokenValue() == QpParser::SUCH);
   std::shared_ptr<SuchThatExpression> such_that_expression_head;
 
   NextToken();  // that
@@ -176,7 +172,7 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
   std::optional<std::shared_ptr<SuchThatExpression>>
       current_such_that_expression;
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    std::string clause_name = NextToken()->getTokenVal();
+    std::string clause_name = NextToken()->GetTokenVal();
     NextToken();  // (
 
     std::string arg1 = "";
@@ -263,7 +259,7 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    std::string syn_assign = NextToken()->getTokenVal();
+    std::string syn_assign = NextToken()->GetTokenVal();
 
     std::string arg1 = "";
     std::string arg2 = "";
@@ -273,7 +269,7 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
 
     NextToken();
     while (GetCurrTokenValue() != ",") {
-      arg1 += GetCurrToken()->getTokenVal();
+      arg1 += GetCurrToken()->GetTokenVal();
       NextToken();
     }
 
@@ -352,17 +348,17 @@ ExpressionTreeBuilder::CreateWithExpressionHead() {
     std::string second_ref = "";
     if (GetCurrTokenValue() == "\"") {
       second_ref += GetCurrTokenValue();         // "
-      second_ref += NextToken()->getTokenVal();  // ident
-      second_ref += NextToken()->getTokenVal();  // "
+      second_ref += NextToken()->GetTokenVal();  // ident
+      second_ref += NextToken()->GetTokenVal();  // "
     } else if (QpParser::IsValidInteger(GetCurrTokenValue())) {
       second_ref += GetCurrTokenValue();
     } else {
       // is attrRef
       second_ref += GetCurrTokenValue();         // synonym
-      second_ref += NextToken()->getTokenVal();  // .
-      std::string attrName = NextToken()->getTokenVal();
+      second_ref += NextToken()->GetTokenVal();  // .
+      std::string attrName = NextToken()->GetTokenVal();
       if (attrName == "stmt") {
-        attrName += NextToken()->getTokenVal();  // #
+        attrName += NextToken()->GetTokenVal();  // #
       }
       second_ref += attrName;
     }

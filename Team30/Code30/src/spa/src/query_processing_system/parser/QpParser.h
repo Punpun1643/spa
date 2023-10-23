@@ -9,13 +9,6 @@
 #include "shared/types/AttrType.h"
 #include "shared/types/EntityType.h"
 
-namespace attr_name {
-std::string const STMT_NUM = "stmt#";
-std::string const PROC_NAME = "procName";
-std::string const VAR_NAME = "varName";
-std::string const VALUE = "value";
-}  // namespace attr_name
-
 class QpParser : public AParser {
  public:
   explicit QpParser(std::vector<std::shared_ptr<Token>> tokens);
@@ -38,6 +31,10 @@ class QpParser : public AParser {
   static std::string const SUCH;
   static std::string const USES;
   static std::string const WITH;
+  static std::string const STMT_NUM;
+  static std::string const PROC_NAME;
+  static std::string const VAR_NAME;
+  static std::string const VALUE;
 
   virtual ~QpParser() = default;
 

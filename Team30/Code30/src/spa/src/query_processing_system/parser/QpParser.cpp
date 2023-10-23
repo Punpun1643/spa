@@ -36,6 +36,10 @@ std::string const QpParser::SELECT = "Select";
 std::string const QpParser::SUCH = "such";
 std::string const QpParser::USES = "Uses";
 std::string const QpParser::WITH = "with";
+std::string const QpParser::STMT_NUM = "stmt#";
+std::string const QpParser::PROC_NAME = "procName";
+std::string const QpParser::VAR_NAME = "varName";
+std::string const QpParser::VALUE = "value";
 
 bool QpParser::IsEntRef(std::string const& name) {
   return (IsSynonym(name) || IsWildcard(name) || IsQuotedIdentifier(name));

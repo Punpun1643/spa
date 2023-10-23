@@ -18,21 +18,21 @@ std::shared_ptr<Context> ContextBuilder::GetContext() {
 }
 
 void ContextBuilder::parse() {
-  while (GetCurrToken()->getTokenVal() != "Select") {
+  while (GetCurrToken()->GetTokenVal() != "Select") {
     this->parseDeclaration();
   }
 }
 
 void ContextBuilder::parseDeclaration() {
   EntityType entity_type =
-      QpParser::StringToEntityType(GetCurrToken()->getTokenVal());
+      QpParser::StringToEntityType(GetCurrToken()->GetTokenVal());
   std::shared_ptr<std::vector<std::string>> synonym_list(
       std::make_shared<std::vector<std::string>>());
-  std::string synonym = NextToken()->getTokenVal();
+  std::string synonym = NextToken()->GetTokenVal();
   this->addSynonym(synonym_list, synonym);
   NextToken();  // ; OR ,
-  while (GetCurrToken()->getTokenVal() == ",") {
-    synonym = NextToken()->getTokenVal();
+  while (GetCurrToken()->GetTokenVal() == ",") {
+    synonym = NextToken()->GetTokenVal();
     this->addSynonym(synonym_list, synonym);
     NextToken();  // ; OR ,
   }

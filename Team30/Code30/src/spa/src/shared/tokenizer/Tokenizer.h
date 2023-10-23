@@ -12,13 +12,13 @@ class Tokenizer {
  private:
   std::istream& input;
   std::unordered_set<std::string> keywords;
-  std::shared_ptr<Token> handleSpecialChar(char c);
-  std::shared_ptr<Token> next();
-  bool hasNext();
+  std::shared_ptr<Token> HandleSpecialChar(char c);
+  std::shared_ptr<Token> Next();
+  bool HasNext();
 
  public:
   explicit Tokenizer(std::istream& input);
   ~Tokenizer() = default;
 
-  std::vector<std::shared_ptr<Token>> tokenize();
+  std::vector<std::shared_ptr<Token>> Tokenize();
 };
