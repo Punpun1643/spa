@@ -1,6 +1,5 @@
 #include "SyntaxChecker.h"
 
-#include <cassert>
 #include <iostream>
 #include <memory>
 #include <queue>
@@ -36,8 +35,6 @@ void SyntaxChecker::parse() {
 }
 
 void SyntaxChecker::CheckAffects() {
-  assert(GetCurrTokenValue() == AFFECTS);
-
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Affects clause");
 
@@ -60,7 +57,6 @@ void SyntaxChecker::CheckAffects() {
   NextToken();
 }
 void SyntaxChecker::CheckAnd(ClauseType clause_type) {
-  assert(GetCurrTokenValue() == QpParser::AND);
   NextToken();
 
   if (clause_type == ClauseType::such_that) {
@@ -83,9 +79,6 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
 }
 
 void SyntaxChecker::CheckCalls() {
-  assert(GetCurrTokenValue() == QpParser::CALLS ||
-         GetCurrTokenValue() == QpParser::CALLS_STAR);
-
   NextToken();
   CheckCurrentTokenSyntax("(", "Expected \'(\' for Calls clause");
 
@@ -118,7 +111,6 @@ void SyntaxChecker::CheckClauses() {
     } else if (clause_name == QpParser::WITH) {
       this->CheckWith(false);
     } else {
-      std::cout << "sc1: " << GetCurrTokenValue() << "\n";
       throw InvalidSyntaxException("Did not encounter expected clause");
     }
   }
@@ -175,9 +167,6 @@ void SyntaxChecker::CheckEOF() {
 }
 
 void SyntaxChecker::CheckFollows() {
-  assert(GetCurrTokenValue() == QpParser::FOLLOWS ||
-         GetCurrTokenValue() == QpParser::FOLLOWS_STAR);
-
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Follows/* clause");
 
@@ -201,8 +190,6 @@ void SyntaxChecker::CheckFollows() {
 }
 
 void SyntaxChecker::CheckModifies() {
-  assert(GetCurrTokenValue() == QpParser::MODIFIES);
-
   NextToken();
   CheckCurrentTokenSyntax("(", "Expected \'(\' for Modifies clause");
 
@@ -232,8 +219,6 @@ void SyntaxChecker::CheckModifies() {
 }
 
 void SyntaxChecker::CheckNext() {
-  assert(GetCurrTokenValue() == NEXT || GetCurrTokenValue() == NEXT_STAR);
-
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Next/* clause");
 
@@ -257,8 +242,6 @@ void SyntaxChecker::CheckNext() {
 }
 
 void SyntaxChecker::CheckParent() {
-  assert(GetCurrTokenValue() == PARENT || GetCurrTokenValue() == PARENT_STAR);
-
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Parent/* clause");
 
@@ -285,7 +268,6 @@ void SyntaxChecker::CheckPattern(bool has_and) {
   if (!has_and) {
     NextToken();
   }
-  std::cout << "here: " << GetCurrTokenValue() << "\n";
 
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Pattern clause");
@@ -303,7 +285,6 @@ void SyntaxChecker::CheckPattern(bool has_and) {
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
   NextToken();
-  std::cout << "pattern checked\n";
   if (GetCurrTokenValue() == QpParser::AND) {
     CheckAnd(ClauseType::pattern);
   }
@@ -316,10 +297,8 @@ void SyntaxChecker::CheckSelect() {
 
   NextToken();  // result-cl
   if (GetCurrTokenValue() == QpParser::BOOLEAN) {
-    if (existing_declarations.find(QpParser::BOOLEAN) ==
+    if (existing_declarations.find(QpParser::BOOLEAN) !=
         existing_declarations.end()) {
-      CheckSelectBoolean();
-    } else {
       CheckSelectSingle();
     }
   } else if (GetCurrTokenValue() == "<") {
@@ -330,13 +309,7 @@ void SyntaxChecker::CheckSelect() {
   NextToken();
 }
 
-void SyntaxChecker::CheckSelectBoolean() {
-  assert(GetCurrTokenValue() == QpParser::BOOLEAN);
-}
-
 void SyntaxChecker::CheckSelectMultiple() {
-  assert(GetCurrTokenValue() == "<");
-
   NextToken();  // synonym
   while (GetCurrTokenValue() != ">") {
     if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
@@ -381,8 +354,8 @@ void SyntaxChecker::CheckSelectSingle() {
 
 void SyntaxChecker::CheckSuchThat(bool has_and) {
   if (!has_and) {
-    if (NextToken()->getTokenVal() != "that") {
-      std::cout << "Expected 'that' in such that clause";
+    if (NextToken()->GetTokenVal() != "that") {
+      throw InvalidSyntaxException("Expected 'that' in such that clause");
     }
     NextToken();  // relRef
   }
@@ -413,8 +386,6 @@ void SyntaxChecker::CheckSuchThat(bool has_and) {
 }
 
 void SyntaxChecker::CheckUses() {
-  assert(GetCurrTokenValue() == QpParser::USES);
-
   NextToken();
   CheckCurrentTokenSyntax("(", "Expected \'(\' for Uses clause");
 
@@ -630,8 +601,8 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
 void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
   std::string attr_name = GetCurrTokenValue();
 
-  if (attr_name != attr_name::STMT_NUM && attr_name != attr_name::PROC_NAME &&
-      attr_name != attr_name::VAR_NAME && attr_name != attr_name::VALUE) {
+  if (attr_name != QpParser::STMT_NUM && attr_name != QpParser::PROC_NAME &&
+      attr_name != QpParser::VAR_NAME && attr_name != QpParser::VALUE) {
     throw InvalidSyntaxException("Invalid attr name");
   }
 }

@@ -1,7 +1,5 @@
 #include "ExpressionTreeBuilder.h"
 
-#include <assert.h>
-
 #include <iostream>
 #include <memory>
 #include <queue>
@@ -89,7 +87,6 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 std::shared_ptr<SelectExpression>
 ExpressionTreeBuilder ::CreateSelectExpressionHead() {
   // After syntax checking & context building, currToken should be 'Select'
-  assert(GetCurrTokenValue() == QpParser::SELECT);
   NextToken();  // 'BOOLEAN' or '<' or elem
 
   std::optional<std::shared_ptr<SelectExpression>> select_head;
@@ -166,7 +163,6 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
 
 std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
-  assert(GetCurrTokenValue() == QpParser::SUCH);
   std::shared_ptr<SuchThatExpression> such_that_expression_head;
 
   NextToken();  // that

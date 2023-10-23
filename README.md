@@ -7,8 +7,8 @@
 
 Item | Version
 -|-
-OS | Mac, macOS
-Toolchain | CMake 3.27.6
+OS | Windows 11
+Toolchain | CMake 3.26 + MSVC 19.37.32822.0
 C++ Standard | C++17
 
 ### Additional Build Instructions
