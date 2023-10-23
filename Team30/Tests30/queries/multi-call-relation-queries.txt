@@ -76,7 +76,7 @@ none
 16 - Calls* (wildcard, proc_syn)
 procedure p;
 Select r such that Calls* (_, "D")
-SyntaxError
+SemanticError
 5000
 17 - Calls* (wildcard, proc_name)
 if i;

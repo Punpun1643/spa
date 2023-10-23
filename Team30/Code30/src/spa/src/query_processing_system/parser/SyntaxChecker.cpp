@@ -445,12 +445,8 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
                        "Variable used for pattern has not been declared");
   }
   if (existing_declarations.at(token_value).GetEntityType() !=
-          EntityType::ASSIGN &&
-      existing_declarations.at(token_value).GetEntityType() !=
-          EntityType::WHILE &&
-      existing_declarations.at(token_value).GetEntityType() != EntityType::IF) {
-    throw InvalidSemanticsException(
-        "Variable used for pattern is not an assign, while or if synonym");
+          EntityType::ASSIGN) {
+    has_semantic_exception = true;
   }
   return existing_declarations.at(token_value).GetEntityType();
 }
