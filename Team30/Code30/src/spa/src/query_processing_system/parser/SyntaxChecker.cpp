@@ -14,7 +14,7 @@
 #include "../exceptions/InvalidSyntaxException.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
-    : QpParser(tokens) {}
+    : QpParser(tokens), has_semantic_exception(false) {}
 
 void SyntaxChecker::parse() {
   std::shared_ptr<Token> current_token = GetCurrToken();
@@ -29,6 +29,10 @@ void SyntaxChecker::parse() {
   CheckSelect();
   CheckClauses();
   CheckEOF();
+  if (has_semantic_exception) {
+    throw InvalidSemanticsException(
+        "Semantic exception found by SyntaxChecker");
+  }
 }
 
 void SyntaxChecker::CheckAffects() {
@@ -281,25 +285,25 @@ void SyntaxChecker::CheckPattern(bool has_and) {
   if (!has_and) {
     NextToken();
   }
-
-  EntityType entity_type = this->CheckCurrentTokenPatternEntity();
+  std::cout << "here: " << GetCurrTokenValue() << "\n";
 
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Pattern clause");
 
   NextToken();
-  this->CheckCurrentTokenPatternFirstArg(entity_type);
+  this->CheckCurrentTokenPatternFirstArg();
 
   NextToken();
   this->CheckCurrentTokenSyntax(",", "Expected \',\' for Pattern clause");
 
   NextToken();
-  this->CheckCurrentTokenPatternSecondArg(entity_type);
+  this->CheckCurrentTokenPatternSecondArg();
 
   NextToken();
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
   NextToken();
+  std::cout << "pattern checked\n";
   if (GetCurrTokenValue() == QpParser::AND) {
     CheckAnd(ClauseType::pattern);
   }
@@ -377,7 +381,9 @@ void SyntaxChecker::CheckSelectSingle() {
 
 void SyntaxChecker::CheckSuchThat(bool has_and) {
   if (!has_and) {
-    NextToken();  // that
+    if (NextToken()->getTokenVal() != "that") {
+      std::cout << "Expected 'that' in such that clause";
+    }
     NextToken();  // relRef
   }
   if (!QpParser::IsRelRef(GetCurrTokenValue())) {
@@ -495,13 +501,13 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
     }
     return;
   } else if (QpParser::IsSynonym(ref)) {
+    if (GetPeekTokenValue() != ".") {
+      throw InvalidSyntaxException("Expected . after synonym for with ref");
+    }
     CheckSynonymExists(ref,
                        "Variable used for 'with' clause has not been declared");
 
     NextToken();  // .
-    if (GetCurrTokenValue() != ".") {
-      throw InvalidSyntaxException("Expected . after synonym for with ref");
-    }
 
     NextToken();
     CheckUpcomingTokensAreValidAttrName();
@@ -515,36 +521,31 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
   throw InvalidSyntaxException("No valid input for with ref");
 }
 
-void SyntaxChecker::CheckCurrentTokenPatternFirstArg(EntityType variable_type) {
-  if (variable_type == EntityType::ASSIGN) {
-    this->CheckUpcomingTokensAreEntRef(
-        "First arg of pattern clause not valid ent ref",
-        "First arg of pattern clause has not been declared");
-  }
+void SyntaxChecker::CheckCurrentTokenPatternFirstArg() {
+  this->CheckUpcomingTokensAreEntRef(
+      "First arg of pattern clause not valid ent ref",
+      "First arg of pattern clause has not been declared");
 }
 
-void SyntaxChecker::CheckCurrentTokenPatternSecondArg(
-    EntityType variable_type) {
+void SyntaxChecker::CheckCurrentTokenPatternSecondArg() {
   std::string token_value = GetCurrTokenValue();
-  if (variable_type == EntityType::ASSIGN) {
-    if (GetCurrTokenValue() == "_") {
-      if (AParser::GetPeekTokenValue() == ")") {
-        // expression-spec = _
-        return;
-      } else {
-        // expression-spec = _"expr"_
-        NextToken();
-        this->CheckUpcomingTokensAreQuotedExpr(
-            "Expected quoted expr for pattern second arg");
-
-        NextToken();
-        this->CheckCurrentTokenSyntax(
-            "_", "Expected '_' at the ending of pattern second arg");
-      }
+  if (GetCurrTokenValue() == "_") {
+    if (AParser::GetPeekTokenValue() == ")") {
+      // expression-spec = _
+      return;
     } else {
+      // expression-spec = _"expr"_
+      NextToken();
       this->CheckUpcomingTokensAreQuotedExpr(
           "Expected quoted expr for pattern second arg");
+
+      NextToken();
+      this->CheckCurrentTokenSyntax(
+          "_", "Expected '_' at the ending of pattern second arg");
     }
+  } else {
+    this->CheckUpcomingTokensAreQuotedExpr(
+        "Expected quoted expr for pattern second arg");
   }
 }
 
@@ -590,7 +591,7 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
 void SyntaxChecker::CheckSynonymExists(std::string synonym,
                                        std::string error_msg) {
   if (existing_declarations.find(synonym) == existing_declarations.end()) {
-    throw InvalidSemanticsException(error_msg);
+    this->has_semantic_exception = true;
   }
 }
 
