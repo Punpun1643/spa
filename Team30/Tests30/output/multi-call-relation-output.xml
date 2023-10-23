@@ -1,219 +1,210 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.645000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.598000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls (proc_syn, proc_syn)">1</id><querystr><![CDATA[procedure p, p1; Select p1 such that Calls(p,p1)]]></querystr>
 <stuans>B,C,D,F,G,H,I,J</stuans>
 <correct>B,C,D,F,G,H,I,J</correct>
-<time_taken>1.639000</time_taken>
+<time_taken>1.278000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls (proc_syn, proc_name)">2</id><querystr><![CDATA[procedure p; Select p such that Calls (p, "D")]]></querystr>
 <stuans>B,C</stuans>
 <correct>B,C</correct>
-<time_taken>1.706000</time_taken>
+<time_taken>1.088000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls (proc_syn, wildcard)">3</id><querystr><![CDATA[procedure p; Select p such that Calls (p, _)]]></querystr>
 <stuans>A,B,C,D,E,F,G,J</stuans>
 <correct>A,B,C,D,E,F,G,J</correct>
-<time_taken>2.101000</time_taken>
+<time_taken>1.131000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls (proc_name, proc_syn)">4</id><querystr><![CDATA[procedure p; Select p such that Calls ("F", p)]]></querystr>
 <stuans>G,H,I</stuans>
 <correct>G,H,I</correct>
-<time_taken>1.673000</time_taken>
+<time_taken>1.059000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls (proc_name, proc_name)">5</id><querystr><![CDATA[assign a; Select a such that Calls ("F", "J")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.839000</time_taken>
+<time_taken>1.103000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls (proc_name, wildcard)">6</id><querystr><![CDATA[print pn; Select pn such that Calls ("D", _)]]></querystr>
 <stuans>20,6</stuans>
 <correct>6,20</correct>
-<time_taken>1.938000</time_taken>
+<time_taken>1.093000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls (wildcard, proc_syn)">7</id><querystr><![CDATA[procedure p; Select p such that Calls (_, p)]]></querystr>
 <stuans>B,C,D,F,G,H,I,J</stuans>
 <correct>B,C,D,F,G,H,I,J</correct>
-<time_taken>1.815000</time_taken>
+<time_taken>1.026000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls (wildcard, proc_name)">8</id><querystr><![CDATA[assign a; Select a such that Calls (_, p)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>2.076000</time_taken>
+<time_taken>1.320000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="Calls (wildcard, wildcard)">9</id><querystr><![CDATA[read r; Select r such that Calls (_, _) ]]></querystr>
 <stuans>5</stuans>
 <correct>5</correct>
-<time_taken>1.822000</time_taken>
+<time_taken>1.058000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls (proc_syn, proc_syn)">10</id><querystr><![CDATA[procedure p, p1;  Select p such that Calls (p, p1)]]></querystr>
 <stuans>A,B,C,D,E,F,G,J</stuans>
 <correct>A,B,C,D,E,F,G,J</correct>
-<time_taken>1.890000</time_taken>
+<time_taken>1.077000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls* (proc_syn, proc_name)">11</id><querystr><![CDATA[procedure p; Select p such that Calls* (p, "H")]]></querystr>
 <stuans>E,F</stuans>
 <correct>E,F</correct>
-<time_taken>1.693000</time_taken>
+<time_taken>1.099000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls* (proc_syn, wildcard)">12</id><querystr><![CDATA[procedure p; Select p such that Calls* (p, _)]]></querystr>
 <stuans>A,B,C,D,E,F,G,J</stuans>
 <correct>A,B,C,D,E,F,G,J</correct>
-<time_taken>2.290000</time_taken>
+<time_taken>1.125000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls* (proc_name, proc_syn)">13</id><querystr><![CDATA[procedure p; Select p such that Calls* ("E", p)]]></querystr>
 <stuans>F,G,H,I,J</stuans>
 <correct>F,G,H,I,J</correct>
-<time_taken>1.952000</time_taken>
+<time_taken>1.256000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls* (proc_name, proc_name)">14</id><querystr><![CDATA[assign a; Select a such that Calls* ("A", "D")]]></querystr>
 <stuans>10,19,2,9</stuans>
 <correct>2,9,10,19</correct>
-<time_taken>1.810000</time_taken>
+<time_taken>1.119000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls* (proc_name, wildcard)">15</id><querystr><![CDATA[while w; Select w such that Calls* ("I",_)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.855000</time_taken>
+<time_taken>1.025000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls* (wildcard, proc_syn)">16</id><querystr><![CDATA[procedure p; Select r such that Calls* (_, "D")]]></querystr>
 <stuans>SemanticError</stuans>
-<correct>SyntaxError</correct>
-<time_taken>1.951000</time_taken>
-<failed>
-<missing>SyntaxError</missing>
-<additional>SemanticError</additional>
-<summary>
-<expected>1</expected>
-<matched>0</matched>
-<missing>1</missing>
-<additional>1</additional>
-</summary>
-</failed>
+<correct>SemanticError</correct>
+<time_taken>1.118000</time_taken>
+<passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Calls* (wildcard, proc_name)">17</id><querystr><![CDATA[if i; Select i such that Calls* (_, "G")]]></querystr>
 <stuans>14</stuans>
 <correct>14</correct>
-<time_taken>1.226000</time_taken>
+<time_taken>1.113000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="Calls* (wildcard, wildcard)">18</id><querystr><![CDATA[procedure p; Select p such that Calls* (_, _)]]></querystr>
 <stuans>A,B,C,D,E,F,G,H,I,J</stuans>
 <correct>A,B,C,D,E,F,G,H,I,J</correct>
-<time_taken>1.820000</time_taken>
+<time_taken>1.151000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls Invalid: Cannot have constant as 2nd param">19</id><querystr><![CDATA[procedure p;  Select p such that Calls (p, "1")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.929000</time_taken>
+<time_taken>1.077000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls* Invalid: Cannot have constant as 2nd param">20</id><querystr><![CDATA[procedure p;  Select p such that Calls* (p, "2")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.118000</time_taken>
+<time_taken>1.090000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls Variable as 2nd term, should not output error but return no values.">21</id><querystr><![CDATA[procedure p; Select p such that Calls (p, "x")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.079000</time_taken>
+<time_taken>1.060000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Calls* Variable as 2nd term, should not output error but return no values.">22</id><querystr><![CDATA[procedure p; Select p such that Calls* (p, "y")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.160000</time_taken>
+<time_taken>1.105000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid - calls synonym as the first argument, throws semantic error">23</id><querystr><![CDATA[procedure p; call c; Select p such that Calls* (c, p)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.220000</time_taken>
+<time_taken>1.155000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid - calls synonym as the second argument, throws semantic error">24</id><querystr><![CDATA[procedure p; call c; Select p such that Calls* (p, c)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.127000</time_taken>
+<time_taken>1.134000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid - statement synonym as first argument, throws semantic error">25</id><querystr><![CDATA[assign a; procedure p; Select p such that Calls* (a, p)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.287000</time_taken>
+<time_taken>1.255000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid - statement synonym as second argument, throws semantic error">26</id><querystr><![CDATA[print pn; procedure p; Select p such that Calls (p, pn)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.134000</time_taken>
+<time_taken>1.117000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Select procedures that Calls* itself should return none">27</id><querystr><![CDATA[procedure p; Select p such that Calls* (p, p)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.083000</time_taken>
+<time_taken>1.132000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="2" SuchThat="1" CondNum="4" RelNum="2" comment="2-layered Calls">28</id><querystr><![CDATA[procedure p, p1, p2; Select p such that Calls (p, p1) and Calls(p1, p2)]]></querystr>
 <stuans>A,B,C,D,E,F,G</stuans>
 <correct>A,B,C,D,E,F,G</correct>
-<time_taken>1.163000</time_taken>
+<time_taken>1.203000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Calls="3" SuchThat="1" CondNum="5" RelNum="3" comment="3-layered Calls">29</id><querystr><![CDATA[procedure p, p1, p2, p3; Select p such that Calls (p, p1) and Calls(p1, p2) and Calls (p2, p3)]]></querystr>
 <stuans>A,B,C,E,F</stuans>
 <correct>A,B,C,E,F</correct>
-<time_taken>1.203000</time_taken>
+<time_taken>1.194000</time_taken>
 <passed/>
 </query>
 </queries>
