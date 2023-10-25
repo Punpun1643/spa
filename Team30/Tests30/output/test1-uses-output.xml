@@ -1,252 +1,252 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.969000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.662000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses stmt syn LHS and var syn RHS">1</id><querystr><![CDATA[stmt s; variable v; Select v such that Uses (s, v)]]></querystr>
 <stuans>a,b,i,j,p,q,t,x,y,z</stuans>
 <correct>x,y,z,p,q,i,j,a,t,b</correct>
-<time_taken>1.677000</time_taken>
+<time_taken>1.852000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses container syn LHS and var syn RHS">2</id><querystr><![CDATA[while w; variable v; Select w such that Uses (w, v)]]></querystr>
 <stuans>14,7</stuans>
 <correct>7,14</correct>
-<time_taken>1.272000</time_taken>
+<time_taken>1.295000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses container syn LHS and var syn RHS">3</id><querystr><![CDATA[if i; variable v; while extra; Select i such that Uses (i, v)]]></querystr>
 <stuans>20,24,4</stuans>
 <correct>4,20,24</correct>
-<time_taken>1.238000</time_taken>
+<time_taken>1.129000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses stmt syn LHS and specific var string RHS">4</id><querystr><![CDATA[print pn; Select pn such that Uses (pn, "p")]]></querystr>
 <stuans>6</stuans>
 <correct>6</correct>
-<time_taken>1.193000</time_taken>
+<time_taken>1.175000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses stmt syn LHS and specific var string RHS">5</id><querystr><![CDATA[stmt s; variable v; Select s such that Uses (s, "y")]]></querystr>
 <stuans>13,14,16,19,20,23,3</stuans>
 <correct>3,13,14,16,19,20,23</correct>
-<time_taken>1.157000</time_taken>
+<time_taken>1.211000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses container syn LHS and specific var string RHS">6</id><querystr><![CDATA[if i; Select i such that Uses (i, "a")]]></querystr>
 <stuans>20,24</stuans>
 <correct>20,24</correct>
-<time_taken>1.305000</time_taken>
+<time_taken>1.083000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses container syn LHS and specific var string RHS">7</id><querystr><![CDATA[while w; Select w such that Uses (w, "t")]]></querystr>
 <stuans>14</stuans>
 <correct>14</correct>
-<time_taken>1.243000</time_taken>
+<time_taken>1.134000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses container syn LHS and specific var string RHS">8</id><querystr><![CDATA[while w; Select w such that Uses (w, "a")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.913000</time_taken>
+<time_taken>1.210000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses stmt syn LHS and nonexistent var string RHS">9</id><querystr><![CDATA[stmt s; Select s such that Uses (s, "wowThisIsAReallyLongVariableNameICantBelieveHowLongThisIsHereAreSomeNumbers910239122")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>2.017000</time_taken>
+<time_taken>1.227000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Uses stmt syn LHS and wildcard RHS">10</id><querystr><![CDATA[assign a; Select a such that Uses (a, _)]]></querystr>
 <stuans>10,11,12,13,15,17,18,19,2,23,25,26,27,3,5,8,9</stuans>
 <correct>2,3,5,8,9,10,11,12,13,15,17,18,19,23,25,26,27</correct>
-<time_taken>1.811000</time_taken>
+<time_taken>1.201000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Uses container syn LHS and wildcard RHS">11</id><querystr><![CDATA[while w, w1; Select w such that Uses (w, _)]]></querystr>
 <stuans>14,7</stuans>
 <correct>7,14</correct>
-<time_taken>1.144000</time_taken>
+<time_taken>1.269000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Uses stmt syn LHS and wildcard RHS">12</id><querystr><![CDATA[while w, w1; stmt s; Select w such that Uses (s, _)]]></querystr>
 <stuans>14,30,7</stuans>
 <correct>7,14,30</correct>
-<time_taken>1.404000</time_taken>
+<time_taken>1.313000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Uses stmt syn LHS and wildcard RHS">13</id><querystr><![CDATA[while w, w1; stmt s; Select s such that Uses (s, _)]]></querystr>
 <stuans>10,11,12,13,14,15,16,17,18,19,2,20,23,24,25,26,27,29,3,4,5,6,7,8,9</stuans>
 <correct>2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23,24,25,26,27,29</correct>
-<time_taken>1.346000</time_taken>
+<time_taken>1.170000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="read statements do not Uses anything">14</id><querystr><![CDATA[read re; Select re such that Uses (re, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.255000</time_taken>
+<time_taken>1.147000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and var syn RHS">15</id><querystr><![CDATA[variable v; Select v such that Uses (8, v)]]></querystr>
 <stuans>q,x</stuans>
 <correct>x,q</correct>
-<time_taken>1.272000</time_taken>
+<time_taken>1.060000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and var syn RHS">16</id><querystr><![CDATA[variable v; Select v such that Uses (4, v)]]></querystr>
 <stuans>p,q,x,z</stuans>
 <correct>z,q,x,p</correct>
-<time_taken>1.919000</time_taken>
+<time_taken>1.069000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific container num LHS and var syn RHS">17</id><querystr><![CDATA[while w; variable v; Select w such that Uses (30, v)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.849000</time_taken>
+<time_taken>1.126000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and var syn RHS">18</id><querystr><![CDATA[variable v; Select v such that Uses (28, v)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.114000</time_taken>
+<time_taken>1.119000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and specific var string RHS">19</id><querystr><![CDATA[print pn; Select pn such that Uses (11, "q")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.087000</time_taken>
+<time_taken>0.965000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and specific var string RHS">20</id><querystr><![CDATA[print pn; Select pn such that Uses (11, "x")]]></querystr>
 <stuans>16,29,6</stuans>
 <correct>6,16,29</correct>
-<time_taken>1.148000</time_taken>
+<time_taken>1.004000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and specific var string RHS">21</id><querystr><![CDATA[print pn; Select pn such that Uses (20, "i")]]></querystr>
 <stuans>16,29,6</stuans>
 <correct>6,16,29</correct>
-<time_taken>1.062000</time_taken>
+<time_taken>1.024000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Uses specific stmt num LHS and specific var string RHS">22</id><querystr><![CDATA[read re; Select re such that Uses (20, "a")]]></querystr>
 <stuans>1,21,28,31,33,34</stuans>
 <correct>1,21,28,31,33,34</correct>
-<time_taken>1.118000</time_taken>
+<time_taken>1.076000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Uses specific stmt num LHS and wildcard RHS">23</id><querystr><![CDATA[read r; Select r such that Uses (7, _)]]></querystr>
 <stuans>1,21,28,31,33,34</stuans>
 <correct>1,21,28,31,33,34</correct>
-<time_taken>1.228000</time_taken>
+<time_taken>1.217000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Uses specific stmt num LHS and wildcard RHS">24</id><querystr><![CDATA[while w; Select w such that Uses (1, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.157000</time_taken>
+<time_taken>1.023000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Uses="1" SuchThat="1" CondNum="4" RelNum="1" comment="Semantic Error, cannot have wildcard in first param of Uses">25</id><querystr><![CDATA[read r; variable v; Select r such that Uses (_, v)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.454000</time_taken>
+<time_taken>1.271000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have variable syn in first param of Uses">26</id><querystr><![CDATA[variable v1, v2; Select v1 such that Uses (v1, v2)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.229000</time_taken>
+<time_taken>1.197000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have constant syn in first param of Uses">27</id><querystr><![CDATA[constant c; Select c such that Uses (c, v2)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.173000</time_taken>
+<time_taken>1.251000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, cannot have identifier in first param of Uses">28</id><querystr><![CDATA[variable v1, v2; Select v1 such that Uses ("abc", v2)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.202000</time_taken>
+<time_taken>1.192000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, IDENT must start with a letter">29</id><querystr><![CDATA[assign a; Select a such that Uses (a, "1")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.115000</time_taken>
+<time_taken>1.242000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, cannot have stmt number in second param of Uses">30</id><querystr><![CDATA[read r; variable v; Select r such that Uses (10, 15)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.101000</time_taken>
+<time_taken>1.241000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have Stmt Declaration in second param of Uses">31</id><querystr><![CDATA[read r; stmt s; Select r such that Uses (10, s)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.102000</time_taken>
+<time_taken>1.164000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have Constant Declaration in second param of Uses">32</id><querystr><![CDATA[read r; constant con; Select r such that Uses (10, con)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.182000</time_taken>
+<time_taken>1.323000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" SuchThat="1" CondNum="2" RelNum="0" comment="Syntax Error, spell Uses wrongly">33</id><querystr><![CDATA[read r; constant con; Select r such that Use (10, con)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.241000</time_taken>
+<time_taken>1.137000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, IDENTIFIER cannot be empty">34</id><querystr><![CDATA[read r; constant con; Select r such that Uses (10, " ")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.136000</time_taken>
+<time_taken>1.274000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, non-existent declaration">35</id><querystr><![CDATA[while w; Select i such that Uses (i, "a")]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.147000</time_taken>
+<time_taken>1.445000</time_taken>
 <passed/>
 </query>
 </queries>
