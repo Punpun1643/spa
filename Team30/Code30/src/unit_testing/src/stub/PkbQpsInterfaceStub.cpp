@@ -110,7 +110,7 @@ PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
   return std::vector<std::pair<std::string, std::string>>(synonymSynonymValues);
 }
 
-std::vector<std::string> PkbQpsInterfaceStub::GetPatternMatchesWildLhs(
+std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternWildCalls++;
   last_match_type_passed = match_type;
@@ -118,7 +118,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetPatternMatchesWildLhs(
   return std::vector<std::string>(patternWildValues);
 };
 
-std::vector<std::string> PkbQpsInterfaceStub::GetPatternMatchesValueLhs(
+std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
   patternValueCalls++;
@@ -129,10 +129,25 @@ std::vector<std::string> PkbQpsInterfaceStub::GetPatternMatchesValueLhs(
 };
 
 std::vector<std::pair<std::string, std::string>>
-PkbQpsInterfaceStub::GetPatternMatchesSynonymLhs(
+PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   patternDeclCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
   return std::vector<std::pair<std::string, std::string>>(patternDeclValues);
 };
+
+std::vector<std::string>
+PkbQpsInterfaceStub::GetContainerStmtsWithControlVar(EntityType container_stmt_type) {
+    return {};
+}
+
+std::vector<std::string>
+PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(EntityType container_stmt_type, std::string var_name) {
+    return {};
+}
+
+std::vector<std::pair<std::string, std::string>>
+PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
+    return {};
+}

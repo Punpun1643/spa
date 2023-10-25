@@ -491,7 +491,7 @@ TEST_CASE("Test1-Source PKB") {
 
   std::vector<std::string> expected_res = {"8", "15", "17"};
   std::vector<std::string> actual;
-  actual = pkb.GetPatternMatchesWildLhs(
+  actual = pkb.GetMatchingAssignStmts(
       std::make_shared<TreeNode>("5", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
 
@@ -502,7 +502,7 @@ TEST_CASE("Test1-Source PKB") {
   std::vector<std::pair<std::string, std::string>> expected_pairs = {
       {"9", "z"}, {"22", "x"}, {"25", "x"}};
   std::vector<std::pair<std::string, std::string>> actual_pairs;
-  actual_pairs = pkb.GetPatternMatchesSynonymLhs(
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
       std::make_shared<TreeNode>("1", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
@@ -510,7 +510,7 @@ TEST_CASE("Test1-Source PKB") {
   REQUIRE(actual_pairs == expected_pairs);
 
   expected_res = {"8", "10"};
-  actual = pkb.GetPatternMatchesWildLhs(
+  actual = pkb.GetMatchingAssignStmts(
       std::make_shared<TreeNode>("q", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
@@ -518,7 +518,7 @@ TEST_CASE("Test1-Source PKB") {
   REQUIRE(actual == expected_res);
 
   expected_pairs = {{"26", "a"}};
-  actual_pairs = pkb.GetPatternMatchesSynonymLhs(
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
       std::make_shared<TreeNode>("b", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
@@ -556,7 +556,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected_pairs.push_back({"4", "y"});
   expected_pairs.push_back({"5", "x"});
   auto actual_pairs =
-      pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::WILD_MATCH);
+      pkb.GetMatchingAssignStmtLhsVarPairs(buildTree4(), MatchType::WILD_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
@@ -564,22 +564,22 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected_pairs.clear();
   expected_pairs.push_back({"3", "x"});
   expected_pairs.push_back({"4", "y"});
-  actual_pairs =
-      pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::PARTIAL_MATCH);
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(buildTree4(),
+                                                      MatchType::PARTIAL_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
   // syn = b * c
   expected_pairs.clear();
-  actual_pairs =
-      pkb.GetPatternMatchesSynonymLhs(buildTree4(), MatchType::EXACT_MATCH);
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(buildTree4(),
+                                                      MatchType::EXACT_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
   // syn = a + b
   expected_pairs.push_back({"5", "x"});
-  actual_pairs =
-      pkb.GetPatternMatchesSynonymLhs(buildTree3(), MatchType::EXACT_MATCH);
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(buildTree3(),
+                                                      MatchType::EXACT_MATCH);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);
 
@@ -588,23 +588,23 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.push_back("3");
   expected.push_back("5");
   auto actual =
-      pkb.GetPatternMatchesValueLhs("x", buildTree4(), MatchType::WILD_MATCH);
+      pkb.GetMatchingAssignStmts("x", buildTree4(), MatchType::WILD_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
   // x = _b * c_
   expected.clear();
   expected.push_back("3");
-  actual = pkb.GetPatternMatchesValueLhs("x", buildTree4(),
-                                         MatchType::PARTIAL_MATCH);
+  actual =
+      pkb.GetMatchingAssignStmts("x", buildTree4(), MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
   // x = _a + b_
   expected.clear();
   expected.push_back("5");
-  actual = pkb.GetPatternMatchesValueLhs("x", buildTree3(),
-                                         MatchType::PARTIAL_MATCH);
+  actual =
+      pkb.GetMatchingAssignStmts("x", buildTree3(), MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
@@ -612,14 +612,14 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.clear();
   expected.push_back("3");
   actual =
-      pkb.GetPatternMatchesValueLhs("x", buildTree1(), MatchType::EXACT_MATCH);
+      pkb.GetMatchingAssignStmts("x", buildTree1(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
   // y = a + b * c % d;
   expected.clear();
   actual =
-      pkb.GetPatternMatchesValueLhs("y", buildTree1(), MatchType::EXACT_MATCH);
+      pkb.GetMatchingAssignStmts("y", buildTree1(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
@@ -628,7 +628,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.push_back("3");
   expected.push_back("4");
   expected.push_back("5");
-  actual = pkb.GetPatternMatchesWildLhs(buildTree1(), MatchType::WILD_MATCH);
+  actual = pkb.GetMatchingAssignStmts(buildTree1(), MatchType::WILD_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 
@@ -636,7 +636,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   expected.clear();
   expected.push_back("3");
   expected.push_back("5");
-  actual = pkb.GetPatternMatchesWildLhs(
+  actual = pkb.GetMatchingAssignStmts(
       std::make_shared<TreeNode>("a", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
   std::sort(actual.begin(), actual.end());
@@ -645,7 +645,7 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   // _ = _a_
   expected.clear();
   expected.push_back("4");
-  actual = pkb.GetPatternMatchesWildLhs(buildTree2(), MatchType::EXACT_MATCH);
+  actual = pkb.GetMatchingAssignStmts(buildTree2(), MatchType::EXACT_MATCH);
   std::sort(actual.begin(), actual.end());
   REQUIRE(actual == expected);
 }

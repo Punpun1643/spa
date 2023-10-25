@@ -110,14 +110,21 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       RelationType rel_type) override;
 
   // Pattern clause
-  std::vector<std::string> GetPatternMatchesWildLhs(
+  std::vector<std::string> GetMatchingAssignStmts(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
-  std::vector<std::string> GetPatternMatchesValueLhs(
+  std::vector<std::string> GetMatchingAssignStmts(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
-  // 2 paired values - one for the implicit assign declaration, paired with
-  // the variable declaration on the LHS of the assign stmt
-  GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
                               MatchType match_type) override;
+
+  std::vector<std::string>
+  GetContainerStmtsWithControlVar(EntityType container_stmt_type) override;
+
+  std::vector<std::string>
+  GetContainerStmtsWithGivenControlVar(EntityType container_stmt_type, std::string var_name) override;
+
+  std::vector<std::pair<std::string, std::string>>
+  GetContainerStmtControlVarPairs(EntityType container_stmt_type) override;
 };
