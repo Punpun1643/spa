@@ -184,7 +184,7 @@ std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
 }
 
 // ---------- PATTERNS ----------
-std::vector<std::string> PKB::GetPatternMatchesWildLhs(
+std::vector<std::string> PKB::GetMatchingAssignStmts(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   std::unordered_set<std::string> output;
 
@@ -208,7 +208,7 @@ std::vector<std::string> PKB::GetPatternMatchesWildLhs(
   return std::vector<std::string>(output.begin(), output.end());
 }
 
-std::vector<std::string> PKB::GetPatternMatchesValueLhs(
+std::vector<std::string> PKB::GetMatchingAssignStmts(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
   std::unordered_set<std::string> output;
@@ -236,8 +236,8 @@ std::vector<std::string> PKB::GetPatternMatchesValueLhs(
 }
 
 std::vector<std::pair<std::string, std::string>>
-PKB::GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
-                                 MatchType match_type) {
+PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+                                      MatchType match_type) {
   std::vector<std::pair<std::string, std::string>> output;
 
   // Synonym Wild
@@ -261,4 +261,18 @@ PKB::GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
 
   return std::vector<std::pair<std::string, std::string>>(output.begin(),
                                                           output.end());
+}
+std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
+    EntityType container_stmt_type) {
+  return {};
+}
+
+std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
+    EntityType container_stmt_type, std::string var_name) {
+  return {};
+}
+
+std::vector<std::pair<std::string, std::string>>
+PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
+  return {};
 }

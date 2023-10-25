@@ -1,9 +1,9 @@
 #include "LinkedListTable.h"
 
 #include <iostream>
+#include <memory>
 #include <queue>
 #include <string>
-#include <memory>
 
 LinkedListTable::LinkedListTable() : BaseTable() {}
 
