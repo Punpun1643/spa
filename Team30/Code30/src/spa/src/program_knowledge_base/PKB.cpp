@@ -237,7 +237,7 @@ std::vector<std::string> PKB::GetMatchingAssignStmts(
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
-                                 MatchType match_type) {
+                                      MatchType match_type) {
   std::vector<std::pair<std::string, std::string>> output;
 
   // Synonym Wild
@@ -262,13 +262,13 @@ PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
   return std::vector<std::pair<std::string, std::string>>(output.begin(),
                                                           output.end());
 }
-std::vector<std::string>
-PKB::GetContainerStmtsWithControlVar(EntityType container_stmt_type) {
+std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
+    EntityType container_stmt_type) {
   return {};
 }
 
-std::vector<std::string>
-PKB::GetContainerStmtsWithGivenControlVar(EntityType container_stmt_type, std::string var_name) {
+std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
+    EntityType container_stmt_type, std::string var_name) {
   return {};
 }
 

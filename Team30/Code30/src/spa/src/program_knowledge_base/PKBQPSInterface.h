@@ -80,15 +80,14 @@ class PKBQPSInterface {
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
-                              MatchType match_type) = 0;
+                                   MatchType match_type) = 0;
 
-  virtual std::vector<std::string>
-  GetContainerStmtsWithControlVar(EntityType container_stmt_type) = 0;
+  virtual std::vector<std::string> GetContainerStmtsWithControlVar(
+      EntityType container_stmt_type) = 0;
 
-  virtual std::vector<std::string>
-  GetContainerStmtsWithGivenControlVar(EntityType container_stmt_type, std::string var_name) = 0;
+  virtual std::vector<std::string> GetContainerStmtsWithGivenControlVar(
+      EntityType container_stmt_type, std::string var_name) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(EntityType container_stmt_type) = 0;
-
 };

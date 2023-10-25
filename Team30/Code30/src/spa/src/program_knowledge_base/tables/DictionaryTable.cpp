@@ -1,7 +1,7 @@
+#include "DictionaryTable.h"
+
 #include <memory>
 #include <string>
-
-#include "DictionaryTable.h"
 
 DictionaryTable::DictionaryTable() : BaseTable() {}
 

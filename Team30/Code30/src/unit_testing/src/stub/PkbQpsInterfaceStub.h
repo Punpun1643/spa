@@ -117,13 +117,13 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
-                              MatchType match_type) override;
+                                   MatchType match_type) override;
 
-  std::vector<std::string>
-  GetContainerStmtsWithControlVar(EntityType container_stmt_type) override;
+  std::vector<std::string> GetContainerStmtsWithControlVar(
+      EntityType container_stmt_type) override;
 
-  std::vector<std::string>
-  GetContainerStmtsWithGivenControlVar(EntityType container_stmt_type, std::string var_name) override;
+  std::vector<std::string> GetContainerStmtsWithGivenControlVar(
+      EntityType container_stmt_type, std::string var_name) override;
 
   std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(EntityType container_stmt_type) override;

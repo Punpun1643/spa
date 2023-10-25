@@ -137,17 +137,19 @@ PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
   return std::vector<std::pair<std::string, std::string>>(patternDeclValues);
 };
 
-std::vector<std::string>
-PkbQpsInterfaceStub::GetContainerStmtsWithControlVar(EntityType container_stmt_type) {
-    return {};
+std::vector<std::string> PkbQpsInterfaceStub::GetContainerStmtsWithControlVar(
+    EntityType container_stmt_type) {
+  return {};
 }
 
 std::vector<std::string>
-PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(EntityType container_stmt_type, std::string var_name) {
-    return {};
+PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(
+    EntityType container_stmt_type, std::string var_name) {
+  return {};
 }
 
 std::vector<std::pair<std::string, std::string>>
-PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
-    return {};
+PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(
+    EntityType container_stmt_type) {
+  return {};
 }
