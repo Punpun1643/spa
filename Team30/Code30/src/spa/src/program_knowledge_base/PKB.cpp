@@ -17,9 +17,17 @@ std::unordered_set<std::string> PKB::GetIntersection(
     std::unordered_set<std::string> set1,
     std::unordered_set<std::string> set2) {
   std::unordered_set<std::string> output;
-  for (std::string v : set1) {
-    if (set2.find(v) != set2.end()) {
-      output.insert(v);
+  if (set1.size() < set2.size()) {
+    for (std::string v : set1) {
+      if (set2.find(v) != set2.end()) {
+        output.insert(v);
+      }
+    }
+  } else {
+    for (std::string v : set2) {
+      if (set1.find(v) != set1.end()) {
+        output.insert(v);
+      }
     }
   }
   return output;
