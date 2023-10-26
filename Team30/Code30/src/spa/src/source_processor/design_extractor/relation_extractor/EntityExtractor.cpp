@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <string>
 #include <unordered_set>
 
 EntityExtractor::EntityExtractor(PKBSPInterface& pkb)
