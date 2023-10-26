@@ -1,22 +1,20 @@
 #pragma once
 
 #include <memory>
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 
-#include "../utils/UFDS.h"
+#include "../../utils/LinkedList.h"
 #include "RelationTable.h"
 
-class DictionaryTable : public RelationTable {
-  std::unordered_map<std::string, std::unordered_set<std::string>> relations =
-      {};
-  std::unordered_map<std::string, std::unordered_set<std::string>>
-      inverse_relations = {};
+class LinkedListTable : public RelationTable {
+  LinkedList relations = LinkedList();
 
  public:
-  DictionaryTable();
-  ~DictionaryTable() = default;
+  LinkedListTable();
+  ~LinkedListTable() = default;
 
   void Insert(std::string i, std::string j) override;
   bool IsEmpty() override;

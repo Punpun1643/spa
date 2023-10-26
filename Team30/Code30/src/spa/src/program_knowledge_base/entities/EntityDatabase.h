@@ -13,7 +13,7 @@
 #include "shared/types/AttrType.h"
 #include "shared/types/EntityAttrPairings.h"
 #include "shared/types/EntityType.h"
-#include "utils/PairHash.h"
+#include "../utils/PairHash.h"
 
 class EntityDatabase {
  private:

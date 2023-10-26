@@ -1,4 +1,4 @@
-#include "../../../spa/src/program_knowledge_base/RelDatabase.h"
+#include "../../../spa/src/program_knowledge_base/relations/RelDatabase.h"
 #include "catch.hpp"
 #include "source_processor/node/stmt_node/AssignNode.h"
 #include "source_processor/node/stmt_node/CallNode.h"

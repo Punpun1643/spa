@@ -7,7 +7,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../source_processor/node/util_node/CFGNode.h"
+#include "../../source_processor/node/util_node/CFGNode.h"
 #include "shared/types/RelationType.h"
 #include "tables/RelationTable.h"
 #include "tables/DictionaryTable.h"

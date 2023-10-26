@@ -1,4 +1,4 @@
-#include "../../../spa/src/program_knowledge_base/PatternDatabase.h"
+#include "../../../spa/src/program_knowledge_base/patterns/PatternDatabase.h"
 #include "catch.hpp"
 
 std::shared_ptr<TreeNode> buildTree20() {

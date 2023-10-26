@@ -13,9 +13,9 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "PKBQPSInterface.h"
 #include "PKBSPInterface.h"
-#include "program_knowledge_base/EntityDatabase.h"
-#include "program_knowledge_base/PatternDatabase.h"
-#include "program_knowledge_base/RelDatabase.h"
+#include "program_knowledge_base/entities/EntityDatabase.h"
+#include "program_knowledge_base/patterns/PatternDatabase.h"
+#include "program_knowledge_base/relations/RelDatabase.h"
 #include "shared/types/EntityType.h"
 
 class PKB : public PKBQPSInterface, public PKBSPInterface {
