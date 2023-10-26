@@ -6,7 +6,7 @@
 
 PatternDatabase::PatternDatabase() {}
 
-void PatternDatabase::Insert(PatternType type, std::string line_num,
+void PatternDatabase::Insert(std::string line_num,
                              std::string lhs, std::shared_ptr<TreeNode> rhs) {
   assignments.insert({line_num, {lhs, rhs}});
   lhs_assignments[lhs].insert(line_num);

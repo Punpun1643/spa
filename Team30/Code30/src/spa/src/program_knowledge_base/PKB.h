@@ -39,7 +39,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
                     std::string attribute) override;
   void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void InsertPattern(PatternType type, std::string statement_number,
+  void InsertPattern(std::string statement_number,
                      std::string lhs, std::shared_ptr<TreeNode> rhs) override;
   void InsertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;

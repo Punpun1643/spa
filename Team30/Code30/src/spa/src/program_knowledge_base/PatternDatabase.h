@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "../shared/parser/node/TreeNode.h"
-#include "PatternType.h"
 #include "shared/types/RelationType.h"
 #include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
@@ -27,7 +26,7 @@ class PatternDatabase {
   PatternDatabase();
   ~PatternDatabase() = default;
 
-  void Insert(PatternType type, std::string line_num, std::string lhs,
+  void Insert(std::string line_num, std::string lhs,
               std::shared_ptr<TreeNode> rhs);
   std::unordered_set<std::string> GetStatementNumbersGivenLHS(std::string v);
   std::unordered_map<std::string,

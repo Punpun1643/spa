@@ -24,7 +24,7 @@ class PKBSPInterface {
                             std::string attribute) = 0;
   virtual void InsertRelation(RelationType rel_type, std::string s1_line_num,
                               std::string s2_line_num) = 0;
-  virtual void InsertPattern(PatternType type, std::string statement_number,
+  virtual void InsertPattern(std::string statement_number,
                              std::string lhs,
                              std::shared_ptr<TreeNode> rhs) = 0;
   virtual std::unordered_set<std::string> GetProcedureModifies(
