@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "PatternType.h"
 #include "shared/types/AttrType.h"
 #include "shared/types/EntityType.h"
 #include "shared/types/MatchType.h"
@@ -25,8 +24,12 @@ class PKBSPInterface {
   virtual void InsertRelation(RelationType rel_type, std::string s1_line_num,
                               std::string s2_line_num) = 0;
   virtual void InsertAssignPattern(std::string statement_number,
-                             std::string lhs,
-                             std::shared_ptr<TreeNode> rhs) = 0;
+                                   std::string lhs,
+                                   std::shared_ptr<TreeNode> rhs) = 0;
+  virtual void InsertCondVarPattern(EntityType type,
+                                    std::string statement_number,
+                                    std::string var) = 0;
+
   virtual std::unordered_set<std::string> GetProcedureModifies(
       std::string proc_name) = 0;
   virtual std::unordered_set<std::string> GetProcedureUses(

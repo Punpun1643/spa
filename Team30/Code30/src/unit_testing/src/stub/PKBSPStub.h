@@ -34,8 +34,10 @@ class PKBSPStub : public PKBSPInterface {
                     std::string attribute) override;
   void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void InsertAssignPattern(std::string statement_number,
-                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
+  void InsertAssignPattern(std::string statement_number, std::string lhs,
+                           std::shared_ptr<TreeNode> rhs) override;
+  void InsertCondVarPattern(EntityType type, std::string statement_number,
+                            std::string var) override;
 
   void InsertRelationCommon(RelationType type, std::string a, std::string b);
 

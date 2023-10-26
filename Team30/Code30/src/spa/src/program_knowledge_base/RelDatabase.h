@@ -9,13 +9,13 @@
 
 #include "../source_processor/node/util_node/CFGNode.h"
 #include "shared/types/RelationType.h"
-#include "tables/BaseTable.h"
+#include "tables/RelationTable.h"
 #include "tables/DictionaryTable.h"
 #include "tables/LinkedListTable.h"
 
 class RelDatabase {
  private:
-  std::unordered_map<RelationType, std::shared_ptr<BaseTable>> relationships =
+  std::unordered_map<RelationType, std::shared_ptr<RelationTable>> relationships =
       {};
   std::unordered_map<RelationType, std::vector<RelationType>> related_tables;
 

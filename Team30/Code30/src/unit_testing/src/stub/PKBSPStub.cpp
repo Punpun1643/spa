@@ -73,11 +73,17 @@ void PKBSPStub::InsertRelation(RelationType rel_type, std::string s1_line_num,
   InsertRelationCommon(rel_type, s1_line_num, s2_line_num);
 }
 
-// Pattern clause
+// Assign Pattern clause
 void PKBSPStub::InsertAssignPattern(std::string statement_number,
-                              std::string lhs, std::shared_ptr<TreeNode> rhs) {
+                                    std::string lhs,
+                                    std::shared_ptr<TreeNode> rhs) {
   insertPatternCallCount++;
 };
+
+// If/While Pattern clause
+void PKBSPStub::InsertCondVarPattern(EntityType type,
+                                     std::string statement_number,
+                                     std::string var){};
 
 std::unordered_set<std::string> PKBSPStub::GetProcedureUses(
     std::string procName) {

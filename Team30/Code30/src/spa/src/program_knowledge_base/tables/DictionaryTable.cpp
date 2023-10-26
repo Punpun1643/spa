@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-DictionaryTable::DictionaryTable() : BaseTable() {}
+DictionaryTable::DictionaryTable() : RelationTable() {}
 
 void DictionaryTable::Insert(std::string i, std::string j) {
   auto it = relations.find(i);

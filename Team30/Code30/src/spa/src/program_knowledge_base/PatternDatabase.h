@@ -8,7 +8,7 @@
 
 #include "../shared/parser/node/TreeNode.h"
 #include "shared/types/RelationType.h"
-#include "tables/BaseTable.h"
+#include "tables/RelationTable.h"
 #include "tables/DictionaryTable.h"
 
 class PatternDatabase {

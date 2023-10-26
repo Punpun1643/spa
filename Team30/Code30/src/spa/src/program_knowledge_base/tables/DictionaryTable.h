@@ -6,9 +6,9 @@
 #include <unordered_set>
 
 #include "../utils/UFDS.h"
-#include "BaseTable.h"
+#include "RelationTable.h"
 
-class DictionaryTable : public BaseTable {
+class DictionaryTable : public RelationTable {
   std::unordered_map<std::string, std::unordered_set<std::string>> relations =
       {};
   std::unordered_map<std::string, std::unordered_set<std::string>>
