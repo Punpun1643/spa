@@ -3,13 +3,25 @@
 #include <string>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
-PatternDatabase::PatternDatabase() {}
+PatternDatabase::PatternDatabase() {
+  cond_var_patterns[EntityType::IF] = {};
+  cond_var_patterns[EntityType::WHILE] = {};
+  inv_cond_var_patterns[EntityType::IF] = {};
+  inv_cond_var_patterns[EntityType::WHILE] = {};
+}
 
-void PatternDatabase::Insert(std::string line_num, std::string lhs,
-                             std::shared_ptr<TreeNode> rhs) {
+void PatternDatabase::InsertAssignment(std::string line_num, std::string lhs,
+                                       std::shared_ptr<TreeNode> rhs) {
   assignments.insert({line_num, {lhs, rhs}});
   lhs_assignments[lhs].insert(line_num);
+}
+
+void PatternDatabase::InsertCondVar(EntityType type, std::string line_num,
+                                    std::string var) {
+  cond_var_patterns[type][line_num].insert(var);
+  cond_var_patterns[type][var].insert(line_num);
 }
 
 std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
@@ -94,16 +106,32 @@ PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
 
 std::vector<std::string> PatternDatabase::GetContainerStmtsWithControlVar(
     EntityType container_stmt_type) {
-  return {};
+  std::unordered_set<std::string> output;
+
+  for (auto const& stmt_vars : cond_var_patterns[container_stmt_type]) {
+    if (!stmt_vars.second.empty()) {
+      output.insert(stmt_vars.first);
+    }
+  }
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
 std::vector<std::string> PatternDatabase::GetContainerStmtsWithGivenControlVar(
     EntityType container_stmt_type, std::string var_name) {
-  return {};
+  std::unordered_set<std::string> output =
+      inv_cond_var_patterns[container_stmt_type][var_name];
+
+  return std::vector<std::string>(output.begin(), output.end());
 }
 
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type) {
-  return {};
+  std::vector<std::pair<std::string, std::string>> output;
+  for (auto const& stmt_vars : cond_var_patterns[container_stmt_type]) {
+      for (auto vars : stmt_vars.second) {
+      output.push_back(std::make_pair(stmt_vars.first, vars));
+    }
+  }
+  return output;
 }

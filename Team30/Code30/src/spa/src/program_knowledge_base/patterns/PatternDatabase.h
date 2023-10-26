@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "../../shared/parser/node/TreeNode.h"
 #include "shared/types/EntityType.h"
@@ -16,17 +17,29 @@ class PatternDatabase {
   std::unordered_map<std::string,
                      std::pair<std::string, std::shared_ptr<TreeNode>>>
       assignments;
-
   // {lhs variable : statement_number}, used for optimisation
   std::unordered_map<std::string, std::unordered_set<std::string>>
       lhs_assignments = {};
+
+  // {stmt# : vars}
+  std::unordered_map<
+      EntityType,
+      std::unordered_map<std::string, std::unordered_set<std::string>>>
+      cond_var_patterns;
+  // {vars : stmt#}
+  std::unordered_map<
+      EntityType,
+      std::unordered_map<std::string, std::unordered_set<std::string>>>
+      inv_cond_var_patterns;
 
  public:
   PatternDatabase();
   ~PatternDatabase() = default;
 
-  void Insert(std::string line_num, std::string lhs,
-              std::shared_ptr<TreeNode> rhs);
+  void InsertAssignment(std::string line_num, std::string lhs,
+                        std::shared_ptr<TreeNode> rhs);
+
+  void InsertCondVar(EntityType type, std::string line_num, std::string var);
 
   // Assign Pattern
   std::vector<std::string> GetMatchingAssignStmts(

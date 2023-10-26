@@ -47,10 +47,10 @@ TEST_CASE("Pattern Database insertion and retrieval") {
    Line 4: y = c - a;
    Line 5: x = b * c - a;
   */
-  db.Insert("2", "x", buildTree20());
-  db.Insert("3", "x", buildTree21());
-  db.Insert("4", "y", buildTree22());
-  db.Insert("5", "x", buildTree23());
+  db.InsertAssignment("2", "x", buildTree20());
+  db.InsertAssignment("3", "x", buildTree21());
+  db.InsertAssignment("4", "y", buildTree22());
+  db.InsertAssignment("5", "x", buildTree23());
 
   //// x = _
   //std::unordered_set<std::string> expected = {"2", "3", "5"};

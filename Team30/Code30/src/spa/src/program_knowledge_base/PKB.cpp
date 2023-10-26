@@ -50,11 +50,12 @@ void PKB::InsertRelation(RelationType type, std::string input1,
 
 void PKB::InsertAssignPattern(std::string statement_number, std::string lhs,
                               std::shared_ptr<TreeNode> rhs) {
-  pat_data->Insert(statement_number, lhs, rhs);
+  pat_data->InsertAssignment(statement_number, lhs, rhs);
 }
 
 void PKB::InsertCondVarPattern(EntityType type, std::string statement_number,
-                               std::string lhs) {
+                               std::string var) {
+  pat_data->InsertCondVar(type, statement_number, var);
 }
 
 void PKB::InsertCFGNode(std::string statement_number,
