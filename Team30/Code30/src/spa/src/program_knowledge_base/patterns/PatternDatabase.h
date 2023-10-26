@@ -7,7 +7,8 @@
 #include <utility>
 
 #include "../../shared/parser/node/TreeNode.h"
-#include "shared/types/RelationType.h"
+#include "shared/types/EntityType.h"
+#include "shared/types/MatchType.h"
 
 class PatternDatabase {
  private:
@@ -26,8 +27,23 @@ class PatternDatabase {
 
   void Insert(std::string line_num, std::string lhs,
               std::shared_ptr<TreeNode> rhs);
-  std::unordered_set<std::string> GetStatementNumbersGivenLHS(std::string v);
-  std::unordered_map<std::string,
-                     std::pair<std::string, std::shared_ptr<TreeNode>>>
-  GetAssignmentPatterns();
+
+  // Assign Pattern
+  std::vector<std::string> GetMatchingAssignStmts(
+      std::unordered_set<std::string> assign_stmts,
+      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type);
+  std::vector<std::string> GetMatchingAssignStmts(
+      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      MatchType match_type);
+  std::vector<std::pair<std::string, std::string>>
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+                                   MatchType match_type);
+
+  // If/While Patterns
+  std::vector<std::string> GetContainerStmtsWithControlVar(
+      EntityType container_stmt_type);
+  std::vector<std::string> GetContainerStmtsWithGivenControlVar(
+      EntityType container_stmt_type, std::string var_name);
+  std::vector<std::pair<std::string, std::string>>
+  GetContainerStmtControlVarPairs(EntityType container_stmt_type);
 };
