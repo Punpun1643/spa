@@ -17,6 +17,7 @@ ExtractionController::ExtractionController(PKBSPInterface& pkb) : pkb(pkb) {
   extractors.push_back(std::make_shared<ModifiesExtractor>(pkb, calls_manager));
   extractors.push_back(std::make_shared<EntityExtractor>(pkb));
   extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
+  extractors.push_back(std::make_shared<ConstVarExtractor>(pkb));
 }
 
 void ExtractionController::ExecuteProgramExtraction(
