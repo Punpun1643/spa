@@ -21,7 +21,7 @@ void PatternDatabase::InsertAssignment(std::string line_num, std::string lhs,
 void PatternDatabase::InsertCondVar(EntityType type, std::string line_num,
                                     std::string var) {
   cond_var_patterns[type][line_num].insert(var);
-  cond_var_patterns[type][var].insert(line_num);
+  inv_cond_var_patterns[type][var].insert(line_num);
 }
 
 std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
