@@ -48,7 +48,7 @@ void PKB::InsertRelation(RelationType type, std::string input1,
   rel_data->Insert(type, input1, input2);
 }
 
-void PKB::InsertPattern(std::string statement_number,
+void PKB::InsertAssignPattern(std::string statement_number,
                         std::string lhs, std::shared_ptr<TreeNode> rhs) {
   pat_data->Insert(statement_number, lhs, rhs);
 }

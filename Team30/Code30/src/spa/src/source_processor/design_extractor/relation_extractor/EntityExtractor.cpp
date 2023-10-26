@@ -39,6 +39,6 @@ void EntityExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.InsertEntity(EntityType::ASSIGN, std::to_string(node->GetStmtIndex()));
 
   // Pattern insertion
-  pkb.InsertPattern(std::to_string(node->GetStmtIndex()),
+  pkb.InsertAssignPattern(std::to_string(node->GetStmtIndex()),
                     node->GetVarName(), node->GetRootOfTree());
 }
