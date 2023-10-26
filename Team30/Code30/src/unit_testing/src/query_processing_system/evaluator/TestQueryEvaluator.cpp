@@ -3,6 +3,7 @@
 #include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../../spa/src/query_processing_system/clauses/FollowsClause.h"
 #include "../../../../spa/src/query_processing_system/clauses/WithClause.h"
+#include "../../../../spa/src/query_processing_system/clauses/PatternAssignClause.h"
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
@@ -50,7 +51,7 @@ TEST_CASE("Test Query Evaluator") {
     REQUIRE(qe.EvaluateQuery({follows_clause}));
 
     // bool query with no result
-    pattern_clause = std::make_shared<PatternClause>(
+    pattern_clause = std::make_shared<PatternAssignClause>(
         a, EntRef(), MatchType::EXACT_MATCH, rhs_expr);
     REQUIRE_FALSE(qe.EvaluateQuery({follows_clause, pattern_clause}));
   }
@@ -84,7 +85,7 @@ TEST_CASE("Test Query Evaluator") {
   SECTION("Evaluate query with multiple decls") {
     follows_clause =
         QeFactoryMethods::getFollowsClause(StmtRef(if_decl), StmtRef());
-    pattern_clause = std::make_shared<PatternClause>(
+    pattern_clause = std::make_shared<PatternAssignClause>(
         a, EntRef(v), MatchType::EXACT_MATCH, rhs_expr);
     result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)},
                               {follows_clause, pattern_clause});

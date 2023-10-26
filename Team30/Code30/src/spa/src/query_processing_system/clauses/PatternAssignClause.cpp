@@ -1,11 +1,11 @@
-#include "PatternClause.h"
+#include "PatternAssignClause.h"
 
 #include <memory>
 #include <utility>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-PatternClause::PatternClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
+PatternAssignClause::PatternAssignClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
                              MatchType rhs_expr_match_type,
                              std::shared_ptr<TreeNode> rhs_expr)
     : assign_decl(std::move(assign_decl)),
@@ -25,7 +25,7 @@ PatternClause::PatternClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
   }
 }
 
-std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
+std::unique_ptr<ClauseResult> PatternAssignClause::Evaluate(PKBQPSInterface& pkb) {
   switch (lhs_ent_ref.GetRefType()) {
     case (PqlRefType::DECLARATION): {
       auto values =
