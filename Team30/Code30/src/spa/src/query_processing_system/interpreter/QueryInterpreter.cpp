@@ -13,6 +13,7 @@
 #include "../clauses/NextClause.h"
 #include "../clauses/ParentClause.h"
 #include "../clauses/PatternAssignClause.h"
+#include "../clauses/PatternWhileClause.h"
 #include "../clauses/UsesPClause.h"
 #include "../clauses/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -162,7 +163,14 @@ void QueryInterpreter::Interpret(
 
 void QueryInterpreter::Interpret(
     std::shared_ptr<PatternWhileExpression> pattern_while_expression) {
-  int a = 0;
+  std::string synonym = pattern_while_expression->GetSynonym();
+  std::string arg1 = pattern_while_expression->GetArg1();
+  PqlDeclaration while_decl = this->GetMappedDeclaration(arg1);
+  EntRef ent_ref = EntRef(this->GetMappedDeclaration(arg1));
+
+  this->context->AddPatternClause(std::make_shared<PatternWhileClause>(
+        while_decl, ent_ref));
+  this->InterpretNext(pattern_while_expression);
 }
 
 void QueryInterpreter::Interpret(
