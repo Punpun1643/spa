@@ -46,9 +46,9 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
 
   // Pattern Clauses
-  int patternWildCalls = 0;
-  int patternValueCalls = 0;
-  int patternDeclCalls = 0;
+  int patternAssignWildCalls = 0;
+  int patternAssignValueCalls = 0;
+  int patternAssignDeclCalls = 0;
   MatchType last_match_type_passed = MatchType::EXACT_MATCH;
   std::shared_ptr<TreeNode> last_rhs_expr_passed;
 
@@ -61,12 +61,19 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::make_pair(attr_pair_matches_1[0], attr_pair_matches_2[0])};
 
   // Select Clause
-  std::vector<std::string> const patternWildValues = {"10", "20", "30"};
-  std::vector<std::string> const patternValueValues = {"ab", "bb", "cb"};
-  std::vector<std::string> const patternDeclValues1 = {"123"};
-  std::vector<std::string> const patternDeclValues2 = {"345"};
-  std::vector<std::pair<std::string, std::string>> const patternDeclValues = {
-      std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
+  std::vector<std::string> const patternAssignWildValues = {"10", "20", "30"};
+  std::vector<std::string> const patternAssignValueValues = {"ab", "bb", "cb"};
+  std::vector<std::string> const patternAssignDeclValues1 = {"123"};
+  std::vector<std::string> const patternAssignDeclValues2 = {"345"};
+  std::vector<std::pair<std::string, std::string>> const
+      patternAssignDeclValues = {
+      std::make_pair(patternAssignDeclValues1[0], patternAssignDeclValues2[0])};
+
+  std::vector<std::string> const patternContainerWildValues = {"18", "19", "20"};
+  std::vector<std::string> const patternContainerValueValues = {"21", "24", "25"};
+  std::vector<std::string> const patternContainerDeclValues1 = {"22"};
+  std::vector<std::string> const patternContainerDeclValues2 = {"varX"};
+  std::vector<std::pair<std::string, std::string>> const patternContainerDeclValues = {std::make_pair(patternContainerDeclValues1[0], patternContainerDeclValues2[0])};
 
   // Entities
   std::vector<std::string> GetEntitiesWithType(EntityType type) override;

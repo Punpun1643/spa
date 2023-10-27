@@ -112,44 +112,49 @@ PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
 
 std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
-  patternWildCalls++;
+  patternAssignWildCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
-  return std::vector<std::string>(patternWildValues);
+  return std::vector<std::string>(patternAssignWildValues);
 };
 
 std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
-  patternValueCalls++;
+  patternAssignValueCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
   last_value_passed = lhs_value;
-  return std::vector<std::string>(patternValueValues);
+  return std::vector<std::string>(patternAssignValueValues);
 };
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
-  patternDeclCalls++;
+  patternAssignDeclCalls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
-  return std::vector<std::pair<std::string, std::string>>(patternDeclValues);
+  return std::vector<std::pair<std::string, std::string>>(
+      patternAssignDeclValues);
 };
 
 std::vector<std::string> PkbQpsInterfaceStub::GetContainerStmtsWithControlVar(
     EntityType container_stmt_type) {
-  return {};
+  last_entity_type_passed = container_stmt_type;
+  return patternContainerWildValues;
 }
 
 std::vector<std::string>
 PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(
     EntityType container_stmt_type, std::string var_name) {
-  return {};
+  last_entity_type_passed = container_stmt_type;
+  last_value_passed = var_name;
+  return patternContainerValueValues;
 }
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type) {
-  return {};
+  last_entity_type_passed = container_stmt_type;
+  return patternContainerDeclValues;
 }
