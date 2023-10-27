@@ -8,7 +8,9 @@ PatternClause::~PatternClause() = default;
 
 PatternClause::PatternClause(PqlDeclaration decl, EntRef ent_ref,
                              EntityType target_type)
-    : decl(std::move(decl)), ent_ref(std::move(ent_ref)), target_type(target_type) {
+    : decl(std::move(decl)),
+      ent_ref(std::move(ent_ref)),
+      target_type(target_type) {
   if (this->decl.GetEntityType() != target_type) {
     throw InvalidSemanticsException(
         "Given PatternClause decl differs from the target type.");

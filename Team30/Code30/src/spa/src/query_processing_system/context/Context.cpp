@@ -18,7 +18,8 @@ void Context::addDeclarations(EntityType entity_type,
   }
 }
 
-void Context::AddPatternClause(std::shared_ptr<PatternAssignClause> pattern_clause) {
+void Context::AddPatternClause(
+    std::shared_ptr<PatternAssignClause> pattern_clause) {
   this->pattern_clauses.push_back(pattern_clause);
 }
 

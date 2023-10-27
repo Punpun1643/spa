@@ -445,7 +445,7 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
                        "Variable used for pattern has not been declared");
   }
   if (existing_declarations.at(token_value).GetEntityType() !=
-          EntityType::ASSIGN) {
+      EntityType::ASSIGN) {
     has_semantic_exception = true;
   }
   return existing_declarations.at(token_value).GetEntityType();
