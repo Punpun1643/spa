@@ -1,10 +1,13 @@
 #pragma once
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "PatternClause.h"
 
 class PatternContainerClause : public PatternClause {
  private:
-  EntityType target_type;
   std::vector<std::pair<std::string, std::string>> EvaluateDeclRef(
       PKBQPSInterface& pkb) override;
   std::vector<std::string> EvaluateValueRef(PKBQPSInterface& pkb) override;

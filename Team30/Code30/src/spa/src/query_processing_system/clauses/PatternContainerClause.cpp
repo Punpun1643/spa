@@ -23,8 +23,7 @@ PatternContainerClause::EvaluateDeclRef(PKBQPSInterface& pkb) {
 PatternContainerClause::PatternContainerClause(PqlDeclaration container_decl,
                                                EntRef ent_ref,
                                                EntityType target_type)
-    : PatternClause(std::move(container_decl), std::move(ent_ref),
-                    target_type) {
+    : PatternClause(std::move(container_decl), std::move(ent_ref), target_type) {
   if (target_type != EntityType::WHILE && target_type != EntityType::IF) {
     throw InvalidSemanticsException(
         "Target type for PatternContainer must be either a while or if stmt");

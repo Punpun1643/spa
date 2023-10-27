@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <utility>
+#include <vector>
 #include <memory>
 
 #include "Clause.h"
