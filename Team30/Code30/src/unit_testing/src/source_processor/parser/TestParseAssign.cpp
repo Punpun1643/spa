@@ -12,8 +12,7 @@
 
 namespace TestParseAssign {
 class TestableParser : public SpParser {
- public:
-  TestableParser(std::vector<std::shared_ptr<Token>> tokens)
+ public:TestableParser(std::vector<std::shared_ptr<Token>> tokens)
       : SpParser(tokens) {}
 
   using SpParser::ParseAssign;

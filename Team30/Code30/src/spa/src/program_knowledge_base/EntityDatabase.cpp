@@ -1,6 +1,6 @@
-#include <utility>
-
 #include "EntityDatabase.h"
+
+#include <utility>
 
 EntityDatabase::EntityDatabase() {
   entities[EntityType::PROCEDURE] =
@@ -25,8 +25,8 @@ EntityDatabase::EntityDatabase() {
       std::make_shared<std::unordered_set<std::string>>();
 
   statement_types = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
-                    EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
-                    EntityType::IF};
+                     EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
+                     EntityType::IF};
 }
 
 std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(

@@ -1,8 +1,8 @@
+#include "PatternDatabase.h"
+
+#include <string>
 #include <unordered_set>
 #include <utility>
-#include <string>
-
-#include "PatternDatabase.h"
 
 PatternDatabase::PatternDatabase() {}
 

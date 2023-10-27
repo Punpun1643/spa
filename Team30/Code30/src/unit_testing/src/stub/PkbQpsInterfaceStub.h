@@ -11,7 +11,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   RelationType last_rel_passed = RelationType::FOLLOWS;
 
   // Select
-  std::vector<std::string> const getAllOfTypeValues = {"x", "y", "z"};
+  std::vector<std::string> const get_all_of_type_values = {"x", "y", "z"};
   std::string converted_entity = "a";
   AttrType last_attr_type_passed = AttrType::VALUE;
   AttrType last_attr_type_2_passed = AttrType::VALUE;
@@ -22,33 +22,33 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   EntityType last_entity_type_passed = EntityType::IF;
   EntityType last_entity_type_2_passed = EntityType::IF;
 
-  int valueValueCalls = 0;
-  int valueWildCalls = 0;
-  int wildValueCalls = 0;
-  int wildWildCalls = 0;
-  int synonymWildCalls = 0;
-  int wildSynonymCalls = 0;
-  int synonymValueCalls = 0;
-  int valueSynonymCalls = 0;
-  int synonymSynonymCalls = 0;
+  int value_value_calls = 0;
+  int value_wild_calls = 0;
+  int wild_value_calls = 0;
+  int wild_wild_calls = 0;
+  int synonym_wild_calls = 0;
+  int wild_synonym_calls = 0;
+  int synonym_value_calls = 0;
+  int value_synonym_calls = 0;
+  int synonym_synonym_calls = 0;
 
-  bool const valueValueBool = false;
-  bool const valueWildBool = false;
-  bool const wildValueBool = true;
-  bool const wildWildBool = true;
-  std::vector<std::string> const synonymWildValues = {"1", "1", "3"};
-  std::vector<std::string> const wildSynonymValues = {"a", "b", "c"};
-  std::vector<std::string> const synonymValueValues = {"4", "5", "6"};
-  std::vector<std::string> const valueSynonymValues = {"d", "e", "f"};
-  std::vector<std::string> const synonymSynonymValues1 = {"42"};
-  std::vector<std::string> const synonymSynonymValues2 = {"43"};
-  std::vector<std::pair<std::string, std::string>> synonymSynonymValues = {
-      std::make_pair(synonymSynonymValues1[0], synonymSynonymValues2[0])};
+  bool const value_value_bool = false;
+  bool const value_wild_bool = false;
+  bool const wild_value_bool = true;
+  bool const wild_wild_bool = true;
+  std::vector<std::string> const synonym_wild_values = {"1", "1", "3"};
+  std::vector<std::string> const wild_synonym_values = {"a", "b", "c"};
+  std::vector<std::string> const synonym_value_values = {"4", "5", "6"};
+  std::vector<std::string> const value_synonym_values = {"d", "e", "f"};
+  std::vector<std::string> const synonym_synonym_values_1 = {"42"};
+  std::vector<std::string> const synonym_synonym_values_2 = {"43"};
+  std::vector<std::pair<std::string, std::string>> synonym_synonym_values = {
+      std::make_pair(synonym_synonym_values_1[0], synonym_synonym_values_2[0])};
 
   // Pattern Clauses
-  int patternWildCalls = 0;
-  int patternValueCalls = 0;
-  int patternDeclCalls = 0;
+  int pattern_assign_wild_calls = 0;
+  int pattern_assign_value_calls = 0;
+  int pattern_assign_decl_calls = 0;
   MatchType last_match_type_passed = MatchType::EXACT_MATCH;
   std::shared_ptr<TreeNode> last_rhs_expr_passed;
 
@@ -61,12 +61,26 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::make_pair(attr_pair_matches_1[0], attr_pair_matches_2[0])};
 
   // Select Clause
-  std::vector<std::string> const patternWildValues = {"10", "20", "30"};
-  std::vector<std::string> const patternValueValues = {"ab", "bb", "cb"};
-  std::vector<std::string> const patternDeclValues1 = {"123"};
-  std::vector<std::string> const patternDeclValues2 = {"345"};
-  std::vector<std::pair<std::string, std::string>> const patternDeclValues = {
-      std::make_pair(patternDeclValues1[0], patternDeclValues2[0])};
+  std::vector<std::string> const pattern_assign_wild_values = {"10", "20",
+                                                               "30"};
+  std::vector<std::string> const pattern_assign_value_values = {"ab", "bb",
+                                                                "cb"};
+  std::vector<std::string> const pattern_assign_decl_values_1 = {"123"};
+  std::vector<std::string> const pattern_assign_decl_values_2 = {"345"};
+  std::vector<std::pair<std::string, std::string>> const
+      pattern_assign_decl_values = {std::make_pair(
+          pattern_assign_decl_values_1[0], pattern_assign_decl_values_2[0])};
+
+  std::vector<std::string> const pattern_container_wild_values = {"18", "19",
+                                                                  "20"};
+  std::vector<std::string> const pattern_container_value_values = {"21", "24",
+                                                                   "25"};
+  std::vector<std::string> const pattern_container_decl_values_1 = {"22"};
+  std::vector<std::string> const pattern_container_decl_values_2 = {"varX"};
+  std::vector<std::pair<std::string, std::string>> const
+      pattern_container_decl_values = {
+          std::make_pair(pattern_container_decl_values_1[0],
+                         pattern_container_decl_values_2[0])};
 
   // Entities
   std::vector<std::string> GetEntitiesWithType(EntityType type) override;
@@ -110,14 +124,21 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       RelationType rel_type) override;
 
   // Pattern clause
-  std::vector<std::string> GetPatternMatchesWildLhs(
+  std::vector<std::string> GetMatchingAssignStmts(
       std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
-  std::vector<std::string> GetPatternMatchesValueLhs(
+  std::vector<std::string> GetMatchingAssignStmts(
       std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
-  // 2 paired values - one for the implicit assign declaration, paired with
-  // the variable declaration on the LHS of the assign stmt
-  GetPatternMatchesSynonymLhs(std::shared_ptr<TreeNode> rhs_expr,
-                              MatchType match_type) override;
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+                                   MatchType match_type) override;
+
+  std::vector<std::string> GetContainerStmtsWithControlVar(
+      EntityType container_stmt_type) override;
+
+  std::vector<std::string> GetContainerStmtsWithGivenControlVar(
+      EntityType container_stmt_type, std::string var_name) override;
+
+  std::vector<std::pair<std::string, std::string>>
+  GetContainerStmtControlVarPairs(EntityType container_stmt_type) override;
 };

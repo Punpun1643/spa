@@ -1,49 +1,43 @@
 #include "PatternClause.h"
 
-#include <memory>
 #include <utility>
 
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
 
-PatternClause::PatternClause(PqlDeclaration assign_decl, EntRef lhs_ent_ref,
-                             MatchType rhs_expr_match_type,
-                             std::shared_ptr<TreeNode> rhs_expr)
-    : assign_decl(std::move(assign_decl)),
-      lhs_ent_ref(std::move(lhs_ent_ref)),
-      rhs_expr_match_type(rhs_expr_match_type),
-      rhs_expr(std::move(rhs_expr)) {
-  if (this->assign_decl.GetEntityType() != EntityType::ASSIGN) {
+PatternClause::~PatternClause() = default;
+
+PatternClause::PatternClause(PqlDeclaration decl, EntRef ent_ref,
+                             EntityType target_type)
+    : decl(std::move(decl)),
+      ent_ref(std::move(ent_ref)),
+      target_type(target_type) {
+  if (this->decl.GetEntityType() != target_type) {
     throw InvalidSemanticsException(
-        "Pattern Clause only accepts assign declarations");
+        "Given PatternClause decl differs from the target type.");
   }
 
-  if (this->lhs_ent_ref.GetRefType() == PqlRefType::DECLARATION &&
-      this->lhs_ent_ref.GetDeclarationType() != EntityType::VARIABLE) {
+  if (this->ent_ref.GetRefType() == PqlRefType::DECLARATION &&
+      this->ent_ref.GetDeclarationType() != EntityType::VARIABLE) {
     throw InvalidSemanticsException(
-        "If the entRef of the pattern clause is a declaration, it must be of "
-        "type variable.");
+        "If the entRef of a Pattern clause is a declaration, it must have the "
+        "variable type");
   }
 }
 
 std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
-  switch (lhs_ent_ref.GetRefType()) {
+  switch (ent_ref.GetRefType()) {
     case (PqlRefType::DECLARATION): {
-      auto values =
-          pkb.GetPatternMatchesSynonymLhs(rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(
-          assign_decl, lhs_ent_ref.GetDeclaration(), values);
-      break;
+      auto values = EvaluateDeclRef(pkb);
+      return std::make_unique<ClauseResult>(decl, ent_ref.GetDeclaration(),
+                                            values);
     }
     case (PqlRefType::VALUE): {
-      auto values = pkb.GetPatternMatchesValueLhs(
-          lhs_ent_ref.GetValue(), rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(assign_decl, values);
-      break;
+      auto values = EvaluateValueRef(pkb);
+      return std::make_unique<ClauseResult>(decl, values);
     }
     case (PqlRefType::WILD): {
-      auto values = pkb.GetPatternMatchesWildLhs(rhs_expr, rhs_expr_match_type);
-      return std::make_unique<ClauseResult>(assign_decl, values);
-      break;
+      auto values = EvaluateWildRef(pkb);
+      return std::make_unique<ClauseResult>(decl, values);
     }
     default:
       break;

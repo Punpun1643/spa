@@ -480,8 +480,7 @@ EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
       existing_declarations.at(token_value).GetEntityType() !=
           EntityType::WHILE &&
       existing_declarations.at(token_value).GetEntityType() != EntityType::IF) {
-    throw InvalidSyntaxException(
-        "Expected a synonym of if, while or assign for pattern");
+    has_semantic_exception = true;
   }
   return existing_declarations.at(token_value).GetEntityType();
 }
