@@ -271,56 +271,50 @@ void SyntaxChecker::CheckPattern(bool has_and) {
 
   EntityType pattern_entity_type = this->CheckCurrentTokenPatternEntity();
 
-  if (pattern_entity_type == EntityType::ASSIGN) {
-    CheckPatternAssign();
-  }
-  /* } else if (pattern_entity_type == EntityType::WHILE) { */
-  /* } else if (pattern_entity_type == EntityType::IF) { */
-  /* } else { */
-  /*   throw InvalidSyntaxException("Pattern synonym not of assign, while or if
-   * type"); */
-  /* } */
-
-  /* NextToken(); */
-  /* this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Pattern clause"); */
-
-  /* NextToken(); */
-  /* this->CheckCurrentTokenPatternFirstArg(); */
-
-  /* NextToken(); */
-  /* this->CheckCurrentTokenSyntax(",", "Expected \',\' for Pattern clause"); */
-
-  /* NextToken(); */
-  /* this->CheckCurrentTokenPatternSecondArg(); */
-
-  /* NextToken(); */
-  /* this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause"); */
-
-  /* NextToken(); */
-  /* if (GetCurrTokenValue() == QpParser::AND) { */
-  /*   CheckAnd(ClauseType::pattern); */
-  /* } */
-}
-
-void SyntaxChecker::CheckPatternAssign() {
   NextToken();
-  this->CheckCurrentTokenSyntax("(",
-                                "Expected \'(\' for Pattern Assign clause");
+  this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Pattern clause");
 
   NextToken();
   this->CheckUpcomingTokensAreEntRef(
-      "First arg of pattern assign clause not valid ent ref",
-      "First arg of pattern assign clause has not been declared");
+      "First arg of pattern clause not valid ent ref",
+      "First arg of pattern clause has not been declared");
 
   NextToken();
-  this->CheckCurrentTokenSyntax(",",
-                                "Expected \',\' for Pattern Assign clause");
+  this->CheckCurrentTokenSyntax(
+      ",", "Expected ',' after first arg for Pattern clause");
 
   NextToken();
+  if (pattern_entity_type == EntityType::ASSIGN) {
+    CheckPatternAssign();
+  } else if (pattern_entity_type == EntityType::WHILE) {
+    CheckPatternWhile();
+  } else if (pattern_entity_type == EntityType::IF) {
+    CheckPatternIf();
+  } else {
+    throw InvalidSyntaxException(
+        "Pattern synonym not of assign, while or if type");
+  }
+}
+
+void SyntaxChecker::CheckPatternAssign() {
   this->CheckExpressionSpec();
 
   NextToken();
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
+
+  NextToken();
+  if (GetCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::pattern);
+  }
+}
+
+void SyntaxChecker::CheckPatternIf() {}
+
+void SyntaxChecker::CheckPatternWhile() {
+  this->CheckCurrentTokenSyntax("_", "Expected '_' for pattern while clause");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected ')' for pattern while clause");
 
   NextToken();
   if (GetCurrTokenValue() == QpParser::AND) {

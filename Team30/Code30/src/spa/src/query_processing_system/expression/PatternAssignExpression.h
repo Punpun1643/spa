@@ -14,7 +14,6 @@ class PatternAssignExpression : public PatternExpression {
   void acceptInterpreter(QueryInterpreter& interpreter) override;
   MatchType GetMatchType();
   std::shared_ptr<TreeNode> GetRhsExprTree();
-  std::string GetSynAssign();
 
   ~PatternAssignExpression() = default;
 

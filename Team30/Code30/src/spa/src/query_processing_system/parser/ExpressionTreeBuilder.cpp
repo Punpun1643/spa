@@ -266,6 +266,10 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
       current_pattern_expression =
           std::make_optional<std::shared_ptr<PatternAssignExpression>>(
               this->CreatePatternAssign(synonym));
+    } else if (pattern_entity_type == EntityType::WHILE) {
+      current_pattern_expression =
+          std::make_optional<std::shared_ptr<PatternWhileExpression>>(
+              this->CreatePatternWhile(synonym));
     }
     if (previous_pattern_expression.has_value()) {
       previous_pattern_expression.value()->SetNextExpression(
@@ -294,7 +298,7 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym) {
 
   NextToken();
   while (GetCurrTokenValue() != ",") {
-    arg1 += GetCurrToken()->GetTokenVal();
+    arg1 += GetCurrTokenValue();
     NextToken();
   }
 
@@ -332,6 +336,23 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym) {
 
   return std::make_shared<PatternAssignExpression>(synonym, arg1, arg2,
                                                    match_type, rhs_expr_tree);
+}
+
+std::shared_ptr<PatternWhileExpression>
+ExpressionTreeBuilder::CreatePatternWhile(std::string synonym) {
+  std::string arg1 = "";
+
+  NextToken();  // (
+
+  NextToken();
+  while (GetCurrTokenValue() != ",") {
+    arg1 += GetCurrTokenValue();
+    NextToken();
+  }
+
+  NextToken();  // _
+  NextToken();  // )
+  return std::make_shared<PatternWhileExpression>(synonym, arg1);
 }
 
 std::shared_ptr<WithExpression>

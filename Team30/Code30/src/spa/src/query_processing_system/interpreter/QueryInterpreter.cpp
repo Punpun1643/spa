@@ -28,6 +28,7 @@
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
 #include "../expression/PatternAssignExpression.h"
+#include "../expression/PatternWhileExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
 #include "../expression/WithExpression.h"
@@ -157,6 +158,11 @@ void QueryInterpreter::Interpret(
   this->context->AddPatternClause(std::make_shared<PatternClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr_tree));
   this->InterpretNext(pattern_assign_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<PatternWhileExpression> pattern_while_expression) {
+  int a = 0;
 }
 
 void QueryInterpreter::Interpret(
