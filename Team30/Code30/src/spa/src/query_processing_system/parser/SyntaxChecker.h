@@ -35,6 +35,9 @@ class SyntaxChecker : public QpParser {
   void CheckNext();
   void CheckParent();
   void CheckPattern(bool has_and);
+  void CheckPatternAssign();
+  void CheckPatternIf();
+  void CheckPatternWhile();
   void CheckSelect();
   void CheckSelectMultiple();
   void CheckSelectSingle();
@@ -45,13 +48,13 @@ class SyntaxChecker : public QpParser {
   // Helpers
   EntityType CheckCurrentTokenPatternEntity();
   void CheckCurrentTokenPatternFirstArg();
-  void CheckCurrentTokenPatternSecondArg();
   void CheckCurrentTokenStmtRef(std::string syntax_error_msg,
                                 std::string not_existing_error_msg);
   void CheckCurrentTokenSyntax(std::string expected_value,
                                std::string error_msg);
+  void CheckExpressionSpec();
   void CheckIsExpr(std::string error_msg);
-  void CheckSynonymExists(std::string synonym, std::string error_msg);
+  void CheckSynonymExists(std::string synonym);
   void CheckUpcomingTokensAreEntRef(std::string syntax_error_msg,
                                     std::string not_existing_error_msg);
   void CheckUpcomingTokensAreQuotedExpr(std::string error_msg);

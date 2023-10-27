@@ -6,6 +6,7 @@
 
 #include "../context/Context.h"
 #include "../expression/ClauseExpression.h"
+#include "../expression/PatternAssignExpression.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/SuchThatExpression.h"
 #include "../expression/WithExpression.h"
@@ -27,6 +28,8 @@ class ExpressionTreeBuilder : public QpParser {
 
   std::optional<std::shared_ptr<ClauseExpression>> CreateClauseExpressionHead();
   std::shared_ptr<PatternExpression> CreatePatternExpressionHead();
+  std::shared_ptr<PatternAssignExpression> CreatePatternAssign(
+      std::string synonym);
   std::optional<std::shared_ptr<SelectExpression>> CreateSelectExpression();
   std::shared_ptr<SelectExpression> CreateSelectExpressionHead();
   std::shared_ptr<SuchThatExpression> CreateSuchThatExpressionHead();
