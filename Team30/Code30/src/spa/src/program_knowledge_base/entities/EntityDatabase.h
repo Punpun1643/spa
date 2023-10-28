@@ -10,10 +10,10 @@
 #include <utility>
 #include <vector>
 
+#include "program_knowledge_base/utils/PairHash.h"
 #include "shared/types/AttrType.h"
 #include "shared/types/EntityAttrPairings.h"
 #include "shared/types/EntityType.h"
-#include "program_knowledge_base/utils/PairHash.h"
 
 class EntityDatabase {
  private:
@@ -47,7 +47,6 @@ class EntityDatabase {
                     std::string statement_number, std::string attribute);
 
   std::string ConvertEntityValueToAlias(std::string value, EntityType type,
-                                        AttrType curr_attr_type,
                                         AttrType wanted_attr_type);
 
   std::vector<std::string> GetEntitiesMatchingAttrValue(EntityType type,

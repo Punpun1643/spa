@@ -72,7 +72,6 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::vector<std::string> GetEntitiesWithType(EntityType type) override;
 
   std::string ConvertEntityValueToAlias(std::string value, EntityType type,
-                                        AttrType curr_attr_type,
                                         AttrType wanted_attr_type) override;
 
   std::vector<std::string> GetEntitiesMatchingAttrValue(

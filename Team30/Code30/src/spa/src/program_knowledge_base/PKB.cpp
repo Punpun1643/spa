@@ -88,10 +88,8 @@ std::vector<std::string> PKB::GetEntitiesWithType(EntityType type) {
 }
 
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
-                                           AttrType curr_attr_type,
                                            AttrType wanted_attr_type) {
-  return ent_data->ConvertEntityValueToAlias(value, type, curr_attr_type,
-                                             wanted_attr_type);
+  return ent_data->ConvertEntityValueToAlias(value, type, wanted_attr_type);
 }
 
 std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
