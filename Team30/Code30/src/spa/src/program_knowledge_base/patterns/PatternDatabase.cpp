@@ -56,7 +56,10 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
 
   // String Wild
   if (match_type == MatchType::WILD_MATCH) {
-    output = lhs_assignments[lhs_value];
+    if (lhs_assignments.count(lhs_value) == 0) {
+      return std::vector<std::string>();
+    }
+    output = lhs_assignments.at(lhs_value);
   } else if (match_type == MatchType::PARTIAL_MATCH) {  // String Partial
     for (auto& pair : assignments) {
       if (pair.second.first == lhs_value &&
@@ -108,7 +111,7 @@ std::vector<std::string> PatternDatabase::GetContainerStmtsWithControlVar(
     EntityType container_stmt_type) {
   std::unordered_set<std::string> output;
 
-  for (auto const& stmt_vars : cond_var_patterns[container_stmt_type]) {
+  for (auto const& stmt_vars : cond_var_patterns.at(container_stmt_type)) {
     if (!stmt_vars.second.empty()) {
       output.insert(stmt_vars.first);
     }
@@ -118,8 +121,12 @@ std::vector<std::string> PatternDatabase::GetContainerStmtsWithControlVar(
 
 std::vector<std::string> PatternDatabase::GetContainerStmtsWithGivenControlVar(
     EntityType container_stmt_type, std::string var_name) {
+  if (inv_cond_var_patterns.at(container_stmt_type).count(var_name) == 0) {
+    return std::vector<std::string>();
+  }
+
   std::unordered_set<std::string> output =
-      inv_cond_var_patterns[container_stmt_type][var_name];
+      inv_cond_var_patterns.at(container_stmt_type).at(var_name);
 
   return std::vector<std::string>(output.begin(), output.end());
 }
@@ -128,8 +135,8 @@ std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type) {
   std::vector<std::pair<std::string, std::string>> output;
-  for (auto const& stmt_vars : cond_var_patterns[container_stmt_type]) {
-      for (auto vars : stmt_vars.second) {
+  for (auto const& stmt_vars : cond_var_patterns.at(container_stmt_type)) {
+    for (auto vars : stmt_vars.second) {
       output.push_back(std::make_pair(stmt_vars.first, vars));
     }
   }
