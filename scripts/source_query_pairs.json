@@ -75,6 +75,34 @@
     {
       "source": "test10-affects-source.txt",
       "query": "test10-affects-queries.txt"
+    },
+    {
+      "source": "similar-names-source.txt",
+      "query": "similar-names-queries.txt"
+    },
+    {
+      "source": "nesting-source.txt",
+      "query": "nesting-queries.txt"
+    },
+    {
+      "source": "multiconditional-source.txt",
+      "query": "multiconditional-queries.txt"
+    },
+    {
+      "source": "multi-procedures-and-calls-source.txt",
+      "query": "multi-procedures-and-calls-queries.txt"
+    },
+    {
+      "source": "multi-procedures-source.txt",
+      "query": "multi-procedures-queries.txt"
+    },
+    {
+      "source": "multi-call-source.txt",
+      "query": "multi-call-relation-queries.txt"
+    },
+    {
+      "source": "exact-pattern-source.txt",
+      "query": "exact-pattern-queries.txt"
     }
   ]
 }
