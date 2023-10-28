@@ -11,6 +11,8 @@ TEST_CASE("Test NotClause functionality") {
 
   auto a = PqlDeclaration("a", EntityType::ASSIGN);
   auto constant = PqlDeclaration("con", EntityType::CONSTANT);
+  auto v = PqlDeclaration("var", EntityType::VARIABLE);
+  auto p = PqlDeclaration("proc", EntityType::PROCEDURE);
 
   SECTION("Test boolean result negation") {
     auto true_result = std::make_unique<ClauseResult>(true);
@@ -53,6 +55,34 @@ TEST_CASE("Test NotClause functionality") {
   }
 
   SECTION("Test double decl negation") {
+    std::vector<std::string> all_values = {"cat", "dog", "fox"};
+    std::vector<std::pair<std::string, std::string>> value_subset_1 =
+        {std::make_pair("cat", "dog"),
+         std::make_pair("fox", "dog"),
+         std::make_pair("fox", "cat"),
+         std::make_pair("fox", "fox")};
+    std::vector<std::pair<std::string, std::string>> value_subset_2 =
+        {std::make_pair("cat", "cat"),
+         std::make_pair("cat", "fox"),
+         std::make_pair("dog", "cat"),
+         std::make_pair("dog", "fox"),
+         std::make_pair("dog", "dog")};
+    std::vector<std::string> value_subset_2_1 = {"cat", "cat", "dog", "dog", "dog"};
+    std::vector<std::string> value_subset_2_2 = {"cat", "fox", "cat", "fox", "dog"};
 
+    pkb.get_all_of_type_values = all_values;
+    auto clause_result = std::make_unique<ClauseResult>(constant, p, value_subset_1);
+    std::unique_ptr<Clause> clause = std::make_unique<ClauseStub>(std::move(clause_result));
+    auto not_clause = NotClauseDecorator(std::move(clause));
+    auto result = not_clause.Evaluate(pkb);
+    REQUIRE(result->GetNumDeclarations() == 2);
+    REQUIRE_THAT(result->GetDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{constant, p}));
+    std::vector<std::pair<std::string, std::string>> paired_result = {};
+    for (auto& value_1: result->GetValues(constant)) {
+      for (auto& value_2: result->GetValues(p)) {
+        paired_result.emplace_back(value_1, value_2);
+      }
+    }
+    REQUIRE_THAT(paired_result, Catch::UnorderedEquals(paired_result));
   }
 }
