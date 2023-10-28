@@ -11,7 +11,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   RelationType last_rel_passed = RelationType::FOLLOWS;
 
   // Select
-  std::vector<std::string> const get_all_of_type_values = {"x", "y", "z"};
+  std::vector<std::string> get_all_of_type_values = {"x", "y", "z"};
   std::string converted_entity = "a";
   AttrType last_attr_type_passed = AttrType::VALUE;
   AttrType last_attr_type_2_passed = AttrType::VALUE;
