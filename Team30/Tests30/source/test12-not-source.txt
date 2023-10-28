@@ -57,7 +57,7 @@ while (f == 0) {
 
   while(e == f + 6 % e) {
     if (y != a) then {
-      if (a == b - c * 2 / 10 + 20 % 5 ) {
+      if (a == b - c * 2 / 10 + 20 % 5 ) then {
         while (w <= z) {
           t = 5 - (x / y % 2);
           call p4;
