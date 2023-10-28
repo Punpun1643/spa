@@ -57,16 +57,16 @@ procedure p3 {
 
 29  while(e == f + 6 % e) {
 30    if (y != a) then {
-31      if (a == b - c * 2 / 10 + 20 % 5 ) {
+31      if (a == b - c * 2 / 10 + 20 % 5 ) then {
 32        while (w <= z) {
 33          t = 5 - (x / y % 2);
 34          call p4;
+          }
         }
         else {
 35          y = c + 2 - z;
 36          t = a + 3 * 6 * 7 / 10;
         }
-      }
     } else {
 37      a = 4 / (a % b * c);
 38      read c;

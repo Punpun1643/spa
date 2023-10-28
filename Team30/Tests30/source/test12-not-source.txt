@@ -62,11 +62,12 @@ while (f == 0) {
           t = 5 - (x / y % 2);
           call p4;
         }
+      }
         else {
           y = c + 2 - z;
           t = a + 3 * 6 * 7 / 10;
-        }
       }
+      
     } else {
       a = 4 / (a % b * c);
       read c;
