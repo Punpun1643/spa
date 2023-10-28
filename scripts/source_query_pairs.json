@@ -1,0 +1,12 @@
+{
+  "pairs": [
+    {
+      "source": "test1-modifies-source.txt",
+      "query": "test1-modifies-queries.txt"
+    },
+    {
+      "source": "test1-uses-source.txt",
+      "query": "test1-uses-queries.txt"
+    }
+  ]
+}
