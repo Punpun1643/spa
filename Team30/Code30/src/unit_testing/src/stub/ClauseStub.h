@@ -7,5 +7,5 @@ class ClauseStub : public Clause {
 
  public:
   explicit ClauseStub(std::unique_ptr<ClauseResult> result);
-  std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface &pkb) override;
+  std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
 };

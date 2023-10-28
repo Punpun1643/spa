@@ -1,9 +1,7 @@
-#include "../../stub/PkbQpsInterfaceStub.h"
 #include "../../stub/ClauseStub.h"
-
+#include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
 #include "query_processing_system/clauses/NotClauseDecorator.h"
-
 
 TEST_CASE("Test NotClause functionality") {
   // Assumes that ClauseResult is functional
@@ -16,14 +14,16 @@ TEST_CASE("Test NotClause functionality") {
 
   SECTION("Test boolean result negation") {
     auto true_result = std::make_unique<ClauseResult>(true);
-    std::unique_ptr<Clause> true_clause = std::make_unique<ClauseStub>(std::move(true_result));
+    std::unique_ptr<Clause> true_clause =
+        std::make_unique<ClauseStub>(std::move(true_result));
     auto not_clause = NotClauseDecorator(std::move(true_clause));
     auto result = not_clause.Evaluate(pkb);
     REQUIRE(result->IsBooleanResult());
     REQUIRE_FALSE(result->GetBooleanClauseValue());
 
     auto false_result = std::make_unique<ClauseResult>(false);
-    std::unique_ptr<Clause> false_clause = std::make_unique<ClauseStub>(std::move(false_result));
+    std::unique_ptr<Clause> false_clause =
+        std::make_unique<ClauseStub>(std::move(false_result));
     not_clause = NotClauseDecorator(std::move(false_clause));
     result = not_clause.Evaluate(pkb);
     REQUIRE(result->IsBooleanResult());
@@ -37,14 +37,17 @@ TEST_CASE("Test NotClause functionality") {
 
     pkb.get_all_of_type_values = all_values;
 
-    auto clause_result = std::make_unique<ClauseResult>(constant, value_subset_1);
-    std::unique_ptr<Clause> clause = std::make_unique<ClauseStub>(std::move(clause_result));
+    auto clause_result =
+        std::make_unique<ClauseResult>(constant, value_subset_1);
+    std::unique_ptr<Clause> clause =
+        std::make_unique<ClauseStub>(std::move(clause_result));
     auto not_clause = NotClauseDecorator(std::move(clause));
     auto result = not_clause.Evaluate(pkb);
     REQUIRE_FALSE(result->IsBooleanResult());
     REQUIRE(result->GetNumDeclarations() == 1);
     REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{constant});
-    REQUIRE_THAT(result->GetValues(constant), Catch::UnorderedEquals(value_subset_2));
+    REQUIRE_THAT(result->GetValues(constant),
+                 Catch::UnorderedEquals(value_subset_2));
 
     clause_result = std::make_unique<ClauseResult>(a, value_subset_2);
     clause = std::make_unique<ClauseStub>(std::move(clause_result));
@@ -56,31 +59,33 @@ TEST_CASE("Test NotClause functionality") {
 
   SECTION("Test double decl negation") {
     std::vector<std::string> all_values = {"cat", "dog", "fox"};
-    std::vector<std::pair<std::string, std::string>> value_subset_1 =
-        {std::make_pair("cat", "dog"),
-         std::make_pair("fox", "dog"),
-         std::make_pair("fox", "cat"),
-         std::make_pair("fox", "fox")};
-    std::vector<std::pair<std::string, std::string>> value_subset_2 =
-        {std::make_pair("cat", "cat"),
-         std::make_pair("cat", "fox"),
-         std::make_pair("dog", "cat"),
-         std::make_pair("dog", "fox"),
-         std::make_pair("dog", "dog")};
-    std::vector<std::string> value_subset_2_1 = {"cat", "cat", "dog", "dog", "dog"};
-    std::vector<std::string> value_subset_2_2 = {"cat", "fox", "cat", "fox", "dog"};
+    std::vector<std::pair<std::string, std::string>> value_subset_1 = {
+        std::make_pair("cat", "dog"), std::make_pair("fox", "dog"),
+        std::make_pair("fox", "cat"), std::make_pair("fox", "fox")};
+    std::vector<std::pair<std::string, std::string>> value_subset_2 = {
+        std::make_pair("cat", "cat"), std::make_pair("cat", "fox"),
+        std::make_pair("dog", "cat"), std::make_pair("dog", "fox"),
+        std::make_pair("dog", "dog")};
+    std::vector<std::string> value_subset_2_1 = {"cat", "cat", "dog", "dog",
+                                                 "dog"};
+    std::vector<std::string> value_subset_2_2 = {"cat", "fox", "cat", "fox",
+                                                 "dog"};
 
     pkb.get_all_of_type_values = all_values;
-    auto clause_result = std::make_unique<ClauseResult>(constant, p, value_subset_1);
-    std::unique_ptr<Clause> clause = std::make_unique<ClauseStub>(std::move(clause_result));
+    auto clause_result =
+        std::make_unique<ClauseResult>(constant, p, value_subset_1);
+    std::unique_ptr<Clause> clause =
+        std::make_unique<ClauseStub>(std::move(clause_result));
     auto not_clause = NotClauseDecorator(std::move(clause));
     auto result = not_clause.Evaluate(pkb);
     REQUIRE(result->GetNumDeclarations() == 2);
-    REQUIRE_THAT(result->GetDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{constant, p}));
+    REQUIRE_THAT(
+        result->GetDeclarations(),
+        Catch::UnorderedEquals(std::vector<PqlDeclaration>{constant, p}));
     std::vector<std::pair<std::string, std::string>> paired_result = {};
 
     auto decl_values_1 = result->GetValues(constant);
-    auto decl_values_2 = result -> GetValues(p);
+    auto decl_values_2 = result->GetValues(p);
     REQUIRE(decl_values_1.size() == decl_values_2.size());
 
     for (int i = 0; i < decl_values_1.size(); i++) {
