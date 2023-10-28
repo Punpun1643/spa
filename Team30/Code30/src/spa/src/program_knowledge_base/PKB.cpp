@@ -17,9 +17,17 @@ std::unordered_set<std::string> PKB::GetIntersection(
     std::unordered_set<std::string> set1,
     std::unordered_set<std::string> set2) {
   std::unordered_set<std::string> output;
-  for (std::string v : set1) {
-    if (set2.find(v) != set2.end()) {
-      output.insert(v);
+  if (set1.size() < set2.size()) {
+    for (std::string v : set1) {
+      if (set2.find(v) != set2.end()) {
+        output.insert(v);
+      }
+    }
+  } else {
+    for (std::string v : set2) {
+      if (set1.find(v) != set1.end()) {
+        output.insert(v);
+      }
     }
   }
   return output;
@@ -40,9 +48,14 @@ void PKB::InsertRelation(RelationType type, std::string input1,
   rel_data->Insert(type, input1, input2);
 }
 
-void PKB::InsertPattern(PatternType type, std::string statement_number,
-                        std::string lhs, std::shared_ptr<TreeNode> rhs) {
-  pat_data->Insert(type, statement_number, lhs, rhs);
+void PKB::InsertAssignPattern(std::string statement_number, std::string lhs,
+                              std::shared_ptr<TreeNode> rhs) {
+  pat_data->InsertAssignment(statement_number, lhs, rhs);
+}
+
+void PKB::InsertCondVarPattern(EntityType type, std::string statement_number,
+                               std::string var) {
+  pat_data->InsertCondVar(type, statement_number, var);
 }
 
 void PKB::InsertCFGNode(std::string statement_number,
@@ -75,10 +88,8 @@ std::vector<std::string> PKB::GetEntitiesWithType(EntityType type) {
 }
 
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
-                                           AttrType curr_attr_type,
                                            AttrType wanted_attr_type) {
-  return ent_data->ConvertEntityValueToAlias(value, type, curr_attr_type,
-                                             wanted_attr_type);
+  return ent_data->ConvertEntityValueToAlias(value, type, wanted_attr_type);
 }
 
 std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
@@ -186,82 +197,23 @@ std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
 // ---------- PATTERNS ----------
 std::vector<std::string> PKB::GetMatchingAssignStmts(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
-  std::unordered_set<std::string> output;
-
-  // Wild Wild
-  if (match_type == MatchType::WILD_MATCH) {
-    output = *ent_data->Get(EntityType::ASSIGN);
-  } else if (match_type == MatchType::PARTIAL_MATCH) {  // Wild Partial
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
-        output.insert(pair.first);
-      }
-    }
-  } else {  // Wild Exact
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
-        output.insert(pair.first);
-      }
-    }
-  }
-
-  return std::vector<std::string>(output.begin(), output.end());
+  std::unordered_set<std::string> assign_stmts =
+      *ent_data->Get(EntityType::ASSIGN);
+  return pat_data->GetMatchingAssignStmts(assign_stmts, rhs_expr, match_type);
 }
 
 std::vector<std::string> PKB::GetMatchingAssignStmts(
     std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
     MatchType match_type) {
-  std::unordered_set<std::string> output;
-
-  // String Wild
-  if (match_type == MatchType::WILD_MATCH) {
-    output = pat_data->GetStatementNumbersGivenLHS(lhs_value);
-  } else if (match_type == MatchType::PARTIAL_MATCH) {  // String Partial
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      if (pair.second.first == lhs_value &&
-          TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
-        output.insert(pair.first);
-      }
-    }
-  } else {  // String Exact
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      if (pair.second.first == lhs_value &&
-          TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
-        output.insert(pair.first);
-      }
-    }
-  }
-
-  return std::vector<std::string>(output.begin(), output.end());
+  return pat_data->GetMatchingAssignStmts(lhs_value, rhs_expr, match_type);
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
                                       MatchType match_type) {
-  std::vector<std::pair<std::string, std::string>> output;
-
-  // Synonym Wild
-  if (match_type == MatchType::WILD_MATCH) {
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      output.push_back(make_pair(pair.first, pair.second.first));
-    }
-  } else if (match_type == MatchType::PARTIAL_MATCH) {  // Synonym Partial
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
-        output.push_back(make_pair(pair.first, pair.second.first));
-      }
-    }
-  } else {  // Synonym Exact
-    for (auto& pair : pat_data->GetAssignmentPatterns()) {
-      if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
-        output.push_back(make_pair(pair.first, pair.second.first));
-      }
-    }
-  }
-
-  return std::vector<std::pair<std::string, std::string>>(output.begin(),
-                                                          output.end());
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
 }
+
 std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
     EntityType container_stmt_type) {
   return {};

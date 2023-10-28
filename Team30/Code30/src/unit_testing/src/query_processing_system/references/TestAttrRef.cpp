@@ -71,7 +71,6 @@ TEST_CASE("Test AttrRef") {
     auto output = ref.GetAliasFromDefault(pkb, "20");
     REQUIRE(pkb.last_value_passed == "20");
     REQUIRE(pkb.last_entity_type_passed == read.GetEntityType());
-    REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
     REQUIRE(pkb.last_attr_type_2_passed == AttrType::VAR_NAME);
     REQUIRE(output == "random_name");
 
@@ -80,7 +79,6 @@ TEST_CASE("Test AttrRef") {
     output = ref.GetAliasFromDefault(pkb, "12");
     REQUIRE(pkb.last_value_passed == "12");
     REQUIRE(pkb.last_entity_type_passed == call.GetEntityType());
-    REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
     REQUIRE(pkb.last_attr_type_2_passed == AttrType::PROC_NAME);
     REQUIRE(output == "blah");
   }

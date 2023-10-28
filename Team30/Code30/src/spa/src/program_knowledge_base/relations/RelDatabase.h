@@ -7,22 +7,20 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../source_processor/node/util_node/CFGNode.h"
+#include "../../source_processor/node/util_node/CFGNode.h"
 #include "shared/types/RelationType.h"
-#include "tables/BaseTable.h"
 #include "tables/DictionaryTable.h"
 #include "tables/LinkedListTable.h"
+#include "tables/RelationTable.h"
 
 class RelDatabase {
  private:
-  std::unordered_map<RelationType, std::shared_ptr<BaseTable>> relationships =
-      {};
+  std::unordered_map<RelationType, std::shared_ptr<RelationTable>>
+      relationships = {};
   std::unordered_map<RelationType, std::vector<RelationType>> related_tables;
 
   std::unordered_map<std::string, std::shared_ptr<CFGNode>> cfg_nodes;
   std::unordered_set<RelationType> cfg_relations;
-
-  int size;
 
   // helper functions
   bool IsCFGRelation(RelationType type);

@@ -34,12 +34,17 @@ std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
   if (EntityAttrPairings::IsDefaultPair(ent_type, attr_type)) {
     return *Get(ent_type);
   }
-  std::unordered_set<std::string> result;
-  std::unordered_map<std::string, std::string> ent_attr =
-      entity_attr_map[std::make_pair(ent_type, attr_type)];
-  for (auto const& pair : ent_attr) {
-    result.insert(pair.second);
+
+  std::pair key = std::make_pair(ent_type, attr_type);
+  if (entity_attr_map.find(key) == entity_attr_map.end()) {
+    return std::unordered_set<std::string>();
   }
+
+  std::unordered_set<std::string> result;
+  for (auto const& ent_attr : entity_attr_map.at(key)) {
+    result.insert(ent_attr.second);
+  }
+
   return result;
 }
 
@@ -59,15 +64,21 @@ void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
 
 std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::Get(
     EntityType type) {
-  std::shared_ptr<std::unordered_set<std::string>> results = entities[type];
+  std::shared_ptr<std::unordered_set<std::string>> results = entities.at(type);
   return results;
 }
 
 // TODO(@tyanhan): Remove curr_attr_type
 std::string EntityDatabase::ConvertEntityValueToAlias(
-    std::string value, EntityType type, AttrType curr_attr_type,
-    AttrType wanted_attr_type) {
-  return entity_attr_map[std::make_pair(type, wanted_attr_type)][value];
+    std::string value, EntityType type, AttrType wanted_attr_type) {
+  std::pair key = std::make_pair(type, wanted_attr_type);
+
+  if (entity_attr_map.find(key) == entity_attr_map.end() ||
+      entity_attr_map.at(key).find(value) == entity_attr_map.at(key).end()) {
+    throw std::runtime_error("Entity does not have the attribute type");
+  }
+
+  return entity_attr_map.at(key).at(value);
 }
 
 std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
@@ -80,7 +91,13 @@ std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
     return std::vector<std::string>();
   }
   std::pair<EntityType, AttrType> key = std::make_pair(type, attr_type);
-  std::unordered_set<std::string> set = attr_ent_map[key][value];
+
+  if (attr_ent_map.find(key) == attr_ent_map.end() ||
+      attr_ent_map.at(key).find(value) == attr_ent_map.at(key).end()) {
+    return std::vector<std::string>();
+  }
+
+  std::unordered_set<std::string> set = attr_ent_map.at(key).at(value);
   return std::vector<std::string>(set.begin(), set.end());
 }
 
