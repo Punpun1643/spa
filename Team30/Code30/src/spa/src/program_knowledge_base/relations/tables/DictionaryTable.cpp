@@ -33,12 +33,11 @@ bool DictionaryTable::IsRelated(std::string i, std::string j) {
 }
 
 bool DictionaryTable::HasRelations(std::string val) {
-  return relations.find(val) != relations.end() && relations.at(val).size() > 0;
+  return relations.find(val) != relations.end();
 }
 
 bool DictionaryTable::HasInverseRelations(std::string val) {
-  return inverse_relations.find(val) != inverse_relations.end() &&
-         inverse_relations.at(val).size() > 0;
+  return inverse_relations.find(val) != inverse_relations.end();
 }
 
 std::unordered_set<std::string> DictionaryTable::GetAllWithRelations(

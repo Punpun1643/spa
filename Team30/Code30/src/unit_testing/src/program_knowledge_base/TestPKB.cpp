@@ -446,6 +446,13 @@ TEST_CASE("PKB test1-source Parent*") {
     REQUIRE(!pkb.IsRelationTrueValueValue("22", std::to_string(i),
                                           RelationType::PARENT));
   }
+
+  REQUIRE(!pkb.IsRelationTrueValueValue("2", "100", RelationType::PARENT_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("100", "2", RelationType::PARENT_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("0", "1", RelationType::FOLLOWS_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("2", "0", RelationType::PARENT_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("2", "-1", RelationType::FOLLOWS_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("0", "300", RelationType::PARENT_STAR));
 }
 
 TEST_CASE("Test1-Source PKB") {
@@ -483,11 +490,11 @@ TEST_CASE("Test1-Source PKB") {
   pkb.InsertAssignPattern("18", "i", buildTree16());
   pkb.InsertAssignPattern("19", "j", buildTree17());
   pkb.InsertAssignPattern("22", "x",
-                    std::make_shared<TreeNode>("1", nullptr, nullptr));
+                          std::make_shared<TreeNode>("1", nullptr, nullptr));
   pkb.InsertAssignPattern("23", "y", buildTree19());
   pkb.InsertAssignPattern("25", "x", buildTree18());
   pkb.InsertAssignPattern("26", "a",
-                    std::make_shared<TreeNode>("b", nullptr, nullptr));
+                          std::make_shared<TreeNode>("b", nullptr, nullptr));
 
   std::vector<std::string> expected_res = {"8", "15", "17"};
   std::vector<std::string> actual;
