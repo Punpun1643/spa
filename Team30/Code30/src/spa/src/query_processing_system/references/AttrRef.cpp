@@ -42,7 +42,7 @@ std::string AttrRef::GetAliasFromDefault(
    */
   if (IsAttrTypeAnAlias()) {
     return pkb.ConvertEntityValueToAlias(default_value, decl.GetEntityType(),
-                                         GetDefaultAttrType(), attr_type);
+                                         attr_type);
   } else {
     return default_value;
   }

@@ -6,10 +6,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "../utils/LinkedList.h"
-#include "BaseTable.h"
+#include "../../utils/LinkedList.h"
+#include "RelationTable.h"
 
-class LinkedListTable : public BaseTable {
+class LinkedListTable : public RelationTable {
   LinkedList relations = LinkedList();
 
  public:

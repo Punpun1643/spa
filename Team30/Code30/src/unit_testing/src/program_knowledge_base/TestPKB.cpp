@@ -446,6 +446,13 @@ TEST_CASE("PKB test1-source Parent*") {
     REQUIRE(!pkb.IsRelationTrueValueValue("22", std::to_string(i),
                                           RelationType::PARENT));
   }
+
+  REQUIRE(!pkb.IsRelationTrueValueValue("2", "100", RelationType::PARENT_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("100", "2", RelationType::PARENT_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("0", "1", RelationType::FOLLOWS_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("2", "0", RelationType::PARENT_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("2", "-1", RelationType::FOLLOWS_STAR));
+  REQUIRE(!pkb.IsRelationTrueValueValue("0", "300", RelationType::PARENT_STAR));
 }
 
 TEST_CASE("Test1-Source PKB") {
@@ -469,25 +476,25 @@ TEST_CASE("Test1-Source PKB") {
   pkb.InsertEntity(EntityType::VARIABLE, "10");
   pkb.InsertEntity(EntityType::VARIABLE, "100");
 
-  pkb.InsertPattern(PatternType::ASSIGN, "2", "x", buildTree5());
-  pkb.InsertPattern(PatternType::ASSIGN, "3", "z", buildTree6());
-  pkb.InsertPattern(PatternType::ASSIGN, "5", "z", buildTree7());
-  pkb.InsertPattern(PatternType::ASSIGN, "8", "y", buildTree8());
-  pkb.InsertPattern(PatternType::ASSIGN, "9", "z", buildTree9());
-  pkb.InsertPattern(PatternType::ASSIGN, "10", "y", buildTree10());
-  pkb.InsertPattern(PatternType::ASSIGN, "11", "i", buildTree11());
-  pkb.InsertPattern(PatternType::ASSIGN, "12", "p", buildTree12());
-  pkb.InsertPattern(PatternType::ASSIGN, "13", "q", buildTree13());
-  pkb.InsertPattern(PatternType::ASSIGN, "15", "a", buildTree14());
-  pkb.InsertPattern(PatternType::ASSIGN, "17", "q", buildTree15());
-  pkb.InsertPattern(PatternType::ASSIGN, "18", "i", buildTree16());
-  pkb.InsertPattern(PatternType::ASSIGN, "19", "j", buildTree17());
-  pkb.InsertPattern(PatternType::ASSIGN, "22", "x",
-                    std::make_shared<TreeNode>("1", nullptr, nullptr));
-  pkb.InsertPattern(PatternType::ASSIGN, "23", "y", buildTree19());
-  pkb.InsertPattern(PatternType::ASSIGN, "25", "x", buildTree18());
-  pkb.InsertPattern(PatternType::ASSIGN, "26", "a",
-                    std::make_shared<TreeNode>("b", nullptr, nullptr));
+  pkb.InsertAssignPattern("2", "x", buildTree5());
+  pkb.InsertAssignPattern("3", "z", buildTree6());
+  pkb.InsertAssignPattern("5", "z", buildTree7());
+  pkb.InsertAssignPattern("8", "y", buildTree8());
+  pkb.InsertAssignPattern("9", "z", buildTree9());
+  pkb.InsertAssignPattern("10", "y", buildTree10());
+  pkb.InsertAssignPattern("11", "i", buildTree11());
+  pkb.InsertAssignPattern("12", "p", buildTree12());
+  pkb.InsertAssignPattern("13", "q", buildTree13());
+  pkb.InsertAssignPattern("15", "a", buildTree14());
+  pkb.InsertAssignPattern("17", "q", buildTree15());
+  pkb.InsertAssignPattern("18", "i", buildTree16());
+  pkb.InsertAssignPattern("19", "j", buildTree17());
+  pkb.InsertAssignPattern("22", "x",
+                          std::make_shared<TreeNode>("1", nullptr, nullptr));
+  pkb.InsertAssignPattern("23", "y", buildTree19());
+  pkb.InsertAssignPattern("25", "x", buildTree18());
+  pkb.InsertAssignPattern("26", "a",
+                          std::make_shared<TreeNode>("b", nullptr, nullptr));
 
   std::vector<std::string> expected_res = {"8", "15", "17"};
   std::vector<std::string> actual;
@@ -545,9 +552,9 @@ TEST_CASE("Pattern Database Assignment insertion and retrieval") {
   pkb.InsertEntity(EntityType::VARIABLE, "c");
   pkb.InsertEntity(EntityType::VARIABLE, "d");
 
-  pkb.InsertPattern(PatternType::ASSIGN, "3", "x", buildTree1());
-  pkb.InsertPattern(PatternType::ASSIGN, "4", "y", buildTree2());
-  pkb.InsertPattern(PatternType::ASSIGN, "5", "x", buildTree3());
+  pkb.InsertAssignPattern("3", "x", buildTree1());
+  pkb.InsertAssignPattern("4", "y", buildTree2());
+  pkb.InsertAssignPattern("5", "x", buildTree3());
 
   std::vector<std::pair<std::string, std::string>> expected_pairs;
 

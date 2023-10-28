@@ -13,9 +13,9 @@
 #include "../source_processor/node/stmt_node/StmtNode.h"
 #include "PKBQPSInterface.h"
 #include "PKBSPInterface.h"
-#include "program_knowledge_base/EntityDatabase.h"
-#include "program_knowledge_base/PatternDatabase.h"
-#include "program_knowledge_base/RelDatabase.h"
+#include "program_knowledge_base/entities/EntityDatabase.h"
+#include "program_knowledge_base/patterns/PatternDatabase.h"
+#include "program_knowledge_base/relations/RelDatabase.h"
 #include "shared/types/EntityType.h"
 
 class PKB : public PKBQPSInterface, public PKBSPInterface {
@@ -39,8 +39,10 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
                     std::string attribute) override;
   void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
-  void InsertPattern(PatternType type, std::string statement_number,
-                     std::string lhs, std::shared_ptr<TreeNode> rhs) override;
+  void InsertAssignPattern(std::string statement_number, std::string lhs,
+                           std::shared_ptr<TreeNode> rhs) override;
+  void InsertCondVarPattern(EntityType type, std::string statement_number,
+                            std::string var) override;
   void InsertCFGNode(std::string statement_num,
                      std::shared_ptr<CFGNode> node) override;
 
@@ -57,7 +59,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::vector<std::string> GetEntitiesWithType(EntityType type) override;
 
   std::string ConvertEntityValueToAlias(std::string value, EntityType type,
-                                        AttrType curr_attr_type,
                                         AttrType wanted_attr_type) override;
 
   std::vector<std::string> GetEntitiesMatchingAttrValue(

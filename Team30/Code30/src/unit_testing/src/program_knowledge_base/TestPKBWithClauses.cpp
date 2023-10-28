@@ -127,32 +127,27 @@ TEST_CASE("PKB With Clauses") {
   // convert call.stmt# to procName
   std::string expected_str = "sub";
   REQUIRE(pkb.ConvertEntityValueToAlias("3", EntityType::CALL,
-                                        AttrType::STMT_NUM,
                                         AttrType::PROC_NAME) == expected_str);
 
-  // convert call.stmt# to varName (invalid, returns empty string)
-  expected_str = "";
-  REQUIRE(pkb.ConvertEntityValueToAlias("3", EntityType::CALL,
-                                        AttrType::STMT_NUM,
-                                        AttrType::VAR_NAME) == expected_str);
+  // convert call.stmt# to varName (invalid)
+  REQUIRE_THROWS_AS(
+      pkb.ConvertEntityValueToAlias("3", EntityType::CALL, AttrType::VAR_NAME),
+      std::runtime_error);
 
   // convert print.stmt# to varName
   expected_str = "sub";
   REQUIRE(pkb.ConvertEntityValueToAlias("4", EntityType::PRINT,
-                                        AttrType::STMT_NUM,
                                         AttrType::VAR_NAME) == expected_str);
 
   // convert read.stmt# to varName
   expected_str = "c";
   REQUIRE(pkb.ConvertEntityValueToAlias("6", EntityType::READ,
-                                        AttrType::STMT_NUM,
                                         AttrType::VAR_NAME) == expected_str);
 
-  // convert assign.stmt# to varName (invalid, returns empty string)
-  expected_str = "";
-  REQUIRE(pkb.ConvertEntityValueToAlias("1", EntityType::ASSIGN,
-                                        AttrType::STMT_NUM,
-                                        AttrType::VAR_NAME) == expected_str);
+  // convert assign.stmt# to varName (invalid)
+  REQUIRE_THROWS_AS(pkb.ConvertEntityValueToAlias("1", EntityType::ASSIGN,
+                                                  AttrType::VAR_NAME),
+                    std::runtime_error);
 
   // get entities matching default attribute values
   expected = {"1"};

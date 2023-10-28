@@ -5,10 +5,10 @@
 #include <unordered_set>
 #include <vector>
 
-class BaseTable {
+class RelationTable {
  public:
-  BaseTable();
-  ~BaseTable() = default;
+  RelationTable();
+  ~RelationTable() = default;
 
   virtual void Insert(std::string i, std::string j) = 0;
   virtual bool IsEmpty() = 0;

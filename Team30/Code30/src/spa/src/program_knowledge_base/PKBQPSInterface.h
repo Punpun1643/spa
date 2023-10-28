@@ -22,7 +22,6 @@ class PKBQPSInterface {
 
   virtual std::string ConvertEntityValueToAlias(std::string value,
                                                 EntityType type,
-                                                AttrType curr_attr_type,
                                                 AttrType alias_attr_type) = 0;
 
   // ---------- WITH CLAUSES ----------

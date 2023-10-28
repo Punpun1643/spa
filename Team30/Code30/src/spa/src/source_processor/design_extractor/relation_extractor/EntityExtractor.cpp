@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <string>
 #include <unordered_set>
 
 EntityExtractor::EntityExtractor(PKBSPInterface& pkb)
@@ -29,16 +30,26 @@ void EntityExtractor::ExtractFromRead(std::shared_ptr<ReadNode> node) {
 
 void EntityExtractor::ExtractFromWhile(std::shared_ptr<WhileNode> node) {
   pkb.InsertEntity(EntityType::WHILE, std::to_string(node->GetStmtIndex()));
+
+  for (std::string var : *node->GetCondExpr()->GetVariables()) {
+    pkb.InsertCondVarPattern(EntityType::WHILE,
+                             std::to_string(node->GetStmtIndex()), var);
+  }
 }
 
 void EntityExtractor::ExtractFromIf(std::shared_ptr<IfNode> node) {
   pkb.InsertEntity(EntityType::IF, std::to_string(node->GetStmtIndex()));
+
+  for (std::string var : *node->GetCondExpr()->GetVariables()) {
+    pkb.InsertCondVarPattern(EntityType::IF,
+                             std::to_string(node->GetStmtIndex()), var);
+  }
 }
 
 void EntityExtractor::ExtractFromAssign(std::shared_ptr<AssignNode> node) {
   pkb.InsertEntity(EntityType::ASSIGN, std::to_string(node->GetStmtIndex()));
 
   // Pattern insertion
-  pkb.InsertPattern(PatternType::ASSIGN, std::to_string(node->GetStmtIndex()),
-                    node->GetVarName(), node->GetRootOfTree());
+  pkb.InsertAssignPattern(std::to_string(node->GetStmtIndex()),
+                          node->GetVarName(), node->GetRootOfTree());
 }
