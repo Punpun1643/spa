@@ -22,8 +22,6 @@ class RelDatabase {
   std::unordered_map<std::string, std::shared_ptr<CFGNode>> cfg_nodes;
   std::unordered_set<RelationType> cfg_relations;
 
-  int size;
-
   // helper functions
   bool IsCFGRelation(RelationType type);
   bool IsValidStatementNumber(std::string val);

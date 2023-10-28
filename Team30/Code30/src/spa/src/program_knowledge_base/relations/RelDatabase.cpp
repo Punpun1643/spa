@@ -36,8 +36,6 @@ RelDatabase::RelDatabase() {
 
   cfg_relations = {RelationType::NEXT, RelationType::NEXT_STAR,
                    RelationType::AFFECTS};
-
-  size = 0;
 }
 
 bool RelDatabase::IsValidStatementNumber(std::string val) {
@@ -303,6 +301,5 @@ std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValue(
 
 void RelDatabase::InsertCFGNode(std::string statement_num,
                                 std::shared_ptr<CFGNode> node) {
-  size = std::max(size, std::stoi(statement_num));
   cfg_nodes.insert({statement_num, node});
 }
