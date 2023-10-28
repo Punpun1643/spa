@@ -24,7 +24,26 @@ std::vector<std::pair<std::string, std::string>> NotClauseDecorator::NegateDoubl
                                                                     PqlDeclaration const& decl_1,
                                                                     PqlDeclaration const& decl_2,
                                                                     std::unordered_set<std::pair<std::string, std::string>, PairHash> const& value_set) {
+  auto select_all_clause_1 = SelectAllClause(decl_1);
+  auto select_all_clause_2 = SelectAllClause(decl_2);
 
+  std::vector<std::string> all_values_1 = select_all_clause_1.Evaluate(pkb)->GetValues(decl_1);
+  std::vector<std::string> all_values_2 = select_all_clause_2.Evaluate(pkb)->GetValues(decl_2);
+
+  std::vector<std::pair<std::string, std::string>> all_pairs;
+  for (auto& value_1: all_values_1) {
+    for (auto& value_2: all_values_2) {
+      all_pairs.emplace_back(value_1, value_2);
+    }
+  }
+
+  std::vector<std::pair<std::string, std::string>> complement_pairs;
+  for (auto& pair: all_pairs) {
+    if (value_set.count(pair) == 0) {
+      complement_pairs.push_back(pair);
+    }
+  }
+  return complement_pairs;
 }
 
 std::unique_ptr<ClauseResult> NotClauseDecorator::Evaluate(PKBQPSInterface& pkb) {
@@ -58,7 +77,7 @@ std::unique_ptr<ClauseResult> NotClauseDecorator::Evaluate(PKBQPSInterface& pkb)
         value_set.emplace(value_vec_1[i], value_vec_2[i]);
       }
       auto complement_values = NegateDoubleDeclValues(pkb, decl_1, decl_2, value_set);
-
+      return std::make_unique<ClauseResult>(decl_1, decl_2, complement_values);
     }
     default:
       throw std::logic_error("ClauseResult has an unexpected number of declarations.");
