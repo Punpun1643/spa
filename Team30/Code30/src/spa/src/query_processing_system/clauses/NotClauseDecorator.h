@@ -10,7 +10,7 @@
 
 class NotClauseDecorator : public Clause {
  private:
-  std::unique_ptr<Clause> clause_to_negate;
+  std::shared_ptr<Clause> clause_to_negate;
   static std::vector<std::string> NegateSingleDeclValues(
       PKBQPSInterface& pkb, PqlDeclaration const& decl,
       std::unordered_set<std::string> const& value_set);
@@ -21,6 +21,6 @@ class NotClauseDecorator : public Clause {
                                             PairHash> const& value_set);
 
  public:
-  explicit NotClauseDecorator(std::unique_ptr<Clause> clause_to_negate);
+  explicit NotClauseDecorator(std::shared_ptr<Clause> clause_to_negate);
   std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
 };

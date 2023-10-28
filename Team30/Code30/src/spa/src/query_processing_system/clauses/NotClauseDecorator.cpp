@@ -4,7 +4,7 @@
 
 #include "SelectAllClause.h"
 
-NotClauseDecorator::NotClauseDecorator(std::unique_ptr<Clause> clause_to_negate)
+NotClauseDecorator::NotClauseDecorator(std::shared_ptr<Clause> clause_to_negate)
     : clause_to_negate(std::move(clause_to_negate)) {}
 
 std::vector<std::string> NotClauseDecorator::NegateSingleDeclValues(

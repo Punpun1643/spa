@@ -36,7 +36,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   bool const value_wild_bool = false;
   bool const wild_value_bool = true;
   bool const wild_wild_bool = true;
-  std::vector<std::string> const synonym_wild_values = {"1", "1", "3"};
+  std::vector<std::string> synonym_wild_values = {"1", "1", "3"};
   std::vector<std::string> const wild_synonym_values = {"a", "b", "c"};
   std::vector<std::string> const synonym_value_values = {"4", "5", "6"};
   std::vector<std::string> const value_synonym_values = {"d", "e", "f"};

@@ -14,16 +14,16 @@ TEST_CASE("Test NotClause functionality") {
 
   SECTION("Test boolean result negation") {
     auto true_result = std::make_unique<ClauseResult>(true);
-    std::unique_ptr<Clause> true_clause =
-        std::make_unique<ClauseStub>(std::move(true_result));
+    std::shared_ptr<Clause> true_clause =
+        std::make_shared<ClauseStub>(std::move(true_result));
     auto not_clause = NotClauseDecorator(std::move(true_clause));
     auto result = not_clause.Evaluate(pkb);
     REQUIRE(result->IsBooleanResult());
     REQUIRE_FALSE(result->GetBooleanClauseValue());
 
     auto false_result = std::make_unique<ClauseResult>(false);
-    std::unique_ptr<Clause> false_clause =
-        std::make_unique<ClauseStub>(std::move(false_result));
+    std::shared_ptr<Clause> false_clause =
+        std::make_shared<ClauseStub>(std::move(false_result));
     not_clause = NotClauseDecorator(std::move(false_clause));
     result = not_clause.Evaluate(pkb);
     REQUIRE(result->IsBooleanResult());
@@ -39,8 +39,8 @@ TEST_CASE("Test NotClause functionality") {
 
     auto clause_result =
         std::make_unique<ClauseResult>(constant, value_subset_1);
-    std::unique_ptr<Clause> clause =
-        std::make_unique<ClauseStub>(std::move(clause_result));
+    std::shared_ptr<Clause> clause =
+        std::make_shared<ClauseStub>(std::move(clause_result));
     auto not_clause = NotClauseDecorator(std::move(clause));
     auto result = not_clause.Evaluate(pkb);
     REQUIRE_FALSE(result->IsBooleanResult());
@@ -50,7 +50,7 @@ TEST_CASE("Test NotClause functionality") {
                  Catch::UnorderedEquals(value_subset_2));
 
     clause_result = std::make_unique<ClauseResult>(a, value_subset_2);
-    clause = std::make_unique<ClauseStub>(std::move(clause_result));
+    clause = std::make_shared<ClauseStub>(std::move(clause_result));
     not_clause = NotClauseDecorator(std::move(clause));
     result = not_clause.Evaluate(pkb);
     REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{a});
@@ -74,8 +74,8 @@ TEST_CASE("Test NotClause functionality") {
     pkb.get_all_of_type_values = all_values;
     auto clause_result =
         std::make_unique<ClauseResult>(constant, p, value_subset_1);
-    std::unique_ptr<Clause> clause =
-        std::make_unique<ClauseStub>(std::move(clause_result));
+    std::shared_ptr<Clause> clause =
+        std::make_shared<ClauseStub>(std::move(clause_result));
     auto not_clause = NotClauseDecorator(std::move(clause));
     auto result = not_clause.Evaluate(pkb);
     REQUIRE(result->GetNumDeclarations() == 2);
