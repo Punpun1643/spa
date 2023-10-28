@@ -12,7 +12,7 @@
 #include "../clauses/ModifiesSClause.h"
 #include "../clauses/NextClause.h"
 #include "../clauses/ParentClause.h"
-#include "../clauses/PatternClause.h"
+#include "../clauses/PatternAssignClause.h"
 #include "../clauses/UsesPClause.h"
 #include "../clauses/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -154,7 +154,7 @@ void QueryInterpreter::Interpret(
   } else if (this->IsSynonym(arg1)) {
     lhs_expr = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
   }
-  this->context->AddPatternClause(std::make_shared<PatternClause>(
+  this->context->AddPatternClause(std::make_shared<PatternAssignClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr_tree));
   this->InterpretNext(pattern_expression);
 }
