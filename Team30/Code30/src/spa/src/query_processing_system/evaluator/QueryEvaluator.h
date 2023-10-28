@@ -8,7 +8,6 @@
 #include "../clauses/SelectAllClause.h"
 #include "../clauses/SuchThatClause.h"
 #include "IntermediateResultsTable.h"
-#include "query_processing_system/clauses/PatternClause.h"
 #include "query_processing_system/references/AttrRef.h"
 
 class QueryEvaluator {
