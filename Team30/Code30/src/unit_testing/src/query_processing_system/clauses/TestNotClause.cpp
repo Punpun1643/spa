@@ -66,10 +66,6 @@ TEST_CASE("Test NotClause functionality") {
         std::make_pair("cat", "cat"), std::make_pair("cat", "fox"),
         std::make_pair("dog", "cat"), std::make_pair("dog", "fox"),
         std::make_pair("dog", "dog")};
-    std::vector<std::string> value_subset_2_1 = {"cat", "cat", "dog", "dog",
-                                                 "dog"};
-    std::vector<std::string> value_subset_2_2 = {"cat", "fox", "cat", "fox",
-                                                 "dog"};
 
     pkb.get_all_of_type_values = all_values;
     auto clause_result =
@@ -82,12 +78,11 @@ TEST_CASE("Test NotClause functionality") {
     REQUIRE_THAT(
         result->GetDeclarations(),
         Catch::UnorderedEquals(std::vector<PqlDeclaration>{constant, p}));
-    std::vector<std::pair<std::string, std::string>> paired_result = {};
 
+    std::vector<std::pair<std::string, std::string>> paired_result = {};
     auto decl_values_1 = result->GetValues(constant);
     auto decl_values_2 = result->GetValues(p);
     REQUIRE(decl_values_1.size() == decl_values_2.size());
-
     for (int i = 0; i < decl_values_1.size(); i++) {
       paired_result.emplace_back(decl_values_1[i], decl_values_2[i]);
     }
