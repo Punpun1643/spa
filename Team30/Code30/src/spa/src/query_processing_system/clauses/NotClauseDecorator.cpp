@@ -30,17 +30,13 @@ std::vector<std::pair<std::string, std::string>> NotClauseDecorator::NegateDoubl
   std::vector<std::string> all_values_1 = select_all_clause_1.Evaluate(pkb)->GetValues(decl_1);
   std::vector<std::string> all_values_2 = select_all_clause_2.Evaluate(pkb)->GetValues(decl_2);
 
-  std::vector<std::pair<std::string, std::string>> all_pairs;
+  std::vector<std::pair<std::string, std::string>> complement_pairs;
   for (auto& value_1: all_values_1) {
     for (auto& value_2: all_values_2) {
-      all_pairs.emplace_back(value_1, value_2);
-    }
-  }
-
-  std::vector<std::pair<std::string, std::string>> complement_pairs;
-  for (auto& pair: all_pairs) {
-    if (value_set.count(pair) == 0) {
-      complement_pairs.push_back(pair);
+      auto pair = std::make_pair(value_1, value_2);
+      if (value_set.count(pair) == 0) {
+        complement_pairs.push_back(pair);
+      }
     }
   }
   return complement_pairs;
@@ -56,6 +52,8 @@ std::unique_ptr<ClauseResult> NotClauseDecorator::Evaluate(PKBQPSInterface& pkb)
     case(1): {
       PqlDeclaration decl = results->GetDeclarations()[0];
       std::vector<std::string> values = results->GetValues(decl);
+
+      // TODO(@limweiliang): Optimise ClauseResult to return sets?
       std::unordered_set<std::string> value_set(values.begin(), values.end());
 
       auto complement_values = NegateSingleDeclValues(pkb, decl, value_set);
@@ -65,13 +63,13 @@ std::unique_ptr<ClauseResult> NotClauseDecorator::Evaluate(PKBQPSInterface& pkb)
       PqlDeclaration decl_1 = results->GetDeclarations()[0];
       PqlDeclaration decl_2 = results->GetDeclarations()[1];
 
-      // method to get paired results?
+      // TODO(@limweiliang): Add helper method in ClauseResult to return appropriate data structure directly?
       std::vector<std::string> value_vec_1 = results->GetValues(decl_1);
       std::vector<std::string> value_vec_2 = results->GetValues(decl_2);
       if (value_vec_1.size() != value_vec_2.size()) {
         throw std::logic_error("Value vectors have different lengths.");
       }
-      //
+
       std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set;
       for (int i = 0; i < value_vec_1.size(); i++) {
         value_set.emplace(value_vec_1[i], value_vec_2[i]);

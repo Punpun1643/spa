@@ -78,11 +78,14 @@ TEST_CASE("Test NotClause functionality") {
     REQUIRE(result->GetNumDeclarations() == 2);
     REQUIRE_THAT(result->GetDeclarations(), Catch::UnorderedEquals(std::vector<PqlDeclaration>{constant, p}));
     std::vector<std::pair<std::string, std::string>> paired_result = {};
-    for (auto& value_1: result->GetValues(constant)) {
-      for (auto& value_2: result->GetValues(p)) {
-        paired_result.emplace_back(value_1, value_2);
-      }
+
+    auto decl_values_1 = result->GetValues(constant);
+    auto decl_values_2 = result -> GetValues(p);
+    REQUIRE(decl_values_1.size() == decl_values_2.size());
+
+    for (int i = 0; i < decl_values_1.size(); i++) {
+      paired_result.emplace_back(decl_values_1[i], decl_values_2[i]);
     }
-    REQUIRE_THAT(paired_result, Catch::UnorderedEquals(paired_result));
+    REQUIRE_THAT(value_subset_2, Catch::UnorderedEquals(paired_result));
   }
 }
