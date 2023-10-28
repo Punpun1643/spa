@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include <vector>
-#include <utility>
 #include <string>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include "Clause.h"
 #include "program_knowledge_base/utils/PairHash.h"
