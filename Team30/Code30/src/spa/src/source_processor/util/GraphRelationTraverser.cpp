@@ -1,6 +1,7 @@
 #include "GraphRelationTraverser.h"
 
 #include <queue>
+#include <vector>
 
 bool GraphRelationTraverser::HasImmediatePath(
     std::shared_ptr<CFGNode> start_node, std::shared_ptr<CFGNode> end_node) {

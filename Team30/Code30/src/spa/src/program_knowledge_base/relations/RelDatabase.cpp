@@ -5,6 +5,8 @@
 #include <string>
 #include <unordered_set>
 
+#include "../../source_processor/util/GraphRelationTraverser.h"
+
 RelDatabase::RelDatabase() {
   relationships[RelationType::PARENT] =
       std::make_shared<DictionaryTable>(DictionaryTable());
@@ -66,11 +68,11 @@ bool RelDatabase::IsRelatedCFG(RelationType type, std::string val1,
   std::shared_ptr<CFGNode> node2 = cfg_nodes.at(val2);
 
   if (type == RelationType::NEXT) {
-    return CFGNode::HasImmediatePath(node1, node2);
+    return GraphRelationTraverser::HasImmediatePath(node1, node2);
   } else if (type == RelationType::NEXT_STAR) {
-    return CFGNode::HasPath(node1, node2);
+    return GraphRelationTraverser::HasPath(node1, node2);
   } else {
-    return CFGNode::HasAffectsPath(node1, node2);
+    return GraphRelationTraverser::HasAffectsPath(node1, node2);
   }
 }
 
@@ -87,7 +89,7 @@ bool RelDatabase::HasRelationsCFG(RelationType type, std::string val) {
   // TODO(@tyanhan): Optimise for AFFECTS
   for (auto pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
-    if (CFGNode::HasAffectsPath(node, n)) {
+    if (GraphRelationTraverser::HasAffectsPath(node, n)) {
       return true;
     }
   }
@@ -107,7 +109,7 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
   // TODO(@tyanhan): Optimise for AFFECTS
   for (auto pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
-    if (CFGNode::HasAffectsPath(n, node)) {
+    if (GraphRelationTraverser::HasAffectsPath(n, node)) {
       return true;
     }
   }
@@ -143,7 +145,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithPathFrom(
   std::unordered_set<std::string> output;
   for (auto pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
-    if (CFGNode::HasPath(node, n)) {
+    if (GraphRelationTraverser::HasPath(node, n)) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
     }
   }
@@ -155,7 +157,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathFrom(
   std::unordered_set<std::string> output;
   for (auto pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
-    if (CFGNode::HasAffectsPath(node, n)) {
+    if (GraphRelationTraverser::HasAffectsPath(node, n)) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
     }
   }
@@ -189,7 +191,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithPathTo(
   std::unordered_set<std::string> output;
   for (auto pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
-    if (CFGNode::HasPath(n, node)) {
+    if (GraphRelationTraverser::HasPath(n, node)) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
     }
   }
@@ -201,7 +203,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathTo(
   std::unordered_set<std::string> output;
   for (auto pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
-    if (CFGNode::HasAffectsPath(n, node)) {
+    if (GraphRelationTraverser::HasAffectsPath(n, node)) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
     }
   }
