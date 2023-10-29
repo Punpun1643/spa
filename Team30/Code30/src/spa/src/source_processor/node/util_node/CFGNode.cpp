@@ -1,6 +1,5 @@
 #include "CFGNode.h"
 
-#include <iostream>
 #include <queue>
 
 #include "../stmt_node/AssignNode.h"
