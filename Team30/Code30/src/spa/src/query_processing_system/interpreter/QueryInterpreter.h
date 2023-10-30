@@ -26,6 +26,7 @@ class ModifiesExpression;
 class NextExpression;
 class NextTExpression;
 class PatternAssignExpression;
+class PatternIfExpression;
 class PatternWhileExpression;
 class ParentExpression;
 class ParentTExpression;
@@ -53,6 +54,7 @@ class QueryInterpreter {
   void Interpret(std::shared_ptr<ParentTExpression> parent_t_expression);
   void Interpret(
       std::shared_ptr<PatternAssignExpression> pattern_assign_expression);
+  void Interpret(std::shared_ptr<PatternIfExpression> pattern_if_expression);
   void Interpret(
       std::shared_ptr<PatternWhileExpression> pattern_while_expression);
   void Interpret(std::shared_ptr<SelectExpression> select_expression);

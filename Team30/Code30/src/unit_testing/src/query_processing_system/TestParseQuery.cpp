@@ -906,3 +906,104 @@ TEST_CASE("Pattern While Clauses") {
     REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
   }
 }
+
+TEST_CASE("Pattern If Clauses") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("Positive, simple: if i; variable v; Select i pattern i (v, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddDeclaration(tokens, "variable", {"v"});
+    AddWordVector(tokens, {"Select", "i", "pattern", "i"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"v"});
+    AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive, all _: if i; Select i pattern i (_, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddWordVector(tokens, {"Select", "i", "pattern", "i"});
+    AddSpecialCharVector(tokens, {"(", "_", ",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive: if i1, i2; Select <i1, i2> pattern i1 (v, _, _) and i2 (x, _, _)") {
+    AddDeclaration(tokens, "if", {"i1", "i2"});
+    AddDeclaration(tokens, "variable", {"v", "x"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"i1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"i2"});
+    AddSpecialCharVector(tokens, {">"});
+    AddWordVector(tokens, {"pattern", "i1"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"v"});
+    AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
+    AddWordVector(tokens, {"and", "i2"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"x"});
+    AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Negative: if i; Select i pattern i (v, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddWordVector(tokens, {"Select", "i", "pattern", "i"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"v"});
+    AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+  }
+
+  SECTION("Negative: if i; stmt s1; Select i pattern i (s1, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "i", "pattern", "i"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"s1"});
+    AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+  }
+
+  SECTION("Negative: if i; stmt s1; Select i patternn i (s1, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "i", "patternn", "i"});
+    AddSpecialCharVector(tokens, {"("});
+    AddWordVector(tokens, {"s1"});
+    AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+  }
+
+  SECTION("Negative: if i; Select w pattern w (_, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddWordVector(tokens, {"Select", "w", "pattern", "w"});
+    AddSpecialCharVector(tokens, {"(", "_", ",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+  }
+
+  SECTION("Negative: if i; Selec w pattern w (_, _, _)") {
+    AddDeclaration(tokens, "if", {"i"});
+    AddWordVector(tokens, {"Selec", "w", "pattern", "w"});
+    AddSpecialCharVector(tokens, {"(", "_", ",", "_", ",", "_", ")"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+  }
+}

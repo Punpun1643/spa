@@ -46,7 +46,7 @@ class SyntaxChecker : public QpParser {
   void CheckWith(bool has_and);
 
   // Helpers
-  EntityType CheckCurrentTokenPatternEntity();
+  std::optional<EntityType> CheckCurrentTokenPatternEntity();
   void CheckCurrentTokenPatternFirstArg();
   void CheckCurrentTokenStmtRef(std::string syntax_error_msg,
                                 std::string not_existing_error_msg);

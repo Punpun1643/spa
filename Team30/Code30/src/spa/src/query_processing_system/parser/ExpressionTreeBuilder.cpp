@@ -270,6 +270,10 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
       current_pattern_expression =
           std::make_optional<std::shared_ptr<PatternWhileExpression>>(
               this->CreatePatternWhile(synonym));
+    } else if (pattern_entity_type == EntityType::IF) {
+      current_pattern_expression =
+          std::make_optional<std::shared_ptr<PatternIfExpression>>(
+              this->CreatePatternIf(synonym));
     }
     if (previous_pattern_expression.has_value()) {
       previous_pattern_expression.value()->SetNextExpression(
@@ -336,6 +340,25 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym) {
 
   return std::make_shared<PatternAssignExpression>(synonym, arg1, arg2,
                                                    match_type, rhs_expr_tree);
+}
+
+std::shared_ptr<PatternIfExpression> ExpressionTreeBuilder::CreatePatternIf(
+    std::string synonym) {
+  std::string arg1 = "";
+
+  NextToken();  // (
+
+  NextToken();
+  while (GetCurrTokenValue() != ",") {
+    arg1 += GetCurrTokenValue();
+    NextToken();
+  }
+
+  NextToken();  // _
+  NextToken();  // ,
+  NextToken();  // _
+  NextToken();  // )
+  return std::make_shared<PatternIfExpression>(synonym, arg1);
 }
 
 std::shared_ptr<PatternWhileExpression>
