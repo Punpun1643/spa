@@ -1,0 +1,30 @@
+procedure p1 {
+
+1  if (!(x == y)) then {
+2    read y;
+3    read x;
+   } else {
+4    b = a + d;
+  }
+
+5  while ((a != b) && (d >= 2)) {
+6    x = y;
+7    while (z != w) {
+8      print d;
+    }
+
+  }
+
+9  if (a||b||c) then {
+10    if ((x < (5 / z))) then {
+11      z = 1 + 2;
+    } else {
+12      b = x + 7;
+    }
+  } else {
+13    while (a || !(c < 0)) {
+14      print b;
+    }
+  }
+15  read a;
+}
