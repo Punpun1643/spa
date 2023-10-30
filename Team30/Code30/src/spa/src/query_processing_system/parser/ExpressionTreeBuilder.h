@@ -3,6 +3,7 @@
 #include <memory>
 #include <optional>
 #include <vector>
+#include <string>
 
 #include "../context/Context.h"
 #include "../expression/ClauseExpression.h"

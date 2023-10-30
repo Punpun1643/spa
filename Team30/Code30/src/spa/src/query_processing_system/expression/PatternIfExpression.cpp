@@ -4,7 +4,7 @@
 #include <string>
 
 PatternIfExpression::PatternIfExpression(std::string synonym, std::string arg1)
-    : PatternExpression(synonym, arg1, ""){};
+    : PatternExpression(synonym, arg1, ""){}
 
 void PatternIfExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
