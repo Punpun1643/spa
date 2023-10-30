@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "../../../spa/src/query_processing_system/QPSController.h"
+#include "../../../spa/src/query_processing_system/exceptions/InvalidSemanticsException.h"
+#include "../../../spa/src/query_processing_system/exceptions/InvalidSyntaxException.h"
 #include "ParserHelperFunctions.h"
 #include "catch.hpp"
 
@@ -831,5 +833,76 @@ TEST_CASE("Valid/Invalid Integer") {
     AddEOF(tokens);
 
     REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+}
+
+TEST_CASE("Pattern While Clauses") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("Positive, simple: while w; variable v; Select w pattern w (v, _)") {
+    AddDeclaration(tokens, "while", {"w"});
+    AddDeclaration(tokens, "variable", {"v"});
+    AddWordVector(tokens, {"Select", "w", "pattern", "w"});
+    AddWordWild(tokens, "v");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive, double _: while w; Select w pattern w (_, _)") {
+    AddDeclaration(tokens, "while", {"w"});
+    AddWordVector(tokens, {"Select", "w", "pattern", "w"});
+    AddWildWild(tokens);
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Positive: while w1, w2; Select <w1, w2> pattern w1 (v, _) and w2 (x, _)") {
+    AddDeclaration(tokens, "while", {"w1", "w2"});
+    AddDeclaration(tokens, "variable", {"v", "x"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"w1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"w2"});
+    AddSpecialCharVector(tokens, {">"});
+    AddWordVector(tokens, {"pattern", "w1"});
+    AddWordWild(tokens, "v");
+    AddWordVector(tokens, {"and", "w2"});
+    AddWordWild(tokens, "x");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("Negative: while w; Select w pattern w (v, _)") {
+    AddDeclaration(tokens, "while", {"w"});
+    AddWordVector(tokens, {"Select", "w", "pattern", "w"});
+    AddWordWild(tokens, "v");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+  }
+
+  SECTION("Negative: while w; stmt s1; Select w pattern w (s1, _)") {
+    AddDeclaration(tokens, "while", {"w"});
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "w", "pattern", "w"});
+    AddWordWild(tokens, "s1");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+  }
+
+  SECTION("Negative: while w; stmt s1; Select w patternn w (s1, _)") {
+    AddDeclaration(tokens, "while", {"w"});
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "w", "patternn", "w"});
+    AddWordWild(tokens, "s1");
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
   }
 }

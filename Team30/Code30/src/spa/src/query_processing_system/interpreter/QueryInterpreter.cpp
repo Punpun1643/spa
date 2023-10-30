@@ -165,11 +165,16 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<PatternWhileExpression> pattern_while_expression) {
   std::string synonym = pattern_while_expression->GetSynonym();
   std::string arg1 = pattern_while_expression->GetArg1();
-  PqlDeclaration while_decl = this->GetMappedDeclaration(arg1);
-  EntRef ent_ref = EntRef(this->GetMappedDeclaration(arg1));
+  PqlDeclaration while_decl = this->GetMappedDeclaration(synonym);
+  std::shared_ptr<EntRef> ent_ref;
+  if (arg1 == "_") {
+    ent_ref = std::make_shared<EntRef>();
+  } else {
+    ent_ref = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
+  }
 
-  this->context->AddPatternClause(std::make_shared<PatternWhileClause>(
-        while_decl, ent_ref));
+  this->context->AddPatternClause(
+      std::make_shared<PatternWhileClause>(while_decl, *ent_ref));
   this->InterpretNext(pattern_while_expression);
 }
 

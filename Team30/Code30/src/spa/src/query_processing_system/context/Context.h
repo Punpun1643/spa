@@ -5,12 +5,12 @@
 #include <unordered_map>
 #include <vector>
 
-#include "query_processing_system/references/AttrRef.h"
-#include "query_processing_system/references/PqlDeclaration.h"
-#include "shared/types/EntityType.h"
 #include "../clauses/PatternClause.h"
 #include "../clauses/SuchThatClause.h"
 #include "../clauses/WithClause.h"
+#include "query_processing_system/references/AttrRef.h"
+#include "query_processing_system/references/PqlDeclaration.h"
+#include "shared/types/EntityType.h"
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 
