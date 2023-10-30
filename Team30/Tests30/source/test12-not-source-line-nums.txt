@@ -1,0 +1,80 @@
+procedure p1 {
+
+1 a = c * 3 - b;
+
+2 if ((w == x) || (w ==z)) then {
+3  if (y > z) then {
+4    read a;
+5    q = a + b - c / d;
+  } else {
+6      while(e != e) {
+7        print q;
+      }
+    }
+  } else {
+8  w = (x + (y * z));
+}
+9  a = a + 3;
+10  call p2;
+}
+
+procedure p2 {
+11  while ((a != 0) && ( 0 > 1)) {
+
+12    if (r != d) then {
+13      read d;
+    } else {
+14      call p3;
+    }
+15    print p;
+
+16    i =  i + (1 + 2 + (3 + 4 + (5)));
+17    while ((g > 4) || ((g <= 1) && (g != 5))) {
+18      while (g < 6) {
+19        g = g - 1;
+20        g = g + 1;
+21        g = g + g;
+22        if (d <= 0) then {
+23          a = a + (5 * 10);
+        }
+      else {
+24        r = t + 2 + 5 + 7 + z;
+      }
+    } 
+  }
+}
+
+25  call p4;
+}
+
+
+
+procedure p3 {
+26 while (f == 0) {
+
+27  read r;
+28  print r;
+
+29  while(e == f + 6 % e) {
+30    if (y != a) then {
+31      if (a == b - c * 2 / 10 + 20 % 5 ) then {
+32        while (w <= z) {
+33          t = 5 - (x / y % 2);
+34          call p4;
+          }
+        }
+        else {
+35          y = c + 2 - z;
+36          t = a + 3 * 6 * 7 / 10;
+        }
+    } else {
+37      a = 4 / (a % b * c);
+38      read c;
+    }
+    }
+  }
+}
+
+procedure p4 {
+39  print p;
+}
