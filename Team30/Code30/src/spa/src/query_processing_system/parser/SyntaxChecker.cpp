@@ -269,24 +269,91 @@ void SyntaxChecker::CheckPattern(bool has_and) {
     NextToken();
   }
 
+<<<<<<< HEAD
   if (GetCurrTokenValue() == "not") {
     NextToken();
   }
+=======
+  std::optional<EntityType> pattern_entity_type =
+      this->CheckCurrentTokenPatternEntity();
+>>>>>>> kangwei-implement-pattern-while-if
 
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Pattern clause");
 
   NextToken();
-  this->CheckCurrentTokenPatternFirstArg();
+  this->CheckUpcomingTokensAreEntRef(
+      "First arg of pattern clause not valid ent ref",
+      "First arg of pattern clause has not been declared");
 
   NextToken();
-  this->CheckCurrentTokenSyntax(",", "Expected \',\' for Pattern clause");
+  this->CheckCurrentTokenSyntax(
+      ",", "Expected ',' after first arg for Pattern clause");
 
   NextToken();
-  this->CheckCurrentTokenPatternSecondArg();
+
+  if (pattern_entity_type.has_value()) {
+    if (pattern_entity_type.value() == EntityType::ASSIGN) {
+      CheckPatternAssign();
+    } else if (pattern_entity_type.value() == EntityType::WHILE) {
+      CheckPatternWhile();
+    } else if (pattern_entity_type.value() == EntityType::IF) {
+      CheckPatternIf();
+    } else {
+      throw InvalidSyntaxException(
+          "Pattern synonym not of assign, while or if type");
+    }
+  } else {
+    size_t revert_index = currTokenIndex;
+    try {
+      CheckPatternAssign();
+    } catch (InvalidSyntaxException e) {
+      try {
+        currTokenIndex = revert_index;
+        CheckPatternIf();
+      } catch (InvalidSyntaxException e) {
+        currTokenIndex = revert_index;
+        CheckPatternWhile();
+      }
+    }
+  }
+}
+
+void SyntaxChecker::CheckPatternAssign() {
+  this->CheckExpressionSpec();
 
   NextToken();
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
+
+  NextToken();
+  if (GetCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::pattern);
+  }
+}
+
+void SyntaxChecker::CheckPatternIf() {
+  this->CheckCurrentTokenSyntax("_", "Expected '_' for pattern if clause");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(",", "Expected ',' for pattern if clause");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax("_", "Expected '_' for pattern if clause");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected ')' for pattern if clause");
+
+  NextToken();
+  if (GetCurrTokenValue() == QpParser::AND) {
+    CheckAnd(ClauseType::pattern);
+  }
+}
+
+void SyntaxChecker::CheckPatternWhile() {
+  this->CheckCurrentTokenSyntax("_", "Expected '_' for pattern while clause");
+
+  NextToken();
+  this->CheckCurrentTokenSyntax(")", "Expected ')' for pattern while clause");
 
   NextToken();
   if (GetCurrTokenValue() == QpParser::AND) {
@@ -346,7 +413,7 @@ void SyntaxChecker::CheckSelectSingle() {
   if (!IsSynonym(synonym)) {
     throw InvalidSyntaxException("Expected synonym for select clause");
   } else {
-    CheckSynonymExists(synonym, "Undeclared synonym used for select clause");
+    CheckSynonymExists(synonym);
   }
   if (GetPeekTokenValue() == ".") {
     // check attrRef
@@ -449,19 +516,26 @@ void SyntaxChecker::CheckWith(bool has_and) {
 
 // ---------- HELPERS -------------
 
-EntityType SyntaxChecker::CheckCurrentTokenPatternEntity() {
+std::optional<EntityType> SyntaxChecker::CheckCurrentTokenPatternEntity() {
   std::string token_value = GetCurrTokenValue();
-  if (!IsSynonym(token_value)) {
-    throw InvalidSyntaxException("Invalid synonym used for pattern");
+  if (!IsIdentifier(token_value)) {
+    throw InvalidSyntaxException("Invalid identifier used for pattern");
   } else {
-    CheckSynonymExists(token_value,
-                       "Variable used for pattern has not been declared");
+    CheckSynonymExists(token_value);
   }
-  if (existing_declarations.at(token_value).GetEntityType() !=
-      EntityType::ASSIGN) {
+  auto declaration = existing_declarations.find(token_value);
+  if (declaration == existing_declarations.end() ||
+      (declaration->second.GetEntityType() != EntityType::ASSIGN &&
+       declaration->second.GetEntityType() != EntityType::WHILE &&
+       declaration->second.GetEntityType() != EntityType::IF)) {
     has_semantic_exception = true;
   }
-  return existing_declarations.at(token_value).GetEntityType();
+  if (declaration == existing_declarations.end()) {
+    return std::nullopt;
+  } else {
+    return std::make_optional<EntityType>(
+        existing_declarations.at(token_value).GetEntityType());
+  }
 }
 
 void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
@@ -484,8 +558,7 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
     if (GetPeekTokenValue() != ".") {
       throw InvalidSyntaxException("Expected . after synonym for with ref");
     }
-    CheckSynonymExists(ref,
-                       "Variable used for 'with' clause has not been declared");
+    CheckSynonymExists(ref);
 
     NextToken();  // .
 
@@ -507,8 +580,27 @@ void SyntaxChecker::CheckCurrentTokenPatternFirstArg() {
       "First arg of pattern clause has not been declared");
 }
 
-void SyntaxChecker::CheckCurrentTokenPatternSecondArg() {
+void SyntaxChecker::CheckCurrentTokenStmtRef(
+    std::string syntax_error_msg, std::string not_existing_error_msg) {
   std::string token_value = GetCurrTokenValue();
+  if (!QpParser::IsStmtRef(token_value)) {
+    throw InvalidSyntaxException(syntax_error_msg);
+  } else {
+    if (QpParser::IsSynonym(token_value)) {
+      this->CheckSynonymExists(token_value);
+    }
+  }
+}
+
+void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
+                                            std::string error_msg) {
+  if (GetCurrTokenValue() != expected_value) {
+    throw InvalidSyntaxException(error_msg + ". Got " + GetCurrTokenValue() +
+                                 " instead.");
+  }
+}
+
+void SyntaxChecker::CheckExpressionSpec() {
   if (GetCurrTokenValue() == "_") {
     if (AParser::GetPeekTokenValue() == ")") {
       // expression-spec = _
@@ -526,26 +618,6 @@ void SyntaxChecker::CheckCurrentTokenPatternSecondArg() {
   } else {
     this->CheckUpcomingTokensAreQuotedExpr(
         "Expected quoted expr for pattern second arg");
-  }
-}
-
-void SyntaxChecker::CheckCurrentTokenStmtRef(
-    std::string syntax_error_msg, std::string not_existing_error_msg) {
-  std::string token_value = GetCurrTokenValue();
-  if (!QpParser::IsStmtRef(token_value)) {
-    throw InvalidSyntaxException(syntax_error_msg);
-  } else {
-    if (QpParser::IsSynonym(token_value)) {
-      this->CheckSynonymExists(token_value, not_existing_error_msg);
-    }
-  }
-}
-
-void SyntaxChecker::CheckCurrentTokenSyntax(std::string expected_value,
-                                            std::string error_msg) {
-  if (GetCurrTokenValue() != expected_value) {
-    throw InvalidSyntaxException(error_msg + ". Got " + GetCurrTokenValue() +
-                                 " instead.");
   }
 }
 
@@ -568,8 +640,7 @@ void SyntaxChecker::CheckIsExpr(std::string error_msg) {
   }
 }
 
-void SyntaxChecker::CheckSynonymExists(std::string synonym,
-                                       std::string error_msg) {
+void SyntaxChecker::CheckSynonymExists(std::string synonym) {
   if (existing_declarations.find(synonym) == existing_declarations.end()) {
     this->has_semantic_exception = true;
   }
@@ -589,11 +660,12 @@ void SyntaxChecker::CheckUpcomingTokensAreEntRef(
   if (GetPeekTokenValue() == "\"") {
     value += NextToken()->GetTokenVal();
   }
+
   if (!QpParser::IsEntRef(value)) {
     throw InvalidSyntaxException(syntax_error_msg);
   } else {
     if (QpParser::IsSynonym(value)) {
-      this->CheckSynonymExists(value, not_existing_error_msg);
+      this->CheckSynonymExists(value);
     }
   }
 }

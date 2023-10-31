@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../clauses/NotClauseDecorator.h"
-#include "../clauses/PatternAssignClause.h"
+#include "../clauses/PatternClause.h"
 #include "../clauses/SuchThatClause.h"
 #include "../clauses/WithClause.h"
 #include "query_processing_system/references/AttrRef.h"
@@ -21,7 +21,7 @@ class Context {
   void addDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
   void AddNotClause(std::shared_ptr<NotClauseDecorator> not_clause);
-  void AddPatternClause(std::shared_ptr<PatternAssignClause> pattern_clause);
+  void AddPatternClause(std::shared_ptr<PatternClause> pattern_clause);
   void AddSuchThatClause(std::shared_ptr<SuchThatClause> such_that_clause);
   void AddWithClause(std::shared_ptr<WithClause> with_clause);
   bool CheckDeclarationExists(std::string synonym);
@@ -35,6 +35,6 @@ class Context {
   std::vector<AttrRef> selected_attr_refs;
   std::vector<std::shared_ptr<NotClauseDecorator>> not_clauses;
   std::vector<std::shared_ptr<SuchThatClause>> such_that_clauses;
-  std::vector<std::shared_ptr<PatternAssignClause>> pattern_clauses;
+  std::vector<std::shared_ptr<PatternClause>> pattern_clauses;
   std::vector<std::shared_ptr<WithClause>> with_clauses;
 };

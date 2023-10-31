@@ -24,7 +24,7 @@ void Context::AddNotClause(
 }
 
 void Context::AddPatternClause(
-    std::shared_ptr<PatternAssignClause> pattern_clause) {
+    std::shared_ptr<PatternClause> pattern_clause) {
   this->pattern_clauses.push_back(pattern_clause);
 }
 
