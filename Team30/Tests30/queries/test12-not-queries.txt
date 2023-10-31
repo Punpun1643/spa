@@ -24,8 +24,8 @@ Select v pattern a(v, _) and not i(v,_,_) and not w(v, _)
 q, i, t
 5000
 6 - Multi with (mix of not and +ve)
-read r; print p;
-Select r with r.varName = "p" and not r.stmt# = 15
+print p;
+Select p with p.varName = "p" and not p.stmt# = 15
 39
 5000
 7 - Multi Clause
@@ -36,7 +36,7 @@ Select a pattern not a(v,_"a"_) such that not Parent*(w, a) and not Uses(p, v)
 8 - Stress Test Clause
 assign a;
 Select a with not a.stmt# = 1 and not a.stmt# = 5 and not a.stmt# = 8 and not a.stmt# = 9 and not a.stmt# = 19 and not a.stmt# = 20 and not a.stmt# = 21 and not a.stmt# = 23
-24, 33, 35, 36, 37
+16, 24, 33, 35, 36, 37
 5000
 9 - Invalid, wrong position of not
 if i; assign a; while w; variable v;

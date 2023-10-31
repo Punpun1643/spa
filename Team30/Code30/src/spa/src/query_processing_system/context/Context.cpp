@@ -55,5 +55,7 @@ std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
                        this->pattern_clauses.end());
   other_clauses.insert(other_clauses.end(), this->with_clauses.begin(),
                        this->with_clauses.end());
+  other_clauses.insert(other_clauses.end(), this->not_clauses.begin(),
+                       this->not_clauses.end());
   return other_clauses;
 }
