@@ -5,22 +5,22 @@ p4
 5000
 2 - Not pattern
 assign a;
-Select a such that pattern not a (_, _"a"_)
+Select a pattern not a (_, _"a"_)
 1, 8, 16, 19, 20, 21, 24, 33, 35
 5000
 3 - Not With
 read r;
 Select r with not r.value = "r"
-4, 13, 38
+SemanticError
 5000
 4 - Multi Such That
-if i; assign a; while w
+if i; assign a; while w;
 Select a such that Parent*(w, i) and Parent(i, a) and not Modifies(a, "t") 
 23, 24, 35, 37
 5000
 5 - Multi Pattern (mix of not and +ve)
 if i; assign a; while w; variable v;
-Select v pattern a(v, _) and not i(v,_,_) and not w(v, _, _)
+Select v pattern a(v, _) and not i(v,_,_) and not w(v, _)
 q, i, t
 5000
 6 - Multi with (mix of not and +ve)
