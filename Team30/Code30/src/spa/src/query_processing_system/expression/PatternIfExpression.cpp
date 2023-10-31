@@ -3,8 +3,9 @@
 #include <memory>
 #include <string>
 
-PatternIfExpression::PatternIfExpression(std::string synonym, std::string arg1, bool is_not)
-    : PatternExpression(synonym, arg1, "", is_not){}
+PatternIfExpression::PatternIfExpression(std::string synonym, std::string arg1,
+                                         bool is_not)
+    : PatternExpression(synonym, arg1, "", is_not) {}
 
 void PatternIfExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(

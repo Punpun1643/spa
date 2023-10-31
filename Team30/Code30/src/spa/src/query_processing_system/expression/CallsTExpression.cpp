@@ -2,7 +2,8 @@
 
 #include <string>
 
-CallsTExpression::CallsTExpression(std::string arg1, std::string arg2, bool is_not)
+CallsTExpression::CallsTExpression(std::string arg1, std::string arg2,
+                                   bool is_not)
     : SuchThatExpression(arg1, arg2, is_not) {}
 
 void CallsTExpression::acceptInterpreter(QueryInterpreter& interpreter) {

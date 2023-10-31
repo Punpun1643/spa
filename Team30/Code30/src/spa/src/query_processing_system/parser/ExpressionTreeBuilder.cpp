@@ -355,8 +355,8 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
     rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
   }
 
-  return std::make_shared<PatternAssignExpression>(synonym, arg1, arg2,
-                                                   match_type, rhs_expr_tree, is_not);
+  return std::make_shared<PatternAssignExpression>(
+      synonym, arg1, arg2, match_type, rhs_expr_tree, is_not);
 }
 
 std::shared_ptr<PatternIfExpression> ExpressionTreeBuilder::CreatePatternIf(

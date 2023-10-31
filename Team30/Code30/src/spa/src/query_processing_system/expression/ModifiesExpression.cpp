@@ -2,7 +2,8 @@
 
 #include <string>
 
-ModifiesExpression::ModifiesExpression(std::string arg1, std::string arg2, bool is_not)
+ModifiesExpression::ModifiesExpression(std::string arg1, std::string arg2,
+                                       bool is_not)
     : SuchThatExpression(arg1, arg2, is_not) {}
 
 void ModifiesExpression::acceptInterpreter(QueryInterpreter& interpreter) {

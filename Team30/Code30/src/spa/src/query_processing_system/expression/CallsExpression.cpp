@@ -2,7 +2,8 @@
 
 #include <string>
 
-CallsExpression::CallsExpression(std::string arg1, std::string arg2, bool is_not)
+CallsExpression::CallsExpression(std::string arg1, std::string arg2,
+                                 bool is_not)
     : SuchThatExpression(arg1, arg2, is_not) {}
 
 void CallsExpression::acceptInterpreter(QueryInterpreter& interpreter) {

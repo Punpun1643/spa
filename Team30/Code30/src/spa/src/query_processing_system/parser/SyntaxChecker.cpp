@@ -60,12 +60,8 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
   NextToken();
 
   if (clause_type == ClauseType::such_that) {
-    if (QpParser::IsRelRef(GetCurrTokenValue())) {
-      CheckSuchThat(true);
-      return;
-    } else {
-      throw InvalidSyntaxException("Expected <relref> after 'and'");
-    }
+    CheckSuchThat(true);
+    return;
   } else if (clause_type == ClauseType::pattern) {
     CheckPattern(true);
     return;
@@ -269,14 +265,12 @@ void SyntaxChecker::CheckPattern(bool has_and) {
     NextToken();
   }
 
-<<<<<<< HEAD
   if (GetCurrTokenValue() == "not") {
     NextToken();
   }
-=======
+
   std::optional<EntityType> pattern_entity_type =
       this->CheckCurrentTokenPatternEntity();
->>>>>>> kangwei-implement-pattern-while-if
 
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Pattern clause");

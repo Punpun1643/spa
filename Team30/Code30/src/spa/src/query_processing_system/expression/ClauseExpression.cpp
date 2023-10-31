@@ -1,6 +1,7 @@
 #include "ClauseExpression.h"
 
-ClauseExpression::ClauseExpression(std::string arg1, std::string arg2, bool is_not)
+ClauseExpression::ClauseExpression(std::string arg1, std::string arg2,
+                                   bool is_not)
     : arg1(arg1), arg2(arg2), is_not(is_not) {}
 
 std::string ClauseExpression::GetArg1() const {

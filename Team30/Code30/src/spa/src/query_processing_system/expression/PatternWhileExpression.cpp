@@ -5,7 +5,7 @@
 
 PatternWhileExpression::PatternWhileExpression(std::string synonym,
                                                std::string arg1, bool is_not)
-    : PatternExpression(synonym, arg1, "", is_not){}
+    : PatternExpression(synonym, arg1, "", is_not) {}
 
 void PatternWhileExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
