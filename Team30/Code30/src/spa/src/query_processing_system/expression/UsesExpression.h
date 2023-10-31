@@ -7,7 +7,7 @@
 
 class UsesExpression : public SuchThatExpression {
  public:
-  UsesExpression(std::string arg1, std::string arg2);
+  UsesExpression(std::string arg1, std::string arg2, bool is_not);
 
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 

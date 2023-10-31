@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../clauses/NotClauseDecorator.h"
 #include "../clauses/PatternAssignClause.h"
 #include "../clauses/SuchThatClause.h"
 #include "../clauses/WithClause.h"
@@ -19,6 +20,7 @@ class Context {
   void AddAttrRefDeclaration(AttrRef attr_ref);
   void addDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
+  void AddNotClause(std::shared_ptr<NotClauseDecorator> not_clause);
   void AddPatternClause(std::shared_ptr<PatternAssignClause> pattern_clause);
   void AddSuchThatClause(std::shared_ptr<SuchThatClause> such_that_clause);
   void AddWithClause(std::shared_ptr<WithClause> with_clause);
@@ -31,6 +33,7 @@ class Context {
   DeclarationMap declarations;
   std::vector<std::shared_ptr<Clause>> other_clauses;
   std::vector<AttrRef> selected_attr_refs;
+  std::vector<std::shared_ptr<NotClauseDecorator>> not_clauses;
   std::vector<std::shared_ptr<SuchThatClause>> such_that_clauses;
   std::vector<std::shared_ptr<PatternAssignClause>> pattern_clauses;
   std::vector<std::shared_ptr<WithClause>> with_clauses;

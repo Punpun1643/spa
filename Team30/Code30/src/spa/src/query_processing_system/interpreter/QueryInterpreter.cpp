@@ -11,6 +11,7 @@
 #include "../clauses/ModifiesPClause.h"
 #include "../clauses/ModifiesSClause.h"
 #include "../clauses/NextClause.h"
+#include "../clauses/NotClauseDecorator.h"
 #include "../clauses/ParentClause.h"
 #include "../clauses/PatternAssignClause.h"
 #include "../clauses/UsesPClause.h"
@@ -47,8 +48,14 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<AffectsExpression> affects_expression) {
   std::string arg1 = affects_expression->GetArg1();
   std::string arg2 = affects_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<AffectsClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2)));
+  bool is_not = affects_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause = std::make_shared<AffectsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2));
+  if (is_not) {
+    this->context->AddNotClause(std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(affects_expression);
 }
 
@@ -56,8 +63,14 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<CallsExpression> calls_expression) {
   std::string arg1 = calls_expression->GetArg1();
   std::string arg2 = calls_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<CallsClause>(
-      StringToEntRef(arg1), StringToEntRef(arg2), false));
+  bool is_not = calls_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause = std::make_shared<CallsClause>(
+      StringToEntRef(arg1), StringToEntRef(arg2), false);
+  if (is_not) {
+    this->context->AddNotClause(std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(calls_expression);
 }
 
@@ -65,8 +78,14 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<CallsTExpression> calls_t_expression) {
   std::string arg1 = calls_t_expression->GetArg1();
   std::string arg2 = calls_t_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<CallsClause>(
-      StringToEntRef(arg1), StringToEntRef(arg2), true));
+  bool is_not = calls_t_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause = std::make_shared<CallsClause>(
+      StringToEntRef(arg1), StringToEntRef(arg2), true);
+  if (is_not) {
+    this->context->AddNotClause(std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(calls_t_expression);
 }
 
@@ -74,8 +93,14 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<FollowsExpression> follows_expression) {
   std::string arg1 = follows_expression->GetArg1();
   std::string arg2 = follows_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<FollowsClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  bool is_not = follows_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause = std::make_shared<FollowsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false);
+  if (is_not) {
+    this->context->AddNotClause(std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(follows_expression);
 }
 
@@ -83,8 +108,14 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<FollowsTExpression> follows_t_expression) {
   std::string arg1 = follows_t_expression->GetArg1();
   std::string arg2 = follows_t_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<FollowsClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
+  bool is_not = follows_t_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause = std::make_shared<FollowsClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true);
+  if (is_not) {
+    this->context->AddNotClause(std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(follows_t_expression);
 }
 
@@ -92,12 +123,19 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<ModifiesExpression> modifies_expression) {
   std::string arg1 = modifies_expression->GetArg1();
   std::string arg2 = modifies_expression->GetArg2();
+  bool is_not = modifies_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause;
   if (IsStmtRef(arg1)) {
-    this->context->AddSuchThatClause(std::make_shared<ModifiesSClause>(
-        StringToStmtRef(arg1), StringToEntRef(arg2)));
+    clause = std::make_shared<ModifiesSClause>(
+        StringToStmtRef(arg1), StringToEntRef(arg2));
   } else if (IsEntRef(arg1)) {
-    this->context->AddSuchThatClause(std::make_shared<ModifiesPClause>(
-        StringToEntRef(arg1), StringToEntRef(arg2)));
+    clause = std::make_shared<ModifiesPClause>(
+        StringToEntRef(arg1), StringToEntRef(arg2));
+  }
+  if (is_not) {
+    this->context->AddNotClause(std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
   }
   this->InterpretNext(modifies_expression);
 }
@@ -106,8 +144,16 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<NextExpression> next_expression) {
   std::string arg1 = next_expression->GetArg1();
   std::string arg2 = next_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<NextClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  bool is_not = next_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause =
+    std::make_shared<NextClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false);
+  if (is_not) {
+    this->context->AddNotClause(
+        std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(next_expression);
 }
 
@@ -115,8 +161,16 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<NextTExpression> next_t_expression) {
   std::string arg1 = next_t_expression->GetArg1();
   std::string arg2 = next_t_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<NextClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
+  bool is_not = next_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause =
+    std::make_shared<NextClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true);
+  if (is_not) {
+    this->context->AddNotClause(
+        std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(next_t_expression);
 }
 
@@ -124,8 +178,16 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<ParentExpression> parent_expression) {
   std::string arg1 = parent_expression->GetArg1();
   std::string arg2 = parent_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<ParentClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), false));
+  bool is_not = parent_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause =
+    std::make_shared<ParentClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), false);
+  if (is_not) {
+    this->context->AddNotClause(
+        std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(parent_expression);
 }
 
@@ -133,8 +195,16 @@ void QueryInterpreter::Interpret(
     std::shared_ptr<ParentTExpression> parent_t_expression) {
   std::string arg1 = parent_t_expression->GetArg1();
   std::string arg2 = parent_t_expression->GetArg2();
-  this->context->AddSuchThatClause(std::make_shared<ParentClause>(
-      StringToStmtRef(arg1), StringToStmtRef(arg2), true));
+  bool is_not = next_expression->IsNot();
+  std::shared_ptr<SuchThatClause> clause =
+    std::make_shared<ParentClause>(
+      StringToStmtRef(arg1), StringToStmtRef(arg2), true);
+  if (is_not) {
+    this->context->AddNotClause(
+        std::make_shared<NotClauseDecorator>(clause));
+  } else {
+    this->context->AddSuchThatClause(clause);
+  }
   this->InterpretNext(parent_t_expression);
 }
 
@@ -153,6 +223,10 @@ void QueryInterpreter::Interpret(
     lhs_expr = std::make_shared<EntRef>(arg1.substr(1, arg1.size() - 2));
   } else if (this->IsSynonym(arg1)) {
     lhs_expr = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
+  }
+  bool is_not = pattern_expression->IsNot();
+  if (is_not) {
+  } else {
   }
   this->context->AddPatternClause(std::make_shared<PatternAssignClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr_tree));

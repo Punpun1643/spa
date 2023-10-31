@@ -7,7 +7,7 @@
 
 class ModifiesExpression : public SuchThatExpression {
  public:
-  ModifiesExpression(std::string arg1, std::string arg2);
+  ModifiesExpression(std::string arg1, std::string arg2, bool is_not);
 
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 

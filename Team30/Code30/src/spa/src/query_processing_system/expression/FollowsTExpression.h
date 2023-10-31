@@ -7,7 +7,7 @@
 
 class FollowsTExpression : public SuchThatExpression {
  public:
-  FollowsTExpression(std::string arg1, std::string arg2);
+  FollowsTExpression(std::string arg1, std::string arg2, bool is_not);
 
   void acceptInterpreter(QueryInterpreter& interpreter) override;
 

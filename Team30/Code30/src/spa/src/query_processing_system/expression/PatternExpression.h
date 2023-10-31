@@ -12,7 +12,7 @@ class PatternExpression : public ClauseExpression {
  public:
   PatternExpression(std::string syn_assign, std::string arg1, std::string arg2,
                     MatchType match_type,
-                    std::shared_ptr<TreeNode> rhs_expr_tree);
+                    std::shared_ptr<TreeNode> rhs_expr_tree, bool is_not);
   void acceptInterpreter(QueryInterpreter& interpreter) override;
   MatchType GetMatchType();
   std::shared_ptr<TreeNode> GetRhsExprTree();
