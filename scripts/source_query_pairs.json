@@ -1,0 +1,108 @@
+{
+  "pairs": [
+    {
+      "source": "test1-modifies-source.txt",
+      "query": "test1-modifies-queries.txt"
+    },
+    {
+      "source": "test1-uses-source.txt",
+      "query": "test1-uses-queries.txt"
+    },
+    {
+      "source": "test1-source.txt",
+      "query": "test1-parent-queries.txt"
+    },
+    {
+      "source": "test1-source.txt",
+      "query": "test1-pattern-queries.txt"
+    },
+    {
+      "source": "test2-source.txt",
+      "query": "test2-follows-queries.txt"
+    },
+    {
+      "source": "test2-source.txt",
+      "query": "test2-syntax-invalid-queries.txt"
+    },
+    {
+      "source":"test2-source.txt",
+      "query": "test2-uses-queries.txt"
+    },
+    {
+      "source": "test3-source.txt",
+      "query": "test3-complex-queries.txt"
+    },
+    {
+      "source": "test4-source.txt",
+      "query": "test4-and-pattern-queries.txt"
+    },
+    {
+      "source": "test4-source.txt",
+      "query": "test4-and-such-that-queries.txt"
+    },
+    {
+      "source": "test4-source.txt",
+      "query": "test4-extended-select-queries.txt"
+    },
+    {
+      "source": "test4-source.txt",
+      "query": "test4-pattern-queries.txt"
+    },
+    {
+      "source": "test7-source.txt",
+      "query": "test7-and-clause-queries.txt"
+    },
+    {
+      "source": "test7-source.txt",
+      "query": "test7-multi-return-type-queries.txt"
+    },
+    {
+      "source": "test8-source.txt",
+      "query": "test8-next-queries.txt"
+    },
+    {
+      "source": "test9-attrref-source.txt",
+      "query": "test9-attrref-queries.txt"
+    },
+    {
+      "source": "test9-with-source.txt",
+      "query": "test9-with-invalid-queries.txt"
+    },
+    {
+      "source": "test9-with-source.txt",
+      "query": "test9-with-queries.txt"
+    },
+    {
+      "source": "test10-affects-source.txt",
+      "query": "test10-affects-queries.txt"
+    },
+    {
+      "source": "similar-names-source.txt",
+      "query": "similar-names-queries.txt"
+    },
+    {
+      "source": "nesting-source.txt",
+      "query": "nesting-queries.txt"
+    },
+    {
+      "source": "multiconditional-source.txt",
+      "query": "multiconditional-queries.txt"
+    },
+    {
+      "source": "multi-procedures-and-calls-source.txt",
+      "query": "multi-procedures-and-calls-queries.txt"
+    },
+    {
+      "source": "multi-procedures-source.txt",
+      "query": "multi-procedures-queries.txt"
+    },
+    {
+      "source": "multi-call-source.txt",
+      "query": "multi-call-relation-queries.txt"
+    },
+    {
+      "source": "exact-pattern-source.txt",
+      "query": "exact-pattern-queries.txt"
+    }
+  ]
+}
