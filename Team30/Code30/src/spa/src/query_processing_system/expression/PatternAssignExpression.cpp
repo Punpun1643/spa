@@ -8,7 +8,7 @@ PatternAssignExpression::PatternAssignExpression(
     MatchType match_type, std::shared_ptr<TreeNode> rhs_expr_tree)
     : PatternExpression(synonym, arg1, arg2),
       match_type(match_type),
-      rhs_expr_tree(rhs_expr_tree){}
+      rhs_expr_tree(rhs_expr_tree) {}
 
 void PatternAssignExpression::acceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
