@@ -1,133 +1,133 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.688000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.542000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Exact Match single term">1</id><querystr><![CDATA[assign a; Select a pattern a (_, "5")]]></querystr>
 <stuans>1,15</stuans>
 <correct>1,15</correct>
-<time_taken>1.645000</time_taken>
+<time_taken>1.382000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Exact Match entire RHS">2</id><querystr><![CDATA[assign a; Select a pattern a (_, "5 + y + z")]]></querystr>
 <stuans>3</stuans>
 <correct>3</correct>
-<time_taken>1.542000</time_taken>
+<time_taken>1.260000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Exact Match without brackets">3</id><querystr><![CDATA[assign a; Select a pattern a (_, "a + a - a * a / a % a")]]></querystr>
 <stuans>12,14,16,2</stuans>
 <correct>2,12,14,16</correct>
-<time_taken>1.570000</time_taken>
+<time_taken>1.188000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Exact Match with brackets">4</id><querystr><![CDATA[assign a; Select a pattern a (_, "(b + c) / (c * a)")]]></querystr>
 <stuans>6</stuans>
 <correct>6</correct>
-<time_taken>1.542000</time_taken>
+<time_taken>1.209000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Invalid Exact Match RHS">5</id><querystr><![CDATA[assign a; Select a pattern a (_, "5 +")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.736000</time_taken>
+<time_taken>1.297000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="Partial Match substring RHS">6</id><querystr><![CDATA[assign a; Select a pattern a (_, _"c/c"_)]]></querystr>
 <stuans>9</stuans>
 <correct>9</correct>
-<time_taken>1.642000</time_taken>
+<time_taken>1.193000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="3" Pattern="1" CondNum="5" RelNum="0" comment="Partial Match substring RHS">7</id><querystr><![CDATA[assign a; Select a pattern a (_, _"a * a / a"_)]]></querystr>
 <stuans>12,14,16,2</stuans>
 <correct>2,12,14,16</correct>
-<time_taken>1.553000</time_taken>
+<time_taken>1.127000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Variable synonym LHS, Exact matching RHS">8</id><querystr><![CDATA[assign a; variable v; Select a pattern a (v, "(a + (a - a) * a / (a % a))")]]></querystr>
 <stuans>13</stuans>
 <correct>13</correct>
-<time_taken>1.551000</time_taken>
+<time_taken>1.181000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Variable synonym LHS, Exact matching RHS, multiple answers">9</id><querystr><![CDATA[assign a; variable v; Select a pattern a (v, "(7 - (11 + a - c) * d - (z * y * a))")]]></querystr>
 <stuans>7,8</stuans>
 <correct>7,8</correct>
-<time_taken>1.641000</time_taken>
+<time_taken>1.358000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="String LHS, Exact matching RHS">10</id><querystr><![CDATA[assign a; Select a pattern a ("a", "5")]]></querystr>
 <stuans>15</stuans>
 <correct>15</correct>
-<time_taken>1.419000</time_taken>
+<time_taken>0.988000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="String LHS, Exact matching RHS, multiple answers">11</id><querystr><![CDATA[assign a; Select a pattern a ("h", "a + a - a * a/ a% a")]]></querystr>
 <stuans>12,16</stuans>
 <correct>12,16</correct>
-<time_taken>1.387000</time_taken>
+<time_taken>1.106000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Invalid - non variable synonym LHS, exact match RHS">12</id><querystr><![CDATA[assign a; constant c; Select a pattern a (c, "5 + y + z")]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.532000</time_taken>
+<time_taken>1.294000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Non existent variable RHS exact match">13</id><querystr><![CDATA[assign a; Select a pattern a (_, "zz")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.693000</time_taken>
+<time_taken>1.561000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Existent partial match but non existent exact match">14</id><querystr><![CDATA[assign a; Select a pattern a ("y", "8/6")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.331000</time_taken>
+<time_taken>1.083000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Invalid - procedure attrRef LHS, exact match RHS">15</id><querystr><![CDATA[assign a; procedure p; Select a pattern a (p.procName, "x * 5 + 8 / 6")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.378000</time_taken>
+<time_taken>1.215000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Invalid - variable attrRef LHS, exact match RHS">16</id><querystr><![CDATA[assign a; variable v; Select a pattern a (v.varName, "x * 5 + 8 / 6")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.374000</time_taken>
+<time_taken>1.165000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Invalid - extra inverted commas">17</id><querystr><![CDATA[assign a; Select a pattern a ("h", "a + a - a * a/ a% a"")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.384000</time_taken>
+<time_taken>1.130000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Pattern="1" CondNum="2" RelNum="0" comment="Invalid - missing inverted commas">18</id><querystr><![CDATA[assign a; Select a pattern a ("h", a + a - a * a/ a% a)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.402000</time_taken>
+<time_taken>1.098000</time_taken>
 <passed/>
 </query>
 </queries>
