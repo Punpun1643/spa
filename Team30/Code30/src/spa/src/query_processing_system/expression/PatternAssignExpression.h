@@ -14,7 +14,7 @@ class PatternAssignExpression : public PatternExpression {
                           std::string arg2, MatchType match_type,
                           std::shared_ptr<TreeNode> rhs_expr_tree, bool is_not);
 
-  void acceptInterpreter(QueryInterpreter& interpreter) override;
+  void AcceptInterpreter(QueryInterpreter& interpreter) override;
   MatchType GetMatchType();
   std::shared_ptr<TreeNode> GetRhsExprTree();
 

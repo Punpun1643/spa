@@ -10,7 +10,7 @@ void Context::AddAttrRefDeclaration(AttrRef attr_ref) {
   this->selected_attr_refs.push_back(attr_ref);
 }
 
-void Context::addDeclarations(EntityType entity_type,
+void Context::AddDeclarations(EntityType entity_type,
                               std::vector<std::string> synonyms) {
   for (std::string synonym : synonyms) {
     PqlDeclaration declaration = PqlDeclaration(synonym, entity_type);

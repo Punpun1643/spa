@@ -9,7 +9,7 @@ class PatternIfExpression : public PatternExpression {
  public:
   PatternIfExpression(std::string synonym, std::string arg1, bool is_not);
 
-  void acceptInterpreter(QueryInterpreter& interpreter) override;
+  void AcceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~PatternIfExpression() = default;
 };

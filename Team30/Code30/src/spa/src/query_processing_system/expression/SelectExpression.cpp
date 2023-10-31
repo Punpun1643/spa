@@ -23,7 +23,7 @@ bool SelectExpression::IsBoolean() {
   return this->is_boolean;
 }
 
-void SelectExpression::acceptInterpreter(QueryInterpreter& interpreter) {
+void SelectExpression::AcceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
       std::dynamic_pointer_cast<SelectExpression>(shared_from_this()));
 }

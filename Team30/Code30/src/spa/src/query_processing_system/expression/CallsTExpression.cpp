@@ -6,7 +6,7 @@ CallsTExpression::CallsTExpression(std::string arg1, std::string arg2,
                                    bool is_not)
     : SuchThatExpression(arg1, arg2, is_not) {}
 
-void CallsTExpression::acceptInterpreter(QueryInterpreter& interpreter) {
+void CallsTExpression::AcceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
       std::dynamic_pointer_cast<CallsTExpression>(shared_from_this()));
 }

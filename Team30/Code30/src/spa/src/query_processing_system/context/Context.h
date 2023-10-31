@@ -18,7 +18,7 @@ typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 class Context {
  public:
   void AddAttrRefDeclaration(AttrRef attr_ref);
-  void addDeclarations(EntityType entity_type,
+  void AddDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
   void AddNotClause(std::shared_ptr<NotClauseDecorator> not_clause);
   void AddPatternClause(std::shared_ptr<PatternClause> pattern_clause);

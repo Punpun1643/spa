@@ -10,7 +10,7 @@ PatternAssignExpression::PatternAssignExpression(
       match_type(match_type),
       rhs_expr_tree(rhs_expr_tree) {}
 
-void PatternAssignExpression::acceptInterpreter(QueryInterpreter& interpreter) {
+void PatternAssignExpression::AcceptInterpreter(QueryInterpreter& interpreter) {
   interpreter.Interpret(
       std::dynamic_pointer_cast<PatternAssignExpression>(shared_from_this()));
 }

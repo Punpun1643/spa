@@ -45,7 +45,7 @@ QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
 void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =
       std::move(this->expression_tree);
-  expression_tree->acceptInterpreter(*this);
+  expression_tree->AcceptInterpreter(*this);
 }
 
 void QueryInterpreter::Interpret(
@@ -329,7 +329,7 @@ void QueryInterpreter::InterpretNext(std::shared_ptr<AExpression> expression) {
   std::optional<std::shared_ptr<AExpression>> next_expression =
       expression->GetNextExpression();
   if (next_expression.has_value()) {
-    next_expression.value()->acceptInterpreter(*this);
+    next_expression.value()->AcceptInterpreter(*this);
   }
 }
 

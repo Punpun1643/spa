@@ -38,7 +38,7 @@ void ContextBuilder::parseDeclaration() {
   }
   NextToken();  // entity type OR select
 
-  this->context->addDeclarations(entity_type, *synonym_list);
+  this->context->AddDeclarations(entity_type, *synonym_list);
 }
 
 void ContextBuilder::addSynonym(

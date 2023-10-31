@@ -9,7 +9,7 @@ class CallsExpression : public SuchThatExpression {
  public:
   CallsExpression(std::string arg1, std::string arg2, bool is_not);
 
-  void acceptInterpreter(QueryInterpreter& interpreter) override;
+  void AcceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~CallsExpression() = default;
 };
