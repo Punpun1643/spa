@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../clauses/PatternAssignClause.h"
+#include "../clauses/PatternClause.h"
 #include "../clauses/SuchThatClause.h"
 #include "../clauses/WithClause.h"
 #include "query_processing_system/references/AttrRef.h"
@@ -19,7 +19,7 @@ class Context {
   void AddAttrRefDeclaration(AttrRef attr_ref);
   void addDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
-  void AddPatternClause(std::shared_ptr<PatternAssignClause> pattern_clause);
+  void AddPatternClause(std::shared_ptr<PatternClause> pattern_clause);
   void AddSuchThatClause(std::shared_ptr<SuchThatClause> such_that_clause);
   void AddWithClause(std::shared_ptr<WithClause> with_clause);
   bool CheckDeclarationExists(std::string synonym);
@@ -32,6 +32,6 @@ class Context {
   std::vector<std::shared_ptr<Clause>> other_clauses;
   std::vector<AttrRef> selected_attr_refs;
   std::vector<std::shared_ptr<SuchThatClause>> such_that_clauses;
-  std::vector<std::shared_ptr<PatternAssignClause>> pattern_clauses;
+  std::vector<std::shared_ptr<PatternClause>> pattern_clauses;
   std::vector<std::shared_ptr<WithClause>> with_clauses;
 };

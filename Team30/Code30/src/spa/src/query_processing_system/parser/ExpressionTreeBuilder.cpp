@@ -259,57 +259,22 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    std::string syn_assign = NextToken()->GetTokenVal();
-
-    std::string arg1 = "";
-    std::string arg2 = "";
-    std::vector<std::shared_ptr<Token>> infix_tokens;
-
-    NextToken();  // (
-
-    NextToken();
-    while (GetCurrTokenValue() != ",") {
-      arg1 += GetCurrToken()->GetTokenVal();
-      NextToken();
+    std::string synonym = NextToken()->GetTokenVal();
+    EntityType pattern_entity_type =
+        this->context->GetDeclaration(synonym).GetEntityType();
+    if (pattern_entity_type == EntityType::ASSIGN) {
+      current_pattern_expression =
+          std::make_optional<std::shared_ptr<PatternAssignExpression>>(
+              this->CreatePatternAssign(synonym));
+    } else if (pattern_entity_type == EntityType::WHILE) {
+      current_pattern_expression =
+          std::make_optional<std::shared_ptr<PatternWhileExpression>>(
+              this->CreatePatternWhile(synonym));
+    } else if (pattern_entity_type == EntityType::IF) {
+      current_pattern_expression =
+          std::make_optional<std::shared_ptr<PatternIfExpression>>(
+              this->CreatePatternIf(synonym));
     }
-
-    NextToken();  // start of arg2
-    int opening_brace_count = 0;
-    while ((opening_brace_count >= 1) || GetCurrTokenValue() != ")") {
-      std::string current_token_value = GetCurrTokenValue();
-      if (current_token_value != "_" && current_token_value != "\"") {
-        infix_tokens.push_back(GetCurrToken());
-      }
-      if (current_token_value == "(") {
-        opening_brace_count++;
-      } else if (current_token_value == ")") {
-        opening_brace_count--;
-      }
-      arg2 += current_token_value;
-      NextToken();
-    }
-
-    MatchType match_type;
-    std::shared_ptr<TreeNode> rhs_expr_tree;
-    if (arg2 == "_") {
-      match_type = MatchType::WILD_MATCH;
-      rhs_expr_tree = nullptr;
-    } else {
-      if (std::regex_match(arg2, std::regex("_\".*\"_"))) {
-        match_type = MatchType::PARTIAL_MATCH;
-      } else {
-        match_type = MatchType::EXACT_MATCH;
-      }
-      std::queue<std::shared_ptr<std::string>> post_fix =
-          AParser::ConvertInfixToPostfix(infix_tokens);
-      rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
-    }
-
-    current_pattern_expression =
-        std::make_optional<std::shared_ptr<PatternExpression>>(
-            std::make_shared<PatternExpression>(syn_assign, arg1, arg2,
-                                                match_type, rhs_expr_tree));
-
     if (previous_pattern_expression.has_value()) {
       previous_pattern_expression.value()->SetNextExpression(
           current_pattern_expression);
@@ -325,6 +290,92 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
     NextToken();  // and OR start of another clause OR EOF
   }
   return pattern_expression_head;
+}
+
+std::shared_ptr<PatternAssignExpression>
+ExpressionTreeBuilder::CreatePatternAssign(std::string synonym) {
+  std::string arg1 = "";
+  std::string arg2 = "";
+  std::vector<std::shared_ptr<Token>> infix_tokens;
+
+  NextToken();  // (
+
+  NextToken();
+  while (GetCurrTokenValue() != ",") {
+    arg1 += GetCurrTokenValue();
+    NextToken();
+  }
+
+  NextToken();  // start of arg2
+  int opening_brace_count = 0;
+  while ((opening_brace_count >= 1) || GetCurrTokenValue() != ")") {
+    std::string current_token_value = GetCurrTokenValue();
+    if (current_token_value != "_" && current_token_value != "\"") {
+      infix_tokens.push_back(GetCurrToken());
+    }
+    if (current_token_value == "(") {
+      opening_brace_count++;
+    } else if (current_token_value == ")") {
+      opening_brace_count--;
+    }
+    arg2 += current_token_value;
+    NextToken();
+  }
+
+  MatchType match_type;
+  std::shared_ptr<TreeNode> rhs_expr_tree;
+  if (arg2 == "_") {
+    match_type = MatchType::WILD_MATCH;
+    rhs_expr_tree = nullptr;
+  } else {
+    if (std::regex_match(arg2, std::regex("_\".*\"_"))) {
+      match_type = MatchType::PARTIAL_MATCH;
+    } else {
+      match_type = MatchType::EXACT_MATCH;
+    }
+    std::queue<std::shared_ptr<std::string>> post_fix =
+        AParser::ConvertInfixToPostfix(infix_tokens);
+    rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
+  }
+
+  return std::make_shared<PatternAssignExpression>(synonym, arg1, arg2,
+                                                   match_type, rhs_expr_tree);
+}
+
+std::shared_ptr<PatternIfExpression> ExpressionTreeBuilder::CreatePatternIf(
+    std::string synonym) {
+  std::string arg1 = "";
+
+  NextToken();  // (
+
+  NextToken();
+  while (GetCurrTokenValue() != ",") {
+    arg1 += GetCurrTokenValue();
+    NextToken();
+  }
+
+  NextToken();  // _
+  NextToken();  // ,
+  NextToken();  // _
+  NextToken();  // )
+  return std::make_shared<PatternIfExpression>(synonym, arg1);
+}
+
+std::shared_ptr<PatternWhileExpression>
+ExpressionTreeBuilder::CreatePatternWhile(std::string synonym) {
+  std::string arg1 = "";
+
+  NextToken();  // (
+
+  NextToken();
+  while (GetCurrTokenValue() != ",") {
+    arg1 += GetCurrTokenValue();
+    NextToken();
+  }
+
+  NextToken();  // _
+  NextToken();  // )
+  return std::make_shared<PatternWhileExpression>(synonym, arg1);
 }
 
 std::shared_ptr<WithExpression>

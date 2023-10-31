@@ -13,6 +13,8 @@
 #include "../clauses/NextClause.h"
 #include "../clauses/ParentClause.h"
 #include "../clauses/PatternAssignClause.h"
+#include "../clauses/PatternIfClause.h"
+#include "../clauses/PatternWhileClause.h"
 #include "../clauses/UsesPClause.h"
 #include "../clauses/UsesSClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -27,7 +29,9 @@
 #include "../expression/NextTExpression.h"
 #include "../expression/ParentExpression.h"
 #include "../expression/ParentTExpression.h"
-#include "../expression/PatternExpression.h"
+#include "../expression/PatternAssignExpression.h"
+#include "../expression/PatternIfExpression.h"
+#include "../expression/PatternWhileExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
 #include "../expression/WithExpression.h"
@@ -139,13 +143,13 @@ void QueryInterpreter::Interpret(
 }
 
 void QueryInterpreter::Interpret(
-    std::shared_ptr<PatternExpression> pattern_expression) {
-  std::string syn_assign = pattern_expression->GetSynAssign();
-  std::string arg1 = pattern_expression->GetArg1();
-  MatchType match_type = pattern_expression->GetMatchType();
+    std::shared_ptr<PatternAssignExpression> pattern_assign_expression) {
+  std::string synonym = pattern_assign_expression->GetSynonym();
+  std::string arg1 = pattern_assign_expression->GetArg1();
+  MatchType match_type = pattern_assign_expression->GetMatchType();
   std::shared_ptr<TreeNode> rhs_expr_tree =
-      pattern_expression->GetRhsExprTree();
-  PqlDeclaration assign_decl = this->GetMappedDeclaration(syn_assign);
+      pattern_assign_expression->GetRhsExprTree();
+  PqlDeclaration assign_decl = this->GetMappedDeclaration(synonym);
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {
     lhs_expr = std::make_shared<EntRef>();
@@ -156,7 +160,41 @@ void QueryInterpreter::Interpret(
   }
   this->context->AddPatternClause(std::make_shared<PatternAssignClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr_tree));
-  this->InterpretNext(pattern_expression);
+  this->InterpretNext(pattern_assign_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<PatternIfExpression> pattern_if_expression) {
+  std::string synonym = pattern_if_expression->GetSynonym();
+  std::string arg1 = pattern_if_expression->GetArg1();
+  PqlDeclaration if_decl = this->GetMappedDeclaration(synonym);
+  std::shared_ptr<EntRef> ent_ref;
+  if (arg1 == "_") {
+    ent_ref = std::make_shared<EntRef>();
+  } else {
+    ent_ref = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
+  }
+
+  this->context->AddPatternClause(
+      std::make_shared<PatternIfClause>(if_decl, *ent_ref));
+  this->InterpretNext(pattern_if_expression);
+}
+
+void QueryInterpreter::Interpret(
+    std::shared_ptr<PatternWhileExpression> pattern_while_expression) {
+  std::string synonym = pattern_while_expression->GetSynonym();
+  std::string arg1 = pattern_while_expression->GetArg1();
+  PqlDeclaration while_decl = this->GetMappedDeclaration(synonym);
+  std::shared_ptr<EntRef> ent_ref;
+  if (arg1 == "_") {
+    ent_ref = std::make_shared<EntRef>();
+  } else {
+    ent_ref = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
+  }
+
+  this->context->AddPatternClause(
+      std::make_shared<PatternWhileClause>(while_decl, *ent_ref));
+  this->InterpretNext(pattern_while_expression);
 }
 
 void QueryInterpreter::Interpret(
