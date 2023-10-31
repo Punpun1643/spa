@@ -10,12 +10,16 @@ void Context::AddAttrRefDeclaration(AttrRef attr_ref) {
   this->selected_attr_refs.push_back(attr_ref);
 }
 
-void Context::addDeclarations(EntityType entity_type,
+void Context::AddDeclarations(EntityType entity_type,
                               std::vector<std::string> synonyms) {
   for (std::string synonym : synonyms) {
     PqlDeclaration declaration = PqlDeclaration(synonym, entity_type);
     this->declarations.insert(std::make_pair(synonym, declaration));
   }
+}
+
+void Context::AddNotClause(std::shared_ptr<NotClauseDecorator> not_clause) {
+  this->not_clauses.push_back(not_clause);
 }
 
 void Context::AddPatternClause(std::shared_ptr<PatternClause> pattern_clause) {
@@ -51,5 +55,7 @@ std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
                        this->pattern_clauses.end());
   other_clauses.insert(other_clauses.end(), this->with_clauses.begin(),
                        this->with_clauses.end());
+  other_clauses.insert(other_clauses.end(), this->not_clauses.begin(),
+                       this->not_clauses.end());
   return other_clauses;
 }

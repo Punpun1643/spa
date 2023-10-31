@@ -624,6 +624,18 @@ TEST_CASE("With queries") {
     controller.TokensToClauses(tokens);
   }
 
+  SECTION("stmt s1; Select s1 with s1.stmt = 2") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1", "with", "s1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt"});
+    AddSpecialCharVector(tokens, {"="});
+    AddIntVector(tokens, {"2"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+  }
+
   SECTION("stmt s; constant c; Select s with s.stmt# = c.value") {
     AddDeclaration(tokens, "stmt", {"s"});
     AddDeclaration(tokens, "constant", {"c"});
@@ -833,6 +845,62 @@ TEST_CASE("Valid/Invalid Integer") {
     AddEOF(tokens);
 
     REQUIRE_THROWS(controller.TokensToClauses(tokens));
+  }
+}
+
+TEST_CASE("not clauses") {
+  std::vector<std::shared_ptr<Token>> tokens;
+  QPSController controller = QPSController();
+
+  SECTION("stmt s1; Select s1 such that not Follows(2, s1)") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1", "such", "that", "not", "Follows"});
+    AddIntWord(tokens, "2", "s1");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("assign a; Select a pattern not a (\"x\", _\"y\"_)") {
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select", "a", "pattern", "not", "a"});
+    AddSpecialCharVector(tokens, {"(", "\""});
+    AddWordVector(tokens, {"x"});
+    AddSpecialCharVector(tokens, {"\"", ",", "_", "\""});
+    AddWordVector(tokens, {"y"});
+    AddSpecialCharVector(tokens, {"\"", "_", ")"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("stmt s1; Select s1 with not s1.stmt# = 10") {
+    AddDeclaration(tokens, "stmt", {"s1"});
+    AddWordVector(tokens, {"Select", "s1",  "with", "not", "s1"});
+    AddSpecialCharVector(tokens, {"."});
+    AddWordVector(tokens, {"stmt#"});
+    AddSpecialCharVector(tokens, {"="});
+    AddIntVector(tokens, {"10"});
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
+  }
+
+  SECTION("stmt s1, s2; Select <s1, s2> such that Follows(2, s1) and not Follows*(10, s2)") {
+    AddDeclaration(tokens, "stmt", {"s1", "s2"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"s1"});
+    AddSpecialCharVector(tokens, {","});
+    AddWordVector(tokens, {"s2"});
+    AddSpecialCharVector(tokens, {">"});
+    AddWordVector(tokens, {"such", "that", "not", "Follows"});
+    AddIntWord(tokens, "2", "s1");
+    AddWordVector(tokens, {"and", "not", "Follows*"});
+    AddIntWord(tokens, "10", "s2");
+    AddEOF(tokens);
+
+    controller.TokensToClauses(tokens);
   }
 }
 

@@ -7,8 +7,8 @@
 
 class SuchThatExpression : public ClauseExpression {
  public:
-  SuchThatExpression(std::string arg1, std::string arg2)
-      : ClauseExpression(arg1, arg2) {}
+  SuchThatExpression(std::string arg1, std::string arg2, bool is_not)
+      : ClauseExpression(arg1, arg2, is_not) {}
 
   friend std::ostream& operator<<(std::ostream& os,
                                   SuchThatExpression const& obj) {

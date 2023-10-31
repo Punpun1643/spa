@@ -7,9 +7,9 @@
 
 class ParentTExpression : public SuchThatExpression {
  public:
-  ParentTExpression(std::string arg1, std::string arg2);
+  ParentTExpression(std::string arg1, std::string arg2, bool is_not);
 
-  void acceptInterpreter(QueryInterpreter& interpreter) override;
+  void AcceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~ParentTExpression() = default;
 };

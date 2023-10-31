@@ -172,7 +172,15 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
   std::optional<std::shared_ptr<SuchThatExpression>>
       current_such_that_expression;
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    std::string clause_name = NextToken()->GetTokenVal();
+    NextToken();
+
+    bool is_not = false;
+    if (GetCurrTokenValue() == "not") {
+      is_not = true;
+      NextToken();
+    }
+
+    std::string clause_name = GetCurrTokenValue();
     NextToken();  // (
 
     std::string arg1 = "";
@@ -192,47 +200,47 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
     if (clause_name == QpParser::AFFECTS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<AffectsExpression>>(
-              std::make_shared<AffectsExpression>(arg1, arg2));
+              std::make_shared<AffectsExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::CALLS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<CallsExpression>>(
-              std::make_shared<CallsExpression>(arg1, arg2));
+              std::make_shared<CallsExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::CALLS_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<CallsTExpression>>(
-              std::make_shared<CallsTExpression>(arg1, arg2));
+              std::make_shared<CallsTExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::FOLLOWS) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<FollowsExpression>>(
-              std::make_shared<FollowsExpression>(arg1, arg2));
+              std::make_shared<FollowsExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::FOLLOWS_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<FollowsTExpression>>(
-              std::make_shared<FollowsTExpression>(arg1, arg2));
+              std::make_shared<FollowsTExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::MODIFIES) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ModifiesExpression>>(
-              std::make_shared<ModifiesExpression>(arg1, arg2));
+              std::make_shared<ModifiesExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::NEXT) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<NextExpression>>(
-              std::make_shared<NextExpression>(arg1, arg2));
+              std::make_shared<NextExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::NEXT_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<NextTExpression>>(
-              std::make_shared<NextTExpression>(arg1, arg2));
+              std::make_shared<NextTExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::PARENT) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ParentExpression>>(
-              std::make_shared<ParentExpression>(arg1, arg2));
+              std::make_shared<ParentExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::PARENT_STAR) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<ParentTExpression>>(
-              std::make_shared<ParentTExpression>(arg1, arg2));
+              std::make_shared<ParentTExpression>(arg1, arg2, is_not));
     } else if (clause_name == QpParser::USES) {
       current_such_that_expression =
           std::make_optional<std::shared_ptr<UsesExpression>>(
-              std::make_shared<UsesExpression>(arg1, arg2));
+              std::make_shared<UsesExpression>(arg1, arg2, is_not));
     }
 
     if (previous_such_that_expression.has_value()) {
@@ -259,22 +267,31 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
-    std::string synonym = NextToken()->GetTokenVal();
+    NextToken();
+
+    bool is_not = false;
+    if (GetCurrTokenValue() == "not") {
+      is_not = true;
+      NextToken();
+    }
+
+    std::string synonym = GetCurrTokenValue();
     EntityType pattern_entity_type =
         this->context->GetDeclaration(synonym).GetEntityType();
     if (pattern_entity_type == EntityType::ASSIGN) {
       current_pattern_expression =
           std::make_optional<std::shared_ptr<PatternAssignExpression>>(
-              this->CreatePatternAssign(synonym));
+              this->CreatePatternAssign(synonym, is_not));
     } else if (pattern_entity_type == EntityType::WHILE) {
       current_pattern_expression =
           std::make_optional<std::shared_ptr<PatternWhileExpression>>(
-              this->CreatePatternWhile(synonym));
+              this->CreatePatternWhile(synonym, is_not));
     } else if (pattern_entity_type == EntityType::IF) {
       current_pattern_expression =
           std::make_optional<std::shared_ptr<PatternIfExpression>>(
-              this->CreatePatternIf(synonym));
+              this->CreatePatternIf(synonym, is_not));
     }
+
     if (previous_pattern_expression.has_value()) {
       previous_pattern_expression.value()->SetNextExpression(
           current_pattern_expression);
@@ -293,7 +310,7 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
 }
 
 std::shared_ptr<PatternAssignExpression>
-ExpressionTreeBuilder::CreatePatternAssign(std::string synonym) {
+ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
   std::string arg1 = "";
   std::string arg2 = "";
   std::vector<std::shared_ptr<Token>> infix_tokens;
@@ -338,12 +355,12 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym) {
     rhs_expr_tree = AParser::BuildExprTreeAndValidate(post_fix);
   }
 
-  return std::make_shared<PatternAssignExpression>(synonym, arg1, arg2,
-                                                   match_type, rhs_expr_tree);
+  return std::make_shared<PatternAssignExpression>(
+      synonym, arg1, arg2, match_type, rhs_expr_tree, is_not);
 }
 
 std::shared_ptr<PatternIfExpression> ExpressionTreeBuilder::CreatePatternIf(
-    std::string synonym) {
+    std::string synonym, bool is_not) {
   std::string arg1 = "";
 
   NextToken();  // (
@@ -358,11 +375,11 @@ std::shared_ptr<PatternIfExpression> ExpressionTreeBuilder::CreatePatternIf(
   NextToken();  // ,
   NextToken();  // _
   NextToken();  // )
-  return std::make_shared<PatternIfExpression>(synonym, arg1);
+  return std::make_shared<PatternIfExpression>(synonym, arg1, is_not);
 }
 
 std::shared_ptr<PatternWhileExpression>
-ExpressionTreeBuilder::CreatePatternWhile(std::string synonym) {
+ExpressionTreeBuilder::CreatePatternWhile(std::string synonym, bool is_not) {
   std::string arg1 = "";
 
   NextToken();  // (
@@ -375,7 +392,7 @@ ExpressionTreeBuilder::CreatePatternWhile(std::string synonym) {
 
   NextToken();  // _
   NextToken();  // )
-  return std::make_shared<PatternWhileExpression>(synonym, arg1);
+  return std::make_shared<PatternWhileExpression>(synonym, arg1, is_not);
 }
 
 std::shared_ptr<WithExpression>
@@ -387,6 +404,13 @@ ExpressionTreeBuilder::CreateWithExpressionHead() {
 
   while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
     NextToken();
+
+    bool is_not = false;
+    if (GetCurrTokenValue() == "not") {
+      is_not = true;
+      NextToken();
+    }
+
     std::string first_ref = "";
 
     while (GetCurrTokenValue() != "=") {
@@ -408,15 +432,12 @@ ExpressionTreeBuilder::CreateWithExpressionHead() {
       second_ref += GetCurrTokenValue();         // synonym
       second_ref += NextToken()->GetTokenVal();  // .
       std::string attrName = NextToken()->GetTokenVal();
-      if (attrName == "stmt") {
-        attrName += NextToken()->GetTokenVal();  // #
-      }
       second_ref += attrName;
     }
 
     current_with_expression =
         std::make_optional<std::shared_ptr<WithExpression>>(
-            std::make_shared<WithExpression>(first_ref, second_ref));
+            std::make_shared<WithExpression>(first_ref, second_ref, is_not));
 
     if (previous_with_expression.has_value()) {
       previous_with_expression.value()->SetNextExpression(

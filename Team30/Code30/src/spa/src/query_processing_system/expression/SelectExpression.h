@@ -12,7 +12,7 @@ class SelectExpression : public AExpression {
   AttrType GetAttrType();
   std::string GetSynonym();
   bool IsBoolean();
-  void acceptInterpreter(QueryInterpreter& interpreter) override;
+  void AcceptInterpreter(QueryInterpreter& interpreter) override;
 
   ~SelectExpression() = default;
 

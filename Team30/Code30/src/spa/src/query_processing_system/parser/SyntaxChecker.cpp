@@ -60,12 +60,8 @@ void SyntaxChecker::CheckAnd(ClauseType clause_type) {
   NextToken();
 
   if (clause_type == ClauseType::such_that) {
-    if (QpParser::IsRelRef(GetCurrTokenValue())) {
-      CheckSuchThat(true);
-      return;
-    } else {
-      throw InvalidSyntaxException("Expected <relref> after 'and'");
-    }
+    CheckSuchThat(true);
+    return;
   } else if (clause_type == ClauseType::pattern) {
     CheckPattern(true);
     return;
@@ -269,6 +265,10 @@ void SyntaxChecker::CheckPattern(bool has_and) {
     NextToken();
   }
 
+  if (GetCurrTokenValue() == "not") {
+    NextToken();
+  }
+
   std::optional<EntityType> pattern_entity_type =
       this->CheckCurrentTokenPatternEntity();
 
@@ -422,8 +422,13 @@ void SyntaxChecker::CheckSuchThat(bool has_and) {
     if (NextToken()->GetTokenVal() != "that") {
       throw InvalidSyntaxException("Expected 'that' in such that clause");
     }
-    NextToken();  // relRef
+    NextToken();  // 'not' or relRef
   }
+
+  if (GetCurrTokenValue() == "not") {
+    NextToken();
+  }
+
   if (!QpParser::IsRelRef(GetCurrTokenValue())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
@@ -482,6 +487,10 @@ void SyntaxChecker::CheckUses() {
 void SyntaxChecker::CheckWith(bool has_and) {
   if (!has_and) {
     // current token: with
+    NextToken();
+  }
+
+  if (GetCurrTokenValue() == "not") {
     NextToken();
   }
 
