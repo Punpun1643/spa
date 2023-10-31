@@ -11,7 +11,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   RelationType last_rel_passed = RelationType::FOLLOWS;
 
   // Select
-  std::vector<std::string> const get_all_of_type_values = {"x", "y", "z"};
+  std::vector<std::string> get_all_of_type_values = {"x", "y", "z"};
   std::string converted_entity = "a";
   AttrType last_attr_type_passed = AttrType::VALUE;
   AttrType last_attr_type_2_passed = AttrType::VALUE;
@@ -36,7 +36,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   bool const value_wild_bool = false;
   bool const wild_value_bool = true;
   bool const wild_wild_bool = true;
-  std::vector<std::string> const synonym_wild_values = {"1", "1", "3"};
+  std::vector<std::string> synonym_wild_values = {"1", "1", "3"};
   std::vector<std::string> const wild_synonym_values = {"a", "b", "c"};
   std::vector<std::string> const synonym_value_values = {"4", "5", "6"};
   std::vector<std::string> const value_synonym_values = {"d", "e", "f"};

@@ -2,11 +2,12 @@
 
 #include "../../../../spa/src/program_knowledge_base/PKBQPSInterface.h"
 #include "../../../../spa/src/query_processing_system/clauses/FollowsClause.h"
-#include "../../../../spa/src/query_processing_system/clauses/WithClause.h"
 #include "../../../../spa/src/query_processing_system/clauses/PatternAssignClause.h"
+#include "../../../../spa/src/query_processing_system/clauses/WithClause.h"
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
+#include "query_processing_system/clauses/NotClauseDecorator.h"
 #include "shared/ArrayUtility.h"
 
 class QeFactoryMethods {
@@ -126,6 +127,17 @@ TEST_CASE("Test Query Evaluator") {
         {AttrRef(print), AttrRef(print, AttrType::VAR_NAME)}, {with_clause});
     std::vector<std::vector<std::string>> expected_result = {
         {"alpha", "a"}, {"beta", "a"}, {"delta", "a"}};
+    REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
+  }
+
+  SECTION("Evaluate query with NotClause") {
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(s), StmtRef());
+    std::shared_ptr<Clause> not_clause =
+        std::make_shared<NotClauseDecorator>(follows_clause);
+    pkb.get_all_of_type_values = {"a", "b", "c", "aa"};
+    pkb.synonym_wild_values = {"b", "c"};
+    result = qe.EvaluateQuery({AttrRef(s)}, {not_clause});
+    std::vector<std::vector<std::string>> expected_result = {{"a"}, {"aa"}};
     REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
   }
 }
