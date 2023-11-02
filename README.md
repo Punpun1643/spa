@@ -84,10 +84,12 @@ Examples:
 
 ## Automate the running of test cases
 
-- The source query files to be run are located
+- The source query files to be run are located at `scripts/source_query_pairs.json`
 - Script to automate the running of test cases is located in `scripts/run-autotester.py`
-- To run the script, paste the script into the `autotester` folder
-- Run the script with the following command: `python run-autotester.py`
+- Ensure that the `autotester` folder contains the following files:
+    - `source_query_pairs.json`
+    - `run-autotester.py`
+- Run the script with the following command: `python run-autotester.py` in the same directory as the `autotester`
 
 # Team Members
 
