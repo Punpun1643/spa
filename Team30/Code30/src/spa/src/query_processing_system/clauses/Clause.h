@@ -12,6 +12,6 @@ class Clause {
   virtual std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) = 0;
   virtual ~Clause();
 
-  void FlagAsNotClause();
-  bool IsNotClause() const;
+  void FlagAsNegated();
+  bool IsNegated() const;
 };

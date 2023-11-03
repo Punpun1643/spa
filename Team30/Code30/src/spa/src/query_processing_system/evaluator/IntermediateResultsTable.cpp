@@ -6,8 +6,14 @@
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 
+void IntermediateResultsTable::UpdateNoResultsFlag(int table_idx) {
+  if (tables.at(table_idx).HasNoResults()) {
+    has_no_results = true;
+  }
+}
+
 void IntermediateResultsTable::AddClauseResult(
-    ClauseResult const& clause_result) {
+    ClauseResult const& clause_result, bool is_negated) {
   if (has_no_results) {
     return;  // don't bother, stuck at false already
   }
@@ -15,13 +21,21 @@ void IntermediateResultsTable::AddClauseResult(
   switch (clause_result.GetNumDeclarations()) {
     case (0): {
       bool result = clause_result.GetBooleanClauseValue();
+      if (is_negated) {
+        result = !result;
+      }
       AddBooleanClauseResult(result);
       break;
     }
     case (1): {
       auto declaration = clause_result.GetDeclarations().front();
       auto values = clause_result.GetValues(declaration);
-      AddSingleDeclaration(declaration, values);
+      if (is_negated) {
+        RemoveSingleDeclaration(declaration, values);
+      } else {
+        AddSingleDeclaration(declaration, values);
+      }
+      UpdateNoResultsFlag(table_mapping.at(declaration));
       break;
     }
     case (2): {
@@ -30,7 +44,12 @@ void IntermediateResultsTable::AddClauseResult(
       auto d2 = declarations[1];
       auto d1_values = clause_result.GetValues(d1);
       auto d2_values = clause_result.GetValues(d2);
-      AddPairedDeclarations(d1, d2, d1_values, d2_values);
+      if (is_negated) {
+        RemovePairedDeclaration(d1, d2, d1_values, d2_values);
+      } else {
+        AddPairedDeclarations(d1, d2, d1_values, d2_values);
+      }
+      UpdateNoResultsFlag(table_mapping.at(d1));
       break;
     }
     default: {
@@ -75,7 +94,7 @@ IntermediateResultsTable::GetValuesGivenDeclarations(
 void IntermediateResultsTable::AddBooleanClauseResult(bool result) {
   if (!result) {
     has_no_results = true;
-  }  // otherwise, do nothing
+  }
 }
 
 void IntermediateResultsTable::AddSingleDeclaration(
@@ -88,11 +107,17 @@ void IntermediateResultsTable::AddSingleDeclaration(
   } else {
     int table_idx = table_mapping.at(d);
     tables[table_idx].Join(new_table);
-    if (tables[table_idx].HasNoResults()) {
-      has_no_results = true;
-      return;
-    }
   }
+}
+
+void IntermediateResultsTable::RemoveSingleDeclaration(PqlDeclaration const& d,
+                                                       std::vector<std::string> const& values) {
+  if (table_mapping.count(d) == 0) {
+    throw std::logic_error("Cannot remove values from a declaration that isn't already present");
+  }
+  auto new_table = RelationalTable(d, values);
+  int table_idx = table_mapping.at(d);
+  tables[table_idx].Delete(new_table);
 }
 
 void IntermediateResultsTable::AddPairedDeclarations(
@@ -131,10 +156,22 @@ void IntermediateResultsTable::AddPairedDeclarations(
       MergeExistingTables(d1_table_idx, d2_table_idx);
     }
   }
-  if (tables[table_mapping.at(d1)].HasNoResults()) {
-    has_no_results = true;
-    return;
+}
+
+void IntermediateResultsTable::RemovePairedDeclaration(PqlDeclaration const& d1, PqlDeclaration const& d2,
+                                                       std::vector<std::string> const& new_d1_values,
+                                                       std::vector<std::string> const& new_d2_values) {
+  if (table_mapping.count(d1) == 0 || table_mapping.count(d2) == 0) {
+    throw std::logic_error("Cannot remove values from declarations that aren't already present");
   }
+
+  if (table_mapping.at(d1) != table_mapping.at(d2)) {
+    MergeExistingTables(table_mapping.at(d1), table_mapping.at(d2), true);
+  }
+
+  RelationalTable new_table = RelationalTable(d1, d2, new_d1_values, new_d2_values);
+  int table_idx = table_mapping.at(d1);
+  tables[table_idx].Delete(new_table);
 }
 
 bool IntermediateResultsTable::HasDeclaration(
@@ -146,9 +183,9 @@ void IntermediateResultsTable::MergeExistingTables(int table_to_keep_id,
                                                    int table_to_merge_id,
                                                    bool allow_cross_product) {
   tables[table_to_keep_id].Join(tables[table_to_merge_id], allow_cross_product);
-  // Update table_mappings lazily (without removing old table)
-  // May want to remove old table in the future to reduce mem usage
+  // Update table_mappings lazily (without fully removing old table)
   for (auto const& name : tables[table_to_merge_id].GetTableColNames()) {
     table_mapping[name] = table_to_keep_id;
   }
+  tables[table_to_merge_id].Clear(); // to save memory
 }

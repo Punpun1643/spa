@@ -1,10 +1,10 @@
 #include "Clause.h"
 Clause::~Clause() = default;
 
-void Clause::FlagAsNotClause() {
+void Clause::FlagAsNegated() {
   is_not_clause = true;
 }
 
-bool Clause::IsNotClause() const {
+bool Clause::IsNegated() const {
   return is_not_clause;
 }

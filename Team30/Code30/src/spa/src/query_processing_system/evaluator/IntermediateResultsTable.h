@@ -16,19 +16,28 @@ class IntermediateResultsTable {
   std::vector<RelationalTable> tables;
   std::unordered_map<PqlDeclaration, int, PqlDeclarationHash> table_mapping;
 
+  void UpdateNoResultsFlag(int table_idx);
+
   void AddBooleanClauseResult(bool result);
   void AddSingleDeclaration(PqlDeclaration const& d,
                             std::vector<std::string> const& values);
   void AddPairedDeclarations(PqlDeclaration const& d1, PqlDeclaration const& d2,
                              std::vector<std::string> const& new_d1_values,
                              std::vector<std::string> const& new_d2_values);
+
+  void RemoveSingleDeclaration(PqlDeclaration const& d,
+                               std::vector<std::string> const& values);
+  void RemovePairedDeclaration(PqlDeclaration const& d1, PqlDeclaration const& d2,
+                               std::vector<std::string> const& new_d1_values,
+                               std::vector<std::string> const& new_d2_values);
+
   void MergeExistingTables(int table_to_keep_id, int table_to_merge_id,
                            bool allow_cross_product = false);
 
  public:
   IntermediateResultsTable();
 
-  void AddClauseResult(ClauseResult const& clause_result);
+  void AddClauseResult(ClauseResult const& clause_result, bool is_negated);
 
   bool HasNoResults() const;
 
