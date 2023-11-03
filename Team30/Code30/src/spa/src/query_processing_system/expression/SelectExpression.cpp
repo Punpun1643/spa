@@ -1,3 +1,4 @@
+#include "../interpreter/QueryInterpreter.h"
 #include "SelectExpression.h"
 
 #include <string>
