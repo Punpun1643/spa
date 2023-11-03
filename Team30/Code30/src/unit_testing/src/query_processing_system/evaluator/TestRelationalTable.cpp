@@ -38,6 +38,10 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE_THAT(table.GetTableColNames(),
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>({a, s})));
 
+    table.Clear();
+    REQUIRE(table.GetNumCols() == 0);
+    REQUIRE(table.HasNoResults());
+
     // empty lists
     table = RelationalTable(a, v, EMPTY_VEC, EMPTY_VEC);
     REQUIRE(table.GetNumCols() == 2);
@@ -130,5 +134,75 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE(table_1.GetTableCols({c}).empty());
     REQUIRE(table_1.GetTableCols({v}).empty());
     REQUIRE(table_1.GetTableCols({s}).empty());
+  }
+
+  SECTION("Test Delete") {
+    // TABLE
+    std::vector<std::string> C_VEC = {"1", "1", "2", "2", "2", "6", "1"};
+    std::vector<std::string> S_VEC = {"10", "12", "14", "14",
+                                      "18", "20", "10"};
+    std::vector<std::string> V_VEC = {"a", "b", "c", "d", "e", "f", "g"};
+
+    auto table_1 = RelationalTable(s, v, S_VEC, V_VEC);
+    auto table_1b = RelationalTable(c, v, C_VEC, V_VEC);
+    table_1.Join(table_1b);
+
+    SECTION("Test single decl delete") {
+      // OUTPUT TABLE
+      std::vector<std::vector<std::string>> EXP_OUTPUT = {
+          {"2","14","c"}, {"2","14","d"}, {"2","18","e"}};
+
+      table_1.Delete(c, {"1","6","4","124"});
+      REQUIRE(table_1.GetNumCols() == 3);
+      auto values = table_1.GetTableCols({c, s, v});
+      REQUIRE_THAT(values, Catch::UnorderedEquals(EXP_OUTPUT));
+
+      // Delete everything
+      table_1.Delete(c, {"2", "1", "0"});
+      REQUIRE(table_1.GetNumCols() == 3);
+      REQUIRE(table_1.HasNoResults());
+
+      REQUIRE_THROWS(table_1.Delete(a, {"a"}));
+    }
+
+    SECTION("Test double declaration delete") {
+      std::vector<std::vector<std::string>> EXP_OUTPUT = {
+          {"2","14","c"}, {"2","14","d"}, {"1","12","b"}};
+
+      std::unordered_set<std::pair<std::string, std::string>, PairHash> to_delete;
+      to_delete.emplace("1", "10");
+      to_delete.emplace("6","20");
+      to_delete.emplace("2","18");
+      to_delete.emplace("1","11");
+      to_delete.emplace("3", "14");
+      table_1.Delete(c, s, to_delete);
+      REQUIRE(table_1.GetNumCols() == 3);
+      auto values = table_1.GetTableCols({c, s, v});
+      REQUIRE_THAT(values, Catch::UnorderedEquals(EXP_OUTPUT));
+
+      // Delete everything
+      to_delete.emplace("14", "c");
+      to_delete.emplace("14","d");
+      to_delete.emplace("12","b");
+
+      table_1.Delete(s, v, to_delete);
+      REQUIRE(table_1.HasNoResults());
+
+      REQUIRE_THROWS(table_1.Delete(v, a, to_delete));
+      REQUIRE_THROWS(table_1.Delete(a, c, to_delete));
+      REQUIRE_THROWS(table_1.Delete(a, b, to_delete));
+    }
+
+    SECTION("Test delete that doesn't do anything") {
+      table_1.Delete(s, {"abcd", "efgh"});
+      auto v_values = table_1.GetTableCols({v});
+      REQUIRE_THAT(ArrayUtility::FlattenVector(v_values),
+                   Catch::UnorderedEquals(V_VEC));
+      table_1.Delete(c, s, {std::make_pair("wdqwd", "wedwe"),
+                                           std::make_pair("wadwddd","awd")});
+      v_values = table_1.GetTableCols({v});
+      REQUIRE_THAT(ArrayUtility::FlattenVector(v_values),
+                   Catch::UnorderedEquals(V_VEC));
+    }
   }
 }
