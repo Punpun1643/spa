@@ -6,7 +6,7 @@
 
 class Clause {
  private:
-  bool is_not_clause = false;
+  bool is_negated = false;
 
  public:
   virtual std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) = 0;

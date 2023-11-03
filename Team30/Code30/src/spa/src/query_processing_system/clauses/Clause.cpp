@@ -2,9 +2,9 @@
 Clause::~Clause() = default;
 
 void Clause::FlagAsNegated() {
-  is_not_clause = true;
+  is_negated = true;
 }
 
 bool Clause::IsNegated() const {
-  return is_not_clause;
+  return is_negated;
 }
