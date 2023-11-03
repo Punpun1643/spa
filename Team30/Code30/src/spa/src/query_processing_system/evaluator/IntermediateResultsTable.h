@@ -28,8 +28,8 @@ class IntermediateResultsTable {
   void RemoveSingleDeclaration(PqlDeclaration const& d,
                                std::vector<std::string> const& values);
   void RemovePairedDeclaration(PqlDeclaration const& d1, PqlDeclaration const& d2,
-                               std::vector<std::string> const& new_d1_values,
-                               std::vector<std::string> const& new_d2_values);
+                               std::vector<std::string> const& d1_values,
+                               std::vector<std::string> const& d2_values);
 
   void MergeExistingTables(int table_to_keep_id, int table_to_merge_id,
                            bool allow_cross_product = false);

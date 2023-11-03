@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "query_processing_system/references/PqlDeclaration.h"
+#include "program_knowledge_base/utils/PairHash.h"
+
 
 class RelationalTable {
   /**
@@ -51,4 +53,11 @@ class RelationalTable {
   int GetNumCols() const;
 
   void Join(RelationalTable& other_table, bool allow_cross_product = false);
+
+  void Delete(PqlDeclaration const& decl, std::unordered_set<std::string> const& values);
+
+  void Delete(PqlDeclaration const& d1, PqlDeclaration const& d2,
+              std::unordered_set<std::pair<std::string, std::string>, PairHash> const& values);
+
+  void Clear();
 };
