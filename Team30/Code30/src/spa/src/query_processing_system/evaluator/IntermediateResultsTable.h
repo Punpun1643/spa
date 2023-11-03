@@ -27,7 +27,8 @@ class IntermediateResultsTable {
 
   void RemoveSingleDeclaration(PqlDeclaration const& d,
                                std::vector<std::string> const& values);
-  void RemovePairedDeclaration(PqlDeclaration const& d1, PqlDeclaration const& d2,
+  void RemovePairedDeclaration(PqlDeclaration const& d1,
+                               PqlDeclaration const& d2,
                                std::vector<std::string> const& d1_values,
                                std::vector<std::string> const& d2_values);
 

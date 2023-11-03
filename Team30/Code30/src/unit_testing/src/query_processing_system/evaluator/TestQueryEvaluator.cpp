@@ -147,7 +147,8 @@ TEST_CASE("Test Query Evaluator") {
 
     pkb.get_all_of_type_values = {"42", "43"};
     result = qe.EvaluateQuery({AttrRef(s), AttrRef(a)}, {follows_clause});
-    std::vector<std::vector<std::string>> expected_result = {{"42", "42"}, {"43", "42"}, {"43", "43"}};
+    std::vector<std::vector<std::string>> expected_result = {
+        {"42", "42"}, {"43", "42"}, {"43", "43"}};
     REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
   }
 
@@ -157,14 +158,14 @@ TEST_CASE("Test Query Evaluator") {
     pattern_clause = std::make_shared<PatternAssignClause>(
         a, EntRef(v), MatchType::EXACT_MATCH, rhs_expr);
     pkb.synonym_synonym_values = {std::make_pair("y", "123")};
-    std::shared_ptr<Clause> not_clause = QeFactoryMethods::getFollowsClause(StmtRef(s), StmtRef(a));
+    std::shared_ptr<Clause> not_clause =
+        QeFactoryMethods::getFollowsClause(StmtRef(s), StmtRef(a));
     not_clause->FlagAsNegated();
 
     result = qe.EvaluateQuery({AttrRef(s), AttrRef(s), a_attr_ref, AttrRef(v)},
                               {follows_clause, pattern_clause, not_clause});
     std::vector<std::vector<std::string>> expected_result = {
-        {"x", "x", "123", "345"},
-        {"z", "z", "123", "345"}};
+        {"x", "x", "123", "345"}, {"z", "z", "123", "345"}};
     REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
   }
 }

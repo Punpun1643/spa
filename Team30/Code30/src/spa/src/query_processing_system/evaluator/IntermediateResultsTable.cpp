@@ -115,10 +115,11 @@ void IntermediateResultsTable::AddSingleDeclaration(
   }
 }
 
-void IntermediateResultsTable::RemoveSingleDeclaration(PqlDeclaration const& d,
-                                                       std::vector<std::string> const& values) {
+void IntermediateResultsTable::RemoveSingleDeclaration(
+    PqlDeclaration const& d, std::vector<std::string> const& values) {
   if (table_mapping.count(d) == 0) {
-    throw std::logic_error("Cannot remove values from a declaration that isn't already present");
+    throw std::logic_error(
+        "Cannot remove values from a declaration that isn't already present");
   }
   int table_idx = table_mapping.at(d);
   std::unordered_set<std::string> value_set(values.begin(), values.end());
@@ -163,11 +164,13 @@ void IntermediateResultsTable::AddPairedDeclarations(
   }
 }
 
-void IntermediateResultsTable::RemovePairedDeclaration(PqlDeclaration const& d1, PqlDeclaration const& d2,
-                                                       std::vector<std::string> const& d1_values,
-                                                       std::vector<std::string> const& d2_values) {
+void IntermediateResultsTable::RemovePairedDeclaration(
+    PqlDeclaration const& d1, PqlDeclaration const& d2,
+    std::vector<std::string> const& d1_values,
+    std::vector<std::string> const& d2_values) {
   if (table_mapping.count(d1) == 0 || table_mapping.count(d2) == 0) {
-    throw std::logic_error("Cannot remove values from declarations that aren't already present");
+    throw std::logic_error(
+        "Cannot remove values from declarations that aren't already present");
   }
 
   if (table_mapping.at(d1) != table_mapping.at(d2)) {
@@ -194,5 +197,5 @@ void IntermediateResultsTable::MergeExistingTables(int table_to_keep_id,
   for (auto const& name : tables[table_to_merge_id].GetTableColNames()) {
     table_mapping[name] = table_to_keep_id;
   }
-  tables[table_to_merge_id].Clear(); // to save memory
+  tables[table_to_merge_id].Clear();  // to save memory
 }

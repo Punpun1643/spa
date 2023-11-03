@@ -271,9 +271,10 @@ TEST_CASE("Intermediate Results Table Tests") {
   SECTION("Test negated clauses with two synonyms - same table") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     irt.AddClauseResult(PAIRED_CLAUSE_B_C, false);
-    auto CLAUSE_B_C_PARTIAL_INVERSE = ClauseResult(
-        b, c, {std::make_pair("2", "20"), std::make_pair("4", "40"),
-              std::make_pair("30","3")});
+    auto CLAUSE_B_C_PARTIAL_INVERSE =
+        ClauseResult(b, c,
+                     {std::make_pair("2", "20"), std::make_pair("4", "40"),
+                      std::make_pair("30", "3")});
 
     irt.AddClauseResult(CLAUSE_B_C_PARTIAL_INVERSE, true);
     REQUIRE_FALSE(irt.HasNoResults());
@@ -288,11 +289,13 @@ TEST_CASE("Intermediate Results Table Tests") {
   SECTION("Test negated clauses with two synonyms - diff table") {
     irt.AddClauseResult(SINGLE_CLAUSE_V, false);
     irt.AddClauseResult(ClauseResult(a, {"1", "2"}), false);
-    irt.AddClauseResult(ClauseResult(b, c, {std::make_pair("20","30")}), false);
+    irt.AddClauseResult(ClauseResult(b, c, {std::make_pair("20", "30")}),
+                        false);
 
-    auto CLAUSE_A_B_PARTIAL_INVERSE = ClauseResult(
-        a, b, {std::make_pair("1", "20"), std::make_pair("20", "2"),
-               std::make_pair("1","21")});
+    auto CLAUSE_A_B_PARTIAL_INVERSE =
+        ClauseResult(a, b,
+                     {std::make_pair("1", "20"), std::make_pair("20", "2"),
+                      std::make_pair("1", "21")});
 
     irt.AddClauseResult(CLAUSE_A_B_PARTIAL_INVERSE, true);
     REQUIRE_FALSE(irt.HasNoResults());
@@ -328,8 +331,10 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Check results retrieval - de-duplication") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
-    irt.AddClauseResult(ClauseResult(
-        a, c, IrtTestHelperMethods::makePairedVector({"2", "2", "2"}, LIST_C)), false);
+    irt.AddClauseResult(ClauseResult(a, c,
+                                     IrtTestHelperMethods::makePairedVector(
+                                         {"2", "2", "2"}, LIST_C)),
+                        false);
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}),
                  Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
   }
