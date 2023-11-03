@@ -86,10 +86,19 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.HasNoResults());
   }
 
+  SECTION("Test negated boolean clauses") {
+    irt.AddClauseResult(TRUE_CLAUSE, false);
+    irt.AddClauseResult(FALSE_CLAUSE, true);
+    REQUIRE_FALSE(irt.HasNoResults());
+
+    irt.AddClauseResult(TRUE_CLAUSE, true);
+    REQUIRE(irt.HasNoResults());
+  }
+
   SECTION("Test boolean + single clause") {
     irt.AddClauseResult(SINGLE_CLAUSE_A, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    irt.AddClauseResult(TRUE_CLAUSE, false);
+    irt.AddClauseResult(FALSE_CLAUSE, true);
     REQUIRE_FALSE(irt.HasNoResults());
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
     irt.AddClauseResult(FALSE_CLAUSE, false);
@@ -105,7 +114,7 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE_FALSE(irt.HasNoResults());
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    irt.AddClauseResult(FALSE_CLAUSE, false);
+    irt.AddClauseResult(TRUE_CLAUSE, true);
     REQUIRE(irt.HasNoResults());
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     REQUIRE(irt.HasNoResults());
@@ -139,6 +148,16 @@ TEST_CASE("Intermediate Results Table Tests") {
     // adding in a new clause doesn't change things
     irt.AddClauseResult(SINGLE_CLAUSE_V, false);
     REQUIRE(irt.GetValuesGivenDeclarations({v}).empty());
+  }
+
+  SECTION("Test negated single declaration clauses") {
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
+    irt.AddClauseResult(ClauseResult(a, {"1", "3", "4"}), true);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+
+    irt.AddClauseResult(SINGLE_CLAUSE_B, true);
+    REQUIRE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({b}).empty());
   }
 
   // Full tests with at least 1 x single and 2 x paired clauses (for milestone
@@ -247,6 +266,42 @@ TEST_CASE("Intermediate Results Table Tests") {
       REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
       REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
     }
+  }
+
+  SECTION("Test negated clauses with two synonyms - same table") {
+    irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
+    irt.AddClauseResult(PAIRED_CLAUSE_B_C, false);
+    auto CLAUSE_B_C_PARTIAL_INVERSE = ClauseResult(
+        b, c, {std::make_pair("2", "20"), std::make_pair("4", "40"),
+              std::make_pair("30","3")});
+
+    irt.AddClauseResult(CLAUSE_B_C_PARTIAL_INVERSE, true);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+
+    irt.AddClauseResult(PAIRED_CLAUSE_A_C, true);
+    REQUIRE(irt.HasNoResults());
+  }
+
+  SECTION("Test negated clauses with two synonyms - diff table") {
+    irt.AddClauseResult(, false);
+    irt.AddClauseResult(SINGLE_CLAUSE_A, false);
+    irt.AddClauseResult(PAIRED_CLAUSE_B_C, false);
+
+    auto CLAUSE_B_C_PARTIAL_INVERSE = ClauseResult(
+        b, c, {std::make_pair("2", "20"), std::make_pair("4", "40"),
+               std::make_pair("30","3")});
+
+    irt.AddClauseResult(CLAUSE_B_C_PARTIAL_INVERSE, true);
+    REQUIRE_FALSE(irt.HasNoResults());
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+
+    irt.AddClauseResult(PAIRED_CLAUSE_A_C, true);
+    REQUIRE(irt.HasNoResults());
   }
 
   SECTION("Check results retrieval - unlinked") {
