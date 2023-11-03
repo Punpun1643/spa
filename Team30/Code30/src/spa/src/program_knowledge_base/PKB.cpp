@@ -216,15 +216,15 @@ PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
 
 std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
     EntityType container_stmt_type) {
-  return {};
+  return pat_data->GetContainerStmtsWithControlVar(container_stmt_type);
 }
 
 std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
     EntityType container_stmt_type, std::string var_name) {
-  return {};
+  return pat_data->GetContainerStmtsWithGivenControlVar(container_stmt_type, var_name);
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
-  return {};
+  return pat_data->GetContainerStmtControlVarPairs(container_stmt_type);
 }
