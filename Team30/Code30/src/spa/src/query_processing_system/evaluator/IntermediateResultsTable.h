@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <utility>
+#include <unordered_set>
 
 #include "RelationalTable.h"
 #include "query_processing_system/clauses/ClauseResult.h"
