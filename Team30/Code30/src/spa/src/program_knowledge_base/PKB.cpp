@@ -221,7 +221,8 @@ std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
 
 std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
     EntityType container_stmt_type, std::string var_name) {
-  return pat_data->GetContainerStmtsWithGivenControlVar(container_stmt_type, var_name);
+  return pat_data->GetContainerStmtsWithGivenControlVar(container_stmt_type,
+                                                        var_name);
 }
 
 std::vector<std::pair<std::string, std::string>>
