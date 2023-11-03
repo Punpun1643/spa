@@ -286,19 +286,23 @@ TEST_CASE("Intermediate Results Table Tests") {
   }
 
   SECTION("Test negated clauses with two synonyms - diff table") {
-    irt.AddClauseResult(, false);
-    irt.AddClauseResult(SINGLE_CLAUSE_A, false);
-    irt.AddClauseResult(PAIRED_CLAUSE_B_C, false);
+    irt.AddClauseResult(SINGLE_CLAUSE_V, false);
+    irt.AddClauseResult(ClauseResult(a, {"1", "2"}), false);
+    irt.AddClauseResult(ClauseResult(b, c, {std::make_pair("20","30")}), false);
 
-    auto CLAUSE_B_C_PARTIAL_INVERSE = ClauseResult(
-        b, c, {std::make_pair("2", "20"), std::make_pair("4", "40"),
-               std::make_pair("30","3")});
+    auto CLAUSE_A_B_PARTIAL_INVERSE = ClauseResult(
+        a, b, {std::make_pair("1", "20"), std::make_pair("20", "2"),
+               std::make_pair("1","21")});
 
-    irt.AddClauseResult(CLAUSE_B_C_PARTIAL_INVERSE, true);
+    irt.AddClauseResult(CLAUSE_A_B_PARTIAL_INVERSE, true);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    std::vector<std::string> vector = {"2"};
+    auto OUTPUT_A = IrtTestHelperMethods::addDim(vector);
+    vector = {"30"};
+    auto OUTPUT_C = IrtTestHelperMethods::addDim(vector);
+
+    REQUIRE(irt.GetValuesGivenDeclarations({a}) == OUTPUT_A);
+    REQUIRE(irt.GetValuesGivenDeclarations({c}) == OUTPUT_C);
 
     irt.AddClauseResult(PAIRED_CLAUSE_A_C, true);
     REQUIRE(irt.HasNoResults());
