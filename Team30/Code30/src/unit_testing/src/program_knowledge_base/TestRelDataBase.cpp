@@ -198,33 +198,25 @@ TEST_CASE("Next/Next* and Affects") {
     expected = {"1", "2", "3", "4", "5", "6", "8"};
     std::unordered_set<std::string> tmp = {"1", "2", "3", "4",
                                            "5", "6", "7", "8"};
-    actual = db.GetAllWithRelations(
-        RelationType::NEXT,
-        std::make_shared<std::unordered_set<std::string>>(tmp));
+    actual = db.GetAllWithRelations(RelationType::NEXT, tmp);
     REQUIRE(actual == expected);
 
     // filter all statement numbers with NEXT_STAR relations
     expected = {"1", "2", "3", "4", "5", "6", "8"};
     tmp = {"1", "2", "3", "4", "5", "6", "7", "8"};
-    actual = db.GetAllWithRelations(
-        RelationType::NEXT_STAR,
-        std::make_shared<std::unordered_set<std::string>>(tmp));
+    actual = db.GetAllWithRelations(RelationType::NEXT_STAR, tmp);
     REQUIRE(actual == expected);
 
     // filter all statement numbers that are NEXT of another statement
     expected = {"2", "3", "4", "5", "6", "7", "8"};
     tmp = {"1", "2", "3", "4", "5", "6", "7", "8"};
-    actual = db.GetAllWithInverseRelations(
-        RelationType::NEXT,
-        std::make_shared<std::unordered_set<std::string>>(tmp));
+    actual = db.GetAllWithInverseRelations(RelationType::NEXT, tmp);
     REQUIRE(actual == expected);
 
     // filter all statement numbers that are NEXT_STAR of another statement
     expected = {"2", "3", "4", "5", "6", "7", "8"};
     tmp = {"1", "2", "3", "4", "5", "6", "7", "8"};
-    actual = db.GetAllWithInverseRelations(
-        RelationType::NEXT_STAR,
-        std::make_shared<std::unordered_set<std::string>>(tmp));
+    actual = db.GetAllWithInverseRelations(RelationType::NEXT_STAR, tmp);
     REQUIRE(actual == expected);
 
     // get all statements directly before 8
@@ -306,15 +298,11 @@ TEST_CASE("Next/Next* and Affects") {
     std::unordered_set<std::string> tmp = {"1", "2", "3", "4",
                                            "5", "6", "7", "8"};
     expected = {"1"};
-    actual = db.GetAllWithRelations(
-        RelationType::AFFECTS,
-        std::make_shared<std::unordered_set<std::string>>(tmp));
+    actual = db.GetAllWithRelations(RelationType::AFFECTS, tmp);
     REQUIRE(actual == expected);
 
     expected = {"7"};
-    actual = db.GetAllWithInverseRelations(
-        RelationType::AFFECTS,
-        std::make_shared<std::unordered_set<std::string>>(tmp));
+    actual = db.GetAllWithInverseRelations(RelationType::AFFECTS, tmp);
     REQUIRE(actual == expected);
   }
 }
