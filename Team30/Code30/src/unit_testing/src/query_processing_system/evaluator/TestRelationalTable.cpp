@@ -75,7 +75,26 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
   }
 
-  SECTION("Test Join functionality") {
+  SECTION("Test cross-product join") {
+    std::vector<std::string> VEC_1 = {"1", "2"};
+    std::vector<std::string> VEC_2 = {"a", "b"};
+    std::vector<std::string> VEC_3 = {"x", "y"};
+
+    std::vector<std::vector<std::string>> EXP_OUTPUT = {
+        {"1", "a", "x"},
+        {"1", "a", "y"},
+        {"2", "b", "x"},
+        {"2", "b", "y"}
+        };
+    auto table = RelationalTable(a, b, VEC_1, VEC_2);
+    auto table_2 = RelationalTable(c, VEC_3);
+    REQUIRE_THROWS(table.Join(table_2)); // disable cross-product by default
+    table.Join(table_2, true);
+    REQUIRE(table.GetNumCols() == 3);
+    REQUIRE_THAT(table.GetTableCols({a,b,c,}), Catch::UnorderedEquals(EXP_OUTPUT));
+  }
+
+  SECTION("Test non cross-product join functionality") {
     // TABLE 1
     std::vector<std::string> C_VEC_1 = {"1", "1", "2", "2", "2", "6", "1"};
     std::vector<std::string> S_VEC_1 = {"10", "12", "14", "14",
