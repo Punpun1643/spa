@@ -48,7 +48,7 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateValueAttrRef(
     PKBQPSInterface& pkb, std::string const& value, AttrRef const& attr_ref) {
   std::vector result = pkb.GetEntitiesMatchingAttrValue(
       attr_ref.GetEntityType(), attr_ref.GetAttrType(), value);
-  return std::make_unique<ClauseResult>(attr_ref.GetDecl(), result);
+  return std::make_unique<ClauseResult>(attr_ref.GetDecl(), std::move(result));
 }
 
 std::unique_ptr<ClauseResult> WithClause::EvaluateIntAttrRef(
@@ -82,7 +82,7 @@ std::unique_ptr<ClauseResult> WithClause::EvaluateRefRef(PKBQPSInterface& pkb) {
       attr_ref_1.GetEntityType(), attr_ref_1.GetAttrType(),
       attr_ref_2.GetEntityType(), attr_ref_2.GetAttrType());
   return std::make_unique<ClauseResult>(attr_ref_1.GetDecl(),
-                                        attr_ref_2.GetDecl(), matching);
+                                        attr_ref_2.GetDecl(), std::move(matching));
 }
 
 std::unique_ptr<ClauseResult> WithClause::Evaluate(PKBQPSInterface& pkb) {
