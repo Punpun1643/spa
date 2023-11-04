@@ -1,0 +1,352 @@
+proc Follows {
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+}
+
+
+procedure Nesting {
+  
+  a = a - 1;
+  read a;
+  if (c * 3 == d % 2) then {
+    c = 7 + a + b * d 
+    while (f * 2 < 5) {
+      print f;
+      print d;
+      if () then {
+        d = c;
+        while () {
+          while () {
+            while (f == 0) {
+              if ((g - f) && (m % g)) then {
+
+              } else {
+
+              }
+            }
+          }
+        }
+      } else {
+        while () {
+
+        }
+      }
+    }
+  } else {
+    if () then {
+      if () then {
+
+      } else {
+
+      }
+    } else {
+      while () {
+
+      }
+    }
+  } 
+
+
+}
+
+
+proc Patterns {
+    
+    z = c + a + d + b;
+    z = c - a + d - b;
+    z = c + (a + d) + b;
+    z = c - (a + d) + b;
+    z = c + (a + d - b);
+    z = c - a + d * b;
+    z = c + ((a) + d) + b;
+    z = c + (a + (d)) + b;
+    z = (c - a + (d * b));
+    z = (c - a) + (d * b);
+    z = (c - a + d) * (b);
+    z = c + ((a + d)) + b;
+    z = c + (a + d + b);
+    z = c + ((a + d + b));
+    z = (c - a) + d * b;
+    z = (c - a + d) * b;
+    z = c - (a + d * b);
+    z = (c - (a + d * b));
+    
+    z = a + d * b - c / e % f;
+    z = a + d * b - c / (e % f);
+    z = a + d * ((b - c) / e) % f;
+    z = (a + d) * (b - c / e) % f;
+    z = a + d * (b - (c / e) % f);
+
+}
+
+proc p0 {
+  a = b;
+  call p1;
+  call p2;
+  call p3;
+  call p6;
+}
+
+proc p1 {
+  call p4;
+  a = b;
+  call p7;
+}
+
+proc p2 {
+  b = a;
+  call p4;
+}
+
+proc p3 {
+  a = b;
+  call p5;
+}
+
+proc p4 {
+  b = a;
+}
+
+proc p5 {
+  a = b;
+  call p9;
+}
+
+proc p6 {
+  call p9;
+  call p10;
+  b = a;
+  call p8;
+  
+}
+
+proc p7 {
+  b = a;
+}
+
+proc p8 {
+  call p12;
+  call p11;
+  a = b;
+}
+
+proc p9 {
+  b = a; 
+  call p12;
+  call p11;
+}
+
+proc p10 {
+  a = b;
+  call p11;
+}
+
+proc p11 {
+  a = b;
+  call p14;
+  call p15;
+} 
+
+proc p12 {
+  call p13;
+  a = b;
+}
+
+proc p13 {
+  a = b;
+  call p16;
+}
+
+proc p14 {
+  a = b;
+  call p17;
+}
+
+proc p15 {
+  b = a;
+  call p17;
+}
+
+proc p16 {
+  call p19;
+  a = b;
+  call p18;
+}
+
+proc p17 {
+  b = a;
+  call p18;
+  call p20;
+}
+
+proc p18 {
+  b = a;
+}
+
+proc p19 {
+  a = b;
+  call p21;
+  call p23;
+}
+
+proc p20 {
+  call p23;
+  call p21;
+  a = b;
+}
+
+proc p21 {
+  call p25;
+  b = a;
+  call p26;
+}
+
+proc p22 {
+  call p24;
+  call p25;
+  a = b;
+}
+
+proc p23 {
+  a = b;
+  call p24;
+}
+
+proc p24 {
+  a = b;
+  call p30;
+  call p29;
+}
+
+proc p25 {
+  b = a;
+  call p29;
+  call p30;
+}
+
+proc p26 {
+  a = b;
+  call p29;
+}
+
+proc p27 {
+  a = b;
+  call p28;
+}
+
+proc p28 {
+  call p31;
+  b = a;
+}
+
+proc p29 {
+  b = a;
+  call p31;
+}
+
+proc p30 {
+  a = b;
+  call p31;
+}
+
+proc p31 {
+  b = a;
+}
