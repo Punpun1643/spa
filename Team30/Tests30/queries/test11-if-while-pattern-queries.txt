@@ -5,7 +5,7 @@ Select i pattern i(_, _, _ )
 5000
 2 - If Pattern Variable Name
 if ifs;
-Select ifs pattern ifs ('x',_,_)
+Select ifs pattern ifs ("x",_,_)
 1, 10
 5000
 3 - If Pattern Variable Syn Tuple
@@ -15,7 +15,7 @@ Select <if, v> pattern if(  v, _, _)
 5000
 4 - Multi If Pattern
 if if;
-Select if pattern if ('x', _, _) and if ('z', _, _)
+Select if pattern if ("x", _, _) and if ("z", _, _)
 10
 5000
 5 - While Pattern Wildcard
@@ -25,7 +25,7 @@ Select w pattern w(_,        _)
 5000
 6 - While Pattern Variable Name
 while w;
-Select w pattern w ('c', _)
+Select w pattern w ("c", _)
 13
 5000
 7 - While Pattern Variable Syn
@@ -35,7 +35,7 @@ Select <while, var> pattern while( var, _)
 5000
 8 - Multi While Pattern
 while w;
-Select w pattern w('a',_) and w ('d', _ )
+Select w pattern w("a",_) and w ("d", _ )
 5
 5000
 9 - If Pattern Invalid 2nd param not Wildcard
@@ -45,7 +45,7 @@ SyntaxError
 5000
 10 - If Pattern Invalid 3rd param not Wildcard
 if ifs;
-Select ifs pattern ifs (_,_,'x')
+Select ifs pattern ifs (_,_,"x")
 SyntaxError
 5000
 11 - While Pattern Invalid 2nd param not Wildcard
@@ -65,17 +65,17 @@ SemanticError
 5000
 14 - If Pattern Invalid not a variable string
 if i;
-Select i pattern i('3', _, _) 
+Select i pattern i("3", _, _) 
 SyntaxError
 5000
 15 - While Pattern Invalid not a variable string
 while w;
-Select w pattern w('==',   _) 
+Select w pattern w("==",   _) 
 SyntaxError
 5000
 16 - If Pattern Invalid not a variable string
 if i;
-Select i pattern i('3', _, _) 
+Select i pattern i("3", _, _) 
 SyntaxError
 5000
 17 - While Pattern Invalid not a variable syn
