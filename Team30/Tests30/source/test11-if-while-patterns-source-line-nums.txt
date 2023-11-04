@@ -15,7 +15,7 @@ procedure p1 {
 
   }
 
-9  if (a||b||c) then {
+9  if ((a==b)||(b==c)||(a==c)) then {
 10    if ((x < (5 / z))) then {
 11      z = 1 + 2;
     } else {

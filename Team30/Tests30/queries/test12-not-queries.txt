@@ -1,21 +1,21 @@
 1 - Not such that
 procedure p, p1;
 Select p such that not Calls(p, p1)
-p4
+p1, p2, p3, p4
 5000
 2 - Not pattern
 assign a;
-Select a pattern not a (_, _"a"_)
+Select a pattern not a (_, _'a'_)
 1, 8, 16, 19, 20, 21, 24, 33, 35
 5000
 3 - Not With
 read r;
-Select r with not r.value = "r"
-SemanticError
+Select r with not r.varName = 'r'
+4, 13, 38
 5000
 4 - Multi Such That
 if i; assign a; while w;
-Select a such that Parent*(w, i) and Parent(i, a) and not Modifies(a, "t") 
+Select a such that Parent*(w, i) and Parent(i, a) and not Modifies(a, 't') 
 23, 24, 35, 37
 5000
 5 - Multi Pattern (mix of not and +ve)
@@ -25,12 +25,12 @@ q, i, t
 5000
 6 - Multi with (mix of not and +ve)
 print p;
-Select p with p.varName = "p" and not p.stmt# = 15
+Select p with p.varName = 'p' and not p.stmt# = 15
 39
 5000
 7 - Multi Clause
 while w; variable v; print p; assign a;
-Select a pattern not a(v,_"a"_) such that not Parent*(w, a) and not Uses(p, v)
+Select a pattern not a(v,_'a'_) such that not Parent*(w, a) and not Uses(p, v)
 9
 5000
 8 - Stress Test Clause
@@ -45,7 +45,7 @@ SyntaxError
 5000
 10 - Invalid, wrong position of not
 read r;
-Select r not with r.value = "r"
+Select r not with r.value = 'r'
 SyntaxError
 5000
 11 - Invalid, wrong case for not
