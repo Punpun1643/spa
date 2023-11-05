@@ -128,3 +128,107 @@ bool GraphRelationTraverser::HasAffectsPath(std::shared_ptr<CFGNode> start_node,
   }
   return false;
 }
+
+std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathFrom(
+    std::shared_ptr<CFGNode> start_node) {
+  std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+  std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
+  std::unordered_set<std::string> stmts_with_valid_path;
+
+  nodes_to_visit.push(start_node);
+
+  while (!nodes_to_visit.empty()) {
+    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
+    nodes_to_visit.pop();
+
+    std::vector<std::shared_ptr<CFGNode>> outgoing_nodes =
+        curr_node->GetOutgoingNodes();
+
+    for (std::shared_ptr<CFGNode> out_going_node : outgoing_nodes) {
+      if (visited_nodes.find(out_going_node) == visited_nodes.end()) {
+        nodes_to_visit.push(out_going_node);
+        visited_nodes.insert(out_going_node);
+        stmts_with_valid_path.insert(
+            std::to_string(out_going_node->GetNode()->GetStmtIndex()));
+      }
+    }
+  }
+  return stmts_with_valid_path;
+};
+
+std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathTo(
+    std::shared_ptr<CFGNode> end_node) {
+  std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+  std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
+  std::unordered_set<std::string> stmts_with_valid_path;
+
+  nodes_to_visit.push(end_node);
+
+  while (!nodes_to_visit.empty()) {
+    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
+    nodes_to_visit.pop();
+
+    std::vector<std::shared_ptr<CFGNode>> incoming_nodes =
+        curr_node->GetIncomingNodes();
+
+    for (std::shared_ptr<CFGNode> in_coming_node : incoming_nodes) {
+      if (visited_nodes.find(in_coming_node) == visited_nodes.end()) {
+        nodes_to_visit.push(in_coming_node);
+        visited_nodes.insert(in_coming_node);
+        stmts_with_valid_path.insert(
+            std::to_string(in_coming_node->GetNode()->GetStmtIndex()));
+      }
+    }
+  }
+  return stmts_with_valid_path;
+};
+
+std::unordered_set<std::string>
+GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+    std::shared_ptr<CFGNode> start_node) {
+  if (start_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+    return std::unordered_set<std::string>();
+  }
+
+  std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
+  std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+  std::unordered_set<std::string> stmts_with_valid_path;
+  std::string var_modified_in_start_node =
+      CFGNode::GetVarModifiedInStartNode(start_node);
+
+  nodes_to_visit.push(start_node);
+
+  while (!nodes_to_visit.empty()) {
+    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
+    nodes_to_visit.pop();
+
+    for (std::shared_ptr<CFGNode> outgoing_node :
+         curr_node->GetOutgoingNodes()) {
+      if (!visited_nodes.count(outgoing_node)) {
+        visited_nodes.insert(outgoing_node);
+
+        // if start node affects outgoing node, add to stmts_with_valid_path
+        if (ValidatePossibleAffectsRelationship(
+                var_modified_in_start_node,
+                CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
+            outgoing_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+          stmts_with_valid_path.insert(
+              std::to_string(outgoing_node->GetNode()->GetStmtIndex()));
+        }
+
+        bool should_visit = true;
+        if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
+          should_visit = HandleAssignOrReadOutgoingNode(
+              outgoing_node, var_modified_in_start_node);
+        } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
+          should_visit =
+              HandleCallOutgoingNode(outgoing_node, var_modified_in_start_node);
+        }
+        if (should_visit) {
+          nodes_to_visit.push(outgoing_node);
+        }
+      }
+    }
+  }
+  return stmts_with_valid_path;
+}

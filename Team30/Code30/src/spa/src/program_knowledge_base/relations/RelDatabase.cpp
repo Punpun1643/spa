@@ -140,30 +140,6 @@ std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
   return output;
 }
 
-std::unordered_set<std::string> RelDatabase::GetAllWithPathFrom(
-    std::shared_ptr<CFGNode> node) {
-  std::unordered_set<std::string> output;
-  for (auto pair : cfg_nodes) {
-    std::shared_ptr<CFGNode> n = pair.second;
-    if (GraphRelationTraverser::HasPath(node, n)) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-    }
-  }
-  return output;
-}
-
-std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathFrom(
-    std::shared_ptr<CFGNode> node) {
-  std::unordered_set<std::string> output;
-  for (auto pair : cfg_nodes) {
-    std::shared_ptr<CFGNode> n = pair.second;
-    if (GraphRelationTraverser::HasAffectsPath(node, n)) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-    }
-  }
-  return output;
-}
-
 std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
     RelationType type, std::string val) {
   if (!IsValidStatementNumber(val)) {
@@ -180,22 +156,10 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
     return output;
   } else if (type == RelationType::NEXT_STAR) {
     // TODO(@tyanhan): Optimise for NEXT_STAR and AFFECTS
-    return GetAllWithPathFrom(node);
+    return GraphRelationTraverser::GetAllStmtsWithPathFrom(node);
   } else {
-    return GetAllWithAffectsPathFrom(node);
+    return GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(node);
   }
-}
-
-std::unordered_set<std::string> RelDatabase::GetAllWithPathTo(
-    std::shared_ptr<CFGNode> node) {
-  std::unordered_set<std::string> output;
-  for (auto pair : cfg_nodes) {
-    std::shared_ptr<CFGNode> n = pair.second;
-    if (GraphRelationTraverser::HasPath(n, node)) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-    }
-  }
-  return output;
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathTo(
@@ -225,8 +189,7 @@ std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
     }
     return output;
   } else if (type == RelationType::NEXT_STAR) {
-    // TODO(@tyanhan): Optimise for NEXT_STAR and AFFECTS
-    return GetAllWithPathTo(node);
+    return GraphRelationTraverser::GetAllStmtsWithPathTo(node);
   } else {
     return GetAllWithAffectsPathTo(node);
   }
