@@ -1,0 +1,28 @@
+procedure Barbie {
+1.    print sasha;
+2.    gloria = b * 8;
+3.    c = 2;
+4.    a = 4 - gloria;
+5.    call Ken;
+6.    while (sasha < c) {
+7.        sasha = b + c * a;
+8.        if (sasha > 1) then {
+9.            read a; 
+10.           gloria = gloria + b + c; }
+          else {
+11.           b = a % b + c * a;
+12.           call Ruth; }
+13.       b = a - b; }
+14.   read sasha; 
+15.   gloria = b / c * a; }
+
+procedure Ken {
+16.   if (gloria > sasha) then {
+17.	     sasha = a - 4; 
+18.       call Ruth; }
+      else {
+19.	     gloria = 2; }}
+
+procedure Ruth {
+20.   while (16 != (b + c)){
+21.       read c; }}
