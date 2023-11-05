@@ -106,42 +106,65 @@ procedure Nesting {
   
   a = a - 1;
   read a;
+
   if (c * 3 == d % 2) then {
-    c = 7 + a + b * d 
+    c = 7 + a + b * d;
+    a = b; 
     while (f * 2 < 5) {
       print f;
-      print d;
-      if () then {
-        d = c;
-        while () {
-          while () {
+      read d;
+      b = a;
+      if (!(c < a)) then {
+        d = c + a;
+        a = b;
+        while (d >= 2 / a *c) {
+          print x;
+          while (e == b) {
             while (f == 0) {
-              if ((g - f) && (m % g)) then {
-
+              b = a;
+              if ((g - f) && (b % g)) then {
+                48 % g + x % 92 + d;
+                read x;
+                g = 0 % e / 3 - 0 * 11 % b;
               } else {
-
+                call p1;
+                e = c + c + 1;
+                a = b;
               }
+              a = c % a - x / b;
+              b = a;
             }
+            read e;
           }
+          a = b;
         }
+        e = e + 1;
+        print x;
       } else {
-        while () {
 
+        while (1 == g) {
+          f = b + d - a;
+          c = b - a;
         }
       }
+      call p2;
+      b = a;
     }
   } else {
-    if () then {
-      if () then {
-
+    if (!(6 > e) || (f >= 0)) then {
+      a = b;
+      if (6 > f) then {
+        c = x + a + d + b;
       } else {
-
+        e = f;
+        b = a;
       }
     } else {
-      while () {
-
+      while ((1 > 1) && (d == a / 0) ) {
+        b = a;
       }
     }
+    print a;
   } 
 
 
@@ -175,6 +198,15 @@ proc Patterns {
     z = (a + d) * (b - c / e) % f;
     z = a + d * (b - (c / e) % f);
 
+    while (((((!((aa >= bb) || (!(v <= b)))) && (((0 == fa) || (((42 * (44444 / 90 * 7447 / c)) > m) && (!(((0 > 0) && (!(J32 >= 0))) || ((!(5089 + x * 467 >= 1)) && (((d > ad) && (0 < c)) || ((giaoj1 - 6 + 2147483647 + 9 / x % f == 0) || (b1 % (b2) / o - h == bc2)))))))) || ((adfgoihpa <= 0) && (l >= 0 - 3 % 0)))) || (hd < 1)) && (bc <= 1)) || ((!(!(((2 > 60) && (Bc < b3)) || (888 % E <= x)))) && (!((57 >= m) && (0 > fc))))) {
+      read foo;
+    }
+
+    if (!((((((!(f == bp)) || (16 == h)) || (c + Jq1PP < 0 % v)) || ((0 != 0) && ((95 == 0) || (e < b2)))) && (qad < 89)) && (((4 == p3b0) || ((!(0 < J)) || (0 / giaoj1 != 0 * n))) && (L >= b4)))) then {
+      read bar;
+    } else {
+      read flan;
+    }
 }
 
 proc p0 {
@@ -211,11 +243,11 @@ proc p5 {
 }
 
 proc p6 {
+  a = b;
   call p9;
   call p10;
-  b = a;
   call p8;
-  
+  b = a;
 }
 
 proc p7 {
