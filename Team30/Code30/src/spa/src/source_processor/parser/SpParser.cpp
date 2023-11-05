@@ -198,14 +198,15 @@ void SpParser::CondExprHandleRightParenthesisToken(
   bool is_parse_rel_expr = false;
 
   while (!(IsLeftParenthesisToken(operator_stack.top()))) {
-    if (IsComparisonOperator(operator_stack.top()->GetTokenVal())) {
+    if (IsComparisonOperator(operator_stack.top()->GetTokenVal()) ||
+        operator_stack.top()->GetTokenVal() == SpParserConstant::NOT) {
       is_parse_rel_expr = true;  // closing rel_expr
     }
     postfix_queue.push(operator_stack.top());
     operator_stack.pop();
   }
 
-  if (!operator_stack.empty()) {
+  if (!operator_stack.empty()) {  // pop the corresponding left parenthesis
     operator_stack.pop();
   } else {
     throw InvalidRelExprException();
