@@ -16,7 +16,6 @@ void CFGGenerator::ExecuteCFGGeneration(
   std::vector<std::shared_ptr<CFGNode>> last_node_points_to;
   GenerateCFG(stmts);
   InsertCFGNodes();
-  node_map.clear();
 }
 
 // returns the node that the current node should point to
@@ -55,12 +54,21 @@ void CFGGenerator::HandleIfStmt(std::shared_ptr<StmtNode> curr_stmt,
   std::vector<std::shared_ptr<StmtNode>> else_body_stmts =
       else_body_stl->GetChildren();
 
+  int then_size = then_body_stmts.size();
+  int else_size = else_body_stmts.size();
+
+  std::shared_ptr<StmtNode> then_first_stmt = then_body_stmts[0];
+  std::shared_ptr<StmtNode> else_first_stmt = else_body_stmts[0];
+
+  std::shared_ptr<StmtNode> then_last_stmt = then_body_stmts[then_size - 1];
+  std::shared_ptr<StmtNode> else_last_stmt = else_body_stmts[else_size - 1];
+
   GenerateCFG(then_body_stmts);
   GenerateCFG(else_body_stmts);
-  HandleStmt(curr_stmt, then_body_stmts[0]);
-  HandleStmt(curr_stmt, else_body_stmts[0]);
-  HandleStmt(then_body_stmts[then_body_stmts.size() - 1], next_stmt);
-  HandleStmt(else_body_stmts[else_body_stmts.size() - 1], next_stmt);
+  HandleStmt(curr_stmt, then_first_stmt);
+  HandleStmt(curr_stmt, else_first_stmt);
+  HandleStmt(then_last_stmt, next_stmt);
+  HandleStmt(else_last_stmt, next_stmt);
 }
 
 void CFGGenerator::HandleWhileStmt(std::shared_ptr<StmtNode> curr_stmt) {
@@ -71,30 +79,39 @@ void CFGGenerator::HandleWhileStmt(std::shared_ptr<StmtNode> curr_stmt) {
 
   std::vector<std::shared_ptr<StmtNode>> while_body_stmts =
       while_body_stl->GetChildren();
+
+  int while_size = while_body_stmts.size();
+  std::shared_ptr<StmtNode> while_first_stmt = while_body_stmts[0];
+  std::shared_ptr<StmtNode> while_last_stmt = while_body_stmts[while_size - 1];
+
   GenerateCFG(while_body_stmts);
-  HandleStmt(curr_stmt, while_body_stmts[0]);
-  HandleStmt(while_body_stmts[while_body_stmts.size() - 1], curr_stmt);
+  HandleStmt(curr_stmt, while_first_stmt);
+  HandleStmt(while_last_stmt, curr_stmt);
 }
 
 void CFGGenerator::HandleStmt(std::shared_ptr<StmtNode> curr_stmt,
                               std::shared_ptr<StmtNode> next_stmt) {
-
-  if (curr_stmt != nullptr && next_stmt != nullptr) {
-    int curr_stmt_ind = curr_stmt->GetStmtIndex();
-    int next_stmt_ind = next_stmt->GetStmtIndex();
-    if (node_map.find(curr_stmt_ind) == node_map.end() ||
-        node_map.find(next_stmt_ind) == node_map.end()) {
-      return;
-    }
-    node_map.at(next_stmt_ind)->AddIncomingNode(node_map.at(curr_stmt_ind));
-    node_map.at(curr_stmt_ind)->AddOutgoingNode(node_map.at(next_stmt_ind));
+  if (curr_stmt == nullptr || next_stmt == nullptr) {
+    return;
   }
+
+  int curr_stmt_ind = curr_stmt->GetStmtIndex();
+  int next_stmt_ind = next_stmt->GetStmtIndex();
+
+  if (node_map.find(curr_stmt_ind) == node_map.end() ||
+      node_map.find(next_stmt_ind) == node_map.end()) {
+    return;
+  }
+
+  node_map.at(next_stmt_ind)->AddIncomingNode(node_map.at(curr_stmt_ind));
+  node_map.at(curr_stmt_ind)->AddOutgoingNode(node_map.at(next_stmt_ind));
 }
 
 void CFGGenerator::InsertCFGNodes() {
   for (auto kv : node_map) {
     pkb.InsertCFGNode(std::to_string(kv.first), kv.second);
   }
+  node_map.clear();
 }
 
 void CFGGenerator::MapCFGNodes(std::vector<std::shared_ptr<StmtNode>> stmts) {
