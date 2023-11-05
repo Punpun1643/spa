@@ -5,7 +5,13 @@
 #include "ClauseResult.h"
 
 class Clause {
+ private:
+  bool is_negated = false;
+
  public:
   virtual std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) = 0;
   virtual ~Clause();
+
+  void FlagAsNegated();
+  bool IsNegated() const;
 };

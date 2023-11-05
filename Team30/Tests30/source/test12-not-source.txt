@@ -7,7 +7,7 @@ if ((w == x) || (w ==z)) then {
     read a;
     q = a + b - c / d;
   } else {
-      while(e != e) {
+      while (e != e) {
         print q;
       }
     }
