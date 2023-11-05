@@ -1,3 +1,4 @@
+#include "../interpreter/QueryInterpreter.h"
 #include "WithExpression.h"
 
 #include <string>

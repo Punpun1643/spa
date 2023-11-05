@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <queue>
 
 #include "../clauses/NotClauseDecorator.h"
 #include "../clauses/PatternClause.h"
@@ -15,26 +16,34 @@
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 
+struct CustomCompare
+{
+  bool operator() (std::pair<std::shared_ptr<Clause>, float> clause1, std::pair<std::shared_ptr<Clause>, float> clause2) const {
+    return clause1.second > clause2.second;
+  }
+};
+
 class Context {
  public:
   void AddAttrRefDeclaration(AttrRef attr_ref);
   void AddDeclarations(EntityType entity_type,
                        std::vector<std::string> synonyms);
-  void AddNotClause(std::shared_ptr<NotClauseDecorator> not_clause);
-  void AddPatternClause(std::shared_ptr<PatternClause> pattern_clause);
-  void AddSuchThatClause(std::shared_ptr<SuchThatClause> such_that_clause);
-  void AddWithClause(std::shared_ptr<WithClause> with_clause);
+
+  void AddQueryClause(std::shared_ptr<Clause> clause, float priority_score);
+
   bool CheckDeclarationExists(std::string synonym);
   PqlDeclaration GetDeclaration(std::string synonym);
   std::vector<AttrRef> GetSelectedAttrRefs();
-  std::vector<std::shared_ptr<Clause>> GetOtherClauses();
+  std::vector<std::shared_ptr<Clause>> GetPriorityClauses();
+  std::vector<std::shared_ptr<Clause>> GetUnorderedClauses();
 
  private:
   DeclarationMap declarations;
-  std::vector<std::shared_ptr<Clause>> other_clauses;
+  std::vector<std::shared_ptr<Clause>> unordered_clauses;
   std::vector<AttrRef> selected_attr_refs;
-  std::vector<std::shared_ptr<NotClauseDecorator>> not_clauses;
-  std::vector<std::shared_ptr<SuchThatClause>> such_that_clauses;
-  std::vector<std::shared_ptr<PatternClause>> pattern_clauses;
-  std::vector<std::shared_ptr<WithClause>> with_clauses;
+
+  std::priority_queue<
+    std::pair<std::shared_ptr<Clause>, float>,
+    std::vector<std::pair<std::shared_ptr<Clause>, float>>,
+    CustomCompare> priority_clauses;
 };
