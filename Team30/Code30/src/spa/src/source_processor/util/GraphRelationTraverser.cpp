@@ -160,15 +160,7 @@ bool GraphRelationTraverser::HasAnyAffectsPath(
           return true;
         }
 
-        bool should_visit = true;
-        if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
-          should_visit = HandleAssignOrReadOutgoingNode(
-              outgoing_node, var_modified_in_start_node);
-        } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
-          should_visit =
-              HandleCallOutgoingNode(outgoing_node, var_modified_in_start_node);
-        }
-        if (should_visit) {
+        if (ShouldVisit(outgoing_node, var_modified_in_start_node)) {
           nodes_to_visit.push(outgoing_node);
         }
       }
@@ -300,19 +292,23 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
               std::to_string(outgoing_node->GetNode()->GetStmtIndex()));
         }
 
-        bool should_visit = true;
-        if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
-          should_visit = HandleAssignOrReadOutgoingNode(
-              outgoing_node, var_modified_in_start_node);
-        } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
-          should_visit =
-              HandleCallOutgoingNode(outgoing_node, var_modified_in_start_node);
-        }
-        if (should_visit) {
+        if (ShouldVisit(outgoing_node, var_modified_in_start_node)) {
           nodes_to_visit.push(outgoing_node);
         }
       }
     }
   }
   return stmts_with_valid_path;
+}
+
+bool GraphRelationTraverser::ShouldVisit(
+    std::shared_ptr<CFGNode> node, std ::string var_modified_in_start_node) {
+  bool should_visit = true;
+  if (CFGNode::IsAssignOrReadOutgoingNode(node)) {
+    should_visit =
+        HandleAssignOrReadOutgoingNode(node, var_modified_in_start_node);
+  } else if (CFGNode::IsCallOutgoingNode(node)) {
+    should_visit = HandleCallOutgoingNode(node, var_modified_in_start_node);
+  }
+  return should_visit;
 }

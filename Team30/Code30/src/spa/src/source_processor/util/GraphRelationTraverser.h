@@ -7,6 +7,10 @@
 #include "../node/util_node/CFGNode.h"
 
 class GraphRelationTraverser {
+ private:
+  static bool ShouldVisit(std::shared_ptr<CFGNode> node,
+                   std ::string var_modified_in_start_node);
+
  public:
   static bool HasImmediatePath(std::shared_ptr<CFGNode> start_node,
                                std::shared_ptr<CFGNode> end_node);
