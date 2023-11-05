@@ -1,119 +1,119 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.842000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.760000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next valid: Stmt to Stmt">1</id><querystr><![CDATA[stmt s; Select s such that Next(s,3)]]></querystr>
 <stuans>2</stuans>
 <correct>2</correct>
-<time_taken>1.451000</time_taken>
+<time_taken>1.353000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next valid: If control to if or else stmt">2</id><querystr><![CDATA[stmt s; Select s such that Next(11, s) ]]></querystr>
 <stuans>12,14</stuans>
 <correct>12,14</correct>
-<time_taken>1.323000</time_taken>
+<time_taken>1.292000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next valid: While control to inside stmt or after while">3</id><querystr><![CDATA[stmt s; Select s such that Next(4, s)]]></querystr>
 <stuans>5,8</stuans>
 <correct>5,8</correct>
-<time_taken>1.556000</time_taken>
+<time_taken>1.252000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next valid: Last stmt of while to while control">4</id><querystr><![CDATA[stmt s; Select s such that Next(7, s)]]></querystr>
 <stuans>4</stuans>
 <correct>4</correct>
-<time_taken>1.290000</time_taken>
+<time_taken>1.175000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnBoolean="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next invalid: Last stmt of proc1 to first stmt of proc2">5</id><querystr><![CDATA[stmt s; Select BOOLEAN such that Next(16,17)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>0.976000</time_taken>
+<time_taken>1.083000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next valid: if stmt to after if container, not else stmt">6</id><querystr><![CDATA[stmt s; Select s such that Next(13,s)]]></querystr>
 <stuans>16</stuans>
 <correct>16</correct>
-<time_taken>1.057000</time_taken>
+<time_taken>1.177000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next valid: proc1 call -> following stmt in proc1, not proc2 stmt">10</id><querystr><![CDATA[stmt s; Select s such that Next(9,s)]]></querystr>
 <stuans>10</stuans>
 <correct>10</correct>
-<time_taken>1.062000</time_taken>
+<time_taken>1.067000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next syntax invalid: Cannot have string name in parameters">11</id><querystr><![CDATA[stmt s; Select s such that Next("p1",s)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.111000</time_taken>
+<time_taken>1.284000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Nextstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next* valid: Stmt to Stmt (same proc)">12</id><querystr><![CDATA[print pn; Select pn such that Next*(1,pn)]]></querystr>
 <stuans>16,2,3</stuans>
 <correct>2,3,16</correct>
-<time_taken>1.214000</time_taken>
+<time_taken>1.543000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Nextstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next* valid: if stmt -> else stmt -> else stmt">13</id><querystr><![CDATA[stmt s; assign a; Select a such that Next*(20, a)]]></querystr>
 <stuans>23,26</stuans>
 <correct>23,26</correct>
-<time_taken>1.224000</time_taken>
+<time_taken>1.412000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Nextstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next* valid: level 2 nested while -> level 1 nested while or prev stmt">14</id><querystr><![CDATA[stmt s;  Select s such that Next*(s, 35)]]></querystr>
 <stuans>30,31,32,33,34,35,36</stuans>
 <correct>30,31,32,33,34,35,36</correct>
-<time_taken>1.247000</time_taken>
+<time_taken>1.287000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnBoolean="1" Nextstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next* valid: if stmt to else stmt in a while cont">15</id><querystr><![CDATA[stmt s; Select BOOLEAN such that Next*(41, 40)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.045000</time_taken>
+<time_taken>1.129000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnBoolean="1" Nextstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next* invalid: stmt -> call -> call -> stmt">16</id><querystr><![CDATA[stmt s; Select BOOLEAN such that Next*(8, 38)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.326000</time_taken>
+<time_taken>1.354000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Nextstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Next* syntax invalid: Cannot have string name in parameters">17</id><querystr><![CDATA[stmt s; Select s such that Next*("p2", s)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.164000</time_taken>
+<time_taken>1.128000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="test">18</id><querystr><![CDATA[stmt s; Select s such that Next(10000, 100001)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.135000</time_taken>
+<time_taken>1.149000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Next="1" SuchThat="1" CondNum="3" RelNum="1" comment="test">19</id><querystr><![CDATA[stmt s; Select s such that Next(-1000, 5)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.096000</time_taken>
+<time_taken>1.319000</time_taken>
 <passed/>
 </query>
 </queries>
