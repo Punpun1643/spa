@@ -1,4 +1,4 @@
-proc Follows {
+procedure Follows {
     p = q;
     p = q;
     p = q;
@@ -126,8 +126,8 @@ procedure Nesting {
 15          while (e == b) {
 16            while (f == 0) {
 17              b = a;
-18              if ((g - f) && (b % g)) then {
-19                48 % g + x % 92 + d;
+18              if ((g > f) && (b != g)) then {
+19                a = 48 % g + x % 92 + d;
 20                read x;
 21                g = 0 % e / 3 - 0 * 11 % b;
               } else {
@@ -175,7 +175,7 @@ procedure Nesting {
 }
 
 
-proc Patterns {
+procedure Patterns {
     
 45    z = c + a + d + b;
 46    z = c - a + d - b;
@@ -214,7 +214,7 @@ proc Patterns {
     }
 }
 
-proc p0 {
+procedure p0 {
 73  a = b;
 74  call p1;
 75  call p2;
@@ -222,32 +222,32 @@ proc p0 {
 77  call p6;
 }
 
-proc p1 {
+procedure p1 {
 78  call p4;
 79  a = b;
 80  call p7;
 }
 
-proc p2 {
+procedure p2 {
 81  b = a;
 82  call p4;
 }
 
-proc p3 {
+procedure p3 {
 83  a = b;
 84  call p5;
 }
 
-proc p4 {
+procedure p4 {
 85  b = a;
 }
 
-proc p5 {
+procedure p5 {
 86  a = b;
 87  call p9;
 }
 
-proc p6 {
+procedure p6 {
 88  a = b;
 89  call p9;
 90  call p10;
@@ -255,135 +255,135 @@ proc p6 {
 92  b = a;
 }
 
-proc p7 {
+procedure p7 {
 93  b = a;
 }
 
-proc p8 {
+procedure p8 {
 94  call p12;
 95  call p11;
 96  a = b;
 }
 
-proc p9 {
+procedure p9 {
 97  b = a; 
 98  call p12;
 99  call p11;
 }
 
-proc p10 {
+procedure p10 {
 100  a = b;
 101  call p11;
 }
 
-proc p11 {
+procedure p11 {
 102  a = b;
 103  call p14;
 104  call p15;
 } 
 
-proc p12 {
+procedure p12 {
 105  call p13;
 106  a = b;
 }
 
-proc p13 {
+procedure p13 {
 107  a = b;
 108  call p16;
 }
 
-proc p14 {
+procedure p14 {
 109  a = b;
 110  call p17;
 }
 
-proc p15 {
+procedure p15 {
 111  b = a;
 112  call p17;
 }
 
-proc p16 {
+procedure p16 {
 113  call p19;
 114  a = b;
 115  call p18;
 }
 
-proc p17 {
+procedure p17 {
 116  b = a;
 117  call p18;
 118  call p20;
 }
 
-proc p18 {
+procedure p18 {
 119  b = a;
 }
 
-proc p19 {
+procedure p19 {
 120  a = b;
 121  call p21;
 122  call p23;
 }
 
-proc p20 {
+procedure p20 {
 123  call p23;
 124  call p21;
 125  a = b;
 }
 
-proc p21 {
+procedure p21 {
 126  call p25;
 127  b = a;
 128  call p26;
 }
 
-proc p22 {
+procedure p22 {
 129  call p24;
 130  call p25;
 131  a = b;
 }
 
-proc p23 {
+procedure p23 {
 132  a = b;
 133  call p24;
 }
 
-proc p24 {
+procedure p24 {
 134  a = b;
 135  call p30;
 136  call p29;
 }
 
-proc p25 {
+procedure p25 {
 137  b = a;
 138  call p29;
 139  call p30;
 }
 
-proc p26 {
+procedure p26 {
 140  a = b;
 141  call p29;
 }
 
-proc p27 {
+procedure p27 {
 142  a = b;
 143  call p28;
 }
 
-proc p28 {
+procedure p28 {
 144  call p31;
 145  b = a;
 }
 
-proc p29 {
+procedure p29 {
 146  b = a;
 147  call p31;
 }
 
-proc p30 {
+procedure p30 {
 148  a = b;
 149  call p31;
 }
 
-proc p31 {
+procedure p31 {
 150  b = a;
 }
