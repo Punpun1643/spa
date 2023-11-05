@@ -1,5 +1,6 @@
 #include "GraphRelationTraverser.h"
 
+#include <iostream>
 #include <queue>
 #include <vector>
 
@@ -123,6 +124,89 @@ bool GraphRelationTraverser::HasAffectsPath(std::shared_ptr<CFGNode> start_node,
       } else if (outgoing_node == end_node &&
                  visited_nodes.count(outgoing_node)) {
         return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool GraphRelationTraverser::HasAnyAffectsPath(
+    std::shared_ptr<CFGNode> start_node) {
+  if (start_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+    return false;
+  }
+
+  std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
+  std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+  std::string var_modified_in_start_node =
+      CFGNode::GetVarModifiedInStartNode(start_node);
+
+  nodes_to_visit.push(start_node);
+
+  while (!nodes_to_visit.empty()) {
+    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
+    nodes_to_visit.pop();
+
+    for (std::shared_ptr<CFGNode> outgoing_node :
+         curr_node->GetOutgoingNodes()) {
+      if (!visited_nodes.count(outgoing_node)) {
+        visited_nodes.insert(outgoing_node);
+
+        // if start node affects any outgoing node, return true
+        if (ValidatePossibleAffectsRelationship(
+                var_modified_in_start_node,
+                CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
+            outgoing_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+          return true;
+        }
+
+        bool should_visit = true;
+        if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
+          should_visit = HandleAssignOrReadOutgoingNode(
+              outgoing_node, var_modified_in_start_node);
+        } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
+          should_visit =
+              HandleCallOutgoingNode(outgoing_node, var_modified_in_start_node);
+        }
+        if (should_visit) {
+          nodes_to_visit.push(outgoing_node);
+        }
+      }
+    }
+  }
+  return false;
+}
+
+bool GraphRelationTraverser::HasAnyAffectsPathTo(
+    std::shared_ptr<CFGNode> end_node) {
+  if (end_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+    return false;
+  }
+
+  std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
+  std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+  std::unordered_set<std::string> vars_used_in_end_node =
+      CFGNode::GetVarUsedInEndNode(end_node);
+
+  nodes_to_visit.push(end_node);
+
+  while (!nodes_to_visit.empty()) {
+    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
+    nodes_to_visit.pop();
+
+    for (std::shared_ptr<CFGNode> incoming_node :
+         curr_node->GetIncomingNodes()) {
+      if (!visited_nodes.count(incoming_node)) {
+        visited_nodes.insert(incoming_node);
+
+        // if incoming node changes a variable used by the end node, return true
+        if (incoming_node->GetNodeType() == StmtType::ASSIGN_STMT &&
+            ValidatePossibleAffectsRelationship(
+                CFGNode::GetVarModifiedInStartNode(incoming_node),
+                vars_used_in_end_node)) {
+          return true;
+        }
+        nodes_to_visit.push(incoming_node);
       }
     }
   }

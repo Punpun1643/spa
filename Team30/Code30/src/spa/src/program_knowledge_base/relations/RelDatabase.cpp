@@ -49,7 +49,6 @@ bool RelDatabase::IsCFGRelation(RelationType type) {
 }
 
 bool RelDatabase::IsEmptyCFG(RelationType type) {
-  // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR, AFFECTS
   for (auto pair : cfg_nodes) {
     if (HasRelations(type, pair.first)) {
       return false;
@@ -86,14 +85,7 @@ bool RelDatabase::HasRelationsCFG(RelationType type, std::string val) {
     return !node->GetOutgoingNodes().empty();
   }
 
-  // TODO(@tyanhan): Optimise for AFFECTS
-  for (auto pair : cfg_nodes) {
-    std::shared_ptr<CFGNode> n = pair.second;
-    if (GraphRelationTraverser::HasAffectsPath(node, n)) {
-      return true;
-    }
-  }
-  return false;
+  return GraphRelationTraverser::HasAnyAffectsPath(node);
 }
 
 bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
@@ -106,19 +98,11 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
     return !node->GetIncomingNodes().empty();
   }
 
-  // TODO(@tyanhan): Optimise for AFFECTS
-  for (auto pair : cfg_nodes) {
-    std::shared_ptr<CFGNode> n = pair.second;
-    if (GraphRelationTraverser::HasAffectsPath(n, node)) {
-      return true;
-    }
-  }
-  return false;
+  return GraphRelationTraverser::HasAnyAffectsPathTo(node);
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
-  // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
     if (HasRelations(type, val)) {
@@ -130,7 +114,6 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
     RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
-  // TODO(@tyanhan): Optimise for NEXT, NEXT_STAR and AFFECTS
   std::unordered_set<std::string> output;
   for (std::string val : *vals) {
     if (HasInverseRelations(type, val)) {
