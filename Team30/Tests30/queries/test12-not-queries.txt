@@ -31,7 +31,7 @@ Select p with p.varName = "p" and not p.stmt# = 15
 7 - Multi Clause
 while w; variable v; print p; assign a;
 Select a pattern not a(v,_"a"_) such that not Parent*(w, a) and not Uses(p, v)
-9
+1, 8
 5000
 8 - Stress Test Clause
 assign a;
