@@ -15,14 +15,14 @@ procedure p1 {
 
   }
 
-9  if (a||b||c) then {
-10    if ((x < (5 / z))) then {
+9  if ( ((a == b) || (b == c)) || (a == c)) then {
+10    if (x < (5 / z)) then {
 11      z = 1 + 2;
     } else {
 12      b = x + 7;
     }
   } else {
-13    while (a || !(c < 0)) {
+13    while ((a == b) || (!(c < 0))) {
 14      print b;
     }
   }
