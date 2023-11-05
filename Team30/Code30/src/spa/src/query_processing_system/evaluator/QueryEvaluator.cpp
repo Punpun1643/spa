@@ -11,7 +11,13 @@ void QueryEvaluator::PopulateIntermediateResultsTable(
     IntermediateResultsTable& table, ClauseList clauses) {
   for (auto& clause : clauses) {
     auto clause_result = clause->Evaluate(pkb);
-    table.AddClauseResult(*clause_result);
+    if (clause->IsNegated()) {
+      auto decls = clause_result->GetDeclarations();
+      FillMissingDecls(table, decls);
+      table.AddClauseResult(*clause_result, true);
+    } else {
+      table.AddClauseResult(*clause_result, false);
+    }
     if (table.HasNoResults()) {
       break;  // no point continuing
     }
