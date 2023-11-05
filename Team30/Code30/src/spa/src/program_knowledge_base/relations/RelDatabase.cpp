@@ -155,7 +155,6 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
     }
     return output;
   } else if (type == RelationType::NEXT_STAR) {
-    // TODO(@tyanhan): Optimise for NEXT_STAR and AFFECTS
     return GraphRelationTraverser::GetAllStmtsWithPathFrom(node);
   } else {
     return GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(node);

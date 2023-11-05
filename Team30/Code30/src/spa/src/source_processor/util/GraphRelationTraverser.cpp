@@ -154,7 +154,7 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathFrom(
     }
   }
   return stmts_with_valid_path;
-};
+}
 
 std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathTo(
     std::shared_ptr<CFGNode> end_node) {
@@ -181,7 +181,7 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathTo(
     }
   }
   return stmts_with_valid_path;
-};
+}
 
 std::unordered_set<std::string>
 GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
