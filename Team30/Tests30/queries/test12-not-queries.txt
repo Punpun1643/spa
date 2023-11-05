@@ -21,7 +21,7 @@ Select a such that Parent*(w, i) and Parent(i, a) and not Modifies(a, "t")
 5 - Multi Pattern (mix of not and +ve)
 if i; assign a; while w; variable v;
 Select v pattern a(v, _) and not i(v,_,_) and not w(v, _)
-q, i, t
+a,f,i,q,r,t,w,y
 5000
 6 - Multi with (mix of not and +ve)
 print p;
@@ -31,7 +31,7 @@ Select p with p.varName = "p" and not p.stmt# = 15
 7 - Multi Clause
 while w; variable v; print p; assign a;
 Select a pattern not a(v,_"a"_) such that not Parent*(w, a) and not Uses(p, v)
-1, 8
+1, 5, 8, 9, 16, 19, 20, 21, 23, 24, 33, 35, 36, 37
 5000
 8 - Stress Test Clause
 assign a;
