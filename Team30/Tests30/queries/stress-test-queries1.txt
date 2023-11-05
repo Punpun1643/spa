@@ -11,40 +11,40 @@ Select w such that Parent(i, w) and Parent*(w, w1)
 3 - Stress Test Next/* Relation
 stmt s, s1;
 Select s1 such that Next*(s, s1) with s.stmt# = 119
-None
+106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135
 5000
 4 - Stress Test Calls/* Relation
 procedure p;
 Select p such that Calls*("p5", p)
-None
+p9, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p23, p24, p25, p26, p29, p30, p31
 5000
 5 - Stress Test Affects Relation
 assign a;
-Select BOOLEAN such that Affects(a, 124)
-True
+Select BOOLEAN such that Affects(a, 132)
+TRUE
 5000
 6 - Stress Test Assign Pattern
 assign a; variable v;
 Select a pattern a (v, _"a+d"_)
-None
+147, 148, 149, 151, 152, 156, 157, 158, 166 
 5000
 7 - Stress Test Assign Pattern
 assign a; variable v;
 Select a pattern a (v, "(c - a) + d * b")
-None
+159
 5000
 8 - Stress Test If/While Pattern
 variable v; if if; while while;
-Select v such that pattern if(v, _, _) and while(v, _) with if.stmt# = 168 and while.stmt# = 170
-None
+Select v pattern if(v, _, _) and while(v, _) with while.stmt# = 168 and if.stmt# = 170
+b2, c, f, giaoj1, h, v 
 5000
 9 - Stress Test Not query 
-stmt s; assign a, a1; variable v; read r; if i;
-Select s such that not Parent(w, s) and not Follows (a, s) and not Uses(s, "a") pattern not a1(_, _"x"_) and not a1 ("y", _) and not i ("bc", _, _) with not s.stmt# = 128 and not r.varName = "r"
-None
+assign a, a1; variable v; read r; if i; while w; call c;
+Select a such that not Parent(w, a) and not Follows (a, r) and not Uses(a, "a") pattern not a(_, _"b"_) and not a1 ("p", _) and not i ("bc", _, _) with not s.stmt# = 129 and not r.varName = "r"
+112, 123, 140
 5000
 10 - Stress Test Not query 
 stmt s; assign a; variable v; read r; procedure p; while w; constant c; if i; print pn; call cl;
-Select BOOLEAN such that not Modifies(116, "f") and not Uses(136, "c") and not Calls*("p10", "p22") pattern not a("g", _) and not i("bb",_,_) and not w("e",_) with not cl.procName = "p27" and not c.value = 88 and not pn.varName = "c"
-True
+Select BOOLEAN such that not Modifies(116, "f") and not Uses(136, "c") and not Calls*("p10", "p22") pattern not a("g", _) and not i("bb",_,_) and not w("e",_) with not cl.procName = "p32" and not c.value = 88 and not pn.varName = "c"
+TRUE
 5000

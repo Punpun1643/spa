@@ -116,18 +116,18 @@ procedure Nesting {
       b = a;
       if (!(c < a)) then {
         d = c + a;
-        a = b;
+        a = d;
         while (d >= 2 / a *c) {
           print x;
           while (e == b) {
             while (f == 0) {
-              b = a;
+              d = a;
               if ((g > f) && (b != g)) then {
                 a = 48 % g + x % 92 + d;
                 read x;
-                g = 0 % e / 3 - 0 * 11 % b;
+                c = 0 % g / 3 - 0 * 11 % b;
               } else {
-                call p1;
+                call p21;
                 e = c + c + 1;
                 a = b;
               }
@@ -144,7 +144,7 @@ procedure Nesting {
 
         while (1 == g) {
           f = b + d - a;
-          c = b - a;
+          c = x - d;
         }
       }
       call p2;
