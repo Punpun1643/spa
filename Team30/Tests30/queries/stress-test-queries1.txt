@@ -39,8 +39,8 @@ Select v pattern if(v, _, _) and while(v, _) with while.stmt# = 168 and if.stmt#
 b2, c, f, giaoj1, h, v 
 5000
 9 - Stress Test Not query 
-assign a, a1; variable v; read r; if i; while w; call c;
-Select a such that not Parent(w, a) and not Follows (a, r) and not Uses(a, "a") pattern not a(_, _"b"_) and not a1 ("p", _) and not i ("bc", _, _) with not s.stmt# = 129 and not r.varName = "r"
+assign a; variable v; read r; if i; while w; call c;
+Select a such that not Parent(w, a) and not Follows (a, r) and not Uses(a, "a") pattern not a(_, _"b"_) and not a ("p", _) and not i ("bc", _, _) with not s.stmt# = 129 and not r.varName = "r"
 112, 123, 140
 5000
 10 - Stress Test Not query 
