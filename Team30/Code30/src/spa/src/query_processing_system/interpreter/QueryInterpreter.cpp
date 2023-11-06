@@ -11,7 +11,6 @@
 #include "../clauses/ModifiesPClause.h"
 #include "../clauses/ModifiesSClause.h"
 #include "../clauses/NextClause.h"
-#include "../clauses/NotClauseDecorator.h"
 #include "../clauses/ParentClause.h"
 #include "../clauses/PatternAssignClause.h"
 #include "../clauses/PatternIfClause.h"

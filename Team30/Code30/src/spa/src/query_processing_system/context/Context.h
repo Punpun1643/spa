@@ -7,7 +7,6 @@
 #include <vector>
 #include <utility>
 
-#include "../clauses/NotClauseDecorator.h"
 #include "../clauses/PatternClause.h"
 #include "../clauses/SuchThatClause.h"
 #include "../clauses/WithClause.h"
