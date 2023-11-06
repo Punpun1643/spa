@@ -351,7 +351,8 @@ void SyntaxChecker::CheckPattern(bool has_and) {
         !follows_pattern_assign_syntax &&
         !follows_pattern_if_syntax &&
         !follows_pattern_while_syntax) {
-      throw InvalidSyntaxException("Pattern clause does not follows pattern assign, if or while syntax");
+      throw InvalidSyntaxException(
+          "Pattern clause does not follows pattern assign, if or while syntax");
     } else {
       this->has_semantic_exception = true;
       currTokenIndex = final_index;
