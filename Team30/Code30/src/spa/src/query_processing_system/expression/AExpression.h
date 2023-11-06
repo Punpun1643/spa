@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <utility>
+#include <optional>
 
 class QueryInterpreter;
 
