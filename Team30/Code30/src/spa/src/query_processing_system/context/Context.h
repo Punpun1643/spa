@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <utility>
 
 #include "../clauses/NotClauseDecorator.h"
 #include "../clauses/PatternClause.h"

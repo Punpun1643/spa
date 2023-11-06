@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace QueryUtility {
 bool IsIdentifier(std::string const& string);
 bool IsValidQPInteger(std::string const& string);

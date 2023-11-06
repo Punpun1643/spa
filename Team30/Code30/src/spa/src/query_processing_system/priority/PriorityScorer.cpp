@@ -1,5 +1,7 @@
 #include "PriorityScorer.h"
 
+#include <memory>
+
 #include "../context/Context.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/SuchThatExpression.h"
@@ -11,9 +13,6 @@ PriorityScorer::PriorityScorer(std::shared_ptr<Context> context)
 
 float PriorityScorer::GetPriorityScore(
     std::shared_ptr<PatternExpression> expression) {
-  // TODO: Current method for getting num new synonyms is wrong. num new
-  // synonyms should be based on final clause ordering (within group sorting?),
-  // rather than on initial order
   int num_synonyms = 0;
   int num_new_synonyms = 0;
   int const negated = (expression->IsNot() ? 1 : 0);
