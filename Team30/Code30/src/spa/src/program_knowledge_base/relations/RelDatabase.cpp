@@ -102,9 +102,9 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
-    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+    RelationType type, std::unordered_set<std::string> vals) {
   std::unordered_set<std::string> output;
-  for (std::string val : *vals) {
+  for (std::string val : vals) {
     if (HasRelations(type, val)) {
       output.insert(val);
     }
@@ -113,9 +113,9 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
-    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+    RelationType type, std::unordered_set<std::string> vals) {
   std::unordered_set<std::string> output;
-  for (std::string val : *vals) {
+  for (std::string val : vals) {
     if (HasInverseRelations(type, val)) {
       output.insert(val);
     }
@@ -215,7 +215,7 @@ bool RelDatabase::HasInverseRelations(RelationType type, std::string val) {
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
-    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+    RelationType type, std::unordered_set<std::string> vals) {
   if (IsCFGRelation(type)) {
     return GetAllWithRelationsCFG(type, vals);
   }
@@ -223,7 +223,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelations(
-    RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals) {
+    RelationType type, std::unordered_set<std::string> vals) {
   if (IsCFGRelation(type)) {
     return GetAllWithInverseRelationsCFG(type, vals);
   }

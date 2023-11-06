@@ -3,26 +3,16 @@
 #include <utility>
 
 EntityDatabase::EntityDatabase() {
-  entities[EntityType::PROCEDURE] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::STMT] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::READ] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::PRINT] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::ASSIGN] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::CALL] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::WHILE] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::IF] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::VARIABLE] =
-      std::make_shared<std::unordered_set<std::string>>();
-  entities[EntityType::CONSTANT] =
-      std::make_shared<std::unordered_set<std::string>>();
+  entities[EntityType::PROCEDURE] = std::unordered_set<std::string>();
+  entities[EntityType::STMT] = std::unordered_set<std::string>();
+  entities[EntityType::READ] = std::unordered_set<std::string>();
+  entities[EntityType::PRINT] = std::unordered_set<std::string>();
+  entities[EntityType::ASSIGN] = std::unordered_set<std::string>();
+  entities[EntityType::CALL] = std::unordered_set<std::string>();
+  entities[EntityType::WHILE] = std::unordered_set<std::string>();
+  entities[EntityType::IF] = std::unordered_set<std::string>();
+  entities[EntityType::VARIABLE] = std::unordered_set<std::string>();
+  entities[EntityType::CONSTANT] = std::unordered_set<std::string>();
 
   statement_types = {EntityType::STMT,   EntityType::READ, EntityType::PRINT,
                      EntityType::ASSIGN, EntityType::CALL, EntityType::WHILE,
@@ -32,7 +22,7 @@ EntityDatabase::EntityDatabase() {
 std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
     EntityType ent_type, AttrType attr_type) {
   if (EntityAttrPairings::IsDefaultPair(ent_type, attr_type)) {
-    return *Get(ent_type);
+    return Get(ent_type);
   }
 
   std::pair key = std::make_pair(ent_type, attr_type);
@@ -49,9 +39,9 @@ std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
 }
 
 void EntityDatabase::InsertEntity(EntityType type, std::string value) {
-  (entities[type])->insert(value);
+  (entities[type]).insert(value);
   if (statement_types.find(type) != statement_types.end()) {
-    (entities[EntityType::STMT])->insert(value);
+    (entities[EntityType::STMT]).insert(value);
   }
 }
 
@@ -62,10 +52,9 @@ void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
   attr_ent_map[std::make_pair(type, attr_type)][attribute].insert(ent);
 }
 
-std::shared_ptr<std::unordered_set<std::string>> EntityDatabase::Get(
+std::unordered_set<std::string> EntityDatabase::Get(
     EntityType type) {
-  std::shared_ptr<std::unordered_set<std::string>> results = entities.at(type);
-  return results;
+  return entities.at(type);
 }
 
 // TODO(@tyanhan): Remove curr_attr_type
@@ -84,8 +73,8 @@ std::string EntityDatabase::ConvertEntityValueToAlias(
 std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
     EntityType type, AttrType attr_type, std::string value) {
   if (EntityAttrPairings::IsDefaultPair(type, attr_type)) {
-    std::shared_ptr<std::unordered_set<std::string>> ents = Get(type);
-    if (ents->find(value) != ents->end()) {
+    std::unordered_set<std::string> ents = Get(type);
+    if (ents.find(value) != ents.end()) {
       return std::vector<std::string>({value});
     }
     return std::vector<std::string>();
