@@ -42,3 +42,4 @@ class PriorityScorer {
   bool IsQuotedIdentifier(std::string const& string);
   bool IsSynonym(std::string const& string);
 };
+
