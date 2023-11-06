@@ -437,6 +437,10 @@ void SyntaxChecker::CheckSelectMultiple() {
       if (GetCurrTokenValue() == ">") {
         throw InvalidSyntaxException("Extra comma detected in multiple select");
       }
+    } else {
+      if (GetCurrTokenValue() != ">") {
+        throw InvalidSyntaxException("Expected '<' or ',' for select multiple");
+      }
     }
   }
 }
