@@ -357,32 +357,6 @@ void SyntaxChecker::CheckPattern(bool has_and) {
       currTokenIndex = final_index;
     }
   }
-
-  /* if (pattern_entity_type.has_value()) { */
-  /*   if (pattern_entity_type.value() == EntityType::ASSIGN) { */
-  /*     CheckPatternAssign(); */
-  /*   } else if (pattern_entity_type.value() == EntityType::WHILE) { */
-  /*     CheckPatternWhile(); */
-  /*   } else if (pattern_entity_type.value() == EntityType::IF) { */
-  /*     CheckPatternIf(); */
-  /*   } else { */
-  /*     throw InvalidSyntaxException( */
-  /*         "Pattern synonym not of assign, while or if type"); */
-  /*   } */
-  /* } else { */
-  /*   size_t revert_index = currTokenIndex; */
-  /*   try { */
-  /*     CheckPatternAssign(); */
-  /*   } catch (InvalidSyntaxException e) { */
-  /*     try { */
-  /*       currTokenIndex = revert_index; */
-  /*       CheckPatternIf(); */
-  /*     } catch (InvalidSyntaxException e) { */
-  /*       currTokenIndex = revert_index; */
-  /*       CheckPatternWhile(); */
-  /*     } */
-  /*   } */
-  /* } */
 }
 
 void SyntaxChecker::CheckPatternAssign() {
