@@ -11,26 +11,26 @@ void ClauseResult::SetResultToFalse() {
 }
 
 void ClauseResult::ConstructSingleDeclResult(
-    PqlDeclaration const& d, std::vector<std::string> const& values) {
+    PqlDeclaration d, std::vector<std::string> values) {
   if (values.empty()) {
     SetResultToFalse();
   } else {
     num_declarations = 1;
-    value_map[d] = values;
+    d1 = std::move(d);
+    d1_values = std::move(values);
   }
 }
 
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
-ClauseResult::ClauseResult(PqlDeclaration const& d,
-                           std::vector<std::string> const& values) {
-  ConstructSingleDeclResult(d, values);
+ClauseResult::ClauseResult(PqlDeclaration d, std::vector<std::string> values) {
+  ConstructSingleDeclResult(std::move(d), std::move(values));
 }
 
 ClauseResult::ClauseResult(
-    PqlDeclaration const& d1, PqlDeclaration const& d2,
-    std::vector<std::pair<std::string, std::string>> const& values) {
+    PqlDeclaration d1, PqlDeclaration d2,
+    std::vector<std::pair<std::string, std::string>> values) {
   if (values.empty()) {
     SetResultToFalse();
     return;
@@ -44,13 +44,15 @@ ClauseResult::ClauseResult(
         intersecting.push_back(pair.first);
       }
     }
-    ConstructSingleDeclResult(d1, intersecting);
+    ConstructSingleDeclResult(std::move(d1), std::move(intersecting));
   } else {
     num_declarations = 2;
     // separate out the paired vectors
     auto result = ArrayUtility::SplitPairVector(values);
-    value_map[d1] = result.first;
-    value_map[d2] = result.second;
+    d1 = std::move(d1);
+    d2 = std::move(d2);
+    d1_values = std::move(result.first);
+    d2_values = std::move(result.second);
   }
 }
 
