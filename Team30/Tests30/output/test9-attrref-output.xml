@@ -1,126 +1,126 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.582000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.629000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="AttrRef print stmt#">1</id><querystr><![CDATA[print pn; variable v; Select pn.stmt# such that Uses (pn, v)]]></querystr>
 <stuans>12,13,16,21</stuans>
 <correct>12,13,16,21</correct>
-<time_taken>1.923000</time_taken>
+<time_taken>1.664000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="AttrRef print varName">2</id><querystr><![CDATA[print pn; variable v; Select pn.varName such that Uses (pn, v)]]></querystr>
 <stuans>v2,v3,v4</stuans>
 <correct>v3,v4,v2</correct>
-<time_taken>1.524000</time_taken>
+<time_taken>1.269000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="AttrRef call different attrRef tyoes">3</id><querystr><![CDATA[call c; Select <c.stmt#, c.procName>]]></querystr>
 <stuans>11 p2,17 v3</stuans>
 <correct>11 p2,17 v3</correct>
-<time_taken>1.440000</time_taken>
+<time_taken>1.220000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="AttrRef constant attrRef type">4</id><querystr><![CDATA[constant c1; Select c1.value]]></querystr>
 <stuans>0,1,2,3,4,7,99</stuans>
 <correct>2,99,4,7,3,1,0</correct>
-<time_taken>1.253000</time_taken>
+<time_taken>1.108000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="AttrRef Invalid, wrong attrRef for entity">5</id><querystr><![CDATA[call c; variable v; Select c.varName]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.624000</time_taken>
+<time_taken>1.330000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="AttrRef Invalid, cannot put AttrRef in Relation params">6</id><querystr><![CDATA[stmt s, s1; Select s such that Follows(s, s1.stmt#)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.533000</time_taken>
+<time_taken>2.142000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="AttrRef Invalid, cannot put AttrRef in Pattern params">7</id><querystr><![CDATA[variable v; assign a; Select v pattern a (v.varName, _"v2"_)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.464000</time_taken>
+<time_taken>1.526000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="AttrRef procedure procName">8</id><querystr><![CDATA[procedure p; Select <p, p.procName>]]></querystr>
 <stuans>p1 p1,p2 p2,p4 p4,v3 v3</stuans>
 <correct>p1 p1,p2 p2,v3 v3,p4 p4</correct>
-<time_taken>1.462000</time_taken>
+<time_taken>1.160000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="AttrRef variable varName and procedure procName with With clauses">9</id><querystr><![CDATA[variable v; procedure p; Select v.varName with v.varName = p.procName]]></querystr>
 <stuans>p1,v3</stuans>
 <correct>v3,p1</correct>
-<time_taken>1.477000</time_taken>
+<time_taken>1.255000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="Read stmt# and varName">10</id><querystr><![CDATA[read r; Select <r.stmt#, r.varName> with r.varName = "v2"]]></querystr>
 <stuans>18 v2,5 v2</stuans>
 <correct>5 v2,18 v2</correct>
-<time_taken>1.502000</time_taken>
+<time_taken>1.139000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" With="1" CondNum="2" RelNum="0" comment="Stmt stmt#">11</id><querystr><![CDATA[stmt s; Select s.stmt# with s.stmt# = 4]]></querystr>
 <stuans>4</stuans>
 <correct>4</correct>
-<time_taken>1.340000</time_taken>
+<time_taken>1.210000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="While stmt#">12</id><querystr><![CDATA[while w; Select w.stmt#]]></querystr>
 <stuans>22,6</stuans>
 <correct>6,22</correct>
-<time_taken>1.533000</time_taken>
+<time_taken>1.147000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="If stmt#">13</id><querystr><![CDATA[if i; Select i.stmt#]]></querystr>
 <stuans>8</stuans>
 <correct>8</correct>
-<time_taken>1.548000</time_taken>
+<time_taken>1.216000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="Assign stmt#">14</id><querystr><![CDATA[assign a; Select a.stmt#]]></querystr>
 <stuans>1,10,14,15,2,23,3,7,9</stuans>
 <correct>1,2,3,7,9,10,14,15,23</correct>
-<time_taken>1.728000</time_taken>
+<time_taken>1.263000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="Invalid attrRef proc.varName">15</id><querystr><![CDATA[procedure p; Select p.varName]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.500000</time_taken>
+<time_taken>1.135000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="Invalid attrRef var.procName">16</id><querystr><![CDATA[variable v; Select v.procName]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.548000</time_taken>
+<time_taken>1.219000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="Invalid attrRef constant.stmt#">17</id><querystr><![CDATA[constant c; Select c.stmt#]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.499000</time_taken>
+<time_taken>1.178000</time_taken>
 <passed/>
 </query>
 </queries>
