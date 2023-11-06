@@ -1,252 +1,252 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.804000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.687000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies stmt syn LHS and var syn RHS">1</id><querystr><![CDATA[stmt s; variable v; Select v such that Modifies (s, v)]]></querystr>
 <stuans>a,i,j,p,q,x,y,z</stuans>
 <correct>x,y,z,p,q,i,j,a</correct>
-<time_taken>1.754000</time_taken>
+<time_taken>1.512000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies container syn LHS and var syn RHS">2</id><querystr><![CDATA[while w; variable v; Select w such that Modifies (w, v)]]></querystr>
 <stuans>14,7</stuans>
 <correct>7,14</correct>
-<time_taken>1.475000</time_taken>
+<time_taken>1.278000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies container syn LHS and var syn RHS">3</id><querystr><![CDATA[if i; variable v; while extra; Select i such that Modifies (i, v)]]></querystr>
 <stuans>20,24,4</stuans>
 <correct>4,20,24</correct>
-<time_taken>1.278000</time_taken>
+<time_taken>1.182000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies stmt syn LHS and specific var string RHS">4</id><querystr><![CDATA[read r; Select r such that Modifies (r, "x")]]></querystr>
 <stuans>1,28</stuans>
 <correct>1,28</correct>
-<time_taken>1.385000</time_taken>
+<time_taken>1.069000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies stmt syn LHS and specific var string RHS">5</id><querystr><![CDATA[stmt s; variable v; Select s such that Modifies (s, "y")]]></querystr>
 <stuans>10,2,20,21,23,4,7,8</stuans>
 <correct>2,8,10,21,23,4,7,20</correct>
-<time_taken>1.220000</time_taken>
+<time_taken>1.246000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies container syn LHS and specific var string RHS">6</id><querystr><![CDATA[if i; Select i such that Modifies (i, "a")]]></querystr>
 <stuans>20,24</stuans>
 <correct>20,24</correct>
-<time_taken>1.301000</time_taken>
+<time_taken>1.397000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies container syn LHS and specific var string RHS">7</id><querystr><![CDATA[while w; Select w such that Modifies (w, "t")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.271000</time_taken>
+<time_taken>1.250000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies container syn LHS and specific var string RHS">8</id><querystr><![CDATA[while w; Select w such that Modifies (w, "a")]]></querystr>
 <stuans>14</stuans>
 <correct>14</correct>
-<time_taken>1.294000</time_taken>
+<time_taken>1.082000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies stmt syn LHS and nonexistent var string RHS">9</id><querystr><![CDATA[stmt s; Select s such that Modifies (s, "wowThisIsAReallyLongVariableNameICantBelieveHowLongThisIsHereAreSomeNumbers910239122")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.331000</time_taken>
+<time_taken>1.219000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Modifies stmt syn LHS and wildcard RHS">10</id><querystr><![CDATA[assign a; Select a such that Modifies (a, _)]]></querystr>
 <stuans>10,11,12,13,15,17,18,19,2,22,23,25,26,27,3,5,8,9</stuans>
 <correct>2,3,5,8,9,10,11,12,13,15,17,18,19,22,23,25,26,27</correct>
-<time_taken>1.269000</time_taken>
+<time_taken>1.262000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Modifies container syn LHS and wildcard RHS">11</id><querystr><![CDATA[while w, w1; Select w such that Modifies (w, _)]]></querystr>
 <stuans>14,7</stuans>
 <correct>7,14</correct>
-<time_taken>1.421000</time_taken>
+<time_taken>1.196000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Modifies stmt syn LHS and wildcard RHS">12</id><querystr><![CDATA[while w, w1; stmt s; Select w such that Modifies (s, _)]]></querystr>
 <stuans>14,30,7</stuans>
 <correct>7,14,30</correct>
-<time_taken>1.457000</time_taken>
+<time_taken>1.347000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Modifies stmt syn LHS and wildcard RHS">13</id><querystr><![CDATA[while w, w1; stmt s; Select s such that Modifies (s, _)]]></querystr>
 <stuans>1,10,11,12,13,14,15,17,18,19,2,20,21,22,23,24,25,26,27,28,3,4,5,7,8,9</stuans>
 <correct>1,2,3,4,5,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,24,25,26,27,28</correct>
-<time_taken>1.394000</time_taken>
+<time_taken>1.268000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="print statements do not Modifies anything">14</id><querystr><![CDATA[print pn; Select pn such that Modifies (pn, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.270000</time_taken>
+<time_taken>1.161000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and var syn RHS">15</id><querystr><![CDATA[variable v; Select v such that Modifies (9, v)]]></querystr>
 <stuans>z</stuans>
 <correct>z</correct>
-<time_taken>1.323000</time_taken>
+<time_taken>1.309000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and var syn RHS">16</id><querystr><![CDATA[variable v; Select v such that Modifies (4, v)]]></querystr>
 <stuans>y,z</stuans>
 <correct>y,z</correct>
-<time_taken>1.374000</time_taken>
+<time_taken>1.224000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific container num LHS and var syn RHS">17</id><querystr><![CDATA[while w; variable v; Select w such that Modifies (30, v)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.348000</time_taken>
+<time_taken>1.163000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and var syn RHS">18</id><querystr><![CDATA[variable v; Select v such that Modifies (29, v)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.158000</time_taken>
+<time_taken>1.184000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and specific var string RHS">19</id><querystr><![CDATA[print pn; Select pn such that Modifies (11, "q")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.266000</time_taken>
+<time_taken>1.198000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and specific var string RHS">20</id><querystr><![CDATA[print pn; Select pn such that Modifies (11, "i")]]></querystr>
 <stuans>16,29,31,33,34,6</stuans>
 <correct>6,16,29,31,33,34</correct>
-<time_taken>1.200000</time_taken>
+<time_taken>1.158000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and specific var string RHS">21</id><querystr><![CDATA[print pn; Select pn such that Modifies (20, "i")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.319000</time_taken>
+<time_taken>1.088000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Modifies specific stmt num LHS and specific var string RHS">22</id><querystr><![CDATA[read re; Select re such that Modifies (20, "a")]]></querystr>
 <stuans>1,21,28</stuans>
 <correct>1,21,28</correct>
-<time_taken>1.182000</time_taken>
+<time_taken>1.163000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Modifies specific stmt num LHS and wildcard RHS">23</id><querystr><![CDATA[read r; Select r such that Modifies (7, _)]]></querystr>
 <stuans>1,21,28</stuans>
 <correct>1,21,28</correct>
-<time_taken>1.247000</time_taken>
+<time_taken>1.129000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Modifies specific stmt num LHS and wildcard RHS">24</id><querystr><![CDATA[while w; Select w such that Modifies (6, _)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.434000</time_taken>
+<time_taken>1.174000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Semantic Error, cannot have wildcard in first param of Modifies">25</id><querystr><![CDATA[read r; variable v; Select r such that Modifies (_, v)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.463000</time_taken>
+<time_taken>1.181000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have variable syn in first param of Modifies">26</id><querystr><![CDATA[variable v1, v2; Select v1 such that Modifies (v1, v2)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.331000</time_taken>
+<time_taken>1.199000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have constant syn in first param of Modifies">27</id><querystr><![CDATA[constant c; Select c such that Modifies (c, v2)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.294000</time_taken>
+<time_taken>1.081000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, cannot have identifier in first param of Modifies">28</id><querystr><![CDATA[variable v1, v2; Select v1 such that Modifies ("abc", v2)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.304000</time_taken>
+<time_taken>1.195000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, IDENT must start with a letter">29</id><querystr><![CDATA[assign a; Select a such that Modifies (a, "1")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.337000</time_taken>
+<time_taken>1.222000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, cannot have stmt number in second param of Modifies">30</id><querystr><![CDATA[read r; variable v; Select r such that Modifies (10, 15)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.284000</time_taken>
+<time_taken>1.158000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have Stmt Declaration in second param of Modifies">31</id><querystr><![CDATA[read r; stmt s; Select r such that Modifies (10, s)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.367000</time_taken>
+<time_taken>1.096000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, cannot have Constant Declaration in second param of Modifies">32</id><querystr><![CDATA[read r; constant con; Select r such that Modifies (10, con)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.456000</time_taken>
+<time_taken>1.130000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" SuchThat="1" CondNum="2" RelNum="0" comment="Syntax Error, spell Modifies wrongly">33</id><querystr><![CDATA[read r; constant con; Select r such that Modfies (10, con)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.377000</time_taken>
+<time_taken>1.106000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Syntax Error, IDENTIFIER cannot be empty">34</id><querystr><![CDATA[read r; constant con; Select r such that Modifies (10, " ")]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.287000</time_taken>
+<time_taken>1.010000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="Semantic Error, non-existent declaration">35</id><querystr><![CDATA[while w; Select i such that Modifies (i, "a")]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.134000</time_taken>
+<time_taken>1.109000</time_taken>
 <passed/>
 </query>
 </queries>

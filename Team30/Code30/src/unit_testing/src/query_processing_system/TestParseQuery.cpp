@@ -633,7 +633,8 @@ TEST_CASE("With queries") {
     AddIntVector(tokens, {"2"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSyntaxException);
   }
 
   SECTION("stmt s; constant c; Select s with s.stmt# = c.value") {
@@ -876,7 +877,7 @@ TEST_CASE("not clauses") {
 
   SECTION("stmt s1; Select s1 with not s1.stmt# = 10") {
     AddDeclaration(tokens, "stmt", {"s1"});
-    AddWordVector(tokens, {"Select", "s1",  "with", "not", "s1"});
+    AddWordVector(tokens, {"Select", "s1", "with", "not", "s1"});
     AddSpecialCharVector(tokens, {"."});
     AddWordVector(tokens, {"stmt#"});
     AddSpecialCharVector(tokens, {"="});
@@ -886,7 +887,9 @@ TEST_CASE("not clauses") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("stmt s1, s2; Select <s1, s2> such that Follows(2, s1) and not Follows*(10, s2)") {
+  SECTION(
+      "stmt s1, s2; Select <s1, s2> such that Follows(2, s1) and not "
+      "Follows*(10, s2)") {
     AddDeclaration(tokens, "stmt", {"s1", "s2"});
     AddWordVector(tokens, {"Select"});
     AddSpecialCharVector(tokens, {"<"});
@@ -927,7 +930,9 @@ TEST_CASE("Pattern While Clauses") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Positive: while w1, w2; Select <w1, w2> pattern w1 (v, _) and w2 (x, _)") {
+  SECTION(
+      "Positive: while w1, w2; Select <w1, w2> pattern w1 (v, _) and w2 (x, "
+      "_)") {
     AddDeclaration(tokens, "while", {"w1", "w2"});
     AddDeclaration(tokens, "variable", {"v", "x"});
     AddWordVector(tokens, {"Select"});
@@ -951,7 +956,8 @@ TEST_CASE("Pattern While Clauses") {
     AddWordWild(tokens, "v");
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSemanticsException);
   }
 
   SECTION("Negative: while w; stmt s1; Select w pattern w (s1, _)") {
@@ -961,7 +967,8 @@ TEST_CASE("Pattern While Clauses") {
     AddWordWild(tokens, "s1");
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSemanticsException);
   }
 
   SECTION("Negative: while w; stmt s1; Select w patternn w (s1, _)") {
@@ -971,7 +978,8 @@ TEST_CASE("Pattern While Clauses") {
     AddWordWild(tokens, "s1");
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSyntaxException);
   }
 }
 
@@ -1000,7 +1008,9 @@ TEST_CASE("Pattern If Clauses") {
     controller.TokensToClauses(tokens);
   }
 
-  SECTION("Positive: if i1, i2; Select <i1, i2> pattern i1 (v, _, _) and i2 (x, _, _)") {
+  SECTION(
+      "Positive: if i1, i2; Select <i1, i2> pattern i1 (v, _, _) and i2 (x, _, "
+      "_)") {
     AddDeclaration(tokens, "if", {"i1", "i2"});
     AddDeclaration(tokens, "variable", {"v", "x"});
     AddWordVector(tokens, {"Select"});
@@ -1030,7 +1040,8 @@ TEST_CASE("Pattern If Clauses") {
     AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSemanticsException);
   }
 
   SECTION("Negative: if i; stmt s1; Select i pattern i (s1, _, _)") {
@@ -1042,7 +1053,8 @@ TEST_CASE("Pattern If Clauses") {
     AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSemanticsException);
   }
 
   SECTION("Negative: if i; stmt s1; Select i patternn i (s1, _, _)") {
@@ -1054,7 +1066,8 @@ TEST_CASE("Pattern If Clauses") {
     AddSpecialCharVector(tokens, {",", "_", ",", "_", ")"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSyntaxException);
   }
 
   SECTION("Negative: if i; Select w pattern w (_, _, _)") {
@@ -1063,7 +1076,8 @@ TEST_CASE("Pattern If Clauses") {
     AddSpecialCharVector(tokens, {"(", "_", ",", "_", ",", "_", ")"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSemanticsException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSemanticsException);
   }
 
   SECTION("Negative: if i; Selec w pattern w (_, _, _)") {
@@ -1072,6 +1086,7 @@ TEST_CASE("Pattern If Clauses") {
     AddSpecialCharVector(tokens, {"(", "_", ",", "_", ",", "_", ")"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSyntaxException);
   }
 }

@@ -25,12 +25,6 @@ class RelDatabase {
   // helper functions
   bool IsCFGRelation(RelationType type);
   bool IsValidStatementNumber(std::string val);
-  std::unordered_set<std::string> GetAllWithPathFrom(
-      std::shared_ptr<CFGNode> node);
-  std::unordered_set<std::string> GetAllWithAffectsPathFrom(
-      std::shared_ptr<CFGNode> node);
-  std::unordered_set<std::string> GetAllWithPathTo(
-      std::shared_ptr<CFGNode> node);
   std::unordered_set<std::string> GetAllWithAffectsPathTo(
       std::shared_ptr<CFGNode> node);
 

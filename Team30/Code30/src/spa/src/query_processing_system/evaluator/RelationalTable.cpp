@@ -180,6 +180,40 @@ void RelationalTable::Join(RelationalTable& other_table,
   }
 }
 
+void RelationalTable::Delete(PqlDeclaration const& decl,
+                             std::unordered_set<std::string> const& values) {
+  if (column_mapping.count(decl) == 0) {
+    throw std::invalid_argument(
+        "Declaration with values to be deleted is not present in table.");
+  }
+  int target_col = column_mapping.at(decl);
+  // erase-remove idiom
+  table.erase(std::remove_if(table.begin(), table.end(),
+                             [&](std::vector<std::string> const& row) {
+                               return values.count(row.at(target_col)) == 1;
+                             }),
+              table.end());
+}
+
+void RelationalTable::Delete(
+    PqlDeclaration const& d1, PqlDeclaration const& d2,
+    std::unordered_set<std::pair<std::string, std::string>, PairHash> const&
+        values) {
+  if (column_mapping.count(d1) == 0 || column_mapping.count(d2) == 0) {
+    throw std::invalid_argument(
+        "Declaration with values to be deleted is not present in table.");
+  }
+  int target_col_1 = column_mapping.at(d1);
+  int target_col_2 = column_mapping.at(d2);
+  table.erase(std::remove_if(table.begin(), table.end(),
+                             [&](std::vector<std::string> const& row) {
+                               auto pair = std::make_pair(row.at(target_col_1),
+                                                          row.at(target_col_2));
+                               return values.count(pair) == 1;
+                             }),
+              table.end());
+}
+
 bool RelationalTable::HasNoResults() const {
   return table.empty();
 }
@@ -190,4 +224,9 @@ std::vector<PqlDeclaration> RelationalTable::GetTableColNames() const {
     table_col_names.push_back(key);
   }
   return table_col_names;
+}
+
+void RelationalTable::Clear() {
+  table.clear();
+  column_mapping.clear();
 }
