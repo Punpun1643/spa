@@ -1,7 +1,8 @@
-#include "../interpreter/QueryInterpreter.h"
 #include "WithExpression.h"
 
 #include <string>
+
+#include "../interpreter/QueryInterpreter.h"
 
 WithExpression::WithExpression(std::string first_ref, std::string second_ref,
                                bool is_not)

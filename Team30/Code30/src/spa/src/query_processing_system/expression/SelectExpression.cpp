@@ -1,7 +1,8 @@
-#include "../interpreter/QueryInterpreter.h"
 #include "SelectExpression.h"
 
 #include <string>
+
+#include "../interpreter/QueryInterpreter.h"
 
 SelectExpression::SelectExpression(std::string synonym, AttrType attr_type,
                                    bool is_boolean) {

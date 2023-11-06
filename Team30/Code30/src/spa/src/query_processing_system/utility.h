@@ -1,11 +1,11 @@
 #pragma once
 
 namespace QueryUtility {
-  bool IsIdentifier(std::string const& string);
-  bool IsValidQPInteger(std::string const& string);
-  bool IsQuotedIdentifier(std::string const& string);
-  bool IsSynonym(std::string const& string);
-}
+bool IsIdentifier(std::string const& string);
+bool IsValidQPInteger(std::string const& string);
+bool IsQuotedIdentifier(std::string const& string);
+bool IsSynonym(std::string const& string);
+}  // namespace QueryUtility
 
 bool QueryUtility::IsIdentifier(std::string const& string) {
   if (!std::isalpha(string[0])) {
