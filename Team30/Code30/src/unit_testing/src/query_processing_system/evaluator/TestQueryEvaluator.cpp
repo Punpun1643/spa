@@ -7,7 +7,6 @@
 #include "../../../../spa/src/query_processing_system/evaluator/QueryEvaluator.h"
 #include "../../stub/PkbQpsInterfaceStub.h"
 #include "catch.hpp"
-#include "query_processing_system/clauses/NotClauseDecorator.h"
 #include "shared/ArrayUtility.h"
 
 class QeFactoryMethods {
