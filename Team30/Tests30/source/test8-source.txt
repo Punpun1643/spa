@@ -33,7 +33,7 @@ procedure p2 {
   read v9;
   print v10;
 
-  if ((!(v9 < v8))) then {
+  if (!(v9 < v8)) then {
     print v8;
   } else {
 
