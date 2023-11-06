@@ -17,9 +17,7 @@
 
 class EntityDatabase {
  private:
-  std::unordered_map<EntityType,
-                     std::shared_ptr<std::unordered_set<std::string>>>
-      entities;
+  std::unordered_map<EntityType, std::unordered_set<std::string>> entities;
 
   std::unordered_map<std::pair<EntityType, AttrType>,
                      std::unordered_map<std::string, std::string>, PairHash>
@@ -39,7 +37,7 @@ class EntityDatabase {
  public:
   EntityDatabase();
   ~EntityDatabase() = default;
-  std::shared_ptr<std::unordered_set<std::string>> Get(EntityType type);
+  std::unordered_set<std::string> Get(EntityType type);
 
   void InsertEntity(EntityType type, std::string value);
 

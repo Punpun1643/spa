@@ -25,12 +25,6 @@ class RelDatabase {
   // helper functions
   bool IsCFGRelation(RelationType type);
   bool IsValidStatementNumber(std::string val);
-  std::unordered_set<std::string> GetAllWithPathFrom(
-      std::shared_ptr<CFGNode> node);
-  std::unordered_set<std::string> GetAllWithAffectsPathFrom(
-      std::shared_ptr<CFGNode> node);
-  std::unordered_set<std::string> GetAllWithPathTo(
-      std::shared_ptr<CFGNode> node);
   std::unordered_set<std::string> GetAllWithAffectsPathTo(
       std::shared_ptr<CFGNode> node);
 
@@ -40,9 +34,9 @@ class RelDatabase {
   bool HasInverseRelationsCFG(RelationType type, std::string val);
 
   std::unordered_set<std::string> GetAllWithRelationsCFG(
-      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+      RelationType type, std::unordered_set<std::string> vals);
   std::unordered_set<std::string> GetAllWithInverseRelationsCFG(
-      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+      RelationType type, std::unordered_set<std::string> vals);
 
   std::unordered_set<std::string> GetAllRelatedToValueCFG(RelationType type,
                                                           std::string val);
@@ -60,9 +54,9 @@ class RelDatabase {
   bool HasInverseRelations(RelationType type, std::string val);
 
   std::unordered_set<std::string> GetAllWithRelations(
-      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+      RelationType type, std::unordered_set<std::string> vals);
   std::unordered_set<std::string> GetAllWithInverseRelations(
-      RelationType type, std::shared_ptr<std::unordered_set<std::string>> vals);
+      RelationType type, std::unordered_set<std::string> vals);
 
   std::unordered_set<std::string> GetAllRelatedToValue(RelationType type,
                                                        std::string val);

@@ -60,7 +60,7 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<Clause> clause = std::make_shared<AffectsClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2));
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -77,7 +77,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<CallsExpression> expression) {
       StringToEntRef(arg1), StringToEntRef(arg2), false);
 
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -94,7 +94,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<CallsTExpression> expression) {
       StringToEntRef(arg1), StringToEntRef(arg2), true);
 
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -112,7 +112,7 @@ void QueryInterpreter::Interpret(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false);
 
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -130,7 +130,7 @@ void QueryInterpreter::Interpret(
       StringToStmtRef(arg1), StringToStmtRef(arg2), true);
 
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -153,7 +153,7 @@ void QueryInterpreter::Interpret(
                                                StringToEntRef(arg2));
   }
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -169,7 +169,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<NextExpression> expression) {
   std::shared_ptr<Clause> clause = std::make_shared<NextClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -185,7 +185,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<NextTExpression> expression) {
   std::shared_ptr<Clause> clause = std::make_shared<NextClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), true);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -201,7 +201,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<ParentExpression> expression) {
   std::shared_ptr<Clause> clause = std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), false);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -218,7 +218,7 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<Clause> clause = std::make_shared<ParentClause>(
       StringToStmtRef(arg1), StringToStmtRef(arg2), true);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -246,7 +246,7 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<Clause> clause = std::make_shared<PatternAssignClause>(
       assign_decl, *lhs_expr, match_type, rhs_expr_tree);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -261,7 +261,9 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<EntRef> ent_ref;
   if (arg1 == "_") {
     ent_ref = std::make_shared<EntRef>();
-  } else {
+  } else if (this->IsQuotedIdentifier(arg1)) {
+    ent_ref = std::make_shared<EntRef>(arg1.substr(1, arg1.size() - 2));
+  } else if (this->IsSynonym(arg1)) {
     ent_ref = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
   }
   bool is_not = expression->IsNot();
@@ -270,7 +272,7 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<Clause> clause =
       std::make_shared<PatternIfClause>(if_decl, *ent_ref);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -285,7 +287,9 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<EntRef> ent_ref;
   if (arg1 == "_") {
     ent_ref = std::make_shared<EntRef>();
-  } else {
+  } else if (this->IsQuotedIdentifier(arg1)) {
+    ent_ref = std::make_shared<EntRef>(arg1.substr(1, arg1.size() - 2));
+  } else if (this->IsSynonym(arg1)) {
     ent_ref = std::make_shared<EntRef>(this->GetMappedDeclaration(arg1));
   }
   bool is_not = expression->IsNot();
@@ -294,7 +298,7 @@ void QueryInterpreter::Interpret(
   std::shared_ptr<Clause> clause =
       std::make_shared<PatternWhileClause>(while_decl, *ent_ref);
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 
@@ -333,7 +337,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<UsesExpression> expression) {
                                            StringToEntRef(arg2));
   }
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
   this->InterpretNext(expression);
@@ -349,7 +353,7 @@ void QueryInterpreter::Interpret(std::shared_ptr<WithExpression> expression) {
   float priority_score = this->priority_scorer.GetPriorityScore(expression);
 
   if (is_not) {
-    clause = std::make_shared<NotClauseDecorator>(clause);
+    clause->FlagAsNegated();
   }
   this->context->AddQueryClause(clause, priority_score);
 

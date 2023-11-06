@@ -92,6 +92,7 @@ void PriorityScorer::IncrementSynonymPriorities(std::string string,
     }
   }
 }
+
 bool PriorityScorer::IsIdentifier(std::string const& string) {
   if (!std::isalpha(string[0])) {
     return false;
