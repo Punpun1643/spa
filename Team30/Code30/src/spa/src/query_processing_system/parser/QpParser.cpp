@@ -11,6 +11,7 @@
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
 #include "../clauses/FollowsClause.h"
 #include "../exceptions/InvalidSyntaxException.h"
+#include "../utility.h"
 #include "query_processing_system/references/AttrRef.h"
 #include "query_processing_system/references/PqlDeclaration.h"
 #include "query_processing_system/references/StmtRef.h"

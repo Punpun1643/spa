@@ -8,6 +8,7 @@
 #include "../clauses/Clause.h"
 #include "../clauses/WithClause.h"
 #include "../context/Context.h"
+#include "../priority/PriorityScorer.h"
 #include "query_processing_system/references/EntRef.h"
 #include "query_processing_system/references/PqlDeclaration.h"
 #include "query_processing_system/references/StmtRef.h"
@@ -42,26 +43,25 @@ class QueryInterpreter {
   void Interpret();
   void InterpretNext(std::shared_ptr<AExpression> expression);
 
-  void Interpret(std::shared_ptr<AffectsExpression> affects_expression);
-  void Interpret(std::shared_ptr<CallsExpression> calls_expression);
-  void Interpret(std::shared_ptr<CallsTExpression> calls_t_expression);
-  void Interpret(std::shared_ptr<FollowsExpression> follows_expression);
-  void Interpret(std::shared_ptr<FollowsTExpression> follows_t_expression);
-  void Interpret(std::shared_ptr<ModifiesExpression> modifies_expression);
-  void Interpret(std::shared_ptr<NextExpression> next_expression);
-  void Interpret(std::shared_ptr<NextTExpression> next_t_expression);
-  void Interpret(std::shared_ptr<ParentExpression> parent_expression);
-  void Interpret(std::shared_ptr<ParentTExpression> parent_t_expression);
-  void Interpret(
-      std::shared_ptr<PatternAssignExpression> pattern_assign_expression);
-  void Interpret(std::shared_ptr<PatternIfExpression> pattern_if_expression);
-  void Interpret(
-      std::shared_ptr<PatternWhileExpression> pattern_while_expression);
+  void Interpret(std::shared_ptr<AffectsExpression> expression);
+  void Interpret(std::shared_ptr<CallsExpression> expression);
+  void Interpret(std::shared_ptr<CallsTExpression> expression);
+  void Interpret(std::shared_ptr<FollowsExpression> expression);
+  void Interpret(std::shared_ptr<FollowsTExpression> expression);
+  void Interpret(std::shared_ptr<ModifiesExpression> expression);
+  void Interpret(std::shared_ptr<NextExpression> expression);
+  void Interpret(std::shared_ptr<NextTExpression> expression);
+  void Interpret(std::shared_ptr<ParentExpression> expression);
+  void Interpret(std::shared_ptr<ParentTExpression> expression);
+  void Interpret(std::shared_ptr<PatternAssignExpression> expression);
+  void Interpret(std::shared_ptr<PatternIfExpression> expression);
+  void Interpret(std::shared_ptr<PatternWhileExpression> expression);
   void Interpret(std::shared_ptr<SelectExpression> select_expression);
-  void Interpret(std::shared_ptr<UsesExpression> uses_expression);
-  void Interpret(std::shared_ptr<WithExpression> with_expression);
+  void Interpret(std::shared_ptr<UsesExpression> expression);
+  void Interpret(std::shared_ptr<WithExpression> expression);
 
  private:
+  PriorityScorer priority_scorer;
   std::shared_ptr<Context> context;
   std::shared_ptr<AExpression> expression_tree;
 

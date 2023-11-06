@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "../interpreter/QueryInterpreter.h"
+
 WithExpression::WithExpression(std::string first_ref, std::string second_ref,
                                bool is_not)
     : ClauseExpression(first_ref, second_ref, is_not) {}

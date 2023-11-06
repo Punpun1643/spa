@@ -1,25 +1,25 @@
 1 - select all variables
 stmt v;
 Select v
-main, assign, if, while, read, print, procedure, stmt, a, A
+1,10,11,12,13,14,15,16,17,18,2,3,4,5,6,7,8,9
 5000
 2 - select assignments that use variable a (not A)
 assign a;
 Select a such that Uses (a, "a")
 17
 5000
-3 - select variables modified by an assignment with partial pattern "A"  
+3 - select variables modified by an assignment with partial pattern 'A'
 assign a; variable v
 Select v such that Modifies (a, v) and Pattern a (v, _"A"_)
-procedure
+SyntaxError
 5000
 4 - select assignments with pattern, awkward whitespace
  assign a;variable v
-Select  a    Pattern a(v,_"a"_  ) 
-stmt
+Select  a    Pattern a(v,_"a"_  )
+SyntaxError
 5000
-5 - select stmts that Uses the variable (not procedure) "main"
+5 - select stmts that Uses the variable (not procedure) 'main'
 stms s;
 Select s such that Uses (s, "main")
-1
+SyntaxError
 5000

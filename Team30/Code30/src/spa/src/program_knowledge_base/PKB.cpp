@@ -83,8 +83,8 @@ std::unordered_set<std::string> PKB::GetStatementUses(std::string stmt) {
 // ********** QPS **********
 // ---------- ENTITIES ----------
 std::vector<std::string> PKB::GetEntitiesWithType(EntityType type) {
-  std::shared_ptr<std::unordered_set<std::string>> e = ent_data->Get(type);
-  return std::vector<std::string>(e->begin(), e->end());
+  std::unordered_set<std::string> e = ent_data->Get(type);
+  return std::vector<std::string>(e.begin(), e.end());
 }
 
 std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
@@ -151,7 +151,7 @@ std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
                                                       RelationType rel_type) {
   std::unordered_set<std::string> allInverseRelated =
       rel_data->GetAllInverseRelatedToValue(rel_type, value);
-  std::unordered_set<std::string> entities = *ent_data->Get(entity_type);
+  std::unordered_set<std::string> entities = ent_data->Get(entity_type);
 
   std::unordered_set<std::string> output =
       GetIntersection(allInverseRelated, entities);
@@ -165,7 +165,7 @@ std::vector<std::string> PKB::GetRelationValueSynonym(std::string value,
                                                       RelationType rel_type) {
   std::unordered_set<std::string> allRelated =
       rel_data->GetAllRelatedToValue(rel_type, value);
-  std::unordered_set<std::string> entities = *ent_data->Get(entity_type);
+  std::unordered_set<std::string> entities = ent_data->Get(entity_type);
 
   std::unordered_set<std::string> output =
       GetIntersection(allRelated, entities);
@@ -178,13 +178,11 @@ std::vector<std::string> PKB::GetRelationValueSynonym(std::string value,
 std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
   std::vector<std::pair<std::string, std::string>> output;
-  std::shared_ptr<std::unordered_set<std::string>> ents1 =
-      PKB::ent_data->Get(entity_type_1);
-  std::shared_ptr<std::unordered_set<std::string>> ents2 =
-      ent_data->Get(entity_type_2);
+  std::unordered_set<std::string> ents1 = PKB::ent_data->Get(entity_type_1);
+  std::unordered_set<std::string> ents2 = ent_data->Get(entity_type_2);
 
-  for (std::string ent1 : *ents1) {
-    for (std::string ent2 : *ents2) {
+  for (std::string ent1 : ents1) {
+    for (std::string ent2 : ents2) {
       if (rel_data->IsRelated(rel_type, ent1, ent2)) {
         output.push_back(make_pair(ent1, ent2));
       }
@@ -198,7 +196,7 @@ std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
 std::vector<std::string> PKB::GetMatchingAssignStmts(
     std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
   std::unordered_set<std::string> assign_stmts =
-      *ent_data->Get(EntityType::ASSIGN);
+      ent_data->Get(EntityType::ASSIGN);
   return pat_data->GetMatchingAssignStmts(assign_stmts, rhs_expr, match_type);
 }
 
