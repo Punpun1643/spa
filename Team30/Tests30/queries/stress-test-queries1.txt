@@ -31,7 +31,7 @@ Select a pattern a (v, _"a+d"_)
 7 - Stress Test Assign Pattern
 assign a; variable v;
 Select a pattern a (v, "(c - a) + d * b")
-159
+150, 153, 154, 159
 5000
 8 - Stress Test If/While Pattern
 variable v; if if; while while;
