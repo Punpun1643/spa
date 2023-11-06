@@ -183,6 +183,16 @@ TEST_CASE("Parse select query") {
 
     controller.TokensToClauses(tokens);
   }
+  SECTION("assign a; Select <a a>") {
+    AddDeclaration(tokens, "assign", {"a"});
+    AddWordVector(tokens, {"Select"});
+    AddSpecialCharVector(tokens, {"<"});
+    AddWordVector(tokens, {"a", "a"});
+    AddSpecialCharVector(tokens, {">"});
+    AddEOF(tokens);
+
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+  }
 }
 
 TEST_CASE("Parse Select + Follows query") {

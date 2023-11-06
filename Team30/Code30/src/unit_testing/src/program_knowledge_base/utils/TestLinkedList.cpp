@@ -1,5 +1,3 @@
-#include "program_knowledge_base/relations/tables/LinkedListTable.h"
-
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -7,6 +5,7 @@
 
 #include "../../../../spa/src/program_knowledge_base/utils/LinkedList.h"
 #include "catch.hpp"
+#include "program_knowledge_base/relations/tables/LinkedListTable.h"
 
 TEST_CASE("Linked list functionality check") {
   LinkedList ll = LinkedList();
@@ -63,17 +62,17 @@ TEST_CASE("Linked list table check") {
   REQUIRE(!llt.IsRelated("8", "7"));
 
   std::unordered_set<std::string> empty_set = {};
-  auto input = std::make_shared<std::unordered_set<std::string>>();
-  input->insert("1");
-  input->insert("2");
-  input->insert("3");
-  input->insert("4");
-  input->insert("5");
-  input->insert("6");
-  input->insert("7");
-  input->insert("8");
-  input->insert("9");
-  input->insert("10");
+  std::unordered_set<std::string> input;
+  input.insert("1");
+  input.insert("2");
+  input.insert("3");
+  input.insert("4");
+  input.insert("5");
+  input.insert("6");
+  input.insert("7");
+  input.insert("8");
+  input.insert("9");
+  input.insert("10");
 
   std::unordered_set<std::string> expected = {"1", "2", "4", "5", "9"};
   REQUIRE(llt.GetAllWithRelations(input) == expected);

@@ -1,0 +1,389 @@
+procedure Follows {
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+    p = q;
+}
+
+<<ADD 100 TO LINE NUM>>
+
+procedure Nesting {
+  
+1  a = a - 1;
+2  read a;
+
+3  if (c * 3 == d % 2) then {
+4    c = 7 + a + b * d;
+5    a = b; 
+6    while (f * 2 < 5) {
+7      print f;
+8      read d;
+9      b = a;
+
+10      if (!(c < a)) then {
+11        d = c + a;
+12        a = d;
+
+13        while (d >= 2 / a *c) {
+14          print x;
+
+15          while (e == b) {
+16            while (f == 0) {
+17              d = a;
+18              if ((g > f) && (b != g)) then {
+19                a = 48 % g + x % 92 + d;
+20                read x;
+21                c = 0 % g / 3 - 0 * 11 % b;
+              } else {
+22                call p21;
+23                e = c + c + 1;
+24                a = b;
+              }
+25              a = c % a - x / b;
+26              b = a;
+            }
+27            read e;
+          }
+28          a = b;
+        }
+29        e = e + 1;
+30        print x;
+      } else {
+
+31        while (1 == g) {
+32          f = b + d - a;
+33          c = x - d;
+        }
+      }
+34      call p2;
+35      b = a;
+    }
+  } else {
+36    if (!(6 > e) || (f >= 0)) then {
+37      a = b;
+38      if (6 > f) then {
+39        c = x + a + d + b;
+      } else {
+40        e = f;
+41        b = a;
+      }
+    } else {
+42      while ((1 > 1) && (d == a / 0) ) {
+43        b = a;
+      }
+    }
+44    print a;
+  } 
+
+
+}
+
+
+procedure Patterns {
+    
+45    z = c + a + d + b;
+46    z = c - a + d - b;
+47    z = c + (a + d) + b;
+48    z = c - (a + d) + b;
+49    z = c + (a + d - b);
+50    z = c - a + d * b;
+51    z = c + ((a) + d) + b;
+52    z = c + (a + (d)) + b;
+
+53    z = (c - a + (d * b));
+54    z = (c - a) + (d * b);
+55    z = (c - a + d) * (b);
+56    z = c + ((a + d)) + b;
+57    z = c + (a + d + b);
+58    z = c + ((a + d + b));
+59    z = (c - a) + d * b;
+60    z = (c - a + d) * b;
+61    z = c - (a + d * b);
+62    z = (c - (a + d * b));
+    
+63    z = a + d * b - c / e % f;
+64    z = a + d * b - c / (e % f);
+65    z = a + d * ((b - c) / e) % f;
+66    z = (a + d) * (b - c / e) % f;
+67    z = a + d * (b - (c / e) % f);
+
+68    while (((((!((aa >= bb) || (!(v <= b)))) && (((0 == fa) || (((42 * (44444 / 90 * 7447 / c)) > m) && (!(((0 > 0) && (!(J32 >= 0))) || ((!(5089 + x * 467 >= 1)) && (((d > ad) && (0 < c)) || ((giaoj1 - 6 + 2147483647 + 9 / x % f == 0) || (b1 % (b2) / o - h == bc2)))))))) || ((adfgoihpa <= 0) && (l >= 0 - 3 % 0)))) || (hd < 1)) && (bc <= 1)) || ((!(!(((2 > 60) && (Bc < b3)) || (888 % E <= x)))) && (!((57 >= m) && (0 > fc))))) {
+69      read foo;
+    }
+
+70    if (!((((((!(f == bp)) || (16 == h)) || (c + Jq1PP < 0 % v)) || ((0 != 0) && ((95 == 0) || (e < b2)))) && (qad < 89)) && (((4 == p3b0) || ((!(0 < J)) || (0 / giaoj1 != 0 * n))) && (L >= b4)))) then {
+71      read bar;
+    } else {
+72      read flan;
+    }
+}
+
+procedure p0 {
+73  a = b;
+74  call p1;
+75  call p2;
+76  call p3;
+77  call p6;
+}
+
+procedure p1 {
+78  call p4;
+79  a = b;
+80  call p7;
+}
+
+procedure p2 {
+81  b = a;
+82  call p4;
+}
+
+procedure p3 {
+83  a = b;
+84  call p5;
+}
+
+procedure p4 {
+85  b = a;
+}
+
+procedure p5 {
+86  a = b;
+87  call p9;
+}
+
+procedure p6 {
+88  a = b;
+89  call p9;
+90  call p10;
+91  call p8;
+92  b = a;
+}
+
+procedure p7 {
+93  b = a;
+}
+
+procedure p8 {
+94  call p12;
+95  call p11;
+96  a = b;
+}
+
+procedure p9 {
+97  b = a; 
+98  call p12;
+99  call p11;
+}
+
+procedure p10 {
+100  a = b;
+101  call p11;
+}
+
+procedure p11 {
+102  a = b;
+103  call p14;
+104  call p15;
+} 
+
+procedure p12 {
+105  call p13;
+106  a = b;
+}
+
+procedure p13 {
+107  a = b;
+108  call p16;
+}
+
+procedure p14 {
+109  a = b;
+110  call p17;
+}
+
+procedure p15 {
+111  b = a;
+112  call p17;
+}
+
+procedure p16 {
+113  call p19;
+114  a = b;
+115  call p18;
+}
+
+procedure p17 {
+116  b = a;
+117  call p18;
+118  call p20;
+}
+
+procedure p18 {
+119  b = a;
+}
+
+procedure p19 {
+120  a = b;
+121  call p21;
+122  call p23;
+}
+
+procedure p20 {
+123  call p23;
+124  call p21;
+125  a = b;
+}
+
+procedure p21 {
+126  call p25;
+127  b = a;
+128  call p26;
+}
+
+procedure p22 {
+129  call p24;
+130  call p25;
+131  a = b;
+}
+
+procedure p23 {
+132  a = b;
+133  call p24;
+}
+
+procedure p24 {
+134  a = b;
+135  call p30;
+136  call p29;
+}
+
+procedure p25 {
+137  b = a;
+138  call p29;
+139  call p30;
+}
+
+procedure p26 {
+140  a = b;
+141  call p29;
+}
+
+procedure p27 {
+142  a = b;
+143  call p28;
+}
+
+procedure p28 {
+144  call p31;
+145  b = a;
+}
+
+procedure p29 {
+146  b = a;
+147  call p31;
+}
+
+procedure p30 {
+148  a = b;
+149  call p31;
+}
+
+procedure p31 {
+150  b = a;
+}

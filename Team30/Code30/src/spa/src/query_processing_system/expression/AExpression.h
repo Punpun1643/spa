@@ -3,8 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <utility>
-
-#include "../interpreter/QueryInterpreter.h"
+#include <optional>
 
 class QueryInterpreter;
 
@@ -26,6 +25,6 @@ class AExpression : public std::enable_shared_from_this<AExpression> {
 
   virtual ~AExpression() = default;
 
- protected:
+ private:
   std::optional<std::shared_ptr<AExpression>> next_expression;
 };

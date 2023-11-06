@@ -6,8 +6,8 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <utility>
 #include <vector>
+#include <utility>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -286,29 +286,76 @@ void SyntaxChecker::CheckPattern(bool has_and) {
 
   NextToken();
 
+  size_t revert_index = currTokenIndex;
+  bool is_right_syntax = false;
   if (pattern_entity_type.has_value()) {
     if (pattern_entity_type.value() == EntityType::ASSIGN) {
-      CheckPatternAssign();
-    } else if (pattern_entity_type.value() == EntityType::WHILE) {
-      CheckPatternWhile();
-    } else if (pattern_entity_type.value() == EntityType::IF) {
-      CheckPatternIf();
-    } else {
-      throw InvalidSyntaxException(
-          "Pattern synonym not of assign, while or if type");
-    }
-  } else {
-    size_t revert_index = currTokenIndex;
-    try {
-      CheckPatternAssign();
-    } catch (InvalidSyntaxException e) {
       try {
-        currTokenIndex = revert_index;
-        CheckPatternIf();
+        CheckPatternAssign();
+        is_right_syntax = true;
       } catch (InvalidSyntaxException e) {
         currTokenIndex = revert_index;
-        CheckPatternWhile();
+        this->has_semantic_exception = true;
       }
+    } else if (pattern_entity_type.value() == EntityType::IF) {
+      try {
+        CheckPatternIf();
+        is_right_syntax = true;
+      } catch (InvalidSyntaxException e) {
+        currTokenIndex = revert_index;
+        this->has_semantic_exception = true;
+      }
+    } else if (pattern_entity_type.value() == EntityType::WHILE) {
+      try {
+        CheckPatternWhile();
+        is_right_syntax = true;
+      } catch (InvalidSyntaxException e) {
+        currTokenIndex = revert_index;
+        this->has_semantic_exception = true;
+      }
+    } else {
+      this->has_semantic_exception = true;
+    }
+  }
+  if (!is_right_syntax) {
+    size_t final_index;
+    bool follows_pattern_assign_syntax = true;
+    bool follows_pattern_if_syntax = true;
+    bool follows_pattern_while_syntax = true;
+
+    try {
+      CheckPatternAssign();
+      final_index = currTokenIndex;
+    } catch (InvalidSyntaxException e) {
+      follows_pattern_assign_syntax = false;
+      currTokenIndex = revert_index;
+    }
+
+    try {
+      CheckPatternIf();
+      final_index = currTokenIndex;
+    } catch (InvalidSyntaxException e) {
+      follows_pattern_if_syntax = false;
+      currTokenIndex = revert_index;
+    }
+
+    try {
+      CheckPatternWhile();
+      final_index = currTokenIndex;
+    } catch (InvalidSyntaxException e) {
+      follows_pattern_while_syntax = false;
+      currTokenIndex = revert_index;
+    }
+
+    if (
+        !follows_pattern_assign_syntax &&
+        !follows_pattern_if_syntax &&
+        !follows_pattern_while_syntax) {
+      throw InvalidSyntaxException(
+          "Pattern clause does not follows pattern assign, if or while syntax");
+    } else {
+      this->has_semantic_exception = true;
+      currTokenIndex = final_index;
     }
   }
 }
@@ -389,6 +436,10 @@ void SyntaxChecker::CheckSelectMultiple() {
       NextToken();  // element
       if (GetCurrTokenValue() == ">") {
         throw InvalidSyntaxException("Extra comma detected in multiple select");
+      }
+    } else {
+      if (GetCurrTokenValue() != ">") {
+        throw InvalidSyntaxException("Expected '<' or ',' for select multiple");
       }
     }
   }

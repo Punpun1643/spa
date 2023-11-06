@@ -18,25 +18,30 @@ void Context::AddDeclarations(EntityType entity_type,
   }
 }
 
-void Context::AddNotClause(std::shared_ptr<NotClauseDecorator> not_clause) {
-  this->not_clauses.push_back(not_clause);
-}
-
-void Context::AddPatternClause(std::shared_ptr<PatternClause> pattern_clause) {
-  this->pattern_clauses.push_back(pattern_clause);
-}
-
 bool Context::CheckDeclarationExists(std::string synonym) {
   return this->declarations.count(synonym) ? true : false;
 }
 
-void Context::AddSuchThatClause(
-    std::shared_ptr<SuchThatClause> such_that_clause) {
-  this->such_that_clauses.push_back(such_that_clause);
+void Context::AddQueryClause(std::shared_ptr<Clause> clause,
+                             float priority_score) {
+  std::pair<std::shared_ptr<Clause>, float> pair =
+      std::make_pair(clause, priority_score);
+  this->unordered_clauses.push_back(clause);
+  this->priority_clauses.push(pair);
 }
 
-void Context::AddWithClause(std::shared_ptr<WithClause> with_clause) {
-  this->with_clauses.push_back(with_clause);
+std::vector<std::shared_ptr<Clause>> Context::GetUnorderedClauses() {
+  return this->unordered_clauses;
+}
+
+std::vector<std::shared_ptr<Clause>> Context::GetPriorityClauses() {
+  std::vector<std::shared_ptr<Clause>> query_clauses;
+  while (!this->priority_clauses.empty()) {
+    query_clauses.push_back(priority_clauses.top().first);
+    priority_clauses.pop();
+  }
+
+  return query_clauses;
 }
 
 PqlDeclaration Context::GetDeclaration(std::string synonym) {
@@ -45,17 +50,4 @@ PqlDeclaration Context::GetDeclaration(std::string synonym) {
 
 std::vector<AttrRef> Context::GetSelectedAttrRefs() {
   return this->selected_attr_refs;
-}
-
-std::vector<std::shared_ptr<Clause>> Context::GetOtherClauses() {
-  std::vector<std::shared_ptr<Clause>> other_clauses;
-  other_clauses.insert(other_clauses.end(), this->such_that_clauses.begin(),
-                       this->such_that_clauses.end());
-  other_clauses.insert(other_clauses.end(), this->pattern_clauses.begin(),
-                       this->pattern_clauses.end());
-  other_clauses.insert(other_clauses.end(), this->with_clauses.begin(),
-                       this->with_clauses.end());
-  other_clauses.insert(other_clauses.end(), this->not_clauses.begin(),
-                       this->not_clauses.end());
-  return other_clauses;
 }
