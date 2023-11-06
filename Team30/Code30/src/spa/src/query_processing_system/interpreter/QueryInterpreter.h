@@ -53,11 +53,9 @@ class QueryInterpreter {
   void Interpret(std::shared_ptr<NextTExpression> expression);
   void Interpret(std::shared_ptr<ParentExpression> expression);
   void Interpret(std::shared_ptr<ParentTExpression> expression);
-  void Interpret(
-      std::shared_ptr<PatternAssignExpression> expression);
+  void Interpret(std::shared_ptr<PatternAssignExpression> expression);
   void Interpret(std::shared_ptr<PatternIfExpression> expression);
-  void Interpret(
-      std::shared_ptr<PatternWhileExpression> expression);
+  void Interpret(std::shared_ptr<PatternWhileExpression> expression);
   void Interpret(std::shared_ptr<SelectExpression> select_expression);
   void Interpret(std::shared_ptr<UsesExpression> expression);
   void Interpret(std::shared_ptr<WithExpression> expression);

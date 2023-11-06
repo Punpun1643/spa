@@ -65,8 +65,7 @@ QPSController::TokensToClauses(std::vector<std::shared_ptr<Token>> tokens) {
 
   std::vector<AttrRef> selected_attr_refs = context->GetSelectedAttrRefs();
   std::vector<std::shared_ptr<Clause>> other_clauses =
-    /* context->GetUnorderedClauses(); */
-    context->GetPriorityClauses();
+      context->GetPriorityClauses();
   return std::make_pair(selected_attr_refs, other_clauses);
 }
 

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <memory>
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <queue>
 
 #include "../clauses/NotClauseDecorator.h"
 #include "../clauses/PatternClause.h"
@@ -16,9 +16,9 @@
 
 typedef std::unordered_map<std::string, PqlDeclaration> DeclarationMap;
 
-struct CustomCompare
-{
-  bool operator() (std::pair<std::shared_ptr<Clause>, float> clause1, std::pair<std::shared_ptr<Clause>, float> clause2) const {
+struct CustomCompare {
+  bool operator()(std::pair<std::shared_ptr<Clause>, float> clause1,
+                  std::pair<std::shared_ptr<Clause>, float> clause2) const {
     return clause1.second > clause2.second;
   }
 };
@@ -42,8 +42,8 @@ class Context {
   std::vector<std::shared_ptr<Clause>> unordered_clauses;
   std::vector<AttrRef> selected_attr_refs;
 
-  std::priority_queue<
-    std::pair<std::shared_ptr<Clause>, float>,
-    std::vector<std::pair<std::shared_ptr<Clause>, float>>,
-    CustomCompare> priority_clauses;
+  std::priority_queue<std::pair<std::shared_ptr<Clause>, float>,
+                      std::vector<std::pair<std::shared_ptr<Clause>, float>>,
+                      CustomCompare>
+      priority_clauses;
 };

@@ -40,7 +40,9 @@
 
 QueryInterpreter::QueryInterpreter(std::shared_ptr<Context> context,
                                    std::shared_ptr<AExpression> expression_tree)
-    : context(context), expression_tree(expression_tree) , priority_scorer(PriorityScorer(context)) {}
+    : context(context),
+      expression_tree(expression_tree),
+      priority_scorer(PriorityScorer(context)) {}
 
 void QueryInterpreter::Interpret() {
   std::shared_ptr<AExpression> expression_tree =
@@ -65,8 +67,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<CallsExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<CallsExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();
@@ -83,8 +84,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<CallsTExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<CallsTExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();
@@ -160,8 +160,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<NextExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<NextExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();
@@ -177,8 +176,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<NextTExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<NextTExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();
@@ -194,8 +192,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<ParentExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<ParentExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();
@@ -233,8 +230,7 @@ void QueryInterpreter::Interpret(
   std::string synonym = expression->GetSynonym();
   std::string arg1 = expression->GetArg1();
   MatchType match_type = expression->GetMatchType();
-  std::shared_ptr<TreeNode> rhs_expr_tree =
-      expression->GetRhsExprTree();
+  std::shared_ptr<TreeNode> rhs_expr_tree = expression->GetRhsExprTree();
   PqlDeclaration assign_decl = this->GetMappedDeclaration(synonym);
   std::shared_ptr<EntRef> lhs_expr;
   if (arg1 == "_") {
@@ -247,9 +243,8 @@ void QueryInterpreter::Interpret(
   bool is_not = expression->IsNot();
   float priority_score = this->priority_scorer.GetPriorityScore(expression);
 
-  std::shared_ptr<Clause> clause =
-      std::make_shared<PatternAssignClause>(assign_decl, *lhs_expr, match_type,
-                                            rhs_expr_tree);
+  std::shared_ptr<Clause> clause = std::make_shared<PatternAssignClause>(
+      assign_decl, *lhs_expr, match_type, rhs_expr_tree);
   if (is_not) {
     clause = std::make_shared<NotClauseDecorator>(clause);
   }
@@ -323,8 +318,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(select_expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<UsesExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<UsesExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();
@@ -332,11 +326,11 @@ void QueryInterpreter::Interpret(
 
   std::shared_ptr<Clause> clause;
   if (IsStmtRef(arg1)) {
-    clause = std::make_shared<UsesSClause>(
-        StringToStmtRef(arg1), StringToEntRef(arg2));
+    clause = std::make_shared<UsesSClause>(StringToStmtRef(arg1),
+                                           StringToEntRef(arg2));
   } else if (IsEntRef(arg1)) {
-    clause = std::make_shared<UsesPClause>(
-        StringToEntRef(arg1), StringToEntRef(arg2));
+    clause = std::make_shared<UsesPClause>(StringToEntRef(arg1),
+                                           StringToEntRef(arg2));
   }
   if (is_not) {
     clause = std::make_shared<NotClauseDecorator>(clause);
@@ -345,8 +339,7 @@ void QueryInterpreter::Interpret(
   this->InterpretNext(expression);
 }
 
-void QueryInterpreter::Interpret(
-    std::shared_ptr<WithExpression> expression) {
+void QueryInterpreter::Interpret(std::shared_ptr<WithExpression> expression) {
   std::string arg1 = expression->GetArg1();
   std::string arg2 = expression->GetArg2();
   bool is_not = expression->IsNot();

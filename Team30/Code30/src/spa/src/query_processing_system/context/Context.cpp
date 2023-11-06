@@ -22,10 +22,10 @@ bool Context::CheckDeclarationExists(std::string synonym) {
   return this->declarations.count(synonym) ? true : false;
 }
 
-void Context::AddQueryClause(
-    std::shared_ptr<Clause> clause, float priority_score) {
-  std::pair<
-    std::shared_ptr<Clause>, float> pair = std::make_pair(clause, priority_score);
+void Context::AddQueryClause(std::shared_ptr<Clause> clause,
+                             float priority_score) {
+  std::pair<std::shared_ptr<Clause>, float> pair =
+      std::make_pair(clause, priority_score);
   this->unordered_clauses.push_back(clause);
   this->priority_clauses.push(pair);
 }
