@@ -36,4 +36,10 @@ class PriorityScorer {
                                int const clause_type_priority);
   void IncrementSynonymPriorities(std::string string, int& num_synonyms,
                                   int& num_new_synonyms);
+
+  bool IsIdentifier(std::string const& string);
+  bool IsValidQPInteger(std::string const& string);
+  bool IsQuotedIdentifier(std::string const& string);
+  bool IsSynonym(std::string const& string);
 };
+

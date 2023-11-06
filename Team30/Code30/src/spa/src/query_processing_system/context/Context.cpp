@@ -38,7 +38,6 @@ std::vector<std::shared_ptr<Clause>> Context::GetPriorityClauses() {
   std::vector<std::shared_ptr<Clause>> query_clauses;
   while (!this->priority_clauses.empty()) {
     query_clauses.push_back(priority_clauses.top().first);
-    std::cout << "pushed: " << priority_clauses.top().second << "\n";
     priority_clauses.pop();
   }
 

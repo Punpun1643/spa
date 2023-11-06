@@ -6,7 +6,6 @@
 #include "../expression/PatternExpression.h"
 #include "../expression/SuchThatExpression.h"
 #include "../expression/WithExpression.h"
-#include "../utility.h"
 
 PriorityScorer::PriorityScorer(std::shared_ptr<Context> context)
     : context(context) {}
@@ -83,7 +82,7 @@ float PriorityScorer::CalculatePriorityScore(int const num_synonyms,
 void PriorityScorer::IncrementSynonymPriorities(std::string string,
                                                 int& num_synonyms,
                                                 int& num_new_synonyms) {
-  if (QueryUtility::IsSynonym(string)) {
+  if (PriorityScorer::IsSynonym(string)) {
     num_synonyms++;
     if (queried_synonyms.find(string) != queried_synonyms.end()) {
       // synonyms has been queried
@@ -93,3 +92,43 @@ void PriorityScorer::IncrementSynonymPriorities(std::string string,
     }
   }
 }
+bool PriorityScorer::IsIdentifier(std::string const& string) {
+  if (!std::isalpha(string[0])) {
+    return false;
+  }
+  for (size_t i = 1; i < string.length(); i++) {
+    if (!std::isalnum(string[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool PriorityScorer::IsQuotedIdentifier(std::string const& string) {
+  if (string.size() >= 3) {
+    return (string.substr(0, 1) == "\"" &&
+            IsSynonym(string.substr(1, string.size() - 2)) &&
+            string.substr(string.size() - 1, 1) == "\"");
+  }
+  return false;
+}
+
+bool PriorityScorer::IsSynonym(std::string const& string) {
+  return PriorityScorer::IsIdentifier(string);
+}
+
+bool PriorityScorer::IsValidQPInteger(std::string const& string) {
+  try {
+    stoi(string);
+    if (stoi(string) < 0) {
+      return false;
+    }
+  } catch (std::invalid_argument& e) {
+    return false;
+  }
+  if (string.front() == '0' && string.size() > 1) {
+    return false;
+  }
+  return true;
+}
+
