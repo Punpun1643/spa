@@ -7,6 +7,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <utility>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"

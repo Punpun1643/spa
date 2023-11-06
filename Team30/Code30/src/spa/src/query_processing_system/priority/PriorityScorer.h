@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include <string>
+#include <memory>
 #include <unordered_set>
 
 class Context;
@@ -12,7 +13,7 @@ class WithExpression;
 
 class PriorityScorer {
  public:
-  PriorityScorer(std::shared_ptr<Context> context);
+  explicit PriorityScorer(std::shared_ptr<Context> context);
 
   float GetPriorityScore(std::shared_ptr<PatternExpression> expression);
   float GetPriorityScore(std::shared_ptr<SuchThatExpression> expression);
