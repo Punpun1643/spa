@@ -133,8 +133,7 @@ TEST_CASE("Test build binary tree from postfix expression",
             postFixQueue),
         std::invalid_argument);
   }
-  SECTION(
-      "Test no operators") {
+  SECTION("Test no operators") {
     std::queue<std::shared_ptr<std::string>> postFixQueue;
 
     postFixQueue.push(std::make_shared<std::string>("a"));
@@ -146,13 +145,28 @@ TEST_CASE("Test build binary tree from postfix expression",
         std::invalid_argument);
   }
 
-  SECTION(
-      "Test invlaid postfix with one operation and extra operators") {
+  SECTION("Test invalid postfix with one operation and extra operators") {
     std::queue<std::shared_ptr<std::string>> postFixQueue;
 
     postFixQueue.push(std::make_shared<std::string>("a"));
     postFixQueue.push(std::make_shared<std::string>("b"));
     postFixQueue.push(std::make_shared<std::string>("b"));
+    postFixQueue.push(std::make_shared<std::string>("+"));
+
+    REQUIRE_THROWS_AS(
+        TestBuildExprTreeAndValidate::TestableParser::BuildExprTreeAndValidate(
+            postFixQueue),
+        std::invalid_argument);
+  }
+
+  SECTION("Test invalid postfix with extra operators") {
+    std::queue<std::shared_ptr<std::string>> postFixQueue;
+
+    postFixQueue.push(std::make_shared<std::string>("a"));
+    postFixQueue.push(std::make_shared<std::string>("b"));
+    postFixQueue.push(std::make_shared<std::string>("+"));
+    postFixQueue.push(std::make_shared<std::string>("c"));
+    postFixQueue.push(std::make_shared<std::string>("+"));
     postFixQueue.push(std::make_shared<std::string>("+"));
 
     REQUIRE_THROWS_AS(
