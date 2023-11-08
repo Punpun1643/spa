@@ -6,6 +6,7 @@
 
 #include "../../shared/tokenizer/Tokenizer.h"
 #include "../../shared/tokenizer/token/TokenType.h"
+#include "../exceptions/EmptySourceFileException.h"
 #include "SpParser.h"
 
 SpParserManager::SpParserManager() {}
@@ -19,7 +20,7 @@ std::shared_ptr<ProgramNode> SpParserManager::ParseInputFile(
   std::vector<std::shared_ptr<Token>> tokens = tokenizer.Tokenize();
 
   if (tokens[0]->GetTokenType() == TokenType::EOF_TOKEN) {
-    throw std::invalid_argument("Empty file!");
+    throw EmptySourceFileException();
   }
 
   SpParser parser(tokens);
