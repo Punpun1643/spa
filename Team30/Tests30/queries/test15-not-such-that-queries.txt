@@ -23,3 +23,8 @@ read re; if i;
 Select re such that not Parent(i, re)
 13
 5000
+6 - such that not Parent* single synonym
+assign a;
+Select a such that not Parent*(1, a)
+15
+5000

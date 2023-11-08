@@ -1,10 +1,20 @@
-1 - such that not exact pattern
+1 - pattern not exact match
 assign a; variable v;
 Select <a, v> pattern not a (v, "x + x + y")
 1 y, 1 z, 2 x, 2 z, 3 x, 3 y, 4 x, 4 z, 5 x, 5 y, 6 x, 6 z, 7 x, 7 y, 7 z, 8 x, 8 y, 8 z
 5000
-2 - such that not partial match
+2 - pattern not partial match
 assign a; variable v;
 Select <a, v> pattern not a (v, _"x"_)
 1 y, 1 z, 2 x, 2 z, 3 x, 3 y, 4 x, 4 z, 5 x, 5 y, 6 x, 6 z, 7 x, 7 z, 8 x, 8 y, 8 z
+5000
+3 - pattern not wild match
+assign a; variable v;
+Select <a, v> pattern not a (v, _)
+1 y, 1 z, 2 x, 2 z, 3 x, 3 y, 4 x, 4 z, 5 x, 5 y, 6 x, 6 z, 7 x, 7 z, 8 y, 8 z
+5000
+4 - pattern not single synonym
+assign a; variable v;
+Select <a, v> pattern not a (_, "x + x + y")
+7 x, 7 y, 7 z, 8 x, 8 y, 8 z
 5000
