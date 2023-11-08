@@ -1,6 +1,7 @@
+#include "AParser.h"
+
 #include <utility>
 
-#include "AParser.h"
 #include "exceptions/EmptyParenthesesException.h"
 #include "exceptions/EndOfFileException.h"
 #include "exceptions/InvalidExprException.h"
@@ -225,6 +226,13 @@ void AParser::ValidateUpperBoundTreeStackSize(
   }
 }
 
+void AParser::ValidateEqualTreeStackSize(
+    std::stack<std::shared_ptr<TreeNode>>& treeStack, int size) {
+  if (treeStack.size() != size) {
+    throw InvalidExprException();
+  }
+}
+
 std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
     std::queue<std::shared_ptr<std::string>>& postFixQueue) {
   std::stack<std::shared_ptr<TreeNode>> treeStack;
@@ -234,7 +242,8 @@ std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
     postFixQueue.pop();
 
     if (IsMathematicalOperator(element->c_str())) {
-      ValidateUpperBoundTreeStackSize(treeStack, AParserConstant::MINIMUM_OPERATOR_SIZE);
+      ValidateUpperBoundTreeStackSize(treeStack,
+                                      AParserConstant::MINIMUM_OPERATOR_SIZE);
 
       std::shared_ptr<TreeNode> rightSubTree = treeStack.top();
       treeStack.pop();
@@ -248,7 +257,7 @@ std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
     }
   }
 
-  ValidateUpperBoundTreeStackSize(treeStack, 1);
+  ValidateEqualTreeStackSize(treeStack, 1);
 
   return treeStack.top();
 }

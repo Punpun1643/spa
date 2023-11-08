@@ -82,7 +82,8 @@ class AParser {
   static bool IsMathematicalOperator(std::string const& tokenValue);
 
   /**
-   * @brief Checks if the current tree stack has the expected size.
+   * @brief Checks if the current tree stack does not exceed the upperbound
+   * size.
    *
    * @param treeStack The tree stack to check.
    * @param size The expected size of the tree stack.
@@ -90,6 +91,14 @@ class AParser {
   static void ValidateUpperBoundTreeStackSize(
       std::stack<std::shared_ptr<TreeNode>>& treeStack, int size);
 
+  /**
+   * @brief Checks if the current tree stack has the expected size.
+   *
+   * @param treeStack The tree stack to check.
+   * @param size The expected size of the tree stack.
+   */
+  static void ValidateEqualTreeStackSize(
+      std::stack<std::shared_ptr<TreeNode>>& treeStack, int size);
   /**
    * @brief Builds an expression tree from the given postfix queue.
    *
