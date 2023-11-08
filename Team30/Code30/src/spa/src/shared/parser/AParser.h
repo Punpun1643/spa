@@ -87,7 +87,7 @@ class AParser {
    * @param treeStack The tree stack to check.
    * @param size The expected size of the tree stack.
    */
-  static void ValidateTreeStackSize(
+  static void ValidateUpperBoundTreeStackSize(
       std::stack<std::shared_ptr<TreeNode>>& treeStack, int size);
 
   /**

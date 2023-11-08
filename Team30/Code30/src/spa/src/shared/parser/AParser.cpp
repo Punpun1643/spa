@@ -218,7 +218,7 @@ std::queue<std::shared_ptr<std::string>> AParser::ConvertInfixToPostfix(
   return postFixQueue;
 }
 
-void AParser::ValidateTreeStackSize(
+void AParser::ValidateUpperBoundTreeStackSize(
     std::stack<std::shared_ptr<TreeNode>>& treeStack, int size) {
   if (treeStack.size() < size) {
     throw InvalidExprException();
@@ -234,7 +234,7 @@ std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
     postFixQueue.pop();
 
     if (IsMathematicalOperator(element->c_str())) {
-      ValidateTreeStackSize(treeStack, AParserConstant::MINIMUM_OPERATOR_SIZE);
+      ValidateUpperBoundTreeStackSize(treeStack, AParserConstant::MINIMUM_OPERATOR_SIZE);
 
       std::shared_ptr<TreeNode> rightSubTree = treeStack.top();
       treeStack.pop();
@@ -248,7 +248,7 @@ std::shared_ptr<TreeNode> AParser::BuildExprTreeAndValidate(
     }
   }
 
-  ValidateTreeStackSize(treeStack, 1);
+  ValidateUpperBoundTreeStackSize(treeStack, 1);
 
   return treeStack.top();
 }
