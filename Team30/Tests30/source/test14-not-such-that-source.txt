@@ -1,0 +1,30 @@
+procedure p1 {
+    while (x < 1) {
+		while (y > 3) {
+			y = 2;
+			x = 3;
+			a = 1;
+			b = 1;
+			c = x + y + a + b + c;
+		}
+	}
+
+}
+
+procedure p2 {
+	print x;
+	print y;
+	print a;
+	print b;
+	print c;
+	read x;
+}
+
+procedure p3 {
+	print a;
+	read x;
+	read y;
+	read a;
+	read b;
+	read c;
+}
