@@ -167,4 +167,14 @@ TEST_CASE("Test Query Evaluator") {
         {"x", "x", "123", "345"}, {"z", "z", "123", "345"}};
     REQUIRE_THAT(result, Catch::UnorderedEquals(expected_result));
   }
+
+  SECTION("Test special case of not clause negation") {
+    pkb.get_all_of_type_values = {};
+    pkb.synonym_synonym_values = {};
+    follows_clause = QeFactoryMethods::getFollowsClause(StmtRef(s), StmtRef(a));
+    follows_clause->FlagAsNegated();
+    auto second = QeFactoryMethods::getFollowsClause(StmtRef(print), StmtRef());
+    result = qe.EvaluateQuery({AttrRef(print)}, {follows_clause, second});
+    REQUIRE(result.empty());
+  }
 }
