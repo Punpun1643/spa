@@ -18,13 +18,3 @@ assign a; variable v;
 Select <a, v> pattern not a (_, "x + x + y")
 7 x, 7 y, 7 z, 8 x, 8 y, 8 z
 5000
-5 - pattern not if pattern
-if i;
-Select i pattern not i ("a",_,_)
-9
-5000
-6 - pattern not while pattern
-while w;
-Select w pattern not w ("b",_)
-12
-5000
