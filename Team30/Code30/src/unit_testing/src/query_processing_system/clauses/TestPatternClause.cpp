@@ -4,6 +4,7 @@
 #include "query_processing_system/clauses/PatternIfClause.h"
 #include "query_processing_system/clauses/PatternWhileClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
+#include "shared/ArrayUtility.h"
 
 TEST_CASE("Pattern Assign Clauses") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
@@ -24,10 +25,10 @@ TEST_CASE("Pattern Assign Clauses") {
     REQUIRE(pkb.last_match_type_passed == MatchType::WILD_MATCH);
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
     REQUIRE(pkb.pattern_assign_decl_calls == 1);
-    auto values = result->GetValues(a);
-    REQUIRE(values == pkb.pattern_assign_decl_values_1);
-    values = result->GetValues(v);
-    REQUIRE(values == pkb.pattern_assign_decl_values_2);
+    auto paired_results = ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+
+    REQUIRE(paired_results.first == pkb.pattern_assign_decl_values_1);
+    REQUIRE(paired_results.second == pkb.pattern_assign_decl_values_2);
   }
 
   SECTION("value, partial") {
@@ -38,7 +39,7 @@ TEST_CASE("Pattern Assign Clauses") {
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, rhs_expr));
     REQUIRE(pkb.last_value_passed == "varName");
     REQUIRE(pkb.pattern_assign_value_calls == 1);
-    auto values = result->GetValues(a);
+    auto values = result->GetSingleResultValues();
     REQUIRE(values == pkb.pattern_assign_value_values);
   }
 
@@ -49,7 +50,7 @@ TEST_CASE("Pattern Assign Clauses") {
     REQUIRE(pkb.last_match_type_passed == MatchType::EXACT_MATCH);
     REQUIRE(TreeNode::IsSameTree(pkb.last_rhs_expr_passed, empty_rhs_expr));
     REQUIRE(pkb.pattern_assign_wild_calls == 1);
-    auto values = result->GetValues(a);
+    auto values = result->GetSingleResultValues();
     REQUIRE(values == pkb.pattern_assign_wild_values);
   }
 
@@ -77,15 +78,17 @@ TEST_CASE("Pattern While/If Clauses") {
     auto result = pattern_while.Evaluate(pkb);
     REQUIRE(pkb.last_entity_type_passed == EntityType::WHILE);
     REQUIRE(result->GetNumDeclarations() == 2);
-    REQUIRE(result->GetValues(w) == pkb.pattern_container_decl_values_1);
-    REQUIRE(result->GetValues(v) == pkb.pattern_container_decl_values_2);
+    auto paired_results = ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+    REQUIRE(paired_results.first == pkb.pattern_container_decl_values_1);
+    REQUIRE(paired_results.second == pkb.pattern_container_decl_values_2);
 
     auto pattern_if = PatternIfClause(i, EntRef(v));
     result = pattern_if.Evaluate(pkb);
     REQUIRE(pkb.last_entity_type_passed == EntityType::IF);
     REQUIRE(result->GetNumDeclarations() == 2);
-    REQUIRE(result->GetValues(i) == pkb.pattern_container_decl_values_1);
-    REQUIRE(result->GetValues(v) == pkb.pattern_container_decl_values_2);
+    paired_results = ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+    REQUIRE(paired_results.first == pkb.pattern_container_decl_values_1);
+    REQUIRE(paired_results.second == pkb.pattern_container_decl_values_2);
   }
 
   SECTION("value entRef") {
@@ -94,14 +97,14 @@ TEST_CASE("Pattern While/If Clauses") {
     REQUIRE(pkb.last_entity_type_passed == EntityType::WHILE);
     REQUIRE(pkb.last_value_passed == "varX");
     REQUIRE(result->GetNumDeclarations() == 1);
-    REQUIRE(result->GetValues(w) == pkb.pattern_container_value_values);
+    REQUIRE(result->GetSingleResultValues() == pkb.pattern_container_value_values);
 
     auto pattern_if = PatternIfClause(i, EntRef("varY"));
     result = pattern_if.Evaluate(pkb);
     REQUIRE(pkb.last_entity_type_passed == EntityType::IF);
     REQUIRE(pkb.last_value_passed == "varY");
     REQUIRE(result->GetNumDeclarations() == 1);
-    REQUIRE(result->GetValues(i) == pkb.pattern_container_value_values);
+    REQUIRE(result->GetSingleResultValues() == pkb.pattern_container_value_values);
   }
 
   SECTION("wild entRef") {
@@ -109,13 +112,13 @@ TEST_CASE("Pattern While/If Clauses") {
     auto result = pattern_while.Evaluate(pkb);
     REQUIRE(pkb.last_entity_type_passed == EntityType::WHILE);
     REQUIRE(result->GetNumDeclarations() == 1);
-    REQUIRE(result->GetValues(w) == pkb.pattern_container_wild_values);
+    REQUIRE(result->GetSingleResultValues() == pkb.pattern_container_wild_values);
 
     auto pattern_if = PatternIfClause(i, EntRef());
     result = pattern_if.Evaluate(pkb);
     REQUIRE(pkb.last_entity_type_passed == EntityType::IF);
     REQUIRE(result->GetNumDeclarations() == 1);
-    REQUIRE(result->GetValues(i) == pkb.pattern_container_wild_values);
+    REQUIRE(result->GetSingleResultValues() == pkb.pattern_container_wild_values);
   }
 
   SECTION("semantic errors") {

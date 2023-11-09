@@ -11,6 +11,7 @@
 #include "query_processing_system/clauses/UsesPClause.h"
 #include "query_processing_system/clauses/UsesSClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
+#include "shared/ArrayUtility.h"
 
 TEST_CASE("Test SuchThat Clauses") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
@@ -94,10 +95,9 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE_THAT(
         result->GetDeclarations(),
         Catch::UnorderedEquals(std::vector<PqlDeclaration>{proc, proc2}));
-    auto values = result->GetValues(proc);
-    REQUIRE(values == pkb.synonym_synonym_values_1);
-    values = result->GetValues(proc2);
-    REQUIRE(values == pkb.synonym_synonym_values_2);
+    auto paired_results = ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+    REQUIRE(paired_results.first == pkb.synonym_synonym_values_1);
+    REQUIRE(paired_results.second == pkb.synonym_synonym_values_2);
 
     pkb.last_entity_type_passed = EntityType::IF;  // reset
     REQUIRE(pkb.wild_synonym_calls == 0);
@@ -108,7 +108,7 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(result->GetNumDeclarations() == 1);
     REQUIRE(result->Contains(proc));
     REQUIRE_FALSE(result->Contains(proc2));
-    values = result->GetValues(proc);
+    auto values = result->GetSingleResultValues();
     REQUIRE(values == pkb.wild_synonym_values);
 
     // Test type checking for Calls/*
@@ -144,7 +144,7 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(result->Contains(print));
     REQUIRE_FALSE(result->Contains(proc));
     REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{print});
-    auto values = result->GetValues(print);
+    auto values = result->GetSingleResultValues();
     REQUIRE(values == pkb.synonym_wild_values);
 
     REQUIRE(pkb.synonym_value_calls == 0);
@@ -157,7 +157,7 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(result->Contains(proc));
     REQUIRE_FALSE(result->Contains(s));
     REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{proc});
-    values = result->GetValues(proc);
+    values = result->GetSingleResultValues();
     REQUIRE(values == pkb.synonym_value_values);
 
     // first arg cannot be wild.
@@ -202,7 +202,7 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE(result->GetNumDeclarations() == 1);
     REQUIRE(result->Contains(v));
     REQUIRE(result->GetDeclarations() == std::vector<PqlDeclaration>{v});
-    auto values = result->GetValues(v);
+    auto values = result->GetSingleResultValues();
     REQUIRE(values == pkb.value_synonym_values);
 
     REQUIRE(pkb.value_wild_calls == 0);
@@ -311,7 +311,7 @@ TEST_CASE("Test SuchThat Clauses") {
                                  std::make_unique<StmtRef>(s), false);
     result = next.Evaluate(pkb);
     REQUIRE(result->GetNumDeclarations() == 1);
-    REQUIRE(result->GetValues(s).empty());
+    REQUIRE(result->GetSingleResultValues().empty());
 
     pkb.synonym_synonym_values = {std::make_pair("42", "42")};
     NextClause next_2 = NextClause(std::make_unique<StmtRef>(a),
@@ -319,6 +319,6 @@ TEST_CASE("Test SuchThat Clauses") {
     result = next_2.Evaluate(pkb);
     REQUIRE(result->GetNumDeclarations() == 1);
     REQUIRE_FALSE(result->IsBooleanResult());
-    REQUIRE(result->GetValues(a) == std::vector<std::string>{"42"});
+    REQUIRE(result->GetSingleResultValues() == std::vector<std::string>{"42"});
   }
 }

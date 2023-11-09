@@ -33,8 +33,8 @@ ClauseResult::ClauseResult(
     ConstructSingleDeclResult(std::move(d1), std::move(intersecting));
   } else {
     num_declarations = 2;
-    d1 = std::move(d1);
-    d2 = std::move(d2);
+    this->d1 = std::move(d1);
+    this->d2 = std::move(d2);
     d1_d2_paired_values = std::move(values);
   }
 }

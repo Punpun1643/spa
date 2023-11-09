@@ -39,8 +39,7 @@ class RelationalTable {
   RelationalTable(PqlDeclaration const& d,
                   std::vector<std::string> const& values);
   RelationalTable(PqlDeclaration const& d1, PqlDeclaration const& d2,
-                  std::vector<std::string> const& d1_values,
-                  std::vector<std::string> const& d2_values);
+                  std::vector<std::pair<std::string, std::string>> const& paired_values);
 
   std::vector<std::vector<std::string>> GetTableCols(
       std::vector<PqlDeclaration> const& decls) const;
