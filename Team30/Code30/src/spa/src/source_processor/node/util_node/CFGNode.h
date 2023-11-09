@@ -44,7 +44,7 @@ class CFGNode {
   static std::string GetVarModifiedInStartNode(
       std::shared_ptr<CFGNode> start_node);
 
-  static std::unordered_set<std::string> GetVarUsedInEndNode(
+  static std::unordered_set<std::string>& GetVarUsedInEndNode(
       std::shared_ptr<CFGNode> end_node);
 
  private:

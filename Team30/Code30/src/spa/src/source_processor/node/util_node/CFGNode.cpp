@@ -71,7 +71,7 @@ std::string CFGNode::GetVarModifiedInStartNode(
   return *vars_modified_in_start_node.begin();
 }
 
-std::unordered_set<std::string> CFGNode::GetVarUsedInEndNode(
+std::unordered_set<std::string>& CFGNode::GetVarUsedInEndNode(
     std::shared_ptr<CFGNode> end_node) {
   return end_node->GetUsesVars();
 }
