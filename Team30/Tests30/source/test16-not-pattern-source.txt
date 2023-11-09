@@ -14,3 +14,18 @@ procedure p3 {
 	y = x;
 	x = y;
 }
+
+procedure p4 {
+
+	if (aa > bb) then {
+		a = b;
+	} else {
+		aa = bb;
+	}
+
+	while (B <= A + 3) {
+		b = a;
+	}
+
+
+}
