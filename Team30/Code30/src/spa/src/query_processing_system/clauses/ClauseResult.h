@@ -16,7 +16,7 @@ class ClauseResult {
   std::optional<PqlDeclaration> d1;
   std::optional<PqlDeclaration> d2;
   std::vector<std::string> d1_values;
-  std::vector<std::string> d2_values;
+  std::vector<std::pair<std::string, std::string>> d1_d2_paired_values;
 
   void ConstructSingleDeclResult(PqlDeclaration d,
                                  std::vector<std::string> values);
@@ -41,9 +41,9 @@ class ClauseResult {
 
   std::vector<PqlDeclaration> GetDeclarations() const;
 
-  std::vector<std::string> GetValues(PqlDeclaration const& declaration) const;
+  std::vector<std::string> GetSingleResultValues();
 
-  // Get Paired Values?
+  std::vector<std::pair<std::string, std::string>> GetPairedResultValues();
 
   bool Contains(PqlDeclaration const& d) const;
 };

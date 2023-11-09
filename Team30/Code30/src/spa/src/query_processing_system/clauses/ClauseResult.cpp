@@ -5,18 +5,18 @@
 
 #include "shared/ArrayUtility.h"
 
-void ClauseResult::ConstructSingleDeclResult(
-    PqlDeclaration d, std::vector<std::string> values) {
-  num_declarations = 1;
-  d1 = std::move(d);
-  d1_values = std::move(values);
-}
-
 ClauseResult::ClauseResult(bool is_valid)
     : num_declarations(0), boolean_clause_value(is_valid) {}
 
 ClauseResult::ClauseResult(PqlDeclaration d, std::vector<std::string> values) {
   ConstructSingleDeclResult(std::move(d), std::move(values));
+}
+
+void ClauseResult::ConstructSingleDeclResult(
+    PqlDeclaration d, std::vector<std::string> values) {
+  num_declarations = 1;
+  d1 = std::move(d);
+  d1_values = std::move(values);
 }
 
 ClauseResult::ClauseResult(
@@ -33,12 +33,9 @@ ClauseResult::ClauseResult(
     ConstructSingleDeclResult(std::move(d1), std::move(intersecting));
   } else {
     num_declarations = 2;
-    // separate out the paired vectors
-    auto result = ArrayUtility::SplitPairVector(values);
     d1 = std::move(d1);
     d2 = std::move(d2);
-    d1_values = std::move(result.first);
-    d2_values = std::move(result.second);
+    d1_d2_paired_values = std::move(values);
   }
 }
 
@@ -59,20 +56,35 @@ bool ClauseResult::GetBooleanClauseValue() const {
 }
 
 bool ClauseResult::Contains(PqlDeclaration const& d) const {
-  return value_map.count(d) == 1;
+  if ((d1.has_value() && d1.value() == d) ||
+      (d2.has_value() && d2.value() == d)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 std::vector<PqlDeclaration> ClauseResult::GetDeclarations() const {
   std::vector<PqlDeclaration> output = {};
-  for (auto const& [key, value] : value_map)
-    output.push_back(key);
+  if (d1.has_value()) {
+    output.push_back(d1.value());
+  }
+  if (d2.has_value()) {
+    output.push_back(d2.value());
+  }
   return output;
 }
 
-std::vector<std::string> ClauseResult::GetValues(
-    PqlDeclaration const& declaration) const {
-  if (value_map.count(declaration) == 0) {
-    throw std::invalid_argument("Given declaration does not exist.");
+std::vector<std::string> ClauseResult::GetSingleResultValues() {
+  if (GetNumDeclarations() != 1) {
+    throw std::logic_error("This ClauseResult does not have a single decl.");
   }
-  return value_map.at(declaration);
+  return d1_values;
+}
+
+std::vector<std::pair<std::string, std::string>> ClauseResult::GetPairedResultValues() {
+  if (GetNumDeclarations() != 2) {
+    throw std::logic_error("This ClauseResult does not have two decls.");
+  }
+  return d1_d2_paired_values;
 }
