@@ -14,8 +14,8 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 
 // ********** Private methods **********
 std::unordered_set<std::string> PKB::GetIntersection(
-    std::unordered_set<std::string> set1,
-    std::unordered_set<std::string> set2) {
+    std::unordered_set<std::string>& set1,
+    std::unordered_set<std::string>& set2) {
   std::unordered_set<std::string> output;
   if (set1.size() < set2.size()) {
     for (std::string v : set1) {
@@ -49,7 +49,7 @@ void PKB::InsertRelation(RelationType type, std::string input1,
 }
 
 void PKB::InsertAssignPattern(std::string statement_number, std::string lhs,
-                              std::shared_ptr<TreeNode> rhs) {
+                              std::shared_ptr<TreeNode> const& rhs) {
   pat_data->InsertAssignment(statement_number, lhs, rhs);
 }
 
@@ -59,7 +59,7 @@ void PKB::InsertCondVarPattern(EntityType type, std::string statement_number,
 }
 
 void PKB::InsertCFGNode(std::string statement_number,
-                        std::shared_ptr<CFGNode> node) {
+                        std::shared_ptr<CFGNode> const& node) {
   rel_data->InsertCFGNode(statement_number, node);
 }
 
@@ -194,20 +194,20 @@ std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
 
 // ---------- PATTERNS ----------
 std::vector<std::string> PKB::GetMatchingAssignStmts(
-    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
   std::unordered_set<std::string> assign_stmts =
       ent_data->Get(EntityType::ASSIGN);
   return pat_data->GetMatchingAssignStmts(assign_stmts, rhs_expr, match_type);
 }
 
 std::vector<std::string> PKB::GetMatchingAssignStmts(
-    std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+    std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
     MatchType match_type) {
   return pat_data->GetMatchingAssignStmts(lhs_value, rhs_expr, match_type);
 }
 
 std::vector<std::pair<std::string, std::string>>
-PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                       MatchType match_type) {
   return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
 }

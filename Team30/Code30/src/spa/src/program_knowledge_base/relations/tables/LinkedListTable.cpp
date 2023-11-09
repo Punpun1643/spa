@@ -49,7 +49,7 @@ bool LinkedListTable::HasInverseRelations(std::string val) {
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
-    std::unordered_set<std::string> vals) {
+    std::unordered_set<std::string>& vals) {
   std::unordered_set<std::string> output;
 
   for (std::string val : vals) {
@@ -61,7 +61,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
-    std::unordered_set<std::string> vals) {
+    std::unordered_set<std::string>& vals) {
   std::unordered_set<std::string> output;
 
   for (std::string val : vals) {
