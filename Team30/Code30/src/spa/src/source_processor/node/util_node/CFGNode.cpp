@@ -28,11 +28,11 @@ StmtType CFGNode::GetNodeType() {
   return node->GetStmtType();
 }
 
-std::unordered_set<std::string> CFGNode::GetUsesVars() {
+std::unordered_set<std::string>& CFGNode::GetUsesVars() {
   return uses_vars;
 }
 
-std::unordered_set<std::string> CFGNode::GetModifiesVars() {
+std::unordered_set<std::string>& CFGNode::GetModifiesVars() {
   return modifies_vars;
 }
 
