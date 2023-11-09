@@ -1,9 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\607_GH410_affects_call_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\607_GH410_affects_call_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/607_GH410_affects_call_out.xml
-MEM 1.648438 1699515024.0947
-MEM 5.757812 1699515024.1061
-MEM 6.300781 1699515024.1138
-MEM 6.460938 1699515024.1220
-MEM 6.457031 1699515024.1304
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\614_GH463_override_known_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\614_GH463_override_known_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/614_GH463_override_known_out.xml
-MEM 1.675781 1699515024.9326
-MEM 5.296875 1699515024.9417

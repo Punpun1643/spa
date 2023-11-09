@@ -1,7 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\600_GH327_CFG_Path_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\600_GH327_CFG_Path_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/600_GH327_CFG_Path_out.xml
-MEM 1.695312 1699514021.0217
-MEM 5.746094 1699514021.0314
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\601_GH330_Affects_Typing_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\601_GH330_Affects_Typing_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/601_GH330_Affects_Typing_out.xml
-MEM 1.667969 1699514021.8214
-MEM 5.589844 1699514021.8295
-MEM 6.746094 1699514021.8391

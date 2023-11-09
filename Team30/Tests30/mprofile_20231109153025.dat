@@ -1,7 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\nesting-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\nesting-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/nesting-out.xml
-MEM 1.667969 1699515025.7650
-MEM 5.394531 1699515025.7733
-MEM 6.578125 1699515025.7806
-MEM 6.761719 1699515025.7887
-MEM 6.808594 1699515025.7969
-MEM 6.824219 1699515025.8043

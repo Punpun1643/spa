@@ -1,7 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\005_semantic_error_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\005_semantic_error_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/005_semantic_error_out.xml
-MEM 1.675781 1699515928.1115
-MEM 5.714844 1699515928.1233
-MEM 6.472656 1699515928.1327
-MEM 6.539062 1699515928.1411
-MEM 6.554688 1699515928.1497
-MEM 6.574219 1699515928.1577
