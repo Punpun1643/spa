@@ -3,8 +3,8 @@
 #include "query_processing_system/references/PqlDeclaration.h"
 #include "shared/ArrayUtility.h"
 
-std::vector<std::pair<std::string, std::string>> MakeVectorOfPairsUtil(const std::vector<std::string>& v1,
-                                                                       const std::vector<std::string>& v2) {
+std::vector<std::pair<std::string, std::string>> MakeVectorOfPairsUtil(
+    std::vector<std::string> const& v1, std::vector<std::string> const& v2) {
   std::vector<std::pair<std::string, std::string>> output = {};
   assert(v1.size() == v2.size());
   for (int i = 0; i < v1.size(); i++) {
@@ -128,8 +128,10 @@ TEST_CASE("RelationalTable Tests") {
         {"1", "10", "2", "3", "g"}, {"1", "10", "4", "5", "g"},
         {"2", "14", "5", "6", "c"}, {"2", "14", "5", "6", "d"}};
 
-    auto table_1 = RelationalTable(c, v, MakeVectorOfPairsUtil(C_VEC_1, V_VEC_1));
-    auto table_1b = RelationalTable(v, s, MakeVectorOfPairsUtil(V_VEC_1, S_VEC_1));
+    auto table_1 =
+        RelationalTable(c, v, MakeVectorOfPairsUtil(C_VEC_1, V_VEC_1));
+    auto table_1b =
+        RelationalTable(v, s, MakeVectorOfPairsUtil(V_VEC_1, S_VEC_1));
     table_1.Join(table_1b);
 
     REQUIRE(table_1.GetNumCols() == 3);
@@ -138,9 +140,12 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE_THAT(ArrayUtility::FlattenVector(v_values),
                  Catch::UnorderedEquals(V_VEC_1));
 
-    auto table_2 = RelationalTable(a, b, MakeVectorOfPairsUtil(A_VEC_2, B_VEC_2));
-    auto table_2b = RelationalTable(a, c, MakeVectorOfPairsUtil(A_VEC_2, C_VEC_2));
-    auto table_2c = RelationalTable(b, s, MakeVectorOfPairsUtil(B_VEC_2, S_VEC_2));
+    auto table_2 =
+        RelationalTable(a, b, MakeVectorOfPairsUtil(A_VEC_2, B_VEC_2));
+    auto table_2b =
+        RelationalTable(a, c, MakeVectorOfPairsUtil(A_VEC_2, C_VEC_2));
+    auto table_2c =
+        RelationalTable(b, s, MakeVectorOfPairsUtil(B_VEC_2, S_VEC_2));
 
     table_2.Join(table_2b);
     table_2.Join(table_2c);

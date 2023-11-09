@@ -14,8 +14,8 @@ void IntermediateResultsTable::UpdateNoResultsFlag(int table_idx) {
   }
 }
 
-void IntermediateResultsTable::AddClauseResult(
-    ClauseResult& clause_result, bool is_negated) {
+void IntermediateResultsTable::AddClauseResult(ClauseResult& clause_result,
+                                               bool is_negated) {
   if (has_no_results) {
     return;  // don't bother, stuck at false already
   }
@@ -125,8 +125,7 @@ void IntermediateResultsTable::RemoveSingleDeclaration(
 void IntermediateResultsTable::AddPairedDeclarations(
     PqlDeclaration const& d1, PqlDeclaration const& d2,
     std::vector<std::pair<std::string, std::string>> const& paired_values) {
-  RelationalTable new_table =
-      RelationalTable(d1, d2, paired_values);
+  RelationalTable new_table = RelationalTable(d1, d2, paired_values);
 
   // Both declarations not in table
   if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 0) {
@@ -170,7 +169,8 @@ void IntermediateResultsTable::RemovePairedDeclaration(
   if (table_mapping.at(d1) != table_mapping.at(d2)) {
     MergeExistingTables(table_mapping.at(d1), table_mapping.at(d2), true);
   }
-  std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set(paired_values.begin(), paired_values.end());
+  std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set(
+      paired_values.begin(), paired_values.end());
   int table_idx = table_mapping.at(d1);
   tables[table_idx].Delete(d1, d2, value_set);
 }

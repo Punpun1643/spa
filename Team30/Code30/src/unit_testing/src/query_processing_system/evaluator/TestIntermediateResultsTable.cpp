@@ -338,9 +338,8 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Check results retrieval - de-duplication") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
-    auto clause_result = ClauseResult(a, c,
-                                      IrtTestHelperMethods::makePairedVector(
-                                          {"2", "2", "2"}, LIST_C));
+    auto clause_result = ClauseResult(
+        a, c, IrtTestHelperMethods::makePairedVector({"2", "2", "2"}, LIST_C));
     irt.AddClauseResult(clause_result, false);
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}),
                  Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));

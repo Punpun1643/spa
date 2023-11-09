@@ -26,8 +26,7 @@ class ClauseResult {
   explicit ClauseResult(bool is_valid);
 
   // Constructor for single declaration clauses
-  ClauseResult(PqlDeclaration declaration,
-               std::vector<std::string> values);
+  ClauseResult(PqlDeclaration declaration, std::vector<std::string> values);
 
   // Constructor for 2 declaration clauses
   ClauseResult(PqlDeclaration d1, PqlDeclaration d2,

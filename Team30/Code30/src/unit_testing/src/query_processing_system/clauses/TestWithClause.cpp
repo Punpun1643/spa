@@ -85,8 +85,7 @@ TEST_CASE("Test WithClause") {
     REQUIRE(pkb.last_attr_type_passed == AttrType::VAR_NAME);
     REQUIRE(result->GetDeclarations() ==
             std::vector<PqlDeclaration>{attr_ref_var.GetDecl()});
-    REQUIRE(result->GetSingleResultValues() ==
-            pkb.attr_value_matches);
+    REQUIRE(result->GetSingleResultValues() == pkb.attr_value_matches);
 
     with_clause = WithClause(attr_ref_call_alias, "iamastring");
     result = with_clause.Evaluate(pkb);
@@ -96,8 +95,7 @@ TEST_CASE("Test WithClause") {
     REQUIRE(pkb.last_attr_type_passed == AttrType::PROC_NAME);
     REQUIRE(result->GetDeclarations() ==
             std::vector<PqlDeclaration>{attr_ref_call_alias.GetDecl()});
-    REQUIRE(result->GetSingleResultValues() ==
-            pkb.attr_value_matches);
+    REQUIRE(result->GetSingleResultValues() == pkb.attr_value_matches);
   }
 
   SECTION("Test AttrRef-AttrRef evaluation logic") {
@@ -111,7 +109,8 @@ TEST_CASE("Test WithClause") {
     REQUIRE_THAT(result->GetDeclarations(),
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>{
                      attr_ref_read_alias.GetDecl(), attr_ref_proc.GetDecl()}));
-    auto paired_values = ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+    auto paired_values =
+        ArrayUtility::SplitPairVector(result->GetPairedResultValues());
     REQUIRE(paired_values.first == pkb.attr_pair_matches_1);
     REQUIRE(paired_values.second == pkb.attr_pair_matches_2);
   }

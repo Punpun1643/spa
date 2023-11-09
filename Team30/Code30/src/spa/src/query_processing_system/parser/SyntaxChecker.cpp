@@ -6,8 +6,8 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
@@ -347,9 +347,7 @@ void SyntaxChecker::CheckPattern(bool has_and) {
       currTokenIndex = revert_index;
     }
 
-    if (
-        !follows_pattern_assign_syntax &&
-        !follows_pattern_if_syntax &&
+    if (!follows_pattern_assign_syntax && !follows_pattern_if_syntax &&
         !follows_pattern_while_syntax) {
       throw InvalidSyntaxException(
           "Pattern clause does not follows pattern assign, if or while syntax");

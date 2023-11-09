@@ -12,8 +12,8 @@ ClauseResult::ClauseResult(PqlDeclaration d, std::vector<std::string> values) {
   ConstructSingleDeclResult(std::move(d), std::move(values));
 }
 
-void ClauseResult::ConstructSingleDeclResult(
-    PqlDeclaration d, std::vector<std::string> values) {
+void ClauseResult::ConstructSingleDeclResult(PqlDeclaration d,
+                                             std::vector<std::string> values) {
   num_declarations = 1;
   d1 = std::move(d);
   d1_values = std::move(values);
@@ -82,7 +82,8 @@ std::vector<std::string> ClauseResult::GetSingleResultValues() {
   return d1_values;
 }
 
-std::vector<std::pair<std::string, std::string>> ClauseResult::GetPairedResultValues() {
+std::vector<std::pair<std::string, std::string>>
+ClauseResult::GetPairedResultValues() {
   if (GetNumDeclarations() != 2) {
     throw std::logic_error("This ClauseResult does not have two decls.");
   }

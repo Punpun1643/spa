@@ -23,13 +23,14 @@ class IntermediateResultsTable {
   void AddBooleanClauseResult(bool result);
   void AddSingleDeclaration(PqlDeclaration const& d,
                             std::vector<std::string> const& values);
-  void AddPairedDeclarations(PqlDeclaration const& d1, PqlDeclaration const& d2,
-                             std::vector<std::pair<std::string, std::string>> const& paired_values);
+  void AddPairedDeclarations(
+      PqlDeclaration const& d1, PqlDeclaration const& d2,
+      std::vector<std::pair<std::string, std::string>> const& paired_values);
   void RemoveSingleDeclaration(PqlDeclaration const& d,
                                std::vector<std::string> const& values);
-  void RemovePairedDeclaration(PqlDeclaration const& d1,
-                               PqlDeclaration const& d2,
-                               std::vector<std::pair<std::string, std::string>> const& paired_values);
+  void RemovePairedDeclaration(
+      PqlDeclaration const& d1, PqlDeclaration const& d2,
+      std::vector<std::pair<std::string, std::string>> const& paired_values);
 
   void MergeExistingTables(int table_to_keep_id, int table_to_merge_id,
                            bool allow_cross_product = false);

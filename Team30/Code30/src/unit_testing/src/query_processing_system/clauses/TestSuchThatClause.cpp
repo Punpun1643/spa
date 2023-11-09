@@ -95,7 +95,8 @@ TEST_CASE("Test SuchThat Clauses") {
     REQUIRE_THAT(
         result->GetDeclarations(),
         Catch::UnorderedEquals(std::vector<PqlDeclaration>{proc, proc2}));
-    auto paired_results = ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+    auto paired_results =
+        ArrayUtility::SplitPairVector(result->GetPairedResultValues());
     REQUIRE(paired_results.first == pkb.synonym_synonym_values_1);
     REQUIRE(paired_results.second == pkb.synonym_synonym_values_2);
 
