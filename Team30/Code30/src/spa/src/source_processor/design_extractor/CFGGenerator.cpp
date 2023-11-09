@@ -67,8 +67,17 @@ void CFGGenerator::HandleIfStmt(std::shared_ptr<StmtNode> curr_stmt,
   GenerateCFG(else_body_stmts);
   HandleStmt(curr_stmt, then_first_stmt);
   HandleStmt(curr_stmt, else_first_stmt);
-  HandleStmt(then_last_stmt, next_stmt);
-  HandleStmt(else_last_stmt, next_stmt);
+
+  if (then_last_stmt->GetStmtType() == StmtType::IF_STMT) {
+    HandleIfStmt(then_last_stmt, next_stmt);
+  } else {
+    HandleStmt(then_last_stmt, next_stmt);
+  }
+  if (else_last_stmt->GetStmtType() == StmtType::IF_STMT) {
+    HandleIfStmt(else_last_stmt, next_stmt);
+  } else {
+    HandleStmt(else_last_stmt, next_stmt);
+  }
 }
 
 void CFGGenerator::HandleWhileStmt(std::shared_ptr<StmtNode> curr_stmt) {
@@ -86,7 +95,12 @@ void CFGGenerator::HandleWhileStmt(std::shared_ptr<StmtNode> curr_stmt) {
 
   GenerateCFG(while_body_stmts);
   HandleStmt(curr_stmt, while_first_stmt);
-  HandleStmt(while_last_stmt, curr_stmt);
+
+  if (while_last_stmt->GetStmtType() == StmtType::IF_STMT) {
+    HandleIfStmt(while_last_stmt, curr_stmt);
+  } else {
+    HandleStmt(while_last_stmt, curr_stmt);
+  }
 }
 
 void CFGGenerator::HandleStmt(std::shared_ptr<StmtNode> curr_stmt,
