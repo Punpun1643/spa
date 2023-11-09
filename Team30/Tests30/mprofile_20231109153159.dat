@@ -1,0 +1,14 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\nesting-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\nesting-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/nesting-out.xml
+MEM 1.675781 1699515119.2516
+MEM 5.601562 1699515119.2695
+MEM 6.585938 1699515119.2766
+MEM 6.796875 1699515119.2848
+MEM 6.808594 1699515119.2922
+MEM 6.824219 1699515119.2996
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\similar-names-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\similar-names-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/similar-names-out.xml
+MEM 1.667969 1699515119.7077
+MEM 5.468750 1699515119.7303
+MEM 6.441406 1699515119.7374
+MEM 6.437500 1699515119.7449
+MEM 6.722656 1699515119.7521
+MEM 6.699219 1699515119.7597

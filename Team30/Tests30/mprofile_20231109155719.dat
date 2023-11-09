@@ -1,0 +1,4 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\107_no_follows_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\107_no_follows_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/107_no_follows_out.xml
+MEM 1.585938 1699516639.6474
+MEM 5.324219 1699516639.6586
+MEM 6.453125 1699516639.6664

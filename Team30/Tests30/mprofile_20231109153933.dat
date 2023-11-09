@@ -1,0 +1,5 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\001_Keywords_as_var_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\001_Keywords_as_var_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/001_Keywords_as_var_out.xml
+MEM 1.675781 1699515573.9339
+MEM 5.843750 1699515573.9481
+MEM 6.398438 1699515573.9568
+MEM 6.449219 1699515573.9650

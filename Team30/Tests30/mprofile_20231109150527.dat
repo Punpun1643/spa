@@ -1,0 +1,7 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/other_teams/team41/Team41/Code41/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\test18-not-complex-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\test18-not-complex-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/test18-not-complex-out.xml
+MEM 1.703125 1699513527.1923
+MEM 5.031250 1699513527.2005
+MEM 5.945312 1699513527.2090
+MEM 5.929688 1699513527.2175
+MEM 5.941406 1699513527.2270
+MEM 5.953125 1699513527.2351

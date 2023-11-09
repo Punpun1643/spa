@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\multiconditional-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\multiconditional-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/multiconditional-out.xml
+MEM 1.652344 1699516064.3572
+MEM 5.355469 1699516064.3725
+MEM 6.523438 1699516064.3804
+MEM 6.585938 1699516064.3880
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\nesting-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\nesting-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/nesting-out.xml
+MEM 1.644531 1699516064.7939
+MEM 5.593750 1699516064.8064
+MEM 6.574219 1699516064.8154
+MEM 6.804688 1699516064.8238
+MEM 6.816406 1699516064.8326

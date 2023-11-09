@@ -1,0 +1,6 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\test13-not-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\test13-not-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/test13-not-out.xml
+MEM 1.585938 1699515219.7511
+MEM 5.132812 1699515219.7680
+MEM 6.812500 1699515219.7775
+MEM 6.863281 1699515219.7901
+MEM 6.867188 1699515219.7985

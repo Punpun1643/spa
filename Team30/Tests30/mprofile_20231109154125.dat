@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\404_conditional_parsing_stress_test_2_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\404_conditional_parsing_stress_test_2_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/404_conditional_parsing_stress_test_2_out.xml
+MEM 1.625000 1699515685.1256
+MEM 5.000000 1699515685.1481
+MEM 6.464844 1699515685.1555
+MEM 6.550781 1699515685.1632
+MEM 6.550781 1699515685.1713
+MEM 5.343750 1699515685.1790
+MEM 6.242188 1699515685.1862
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\405_complex_conditional_parsing_stress_test_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\405_complex_conditional_parsing_stress_test_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/405_complex_conditional_parsing_stress_test_out.xml
+MEM 1.675781 1699515685.5927
+MEM 5.316406 1699515685.6003

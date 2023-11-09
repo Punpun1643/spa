@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\156_negative_parents_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\156_negative_parents_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/156_negative_parents_out.xml
+MEM 1.699219 1699513565.2698
+MEM 5.609375 1699513565.2770
+MEM 6.332031 1699513565.2838
+MEM 6.347656 1699513565.2908
+MEM 6.363281 1699513565.2978
+MEM 6.351562 1699513565.3051
+MEM 6.335938 1699513565.3122
+MEM 6.359375 1699513565.3198
+MEM 6.359375 1699513565.3270
+MEM 6.367188 1699513565.3347

@@ -1,0 +1,9 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/other_teams/team28/Team28/Code28/build_win/x86-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\test16-not-pattern-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\test16-not-pattern-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/test16-not-pattern-out.xml
+MEM 2.578125 1699513416.5833
+MEM 5.726562 1699513416.6041
+MEM 6.718750 1699513416.6120
+MEM 6.773438 1699513416.6208
+MEM 6.746094 1699513416.6290
+MEM 6.746094 1699513416.6375
+MEM 6.750000 1699513416.6459
+MEM 6.750000 1699513416.6548

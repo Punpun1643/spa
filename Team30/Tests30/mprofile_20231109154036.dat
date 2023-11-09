@@ -1,0 +1,12 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\120_calls_star_complicated_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\120_calls_star_complicated_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/120_calls_star_complicated_out.xml
+MEM 1.652344 1699515636.2506
+MEM 5.273438 1699515636.2632
+MEM 6.164062 1699515636.2707
+MEM 7.113281 1699515636.2794
+MEM 7.164062 1699515636.2872
+MEM 7.164062 1699515636.2951
+MEM 7.175781 1699515636.3029
+MEM 7.175781 1699515636.3108
+MEM 7.175781 1699515636.3185
+MEM 7.175781 1699515636.3268
+MEM 7.367188 1699515636.3346

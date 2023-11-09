@@ -1,0 +1,23 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\141_with_clause_conflicting_values_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\141_with_clause_conflicting_values_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/141_with_clause_conflicting_values_out.xml
+MEM 1.652344 1699515658.0664
+MEM 5.867188 1699515658.0796
+MEM 6.550781 1699515658.0876
+MEM 6.574219 1699515658.0953
+MEM 6.527344 1699515658.1026
+MEM 6.550781 1699515658.1107
+MEM 6.558594 1699515658.1182
+MEM 6.562500 1699515658.1257
+MEM 6.593750 1699515658.1331
+MEM 6.660156 1699515658.1402
+MEM 6.667969 1699515658.1482
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\142_duplicate_with_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\142_duplicate_with_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/142_duplicate_with_out.xml
+MEM 1.664062 1699515658.9839
+MEM 5.828125 1699515658.9984
+MEM 6.667969 1699515659.0062
+MEM 6.707031 1699515659.0141
+MEM 6.734375 1699515659.0220
+MEM 6.687500 1699515659.0310
+MEM 6.730469 1699515659.0387
+MEM 6.718750 1699515659.0467
+MEM 6.871094 1699515659.0545
+MEM 6.843750 1699515659.0622

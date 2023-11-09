@@ -1,0 +1,7 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/other_teams/team28/Team28/Code28/build_win/x86-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\151_with_multiple_attributes_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\151_with_multiple_attributes_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/151_with_multiple_attributes_out.xml
+MEM 2.589844 1699513400.9986
+MEM 6.085938 1699513401.0079
+MEM 6.753906 1699513401.0160
+MEM 6.753906 1699513401.0247
+MEM 6.718750 1699513401.0334
+MEM 6.765625 1699513401.0425

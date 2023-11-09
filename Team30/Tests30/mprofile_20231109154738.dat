@@ -1,0 +1,8 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\615_GH468_with_attribute_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\615_GH468_with_attribute_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/615_GH468_with_attribute_out.xml
+MEM 1.585938 1699516058.0550
+MEM 5.253906 1699516058.0678
+MEM 6.085938 1699516058.0757
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\616_GH470_empty_group_projection_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\616_GH470_empty_group_projection_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/616_GH470_empty_group_projection_out.xml
+MEM 1.582031 1699516058.8548
+MEM 5.179688 1699516058.8747
+MEM 6.140625 1699516058.8831

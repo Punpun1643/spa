@@ -1,0 +1,17 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\003_syntax_error_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\003_syntax_error_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/003_syntax_error_out.xml
+MEM 1.699219 1699515603.4293
+MEM 5.917969 1699515603.4506
+MEM 6.167969 1699515603.4594
+MEM 6.144531 1699515603.4670
+MEM 6.167969 1699515603.4753
+MEM 6.156250 1699515603.4834
+MEM 6.207031 1699515603.4909
+MEM 6.187500 1699515603.4990
+MEM 6.179688 1699515603.5069
+MEM 6.203125 1699515603.5148
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\004_pattern_syntax_error_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\004_pattern_syntax_error_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/004_pattern_syntax_error_out.xml
+MEM 1.652344 1699515603.9267
+MEM 5.785156 1699515603.9378
+MEM 6.195312 1699515603.9455
+MEM 6.195312 1699515603.9532
+MEM 6.191406 1699515603.9607

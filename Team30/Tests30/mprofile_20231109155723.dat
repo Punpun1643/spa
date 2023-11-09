@@ -1,0 +1,9 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\131_with_negative_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\131_with_negative_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/131_with_negative_out.xml
+MEM 1.667969 1699516643.7175
+MEM 5.496094 1699516643.7254
+MEM 6.035156 1699516643.7338
+MEM 6.339844 1699516643.7417
+MEM 6.378906 1699516643.7499
+MEM 6.355469 1699516643.7577
+MEM 6.355469 1699516643.7657
+MEM 6.378906 1699516643.7737

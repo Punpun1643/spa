@@ -1,0 +1,20 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\exact-pattern-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\exact-pattern-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/exact-pattern-out.xml
+MEM 1.652344 1699516062.2103
+MEM 5.234375 1699516062.2203
+MEM 6.589844 1699516062.2279
+MEM 6.593750 1699516062.2355
+MEM 6.640625 1699516062.2426
+MEM 6.640625 1699516062.2507
+MEM 6.835938 1699516062.2584
+MEM 6.835938 1699516062.2665
+MEM 6.855469 1699516062.2739
+MEM 6.839844 1699516062.2813
+MEM 6.898438 1699516062.2889
+MEM 6.898438 1699516062.2963
+MEM 6.875000 1699516062.3037
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\multi-procedures-and-calls-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\multi-procedures-and-calls-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/multi-procedures-and-calls-out.xml
+MEM 1.652344 1699516062.7125
+MEM 5.460938 1699516062.7250
+MEM 6.890625 1699516062.7327
+MEM 6.878906 1699516062.7400
+MEM 6.960938 1699516062.7479

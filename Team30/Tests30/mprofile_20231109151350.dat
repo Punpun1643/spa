@@ -1,0 +1,9 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\612_GH456_zero_clauses_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\612_GH456_zero_clauses_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/612_GH456_zero_clauses_out.xml
+MEM 1.664062 1699514030.0860
+MEM 5.265625 1699514030.1059
+MEM 6.398438 1699514030.1142
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\613_GH464_pattern_syntax_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\613_GH464_pattern_syntax_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/613_GH464_pattern_syntax_out.xml
+MEM 1.652344 1699514030.9376
+MEM 5.187500 1699514030.9558
+MEM 6.183594 1699514030.9631
+MEM 6.398438 1699514030.9708

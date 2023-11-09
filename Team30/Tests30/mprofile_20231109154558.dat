@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\118_calls_star_diamond_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\118_calls_star_diamond_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/118_calls_star_diamond_out.xml
+MEM 1.703125 1699515958.6914
+MEM 5.656250 1699515958.7001
+MEM 6.621094 1699515958.7083
+MEM 6.636719 1699515958.7164
+MEM 6.644531 1699515958.7243
+MEM 6.667969 1699515958.7324
+MEM 6.667969 1699515958.7401
+MEM 6.667969 1699515958.7480
+MEM 6.644531 1699515958.7557
+MEM 6.871094 1699515958.7636

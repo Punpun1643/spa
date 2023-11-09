@@ -9,10 +9,11 @@ LinkedListTable::LinkedListTable() : RelationTable() {}
 
 void LinkedListTable::Insert(std::string i, std::string j) {
   relations.AddEdge(i, j);
+  empty = false;
 }
 
 bool LinkedListTable::IsEmpty() {
-  return relations.IsEmpty();
+  return empty;
 }
 
 bool LinkedListTable::IsRelated(std::string i, std::string j) {

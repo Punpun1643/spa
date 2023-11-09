@@ -1,0 +1,10 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\test10-affects-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\test10-affects-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/test10-affects-out.xml
+MEM 1.582031 1699514043.8509
+MEM 5.195312 1699514043.8592
+MEM 6.316406 1699514043.8668
+MEM 6.886719 1699514043.8749
+MEM 7.062500 1699514043.8822
+MEM 7.062500 1699514043.8930
+MEM 7.039062 1699514043.9037
+MEM 7.082031 1699514043.9110
+MEM 7.070312 1699514043.9219

@@ -1,0 +1,10 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\155_negative_follow_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\155_negative_follow_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/155_negative_follow_out.xml
+MEM 1.675781 1699515670.2966
+MEM 5.316406 1699515670.3126
+MEM 6.406250 1699515670.3198
+MEM 6.417969 1699515670.3271
+MEM 6.394531 1699515670.3346
+MEM 6.429688 1699515670.3423
+MEM 6.437500 1699515670.3497
+MEM 6.437500 1699515670.3569
+MEM 6.437500 1699515670.3647

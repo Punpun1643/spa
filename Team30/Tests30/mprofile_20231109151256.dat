@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\402_advanced_stress_test_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\402_advanced_stress_test_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/402_advanced_stress_test_out.xml
+MEM 1.675781 1699513976.7491
+MEM 4.773438 1699513976.7678
+MEM 5.765625 1699513976.7755
+MEM 6.125000 1699513976.7820
+MEM 6.523438 1699513976.7892
+MEM 7.277344 1699513976.7963
+MEM 8.167969 1699513976.8033
+MEM 8.773438 1699513976.8101
+MEM 9.597656 1699513976.8167
+MEM 10.546875 1699513976.8242

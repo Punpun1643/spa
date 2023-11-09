@@ -1,0 +1,4 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\615_GH468_with_attribute_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\615_GH468_with_attribute_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/615_GH468_with_attribute_out.xml
+MEM 1.695312 1699514032.2194
+MEM 5.726562 1699514032.2287
+MEM 6.140625 1699514032.2368

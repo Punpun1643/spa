@@ -1,0 +1,4 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\108_while_if_while_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\108_while_if_while_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/108_while_if_while_out.xml
+MEM 1.667969 1699516640.5611
+MEM 5.304688 1699516640.5711
+MEM 6.457031 1699516640.5788

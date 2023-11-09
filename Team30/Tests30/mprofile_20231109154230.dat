@@ -1,0 +1,6 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\607_GH410_affects_call_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\607_GH410_affects_call_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/607_GH410_affects_call_out.xml
+MEM 1.695312 1699515750.6683
+MEM 5.339844 1699515750.6769
+MEM 6.304688 1699515750.6850
+MEM 6.453125 1699515750.6924
+MEM 6.496094 1699515750.6998
