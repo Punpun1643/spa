@@ -310,9 +310,8 @@ TEST_CASE("Test SuchThat Clauses") {
     NextClause next = NextClause(std::make_unique<StmtRef>(s),
                                  std::make_unique<StmtRef>(s), false);
     result = next.Evaluate(pkb);
-    REQUIRE(result->GetNumDeclarations() == 0);
-    REQUIRE(result->IsBooleanResult());
-    REQUIRE_FALSE(result->GetBooleanClauseValue());
+    REQUIRE(result->GetNumDeclarations() == 1);
+    REQUIRE(result->GetValues(s).empty());
 
     pkb.synonym_synonym_values = {std::make_pair("42", "42")};
     NextClause next_2 = NextClause(std::make_unique<StmtRef>(a),

@@ -18,8 +18,6 @@ class ClauseResult {
   std::vector<std::string> d1_values;
   std::vector<std::string> d2_values;
 
-  void SetResultToFalse();
-
   void ConstructSingleDeclResult(PqlDeclaration d,
                                  std::vector<std::string> values);
 

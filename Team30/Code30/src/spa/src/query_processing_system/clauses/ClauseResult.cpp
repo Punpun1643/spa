@@ -5,20 +5,11 @@
 
 #include "shared/ArrayUtility.h"
 
-void ClauseResult::SetResultToFalse() {
-  num_declarations = 0;
-  boolean_clause_value = false;
-}
-
 void ClauseResult::ConstructSingleDeclResult(
     PqlDeclaration d, std::vector<std::string> values) {
-  if (values.empty()) {
-    SetResultToFalse();
-  } else {
-    num_declarations = 1;
-    d1 = std::move(d);
-    d1_values = std::move(values);
-  }
+  num_declarations = 1;
+  d1 = std::move(d);
+  d1_values = std::move(values);
 }
 
 ClauseResult::ClauseResult(bool is_valid)
@@ -31,11 +22,6 @@ ClauseResult::ClauseResult(PqlDeclaration d, std::vector<std::string> values) {
 ClauseResult::ClauseResult(
     PqlDeclaration d1, PqlDeclaration d2,
     std::vector<std::pair<std::string, std::string>> values) {
-  if (values.empty()) {
-    SetResultToFalse();
-    return;
-  }
-
   /* Create a clause result with paired declarations */
   if (d1 == d2) {
     std::vector<std::string> intersecting;
