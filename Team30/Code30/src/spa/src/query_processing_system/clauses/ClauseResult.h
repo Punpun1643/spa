@@ -17,8 +17,6 @@ class ClauseResult {
                      PqlDeclarationHash>
       value_map;
 
-  void SetResultToFalse();
-
   void ConstructSingleDeclResult(PqlDeclaration const& d,
                                  std::vector<std::string> const& values);
 
