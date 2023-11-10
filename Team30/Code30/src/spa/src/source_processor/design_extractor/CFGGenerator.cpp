@@ -14,32 +14,32 @@ void CFGGenerator::ExecuteCFGGeneration(
   std::shared_ptr<StmtLstNode> stmt_lst = proc_node->GetChildren()[0];
   std::vector<std::shared_ptr<StmtNode>> stmts = stmt_lst->GetChildren();
   std::vector<std::shared_ptr<CFGNode>> last_node_points_to;
-  GenerateCFG(stmts);
+  GenerateCFG(stmts, nullptr);
   InsertCFGNodes();
 }
 
-// returns the node that the current node should point to
-void CFGGenerator::GenerateCFG(std::vector<std::shared_ptr<StmtNode>> stmts) {
+void CFGGenerator::GenerateCFG(std::vector<std::shared_ptr<StmtNode>> stmts,
+                               std::shared_ptr<StmtNode> next_stmt) {
   MapCFGNodes(stmts);
 
   for (int i = 0; i < stmts.size(); i++) {
     std::shared_ptr<StmtNode> curr_stmt = stmts[i];
     StmtType curr_type = curr_stmt->GetStmtType();
 
-    std::shared_ptr<StmtNode> next_stmt;
+    std::shared_ptr<StmtNode> inter_next_stmt;
     if (i < stmts.size() - 1) {
-      next_stmt = stmts[i + 1];
+      inter_next_stmt = stmts[i + 1];
     } else {
-      next_stmt = nullptr;
+      inter_next_stmt = next_stmt;
     }
 
     if (curr_type == StmtType::WHILE_STMT) {
       HandleWhileStmt(curr_stmt);
-      HandleStmt(curr_stmt, next_stmt);
+      HandleStmt(curr_stmt, inter_next_stmt);
     } else if (curr_type == StmtType::IF_STMT) {
-      HandleIfStmt(curr_stmt, next_stmt);
+      HandleIfStmt(curr_stmt, inter_next_stmt);
     } else {
-      HandleStmt(curr_stmt, next_stmt);
+      HandleStmt(curr_stmt, inter_next_stmt);
     }
   }
 }
@@ -63,19 +63,15 @@ void CFGGenerator::HandleIfStmt(std::shared_ptr<StmtNode> curr_stmt,
   std::shared_ptr<StmtNode> then_last_stmt = then_body_stmts[then_size - 1];
   std::shared_ptr<StmtNode> else_last_stmt = else_body_stmts[else_size - 1];
 
-  GenerateCFG(then_body_stmts);
-  GenerateCFG(else_body_stmts);
+  GenerateCFG(then_body_stmts, next_stmt);
+  GenerateCFG(else_body_stmts, next_stmt);
   HandleStmt(curr_stmt, then_first_stmt);
   HandleStmt(curr_stmt, else_first_stmt);
 
-  if (then_last_stmt->GetStmtType() == StmtType::IF_STMT) {
-    HandleIfStmt(then_last_stmt, next_stmt);
-  } else {
+  if (then_last_stmt->GetStmtType() != StmtType::IF_STMT) {
     HandleStmt(then_last_stmt, next_stmt);
   }
-  if (else_last_stmt->GetStmtType() == StmtType::IF_STMT) {
-    HandleIfStmt(else_last_stmt, next_stmt);
-  } else {
+  if (else_last_stmt->GetStmtType() != StmtType::IF_STMT) {
     HandleStmt(else_last_stmt, next_stmt);
   }
 }
@@ -93,12 +89,10 @@ void CFGGenerator::HandleWhileStmt(std::shared_ptr<StmtNode> curr_stmt) {
   std::shared_ptr<StmtNode> while_first_stmt = while_body_stmts[0];
   std::shared_ptr<StmtNode> while_last_stmt = while_body_stmts[while_size - 1];
 
-  GenerateCFG(while_body_stmts);
+  GenerateCFG(while_body_stmts, curr_stmt);
   HandleStmt(curr_stmt, while_first_stmt);
 
-  if (while_last_stmt->GetStmtType() == StmtType::IF_STMT) {
-    HandleIfStmt(while_last_stmt, curr_stmt);
-  } else {
+  if (while_last_stmt->GetStmtType() != StmtType::IF_STMT) {
     HandleStmt(while_last_stmt, curr_stmt);
   }
 }

@@ -58,7 +58,7 @@ TEST_CASE("AST 1: Basic SPA, no nesting, while, if") {
     REQUIRE(pkb.checkCFGNodeOutgoing("4", {"5"}));
     REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6", "8"}));
-    REQUIRE(pkb.checkCFGNodeIncoming("5", {"4", "7"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("5", {"4", "7", "7"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("6", {"7"}));
     REQUIRE(pkb.checkCFGNodeIncoming("6", {"5"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("7", {"5"}));
@@ -117,7 +117,7 @@ TEST_CASE("AST 2: Basic SPA, doubly nested while") {
     REQUIRE(pkb.checkCFGNodeIncoming("1", {"2"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("1", {"2"}));
     REQUIRE(pkb.checkCFGNodeIncoming("2", {"1", "4"}));
-    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3", "1"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3", "1", "1"}));
     REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4"}));
     REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
@@ -216,10 +216,10 @@ TEST_CASE(
     REQUIRE(pkb.checkCFGNodeIncoming("2", {"1"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("2", {"3"}));
     REQUIRE(pkb.checkCFGNodeIncoming("3", {"2"}));
-    //REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4", "5"}));
+    REQUIRE(pkb.checkCFGNodeOutgoing("3", {"4", "5"}));
     REQUIRE(pkb.checkCFGNodeIncoming("4", {"3"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("4", {}));
-    //REQUIRE(pkb.checkCFGNodeIncoming("5", {"3", "6"}));
+    REQUIRE(pkb.checkCFGNodeIncoming("5", {"3", "6"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("5", {"6"}));
     REQUIRE(pkb.checkCFGNodeIncoming("6", {"5"}));
     REQUIRE(pkb.checkCFGNodeOutgoing("6", {"5"}));
