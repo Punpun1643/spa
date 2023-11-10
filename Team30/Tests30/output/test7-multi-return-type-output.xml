@@ -1,56 +1,56 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.874000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.894000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnBoolean="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="Return Boolean type">1</id><querystr><![CDATA[procedure p, p1; Select BOOLEAN such that Calls (p, p1)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.451000</time_taken>
+<time_taken>2.736000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnBoolean="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="Return Boolean type">2</id><querystr><![CDATA[assign a; Select BOOLEAN pattern a (_, _"c"_)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.349000</time_taken>
+<time_taken>2.162000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Tuple return, 2 synonyms">3</id><querystr><![CDATA[assign a, a1; Select <a, a1> such that Follows (a, a1) pattern a ("y", _)]]></querystr>
 <stuans>9 10</stuans>
 <correct>9 10</correct>
-<time_taken>1.441000</time_taken>
+<time_taken>2.632000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" SuchThat="1" CondNum="3" RelNum="1" comment="Tuple return, 2 synonyms">4</id><querystr><![CDATA[while w; stmt s; Select <w, s> such that Parent(w, s)]]></querystr>
 <stuans>17 18,17 19,8 10,8 11,8 9</stuans>
 <correct>8 9,8 10,8 11,17 18,17 19</correct>
-<time_taken>1.368000</time_taken>
+<time_taken>2.293000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="2" Followsstar="1" SuchThat="1" CondNum="5" RelNum="3" comment="Tuple return, 3 synonyms (Need and clause to work)">5</id><querystr><![CDATA[stmt s1, s2, s3; Select <s1, s2, s3> such that Follows(s1, s2) and Follows(s2, s3) and Follows* (s1, 13)]]></querystr>
 <stuans>1 2 3,2 3 4,3 4 5,4 5 13,5 13 14</stuans>
 <correct>1 2 3,2 3 4,3 4 5,4 5 13,5 13 14</correct>
-<time_taken>1.811000</time_taken>
+<time_taken>2.861000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid, tuple declaration cannot have names">6</id><querystr><![CDATA[stmt s; Select <"x", "y"> such that Follows (s, 17)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.419000</time_taken>
+<time_taken>2.224000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Valid, 2 identical synonyms in tuple">7</id><querystr><![CDATA[assign a; Select <a, a> pattern a (_, "x + 24")]]></querystr>
 <stuans>6 6</stuans>
 <correct>6 6</correct>
-<time_taken>1.237000</time_taken>
+<time_taken>2.078000</time_taken>
 <passed/>
 </query>
 </queries>
