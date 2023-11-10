@@ -1,149 +1,140 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>1.685000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.817000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Affects="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Affects Wildcard, Wildcard">1</id><querystr><![CDATA[procedure p; Select p such that Affects(_,_)]]></querystr>
 <stuans>p1,p2,p3,p4,p5</stuans>
 <correct>p1,p2,p3,p4,p5</correct>
-<time_taken>1.935000</time_taken>
+<time_taken>1.377000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Affects Wildcard, Stmt#">2</id><querystr><![CDATA[stmt s; Select BOOLEAN such that Affects (_, 2) ]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>2.039000</time_taken>
+<time_taken>1.257000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Affects Stmt#, Wildcard">3</id><querystr><![CDATA[stmt s; Select BOOLEAN such that Affects (3 , _)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.847000</time_taken>
+<time_taken>1.272000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Affects syn, wildcard">4</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects(a, _)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>2.309000</time_taken>
+<time_taken>1.504000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Affects wildcard, syn">5</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (_, a)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>2.007000</time_taken>
+<time_taken>1.602000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Affects="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects same assign stmt (that modifies itself)">6</id><querystr><![CDATA[assign a; Select a such that Affects(a, a) ]]></querystr>
 <stuans>33</stuans>
 <correct>33</correct>
-<time_taken>2.549000</time_taken>
+<time_taken>1.515000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects two assigns different proc">7</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (17, 25)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.758000</time_taken>
+<time_taken>1.228000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects two assigns within same proc, no if/while/call">8</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (3, 5)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>2.109000</time_taken>
+<time_taken>1.277000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects with while container between">9</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (5, 10)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>2.225000</time_taken>
+<time_taken>1.423000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects if container between">10</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (10, 17) ]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>2.201000</time_taken>
+<time_taken>1.205000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects while with nested if container">11</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (39, 37)]]></querystr>
-<stuans>FALSE</stuans>
+<stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.893000</time_taken>
-<failed>
-<missing>TRUE</missing>
-<additional>FALSE</additional>
-<summary>
-<expected>1</expected>
-<matched>0</matched>
-<missing>1</missing>
-<additional>1</additional>
-</summary>
-</failed>
+<time_taken>1.293000</time_taken>
+<passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects 1 stmt in if block, 1 stmt in else block">12</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (12, 14)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.970000</time_taken>
+<time_taken>1.191000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects call stmt between two assigns, called proc does not modify v">13</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (17, 19)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.737000</time_taken>
+<time_taken>1.414000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects call stmt between two assigns, called proc has stmt that modifies v">14</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (19, 21)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.593000</time_taken>
+<time_taken>1.233000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Affects multiple calls between two assigns">15</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects (21, 24)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.585000</time_taken>
+<time_taken>1.191000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Wrong synonym param (Affects should auto evaluate to None)">16</id><querystr><![CDATA[read r;  Select BOOLEAN such that Affects (5, r)]]></querystr>
 <stuans>FALSE</stuans>
 <correct>FALSE</correct>
-<time_taken>1.798000</time_taken>
+<time_taken>1.268000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Wrong synonym param (stmt superset of assign)">17</id><querystr><![CDATA[stmt s; Select BOOLEAN such that Affects (s, 10)]]></querystr>
 <stuans>TRUE</stuans>
 <correct>TRUE</correct>
-<time_taken>1.917000</time_taken>
+<time_taken>1.286000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Wrong synonym param (not a stmt)">18</id><querystr><![CDATA[variable v; Select BOOLEAN such that Affects (v, 5)]]></querystr>
 <stuans>SemanticError</stuans>
 <correct>SemanticError</correct>
-<time_taken>1.989000</time_taken>
+<time_taken>1.418000</time_taken>
 <passed/>
 </query>
 <query>
 <id Affects="1" ReturnBoolean="1" SuchThat="1" CondNum="3" RelNum="1" comment="Invalid Syntax: No strings for affects param">19</id><querystr><![CDATA[assign a; Select BOOLEAN such that Affects ("x", 8)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>2.039000</time_taken>
+<time_taken>1.279000</time_taken>
 <passed/>
 </query>
 </queries>
