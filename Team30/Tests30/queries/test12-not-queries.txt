@@ -53,3 +53,8 @@ procedure p, p1;
 Select p such that NOT Calls(p, p1)
 SyntaxError
 5000
+12 - Invalid, cannot have double not
+procedure p, p1;
+Select p such that not not Calls(p, p1)
+SyntaxError
+5000
