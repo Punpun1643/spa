@@ -26,8 +26,8 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   // Helper functions
   std::unordered_set<std::string> GetIntersection(
-      std::unordered_set<std::string>& set1,
-      std::unordered_set<std::string>& set2);
+      std::unordered_set<std::string> const& set1,
+      std::unordered_set<std::string> const& set2);
 
  public:
   PKB();

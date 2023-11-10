@@ -71,7 +71,7 @@ bool RelDatabase::IsRelatedCFG(RelationType type, std::string val1,
   } else if (type == RelationType::NEXT_STAR) {
     return GraphRelationTraverser::HasPath(node1, node2);
   } else {
-    return GraphRelationTraverser::HasAffectsPath(node1, node2);
+    return GraphRelationTraverser::HasAffectsPath(node1, node2, affects_cache);
   }
 }
 
@@ -85,7 +85,7 @@ bool RelDatabase::HasRelationsCFG(RelationType type, std::string val) {
     return !node->GetOutgoingNodes().empty();
   }
 
-  return GraphRelationTraverser::HasAnyAffectsPath(node);
+  return GraphRelationTraverser::HasAnyAffectsPathFrom(node, affects_cache);
 }
 
 bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
@@ -98,11 +98,11 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
     return !node->GetIncomingNodes().empty();
   }
 
-  return GraphRelationTraverser::HasAnyAffectsPathTo(node);
+  return GraphRelationTraverser::HasAnyAffectsPathTo(node, affects_cache);
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
-    RelationType type, std::unordered_set<std::string>& vals) {
+    RelationType type, std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
   for (std::string val : vals) {
     if (HasRelations(type, val)) {
@@ -113,7 +113,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
-    RelationType type, std::unordered_set<std::string>& vals) {
+    RelationType type, std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
   for (std::string val : vals) {
     if (HasInverseRelations(type, val)) {
@@ -134,26 +134,15 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
   if (type == RelationType::NEXT) {
     std::unordered_set<std::string> output;
     for (auto const& n : node->GetOutgoingNodes()) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+      output.insert(std::to_string(n->GetNodeStmtIndex()));
     }
     return output;
   } else if (type == RelationType::NEXT_STAR) {
     return GraphRelationTraverser::GetAllStmtsWithPathFrom(node);
   } else {
-    return GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(node);
+    return GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+        node, affects_cache);
   }
-}
-
-std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathTo(
-    std::shared_ptr<CFGNode> const& node) {
-  std::unordered_set<std::string> output;
-  for (auto const& pair : cfg_nodes) {
-    std::shared_ptr<CFGNode> n = pair.second;
-    if (GraphRelationTraverser::HasAffectsPath(n, node)) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
-    }
-  }
-  return output;
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
@@ -167,13 +156,14 @@ std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
   if (type == RelationType::NEXT) {
     std::unordered_set<std::string> output;
     for (auto const& n : node->GetIncomingNodes()) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+      output.insert(std::to_string(n->GetNodeStmtIndex()));
     }
     return output;
   } else if (type == RelationType::NEXT_STAR) {
     return GraphRelationTraverser::GetAllStmtsWithPathTo(node);
   } else {
-    return GetAllWithAffectsPathTo(node);
+    return GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(node,
+                                                                affects_cache);
   }
 }
 
@@ -215,7 +205,7 @@ bool RelDatabase::HasInverseRelations(RelationType type, std::string val) {
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
-    RelationType type, std::unordered_set<std::string>& vals) {
+    RelationType type, std::unordered_set<std::string> const& vals) {
   if (IsCFGRelation(type)) {
     return GetAllWithRelationsCFG(type, vals);
   }
@@ -223,7 +213,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelations(
-    RelationType type, std::unordered_set<std::string>& vals) {
+    RelationType type, std::unordered_set<std::string> const& vals) {
   if (IsCFGRelation(type)) {
     return GetAllWithInverseRelationsCFG(type, vals);
   }

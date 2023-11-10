@@ -18,9 +18,9 @@ class RelationTable {
   virtual bool HasInverseRelations(std::string val) = 0;
 
   virtual std::unordered_set<std::string> GetAllWithRelations(
-      std::unordered_set<std::string>& vals) = 0;
+      std::unordered_set<std::string> const& vals) = 0;
   virtual std::unordered_set<std::string> GetAllWithInverseRelations(
-      std::unordered_set<std::string>& vals) = 0;
+      std::unordered_set<std::string> const& vals) = 0;
   virtual std::unordered_set<std::string> GetAllRelatedToValue(
       std::string val) = 0;
   virtual std::unordered_set<std::string> GetAllInverseRelatedToValue(

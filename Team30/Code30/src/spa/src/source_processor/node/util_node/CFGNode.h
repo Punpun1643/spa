@@ -24,6 +24,8 @@ class CFGNode {
 
   StmtType GetNodeType();
 
+  int GetNodeStmtIndex();
+
   std::unordered_set<std::string>& GetUsesVars();
 
   std::unordered_set<std::string>& GetModifiesVars();
