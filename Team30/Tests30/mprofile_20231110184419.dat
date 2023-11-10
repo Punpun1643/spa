@@ -1,9 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\161_simple_negative_affects_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\161_simple_negative_affects_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/161_simple_negative_affects_out.xml
-MEM 1.648438 1699613059.2512
-MEM 4.246094 1699613059.2600
-MEM 5.199219 1699613059.2666
-MEM 5.687500 1699613059.2733
-MEM 6.437500 1699613059.2806
-MEM 6.476562 1699613059.2871
-MEM 6.449219 1699613059.2941
-MEM 6.488281 1699613059.3007

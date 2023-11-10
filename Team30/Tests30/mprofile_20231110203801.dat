@@ -1,7 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\129_while_pattern_parameter_test_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\129_while_pattern_parameter_test_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/129_while_pattern_parameter_test_out.xml
-MEM 3.046875 1699619881.7157
-MEM 5.695312 1699619881.7389
-MEM 6.496094 1699619881.7465
-MEM 6.511719 1699619881.7540
-MEM 6.511719 1699619881.7613
-MEM 6.503906 1699619881.7691

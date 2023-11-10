@@ -1,5 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\405_complex_conditional_parsing_stress_test_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\405_complex_conditional_parsing_stress_test_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/405_complex_conditional_parsing_stress_test_out.xml
-MEM 1.636719 1699613070.2859
-MEM 4.230469 1699613070.2959
-MEM 5.207031 1699613070.3020
-MEM 5.707031 1699613070.3085

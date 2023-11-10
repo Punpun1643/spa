@@ -1,7 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\011_many_constants_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\011_many_constants_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/011_many_constants_out.xml
-MEM 1.660156 1699613003.5565
-MEM 4.238281 1699613003.5654
-MEM 5.660156 1699613003.5722
-MEM 6.285156 1699613003.5792
-MEM 7.378906 1699613003.5860
-MEM 7.378906 1699613003.5930
