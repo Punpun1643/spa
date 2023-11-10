@@ -37,19 +37,19 @@ class PatternDatabase {
   ~PatternDatabase() = default;
 
   void InsertAssignment(std::string line_num, std::string lhs,
-                        std::shared_ptr<TreeNode> rhs);
+                        std::shared_ptr<TreeNode> const& rhs);
 
   void InsertCondVar(EntityType type, std::string line_num, std::string var);
 
   // Assign Pattern
   std::vector<std::string> GetMatchingAssignStmts(
-      std::unordered_set<std::string> assign_stmts,
-      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type);
+      std::unordered_set<std::string>& assign_stmts,
+      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type);
   std::vector<std::string> GetMatchingAssignStmts(
-      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type);
   std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                    MatchType match_type);
 
   // If/While Patterns

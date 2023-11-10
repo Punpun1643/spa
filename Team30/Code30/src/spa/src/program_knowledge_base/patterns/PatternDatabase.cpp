@@ -13,7 +13,7 @@ PatternDatabase::PatternDatabase() {
 }
 
 void PatternDatabase::InsertAssignment(std::string line_num, std::string lhs,
-                                       std::shared_ptr<TreeNode> rhs) {
+                                       std::shared_ptr<TreeNode> const& rhs) {
   assignments.insert({line_num, {lhs, rhs}});
   lhs_assignments[lhs].insert(line_num);
 }
@@ -25,8 +25,8 @@ void PatternDatabase::InsertCondVar(EntityType type, std::string line_num,
 }
 
 std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
-    std::unordered_set<std::string> assign_stmts,
-    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+    std::unordered_set<std::string>& assign_stmts,
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
   std::unordered_set<std::string> output;
 
   // Wild Wild
@@ -50,7 +50,7 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
 }
 
 std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
-    std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+    std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
     MatchType match_type) {
   std::unordered_set<std::string> output;
 
@@ -81,7 +81,7 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
 
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
-    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
   std::vector<std::pair<std::string, std::string>> output;
 
   // Synonym Wild
@@ -136,7 +136,7 @@ PatternDatabase::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type) {
   std::vector<std::pair<std::string, std::string>> output;
   for (auto const& stmt_vars : cond_var_patterns.at(container_stmt_type)) {
-    for (auto vars : stmt_vars.second) {
+    for (auto const& vars : stmt_vars.second) {
       output.push_back(std::make_pair(stmt_vars.first, vars));
     }
   }

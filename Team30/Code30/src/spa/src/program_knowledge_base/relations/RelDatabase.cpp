@@ -102,7 +102,7 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type, std::string val) {
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
-    RelationType type, std::unordered_set<std::string> vals) {
+    RelationType type, std::unordered_set<std::string>& vals) {
   std::unordered_set<std::string> output;
   for (std::string val : vals) {
     if (HasRelations(type, val)) {
@@ -113,7 +113,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
-    RelationType type, std::unordered_set<std::string> vals) {
+    RelationType type, std::unordered_set<std::string>& vals) {
   std::unordered_set<std::string> output;
   for (std::string val : vals) {
     if (HasInverseRelations(type, val)) {
@@ -133,7 +133,7 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
 
   if (type == RelationType::NEXT) {
     std::unordered_set<std::string> output;
-    for (auto n : node->GetOutgoingNodes()) {
+    for (auto const& n : node->GetOutgoingNodes()) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
     }
     return output;
@@ -145,9 +145,9 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithAffectsPathTo(
-    std::shared_ptr<CFGNode> node) {
+    std::shared_ptr<CFGNode> const& node) {
   std::unordered_set<std::string> output;
-  for (auto pair : cfg_nodes) {
+  for (auto const& pair : cfg_nodes) {
     std::shared_ptr<CFGNode> n = pair.second;
     if (GraphRelationTraverser::HasAffectsPath(n, node)) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
@@ -166,7 +166,7 @@ std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
 
   if (type == RelationType::NEXT) {
     std::unordered_set<std::string> output;
-    for (auto n : node->GetIncomingNodes()) {
+    for (auto const& n : node->GetIncomingNodes()) {
       output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
     }
     return output;
@@ -215,7 +215,7 @@ bool RelDatabase::HasInverseRelations(RelationType type, std::string val) {
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
-    RelationType type, std::unordered_set<std::string> vals) {
+    RelationType type, std::unordered_set<std::string>& vals) {
   if (IsCFGRelation(type)) {
     return GetAllWithRelationsCFG(type, vals);
   }
@@ -223,7 +223,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelations(
 }
 
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelations(
-    RelationType type, std::unordered_set<std::string> vals) {
+    RelationType type, std::unordered_set<std::string>& vals) {
   if (IsCFGRelation(type)) {
     return GetAllWithInverseRelationsCFG(type, vals);
   }
@@ -247,6 +247,6 @@ std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValue(
 }
 
 void RelDatabase::InsertCFGNode(std::string statement_num,
-                                std::shared_ptr<CFGNode> node) {
+                                std::shared_ptr<CFGNode> const& node) {
   cfg_nodes.insert({statement_num, node});
 }

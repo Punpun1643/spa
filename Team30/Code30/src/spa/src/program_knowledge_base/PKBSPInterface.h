@@ -25,7 +25,7 @@ class PKBSPInterface {
                               std::string s2_line_num) = 0;
   virtual void InsertAssignPattern(std::string statement_number,
                                    std::string lhs,
-                                   std::shared_ptr<TreeNode> rhs) = 0;
+                                   std::shared_ptr<TreeNode> const& rhs) = 0;
   virtual void InsertCondVarPattern(EntityType type,
                                     std::string statement_number,
                                     std::string var) = 0;
@@ -39,5 +39,5 @@ class PKBSPInterface {
   virtual std::unordered_set<std::string> GetStatementUses(
       std::string stmt) = 0;
   virtual void InsertCFGNode(std::string statement_num,
-                             std::shared_ptr<CFGNode> node) = 0;
+                             std::shared_ptr<CFGNode> const& node) = 0;
 };

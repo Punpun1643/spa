@@ -76,7 +76,7 @@ void PKBSPStub::InsertRelation(RelationType rel_type, std::string s1_line_num,
 // Assign Pattern clause
 void PKBSPStub::InsertAssignPattern(std::string statement_number,
                                     std::string lhs,
-                                    std::shared_ptr<TreeNode> rhs) {
+                                    std::shared_ptr<TreeNode> const& rhs) {
   insertPatternCallCount++;
 };
 
@@ -163,7 +163,7 @@ std::unordered_set<std::string> PKBSPStub::GetStatementUses(std::string stmt) {
 }
 
 void PKBSPStub::InsertCFGNode(std::string statement_num,
-                              std::shared_ptr<CFGNode> node) {
+                              std::shared_ptr<CFGNode> const& node) {
   insertCFGCallCount++;
   CFGNodeMap.insert({statement_num, node});
 };
