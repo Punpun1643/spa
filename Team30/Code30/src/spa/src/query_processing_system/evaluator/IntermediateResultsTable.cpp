@@ -66,9 +66,7 @@ bool IntermediateResultsTable::HasNoResults() const {
 std::vector<std::vector<std::string>>
 IntermediateResultsTable::GetValuesGivenDeclarations(
     std::vector<PqlDeclaration> const& decls) {
-  /**
-   * Destructive method that should only be called once.
-   */
+  // Destructive method that should only be called once.
   // This check must come first, because decls are technically
   // not added to a table that already has no results.
   if (decls.empty() || has_no_results) {
@@ -83,18 +81,19 @@ IntermediateResultsTable::GetValuesGivenDeclarations(
 
   // Merge all the declarations into a single table, but only keep the selected
   // decls.
-  std::unordered_set<PqlDeclaration, PqlDeclarationHash> decl_set(decls.begin(),
-                                                                  decls.end());
   int table_idx = table_mapping.at(decls[0]);
-  tables[table_idx].Filter(decl_set);
-  for (auto& decl : decls) {
-    int other_idx = table_mapping.at(decl);
-    if (other_idx != table_idx) {
-      tables[other_idx].Filter(decl_set);
-      MergeExistingTables(table_idx, table_mapping.at(decl), true);
+  if (decls.size() > 1) {
+    std::unordered_set<PqlDeclaration, PqlDeclarationHash> decl_set(
+        decls.begin(), decls.end());
+    tables[table_idx].Filter(decl_set);
+    for (auto& decl : decls) {
+      int other_idx = table_mapping.at(decl);
+      if (other_idx != table_idx) {
+        tables[other_idx].Filter(decl_set);
+        MergeExistingTables(table_idx, table_mapping.at(decl), true);
+      }
     }
   }
-
   // Retrieve the paired-return from that single table.
   RelationalTable relevant_table = tables[table_idx];
   return relevant_table.GetTableCols(decls);

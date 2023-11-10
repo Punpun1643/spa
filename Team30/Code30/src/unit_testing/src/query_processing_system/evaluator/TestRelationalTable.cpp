@@ -245,4 +245,8 @@ TEST_CASE("RelationalTable Tests") {
                    Catch::UnorderedEquals(V_VEC));
     }
   }
+
+  SECTION("Test Filter") {
+
+  }
 }
