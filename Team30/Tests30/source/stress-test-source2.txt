@@ -306,9 +306,9 @@ procedure p3 {
 procedure p4 {
 	if (0 == 0) then {
     q = l;
-    d = c - 0 % (g % 987 / b * k) + (j + a % 374)
+    d = c - 0 % (g % 987 / b * k) + (j + a % 374);
 	} else {
-    print q
+    print q;
 	}
 }
 
@@ -389,7 +389,7 @@ procedure p7 {
                 read x;
                 c = 0 % g / 3 - 0 * 11 % b;
               } else {
-                call p21;
+                call p2;
                 e = c + c + 1;
                 a = b;
               }
