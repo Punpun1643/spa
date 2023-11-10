@@ -1,0 +1,10 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\143_affects_with_read_print_calls_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\143_affects_with_read_print_calls_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/143_affects_with_read_print_calls_out.xml
+MEM 2.964844 1699619620.5011
+MEM 4.941406 1699619620.5086
+MEM 5.648438 1699619620.5160
+MEM 6.675781 1699619620.5236
+MEM 6.683594 1699619620.5313
+MEM 6.687500 1699619620.5384
+MEM 6.687500 1699619620.5463
+MEM 6.710938 1699619620.5538
+MEM 6.906250 1699619620.5613

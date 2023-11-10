@@ -1,0 +1,17 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\011_negative_and_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\011_negative_and_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/011_negative_and_out.xml
+MEM 3.078125 1699619853.1265
+MEM 5.632812 1699619853.1346
+MEM 6.171875 1699619853.1425
+MEM 6.222656 1699619853.1512
+MEM 6.234375 1699619853.1593
+MEM 6.234375 1699619853.1683
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\012_error_message_as_var_and_syn_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\012_error_message_as_var_and_syn_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/012_error_message_as_var_and_syn_out.xml
+MEM 3.042969 1699619853.9751
+MEM 5.640625 1699619853.9949
+MEM 6.437500 1699619854.0031
+MEM 6.421875 1699619854.0106
+MEM 6.457031 1699619854.0187
+MEM 6.519531 1699619854.0261
+MEM 6.531250 1699619854.0343
+MEM 6.531250 1699619854.0419
+MEM 6.507812 1699619854.0509

@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\002_pql_query_naming_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\002_pql_query_naming_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/002_pql_query_naming_out.xml
+MEM 1.664062 1699612962.7492
+MEM 4.234375 1699612962.7571
+MEM 5.265625 1699612962.7645
+MEM 6.339844 1699612962.7720
+MEM 6.351562 1699612962.7799
+MEM 6.351562 1699612962.7872
+MEM 6.359375 1699612962.7951
+MEM 6.359375 1699612962.8024
+MEM 6.375000 1699612962.8111
+MEM 6.515625 1699612962.8184

@@ -1,0 +1,15 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\161_simple_negative_affects_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\161_simple_negative_affects_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/161_simple_negative_affects_out.xml
+MEM 3.031250 1699620130.0960
+MEM 5.328125 1699620130.1061
+MEM 6.476562 1699620130.1140
+MEM 6.457031 1699620130.1217
+MEM 6.519531 1699620130.1294
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\401_basic_stress_test_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\401_basic_stress_test_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/401_basic_stress_test_out.xml
+MEM 3.054688 1699620130.9890
+MEM 5.480469 1699620131.0098
+MEM 6.078125 1699620131.0182
+MEM 7.531250 1699620131.0264
+MEM 7.570312 1699620131.0351
+MEM 7.574219 1699620131.0434
+MEM 7.785156 1699620131.0527
+MEM 7.785156 1699620131.0608

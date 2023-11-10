@@ -1,0 +1,5 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\616_GH470_empty_group_projection_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\616_GH470_empty_group_projection_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/616_GH470_empty_group_projection_out.xml
+MEM 3.031250 1699620040.7623
+MEM 5.222656 1699620040.7712
+MEM 6.125000 1699620040.7785
+MEM 6.191406 1699620040.7863

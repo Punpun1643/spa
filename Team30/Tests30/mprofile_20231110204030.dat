@@ -1,0 +1,4 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\603_GH335_Assign_Pattern_Constraint_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\603_GH335_Assign_Pattern_Constraint_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/603_GH335_Assign_Pattern_Constraint_out.xml
+MEM 3.054688 1699620030.5123
+MEM 5.250000 1699620030.5270
+MEM 5.753906 1699620030.5346

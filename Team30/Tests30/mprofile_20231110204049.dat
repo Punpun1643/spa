@@ -1,0 +1,7 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\similar-names-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\similar-names-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/similar-names-out.xml
+MEM 2.980469 1699620049.8459
+MEM 4.976562 1699620049.8604
+MEM 5.511719 1699620049.8687
+MEM 6.472656 1699620049.8769
+MEM 6.757812 1699620049.8853
+MEM 6.753906 1699620049.8930

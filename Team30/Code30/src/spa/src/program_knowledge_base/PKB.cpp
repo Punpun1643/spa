@@ -14,18 +14,18 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 
 // ********** Private methods **********
 std::unordered_set<std::string> PKB::GetIntersection(
-    std::unordered_set<std::string>& set1,
-    std::unordered_set<std::string>& set2) {
+    std::unordered_set<std::string> const& set1,
+    std::unordered_set<std::string> const& set2) {
   std::unordered_set<std::string> output;
   if (set1.size() < set2.size()) {
     for (std::string v : set1) {
-      if (set2.find(v) != set2.end()) {
+      if (set2.count(v)) {
         output.insert(v);
       }
     }
   } else {
     for (std::string v : set2) {
-      if (set1.find(v) != set1.end()) {
+      if (set1.count(v)) {
         output.insert(v);
       }
     }
@@ -179,17 +179,19 @@ std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
   std::vector<std::pair<std::string, std::string>> output;
   std::unordered_set<std::string> ents1 = PKB::ent_data->Get(entity_type_1);
-  std::unordered_set<std::string> ents2 = ent_data->Get(entity_type_2);
 
   for (std::string ent1 : ents1) {
+    std::unordered_set<std::string> all_related_to_ent1 =
+        rel_data->GetAllRelatedToValue(rel_type, ent1);
+    std::unordered_set<std::string> ents2 =
+        PKB::GetIntersection(ent_data->Get(entity_type_2), all_related_to_ent1);
+
     for (std::string ent2 : ents2) {
-      if (rel_data->IsRelated(rel_type, ent1, ent2)) {
-        output.push_back(make_pair(ent1, ent2));
-      }
+      output.push_back(make_pair(ent1, ent2));
     }
   }
 
-  return std::vector<std::pair<std::string, std::string>>(output);
+  return output;
 }
 
 // ---------- PATTERNS ----------

@@ -1,0 +1,5 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\611_GH452_zero_with_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\611_GH452_zero_with_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/611_GH452_zero_with_out.xml
+MEM 1.648438 1699613118.3114
+MEM 4.234375 1699613118.3193
+MEM 5.210938 1699613118.3257
+MEM 6.371094 1699613118.3351

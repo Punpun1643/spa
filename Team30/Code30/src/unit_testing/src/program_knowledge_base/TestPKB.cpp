@@ -394,7 +394,6 @@ TEST_CASE("Uses and Modifies") {
           false);
 
   std::vector<std::string> empty_vector;
-  std::vector<std::string> actual;
 
   // Check APIs
 
@@ -404,11 +403,8 @@ TEST_CASE("Uses and Modifies") {
                                      RelationType::MODIFIES_P) == tmp);
   tmp = {"5", "7"};
   // Select s such that Modifies(s, _)
-  actual =
-      pkb.GetRelationSynonymWild(EntityType::STMT, RelationType::MODIFIES_S);
-  std::sort(actual.begin(), actual.end());
-  REQUIRE(actual == tmp);
-
+  REQUIRE(pkb.GetRelationSynonymWild(EntityType::STMT,
+                                     RelationType::MODIFIES_S) == tmp);
   // Query from wrong table
   REQUIRE(pkb.GetRelationSynonymWild(EntityType::STMT, RelationType::USES_P) ==
           empty_vector);

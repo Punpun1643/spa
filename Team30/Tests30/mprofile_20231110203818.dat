@@ -1,0 +1,25 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\144_affects_not_first_procedure_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\144_affects_not_first_procedure_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/144_affects_not_first_procedure_out.xml
+MEM 3.046875 1699619898.0481
+MEM 5.925781 1699619898.0561
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\145_attributes_as_declarations_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\145_attributes_as_declarations_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/145_attributes_as_declarations_out.xml
+MEM 3.046875 1699619898.9129
+MEM 5.675781 1699619898.9216
+MEM 6.382812 1699619898.9300
+MEM 6.562500 1699619898.9382
+MEM 6.562500 1699619898.9464
+MEM 6.566406 1699619898.9544
+MEM 6.574219 1699619898.9628
+MEM 6.578125 1699619898.9717
+MEM 6.605469 1699619898.9796
+MEM 6.652344 1699619898.9876
+MEM 6.652344 1699619898.9956
+MEM 6.664062 1699619899.0052
+MEM 6.683594 1699619899.0134
+MEM 6.664062 1699619899.0214
+MEM 6.664062 1699619899.0297
+MEM 6.660156 1699619899.0376
+MEM 6.640625 1699619899.0456
+MEM 6.664062 1699619899.0537
+MEM 6.664062 1699619899.0618
+MEM 6.664062 1699619899.0705
+MEM 6.667969 1699619899.0790

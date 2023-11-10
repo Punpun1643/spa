@@ -1,0 +1,11 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\606_GH343_with_compare_nondefault_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\606_GH343_with_compare_nondefault_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/606_GH343_with_compare_nondefault_out.xml
+MEM 3.074219 1699620033.0388
+MEM 4.945312 1699620033.0544
+MEM 5.234375 1699620033.0628
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\607_GH410_affects_call_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\607_GH410_affects_call_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/607_GH410_affects_call_out.xml
+MEM 3.031250 1699620033.8886
+MEM 4.953125 1699620033.9043
+MEM 5.332031 1699620033.9118
+MEM 6.339844 1699620033.9199
+MEM 6.546875 1699620033.9272
+MEM 6.511719 1699620033.9351

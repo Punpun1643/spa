@@ -1,0 +1,10 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\107_no_follows_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\107_no_follows_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/107_no_follows_out.xml
+MEM 2.964844 1699619578.0611
+MEM 5.027344 1699619578.0699
+MEM 5.382812 1699619578.0774
+MEM 6.464844 1699619578.0852
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\108_while_if_while_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\108_while_if_while_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/108_while_if_while_out.xml
+MEM 2.964844 1699619578.9533
+MEM 4.917969 1699619578.9672
+MEM 5.765625 1699619578.9750
+MEM 6.441406 1699619578.9830
