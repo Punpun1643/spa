@@ -35,6 +35,8 @@ class IntermediateResultsTable {
   void MergeExistingTables(int table_to_keep_id, int table_to_merge_id,
                            bool allow_cross_product = false);
 
+  void DestructivelyMergeSelectedDecls(std::vector<PqlDeclaration> const& decls);
+
  public:
   IntermediateResultsTable();
 

@@ -222,13 +222,15 @@ void RelationalTable::Filter(
       column_idx_to_keep.push_back(index);
     }
   }
-  std::sort(column_idx_to_keep.begin(), column_idx_to_keep.end());
+  Filter(decls_to_remove, column_idx_to_keep);
+}
 
+void RelationalTable::Filter(std::vector<PqlDeclaration> const& decls_to_remove, std::vector<int>& column_idx_to_keep) {
   if (decls_to_remove.empty()) {
     return;
   }
+  std::sort(column_idx_to_keep.begin(), column_idx_to_keep.end());
 
-  // Recreate the table with those decls removed. Update decls.
   std::vector<std::vector<std::string>> new_table;
   for (auto& row : table) {
     std::vector<std::string> new_row = {};
@@ -238,7 +240,6 @@ void RelationalTable::Filter(
     new_table.push_back(new_row);
   }
 
-  // Remove duplicates in the table.
   ArrayUtility::RemoveDuplicates(new_table);
   table = new_table;
 
