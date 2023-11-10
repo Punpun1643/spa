@@ -3,6 +3,7 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <utility>
 #include <vector>
 
 #include "program_knowledge_base/utils/PairHash2.h"

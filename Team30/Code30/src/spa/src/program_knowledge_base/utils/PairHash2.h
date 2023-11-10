@@ -1,5 +1,5 @@
-#include <functional>
-#include <string>
+#pragma once
+
 #include <unordered_set>
 #include <utility>
 
