@@ -66,6 +66,9 @@ bool IntermediateResultsTable::HasNoResults() const {
 std::vector<std::vector<std::string>>
 IntermediateResultsTable::GetValuesGivenDeclarations(
     std::vector<PqlDeclaration> const& decls) {
+  /**
+   * Destructive method that should only be called once.
+   */
   // This check must come first, because decls are technically
   // not added to a table that already has no results.
   if (decls.empty() || has_no_results) {
