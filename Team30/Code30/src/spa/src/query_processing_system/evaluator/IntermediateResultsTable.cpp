@@ -78,8 +78,10 @@ IntermediateResultsTable::GetValuesGivenDeclarations(
     }
   }
 
-  // Merge all the declarations into a single table, but only keep the selected decls.
-  std::unordered_set<PqlDeclaration, PqlDeclarationHash> decl_set(decls.begin(), decls.end());
+  // Merge all the declarations into a single table, but only keep the selected
+  // decls.
+  std::unordered_set<PqlDeclaration, PqlDeclarationHash> decl_set(decls.begin(),
+                                                                  decls.end());
   int table_idx = table_mapping.at(decls[0]);
   tables[table_idx].Filter(decl_set);
   for (auto& decl : decls) {

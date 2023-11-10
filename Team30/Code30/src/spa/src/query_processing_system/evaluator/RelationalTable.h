@@ -53,7 +53,8 @@ class RelationalTable {
 
   void Join(RelationalTable& other_table, bool allow_cross_product = false);
 
-  void Filter(std::unordered_set<PqlDeclaration, PqlDeclarationHash> const& decls_to_keep);
+  void Filter(std::unordered_set<PqlDeclaration, PqlDeclarationHash> const&
+                  decls_to_keep);
 
   void Delete(PqlDeclaration const& decl,
               std::unordered_set<std::string> const& values);
