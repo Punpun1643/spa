@@ -90,13 +90,14 @@ IntermediateResultsTable::GetValuesGivenDeclarations(
   return relevant_table.GetTableCols(decls);
 }
 
-void IntermediateResultsTable::DestructivelyMergeSelectedDecls(std::vector<PqlDeclaration> const& decls) {
+void IntermediateResultsTable::DestructivelyMergeSelectedDecls(
+    std::vector<PqlDeclaration> const& decls) {
   if (decls.size() <= 1) {
     throw std::invalid_argument("Given decl vector has less than 2 elements.");
   }
   int table_idx = table_mapping.at(decls[0]);
-  std::unordered_set<PqlDeclaration, PqlDeclarationHash> decl_set(
-      decls.begin(), decls.end());
+  std::unordered_set<PqlDeclaration, PqlDeclarationHash> decl_set(decls.begin(),
+                                                                  decls.end());
   tables[table_idx].Filter(decl_set);
   for (auto& decl : decls) {
     int other_idx = table_mapping.at(decl);

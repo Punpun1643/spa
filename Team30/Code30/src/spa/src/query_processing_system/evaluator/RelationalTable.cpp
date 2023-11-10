@@ -225,7 +225,8 @@ void RelationalTable::Filter(
   Filter(decls_to_remove, column_idx_to_keep);
 }
 
-void RelationalTable::Filter(std::vector<PqlDeclaration> const& decls_to_remove, std::vector<int>& column_idx_to_keep) {
+void RelationalTable::Filter(std::vector<PqlDeclaration> const& decls_to_remove,
+                             std::vector<int>& column_idx_to_keep) {
   if (decls_to_remove.empty()) {
     return;
   }
