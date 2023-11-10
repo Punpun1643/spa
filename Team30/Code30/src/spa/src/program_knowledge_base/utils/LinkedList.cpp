@@ -18,7 +18,3 @@ void LinkedList::AddEdge(std::string val1, std::string val2) {
   node1->next.insert(node2);
   node2->prev.insert(node1);
 }
-
-bool LinkedList::IsEmpty() {
-  return nodes.empty();
-}

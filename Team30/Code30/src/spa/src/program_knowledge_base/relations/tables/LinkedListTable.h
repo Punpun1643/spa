@@ -11,6 +11,7 @@
 
 class LinkedListTable : public RelationTable {
   LinkedList relations = LinkedList();
+  bool empty = true;
 
  public:
   LinkedListTable();
