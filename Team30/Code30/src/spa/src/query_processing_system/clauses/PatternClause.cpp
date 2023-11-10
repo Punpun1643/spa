@@ -29,15 +29,15 @@ std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
     case (PqlRefType::DECLARATION): {
       auto values = EvaluateDeclRef(pkb);
       return std::make_unique<ClauseResult>(decl, ent_ref.GetDeclaration(),
-                                            values);
+                                            std::move(values));
     }
     case (PqlRefType::VALUE): {
       auto values = EvaluateValueRef(pkb);
-      return std::make_unique<ClauseResult>(decl, values);
+      return std::make_unique<ClauseResult>(decl, std::move(values));
     }
     case (PqlRefType::WILD): {
       auto values = EvaluateWildRef(pkb);
-      return std::make_unique<ClauseResult>(decl, values);
+      return std::make_unique<ClauseResult>(decl, std::move(values));
     }
     default:
       break;

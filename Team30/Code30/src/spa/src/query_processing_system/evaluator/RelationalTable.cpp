@@ -15,22 +15,17 @@ RelationalTable::RelationalTable(PqlDeclaration const& d,
   }
 }
 
-RelationalTable::RelationalTable(PqlDeclaration const& d1,
-                                 PqlDeclaration const& d2,
-                                 std::vector<std::string> const& d1_values,
-                                 std::vector<std::string> const& d2_values) {
+RelationalTable::RelationalTable(
+    PqlDeclaration const& d1, PqlDeclaration const& d2,
+    std::vector<std::pair<std::string, std::string>> const& paired_values) {
   if (d1 == d2) {
     throw std::invalid_argument("Error: Declarations are identical");
   }
-  if (d1_values.size() != d2_values.size()) {
-    throw std::invalid_argument("Error: Decl values have different lengths.");
-  }
-
   column_mapping[d1] = 0;
   column_mapping[d2] = 1;
 
-  for (auto i = 0; i < d1_values.size(); i++) {
-    table.push_back({d1_values[i], d2_values[i]});
+  for (auto const& paired_value : paired_values) {
+    table.push_back({paired_value.first, paired_value.second});
   }
 }
 

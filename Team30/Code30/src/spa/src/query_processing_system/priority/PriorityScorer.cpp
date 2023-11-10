@@ -132,4 +132,3 @@ bool PriorityScorer::IsValidQPInteger(std::string const& string) {
   }
   return true;
 }
-
