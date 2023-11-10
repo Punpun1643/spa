@@ -3,14 +3,16 @@
 #include "query_processing_system/references/PqlDeclaration.h"
 #include "shared/ArrayUtility.h"
 
-std::vector<std::pair<std::string, std::string>> MakeVectorOfPairsUtil(
-    std::vector<std::string> const& v1, std::vector<std::string> const& v2) {
-  std::vector<std::pair<std::string, std::string>> output = {};
-  assert(v1.size() == v2.size());
-  for (int i = 0; i < v1.size(); i++) {
-    output.emplace_back(v1[i], v2[i]);
+namespace RelationalTableHelperMethods {
+  std::vector<std::pair<std::string, std::string>> MakeVectorOfPairsUtil(
+      std::vector<std::string> const& v1, std::vector<std::string> const& v2) {
+    std::vector<std::pair<std::string, std::string>> output = {};
+    assert(v1.size() == v2.size());
+    for (int i = 0; i < v1.size(); i++) {
+      output.emplace_back(v1[i], v2[i]);
+    }
+    return output;
   }
-  return output;
 }
 
 TEST_CASE("RelationalTable Tests") {
@@ -37,7 +39,7 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE(table.GetTableColNames() == std::vector<PqlDeclaration>({a}));
 
     // two decl constructor
-    auto combined_vec = MakeVectorOfPairsUtil(NUM_VEC, WORD_VEC);
+    auto combined_vec = RelationalTableHelperMethods::MakeVectorOfPairsUtil(NUM_VEC, WORD_VEC);
     table = RelationalTable(a, s, combined_vec);
     REQUIRE(table.GetNumCols() == 2);
     REQUIRE_FALSE(table.HasNoResults());
@@ -65,9 +67,9 @@ TEST_CASE("RelationalTable Tests") {
     std::vector<std::string> VEC_1 = {"1", "2", "3"};
     std::vector<std::string> VEC_2 = {"4", "5", "6"};
     std::vector<std::string> VEC_3 = {"7", "8", "9"};
-    auto combined_vec = MakeVectorOfPairsUtil(VEC_1, VEC_2);
+    auto combined_vec = RelationalTableHelperMethods::MakeVectorOfPairsUtil(VEC_1, VEC_2);
     auto table = RelationalTable(a, b, combined_vec);
-    combined_vec = MakeVectorOfPairsUtil(VEC_2, VEC_3);
+    combined_vec = RelationalTableHelperMethods::MakeVectorOfPairsUtil(VEC_2, VEC_3);
     auto table_2 = RelationalTable(b, c, combined_vec);
     table.Join(table_2);
 
@@ -95,7 +97,7 @@ TEST_CASE("RelationalTable Tests") {
 
     std::vector<std::vector<std::string>> EXP_OUTPUT = {
         {"1", "a", "x"}, {"1", "a", "y"}, {"2", "b", "x"}, {"2", "b", "y"}};
-    auto combined_vec = MakeVectorOfPairsUtil(VEC_1, VEC_2);
+    auto combined_vec = RelationalTableHelperMethods::MakeVectorOfPairsUtil(VEC_1, VEC_2);
     auto table = RelationalTable(a, b, combined_vec);
     auto table_2 = RelationalTable(c, VEC_3);
     REQUIRE_THROWS(table.Join(table_2));  // disable cross-product by default
@@ -129,9 +131,9 @@ TEST_CASE("RelationalTable Tests") {
         {"2", "14", "5", "6", "c"}, {"2", "14", "5", "6", "d"}};
 
     auto table_1 =
-        RelationalTable(c, v, MakeVectorOfPairsUtil(C_VEC_1, V_VEC_1));
+        RelationalTable(c, v, RelationalTableHelperMethods::MakeVectorOfPairsUtil(C_VEC_1, V_VEC_1));
     auto table_1b =
-        RelationalTable(v, s, MakeVectorOfPairsUtil(V_VEC_1, S_VEC_1));
+        RelationalTable(v, s, RelationalTableHelperMethods::MakeVectorOfPairsUtil(V_VEC_1, S_VEC_1));
     table_1.Join(table_1b);
 
     REQUIRE(table_1.GetNumCols() == 3);
@@ -141,11 +143,11 @@ TEST_CASE("RelationalTable Tests") {
                  Catch::UnorderedEquals(V_VEC_1));
 
     auto table_2 =
-        RelationalTable(a, b, MakeVectorOfPairsUtil(A_VEC_2, B_VEC_2));
+        RelationalTable(a, b, RelationalTableHelperMethods::MakeVectorOfPairsUtil(A_VEC_2, B_VEC_2));
     auto table_2b =
-        RelationalTable(a, c, MakeVectorOfPairsUtil(A_VEC_2, C_VEC_2));
+        RelationalTable(a, c, RelationalTableHelperMethods::MakeVectorOfPairsUtil(A_VEC_2, C_VEC_2));
     auto table_2c =
-        RelationalTable(b, s, MakeVectorOfPairsUtil(B_VEC_2, S_VEC_2));
+        RelationalTable(b, s, RelationalTableHelperMethods::MakeVectorOfPairsUtil(B_VEC_2, S_VEC_2));
 
     table_2.Join(table_2b);
     table_2.Join(table_2c);
@@ -164,8 +166,8 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE_THAT(values, Catch::UnorderedEquals(CSABV_OUTPUT));
 
     // test join when result is empty table
-    table_1 = RelationalTable(c, v, MakeVectorOfPairsUtil(C_VEC_1, V_VEC_1));
-    table_1b = RelationalTable(v, s, MakeVectorOfPairsUtil(C_VEC_1, S_VEC_1));
+    table_1 = RelationalTable(c, v, RelationalTableHelperMethods::MakeVectorOfPairsUtil(C_VEC_1, V_VEC_1));
+    table_1b = RelationalTable(v, s, RelationalTableHelperMethods::MakeVectorOfPairsUtil(C_VEC_1, S_VEC_1));
 
     table_1.Join(table_1b);
     REQUIRE(table_1.GetNumCols() == 3);
@@ -175,14 +177,14 @@ TEST_CASE("RelationalTable Tests") {
     REQUIRE(table_1.GetTableCols({s}).empty());
   }
 
-  SECTION("Test Delete") {
+  SECTION("Test Delete and Filter") {
     // TABLE
     std::vector<std::string> C_VEC = {"1", "1", "2", "2", "2", "6", "1"};
     std::vector<std::string> S_VEC = {"10", "12", "14", "14", "18", "20", "10"};
     std::vector<std::string> V_VEC = {"a", "b", "c", "d", "e", "f", "g"};
 
-    auto table_1 = RelationalTable(s, v, MakeVectorOfPairsUtil(S_VEC, V_VEC));
-    auto table_1b = RelationalTable(c, v, MakeVectorOfPairsUtil(C_VEC, V_VEC));
+    auto table_1 = RelationalTable(s, v, RelationalTableHelperMethods::MakeVectorOfPairsUtil(S_VEC, V_VEC));
+    auto table_1b = RelationalTable(c, v, RelationalTableHelperMethods::MakeVectorOfPairsUtil(C_VEC, V_VEC));
     table_1.Join(table_1b);
 
     SECTION("Test single decl delete") {
@@ -244,9 +246,20 @@ TEST_CASE("RelationalTable Tests") {
       REQUIRE_THAT(ArrayUtility::FlattenVector(v_values),
                    Catch::UnorderedEquals(V_VEC));
     }
-  }
+    SECTION("Test Filter - keep 2 cols") {
+      std::vector<std::vector<std::string>> EXP_OUTPUT = {
+          {"1", "10"}, {"1", "12"}, {"2", "14"},{"2", "18"},{"6", "20"}};
+      table_1.Filter({a, b, c, s});
+      REQUIRE(table_1.GetNumCols() == 2);
+      REQUIRE(table_1.GetTableColNames() == std::vector<PqlDeclaration>{c, s});
+      REQUIRE(table_1.GetTableCols({c, s}) == EXP_OUTPUT);
+    }
 
-  SECTION("Test Filter") {
-
+    SECTION("Test Filter - keep 1 col") {
+      table_1.Filter({v, a});
+      REQUIRE(table_1.GetTableColNames() == std::vector<PqlDeclaration>{v});
+      auto results = table_1.GetTableCols({v});
+      REQUIRE(ArrayUtility::FlattenVector(results) == V_VEC);
+    }
   }
 }
