@@ -2,6 +2,7 @@
 #include "catch.hpp"
 #include "query_processing_system/clauses/WithClause.h"
 #include "query_processing_system/exceptions/InvalidSemanticsException.h"
+#include "shared/ArrayUtility.h"
 
 TEST_CASE("Test WithClause") {
   PkbQpsInterfaceStub pkb = PkbQpsInterfaceStub();
@@ -62,8 +63,7 @@ TEST_CASE("Test WithClause") {
     REQUIRE(pkb.last_attr_type_passed == AttrType::STMT_NUM);
     REQUIRE(result->GetDeclarations() ==
             std::vector<PqlDeclaration>{attr_ref_stmt.GetDecl()});
-    REQUIRE(result->GetValues(attr_ref_stmt.GetDecl()) ==
-            pkb.attr_value_matches);
+    REQUIRE(result->GetSingleResultValues() == pkb.attr_value_matches);
 
     with_clause = WithClause(attr_ref_const, 21);
     result = with_clause.Evaluate(pkb);
@@ -73,8 +73,7 @@ TEST_CASE("Test WithClause") {
     REQUIRE(pkb.last_attr_type_passed == AttrType::VALUE);
     REQUIRE(result->GetDeclarations() ==
             std::vector<PqlDeclaration>{attr_ref_const.GetDecl()});
-    REQUIRE(result->GetValues(attr_ref_const.GetDecl()) ==
-            pkb.attr_value_matches);
+    REQUIRE(result->GetSingleResultValues() == pkb.attr_value_matches);
   }
 
   SECTION("Test String-AttrRef evaluation logic") {
@@ -86,8 +85,7 @@ TEST_CASE("Test WithClause") {
     REQUIRE(pkb.last_attr_type_passed == AttrType::VAR_NAME);
     REQUIRE(result->GetDeclarations() ==
             std::vector<PqlDeclaration>{attr_ref_var.GetDecl()});
-    REQUIRE(result->GetValues(attr_ref_var.GetDecl()) ==
-            pkb.attr_value_matches);
+    REQUIRE(result->GetSingleResultValues() == pkb.attr_value_matches);
 
     with_clause = WithClause(attr_ref_call_alias, "iamastring");
     result = with_clause.Evaluate(pkb);
@@ -97,8 +95,7 @@ TEST_CASE("Test WithClause") {
     REQUIRE(pkb.last_attr_type_passed == AttrType::PROC_NAME);
     REQUIRE(result->GetDeclarations() ==
             std::vector<PqlDeclaration>{attr_ref_call_alias.GetDecl()});
-    REQUIRE(result->GetValues(attr_ref_call_alias.GetDecl()) ==
-            pkb.attr_value_matches);
+    REQUIRE(result->GetSingleResultValues() == pkb.attr_value_matches);
   }
 
   SECTION("Test AttrRef-AttrRef evaluation logic") {
@@ -112,10 +109,10 @@ TEST_CASE("Test WithClause") {
     REQUIRE_THAT(result->GetDeclarations(),
                  Catch::UnorderedEquals(std::vector<PqlDeclaration>{
                      attr_ref_read_alias.GetDecl(), attr_ref_proc.GetDecl()}));
-    REQUIRE(result->GetValues(attr_ref_read_alias.GetDecl()) ==
-            pkb.attr_pair_matches_1);
-    REQUIRE(result->GetValues(attr_ref_proc.GetDecl()) ==
-            pkb.attr_pair_matches_2);
+    auto paired_values =
+        ArrayUtility::SplitPairVector(result->GetPairedResultValues());
+    REQUIRE(paired_values.first == pkb.attr_pair_matches_1);
+    REQUIRE(paired_values.second == pkb.attr_pair_matches_2);
   }
 
   SECTION("Incompatible args should throw semantic error") {

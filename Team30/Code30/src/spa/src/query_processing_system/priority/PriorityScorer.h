@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include <string>
 #include <memory>
+#include <string>
 #include <unordered_set>
 
 class Context;
@@ -42,4 +42,3 @@ class PriorityScorer {
   bool IsQuotedIdentifier(std::string const& string);
   bool IsSynonym(std::string const& string);
 };
-

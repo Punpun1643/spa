@@ -14,8 +14,8 @@ void IntermediateResultsTable::UpdateNoResultsFlag(int table_idx) {
   }
 }
 
-void IntermediateResultsTable::AddClauseResult(
-    ClauseResult const& clause_result, bool is_negated) {
+void IntermediateResultsTable::AddClauseResult(ClauseResult& clause_result,
+                                               bool is_negated) {
   if (has_no_results) {
     return;  // don't bother, stuck at false already
   }
@@ -31,7 +31,7 @@ void IntermediateResultsTable::AddClauseResult(
     }
     case (1): {
       auto declaration = clause_result.GetDeclarations().front();
-      auto values = clause_result.GetValues(declaration);
+      auto values = clause_result.GetSingleResultValues();
       if (is_negated) {
         RemoveSingleDeclaration(declaration, values);
       } else {
@@ -44,15 +44,11 @@ void IntermediateResultsTable::AddClauseResult(
       auto declarations = clause_result.GetDeclarations();
       auto d1 = declarations[0];
       auto d2 = declarations[1];
-      auto d1_values = clause_result.GetValues(d1);
-      auto d2_values = clause_result.GetValues(d2);
-      if (d1_values.size() != d2_values.size()) {
-        throw std::invalid_argument("Decls have differently sized vectors.");
-      }
+      auto values = clause_result.GetPairedResultValues();
       if (is_negated) {
-        RemovePairedDeclaration(d1, d2, d1_values, d2_values);
+        RemovePairedDeclaration(d1, d2, values);
       } else {
-        AddPairedDeclarations(d1, d2, d1_values, d2_values);
+        AddPairedDeclarations(d1, d2, values);
       }
       UpdateNoResultsFlag(table_mapping.at(d1));
       break;
@@ -128,10 +124,8 @@ void IntermediateResultsTable::RemoveSingleDeclaration(
 
 void IntermediateResultsTable::AddPairedDeclarations(
     PqlDeclaration const& d1, PqlDeclaration const& d2,
-    std::vector<std::string> const& new_d1_values,
-    std::vector<std::string> const& new_d2_values) {
-  RelationalTable new_table =
-      RelationalTable(d1, d2, new_d1_values, new_d2_values);
+    std::vector<std::pair<std::string, std::string>> const& paired_values) {
+  RelationalTable new_table = RelationalTable(d1, d2, paired_values);
 
   // Both declarations not in table
   if (table_mapping.count(d1) == 0 && table_mapping.count(d2) == 0) {
@@ -166,8 +160,7 @@ void IntermediateResultsTable::AddPairedDeclarations(
 
 void IntermediateResultsTable::RemovePairedDeclaration(
     PqlDeclaration const& d1, PqlDeclaration const& d2,
-    std::vector<std::string> const& d1_values,
-    std::vector<std::string> const& d2_values) {
+    std::vector<std::pair<std::string, std::string>> const& paired_values) {
   if (table_mapping.count(d1) == 0 || table_mapping.count(d2) == 0) {
     throw std::logic_error(
         "Cannot remove values from declarations that aren't already present");
@@ -176,10 +169,8 @@ void IntermediateResultsTable::RemovePairedDeclaration(
   if (table_mapping.at(d1) != table_mapping.at(d2)) {
     MergeExistingTables(table_mapping.at(d1), table_mapping.at(d2), true);
   }
-  std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set;
-  for (int i = 0; i < d1_values.size(); i++) {
-    value_set.emplace(d1_values[i], d2_values[i]);
-  }
+  std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set(
+      paired_values.begin(), paired_values.end());
   int table_idx = table_mapping.at(d1);
   tables[table_idx].Delete(d1, d2, value_set);
 }
