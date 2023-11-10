@@ -121,7 +121,7 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathFrom(
         nodes_to_visit.push(out_going_node);
         visited_nodes.insert(out_going_node);
         stmts_with_valid_path.insert(
-            std::to_string(out_going_node->GetNode()->GetStmtIndex()));
+            std::to_string(out_going_node->GetNodeStmtIndex()));
       }
     }
   }
@@ -148,7 +148,7 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathTo(
         nodes_to_visit.push(in_coming_node);
         visited_nodes.insert(in_coming_node);
         stmts_with_valid_path.insert(
-            std::to_string(in_coming_node->GetNode()->GetStmtIndex()));
+            std::to_string(in_coming_node->GetNodeStmtIndex()));
       }
     }
   }
@@ -290,7 +290,7 @@ bool GraphRelationTraverser::HasAnyAffectsPathTo(
   for (std::shared_ptr<CFGNode> incoming_node : end_node->GetIncomingNodes()) {
     nodes_to_visit.push(incoming_node);
     vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-    visited.insert(make_pair(incoming_node->GetNode()->GetStmtIndex(),
+    visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
                              unmodified_vars_used_in_end_node));
   }
 
@@ -322,11 +322,11 @@ bool GraphRelationTraverser::HasAnyAffectsPathTo(
 
     for (std::shared_ptr<CFGNode> incoming_node :
          curr_node->GetIncomingNodes()) {
-      if (!visited.count(make_pair(incoming_node->GetNode()->GetStmtIndex(),
+      if (!visited.count(make_pair(incoming_node->GetNodeStmtIndex(),
                                    unmodified_vars_used_in_end_node))) {
         nodes_to_visit.push(incoming_node);
         vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-        visited.insert(make_pair(incoming_node->GetNode()->GetStmtIndex(),
+        visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
                                  unmodified_vars_used_in_end_node));
       }
     }
@@ -370,7 +370,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
                 CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
             outgoing_node->GetNodeType() == StmtType::ASSIGN_STMT) {
           stmts_with_valid_path.insert(
-              std::to_string(outgoing_node->GetNode()->GetStmtIndex()));
+              std::to_string(outgoing_node->GetNodeStmtIndex()));
           cache->CacheAffects(start_node, outgoing_node);
         }
 
@@ -407,7 +407,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
   for (std::shared_ptr<CFGNode> incoming_node : end_node->GetIncomingNodes()) {
     nodes_to_visit.push(incoming_node);
     vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-    visited.insert(make_pair(incoming_node->GetNode()->GetStmtIndex(),
+    visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
                              unmodified_vars_used_in_end_node));
   }
 
@@ -424,7 +424,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
             unmodified_vars_used_in_end_node)) {
       cache->CacheAffects(curr_node, end_node);
       stmts_with_valid_path.insert(
-          std::to_string(curr_node->GetNode()->GetStmtIndex()));
+          std::to_string(curr_node->GetNodeStmtIndex()));
     }
 
     // if incoming node changes a variable used by the end node, remove it from
@@ -439,11 +439,11 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
 
     for (std::shared_ptr<CFGNode> incoming_node :
          curr_node->GetIncomingNodes()) {
-      if (!visited.count(make_pair(incoming_node->GetNode()->GetStmtIndex(),
+      if (!visited.count(make_pair(incoming_node->GetNodeStmtIndex(),
                                    unmodified_vars_used_in_end_node))) {
         nodes_to_visit.push(incoming_node);
         vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-        visited.insert(make_pair(incoming_node->GetNode()->GetStmtIndex(),
+        visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
                                  unmodified_vars_used_in_end_node));
       }
     }

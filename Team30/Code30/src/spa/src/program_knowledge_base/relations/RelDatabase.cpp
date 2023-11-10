@@ -134,7 +134,7 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
   if (type == RelationType::NEXT) {
     std::unordered_set<std::string> output;
     for (auto const& n : node->GetOutgoingNodes()) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+      output.insert(std::to_string(n->GetNodeStmtIndex()));
     }
     return output;
   } else if (type == RelationType::NEXT_STAR) {
@@ -156,7 +156,7 @@ std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
   if (type == RelationType::NEXT) {
     std::unordered_set<std::string> output;
     for (auto const& n : node->GetIncomingNodes()) {
-      output.insert(std::to_string(n->GetNode()->GetStmtIndex()));
+      output.insert(std::to_string(n->GetNodeStmtIndex()));
     }
     return output;
   } else if (type == RelationType::NEXT_STAR) {
