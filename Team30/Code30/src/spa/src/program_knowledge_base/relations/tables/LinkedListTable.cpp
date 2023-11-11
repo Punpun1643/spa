@@ -9,10 +9,11 @@ LinkedListTable::LinkedListTable() : RelationTable() {}
 
 void LinkedListTable::Insert(std::string i, std::string j) {
   relations.AddEdge(i, j);
+  empty = false;
 }
 
 bool LinkedListTable::IsEmpty() {
-  return relations.IsEmpty();
+  return empty;
 }
 
 bool LinkedListTable::IsRelated(std::string i, std::string j) {
@@ -49,7 +50,7 @@ bool LinkedListTable::HasInverseRelations(std::string val) {
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
-    std::unordered_set<std::string> vals) {
+    std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
 
   for (std::string val : vals) {
@@ -61,7 +62,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
-    std::unordered_set<std::string> vals) {
+    std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
 
   for (std::string val : vals) {

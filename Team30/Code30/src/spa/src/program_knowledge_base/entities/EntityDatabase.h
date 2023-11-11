@@ -37,7 +37,7 @@ class EntityDatabase {
  public:
   EntityDatabase();
   ~EntityDatabase() = default;
-  std::unordered_set<std::string> Get(EntityType type);
+  std::unordered_set<std::string>& Get(EntityType type);
 
   void InsertEntity(EntityType type, std::string value);
 

@@ -131,6 +131,8 @@ TEST_CASE("Test has affects path for Affects relationship",
         std::unordered_set<std::string>{"x", "y", "z"},
         std::unordered_set<std::string>{"x"});
 
+    std::shared_ptr<AffectsCache> cache = std::make_shared<AffectsCache>();
+
     cfg1->AddOutgoingNode(cfg2);
     cfg2->AddOutgoingNode(cfg3);
     cfg3->AddOutgoingNode(cfg4);
@@ -159,162 +161,162 @@ TEST_CASE("Test has affects path for Affects relationship",
     cfg11->AddIncomingNode(cfg10);
     cfg12->AddIncomingNode(cfg11);
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg3));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg7));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg9));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg11));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg3, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg7, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg9, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg11, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg5));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg9));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg5, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg9, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg9));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg9, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg3));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg7));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg9));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg11));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg3, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg7, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg9, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg11, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg9));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg9, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg5));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg6));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg5, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg6, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg9));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg9, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg6, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg9));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg9, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg7, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg9));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg11));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg9, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg11, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg8, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg9));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg9, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg9, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg9));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg10));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg11));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg9, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg10, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg11, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg10, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg9));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg11));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg9, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg11, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg11, cfg12, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg5));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg6));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg7));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg8));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg9));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg10));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg11));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg12));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg5, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg6, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg7, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg8, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg9, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg10, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg11, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg12, cfg12, cache));
   }
 
   SECTION(
@@ -362,6 +364,9 @@ TEST_CASE("Test has affects path for Affects relationship",
         5, StmtType::ASSIGN_STMT,
         std::unordered_set<std::string>{"x", "y", "z"},
         std::unordered_set<int>{}, "z", nullptr);
+    auto stmt10 = std::make_shared<AssignNode>(
+        10, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{"x", "z"},
+        std::unordered_set<int>{}, "y", nullptr);
 
     std::shared_ptr<CFGNode> cfg1 = std::make_shared<CFGNode>(
         stmt1, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{},
@@ -381,9 +386,10 @@ TEST_CASE("Test has affects path for Affects relationship",
         std::unordered_set<std::string>{"x", "y", "z"},
         std::unordered_set<std::string>{"z"});
 
-    std::shared_ptr<CFGNode> cfg10 = std::make_shared<CFGNode>(
-        stmt5, StmtType::ASSIGN_STMT, std::unordered_set<std::string>{"x", "z"},
-        std::unordered_set<std::string>{"y"});
+    std::shared_ptr<CFGNode> cfg10 =
+        std::make_shared<CFGNode>(stmt10, StmtType::ASSIGN_STMT,
+                                  std::unordered_set<std::string>{"x", "z"},
+                                  std::unordered_set<std::string>{"y"});
 
     cfg1->AddOutgoingNode(cfg2);
     cfg2->AddOutgoingNode(cfg3);
@@ -395,37 +401,39 @@ TEST_CASE("Test has affects path for Affects relationship",
     cfg4->AddIncomingNode(cfg3);
     cfg5->AddIncomingNode(cfg4);
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg5));
+    std::shared_ptr<AffectsCache> cache = std::make_shared<AffectsCache>();
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg2));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg5));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg1, cfg5, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg4));
-    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg5));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg2, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg2, cfg5, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg5));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg4, cache));
+    REQUIRE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg5, cache));
 
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg1));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg2));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg3));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg4));
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg5));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg4, cfg5, cache));
+
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg1, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg2, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg3, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg4, cache));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg5, cfg5, cache));
 
     // test cfg node from a different procedure
-    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg10));
+    REQUIRE_FALSE(GraphRelationTraverser::HasAffectsPath(cfg3, cfg10, cache));
   }
 }

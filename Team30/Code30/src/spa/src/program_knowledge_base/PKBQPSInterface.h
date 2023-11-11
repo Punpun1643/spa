@@ -70,15 +70,15 @@ class PKBQPSInterface {
   // ---------- PATTERNS ----------
   // wild LHS
   virtual std::vector<std::string> GetMatchingAssignStmts(
-      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) = 0;
+      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) = 0;
 
   // LHS with a fixed value
   virtual std::vector<std::string> GetMatchingAssignStmts(
-      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                    MatchType match_type) = 0;
 
   virtual std::vector<std::string> GetContainerStmtsWithControlVar(

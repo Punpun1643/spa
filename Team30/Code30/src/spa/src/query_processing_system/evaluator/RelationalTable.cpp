@@ -15,22 +15,17 @@ RelationalTable::RelationalTable(PqlDeclaration const& d,
   }
 }
 
-RelationalTable::RelationalTable(PqlDeclaration const& d1,
-                                 PqlDeclaration const& d2,
-                                 std::vector<std::string> const& d1_values,
-                                 std::vector<std::string> const& d2_values) {
+RelationalTable::RelationalTable(
+    PqlDeclaration const& d1, PqlDeclaration const& d2,
+    std::vector<std::pair<std::string, std::string>> const& paired_values) {
   if (d1 == d2) {
     throw std::invalid_argument("Error: Declarations are identical");
   }
-  if (d1_values.size() != d2_values.size()) {
-    throw std::invalid_argument("Error: Decl values have different lengths.");
-  }
-
   column_mapping[d1] = 0;
   column_mapping[d2] = 1;
 
-  for (auto i = 0; i < d1_values.size(); i++) {
-    table.push_back({d1_values[i], d2_values[i]});
+  for (auto const& paired_value : paired_values) {
+    table.push_back({paired_value.first, paired_value.second});
   }
 }
 
@@ -212,6 +207,49 @@ void RelationalTable::Delete(
                                return values.count(pair) == 1;
                              }),
               table.end());
+}
+
+void RelationalTable::Filter(
+    std::unordered_set<PqlDeclaration, PqlDeclarationHash> const&
+        decls_to_keep) {
+  // Not all decls_to_keep are in the table.
+  std::vector<PqlDeclaration> decls_to_remove;
+  std::vector<int> column_idx_to_keep;
+  for (auto const& [decl, index] : column_mapping) {
+    if (decls_to_keep.count(decl) == 0) {
+      decls_to_remove.push_back(decl);
+    } else {
+      column_idx_to_keep.push_back(index);
+    }
+  }
+  Filter(decls_to_remove, column_idx_to_keep);
+}
+
+void RelationalTable::Filter(std::vector<PqlDeclaration> const& decls_to_remove,
+                             std::vector<int>& column_idx_to_keep) {
+  if (decls_to_remove.empty()) {
+    return;
+  }
+  std::sort(column_idx_to_keep.begin(), column_idx_to_keep.end());
+
+  std::vector<std::vector<std::string>> new_table;
+  for (auto& row : table) {
+    std::vector<std::string> new_row = {};
+    for (int i : column_idx_to_keep) {
+      new_row.push_back(row[i]);
+    }
+    new_table.push_back(new_row);
+  }
+
+  ArrayUtility::RemoveDuplicates(new_table);
+  table = new_table;
+
+  // Update col mapping in table.
+  auto renumbered_cols = GetRenumberedColsAfterRemoval(decls_to_remove);
+  column_mapping.clear();
+  for (auto& [decl, idx] : renumbered_cols) {
+    column_mapping[decl] = idx;
+  }
 }
 
 bool RelationalTable::HasNoResults() const {

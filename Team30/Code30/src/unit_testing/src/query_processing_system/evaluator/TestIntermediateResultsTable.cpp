@@ -6,7 +6,7 @@
 // ASSUMPTIONS: Tests for RelationalTable all pass.
 
 namespace IrtTestHelperMethods {
-std::vector<std::pair<std::string, std::string>> makePairedVector(
+std::vector<std::pair<std::string, std::string>> MakePairedVector(
     std::vector<std::string> v1, std::vector<std::string> v2) {
   assert(v1.size() == v2.size());
   auto list_of_pairs = std::vector<std::pair<std::string, std::string>>();
@@ -16,10 +16,27 @@ std::vector<std::pair<std::string, std::string>> makePairedVector(
   return list_of_pairs;
 }
 
-std::vector<std::vector<std::string>> addDim(std::vector<std::string>& vec) {
+std::vector<std::vector<std::string>> AddDim(std::vector<std::string>& vec) {
   std::vector<std::vector<std::string>> output = {};
   for (auto const& value : vec) {
     output.push_back({value});
+  }
+  return output;
+}
+
+std::vector<std::vector<std::string>> MergeVectorsElementWise(
+    std::vector<std::vector<std::string>> input_vectors) {
+  // assume input vectors have same length
+  for (int i = 0; i < input_vectors.size() - 1; i++) {
+    assert(input_vectors[i].size() == input_vectors[i + 1].size());
+  }
+  std::vector<std::vector<std::string>> output;
+  for (auto i = 0; i < input_vectors[0].size(); i++) {
+    std::vector<std::string> new_row;
+    for (auto& v : input_vectors) {
+      new_row.push_back(v[i]);
+    }
+    output.push_back(new_row);
   }
   return output;
 }
@@ -46,15 +63,15 @@ TEST_CASE("Intermediate Results Table Tests") {
   std::vector<std::string> LIST_V_PARTIAL = {LIST_V[1]};
   auto LIST_S = std::vector<std::string>({"5", "6", "7"});
 
-  auto LIST_A_OUTPUT = IrtTestHelperMethods::addDim(LIST_A);
-  auto LIST_A_PARTIAL_OUTPUT = IrtTestHelperMethods::addDim(LIST_A_PARTIAL);
-  auto LIST_B_OUTPUT = IrtTestHelperMethods::addDim(LIST_B);
-  auto LIST_B_PARTIAL_OUTPUT = IrtTestHelperMethods::addDim(LIST_B_PARTIAL);
-  auto LIST_C_OUTPUT = IrtTestHelperMethods::addDim(LIST_C);
-  auto LIST_C_PARTIAL_OUTPUT = IrtTestHelperMethods::addDim(LIST_C_PARTIAL);
-  auto LIST_V_OUTPUT = IrtTestHelperMethods::addDim(LIST_V);
-  auto LIST_V_PARTIAL_OUTPUT = IrtTestHelperMethods::addDim(LIST_V_PARTIAL);
-  auto LIST_S_OUTPUT = IrtTestHelperMethods::addDim(LIST_S);
+  auto LIST_A_OUTPUT = IrtTestHelperMethods::AddDim(LIST_A);
+  auto LIST_A_PARTIAL_OUTPUT = IrtTestHelperMethods::AddDim(LIST_A_PARTIAL);
+  auto LIST_B_OUTPUT = IrtTestHelperMethods::AddDim(LIST_B);
+  auto LIST_B_PARTIAL_OUTPUT = IrtTestHelperMethods::AddDim(LIST_B_PARTIAL);
+  auto LIST_C_OUTPUT = IrtTestHelperMethods::AddDim(LIST_C);
+  auto LIST_C_PARTIAL_OUTPUT = IrtTestHelperMethods::AddDim(LIST_C_PARTIAL);
+  auto LIST_V_OUTPUT = IrtTestHelperMethods::AddDim(LIST_V);
+  auto LIST_V_PARTIAL_OUTPUT = IrtTestHelperMethods::AddDim(LIST_V_PARTIAL);
+  auto LIST_S_OUTPUT = IrtTestHelperMethods::AddDim(LIST_S);
 
   auto SINGLE_CLAUSE_A = ClauseResult(a, LIST_A);
   auto SINGLE_CLAUSE_B = ClauseResult(b, LIST_B);
@@ -62,17 +79,17 @@ TEST_CASE("Intermediate Results Table Tests") {
   auto SINGLE_CLAUSE_V = ClauseResult(v, LIST_V);
   auto CONTRADICTING_CLAUSE_A = ClauseResult(a, LIST_C);
   auto PAIRED_CLAUSE_A_B = ClauseResult(
-      a, b, IrtTestHelperMethods::makePairedVector(LIST_A, LIST_B));
+      a, b, IrtTestHelperMethods::MakePairedVector(LIST_A, LIST_B));
   auto PAIRED_CLAUSE_A_C = ClauseResult(
-      a, c, IrtTestHelperMethods::makePairedVector(LIST_A, LIST_C));
+      a, c, IrtTestHelperMethods::MakePairedVector(LIST_A, LIST_C));
   auto PAIRED_CLAUSE_B_C = ClauseResult(
-      b, c, IrtTestHelperMethods::makePairedVector(LIST_B, LIST_C));
+      b, c, IrtTestHelperMethods::MakePairedVector(LIST_B, LIST_C));
   auto PAIRED_CLAUSE_B_C_PARTIAL = ClauseResult(
-      b, c, IrtTestHelperMethods::makePairedVector({LIST_B[1]}, {LIST_C[1]}));
+      b, c, IrtTestHelperMethods::MakePairedVector({LIST_B[1]}, {LIST_C[1]}));
   auto PAIRED_CLAUSE_V_S = ClauseResult(
-      v, s, IrtTestHelperMethods::makePairedVector(LIST_V, LIST_S));
+      v, s, IrtTestHelperMethods::MakePairedVector(LIST_V, LIST_S));
   auto CONTRADICTING_CLAUSE_A_B = ClauseResult(
-      a, b, IrtTestHelperMethods::makePairedVector(LIST_V, LIST_V));
+      a, b, IrtTestHelperMethods::MakePairedVector(LIST_V, LIST_V));
 
   auto irt = IntermediateResultsTable();
 
@@ -112,8 +129,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE_FALSE(irt.HasNoResults());
     irt.AddClauseResult(TRUE_CLAUSE, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise({LIST_A, LIST_B}));
     irt.AddClauseResult(TRUE_CLAUSE, true);
     REQUIRE(irt.HasNoResults());
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
@@ -127,7 +144,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     // changes to A should not affect B
-    irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL), false);
+    auto clause_result = ClauseResult(a, LIST_A_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     // adding in a third unrelated clause should not affect the first two
@@ -152,7 +170,8 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Test negated single declaration clauses") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
-    irt.AddClauseResult(ClauseResult(a, {"1", "3", "4"}), true);
+    auto clause_result = ClauseResult(a, {"1", "3", "4"});
+    irt.AddClauseResult(clause_result, true);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
 
     irt.AddClauseResult(SINGLE_CLAUSE_B, true);
@@ -194,15 +213,16 @@ TEST_CASE("Intermediate Results Table Tests") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     irt.AddClauseResult(PAIRED_CLAUSE_A_C, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A, LIST_B, LIST_C}));
     // Test that values are linked properly
-    irt.AddClauseResult(ClauseResult(c, LIST_C_PARTIAL), false);
+    auto clause_result = ClauseResult(c, LIST_C_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A_PARTIAL, LIST_B_PARTIAL, LIST_C_PARTIAL}));
   }
 
   SECTION("Clauses have 1 synonym in common + no results") {
@@ -220,8 +240,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise({LIST_A, LIST_B}));
   }
 
   SECTION("Chained synonyms") {
@@ -230,18 +250,21 @@ TEST_CASE("Intermediate Results Table Tests") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     irt.AddClauseResult(PAIRED_CLAUSE_B_C, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A, LIST_B, LIST_C}));
 
     // Test that values are linked properly
-    irt.AddClauseResult(ClauseResult(v, LIST_V_PARTIAL), false);
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
-    irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL), false);
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    auto clause_result = ClauseResult(v, LIST_V_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A, LIST_B, LIST_C}));
+    clause_result = ClauseResult(a, LIST_A_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A_PARTIAL, LIST_B_PARTIAL, LIST_C_PARTIAL}));
   }
 
   SECTION("Separate tables that get later merged") {
@@ -249,22 +272,23 @@ TEST_CASE("Intermediate Results Table Tests") {
     irt.AddClauseResult(PAIRED_CLAUSE_B_C, false);
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A, LIST_B, LIST_C}));
 
     SECTION("Check linking on a") {
-      irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL), false);
-      REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-      REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-      REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+      auto clause_result = ClauseResult(a, LIST_A_PARTIAL);
+      irt.AddClauseResult(clause_result, false);
+      REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+              IrtTestHelperMethods::MergeVectorsElementWise(
+                  {LIST_A_PARTIAL, LIST_B_PARTIAL, LIST_C_PARTIAL}));
     }
 
     SECTION("Check paired joining") {
       irt.AddClauseResult(PAIRED_CLAUSE_B_C_PARTIAL, false);
-      REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-      REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-      REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+      REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+              IrtTestHelperMethods::MergeVectorsElementWise(
+                  {LIST_A_PARTIAL, LIST_B_PARTIAL, LIST_C_PARTIAL}));
     }
   }
 
@@ -278,9 +302,9 @@ TEST_CASE("Intermediate Results Table Tests") {
 
     irt.AddClauseResult(CLAUSE_B_C_PARTIAL_INVERSE, true);
     REQUIRE_FALSE(irt.HasNoResults());
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
+    REQUIRE(irt.GetValuesGivenDeclarations({a, b, c}) ==
+            IrtTestHelperMethods::MergeVectorsElementWise(
+                {LIST_A_PARTIAL, LIST_B_PARTIAL, LIST_C_PARTIAL}));
 
     irt.AddClauseResult(PAIRED_CLAUSE_A_C, true);
     REQUIRE(irt.HasNoResults());
@@ -288,9 +312,10 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Test negated clauses with two synonyms - diff table") {
     irt.AddClauseResult(SINGLE_CLAUSE_V, false);
-    irt.AddClauseResult(ClauseResult(a, {"1", "2"}), false);
-    irt.AddClauseResult(ClauseResult(b, c, {std::make_pair("20", "30")}),
-                        false);
+    auto clause_result = ClauseResult(a, {"1", "2"});
+    irt.AddClauseResult(clause_result, false);
+    clause_result = ClauseResult(b, c, {std::make_pair("20", "30")});
+    irt.AddClauseResult(clause_result, false);
 
     auto CLAUSE_A_B_PARTIAL_INVERSE =
         ClauseResult(a, b,
@@ -299,13 +324,12 @@ TEST_CASE("Intermediate Results Table Tests") {
 
     irt.AddClauseResult(CLAUSE_A_B_PARTIAL_INVERSE, true);
     REQUIRE_FALSE(irt.HasNoResults());
-    std::vector<std::string> vector = {"2"};
-    auto OUTPUT_A = IrtTestHelperMethods::addDim(vector);
-    vector = {"30"};
-    auto OUTPUT_C = IrtTestHelperMethods::addDim(vector);
+    std::vector<std::string> OUTPUT_A = {"2"};
+    std::vector<std::string> OUTPUT_C = {"30"};
 
-    REQUIRE(irt.GetValuesGivenDeclarations({a}) == OUTPUT_A);
-    REQUIRE(irt.GetValuesGivenDeclarations({c}) == OUTPUT_C);
+    REQUIRE(
+        irt.GetValuesGivenDeclarations({a, c}) ==
+        IrtTestHelperMethods::MergeVectorsElementWise({OUTPUT_A, OUTPUT_C}));
 
     irt.AddClauseResult(PAIRED_CLAUSE_A_C, true);
     REQUIRE(irt.HasNoResults());
@@ -331,10 +355,9 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Check results retrieval - de-duplication") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
-    irt.AddClauseResult(ClauseResult(a, c,
-                                     IrtTestHelperMethods::makePairedVector(
-                                         {"2", "2", "2"}, LIST_C)),
-                        false);
+    auto clause_result = ClauseResult(
+        a, c, IrtTestHelperMethods::MakePairedVector({"2", "2", "2"}, LIST_C));
+    irt.AddClauseResult(clause_result, false);
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}),
                  Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
   }

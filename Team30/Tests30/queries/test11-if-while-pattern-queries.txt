@@ -31,7 +31,7 @@ Select w pattern w ("c", _)
 7 - While Pattern Variable Syn
 while while; variable var;
 Select <while, var> pattern while( var, _)
-5 a, 5 b, 5 d, 7 z, 7 w, 13 a, 13 c 
+5 a, 5 b, 5 d, 7 z, 7 w, 13 a, 13 b, 13 c
 5000
 8 - Multi While Pattern
 while w;
@@ -86,5 +86,5 @@ SemanticError
 18 - If Pattern Invalid not a variable syn
 read r; if i;
 Select <i, r> pattern i(i, _,  _) 
-SyntaxError
+SemanticError
 5000

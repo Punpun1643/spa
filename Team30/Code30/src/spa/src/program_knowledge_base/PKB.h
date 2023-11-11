@@ -26,8 +26,8 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   // Helper functions
   std::unordered_set<std::string> GetIntersection(
-      std::unordered_set<std::string> set1,
-      std::unordered_set<std::string> set2);
+      std::unordered_set<std::string> const& set1,
+      std::unordered_set<std::string> const& set2);
 
  public:
   PKB();
@@ -40,11 +40,11 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void InsertAssignPattern(std::string statement_number, std::string lhs,
-                           std::shared_ptr<TreeNode> rhs) override;
+                           std::shared_ptr<TreeNode> const& rhs) override;
   void InsertCondVarPattern(EntityType type, std::string statement_number,
                             std::string var) override;
   void InsertCFGNode(std::string statement_num,
-                     std::shared_ptr<CFGNode> node) override;
+                     std::shared_ptr<CFGNode> const& node) override;
 
   std::unordered_set<std::string> GetProcedureModifies(
       std::string proc_name) override;
@@ -98,12 +98,12 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   // ---------- PATTERNS ----------
   std::vector<std::string> GetMatchingAssignStmts(
-      std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) override;
+      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) override;
   std::vector<std::string> GetMatchingAssignStmts(
-      std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+      std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> rhs_expr,
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                    MatchType match_type) override;
 
   std::vector<std::string> GetContainerStmtsWithControlVar(

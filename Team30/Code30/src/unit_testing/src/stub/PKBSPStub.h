@@ -35,7 +35,7 @@ class PKBSPStub : public PKBSPInterface {
   void InsertRelation(RelationType rel_type, std::string s1_line_num,
                       std::string s2_line_num) override;
   void InsertAssignPattern(std::string statement_number, std::string lhs,
-                           std::shared_ptr<TreeNode> rhs) override;
+                           std::shared_ptr<TreeNode> const& rhs) override;
   void InsertCondVarPattern(EntityType type, std::string statement_number,
                             std::string var) override;
 
@@ -54,7 +54,7 @@ class PKBSPStub : public PKBSPInterface {
       std::string procName) override;
 
   void InsertCFGNode(std::string statement_num,
-                     std::shared_ptr<CFGNode> node) override;
+                     std::shared_ptr<CFGNode> const& node) override;
 
   bool checkCFGNodeOutgoing(std::string statement_num,
                             std::vector<std::string> outgoingStmtNos);
