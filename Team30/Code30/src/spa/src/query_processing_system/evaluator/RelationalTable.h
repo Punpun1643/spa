@@ -35,6 +35,9 @@ class RelationalTable {
       std::vector<std::string> const& row_2,
       std::unordered_set<int> const& skipped_idx_in_row_2);
 
+  void Filter(std::vector<PqlDeclaration> const& decls_to_remove,
+              std::vector<int>& column_idx_to_keep);
+
  public:
   RelationalTable(PqlDeclaration const& d,
                   std::vector<std::string> const& values);
@@ -52,6 +55,9 @@ class RelationalTable {
   int GetNumCols() const;
 
   void Join(RelationalTable& other_table, bool allow_cross_product = false);
+
+  void Filter(std::unordered_set<PqlDeclaration, PqlDeclarationHash> const&
+                  decls_to_keep);
 
   void Delete(PqlDeclaration const& decl,
               std::unordered_set<std::string> const& values);
