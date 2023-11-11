@@ -130,6 +130,8 @@ TEST_CASE("Test get all stmts with affects path",
         std::unordered_set<std::string>{"x", "y", "z"},
         std::unordered_set<std::string>{"x"});
 
+    std::shared_ptr<AffectsCache> cache = std::make_shared<AffectsCache>();
+
     cfg1->AddOutgoingNode(cfg2);
     cfg2->AddOutgoingNode(cfg3);
     cfg3->AddOutgoingNode(cfg4);
@@ -159,47 +161,47 @@ TEST_CASE("Test get all stmts with affects path",
     cfg12->AddIncomingNode(cfg11);
 
     expected = {"4", "8", "10", "12"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg1) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg1, cache) == expected);
 
     expected = {"6", "10"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg2) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg2, cache) == expected);
 
     expected = {"4", "8", "10", "12"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg4) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg4, cache) == expected);
 
     expected = {"6", "10"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg6) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg6, cache) == expected);
 
     expected = {"10", "12"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg8) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg8, cache) == expected);
 
     expected = {"10"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg9) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg9, cache) == expected);
 
     expected = {"11", "12"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg10) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg10, cache) == expected);
 
     expected = {"12"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg11) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg11, cache) == expected);
 
     expected = {};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg12) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg12, cache) == expected);
 
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg3) ==
-            expected);
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg5) ==
-            expected);
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg7) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg3, cache) == expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg5, cache) == expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg7, cache) == expected);
   }
 
   SECTION(
@@ -280,20 +282,22 @@ TEST_CASE("Test get all stmts with affects path",
     cfg4->AddIncomingNode(cfg3);
     cfg5->AddIncomingNode(cfg4);
 
+    std::shared_ptr<AffectsCache> cache = std::make_shared<AffectsCache>();
+
     expected = {};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg1) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg1, cache) == expected);
 
     expected = {"3"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg2) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg2, cache) == expected);
 
     expected = {"5"};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg3) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg3, cache) == expected);
 
     expected = {};
-    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(cfg5) ==
-            expected);
+    REQUIRE(GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
+                cfg5, cache) == expected);
   }
 }

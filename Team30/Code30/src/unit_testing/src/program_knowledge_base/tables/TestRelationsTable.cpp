@@ -1,7 +1,6 @@
-#include "program_knowledge_base/relations/tables/LinkedListTable.h"
-
 #include "../../../../spa/src/program_knowledge_base/relations/tables/DictionaryTable.h"
 #include "catch.hpp"
+#include "program_knowledge_base/relations/tables/LinkedListTable.h"
 
 TEST_CASE("Parent & Follows (DictionaryTable)") {
   DictionaryTable p = DictionaryTable();
@@ -24,7 +23,11 @@ TEST_CASE("Parent & Follows (DictionaryTable)") {
 TEST_CASE("Parents Star & Follows Star (LinkedListTable)") {
   LinkedListTable ps = LinkedListTable();
 
+  REQUIRE(ps.IsEmpty());
+
   ps.Insert("1", "4");
+  REQUIRE(!ps.IsEmpty());
+
   ps.Insert("4", "7");
 
   // added relation

@@ -11,6 +11,7 @@
 
 class LinkedListTable : public RelationTable {
   LinkedList relations = LinkedList();
+  bool empty = true;
 
  public:
   LinkedListTable();
@@ -24,9 +25,9 @@ class LinkedListTable : public RelationTable {
   bool HasInverseRelations(std::string val) override;
 
   std::unordered_set<std::string> GetAllWithRelations(
-      std::unordered_set<std::string> vals) override;
+      std::unordered_set<std::string> const& vals) override;
   std::unordered_set<std::string> GetAllWithInverseRelations(
-      std::unordered_set<std::string> vals) override;
+      std::unordered_set<std::string> const& vals) override;
   std::unordered_set<std::string> GetAllRelatedToValue(
       std::string val) override;
   std::unordered_set<std::string> GetAllInverseRelatedToValue(

@@ -191,7 +191,8 @@ TEST_CASE("Parse select query") {
     AddSpecialCharVector(tokens, {">"});
     AddEOF(tokens);
 
-    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens), InvalidSyntaxException);
+    REQUIRE_THROWS_AS(controller.TokensToClauses(tokens),
+                      InvalidSyntaxException);
   }
 }
 

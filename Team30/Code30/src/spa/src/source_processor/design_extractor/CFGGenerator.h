@@ -19,7 +19,8 @@ class CFGGenerator {
 
   std::unordered_map<int, std::shared_ptr<CFGNode>> node_map;
 
-  void GenerateCFG(std::vector<std::shared_ptr<StmtNode>> stmts);
+  void GenerateCFG(std::vector<std::shared_ptr<StmtNode>> stmts,
+                   std::shared_ptr<StmtNode> next_stmt);
 
   void InsertCFGNodes();
 

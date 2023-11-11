@@ -127,7 +127,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     // changes to A should not affect B
-    irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL), false);
+    auto clause_result = ClauseResult(a, LIST_A_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     // adding in a third unrelated clause should not affect the first two
@@ -152,7 +153,8 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Test negated single declaration clauses") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
-    irt.AddClauseResult(ClauseResult(a, {"1", "3", "4"}), true);
+    auto clause_result = ClauseResult(a, {"1", "3", "4"});
+    irt.AddClauseResult(clause_result, true);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
 
     irt.AddClauseResult(SINGLE_CLAUSE_B, true);
@@ -198,7 +200,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
     // Test that values are linked properly
-    irt.AddClauseResult(ClauseResult(c, LIST_C_PARTIAL), false);
+    auto clause_result = ClauseResult(c, LIST_C_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
     REQUIRE_FALSE(irt.HasNoResults());
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
@@ -235,10 +238,12 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
 
     // Test that values are linked properly
-    irt.AddClauseResult(ClauseResult(v, LIST_V_PARTIAL), false);
+    auto clause_result = ClauseResult(v, LIST_V_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
-    irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL), false);
+    clause_result = ClauseResult(a, LIST_A_PARTIAL);
+    irt.AddClauseResult(clause_result, false);
     REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
     REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
@@ -254,7 +259,8 @@ TEST_CASE("Intermediate Results Table Tests") {
     REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_OUTPUT);
 
     SECTION("Check linking on a") {
-      irt.AddClauseResult(ClauseResult(a, LIST_A_PARTIAL), false);
+      auto clause_result = ClauseResult(a, LIST_A_PARTIAL);
+      irt.AddClauseResult(clause_result, false);
       REQUIRE(irt.GetValuesGivenDeclarations({a}) == LIST_A_PARTIAL_OUTPUT);
       REQUIRE(irt.GetValuesGivenDeclarations({b}) == LIST_B_PARTIAL_OUTPUT);
       REQUIRE(irt.GetValuesGivenDeclarations({c}) == LIST_C_PARTIAL_OUTPUT);
@@ -288,9 +294,10 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Test negated clauses with two synonyms - diff table") {
     irt.AddClauseResult(SINGLE_CLAUSE_V, false);
-    irt.AddClauseResult(ClauseResult(a, {"1", "2"}), false);
-    irt.AddClauseResult(ClauseResult(b, c, {std::make_pair("20", "30")}),
-                        false);
+    auto clause_result = ClauseResult(a, {"1", "2"});
+    irt.AddClauseResult(clause_result, false);
+    clause_result = ClauseResult(b, c, {std::make_pair("20", "30")});
+    irt.AddClauseResult(clause_result, false);
 
     auto CLAUSE_A_B_PARTIAL_INVERSE =
         ClauseResult(a, b,
@@ -331,10 +338,9 @@ TEST_CASE("Intermediate Results Table Tests") {
 
   SECTION("Check results retrieval - de-duplication") {
     irt.AddClauseResult(PAIRED_CLAUSE_A_B, false);
-    irt.AddClauseResult(ClauseResult(a, c,
-                                     IrtTestHelperMethods::makePairedVector(
-                                         {"2", "2", "2"}, LIST_C)),
-                        false);
+    auto clause_result = ClauseResult(
+        a, c, IrtTestHelperMethods::makePairedVector({"2", "2", "2"}, LIST_C));
+    irt.AddClauseResult(clause_result, false);
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}),
                  Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
   }

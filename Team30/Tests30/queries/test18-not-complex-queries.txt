@@ -1,0 +1,30 @@
+1 - not parent*
+variable v; while w; assign a;
+Select <a, w> such that not Parent*(w, a)
+3 5, 4 5
+5000
+2 - not pattern and not such that
+variable v; while w; assign a;
+Select <a, w, v> such that not Parent*(w, a) pattern not w (v, _)
+3 5 y,4 5 y
+5000
+3 - not pattern and not such that
+variable v; while w; assign a;
+Select <a, w> such that not Parent*(w, a) pattern not w ("x", _)
+none
+5000
+4 - not pattern and not such that
+variable v; while w; assign a;
+Select <a, w> such that not Parent*(w, a) pattern not w ("y", _)
+3 5, 4 5
+5000
+5 - not with and not such that
+variable v; while w; assign a; if i; print pn; procedure p;
+Select <w, p> such that not Follows (w, i) and Uses(w, v) and Uses(i, v) with not pn.varName = "y" and not p.procName = "x" 
+1 y, 5 y
+5000
+6 - not with and not pattern
+assign a; if i; stmt s; variable v;
+Select v pattern not a (v, "y") and i (v, _, _) with not s.stmt# = 13 and not v.varName = "z"
+y
+5000
