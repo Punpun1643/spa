@@ -52,7 +52,7 @@ void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
   attr_ent_map[std::make_pair(type, attr_type)][attribute].insert(ent);
 }
 
-std::unordered_set<std::string> EntityDatabase::Get(
+std::unordered_set<std::string>& EntityDatabase::Get(
     EntityType type) {
   return entities.at(type);
 }

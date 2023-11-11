@@ -28,11 +28,15 @@ StmtType CFGNode::GetNodeType() {
   return node->GetStmtType();
 }
 
-std::unordered_set<std::string> CFGNode::GetUsesVars() {
+int CFGNode::GetNodeStmtIndex() {
+  return node->GetStmtIndex();
+}
+
+std::unordered_set<std::string>& CFGNode::GetUsesVars() {
   return uses_vars;
 }
 
-std::unordered_set<std::string> CFGNode::GetModifiesVars() {
+std::unordered_set<std::string>& CFGNode::GetModifiesVars() {
   return modifies_vars;
 }
 
@@ -71,7 +75,7 @@ std::string CFGNode::GetVarModifiedInStartNode(
   return *vars_modified_in_start_node.begin();
 }
 
-std::unordered_set<std::string> CFGNode::GetVarUsedInEndNode(
+std::unordered_set<std::string>& CFGNode::GetVarUsedInEndNode(
     std::shared_ptr<CFGNode> end_node) {
   return end_node->GetUsesVars();
 }

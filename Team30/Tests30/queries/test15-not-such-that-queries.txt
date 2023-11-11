@@ -1,0 +1,30 @@
+1 - such that not Uses
+procedure p; variable v;
+Select p such that not Uses(p, v)
+p3
+5000
+2 - such that not Modifies
+procedure p; variable v;
+Select p such that not Modifies(p, v)
+p2
+5000
+3 - such that not Parent* while
+assign a; while w;
+Select a such that not Parent*(w, a)
+3, 4, 5, 6, 7, 15
+5000
+4 - such that not Parent while
+assign a; while w;
+Select a such that not Parent(w, a)
+3, 4, 5, 6, 7, 15
+5000
+5 - such that not Parent if
+read re; if i;
+Select re such that not Parent(i, re)
+13
+5000
+6 - such that not Parent* single synonym
+assign a;
+Select a such that not Parent*(1, a)
+15
+5000

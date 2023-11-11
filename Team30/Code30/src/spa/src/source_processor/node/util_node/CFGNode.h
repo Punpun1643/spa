@@ -24,9 +24,11 @@ class CFGNode {
 
   StmtType GetNodeType();
 
-  std::unordered_set<std::string> GetUsesVars();
+  int GetNodeStmtIndex();
 
-  std::unordered_set<std::string> GetModifiesVars();
+  std::unordered_set<std::string>& GetUsesVars();
+
+  std::unordered_set<std::string>& GetModifiesVars();
 
   StmtType GetStmtType();
 
@@ -44,7 +46,7 @@ class CFGNode {
   static std::string GetVarModifiedInStartNode(
       std::shared_ptr<CFGNode> start_node);
 
-  static std::unordered_set<std::string> GetVarUsedInEndNode(
+  static std::unordered_set<std::string>& GetVarUsedInEndNode(
       std::shared_ptr<CFGNode> end_node);
 
  private:

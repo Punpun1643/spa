@@ -110,7 +110,7 @@ PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
 }
 
 std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
-    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
   pattern_assign_wild_calls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
@@ -118,7 +118,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
 };
 
 std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
-    std::string lhs_value, std::shared_ptr<TreeNode> rhs_expr,
+    std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
     MatchType match_type) {
   pattern_assign_value_calls++;
   last_match_type_passed = match_type;
@@ -129,7 +129,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
-    std::shared_ptr<TreeNode> rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
   pattern_assign_decl_calls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
