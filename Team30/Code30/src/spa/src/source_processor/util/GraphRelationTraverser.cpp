@@ -12,10 +12,10 @@ bool GraphRelationTraverser::ShouldVisit(
     std::shared_ptr<CFGNode> const& node,
     std ::string var_modified_in_start_node) {
   bool should_visit = true;
-  if (CFGNode::IsAssignOrReadOutgoingNode(node)) {
+  if (CFGNode::IsAssignOrReadNode(node)) {
     should_visit =
         HandleAssignOrReadOutgoingNode(node, var_modified_in_start_node);
-  } else if (CFGNode::IsCallOutgoingNode(node)) {
+  } else if (CFGNode::IsCallNode(node)) {
     should_visit = HandleCallOutgoingNode(node, var_modified_in_start_node);
   }
   return should_visit;
@@ -24,8 +24,7 @@ bool GraphRelationTraverser::ShouldVisit(
 bool GraphRelationTraverser::ValidateStartAndEndNodes(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<CFGNode> const& end_node) {
-  return start_node->GetStmtType() == StmtType::ASSIGN_STMT &&
-         end_node->GetStmtType() == StmtType::ASSIGN_STMT;
+  return CFGNode::IsAssignNode(start_node) && CFGNode::IsAssignNode(end_node);
 }
 
 bool GraphRelationTraverser::ValidatePossibleAffectsRelationship(
@@ -181,10 +180,10 @@ void GraphRelationTraverser::HandleVisitOutgoingNode(
     std::shared_ptr<CFGNode> const& outgoing_node,
     std::queue<std::shared_ptr<CFGNode>>& nodes_to_visit) {
   bool should_visit = true;
-  if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
+  if (CFGNode::IsAssignOrReadNode(outgoing_node)) {
     should_visit = HandleAssignOrReadOutgoingNode(
         outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
-  } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
+  } else if (CFGNode::IsCallNode(outgoing_node)) {
     should_visit = HandleCallOutgoingNode(
         outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
   }
@@ -198,7 +197,7 @@ void GraphRelationTraverser::HandleCacheOutgoingNode(
     std::shared_ptr<CFGNode> const& outgoing_node,
     std::string const& var_modified_in_start,
     std::shared_ptr<AffectsCache> cache) {
-  if (CFGNode::IsAssignOutgoingNode(outgoing_node)) {
+  if (CFGNode::IsAssignNode(outgoing_node)) {
     if (outgoing_node->GetUsesVars().count(var_modified_in_start)) {
       cache->CacheAffects(start_node, outgoing_node);
     } else {
@@ -260,7 +259,7 @@ bool GraphRelationTraverser::HasAffectsPath(
 bool GraphRelationTraverser::HasAnyAffectsPathFrom(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<AffectsCache> cache) {
-  if (start_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+  if (!CFGNode::IsAssignNode(start_node)) {
     return false;
   }
 
@@ -290,7 +289,7 @@ bool GraphRelationTraverser::HasAnyAffectsPathFrom(
         if (ValidatePossibleAffectsRelationship(
                 var_modified_in_start_node,
                 CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
-            outgoing_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+            CFGNode::IsAssignNode(outgoing_node)) {
           cache->CacheAffects(start_node, outgoing_node);
           return true;
         }
@@ -308,7 +307,7 @@ bool GraphRelationTraverser::HasAnyAffectsPathFrom(
 bool GraphRelationTraverser::HasAnyAffectsPathTo(
     std::shared_ptr<CFGNode> const& end_node,
     std::shared_ptr<AffectsCache> cache) {
-  if (end_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+  if (!CFGNode::IsAssignNode(end_node)) {
     return false;
   }
 
@@ -340,7 +339,7 @@ bool GraphRelationTraverser::HasAnyAffectsPathTo(
     vars_used_in_nodes.pop();
 
     // return true if has valid affects relation
-    if (curr_node->GetNodeType() == StmtType::ASSIGN_STMT &&
+    if (CFGNode::IsAssignNode(curr_node) &&
         ValidatePossibleAffectsRelationship(
             CFGNode::GetVarModifiedInStartNode(curr_node),
             unmodified_vars_used_in_end_node)) {
@@ -350,9 +349,7 @@ bool GraphRelationTraverser::HasAnyAffectsPathTo(
 
     // if incoming node changes a variable used by the end node, remove it from
     // unmodifed vars
-    if (curr_node->GetNodeType() == StmtType::CALL_STMT ||
-        curr_node->GetNodeType() == StmtType::READ_STMT ||
-        curr_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+    if (CFGNode::IsAssignOrReadOrCallNode(curr_node)) {
       for (auto v : curr_node->GetModifiesVars()) {
         unmodified_vars_used_in_end_node.erase(v);
       }
@@ -377,7 +374,7 @@ std::unordered_set<std::string>
 GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<AffectsCache> cache) {
-  if (start_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+  if (!CFGNode::IsAssignNode(start_node)) {
     return std::unordered_set<std::string>();
   }
 
@@ -406,7 +403,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
         if (ValidatePossibleAffectsRelationship(
                 var_modified_in_start_node,
                 CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
-            outgoing_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+            CFGNode::IsAssignNode(outgoing_node)) {
           stmts_with_valid_path.insert(
               std::to_string(outgoing_node->GetNodeStmtIndex()));
           cache->CacheAffects(start_node, outgoing_node);
@@ -426,7 +423,7 @@ std::unordered_set<std::string>
 GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
     std::shared_ptr<CFGNode> const& end_node,
     std::shared_ptr<AffectsCache> cache) {
-  if (end_node->GetNodeType() != StmtType::ASSIGN_STMT) {
+  if (!CFGNode::IsAssignNode(end_node)) {
     return std::unordered_set<std::string>();
   }
 
@@ -456,7 +453,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
     nodes_to_visit.pop();
     vars_used_in_nodes.pop();
 
-    if (curr_node->GetNodeType() == StmtType::ASSIGN_STMT &&
+    if (CFGNode::IsAssignNode(curr_node) &&
         ValidatePossibleAffectsRelationship(
             CFGNode::GetVarModifiedInStartNode(curr_node),
             unmodified_vars_used_in_end_node)) {
@@ -467,9 +464,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
 
     // if incoming node changes a variable used by the end node, remove it from
     // unmodifed vars
-    if (curr_node->GetNodeType() == StmtType::CALL_STMT ||
-        curr_node->GetNodeType() == StmtType::READ_STMT ||
-        curr_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+    if (CFGNode::IsAssignOrReadOrCallNode(curr_node)) {
       for (auto v : curr_node->GetModifiesVars()) {
         unmodified_vars_used_in_end_node.erase(v);
       }

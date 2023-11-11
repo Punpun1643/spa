@@ -59,16 +59,23 @@ void CFGNode::AddIncomingNode(std::shared_ptr<CFGNode> new_node) {
   incoming_nodes.push_back(new_node);
 }
 
-bool CFGNode::IsAssignOrReadOutgoingNode(std::shared_ptr<CFGNode> node) {
-  return node->GetStmtType() == StmtType::ASSIGN_STMT ||
-         node->GetStmtType() == StmtType::READ_STMT;
+bool CFGNode::IsAssignOrReadNode(std::shared_ptr<CFGNode> node) {
+  return IsAssignNode(node) || IsReadNode(node);
 }
 
-bool CFGNode::IsCallOutgoingNode(std::shared_ptr<CFGNode> node) {
+bool CFGNode::IsAssignOrReadOrCallNode(std::shared_ptr<CFGNode> node) {
+  return IsAssignNode(node) || IsReadNode(node) || IsCallNode(node);
+}
+
+bool CFGNode::IsReadNode(std::shared_ptr<CFGNode> node) {
+  return node->GetStmtType() == StmtType::READ_STMT;
+}
+
+bool CFGNode::IsCallNode(std::shared_ptr<CFGNode> node) {
   return node->GetStmtType() == StmtType::CALL_STMT;
 }
 
-bool CFGNode::IsAssignOutgoingNode(std::shared_ptr<CFGNode> node) {
+bool CFGNode::IsAssignNode(std::shared_ptr<CFGNode> node) {
   return node->GetStmtType() == StmtType::ASSIGN_STMT;
 }
 
