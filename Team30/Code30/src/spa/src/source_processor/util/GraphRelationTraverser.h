@@ -63,11 +63,13 @@ class GraphRelationTraverser {
       std::shared_ptr<CFGNode> const& end_node,
       std::shared_ptr<AffectsCache> cache);
 
-  static bool CheckCacheForAffectsPathFrom(std::shared_ptr<CFGNode> const& start_node,
-                                           std::shared_ptr<AffectsCache> cache);
+  static bool CheckCacheForAffectsPathFrom(
+      std::shared_ptr<CFGNode> const& start_node,
+      std::shared_ptr<AffectsCache> cache);
 
-  static bool CheckCacheForAffectsPathTo(std::shared_ptr<CFGNode> const& end_node,
-                                         std::shared_ptr<AffectsCache> cache);
+  static bool CheckCacheForAffectsPathTo(
+      std::shared_ptr<CFGNode> const& end_node,
+      std::shared_ptr<AffectsCache> cache);
 
   static bool TraverseAndEvaluatePath(
       std::shared_ptr<CFGNode> const& start_node,
@@ -78,15 +80,20 @@ class GraphRelationTraverser {
                                    std::shared_ptr<CFGNode> const& end_node,
                                    std::shared_ptr<AffectsCache> cache);
 
-  static bool PerformAffectsTraversal(std::shared_ptr<CFGNode> const& start_node,
-                                      std::shared_ptr<AffectsCache> cache);
+  static bool PerformAffectsTraversal(
+      std::shared_ptr<CFGNode> const& start_node,
+      std::shared_ptr<AffectsCache> cache);
 
   static void HandleVisitOutgoingNode(
       std::shared_ptr<CFGNode> const& start_node,
       std::shared_ptr<CFGNode> const& outgoing_node,
       std::queue<std::shared_ptr<CFGNode>>& nodes_to_visit);
 
-  static bool AffectsAnyOutgoingNode(std::shared_ptr<CFGNode> const& start_node, std::shared_ptr<CFGNode> const& outgoing_node, std::string const& var_modified_in_start_node, std::shared_ptr<AffectsCache> cache);
+  static bool AffectsAnyOutgoingNode(
+      std::shared_ptr<CFGNode> const& start_node,
+      std::shared_ptr<CFGNode> const& outgoing_node,
+      std::string const& var_modified_in_start_node,
+      std::shared_ptr<AffectsCache> cache);
 
   static void HandleCacheOutgoingNode(
       std::shared_ptr<CFGNode> const& start_node,

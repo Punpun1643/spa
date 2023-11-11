@@ -179,8 +179,8 @@ void GraphRelationTraverser::HandleVisitOutgoingNode(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<CFGNode> const& outgoing_node,
     std::queue<std::shared_ptr<CFGNode>>& nodes_to_visit) {
-  bool should_visit = ShouldVisit(outgoing_node,
-                                  CFGNode::GetVarModifiedInStartNode(start_node));
+  bool should_visit = ShouldVisit(
+      outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
   if (should_visit) {
     nodes_to_visit.push(outgoing_node);
   }
@@ -250,7 +250,9 @@ bool GraphRelationTraverser::HasAffectsPath(
   return TraverseAndEvaluatePath(start_node, end_node, cache);
 }
 
-bool GraphRelationTraverser::CheckCacheForAffectsPathFrom(std::shared_ptr<CFGNode> const& start_node, std::shared_ptr<AffectsCache> cache) {
+bool GraphRelationTraverser::CheckCacheForAffectsPathFrom(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<AffectsCache> cache) {
   if (cache->HasAnyAffectsPathFrom(start_node)) {
     return true;
   } else if (cache->HasNoAffectsPathFrom(start_node)) {
@@ -259,7 +261,9 @@ bool GraphRelationTraverser::CheckCacheForAffectsPathFrom(std::shared_ptr<CFGNod
   return false;
 }
 
-bool GraphRelationTraverser::CheckCacheForAffectsPathTo(std::shared_ptr<CFGNode> const& end_node, std::shared_ptr<AffectsCache> cache) {
+bool GraphRelationTraverser::CheckCacheForAffectsPathTo(
+    std::shared_ptr<CFGNode> const& end_node,
+    std::shared_ptr<AffectsCache> cache) {
   if (cache->HasAnyAffectsPathTo(end_node)) {
     return true;
   } else if (cache->HasNoAffectsPathTo(end_node)) {
@@ -268,7 +272,11 @@ bool GraphRelationTraverser::CheckCacheForAffectsPathTo(std::shared_ptr<CFGNode>
   return false;
 }
 
-bool GraphRelationTraverser::AffectsAnyOutgoingNode(std::shared_ptr<CFGNode> const& start_node, std::shared_ptr<CFGNode> const& outgoing_node, std::string const& var_modified_in_start_node, std::shared_ptr<AffectsCache> cache) {
+bool GraphRelationTraverser::AffectsAnyOutgoingNode(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<CFGNode> const& outgoing_node,
+    std::string const& var_modified_in_start_node,
+    std::shared_ptr<AffectsCache> cache) {
   if (ValidatePossibleAffectsRelationship(
           var_modified_in_start_node,
           CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
@@ -279,7 +287,9 @@ bool GraphRelationTraverser::AffectsAnyOutgoingNode(std::shared_ptr<CFGNode> con
   return false;
 }
 
-bool GraphRelationTraverser::PerformAffectsTraversal(std::shared_ptr<CFGNode> const& start_node, std::shared_ptr<AffectsCache> cache) {
+bool GraphRelationTraverser::PerformAffectsTraversal(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<AffectsCache> cache) {
   std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
   std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
   std::string var_modified_in_start_node =
@@ -294,7 +304,8 @@ bool GraphRelationTraverser::PerformAffectsTraversal(std::shared_ptr<CFGNode> co
       if (!visited_nodes.count(outgoing_node)) {
         visited_nodes.insert(outgoing_node);
         // if start node affects any outgoing node, return true
-        if (AffectsAnyOutgoingNode(start_node, outgoing_node, var_modified_in_start_node, cache)) {
+        if (AffectsAnyOutgoingNode(start_node, outgoing_node,
+                                   var_modified_in_start_node, cache)) {
           return true;
         }
         if (ShouldVisit(outgoing_node, var_modified_in_start_node)) {
