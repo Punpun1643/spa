@@ -18,6 +18,7 @@ std::shared_ptr<Context> ContextBuilder::GetContext() {
 }
 
 void ContextBuilder::parse() {
+  // magic string
   while (GetCurrToken()->GetTokenVal() != "Select") {
     this->parseDeclaration();
   }

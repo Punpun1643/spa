@@ -47,6 +47,8 @@ float PriorityScorer::GetPriorityScore(
 
 float PriorityScorer::GetPriorityScore(
     std::shared_ptr<WithExpression> expression) {
+
+  // var declared but not used
   float priority_score = 0;
   int num_synonyms = 0;
   int num_new_synonyms = 0;
@@ -56,6 +58,7 @@ float PriorityScorer::GetPriorityScore(
   std::string const arg1 = expression->GetArg1();
   std::string const arg2 = expression->GetArg2();
 
+  // G8: magic number/string should be replaced by constants
   this->IncrementSynonymPriorities(arg1.substr(0, arg1.find(".")), num_synonyms,
                                    num_new_synonyms);
   this->IncrementSynonymPriorities(arg2.substr(0, arg2.find(".")), num_synonyms,
@@ -107,6 +110,7 @@ bool PriorityScorer::IsIdentifier(std::string const& string) {
 
 bool PriorityScorer::IsQuotedIdentifier(std::string const& string) {
   if (string.size() >= 3) {
+    // G8: magic number/string should be replaced by constants
     return (string.substr(0, 1) == "\"" &&
             IsSynonym(string.substr(1, string.size() - 2)) &&
             string.substr(string.size() - 1, 1) == "\"");

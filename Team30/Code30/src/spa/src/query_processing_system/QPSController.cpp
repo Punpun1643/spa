@@ -22,6 +22,8 @@ void QPSController::HandleQuery(
   try {
     tokens = this->TokenizeQuery(query);
   } catch (std::invalid_argument e) {
+    // comment: actually for SP, we have a specific place just to contain exception msg.
+    // But this looks fine too. Not a big deal.
     throw InvalidSyntaxException("Invalid item to be tokenized");
   }
 
@@ -34,6 +36,7 @@ void QPSController::HandleQuery(
 
   if (selected_attr_refs.empty()) {
     bool query_results = query_evaluator->EvaluateQuery(other_clauses);
+    // G8: magic number/string should be replaced by constants
     results.push_back(query_results ? "TRUE" : "FALSE");
   } else {
     std::vector<std::vector<std::string>> query_results =
@@ -44,6 +47,7 @@ void QPSController::HandleQuery(
            it != result.end(); it++) {
         result_string += *it;
         if (it != std::prev(result.end())) {
+          // G8: magic number/string should be replaced by constants
           result_string += " ";
         }
       }

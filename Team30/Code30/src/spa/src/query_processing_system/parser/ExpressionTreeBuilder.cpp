@@ -43,6 +43,7 @@ std::shared_ptr<AExpression> ExpressionTreeBuilder::GetExpressionTree() {
   return std::move(this->expression_tree);
 }
 
+// naming convention
 void ExpressionTreeBuilder::parse() {
   std::shared_ptr<SelectExpression> select_expression =
       this->CreateSelectExpressionHead();
@@ -65,6 +66,7 @@ ExpressionTreeBuilder ::CreateSelectExpression() {
 
   } else if (QpParser::IsSynonym(GetCurrTokenValue())) {
     std::string synonym = GetCurrTokenValue();
+    // G8: magic number/string should be replaced by constants
     if (GetPeekTokenValue() == ".") {
       NextToken();  // .
       std::string attr_type_string = NextToken()->GetTokenVal();
@@ -91,6 +93,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
 
   std::optional<std::shared_ptr<SelectExpression>> select_head;
 
+  // G8: magic number/string should be replaced by constants
   if (GetCurrTokenValue() != "<") {
     select_head = CreateSelectExpression();
   } else {
@@ -99,6 +102,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
     bool is_first_run = true;
 
     NextToken();  // elem
+    // G8: magic number/string should be replaced by constants
     while (GetCurrTokenValue() != ">") {
       if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
         throw std::runtime_error("ETB multiple select parsing hit eof");
@@ -118,6 +122,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
       is_first_run = false;
 
       NextToken();  // , or >
+      // G8: magic number/string should be replaced by constants
       if (GetCurrTokenValue() == ",") {
         NextToken();  // elem
       }
@@ -161,6 +166,7 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
   return clause_expression_head;
 }
 
+// this method looks a little bit long
 std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
   std::shared_ptr<SuchThatExpression> such_that_expression_head;
@@ -175,6 +181,7 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
     NextToken();
 
     bool is_not = false;
+    // G8: magic number/string should be replaced by constants
     if (GetCurrTokenValue() == "not") {
       is_not = true;
       NextToken();
@@ -309,6 +316,7 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   return pattern_expression_head;
 }
 
+// maybe some can use helper functions, I'm not too sure
 std::shared_ptr<PatternAssignExpression>
 ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
   std::string arg1 = "";
@@ -325,6 +333,7 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
 
   NextToken();  // start of arg2
   int opening_brace_count = 0;
+  // G8: magic number/string should be replaced by constants
   while ((opening_brace_count >= 1) || GetCurrTokenValue() != ")") {
     std::string current_token_value = GetCurrTokenValue();
     if (current_token_value != "_" && current_token_value != "\"") {

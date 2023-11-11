@@ -23,6 +23,7 @@ bool QueryUtility::IsIdentifier(std::string const& string) {
 
 bool QueryUtility::IsQuotedIdentifier(std::string const& string) {
   if (string.size() >= 3) {
+    // G8: magic number/string should be replaced by constants
     return (string.substr(0, 1) == "\"" &&
             IsSynonym(string.substr(1, string.size() - 2)) &&
             string.substr(string.size() - 1, 1) == "\"");

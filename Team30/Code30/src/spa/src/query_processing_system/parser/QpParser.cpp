@@ -20,6 +20,7 @@ QpParser::QpParser(std::vector<std::shared_ptr<Token>> tokens)
     : AParser(tokens) {}
 
 // Constants
+// probably should be moved to a constants file
 std::string const QpParser::AND = "and";
 std::string const QpParser::AFFECTS = "Affects";
 std::string const QpParser::BOOLEAN = "BOOLEAN";
@@ -114,6 +115,7 @@ bool QpParser::IsValidInteger(std::string const& int_string) {
 }
 
 bool QpParser::IsWildcard(std::string const& name) {
+  // G8: magic number/string should be replaced by constants
   return (name == "_");
 }
 
@@ -133,6 +135,7 @@ AttrType QpParser::GetDefaultAttrTypeFromEntityType(EntityType entity_type) {
 }
 
 AttrType QpParser::StringToAttrType(std::string const& string) {
+  // G8: magic number/string should be replaced by constants
   if (string == "procName") {
     return AttrType::PROC_NAME;
   } else if (string == "varName") {
@@ -147,6 +150,7 @@ AttrType QpParser::StringToAttrType(std::string const& string) {
 }
 
 EntityType QpParser::StringToEntityType(std::string const& entity_string) {
+  // G8: magic number/string should be replaced by constants
   if (entity_string == "stmt") {
     return EntityType::STMT;
   } else if (entity_string == "read") {

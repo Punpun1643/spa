@@ -35,6 +35,7 @@ void SyntaxChecker::parse() {
 }
 
 void SyntaxChecker::CheckAffects() {
+  // probably all these pattern (i.e. NextToken() + check something) can be done in a helper function
   NextToken();
   this->CheckCurrentTokenSyntax("(", "Expected \'(\' for Affects clause");
 
