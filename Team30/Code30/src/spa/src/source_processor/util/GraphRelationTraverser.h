@@ -76,4 +76,6 @@ class GraphRelationTraverser {
       std::shared_ptr<CFGNode> const& start_node,
       std::shared_ptr<CFGNode> const& outgoing_node,
       std::queue<std::shared_ptr<CFGNode>>& nodes_to_visit);
+
+  static void HandleCacheOutgoingNode(std::shared_ptr<CFGNode> const& start_node, std::shared_ptr<CFGNode> const& outgoing_node, std::string const& var_modified_in_start, std::shared_ptr<AffectsCache> cache);
 };

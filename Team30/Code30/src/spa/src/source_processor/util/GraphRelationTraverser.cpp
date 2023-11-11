@@ -193,6 +193,16 @@ void GraphRelationTraverser::HandleVisitOutgoingNode(
   }
 }
 
+void GraphRelationTraverser::HandleCacheOutgoingNode(std::shared_ptr<CFGNode> const& start_node, std::shared_ptr<CFGNode> const& outgoing_node, std::string const& var_modified_in_start, std::shared_ptr<AffectsCache> cache) {
+  if (CFGNode::IsAssignOutgoingNode(outgoing_node)) {
+    if (outgoing_node->GetUsesVars().count(var_modified_in_start)) {
+      cache->CacheAffects(start_node, outgoing_node);
+    } else {
+      cache->CacheNotAffects(start_node, outgoing_node);
+    }
+  }
+}
+
 bool GraphRelationTraverser::PerformNodeTraversal(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<CFGNode> const& end_node,
@@ -212,14 +222,7 @@ bool GraphRelationTraverser::PerformNodeTraversal(
       }
       if (!visited_nodes.count(outgoing_node)) {
         visited_nodes.insert(outgoing_node);
-
-        if (CFGNode::IsAssignOutgoingNode(outgoing_node)) {
-          if (outgoing_node->GetUsesVars().count(var_modified_in_start)) {
-            cache->CacheAffects(start_node, outgoing_node);
-          } else {
-            cache->CacheNotAffects(start_node, outgoing_node);
-          }
-        }
+        HandleCacheOutgoingNode(start_node, outgoing_node, var_modified_in_start, cache);
         HandleVisitOutgoingNode(start_node, outgoing_node, nodes_to_visit);
       }
     }
