@@ -63,6 +63,9 @@ class GraphRelationTraverser {
       std::shared_ptr<CFGNode> const& end_node,
       std::shared_ptr<AffectsCache> cache);
 
+  static bool CheckCacheForAffectsPathFrom(std::shared_ptr<CFGNode> const& start_node,
+                                           std::shared_ptr<AffectsCache> cache);
+
   static bool TraverseAndEvaluatePath(
       std::shared_ptr<CFGNode> const& start_node,
       std::shared_ptr<CFGNode> const& end_node,
@@ -71,6 +74,9 @@ class GraphRelationTraverser {
   static bool PerformNodeTraversal(std::shared_ptr<CFGNode> const& start_node,
                                    std::shared_ptr<CFGNode> const& end_node,
                                    std::shared_ptr<AffectsCache> cache);
+
+  static bool PerformAffectsTraversal(std::shared_ptr<CFGNode> const& start_node,
+                                      std::shared_ptr<AffectsCache> cache);
 
   static void HandleVisitOutgoingNode(
       std::shared_ptr<CFGNode> const& start_node,
