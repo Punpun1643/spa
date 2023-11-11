@@ -159,12 +159,12 @@ std::vector<std::string> PKB::GetRelationWildSynonym(EntityType entity_type,
 std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
                                                       std::string const& value,
                                                       RelationType rel_type) {
-  std::unordered_set<std::string> allInverseRelated =
+  std::unordered_set<std::string> all_inverse_related =
       rel_data->GetAllInverseRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = ent_data->Get(entity_type);
 
   std::unordered_set<std::string> output =
-      GetIntersection(allInverseRelated, entities);
+      GetIntersection(all_inverse_related, entities);
 
   return std::vector<std::string>(output.begin(), output.end());
 }
@@ -173,12 +173,12 @@ std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
 std::vector<std::string> PKB::GetRelationValueSynonym(std::string const& value,
                                                       EntityType entity_type,
                                                       RelationType rel_type) {
-  std::unordered_set<std::string> allRelated =
+  std::unordered_set<std::string> all_related =
       rel_data->GetAllRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = ent_data->Get(entity_type);
 
   std::unordered_set<std::string> output =
-      GetIntersection(allRelated, entities);
+      GetIntersection(all_related, entities);
 
   return std::vector<std::string>(output.begin(), output.end());
 }

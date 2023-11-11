@@ -82,7 +82,7 @@ bool RelDatabase::HasRelationsCFG(RelationType type, std::string const& val) {
 
   std::shared_ptr<CFGNode> node = cfg_nodes.at(val);
   if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
-    return !node->GetOutgoingNodes().empty();
+    return !node->HasNoOutgoingNodes();
   }
 
   return GraphRelationTraverser::HasAnyAffectsPathFrom(node, affects_cache);
@@ -96,7 +96,7 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type,
 
   std::shared_ptr<CFGNode> node = cfg_nodes.at(val);
   if (type == RelationType::NEXT || type == RelationType::NEXT_STAR) {
-    return !node->GetIncomingNodes().empty();
+    return !node->HasNoIncomingNodes();
   }
 
   return GraphRelationTraverser::HasAnyAffectsPathTo(node, affects_cache);

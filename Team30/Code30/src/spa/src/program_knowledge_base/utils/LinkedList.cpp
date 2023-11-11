@@ -2,7 +2,7 @@
 
 LinkedList::LinkedList() {}
 
-std::shared_ptr<Node> LinkedList::GetNode(std::string val) {
+std::shared_ptr<Node> LinkedList::GetNode(std::string const& val) {
   auto it = nodes.find(val);
   if (it == nodes.end()) {
     std::shared_ptr<Node> new_node = std::make_shared<Node>(Node(val));
@@ -12,9 +12,9 @@ std::shared_ptr<Node> LinkedList::GetNode(std::string val) {
   return it->second;
 }
 
-void LinkedList::AddEdge(std::string val1, std::string val2) {
+void LinkedList::AddEdge(std::string const& val1, std::string const& val2) {
   std::shared_ptr<Node> node1 = GetNode(val1);
   std::shared_ptr<Node> node2 = GetNode(val2);
-  node1->next.insert(node2);
-  node2->prev.insert(node1);
+  node1->InsertNext(node2);
+  node2->InsertPrev(node1);
 }

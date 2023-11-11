@@ -41,12 +41,12 @@ bool LinkedListTable::IsRelated(std::string const& i, std::string const& j) {
 
 bool LinkedListTable::HasRelations(std::string const& val) {
   std::shared_ptr<Node> node = relations.GetNode(val);
-  return !node->next.empty();
+  return !node->IsNextEmpty();
 }
 
 bool LinkedListTable::HasInverseRelations(std::string const& val) {
   std::shared_ptr<Node> node = relations.GetNode(val);
-  return !node->prev.empty();
+  return !node->IsPrevEmpty();
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
@@ -74,7 +74,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
-    std::string const& val) {
+    std::string val) {
   std::shared_ptr<Node> curr = relations.GetNode(val);
   std::queue<std::shared_ptr<Node>> q;
   std::unordered_set<std::string> output;
@@ -97,7 +97,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllInverseRelatedToValue(
-    std::string const& val) {
+    std::string val) {
   std::shared_ptr<Node> curr = relations.GetNode(val);
   std::queue<std::shared_ptr<Node>> q;
   std::unordered_set<std::string> output;

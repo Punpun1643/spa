@@ -17,8 +17,10 @@ class CFGNode {
           std::unordered_set<std::string> modifies_vars);
 
   std::vector<std::shared_ptr<CFGNode>> GetOutgoingNodes();
+  bool HasNoOutgoingNodes();
 
   std::vector<std::shared_ptr<CFGNode>> GetIncomingNodes();
+  bool HasNoIncomingNodes();
 
   std::shared_ptr<StmtNode> GetNode();
 

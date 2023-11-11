@@ -63,7 +63,7 @@ std::unordered_set<std::string> DictionaryTable::GetAllWithInverseRelations(
 }
 
 std::unordered_set<std::string> DictionaryTable::GetAllRelatedToValue(
-    std::string const& val) {
+    std::string val) {
   if (relations.count(val) == 0) {
     return std::unordered_set<std::string>();
   }
@@ -71,7 +71,7 @@ std::unordered_set<std::string> DictionaryTable::GetAllRelatedToValue(
 }
 
 std::unordered_set<std::string> DictionaryTable::GetAllInverseRelatedToValue(
-    std::string const& val) {
+    std::string val) {
   if (inverse_relations.count(val) == 0) {
     return std::unordered_set<std::string>();
   }

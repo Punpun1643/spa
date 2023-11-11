@@ -57,7 +57,6 @@ std::unordered_set<std::string>& EntityDatabase::Get(EntityType type) {
   return entities.at(type);
 }
 
-// TODO(@tyanhan): Remove curr_attr_type
 std::string EntityDatabase::ConvertEntityValueToAlias(
     std::string const& value, EntityType type, AttrType wanted_attr_type) {
   std::pair key = std::make_pair(type, wanted_attr_type);

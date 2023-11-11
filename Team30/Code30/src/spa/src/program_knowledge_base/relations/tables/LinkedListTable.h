@@ -29,7 +29,7 @@ class LinkedListTable : public RelationTable {
   std::unordered_set<std::string> GetAllWithInverseRelations(
       std::unordered_set<std::string> const& vals) override;
   std::unordered_set<std::string> GetAllRelatedToValue(
-      std::string const& val) override;
+      std::string val) override;
   std::unordered_set<std::string> GetAllInverseRelatedToValue(
-      std::string const& val) override;
+      std::string val) override;
 };
