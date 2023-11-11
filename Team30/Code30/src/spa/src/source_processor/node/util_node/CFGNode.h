@@ -43,6 +43,8 @@ class CFGNode {
 
   static bool IsCallOutgoingNode(std::shared_ptr<CFGNode> node);
 
+  static bool IsAssignOutgoingNode(std::shared_ptr<CFGNode> node);
+
   static std::string GetVarModifiedInStartNode(
       std::shared_ptr<CFGNode> start_node);
 

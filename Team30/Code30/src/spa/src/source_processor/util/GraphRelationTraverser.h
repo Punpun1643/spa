@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -70,4 +71,9 @@ class GraphRelationTraverser {
   static bool PerformNodeTraversal(std::shared_ptr<CFGNode> const& start_node,
                                    std::shared_ptr<CFGNode> const& end_node,
                                    std::shared_ptr<AffectsCache> cache);
+
+  static void HandleVisitOutgoingNode(
+      std::shared_ptr<CFGNode> const& start_node,
+      std::shared_ptr<CFGNode> const& outgoing_node,
+      std::queue<std::shared_ptr<CFGNode>>& nodes_to_visit);
 };

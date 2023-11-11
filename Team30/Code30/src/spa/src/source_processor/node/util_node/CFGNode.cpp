@@ -68,6 +68,10 @@ bool CFGNode::IsCallOutgoingNode(std::shared_ptr<CFGNode> node) {
   return node->GetStmtType() == StmtType::CALL_STMT;
 }
 
+bool CFGNode::IsAssignOutgoingNode(std::shared_ptr<CFGNode> node) {
+  return node->GetStmtType() == StmtType::ASSIGN_STMT;
+}
+
 std::string CFGNode::GetVarModifiedInStartNode(
     std::shared_ptr<CFGNode> start_node) {
   std::unordered_set<std::string> vars_modified_in_start_node =

@@ -176,6 +176,23 @@ bool GraphRelationTraverser::CheckCacheForAffectsPath(
   return false;
 }
 
+void GraphRelationTraverser::HandleVisitOutgoingNode(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<CFGNode> const& outgoing_node,
+    std::queue<std::shared_ptr<CFGNode>>& nodes_to_visit) {
+  bool should_visit = true;
+  if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
+    should_visit = HandleAssignOrReadOutgoingNode(
+        outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
+  } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
+    should_visit = HandleCallOutgoingNode(
+        outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
+  }
+  if (should_visit) {
+    nodes_to_visit.push(outgoing_node);
+  }
+}
+
 bool GraphRelationTraverser::PerformNodeTraversal(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<CFGNode> const& end_node,
@@ -184,41 +201,26 @@ bool GraphRelationTraverser::PerformNodeTraversal(
   std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
   std::string var_modified_in_start = *start_node->GetModifiesVars().begin();
   nodes_to_visit.push(start_node);
-
   while (!nodes_to_visit.empty()) {
     std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
     nodes_to_visit.pop();
-
     for (std::shared_ptr<CFGNode> outgoing_node :
          curr_node->GetOutgoingNodes()) {
       if (outgoing_node == end_node) {
         cache->CacheAffects(start_node, end_node);
         return true;
       }
-
       if (!visited_nodes.count(outgoing_node)) {
         visited_nodes.insert(outgoing_node);
 
-        if (outgoing_node->GetNodeType() == StmtType::ASSIGN_STMT) {
+        if (CFGNode::IsAssignOutgoingNode(outgoing_node)) {
           if (outgoing_node->GetUsesVars().count(var_modified_in_start)) {
             cache->CacheAffects(start_node, outgoing_node);
           } else {
             cache->CacheNotAffects(start_node, outgoing_node);
           }
         }
-
-        bool should_visit = true;
-        if (CFGNode::IsAssignOrReadOutgoingNode(outgoing_node)) {
-          should_visit = HandleAssignOrReadOutgoingNode(
-              outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
-        } else if (CFGNode::IsCallOutgoingNode(outgoing_node)) {
-          should_visit = HandleCallOutgoingNode(
-              outgoing_node, CFGNode::GetVarModifiedInStartNode(start_node));
-        }
-
-        if (should_visit) {
-          nodes_to_visit.push(outgoing_node);
-        }
+        HandleVisitOutgoingNode(start_node, outgoing_node, nodes_to_visit);
       }
     }
   }
