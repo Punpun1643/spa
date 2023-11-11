@@ -155,25 +155,31 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathTo(
   return stmts_with_valid_path;
 }
 
-bool GraphRelationTraverser::HasAffectsPath(
+bool GraphRelationTraverser::IsValidPath(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<CFGNode> const& end_node) {
+  return ValidateStartAndEndNodes(start_node, end_node) &&
+         ValidatePossibleAffectsRelationship(
+             CFGNode::GetVarModifiedInStartNode(start_node),
+             CFGNode::GetVarUsedInEndNode(end_node));
+}
+
+bool GraphRelationTraverser::CheckCacheForAffectsPath(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<CFGNode> const& end_node,
     std::shared_ptr<AffectsCache> cache) {
-  if (!ValidateStartAndEndNodes(start_node, end_node)) {
-    return false;
-  }
-  if (!ValidatePossibleAffectsRelationship(
-          CFGNode::GetVarModifiedInStartNode(start_node),
-          CFGNode::GetVarUsedInEndNode(end_node))) {
-    return false;
-  }
-
   if (cache->IsCachedAndAffects(start_node, end_node)) {
     return true;
   } else if (cache->IsCachedAndNotAffects(start_node, end_node)) {
     return false;
   }
+  return false;
+}
 
+bool GraphRelationTraverser::PerformNodeTraversal(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<CFGNode> const& end_node,
+    std::shared_ptr<AffectsCache> cache) {
   std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
   std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
   std::string var_modified_in_start = *start_node->GetModifiesVars().begin();
@@ -182,6 +188,7 @@ bool GraphRelationTraverser::HasAffectsPath(
   while (!nodes_to_visit.empty()) {
     std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
     nodes_to_visit.pop();
+
     for (std::shared_ptr<CFGNode> outgoing_node :
          curr_node->GetOutgoingNodes()) {
       if (outgoing_node == end_node) {
@@ -217,6 +224,27 @@ bool GraphRelationTraverser::HasAffectsPath(
   }
   cache->CacheNotAffects(start_node, end_node);
   return false;
+}
+
+bool GraphRelationTraverser::TraverseAndEvaluatePath(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<CFGNode> const& end_node,
+    std::shared_ptr<AffectsCache> cache) {
+  if (CheckCacheForAffectsPath(start_node, end_node, cache)) {
+    return true;
+  }
+  return PerformNodeTraversal(start_node, end_node, cache);
+}
+
+bool GraphRelationTraverser::HasAffectsPath(
+    std::shared_ptr<CFGNode> const& start_node,
+    std::shared_ptr<CFGNode> const& end_node,
+    std::shared_ptr<AffectsCache> cache) {
+  if (!IsValidPath(start_node, end_node)) {
+    return false;
+  }
+
+  return TraverseAndEvaluatePath(start_node, end_node, cache);
 }
 
 bool GraphRelationTraverser::HasAnyAffectsPathFrom(

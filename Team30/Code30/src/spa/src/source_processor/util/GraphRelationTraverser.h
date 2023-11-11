@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "../../program_knowledge_base/utils/AffectsCache.h"
 #include "../node/util_node/CFGNode.h"
-#include "program_knowledge_base/utils/AffectsCache.h"
 
 class GraphRelationTraverser {
  private:
@@ -53,4 +53,21 @@ class GraphRelationTraverser {
   static std::unordered_set<std::string> GetAllStmtsWithAffectsPathTo(
       std::shared_ptr<CFGNode> const& end_node,
       std::shared_ptr<AffectsCache> cache);
+
+  static bool IsValidPath(std::shared_ptr<CFGNode> const& start_node,
+                          std::shared_ptr<CFGNode> const& end_node);
+
+  static bool CheckCacheForAffectsPath(
+      std::shared_ptr<CFGNode> const& start_node,
+      std::shared_ptr<CFGNode> const& end_node,
+      std::shared_ptr<AffectsCache> cache);
+
+  static bool TraverseAndEvaluatePath(
+      std::shared_ptr<CFGNode> const& start_node,
+      std::shared_ptr<CFGNode> const& end_node,
+      std::shared_ptr<AffectsCache> cache);
+
+  static bool PerformNodeTraversal(std::shared_ptr<CFGNode> const& start_node,
+                                   std::shared_ptr<CFGNode> const& end_node,
+                                   std::shared_ptr<AffectsCache> cache);
 };
