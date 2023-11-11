@@ -2,172 +2,179 @@ while, if, while, else, if, while, while, if, else, while, else,
 else, else, while, while, while, if, while, if, if, else, 
 if, while, while, if, x2 while
 
-X Lines 
+381 Lines 
 
 procedure DeepNesting {
 
-while (a <= 0) {
-	b = 1 + 9 / c / 3 / 0;
-  f = 0 - 9 + 0 + 0;
+1 while (a <= 0) {
+2	b = 1 + 9 / c / 3 / 0;
+3  f = 0 - 9 + 0 + 0;
 
-  if ((!(0 > u)) && (!(h >= y))) then { 
-		r = a - (c * 0) % 41 * t / s * a;
-    a = 0;                               
-    p = w + (l - 46 - 19 + 0) - 9 * 2 + a;
+4  if ((!(0 > u)) && (!(h >= y))) then { 
+5		r = a - (c * 0) % 41 * t / s * a;
+6    a = 0;                               
+7    p = w + (l - 46 - 19 + 0) - 9 * 2 + a;
 
-		while ((a != t) || (10 % 3 == (p))) {
-			read r;
-			t = u / 2;
-      b = (t * q % 1 + 0) % c / d / y * i;
-      read y;
+8		while ((a != t) || (10 % 3 == (p))) {
+9			read r;
+10			t = u / 2;
+11      b = (t * q % 1 + 0) % c / d / y * i;
+12      read y;
 
-			if ((k == k) && (k != k)) then {
-				call p1;    
-				print q;
+13			if ((k == k) && (k != k)) then {
+14				call p1;    
+15				print q;
 			} else {
-				call p2;
-				if ((!(x + y <= z)) && (x == w)) then {
-					while ((d != 55) || ((!(m * m % n % v < 0)) && (p != d))) {
-						while (!(!(!(e == 0)))) {
-							if (o >= d * (0 + 6) + (0 * n) - l + ((0) + (c / k)) + z + m) then {
-								if ((v <= 0 + u) || ((0 == c % 40 * n + o) && (p < 1 / i * k + k / 0 * (41105 * 9 * 632 - 1 % w) * (0 + 0 / y - i / k % 347847446 % 0 * g % ((0)) % m % p + ((b / 666 % e / l * ((0))) / 8 / 0) - z) / 0 - 60 % 0 / ((0 / 0) % 4 / (z - 3 / f * 6 - 0 + 0 / 0 % x / 0 + o % 92 - 0 - 0 * (v * 507 / i + 2 / 0 % 3 / 0) / w - s + 0) % 0 - 0 / 8 % 0 - c * 0 % 0 / 0 / 7 % (0 / (0 + (0 * s) - x % 2 - (d + q - 0 * 249)) * t) + 4)))) then {
-									j = k / 19 % o / 361 + 0 - q - u;
-									print w;
-    							l = ((81 * 5 % 855 % s + (0 % (m * u * (0 + 2 + (j))) / 0) % h)) + x * 0;
-    							w = t - h / x;
+16				call p2;
+17				if ((!(x + y <= z)) && (x == w)) then {
+18					while ((d != 55) || ((!(m * m % n % v < 0)) && (p != d))) {
+						
+19            u = i + o + e + a;
+            
+20           while (!(!(!(e == 0)))) {
+21							if (o >= d * (0 + 6) + (0 * n) - l + ((0) + (c / k)) + z + m) then {
+								
+22                read n;
+23                call p8;
+
+24                if ((v <= 0 + u) || ((0 == c % 40 * n + o) && (p < 1 / i * k + k / 0 * (41105 * 9 * 632 - 1 % w) * (0 + 0 / y - i / k % 347847446 % 0 * g % ((0)) % m % p + ((b / 666 % e / l * ((0))) / 8 / 0) - z) / 0 - 60 % 0 / ((0 / 0) % 4 / (z - 3 / f * 6 - 0 + 0 / 0 % x / 0 + o % 92 - 0 - 0 * (v * 507 / i + 2 / 0 % 3 / 0) / w - s + 0) % 0 - 0 / 8 % 0 - c * 0 % 0 / 0 / 7 % (0 / (0 + (0 * s) - x % 2 - (d + q - 0 * 249)) * t) + 4)))) then {
+25									j = k / 19 % o / 361 + 0 - q - u;
+26									print w;
+27    							l = ((81 * 5 % 855 % s + (0 % (m * u * (0 + 2 + (j))) / 0) % h)) + x * 0;
+28    							w = t - h / x;
 								} else {
-									while (s == q){
-										if (x >= 1+(1-(1*(1/(1%1)))) ) then {
-											h = w + 8 / p;
+29									while (s == q){
+30										if (x >= 1+(1-(1*(1/(1%1)))) ) then {
+31											h = w + 8 / p;
 										} else {
-											r = (o - 0);
-                     	call p2;
-											if (!( (!(0 <= 0)) && (0 > 0) )) then {
-												q = (84 + r * 0 - 0 + 4) * z;
-                     		e = 0 * m + (1) % (u / 0 * 6 % n * (k / (e) / e % 0 * o * y)) * 0 / (w);
-                     		call p3;
+32											r = (o - 0);
+33                    	call p2;
+34											if (!( (!(0 <= 0)) && (0 > 0) )) then {
+35												q = (84 + r * 0 - 0 + 4) * z;
+36                     		e = 0 * m + (1) % (u / 0 * 6 % n * (k / (e) / e % 0 * o * y)) * 0 / (w);
+37                     		call p3;
                      
 											} else {
-												if (0 - (2 / n) % (0 * b * 7) - 53 > 35) then {
-													print w;
-                          w = 14 - (d) + (j % g - k % t / 8);
-                          call p3;
+38												if (0 - (2 / n) % (0 * b * 7) - 53 > 35) then {
+39													print w;
+40                          w = 14 - (d) + (j % g - k % t / 8);
+41                          call p3;
 												} else {
-													while (9 != 11) {
+42													while (9 != 11) {
 
-                            x = (1 + 9) * (7 + 6);
+43                            x = (1 + 9) * (7 + 6);
 
-														while (!(u <= h) || ((0 <= m) || (5 == 0)) ) {
-                              print p;
-                              read r;
+44														while (!(u <= h) || ((0 <= m) || (5 == 0)) ) {
+45                              print p;
+46                              read r;
 
-															while ((o <= o) && (s > 7)) {
-                                call p5;
+47															while ((o <= o) && (s > 7)) {
+48                                call p5;
 
-																if ((((((t > 981) && (i == 0)) || (q == (0) % c)) && (!(n == ((7) + k) % r - a * a))) || (5 + 24 % 0 != 0)) && (w < h)) then {
+49																if ((((((t > 981) && (i == 0)) || (q == (0) % c)) && (!(n == ((7) + k) % r - a * a))) || (5 + 24 % 0 != 0)) && (w < h)) then {
 																	
-                                  a = a + a - a / a * a % a;
+50                                  a = a + a - a / a * a % a;
                                   
-                                  while (u % a - r < 0 % 0 % 4) {
-																		if (2 > (l % l - 2)) then {
+51                                  while (u % a - r < 0 % 0 % 4) {
+52																		if (2 > (l % l - 2)) then {
 																			
-                                      call p8;
+53                                      call p8;
 
-                                      if (((0 != x) || (a != t)) || ((0 % (p) / c - 0 != p) && (29 != e))) then {
-																				y = s + a / r * p % w * 2 % k - m / 39397885;
-    																		s = x;
-    																		h = e;
-    																		d = 9;
+54                                      if (((0 != x) || (a != t)) || ((0 % (p) / c - 0 != p) && (29 != e))) then {
+55																				y = s + a / r * p % w * 2 % k - m / 39397885;
+56    																		s = x;
+57    																		h = e;
+58    																		d = 9;
 																			} else {
-																				if ((64 % b % (1) / r == 502) || (a < 0)) then {
-																					while (0 != 3 - 0 / 8) {
-																						 b = 3 * a;
-                     												call p3;
-                     												call p1;
-                     												r = 4 % 0 / m * r / g - t * ((((0)) - a % s + 8 + q) + 0);
+59																				if ((64 % b % (1) / r == 502) || (a < 0)) then {
+60																					while (0 != 3 - 0 / 8) {
+61																						 b = 3 * a;
+62                     												call p3;
+63                     												call p1;
+64                     												r = 4 % 0 / m * r / g - t * ((((0)) - a % s + 8 + q) + 0);
 																					} 
 																					
-																					while (!(j != 420)) {
-																						o = 12;
-                         										read y;
-                         										call p2;
-                         										v = ((w % g) + 0 / b * 4 - (2 % x % 4)) * 8;
-                         										z = 0 / ((0) + 4 % k / (i + e));
-                         										read b;
-                         										j = 0;
+65																					while (!(j != 420)) {
+66																						o = 12;
+67                         										read y;
+68                         										call p2;
+69                         										v = ((w % g) + 0 / b * 4 - (2 % x % 4)) * 8;
+70                         										z = 0 / ((0) + 4 % k / (i + e));
+71                         										read b;
+72                         										j = 0;
 																					}
 																				} else {
-																					print i;
-																					e = 0 + ((k - a) / n * r);
+73																					print i;
+74																					e = 0 + ((k - a) / n * r);
 
-    																			h = 9 / v % q % d - (l + (h * (a / (x * x) - 4 * 8 % f * 0 + 3 + e) - k * 5) / l * c - z / f / 2 * w * 0);
-        																	call p4;
+75    																			h = 9 / v % q % d - (l + (h * (a / (x * x) - 4 * 8 % f * 0 + 3 + e) - k * 5) / l * c - z / f / 2 * w * 0);
+76        																	call p4;
 																				}
-																				s= (z * 0) * (v + (888 + 0 - 0 * 0) + 0 - p * q % (z) % 999) / f;
+77																				s= (z * 0) * (v + (888 + 0 - 0 * 0) + 0 - p * q % (z) % 999) / f;
 																			}
 																		} else {
-																			e = c;
-    																	print i;
-    																	r = ((s / u) - (m % ((d / 73794 * (q / x)) / d) - 8593 * (8) * t + (u)) * 1 % f) + (0 / 61 + (0 % o % (f * (p * d) / (0 % x % 7913 / k + 0 + u * l + ((14) / 0) - 7 * 0 + v / q / 1 % o) % a % 8 * 0 - 8 * u % 3 * 9855 + (0 * ((0)) / m * z * (d) % 9 / 0 % y % 8 % u * 4) - b % e) % (0 % 0 % c) % b));
-    																	g = 1 / 0;
+78																			e = c;
+79    																	print i;
+80    																	r = ((s / u) - (m % ((d / 73794 * (q / x)) / d) - 8593 * (8) * t + (u)) * 1 % f) + (0 / 61 + (0 % o % (f * (p * d) / (0 % x % 7913 / k + 0 + u * l + ((14) / 0) - 7 * 0 + v / q / 1 % o) % a % 8 * 0 - 8 * u % 3 * 9855 + (0 * ((0)) / m * z * (d) % 9 / 0 % y % 8 % u * 4) - b % e) % (0 % 0 % c) % b));
+81    																	g = 1 / 0;
 																		}
-																		s = 86 % j + 0;
-                                    g = 0 % n + k * y - (0);
+82																		s = 86 % j + 0;
+83                                    g = 0 % n + k * y - (0);
 																	}
 																} else {
-																	f = 0 * 0 - 0;
-                                  u = g - c;
-                                  u = 0 + 0 * 0 - c * 7799 - 5;
+84																	f = 0 * 0 - 0;
+85                                  u = g - c;
+86                                  u = 0 + 0 * 0 - c * 7799 - 5;
 																}
-																read m;
+87																read m;
 															}
 
-                              v = v - v;
-                              print v;
-                              print v;
-                              read v;
-                              l = 1;
+88                              v = v - v;
+89                              print v;
+90                              print v;
+91                              read v;
+92                              l = 1;
 														} 
 
 													} 
-													print i;
-													v = 0 / 0 / 0;
-    											h = (0 * r + 31 / c);
-    											n = k / 19 % o / 361 + 0 - q - u;
+93													print i;
+94													v = 0 / 0 / 0;
+95    											h = (0 * r + 31 / c);
+96    											n = k / 19 % o / 361 + 0 - q - u;
 
-													read x;
+97													read x;
 												}
-												call p3;
-												print s;
+98												call p3;
+99												print s;
 											}
 
 										}
-										print m;
+100										print m;
 
 									} 
-									call p1;
-									g = c;
-                  u = x;
-                  read m;
-                  h = 0;
-                  print s;
-                  print q;
-                  z = 0;
+101									call p1;
+102									g = c;
+103                  u = x;
+104                  read m;
+105                  h = 0;
+106                  print s;
+107                  print q;
+108                  z = 0;
 								}
 
 							} else {
-								o = 9;
-            		p = 0 % 0 * e * m - 0;
-            		call p6;
+109								o = 9;
+110            		p = 0 % 0 * e * m - 0;
+111            		call p6;
 							}
-              n = k / 19 % o / 361 + 0 - q - 1;
-              call p4;
-              l = ((81 * 5 % 855 % s + (0 % (m * f * (0 + 2 + (j))) / 0) % h)) + x * 0;
+112              n = k / 19 % o / 361 + 0 - q - 1;
+113              call p4;
+114              l = ((81 * 5 % 855 % s + (0 % (m * f * (0 + 2 + (j))) / 0) % h)) + x * 0;
 						}
-            read c;
-            read d;
+115            read c;
+116            read d;
 					}
-          m = y + (777 / 4) / 17 % 0 % k;
+117          m = y + (777 / 4) / 17 % 0 % k;
 				} else {
 					a =  (a +d - c) / e % e + (b + c - d) * a / f;
 					a =  (a +d - c) / e % e + (b + c - d) * a / f;
@@ -271,182 +278,182 @@ while (a <= 0) {
 					a =  (a +d - c) / e % e + (b + c - d) * a / f;
 
 				}
-				call p5;
-        h = e / 3 * 2 + ( d - 20);
+218				call p5;
+219        h = e / 3 * 2 + ( d - 20);
 			}
 
-			j = d / 256;
-			read b;
-      y = (h) - 5 / (v * (0 % 0 * g % l * (b / (91) % m)) / p % (3 * 63 % ((t)) + (7 * (0 / 116 / q / c + 0 * (0 / e / r * 9 % y)))) * p) / (t - z % v) / 6 / 0 % (o);
-      i = h;
-      call p7;
+220			j = d / 256;
+221			read b;
+222      y = (h) - 5 / (v * (0 % 0 * g % l * (b / (91) % m)) / p % (3 * 63 % ((t)) + (7 * (0 / 116 / q / c + 0 * (0 / e / r * 9 % y)))) * p) / (t - z % v) / 6 / 0 % (o);
+223     i = h;
+224      call p7;
 		}
 
-    f = 34 * n + 6 / e;
-    a = (b - 0) - 419 - 0 / r / q % x - l - u / 635 % 43;
-    g = ((262) + (6 / 0 - 74 - y) - (0 - w)) % 0 % i;
+225    f = 34 * n + 6 / e;
+226    a = (b - 0) - 419 - 0 / r / q % x - l - u / 635 % 43;
+227    g = ((262) + (6 / 0 - 74 - y) - (0 - w)) % 0 % i;
 
-    a = h;
-    call p3;
+228    a = h;
+229    call p3;
 
   } else {
-		q = 333;
-    q = j + 9;
-		print q;
-		read q;
+230		q = 333;
+231    q = j + 9;
+232		print q;
+233		read q;
 
 	}
-  e = j;
-  print m;
-  x = p + 0;
+234  e = j;
+235  print m;
+236  x = p + 0;
             
 }
 
-print z;
-p = 0;
+237 print z;
+238 p = 0;
 
 }
 
 
 procedure p1 {
-    a = b;
+239    a = b;
 }
 
 procedure p2 {
-    print l;
-    v = p / 65 % (x) % (84) - e;
-    read a;
+240    print l;
+241    v = p / 65 % (x) % (84) - e;
+242    read a;
 }
 
 procedure p3 {
-    call p1;
-    call p2;
+243    call p1;
+244    call p2;
 }
 
 procedure p4 {
-	if (0 == 0) then {
-    q = l;
-    d = c - 0 % (g % 987 / b * k) + (j + a % 374);
+245	if (0 == 0) then {
+246    q = l;
+247    d = c - 0 % (g % 987 / b * k) + (j + a % 374);
 	} else {
-    print q;
+248    print q;
 	}
 }
 
 procedure p5 {
-  while (o != z) {  
-    while ((6 >= d) || (!(m <= d))) {
-      read c;
+249  while (o != z) {  
+250    while ((6 >= d) || (!(m <= d))) {
+251      read c;
       }
-    call p4;
+252    call p4;
   }
 }
 
 procedure p6 {
-    a = 5;
-    b = 1;
-    c = 7;
+253    a = 5;
+254    b = 1;
+255    c = 7;
 
-    while (b < 8) {
-      if (c <= 10) then {
-        a = b - 1;
-        b = b + 2;
+256    while (b < 8) {
+257      if (c <= 10) then {
+258        a = b - 1;
+259        b = b + 2;
       } else {
-        c = a - b + 1;
-        while (d == 4) {
-          d = d * 2;
-          read a;
-          while (b == 0) {
-            print b;
+260        c = a - b + 1;
+261        while (d == 4) {
+262          d = d * 2;
+263          read a;
+264          while (b == 0) {
+265            print b;
           }
         }
       }
 
-      d = b + c;
+266      d = b + c;
 
-      while (c == 1) {
-        print b;
-        c = c + 1;
+267      while (c == 1) {
+268        print b;
+269        c = c + 1;
       }
     }
 
-    if (c > 5) then {
-        read c;
+270    if (c > 5) then {
+271        read c;
     } else {
-        if (e == 1) then {
-           c = c + 1;
-           b = c + 2; 
+272        if (e == 1) then {
+273           c = c + 1;
+274           b = c + 2; 
         } else {
-           c = c + 1;
+275           c = c + 1;
         }
     }
     
-    print b;
+276    print b;
 
 }
 
 procedure p7 {
   
-  a = a - 1;
-  read a;
+277  a = a - 1;
+278  read a;
 
-  if (c * 3 == d % 2) then {
-    c = 7 + a + b * d;
-    a = b; 
-    while (f * 2 < 5) {
-      print f;
-      read d;
-      b = a;
-      if (!(c < a)) then {
-        d = c + a;
-        a = d;
-        while (d >= 2 / a *c) {
-          print x;
-          while (e == b) {
-            while (f == 0) {
-              d = a;
-              if ((g > f) && (b != g)) then {
-                a = 48 % g + x % 92 + d;
-                read x;
-                c = 0 % g / 3 - 0 * 11 % b;
+279  if (c * 3 == d % 2) then {
+280    c = 7 + a + b * d;
+281    a = b; 
+282    while (f * 2 < 5) {
+283      print f;
+284      read d;
+285      b = a;
+286      if (!(c < a)) then {
+287        d = c + a;
+288        a = d;
+289        while (d >= 2 / a *c) {
+290          print x;
+291          while (e == b) {
+292            while (f == 0) {
+293              d = a;
+294              if ((g > f) && (b != g)) then {
+295                a = 48 % g + x % 92 + d;
+296                read x;
+297                c = 0 % g / 3 - 0 * 11 % b;
               } else {
-                call p2;
-                e = c + c + 1;
-                a = b;
+298                call p2;
+299                e = c + c + 1;
+300                a = b;
               }
-              a = c % a - x / b;
-              b = a;
+301              a = c % a - x / b;
+302              b = a;
             }
-            read e;
+303            read e;
           }
-          a = b;
+304          a = b;
         }
-        e = e + 1;
-        print x;
+305        e = e + 1;
+306        print x;
       } else {
 
-        while (1 == g) {
-          f = b + d - a;
-          c = x - d;
+307        while (1 == g) {
+308          f = b + d - a;
+309          c = x - d;
         }
       }
-      call p2;
-      b = a;
+310      call p2;
+311      b = a;
     }
   } else {
-    if (!(6 > e) || (f >= 0)) then {
-      a = b;
-      if (6 > f) then {
-        c = x + a + d + b;
+312    if (!(6 > e) || (f >= 0)) then {
+313      a = b;
+314      if (6 > f) then {
+315        c = x + a + d + b;
       } else {
-        e = f;
-        b = a;
+316        e = f;
+317        b = a;
       }
     } else {
-      while ((1 > 1) && (d == a / 0) ) {
-        b = a;
+318      while ((1 > 1) && (d == a / 0) ) {
+319        b = a;
       }
     }
-    print a;
+320    print a;
   } 
 
 
@@ -454,89 +461,89 @@ procedure p7 {
 
 procedure p8 {
 
-      print v0;
-      print v1;
-      if (v2 > v5) then {
-          print v8;
+321      print v0;
+322      print v1;
+323      if (v2 > v5) then {
+324          print v8;
       }  else {
-          v4 = v5 % 1 + 5 / 3 * v9 - (v7 / v1);
-          print v7;
-          print v6;
-          print v9;
-          v1 = v2 - 1;
+325          v4 = v5 % 1 + 5 / 3 * v9 - (v7 / v1);
+326          print v7;
+327          print v6;
+328          print v9;
+329          v1 = v2 - 1;
 
-          read v2;
-          while (v2 > 0) {
-              v3 = v4 - 4;
-              v4 = v4 - 1;
-              v5 = v8;
+330          read v2;
+331          while (v2 > 0) {
+332              v3 = v4 - 4;
+333              v4 = v4 - 1;
+334             v5 = v8;
           } 
-          v6 = v3;
-          read v9;
+335          v6 = v3;
+336          read v9;
 
-          if (v1 > v29) then {
-              v1 = v3 - 20;
+337          if (v1 > v29) then {
+338              v1 = v3 - 20;
           } else {
-              v5 = v3 + v2;
-              v6 = 1;
-              v7 = v4 + v3;
+339              v5 = v3 + v2;
+340              v6 = 1;
+341              v7 = v4 + v3;
           }
 
-          if (v3 > 4) then {
-              v1 = v2 - v3;
-              print v4;
-              print v3;
-              print v6;
-              read v7;
-              v7 = 1;
+342          if (v3 > 4) then {
+343              v1 = v2 - v3;
+344              print v4;
+345              print v3;
+346              print v6;
+347              read v7;
+348              v7 = 1;
           } else {
-              print v8;
-              print v9;
-              v0 = 2 * v8;
+349              print v8;
+350              print v9;
+351              v0 = 2 * v8;
           }
-          while (v6 == v1) {
-              v6 = v7 + 7;
-              v1 = v1;
-              print v2;
+352          while (v6 == v1) {
+353              v6 = v7 + 7;
+354              v1 = v1;
+355              print v2;
 
-              if (v1 == 1) then {
-                  read v3;
+356              if (v1 == 1) then {
+357                  read v3;
               } else {
-                  read v1;
+358                  read v1;
               }
           }
       }
 
-      print v9;
-      read v4;
+359      print v9;
+360      read v4;
 
-      a = b - 1;
-      b = c + d;
-      b = 10 / 3;
-      print c;
+361      a = b - 1;
+362      b = c + d;
+363      b = 10 / 3;
+364      print c;
 
-      while (a < b + 1) {
-          read d;
-          d = b - c;
-          d = c - d;
-          while (d > 0 + e) {
-            d = d - 1;
-            read d;
-            read e;
-            print f;
-            if (f < 4) then {
-                f = f + 4 * 10 - e;
-                e = 0 + f;
+365      while (a < b + 1) {
+366          read d;
+367          d = b - c;
+368          d = c - d;
+369          while (d > 0 + e) {
+370            d = d - 1;
+371            read d;
+372            read e;
+373            print f;
+374            if (f < 4) then {
+375                f = f + 4 * 10 - e;
+376               e = 0 + f;
             } else {
-                e = f / 40;
-                g = h - 1;
-                read f;
+377                e = f / 40;
+378                g = h - 1;
+379                read f;
             }
           }
       }
 
-      f = f - 2;
-      h = d / 20 * 3 - ( e - 2);
+380      f = f - 2;
+381      h = d / 20 * 3 - ( e - 2);
 
 
 

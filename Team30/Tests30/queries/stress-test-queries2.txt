@@ -1,55 +1,55 @@
 1 - Get all constants
 constant c;
 Select c
-none
+0, 1, 10, 11, 116, 12, 14, 17, 19, 2, 20, 24, 249, 256, 262, 29, 3, 31, 333, 34, 347847446, 35, 361, 374, 39397885, 4, 40, 41, 41105, 419, 420, 43, 46, 48, 5, 502, 507, 53, 55, 6, 60, 61, 63, 632, 635, 64, 65, 666, 7, 73794, 74, 777, 7799, 7913, 8, 81, 84, 855, 8593, 86, 888, 9, 91, 92, 981, 9855, 987, 999
 5000
 2 - Get all variables
 variable v;
 Select v
-none
+a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, v0, v1, v2, v29, v3, v4, v5, v6, v7, v8, v9, w, x, y, z 
 5000
-3- Search for specific line
+3 - Multi With Clause
 stmt s; read r; print pn; procedure p; constant c;
-Select s with r
-none
+Select r with not r.varName = "n" and p.procName = "p6" and c.value = 855 and not pn.stmt# = 22
+104, 115, 116, 12, 221, 233, 242, 251, 263, 271, 278, 284, 296, 303, 330, 336, 347, 357, 358, 360, 366, 371, 372, 379, 46, 67, 71, 87, 9, 91, 97
 5000
 4 - Parent/* Relation for a very large nesting of if/whiles
 assign a; if i, i1; while w;
 Select a such that Parent(w, a) and Parent*(i1, w) and Parent(i, i1)
-none
+112, 114, 19, 319, 43, 61, 64, 66, 69, 70, 72, 82, 83, 88, 92 
 5000
-5 - Next/* Relation for a very large nesting of if/whiles
-stmt s;
-Select BOOLEAN such that Next(s,s1) with s.stmt# = 87 and s1.stmt# = 100
+5 - Next Relation for a very large nesting of if/whiles
+stmt s, s1, s2;
+Select BOOLEAN such that Next(s,s1) and Next(s1, s2) with s.stmt# = 65 and s1.stmt# = 77 and s2.stmt# = 82
 TRUE
 5000
 6 - Next/* Relation for a very large nesting of if/whiles
 stmt s;
-Select s such that Next*(56,s)
-none
+Select s such that Next* (111, s)
+1, 10, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 11, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 12, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 13, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 14, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 15, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 16, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 17, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 18, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 19, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 2, 20, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 21, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 22, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 23, 230, 231, 232, 233, 234, 235, 236, 237, 238, 24, 25, 26, 27, 28, 29, 3, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 4, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 5, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 6, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 7, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 8, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 9, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99
 5000
 7 - Affects Relation for a very large nesting of if/whiles
-assign a,
-Select a such that Affects(a, a1) where a1.stmt# = 127
-none
+assign a, a1;
+Select <a, a1> such that Affects(a, a1) and Parent*(29, a) and Parent*(29, a1)
+32 35, 32 95, 43 56, 43 69, 43 75, 43 80, 50 50, 50 80, 61 69, 64 64, 69 77, 70 77, 74 75, 78 80, 80 55, 80 64, 80 74, 80 95, 82 55, 82 64, 82 80, 83 85, 84 80, 86 80, 86 96, 92 75, 92 80
 5000
 8 - Multi Clause
 assign a, a1; variable v;
 Select a1 such that Affects(a, a1) and Modifies(a, v) with v.varName = "c" 
-none
+266, 269, 273, 274, 275, 287, 299, 301
 5000
 9 - Multi Not Clause
-variable v; assign a; print pn;
-Select <r, pn> such that Modifies(r, v) and Uses(pn, v) and not pattern i(v,_,_)
+variable v; assign a; print pn; read r; if i;
+Select <r, pn> such that Modifies(r, v) and Uses(pn, v) pattern not i(v,_,_)
+104 100, 104 235, 115 364, 221 265, 221 268, 221 276, 233 107, 233 15, 233 232, 233 248, 242 320, 251 364, 263 320, 271 364, 278 320, 296 290, 296 306, 330 355, 336 328, 336 350, 336 359, 347 326, 357 345, 358 322, 360 344, 379 283, 379 373, 71 265, 71 268, 71 276, 87 100, 87 235, 91 89, 91 90, 97 290, 97 306
+5000
+10 - Multi Not Clause (Timeout?)
+variable v; constant c; if i; while w; assign a;
+Select v such that Uses(w, v) and Uses(i, v) pattern not a(v,_) with not c.value = 99999
 none
 5000
-10 - Multi Not Clause
+11 - Multi Not Clause (Timeout?)
 variable v; assign a; print pn; read r;
 Select v such that not Uses(a, v) and not Follows(a, pn) and not Follows (a, r)
-none
-5000
-11 - Multi Not Clause
-variable v, v1; constant c; if i; while w; 
-Select v such that Uses(w, v) and not Uses(i, v) pattern w(v1,_) with not c.value = 99999
 none
 5000
