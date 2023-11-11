@@ -117,7 +117,7 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathFrom(
         curr_node->GetOutgoingNodes();
 
     for (std::shared_ptr<CFGNode> out_going_node : outgoing_nodes) {
-      if (visited_nodes.find(out_going_node) == visited_nodes.end()) {
+      if (!visited_nodes.count(out_going_node)) {
         nodes_to_visit.push(out_going_node);
         visited_nodes.insert(out_going_node);
         stmts_with_valid_path.insert(
@@ -144,7 +144,7 @@ std::unordered_set<std::string> GraphRelationTraverser::GetAllStmtsWithPathTo(
         curr_node->GetIncomingNodes();
 
     for (std::shared_ptr<CFGNode> in_coming_node : incoming_nodes) {
-      if (visited_nodes.find(in_coming_node) == visited_nodes.end()) {
+      if (!visited_nodes.count(in_coming_node)) {
         nodes_to_visit.push(in_coming_node);
         visited_nodes.insert(in_coming_node);
         stmts_with_valid_path.insert(
