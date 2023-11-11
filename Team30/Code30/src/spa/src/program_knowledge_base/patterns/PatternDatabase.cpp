@@ -12,14 +12,16 @@ PatternDatabase::PatternDatabase() {
   inv_cond_var_patterns[EntityType::WHILE] = {};
 }
 
-void PatternDatabase::InsertAssignment(std::string line_num, std::string lhs,
+void PatternDatabase::InsertAssignment(std::string const& line_num,
+                                       std::string const& lhs,
                                        std::shared_ptr<TreeNode> const& rhs) {
   assignments.insert({line_num, {lhs, rhs}});
   lhs_assignments[lhs].insert(line_num);
 }
 
-void PatternDatabase::InsertCondVar(EntityType type, std::string line_num,
-                                    std::string var) {
+void PatternDatabase::InsertCondVar(EntityType type,
+                                    std::string const& line_num,
+                                    std::string const& var) {
   cond_var_patterns.at(type)[line_num].insert(var);
   inv_cond_var_patterns.at(type)[var].insert(line_num);
 }
@@ -50,7 +52,7 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
 }
 
 std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
-    std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
+    std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
     MatchType match_type) {
   std::unordered_set<std::string> output;
 
@@ -120,7 +122,7 @@ std::vector<std::string> PatternDatabase::GetContainerStmtsWithControlVar(
 }
 
 std::vector<std::string> PatternDatabase::GetContainerStmtsWithGivenControlVar(
-    EntityType container_stmt_type, std::string var_name) {
+    EntityType container_stmt_type, std::string const& var_name) {
   if (inv_cond_var_patterns.at(container_stmt_type).count(var_name) == 0) {
     return std::vector<std::string>();
   }

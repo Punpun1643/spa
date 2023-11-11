@@ -17,19 +17,19 @@ class DictionaryTable : public RelationTable {
   DictionaryTable();
   ~DictionaryTable() = default;
 
-  void Insert(std::string i, std::string j) override;
+  void Insert(std::string const& i, std::string const& j) override;
   bool IsEmpty() override;
 
-  bool IsRelated(std::string i, std::string j) override;
-  bool HasRelations(std::string val) override;
-  bool HasInverseRelations(std::string val) override;
+  bool IsRelated(std::string const& i, std::string const& j) override;
+  bool HasRelations(std::string const& val) override;
+  bool HasInverseRelations(std::string const& val) override;
 
   std::unordered_set<std::string> GetAllWithRelations(
       std::unordered_set<std::string> const& vals) override;
   std::unordered_set<std::string> GetAllWithInverseRelations(
       std::unordered_set<std::string> const& vals) override;
   std::unordered_set<std::string> GetAllRelatedToValue(
-      std::string val) override;
+      std::string const& val) override;
   std::unordered_set<std::string> GetAllInverseRelatedToValue(
-      std::string val) override;
+      std::string const& val) override;
 };
