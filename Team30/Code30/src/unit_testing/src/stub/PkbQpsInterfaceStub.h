@@ -125,8 +125,8 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       RelationType rel_type) override;
   std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
       EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
-      std::unordered_set<std::string> const& syn_1_possible_values,
-      std::unordered_set<std::string> const& syn_2_possible_values) override;
+      std::unordered_set<std::string> syn_1_possible_values,
+      std::unordered_set<std::string> syn_2_possible_values) override;
 
   // Pattern clause
   std::vector<std::string> GetMatchingAssignStmts(
