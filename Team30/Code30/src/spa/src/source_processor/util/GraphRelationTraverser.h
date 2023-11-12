@@ -6,8 +6,8 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "../../program_knowledge_base/utils/AffectsCache.h"
 #include "../node/util_node/CFGNode.h"
@@ -147,11 +147,12 @@ class GraphRelationTraverser {
       std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
       AffectsTraversalContext& context);
 
-  static std::unordered_set<std::string> PerformForwardTraversal(AffectsFromTraversalContext& context);
+  static std::unordered_set<std::string> PerformForwardTraversal(
+      AffectsFromTraversalContext& context);
 
   static void ProcessOutgoingNode(
       std::shared_ptr<CFGNode> curr_node,
-    const std::string& var_modified_in_start_node,
+      std::string const& var_modified_in_start_node,
       std::unordered_set<std::string>& stmts_with_valid_path,
       AffectsFromTraversalContext& context);
 };

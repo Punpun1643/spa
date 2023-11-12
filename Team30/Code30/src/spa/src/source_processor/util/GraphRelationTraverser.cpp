@@ -440,14 +440,14 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
   if (cache->CompletedForwardTraversal(start_node)) {
     return cache->GetAllAffects(start_node);
   }
-  AffectsFromTraversalContext context{std::queue<std::shared_ptr<CFGNode>>(),
-                                      std::unordered_set<std::shared_ptr<CFGNode>>(),
-                                      start_node, cache};
+  AffectsFromTraversalContext context{
+      std::queue<std::shared_ptr<CFGNode>>(),
+      std::unordered_set<std::shared_ptr<CFGNode>>(), start_node, cache};
   return PerformForwardTraversal(context);
 }
 
-std::unordered_set<std::string>
-GraphRelationTraverser::PerformForwardTraversal(AffectsFromTraversalContext& context) {
+std::unordered_set<std::string> GraphRelationTraverser::PerformForwardTraversal(
+    AffectsFromTraversalContext& context) {
   std::unordered_set<std::string> stmts_with_valid_path;
   std::string var_modified_in_start_node =
       CFGNode::GetVarModifiedInStartNode(context.start_node);
@@ -456,7 +456,8 @@ GraphRelationTraverser::PerformForwardTraversal(AffectsFromTraversalContext& con
   while (!context.nodes_to_visit.empty()) {
     auto curr_node = context.nodes_to_visit.front();
     context.nodes_to_visit.pop();
-    ProcessOutgoingNode(curr_node, var_modified_in_start_node, stmts_with_valid_path, context);
+    ProcessOutgoingNode(curr_node, var_modified_in_start_node,
+                        stmts_with_valid_path, context);
   }
 
   context.cache->InsertCompletedForwardTraversal(context.start_node);
@@ -465,21 +466,22 @@ GraphRelationTraverser::PerformForwardTraversal(AffectsFromTraversalContext& con
 
 void GraphRelationTraverser::ProcessOutgoingNode(
     std::shared_ptr<CFGNode> curr_node,
-    const std::string& var_modified_in_start_node,
+    std::string const& var_modified_in_start_node,
     std::unordered_set<std::string>& stmts_with_valid_path,
     AffectsFromTraversalContext& context) {
-
   for (auto outgoing_node : curr_node->GetOutgoingNodes()) {
     if (!context.visited_nodes.count(outgoing_node)) {
       context.visited_nodes.insert(outgoing_node);
-      if (ValidatePossibleAffectsRelationship(var_modified_in_start_node,
-                                              CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
+      if (ValidatePossibleAffectsRelationship(
+              var_modified_in_start_node,
+              CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
           CFGNode::IsAssignNode(outgoing_node)) {
         stmts_with_valid_path.insert(
             std::to_string(outgoing_node->GetNodeStmtIndex()));
         context.cache->CacheAffects(context.start_node, outgoing_node);
       }
-      HandleVisitOutgoingNode(context.start_node, outgoing_node, context.nodes_to_visit);
+      HandleVisitOutgoingNode(context.start_node, outgoing_node,
+                              context.nodes_to_visit);
     }
   }
 }
