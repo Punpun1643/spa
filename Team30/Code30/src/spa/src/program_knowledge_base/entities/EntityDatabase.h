@@ -39,17 +39,18 @@ class EntityDatabase {
   ~EntityDatabase() = default;
   std::unordered_set<std::string>& Get(EntityType type);
 
-  void InsertEntity(EntityType type, std::string value);
+  void InsertEntity(EntityType type, std::string const& value);
 
   void InsertEntity(EntityType type, AttrType attr_type,
-                    std::string statement_number, std::string attribute);
+                    std::string const& statement_number,
+                    std::string const& attribute);
 
-  std::string ConvertEntityValueToAlias(std::string value, EntityType type,
+  std::string ConvertEntityValueToAlias(std::string const& value,
+                                        EntityType type,
                                         AttrType wanted_attr_type);
 
-  std::vector<std::string> GetEntitiesMatchingAttrValue(EntityType type,
-                                                        AttrType attr_type,
-                                                        std::string value);
+  std::vector<std::string> GetEntitiesMatchingAttrValue(
+      EntityType type, AttrType attr_type, std::string const& value);
 
   std::vector<std::pair<std::string, std::string>>
   GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,

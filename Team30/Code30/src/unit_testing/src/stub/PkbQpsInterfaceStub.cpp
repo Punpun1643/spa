@@ -9,7 +9,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesWithType(
 }
 
 std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
-    std::string value, EntityType type, AttrType wanted_attr_type) {
+    std::string const& value, EntityType type, AttrType wanted_attr_type) {
   last_value_passed = value;
   last_entity_type_passed = type;
   last_attr_type_2_passed = wanted_attr_type;
@@ -17,7 +17,7 @@ std::string PkbQpsInterfaceStub::ConvertEntityValueToAlias(
 };
 
 std::vector<std::string> PkbQpsInterfaceStub::GetEntitiesMatchingAttrValue(
-    EntityType type, AttrType attr_type, std::string value) {
+    EntityType type, AttrType attr_type, std::string const& value) {
   last_entity_type_passed = type;
   last_attr_type_passed = attr_type;
   last_value_passed = value;
@@ -36,8 +36,8 @@ PkbQpsInterfaceStub::GetEntitiesWhereAttributesMatch(EntityType type_1,
   return attr_pair_matches;
 };
 
-bool PkbQpsInterfaceStub::IsRelationTrueValueValue(std::string value_1,
-                                                   std::string value_2,
+bool PkbQpsInterfaceStub::IsRelationTrueValueValue(std::string const& value_1,
+                                                   std::string const& value_2,
                                                    RelationType rel_type) {
   value_value_calls++;
   last_rel_passed = rel_type;
@@ -45,14 +45,14 @@ bool PkbQpsInterfaceStub::IsRelationTrueValueValue(std::string value_1,
   last_value_2_passed = value_2;
   return value_value_bool;
 }
-bool PkbQpsInterfaceStub::IsRelationTrueValueWild(std::string value,
+bool PkbQpsInterfaceStub::IsRelationTrueValueWild(std::string const& value,
                                                   RelationType rel_type) {
   value_wild_calls++;
   last_rel_passed = rel_type;
   last_value_passed = value;
   return value_wild_bool;
 }
-bool PkbQpsInterfaceStub::IsRelationTrueWildValue(std::string value,
+bool PkbQpsInterfaceStub::IsRelationTrueWildValue(std::string const& value,
                                                   RelationType rel_type) {
   wild_value_calls++;
   last_rel_passed = rel_type;
@@ -81,7 +81,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetRelationWildSynonym(
 }
 
 std::vector<std::string> PkbQpsInterfaceStub::GetRelationSynonymValue(
-    EntityType entity_type, std::string value, RelationType rel_type) {
+    EntityType entity_type, std::string const& value, RelationType rel_type) {
   synonym_value_calls++;
   last_entity_type_passed = entity_type;
   last_value_passed = value;
@@ -89,7 +89,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetRelationSynonymValue(
   return std::vector<std::string>(synonym_value_values);
 }
 std::vector<std::string> PkbQpsInterfaceStub::GetRelationValueSynonym(
-    std::string value, EntityType entity_type, RelationType rel_type) {
+    std::string const& value, EntityType entity_type, RelationType rel_type) {
   value_synonym_calls++;
   last_entity_type_passed = entity_type;
   last_value_passed = value;
@@ -98,9 +98,10 @@ std::vector<std::string> PkbQpsInterfaceStub::GetRelationValueSynonym(
 }
 
 std::vector<std::pair<std::string, std::string>>
-PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
-                                               EntityType entity_type_2,
-                                               RelationType rel_type) {
+PkbQpsInterfaceStub::GetRelationSynonymSynonym(
+    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
+    std::unordered_set<std::string> const& syn_1_possible_values,
+    std::unordered_set<std::string> const& syn_2_possible_values) {
   synonym_synonym_calls++;
   last_entity_type_passed = entity_type_1;
   last_entity_type_2_passed = entity_type_2;
@@ -118,7 +119,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
 };
 
 std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
-    std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
+    std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
     MatchType match_type) {
   pattern_assign_value_calls++;
   last_match_type_passed = match_type;
@@ -129,7 +130,9 @@ std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
-    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+    std::unordered_set<std::string> const& assign_syn_possible_values,
+    std::unordered_set<std::string> const& var_syn_possible_values) {
   pattern_assign_decl_calls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
@@ -145,7 +148,7 @@ std::vector<std::string> PkbQpsInterfaceStub::GetContainerStmtsWithControlVar(
 
 std::vector<std::string>
 PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(
-    EntityType container_stmt_type, std::string var_name) {
+    EntityType container_stmt_type, std::string const& var_name) {
   last_entity_type_passed = container_stmt_type;
   last_value_passed = var_name;
   return pattern_container_value_values;
@@ -153,7 +156,9 @@ PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(
-    EntityType container_stmt_type) {
+    EntityType container_stmt_type,
+    std::unordered_set<std::string> const& container_syn_possible_values,
+    std::unordered_set<std::string> const& control_var_possible_values) {
   last_entity_type_passed = container_stmt_type;
   return pattern_container_decl_values;
 }

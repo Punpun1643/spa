@@ -17,27 +17,28 @@
 
 class PKBSPInterface {
  public:
-  virtual void InsertEntity(EntityType type, std::string value) = 0;
+  virtual void InsertEntity(EntityType type, std::string const& value) = 0;
   virtual void InsertEntity(EntityType type, AttrType attr_type,
-                            std::string statement_number,
-                            std::string attribute) = 0;
-  virtual void InsertRelation(RelationType rel_type, std::string s1_line_num,
-                              std::string s2_line_num) = 0;
-  virtual void InsertAssignPattern(std::string statement_number,
-                                   std::string lhs,
+                            std::string const& entity,
+                            std::string const& attribute) = 0;
+  virtual void InsertRelation(RelationType rel_type,
+                              std::string const& s1_line_num,
+                              std::string const& s2_line_num) = 0;
+  virtual void InsertAssignPattern(std::string const& statement_number,
+                                   std::string const& lhs,
                                    std::shared_ptr<TreeNode> const& rhs) = 0;
   virtual void InsertCondVarPattern(EntityType type,
-                                    std::string statement_number,
-                                    std::string var) = 0;
+                                    std::string const& statement_number,
+                                    std::string const& var) = 0;
 
   virtual std::unordered_set<std::string> GetProcedureModifies(
-      std::string proc_name) = 0;
+      std::string const& proc_name) = 0;
   virtual std::unordered_set<std::string> GetProcedureUses(
-      std::string proc_name) = 0;
+      std::string const& proc_name) = 0;
   virtual std::unordered_set<std::string> GetStatementModifies(
-      std::string stmt) = 0;
+      std::string const& stmt) = 0;
   virtual std::unordered_set<std::string> GetStatementUses(
-      std::string stmt) = 0;
-  virtual void InsertCFGNode(std::string statement_num,
+      std::string const& stmt) = 0;
+  virtual void InsertCFGNode(std::string const& statement_num,
                              std::shared_ptr<CFGNode> const& node) = 0;
 };

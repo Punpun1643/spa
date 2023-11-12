@@ -15,7 +15,7 @@ PKBSPStub::PKBSPStub()
       insertPatternCallCount(0),
       insertCFGCallCount(0){};
 
-void PKBSPStub::InsertEntity(EntityType type, std::string entity) {
+void PKBSPStub::InsertEntity(EntityType type, std::string const& entity) {
   if (type == EntityType::CONSTANT) {
     insertConstantCallCount++;
   } else if (type == EntityType::VARIABLE) {
@@ -28,8 +28,8 @@ void PKBSPStub::InsertEntity(EntityType type, std::string entity) {
 }
 
 void PKBSPStub::InsertEntity(EntityType type, AttrType attr_type,
-                             std::string statement_number,
-                             std::string attribute) {
+                             std::string const& statement_number,
+                             std::string const& attribute) {
   InsertEntity(type, statement_number);
 };
 
@@ -68,101 +68,103 @@ void PKBSPStub::InsertRelationCommon(RelationType type, std::string a,
 }
 
 // Relation (integer, integer)
-void PKBSPStub::InsertRelation(RelationType rel_type, std::string s1_line_num,
-                               std::string s2_line_num) {
+void PKBSPStub::InsertRelation(RelationType rel_type,
+                               std::string const& s1_line_num,
+                               std::string const& s2_line_num) {
   InsertRelationCommon(rel_type, s1_line_num, s2_line_num);
 }
 
 // Assign Pattern clause
-void PKBSPStub::InsertAssignPattern(std::string statement_number,
-                                    std::string lhs,
+void PKBSPStub::InsertAssignPattern(std::string const& statement_number,
+                                    std::string const& lhs,
                                     std::shared_ptr<TreeNode> const& rhs) {
   insertPatternCallCount++;
 };
 
 // If/While Pattern clause
 void PKBSPStub::InsertCondVarPattern(EntityType type,
-                                     std::string statement_number,
-                                     std::string var){};
+                                     std::string const& statement_number,
+                                     std::string const& var){};
 
 std::unordered_set<std::string> PKBSPStub::GetProcedureUses(
-    std::string procName) {
+    std::string const& proc_name) {
   std::unordered_set<std::string> result;
-  if (procName == "proc_AST1_A") {
+  if (proc_name == "proc_AST1_A") {
     result.insert("var1");
     result.insert("var3");
     result.insert("var2");
     result.insert("var4");
     result.insert("var5");
-  } else if (procName == "proc_AST1_B") {
+  } else if (proc_name == "proc_AST1_B") {
     result.insert("y");
-  } else if (procName == "proc_AST2_A") {
+  } else if (proc_name == "proc_AST2_A") {
     result.insert("var1");
     result.insert("var2");
     result.insert("var3");
-  } else if (procName == "proc_AST3_A") {
+  } else if (proc_name == "proc_AST3_A") {
     result.insert("var1");
-  } else if (procName == "proc_AST3_B") {
+  } else if (proc_name == "proc_AST3_B") {
     result.insert("var2");
-  } else if (procName == "proc_AST4_A") {
+  } else if (proc_name == "proc_AST4_A") {
     result.insert("var1");
     result.insert("var2");
     result.insert("var3");
-  } else if (procName == "proc_AST4_B") {
+  } else if (proc_name == "proc_AST4_B") {
     result.insert("y");
-  } else if (procName == "proc_AST5_A") {
-  } else if (procName == "proc_AST5_B") {
-  } else if (procName == "proc_AST1_C") {
+  } else if (proc_name == "proc_AST5_A") {
+  } else if (proc_name == "proc_AST5_B") {
+  } else if (proc_name == "proc_AST1_C") {
     result.insert("y");
   }
   return result;
 }
 
 std::unordered_set<std::string> PKBSPStub::GetProcedureModifies(
-    std::string procName) {
+    std::string const& proc_name) {
   std::unordered_set<std::string> result;
-  if (procName == "proc_AST1_A") {
+  if (proc_name == "proc_AST1_A") {
     result.insert("var1");
     result.insert("var3");
     result.insert("var2");
     result.insert("var4");
     result.insert("var5");
-  } else if (procName == "proc_AST1_B") {
+  } else if (proc_name == "proc_AST1_B") {
     result.insert("y");
-  } else if (procName == "proc_AST2_A") {
+  } else if (proc_name == "proc_AST2_A") {
     result.insert("var1");
     result.insert("var2");
     result.insert("var3");
-  } else if (procName == "proc_AST3_A") {
+  } else if (proc_name == "proc_AST3_A") {
     result.insert("var1");
-  } else if (procName == "proc_AST3_B") {
+  } else if (proc_name == "proc_AST3_B") {
     result.insert("var2");
-  } else if (procName == "proc_AST4_A") {
+  } else if (proc_name == "proc_AST4_A") {
     result.insert("var1");
     result.insert("var2");
     result.insert("var3");
-  } else if (procName == "proc_AST4_B") {
+  } else if (proc_name == "proc_AST4_B") {
     result.insert("y");
-  } else if (procName == "proc_AST5_A") {
-  } else if (procName == "proc_AST5_B") {
-  } else if (procName == "proc_AST1_C") {
+  } else if (proc_name == "proc_AST5_A") {
+  } else if (proc_name == "proc_AST5_B") {
+  } else if (proc_name == "proc_AST1_C") {
     result.insert("y");
   }
   return result;
 }
 
 std::unordered_set<std::string> PKBSPStub::GetStatementModifies(
-    std::string stmt) {
+    std::string const& stmt) {
   std::unordered_set<std::string> result;
   return result;
 }
 
-std::unordered_set<std::string> PKBSPStub::GetStatementUses(std::string stmt) {
+std::unordered_set<std::string> PKBSPStub::GetStatementUses(
+    std::string const& stmt) {
   std::unordered_set<std::string> result;
   return result;
 }
 
-void PKBSPStub::InsertCFGNode(std::string statement_num,
+void PKBSPStub::InsertCFGNode(std::string const& statement_num,
                               std::shared_ptr<CFGNode> const& node) {
   insertCFGCallCount++;
   CFGNodeMap.insert({statement_num, node});
@@ -178,11 +180,11 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
     return false;
   }
 
-  //std::cout << "\n\n";
-  //for (auto n : node->GetOutgoingNodes()) {
-  //  std::cout << n->GetNode()->GetStmtIndex() << "\n";
-  //}
-  //std::cout << "\n\n";
+  // std::cout << "\n\n";
+  // for (auto n : node->GetOutgoingNodes()) {
+  //   std::cout << n->GetNode()->GetStmtIndex() << "\n";
+  // }
+  // std::cout << "\n\n";
 
   for (std::shared_ptr<CFGNode> currNode : node->GetOutgoingNodes()) {
     length--;
