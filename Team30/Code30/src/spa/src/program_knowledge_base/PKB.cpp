@@ -186,7 +186,9 @@ std::vector<std::string> PKB::GetRelationValueSynonym(std::string const& value,
 //// 2 Declarations
 // example Follows(s1, s2), FollowsStar(s1, s2)
 std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
-    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
+    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
+    std::unordered_set<std::string> const& syn_1_possible_values,
+    std::unordered_set<std::string> const& syn_2_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
   std::unordered_set<std::string> ents1 = PKB::ent_data->Get(entity_type_1);
 
@@ -219,8 +221,10 @@ std::vector<std::string> PKB::GetMatchingAssignStmts(
 }
 
 std::vector<std::pair<std::string, std::string>>
-PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
-                                      MatchType match_type) {
+PKB::GetMatchingAssignStmtLhsVarPairs(
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+    std::unordered_set<std::string> const& assign_syn_possible_values,
+    std::unordered_set<std::string> const& var_syn_possible_values) {
   return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
 }
 
@@ -236,6 +240,9 @@ std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
 }
 
 std::vector<std::pair<std::string, std::string>>
-PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
+PKB::GetContainerStmtControlVarPairs(
+    EntityType container_stmt_type,
+    std::unordered_set<std::string> const& container_syn_possible_values,
+    std::unordered_set<std::string> const& control_var_possible_values) {
   return pat_data->GetContainerStmtControlVarPairs(container_stmt_type);
 }

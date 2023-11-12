@@ -45,8 +45,7 @@ void AffectsCache::CacheHasNoAffectsFrom(std::shared_ptr<CFGNode> const& node) {
 }
 
 bool AffectsCache::HasNoAffectsPathFrom(std::shared_ptr<CFGNode> const& node) {
-  return has_no_affects_path_from_cache.count(node->GetNodeStmtIndex()) >
-         0;
+  return has_no_affects_path_from_cache.count(node->GetNodeStmtIndex()) > 0;
 }
 
 bool AffectsCache::HasAnyAffectsPathFrom(std::shared_ptr<CFGNode> const& node) {
@@ -58,8 +57,7 @@ void AffectsCache::CacheHasNoAffectsTo(std::shared_ptr<CFGNode> const& node) {
 }
 
 bool AffectsCache::HasNoAffectsPathTo(std::shared_ptr<CFGNode> const& node) {
-  return has_no_affects_path_to_cache.count(node->GetNodeStmtIndex()) >
-         0;
+  return has_no_affects_path_to_cache.count(node->GetNodeStmtIndex()) > 0;
 }
 
 bool AffectsCache::HasAnyAffectsPathTo(std::shared_ptr<CFGNode> const& node) {
@@ -83,8 +81,7 @@ bool AffectsCache::CompletedForwardTraversal(
 
 bool AffectsCache::CompletedBackwardTraversal(
     std::shared_ptr<CFGNode> const& node) {
-  return completed_backward_traversal.count(node->GetNodeStmtIndex()) >
-         0;
+  return completed_backward_traversal.count(node->GetNodeStmtIndex()) > 0;
 }
 
 std::unordered_set<std::string> AffectsCache::GetAllAffects(

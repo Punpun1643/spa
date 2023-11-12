@@ -98,9 +98,10 @@ std::vector<std::string> PkbQpsInterfaceStub::GetRelationValueSynonym(
 }
 
 std::vector<std::pair<std::string, std::string>>
-PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
-                                               EntityType entity_type_2,
-                                               RelationType rel_type) {
+PkbQpsInterfaceStub::GetRelationSynonymSynonym(
+    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
+    std::unordered_set<std::string> const& syn_1_possible_values,
+    std::unordered_set<std::string> const& syn_2_possible_values) {
   synonym_synonym_calls++;
   last_entity_type_passed = entity_type_1;
   last_entity_type_2_passed = entity_type_2;
@@ -129,7 +130,9 @@ std::vector<std::string> PkbQpsInterfaceStub::GetMatchingAssignStmts(
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
-    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+    std::unordered_set<std::string> const& assign_syn_possible_values,
+    std::unordered_set<std::string> const& var_syn_possible_values) {
   pattern_assign_decl_calls++;
   last_match_type_passed = match_type;
   last_rhs_expr_passed = rhs_expr;
@@ -153,7 +156,9 @@ PkbQpsInterfaceStub::GetContainerStmtsWithGivenControlVar(
 
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(
-    EntityType container_stmt_type) {
+    EntityType container_stmt_type,
+    std::unordered_set<std::string> const& container_syn_possible_values,
+    std::unordered_set<std::string> const& control_var_possible_values) {
   last_entity_type_passed = container_stmt_type;
   return pattern_container_decl_values;
 }
