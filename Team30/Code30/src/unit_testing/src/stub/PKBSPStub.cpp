@@ -68,18 +68,23 @@ void PKBSPStub::InsertRelationCommon(RelationType type, std::string a,
 }
 
 // Relation (integer, integer)
-void PKBSPStub::InsertRelation(RelationType rel_type, std::string const& s1_line_num, std::string const& s2_line_num) {
+void PKBSPStub::InsertRelation(RelationType rel_type,
+                               std::string const& s1_line_num,
+                               std::string const& s2_line_num) {
   InsertRelationCommon(rel_type, s1_line_num, s2_line_num);
 }
 
 // Assign Pattern clause
-void PKBSPStub::InsertAssignPattern(std::string const& statement_number, std::string const& lhs,
+void PKBSPStub::InsertAssignPattern(std::string const& statement_number,
+                                    std::string const& lhs,
                                     std::shared_ptr<TreeNode> const& rhs) {
   insertPatternCallCount++;
 };
 
 // If/While Pattern clause
-void PKBSPStub::InsertCondVarPattern(EntityType type, std::string const& statement_number, std::string const& var){};
+void PKBSPStub::InsertCondVarPattern(EntityType type,
+                                     std::string const& statement_number,
+                                     std::string const& var){};
 
 std::unordered_set<std::string> PKBSPStub::GetProcedureUses(
     std::string const& proc_name) {
@@ -153,7 +158,8 @@ std::unordered_set<std::string> PKBSPStub::GetStatementModifies(
   return result;
 }
 
-std::unordered_set<std::string> PKBSPStub::GetStatementUses(std::string const& stmt) {
+std::unordered_set<std::string> PKBSPStub::GetStatementUses(
+    std::string const& stmt) {
   std::unordered_set<std::string> result;
   return result;
 }
@@ -174,11 +180,11 @@ bool PKBSPStub::checkCFGNodeOutgoing(std::string statement_num,
     return false;
   }
 
-  //std::cout << "\n\n";
-  //for (auto n : node->GetOutgoingNodes()) {
-  //  std::cout << n->GetNode()->GetStmtIndex() << "\n";
-  //}
-  //std::cout << "\n\n";
+  // std::cout << "\n\n";
+  // for (auto n : node->GetOutgoingNodes()) {
+  //   std::cout << n->GetNode()->GetStmtIndex() << "\n";
+  // }
+  // std::cout << "\n\n";
 
   for (std::shared_ptr<CFGNode> currNode : node->GetOutgoingNodes()) {
     length--;

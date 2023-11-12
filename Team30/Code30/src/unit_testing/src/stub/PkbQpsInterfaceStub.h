@@ -85,7 +85,8 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   // Entities
   std::vector<std::string> GetEntitiesWithType(EntityType type) override;
 
-  std::string ConvertEntityValueToAlias(std::string const& value, EntityType type,
+  std::string ConvertEntityValueToAlias(std::string const& value,
+                                        EntityType type,
                                         AttrType wanted_attr_type) override;
 
   std::vector<std::string> GetEntitiesMatchingAttrValue(
@@ -120,9 +121,10 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
 
   // 2 Declarations - SuchThatClauses
   std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
-      EntityType entity_type_1, EntityType entity_type_2,
-      RelationType rel_type, std::unordered_set<std::string> const& syn_1_possible_values = {},
-      std::unordered_set<std::string> const& syn_2_possible_values = {}) override;
+      EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
+      std::unordered_set<std::string> const& syn_1_possible_values = {},
+      std::unordered_set<std::string> const& syn_2_possible_values = {})
+      override;
 
   // Pattern clause
   std::vector<std::string> GetMatchingAssignStmts(
@@ -131,9 +133,11 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
-                                   MatchType match_type, std::unordered_set<std::string> const& assign_syn_possible_values = {},
-                                   std::unordered_set<std::string> const& var_syn_possible_values = {}) override;
+  GetMatchingAssignStmtLhsVarPairs(
+      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+      std::unordered_set<std::string> const& assign_syn_possible_values = {},
+      std::unordered_set<std::string> const& var_syn_possible_values = {})
+      override;
 
   std::vector<std::string> GetContainerStmtsWithControlVar(
       EntityType container_stmt_type) override;
@@ -142,6 +146,9 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       EntityType container_stmt_type, std::string const& var_name) override;
 
   std::vector<std::pair<std::string, std::string>>
-  GetContainerStmtControlVarPairs(EntityType container_stmt_type, std::unordered_set<std::string> const& container_syn_possible_values = {},
-                                  std::unordered_set<std::string> const& control_var_possible_values = {}) override;
+  GetContainerStmtControlVarPairs(
+      EntityType container_stmt_type,
+      std::unordered_set<std::string> const& container_syn_possible_values = {},
+      std::unordered_set<std::string> const& control_var_possible_values = {})
+      override;
 };
