@@ -34,5 +34,4 @@ class PatternClause : public Clause {
   bool SupportsConditionalEvaluation() const override;
   std::optional<PqlDeclaration> GetFirstDeclaration() const override;
   std::optional<PqlDeclaration> GetSecondDeclaration() const override;
-
 };

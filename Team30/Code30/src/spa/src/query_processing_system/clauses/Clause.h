@@ -10,9 +10,9 @@ class Clause {
 
  public:
   virtual std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) = 0;
-  virtual std::unique_ptr<ClauseResult> EvaluateOnCondition(PKBQPSInterface& pkb,
-                                                            std::unordered_set<std::string>& d1_values,
-                                                            std::unordered_set<std::string>& d2_values);
+  virtual std::unique_ptr<ClauseResult> EvaluateOnCondition(
+      PKBQPSInterface& pkb, std::unordered_set<std::string>& d1_values,
+      std::unordered_set<std::string>& d2_values);
   virtual ~Clause();
 
   void FlagAsNegated();

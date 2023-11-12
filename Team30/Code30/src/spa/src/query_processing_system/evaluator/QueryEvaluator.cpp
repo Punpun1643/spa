@@ -9,8 +9,10 @@ QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 
 void QueryEvaluator::PopulateIntermediateResultsTable(
     IntermediateResultsTable& table, ClauseList clauses) {
-  for (const auto& clause : clauses) {
-    auto clause_result = (clause->SupportsConditionalEvaluation()) ? EvaluateClauseConditionally(table, clause) : clause->Evaluate(pkb);
+  for (auto const& clause : clauses) {
+    auto clause_result = (clause->SupportsConditionalEvaluation())
+                             ? EvaluateClauseConditionally(table, clause)
+                             : clause->Evaluate(pkb);
     if (clause->IsNegated()) {
       auto decls = clause_result->GetDeclarations();
       FillMissingDecls(table, decls);
@@ -24,7 +26,8 @@ void QueryEvaluator::PopulateIntermediateResultsTable(
   }
 }
 
-std::unique_ptr<ClauseResult> QueryEvaluator::EvaluateClauseConditionally(IntermediateResultsTable& table, const std::shared_ptr<Clause>& clause) {
+std::unique_ptr<ClauseResult> QueryEvaluator::EvaluateClauseConditionally(
+    IntermediateResultsTable& table, std::shared_ptr<Clause> const& clause) {
   if (table.HasNoResults()) {
     throw std::invalid_argument("Provided table already has no results.");
   }

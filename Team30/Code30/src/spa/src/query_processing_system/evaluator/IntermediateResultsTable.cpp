@@ -63,7 +63,8 @@ bool IntermediateResultsTable::HasNoResults() const {
   return has_no_results;
 }
 
-std::unordered_set<std::string> IntermediateResultsTable::GetValues(PqlDeclaration const& decl) {
+std::unordered_set<std::string> IntermediateResultsTable::GetValues(
+    PqlDeclaration const& decl) {
   if (has_no_results) {
     return {};
   }

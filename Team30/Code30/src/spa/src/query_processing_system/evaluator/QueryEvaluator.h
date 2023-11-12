@@ -28,7 +28,8 @@ class QueryEvaluator {
   bool UpdateResultUsingAttrTypes(std::vector<std::vector<std::string>>& values,
                                   std::vector<AttrRef> const& attr_refs);
 
-  std::unique_ptr<ClauseResult> EvaluateClauseConditionally(IntermediateResultsTable& table, const std::shared_ptr<Clause>& clause);
+  std::unique_ptr<ClauseResult> EvaluateClauseConditionally(
+      IntermediateResultsTable& table, std::shared_ptr<Clause> const& clause);
 
  public:
   explicit QueryEvaluator(PKBQPSInterface& pkb);
