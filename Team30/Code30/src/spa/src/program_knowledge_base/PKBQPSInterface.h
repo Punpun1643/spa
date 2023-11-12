@@ -20,13 +20,13 @@ class PKBQPSInterface {
   virtual std::vector<std::string> GetEntitiesWithType(
       EntityType type) = 0;  // Returns all Entities in the default AttrType
 
-  virtual std::string ConvertEntityValueToAlias(std::string value,
+  virtual std::string ConvertEntityValueToAlias(std::string const& value,
                                                 EntityType type,
                                                 AttrType alias_attr_type) = 0;
 
   // ---------- WITH CLAUSES ----------
   virtual std::vector<std::string> GetEntitiesMatchingAttrValue(
-      EntityType type, AttrType attr_type, std::string attr_value) = 0;
+      EntityType type, AttrType attr_type, std::string const& value) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
@@ -35,14 +35,14 @@ class PKBQPSInterface {
   // ---------- RELATIONS ----------
   // 0 Declarations
   // Relation(int, int)
-  virtual bool IsRelationTrueValueValue(std::string value_1,
-                                        std::string value_2,
+  virtual bool IsRelationTrueValueValue(std::string const& value_1,
+                                        std::string const& value_2,
                                         RelationType rel_type) = 0;
   // Relation(int, _)
-  virtual bool IsRelationTrueValueWild(std::string value,
+  virtual bool IsRelationTrueValueWild(std::string const& value,
                                        RelationType rel_type) = 0;
   // Relation(_, int)
-  virtual bool IsRelationTrueWildValue(std::string value,
+  virtual bool IsRelationTrueWildValue(std::string const& value,
                                        RelationType rel_type) = 0;
   // Relation(_, _)
   virtual bool IsRelationTrueWildWild(RelationType relation_type) = 0;
@@ -56,10 +56,12 @@ class PKBQPSInterface {
       EntityType entity_type, RelationType rel_type) = 0;
   // Relation(syn, int)
   virtual std::vector<std::string> GetRelationSynonymValue(
-      EntityType entity_type, std::string value, RelationType rel_type) = 0;
+      EntityType entity_type, std::string const& value,
+      RelationType rel_type) = 0;
   // Relation(int, syn)
   virtual std::vector<std::string> GetRelationValueSynonym(
-      std::string value, EntityType entity_type, RelationType rel_type) = 0;
+      std::string const& value, EntityType entity_type,
+      RelationType rel_type) = 0;
 
   // 2 Declarations
   // Relation(syn1, syn2)
@@ -74,7 +76,7 @@ class PKBQPSInterface {
 
   // LHS with a fixed value
   virtual std::vector<std::string> GetMatchingAssignStmts(
-      std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
+      std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
@@ -85,7 +87,7 @@ class PKBQPSInterface {
       EntityType container_stmt_type) = 0;
 
   virtual std::vector<std::string> GetContainerStmtsWithGivenControlVar(
-      EntityType container_stmt_type, std::string var_name) = 0;
+      EntityType container_stmt_type, std::string const& var_name) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(EntityType container_stmt_type) = 0;

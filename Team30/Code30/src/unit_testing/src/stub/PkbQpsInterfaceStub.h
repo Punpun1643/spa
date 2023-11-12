@@ -85,11 +85,11 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   // Entities
   std::vector<std::string> GetEntitiesWithType(EntityType type) override;
 
-  std::string ConvertEntityValueToAlias(std::string value, EntityType type,
+  std::string ConvertEntityValueToAlias(std::string const& value, EntityType type,
                                         AttrType wanted_attr_type) override;
 
   std::vector<std::string> GetEntitiesMatchingAttrValue(
-      EntityType type, AttrType attr_type, std::string value) override;
+      EntityType type, AttrType attr_type, std::string const& value) override;
 
   std::vector<std::pair<std::string, std::string>>
   GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
@@ -97,11 +97,12 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
                                   AttrType attr_type_2) override;
 
   // 0 Declarations - SuchThatClauses
-  bool IsRelationTrueValueValue(std::string value_1, std::string value_2,
+  bool IsRelationTrueValueValue(std::string const& value_1,
+                                std::string const& value_2,
                                 RelationType rel_type) override;
-  bool IsRelationTrueValueWild(std::string value,
+  bool IsRelationTrueValueWild(std::string const& value,
                                RelationType rel_type) override;
-  bool IsRelationTrueWildValue(std::string value,
+  bool IsRelationTrueWildValue(std::string const& value,
                                RelationType rel_type) override;
   bool IsRelationTrueWildWild(RelationType relation_type) override;
 
@@ -111,10 +112,10 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::vector<std::string> GetRelationWildSynonym(
       EntityType entity_type, RelationType rel_type) override;
   std::vector<std::string> GetRelationSynonymValue(
-      EntityType entity_type, std::string value,
+      EntityType entity_type, std::string const& value,
       RelationType rel_type) override;
   std::vector<std::string> GetRelationValueSynonym(
-      std::string value, EntityType entity_type,
+      std::string const& value, EntityType entity_type,
       RelationType rel_type) override;
 
   // 2 Declarations - SuchThatClauses
@@ -126,7 +127,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::vector<std::string> GetMatchingAssignStmts(
       std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) override;
   std::vector<std::string> GetMatchingAssignStmts(
-      std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
+      std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
@@ -136,7 +137,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       EntityType container_stmt_type) override;
 
   std::vector<std::string> GetContainerStmtsWithGivenControlVar(
-      EntityType container_stmt_type, std::string var_name) override;
+      EntityType container_stmt_type, std::string const& var_name) override;
 
   std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(EntityType container_stmt_type) override;
