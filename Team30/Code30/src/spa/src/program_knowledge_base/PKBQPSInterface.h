@@ -67,7 +67,9 @@ class PKBQPSInterface {
   // Relation(syn1, syn2)
   virtual std::vector<std::pair<std::string, std::string>>
   GetRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
-                            RelationType rel_type) = 0;
+                            RelationType rel_type,
+                            std::unordered_set<std::string> const& syn_1_possible_values = {},
+                            std::unordered_set<std::string> const& syn_2_possible_values = {}) = 0;
 
   // ---------- PATTERNS ----------
   // wild LHS
@@ -81,7 +83,9 @@ class PKBQPSInterface {
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
-                                   MatchType match_type) = 0;
+                                   MatchType match_type,
+                                   std::unordered_set<std::string> const& assign_syn_possible_values = {},
+                                   std::unordered_set<std::string> const& var_syn_possible_values = {}) = 0;
 
   virtual std::vector<std::string> GetContainerStmtsWithControlVar(
       EntityType container_stmt_type) = 0;
@@ -90,5 +94,7 @@ class PKBQPSInterface {
       EntityType container_stmt_type, std::string const& var_name) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
-  GetContainerStmtControlVarPairs(EntityType container_stmt_type) = 0;
+  GetContainerStmtControlVarPairs(EntityType container_stmt_type,
+                                  std::unordered_set<std::string> const& container_syn_possible_values = {},
+                                  std::unordered_set<std::string> const& control_var_possible_values = {}) = 0;
 };
