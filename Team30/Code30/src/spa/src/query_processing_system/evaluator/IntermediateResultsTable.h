@@ -47,6 +47,8 @@ class IntermediateResultsTable {
 
   bool HasDeclaration(PqlDeclaration const& declaration) const;
 
+  std::unordered_set<std::string> GetValues(PqlDeclaration const& decl);
+
   std::vector<std::vector<std::string>> GetValuesGivenDeclarations(
       std::vector<PqlDeclaration> const& decls);
 };
