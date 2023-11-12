@@ -86,11 +86,13 @@ TEST_CASE("RelationalTable Tests") {
                 {"5", "5", "2", "2", "2"},
                 {"6", "6", "3", "3", "3"}};
     REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
+    REQUIRE(table.GetCol(a) == std::unordered_set<std::string>(VEC_1.begin(), VEC_1.end()));
 
     // Make sure de-duplication is done
     auto table_3 = RelationalTable(v, VEC_3);
     table.Join(table_3, true);
     REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
+    REQUIRE(table.GetCol(b) == std::unordered_set<std::string>(VEC_2.begin(), VEC_2.end()));
   }
 
   SECTION("Test cross-product join") {
