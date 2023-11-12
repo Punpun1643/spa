@@ -41,6 +41,14 @@ class GraphRelationTraverser {
     std::shared_ptr<AffectsCache> cache;
     std::shared_ptr<CFGNode> end_node;
   };
+
+  struct AffectsFromTraversalContext {
+    std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
+    std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+    std::shared_ptr<CFGNode> start_node;
+    std::shared_ptr<AffectsCache> cache;
+  };
+
   // Next
   static bool HasImmediatePath(std::shared_ptr<CFGNode> const& start_node,
                                std::shared_ptr<CFGNode> const& end_node);
@@ -138,4 +146,12 @@ class GraphRelationTraverser {
       std::shared_ptr<CFGNode> const& curr_node,
       std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
       AffectsTraversalContext& context);
+
+  static std::unordered_set<std::string> PerformForwardTraversal(AffectsFromTraversalContext& context);
+
+  static void ProcessOutgoingNode(
+      std::shared_ptr<CFGNode> curr_node,
+    const std::string& var_modified_in_start_node,
+      std::unordered_set<std::string>& stmts_with_valid_path,
+      AffectsFromTraversalContext& context);
 };

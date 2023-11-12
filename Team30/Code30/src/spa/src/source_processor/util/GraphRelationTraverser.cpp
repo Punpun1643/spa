@@ -440,39 +440,48 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
   if (cache->CompletedForwardTraversal(start_node)) {
     return cache->GetAllAffects(start_node);
   }
+  AffectsFromTraversalContext context{std::queue<std::shared_ptr<CFGNode>>(),
+                                      std::unordered_set<std::shared_ptr<CFGNode>>(),
+                                      start_node, cache};
+  return PerformForwardTraversal(context);
+}
 
-  std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
-  std::unordered_set<std::shared_ptr<CFGNode>> visited_nodes;
+std::unordered_set<std::string>
+GraphRelationTraverser::PerformForwardTraversal(AffectsFromTraversalContext& context) {
   std::unordered_set<std::string> stmts_with_valid_path;
   std::string var_modified_in_start_node =
-      CFGNode::GetVarModifiedInStartNode(start_node);
+      CFGNode::GetVarModifiedInStartNode(context.start_node);
+  context.nodes_to_visit.push(context.start_node);
 
-  nodes_to_visit.push(start_node);
+  while (!context.nodes_to_visit.empty()) {
+    auto curr_node = context.nodes_to_visit.front();
+    context.nodes_to_visit.pop();
+    ProcessOutgoingNode(curr_node, var_modified_in_start_node, stmts_with_valid_path, context);
+  }
 
-  while (!nodes_to_visit.empty()) {
-    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.front();
-    nodes_to_visit.pop();
+  context.cache->InsertCompletedForwardTraversal(context.start_node);
+  return stmts_with_valid_path;
+}
 
-    for (std::shared_ptr<CFGNode> outgoing_node :
-         curr_node->GetOutgoingNodes()) {
-      if (!visited_nodes.count(outgoing_node)) {
-        visited_nodes.insert(outgoing_node);
+void GraphRelationTraverser::ProcessOutgoingNode(
+    std::shared_ptr<CFGNode> curr_node,
+    const std::string& var_modified_in_start_node,
+    std::unordered_set<std::string>& stmts_with_valid_path,
+    AffectsFromTraversalContext& context) {
 
-        // if start node affects outgoing node, add to stmts_with_valid_path
-        if (ValidatePossibleAffectsRelationship(
-                var_modified_in_start_node,
-                CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
-            CFGNode::IsAssignNode(outgoing_node)) {
-          stmts_with_valid_path.insert(
-              std::to_string(outgoing_node->GetNodeStmtIndex()));
-          cache->CacheAffects(start_node, outgoing_node);
-        }
-        HandleVisitOutgoingNode(start_node, outgoing_node, nodes_to_visit);
+  for (auto outgoing_node : curr_node->GetOutgoingNodes()) {
+    if (!context.visited_nodes.count(outgoing_node)) {
+      context.visited_nodes.insert(outgoing_node);
+      if (ValidatePossibleAffectsRelationship(var_modified_in_start_node,
+                                              CFGNode::GetVarUsedInEndNode(outgoing_node)) &&
+          CFGNode::IsAssignNode(outgoing_node)) {
+        stmts_with_valid_path.insert(
+            std::to_string(outgoing_node->GetNodeStmtIndex()));
+        context.cache->CacheAffects(context.start_node, outgoing_node);
       }
+      HandleVisitOutgoingNode(context.start_node, outgoing_node, context.nodes_to_visit);
     }
   }
-  cache->InsertCompletedForwardTraversal(start_node);
-  return stmts_with_valid_path;
 }
 
 std::unordered_set<std::string>
