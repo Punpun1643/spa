@@ -431,10 +431,7 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
               std::to_string(outgoing_node->GetNodeStmtIndex()));
           cache->CacheAffects(start_node, outgoing_node);
         }
-
-        if (ShouldVisit(outgoing_node, var_modified_in_start_node)) {
-          nodes_to_visit.push(outgoing_node);
-        }
+        HandleVisitOutgoingNode(start_node, outgoing_node, nodes_to_visit);
       }
     }
   }
