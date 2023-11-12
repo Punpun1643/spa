@@ -287,7 +287,7 @@ bool GraphRelationTraverser::AffectsAnyOutgoingNode(
   return false;
 }
 
-bool GraphRelationTraverser::PerformAffectsTraversal(
+bool GraphRelationTraverser::PerformAffectsFromTraversal(
     std::shared_ptr<CFGNode> const& start_node,
     std::shared_ptr<AffectsCache> cache) {
   std::queue<std::shared_ptr<CFGNode>> nodes_to_visit;
@@ -327,7 +327,95 @@ bool GraphRelationTraverser::HasAnyAffectsPathFrom(
   if (CheckCacheForAffectsPathFrom(start_node, cache)) {
     return true;
   }
-  return PerformAffectsTraversal(start_node, cache);
+  return PerformAffectsFromTraversal(start_node, cache);
+}
+
+bool GraphRelationTraverser::IsValidAffectsRelation(
+    std::shared_ptr<CFGNode> const& curr_node,
+    std::shared_ptr<CFGNode> const& end_node,
+    std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
+    std::shared_ptr<AffectsCache> cache) {
+  if (CFGNode::IsAssignNode(curr_node) &&
+      ValidatePossibleAffectsRelationship(
+          CFGNode::GetVarModifiedInStartNode(curr_node),
+          unmodified_vars_used_in_end_node)) {
+    cache->CacheAffects(curr_node, end_node);
+    return true;
+  }
+  return false;
+}
+
+void GraphRelationTraverser::InitializeTraversal(
+    AffectsTraversalContext& context,
+    std::unordered_set<std::string> const& unmodified_vars_used_in_end_node) {
+  for (auto& incoming_node : context.end_node->GetIncomingNodes()) {
+    context.nodes_to_visit.push(incoming_node);
+    context.vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
+    context.visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
+                                     unmodified_vars_used_in_end_node));
+  }
+}
+
+void GraphRelationTraverser::UpdateUnmodifiedVars(
+    std::shared_ptr<CFGNode> const& curr_node,
+    std::unordered_set<std::string>& unmodified_vars_used_in_end_node) {
+  if (CFGNode::IsAssignOrReadOrCallNode(curr_node)) {
+    for (auto v : curr_node->GetModifiesVars()) {
+      unmodified_vars_used_in_end_node.erase(v);
+    }
+  }
+}
+
+void GraphRelationTraverser::AddIncomingNodesToTraversal(
+    std::shared_ptr<CFGNode> const& curr_node,
+    std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
+    AffectsTraversalContext& context) {
+  for (auto& incoming_node : curr_node->GetIncomingNodes()) {
+    if (!context.visited.count(make_pair(incoming_node->GetNodeStmtIndex(),
+                                         unmodified_vars_used_in_end_node))) {
+      context.nodes_to_visit.push(incoming_node);
+      context.vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
+      context.visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
+                                       unmodified_vars_used_in_end_node));
+    }
+  }
+}
+
+bool GraphRelationTraverser::ProcessCurrNode(AffectsTraversalContext& context) {
+  auto curr_node = context.nodes_to_visit.top();
+  auto unmodified_vars_used_in_end_node = context.vars_used_in_nodes.top();
+
+  context.nodes_to_visit.pop();
+  context.vars_used_in_nodes.pop();
+
+  if (IsValidAffectsRelation(curr_node, context.end_node,
+                             unmodified_vars_used_in_end_node, context.cache)) {
+    return true;
+  }
+
+  UpdateUnmodifiedVars(curr_node, unmodified_vars_used_in_end_node);
+  AddIncomingNodesToTraversal(curr_node, unmodified_vars_used_in_end_node,
+                              context);
+
+  return false;
+}
+
+bool GraphRelationTraverser::PerformAffectsToTraversal(
+    std::shared_ptr<CFGNode> const& end_node,
+    std::shared_ptr<AffectsCache> cache) {
+  AffectsTraversalContext context;
+  context.end_node = end_node;
+  context.cache = cache;
+
+  InitializeTraversal(context, CFGNode::GetVarUsedInEndNode(end_node));
+
+  while (!context.nodes_to_visit.empty()) {
+    if (ProcessCurrNode(context)) {
+      return true;
+    }
+  }
+  cache->CacheHasNoAffectsTo(end_node);
+  return false;
 }
 
 bool GraphRelationTraverser::HasAnyAffectsPathTo(
@@ -339,58 +427,7 @@ bool GraphRelationTraverser::HasAnyAffectsPathTo(
   if (CheckCacheForAffectsPathTo(end_node, cache)) {
     return true;
   }
-
-  std::stack<std::shared_ptr<CFGNode>> nodes_to_visit;
-  std::unordered_set<std::pair<int, std::unordered_set<std::string>>, PairHash2>
-      visited;
-  std::stack<std::unordered_set<std::string>> vars_used_in_nodes;
-
-  std::unordered_set<std::string> unmodified_vars_used_in_end_node =
-      CFGNode::GetVarUsedInEndNode(end_node);
-  for (std::shared_ptr<CFGNode> incoming_node : end_node->GetIncomingNodes()) {
-    nodes_to_visit.push(incoming_node);
-    vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-    visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
-                             unmodified_vars_used_in_end_node));
-  }
-
-  while (!nodes_to_visit.empty()) {
-    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.top();
-    std::unordered_set<std::string> unmodified_vars_used_in_end_node =
-        vars_used_in_nodes.top();
-    nodes_to_visit.pop();
-    vars_used_in_nodes.pop();
-
-    // return true if has valid affects relation
-    if (CFGNode::IsAssignNode(curr_node) &&
-        ValidatePossibleAffectsRelationship(
-            CFGNode::GetVarModifiedInStartNode(curr_node),
-            unmodified_vars_used_in_end_node)) {
-      cache->CacheAffects(curr_node, end_node);
-      return true;
-    }
-
-    // if incoming node changes a variable used by the end node, remove it from
-    // unmodifed vars
-    if (CFGNode::IsAssignOrReadOrCallNode(curr_node)) {
-      for (auto v : curr_node->GetModifiesVars()) {
-        unmodified_vars_used_in_end_node.erase(v);
-      }
-    }
-
-    for (std::shared_ptr<CFGNode> incoming_node :
-         curr_node->GetIncomingNodes()) {
-      if (!visited.count(make_pair(incoming_node->GetNodeStmtIndex(),
-                                   unmodified_vars_used_in_end_node))) {
-        nodes_to_visit.push(incoming_node);
-        vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-        visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
-                                 unmodified_vars_used_in_end_node));
-      }
-    }
-  }
-  cache->CacheHasNoAffectsTo(end_node);
-  return false;
+  return PerformAffectsToTraversal(end_node, cache);
 }
 
 std::unordered_set<std::string>
@@ -400,7 +437,6 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathFrom(
   if (!CFGNode::IsAssignNode(start_node)) {
     return std::unordered_set<std::string>();
   }
-
   if (cache->CompletedForwardTraversal(start_node)) {
     return cache->GetAllAffects(start_node);
   }
