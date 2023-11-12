@@ -31,4 +31,7 @@ class WithClause : public Clause {
   WithClause(WithRef ref1, WithRef ref2);
 
   std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
+
+  std::optional<PqlDeclaration> GetFirstDeclaration() const override;
+  std::optional<PqlDeclaration> GetSecondDeclaration() const override;
 };

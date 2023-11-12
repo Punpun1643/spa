@@ -117,12 +117,25 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
     PKBQPSInterface& pkb) {
   EntityType entity_type_1 = arg1->GetDeclarationType();
   EntityType entity_type_2 = arg2->GetDeclarationType();
-  PqlDeclaration declaration_1 = arg1->GetDeclaration();
-  PqlDeclaration declaration_2 = arg2->GetDeclaration();
 
   auto possible_values = pkb.GetRelationSynonymSynonym(
       entity_type_1, entity_type_2, relation_type);
-  return std::make_unique<ClauseResult>(declaration_1, declaration_2,
+  return std::make_unique<ClauseResult>(arg1->GetDeclaration(),
+                                        arg2->GetDeclaration(),
+                                        std::move(possible_values));
+}
+
+std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
+    PKBQPSInterface& pkb, std::unordered_set<std::string> const& decl_1_subset,
+    std::unordered_set<std::string> const& decl_2_subset) {
+  EntityType entity_type_1 = arg1->GetDeclarationType();
+  EntityType entity_type_2 = arg2->GetDeclarationType();
+
+  auto possible_values =
+      pkb.GetRelationSynonymSynonym(entity_type_1, entity_type_2, relation_type,
+                                    decl_1_subset, decl_2_subset);
+  return std::make_unique<ClauseResult>(arg1->GetDeclaration(),
+                                        arg2->GetDeclaration(),
                                         std::move(possible_values));
 }
 
@@ -160,4 +173,36 @@ std::unique_ptr<ClauseResult> SuchThatClause::Evaluate(PKBQPSInterface& pkb) {
   } else {
     throw std::runtime_error("Unknown combination of reference types");
   }
+}
+
+std::unique_ptr<ClauseResult> SuchThatClause::EvaluateOnCondition(
+    PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+    std::unordered_set<std::string>& decl_2_subset) {
+  if (!SupportsConditionalEvaluation()) {
+    throw std::logic_error(
+        "SuchThatClause only supports conditional evaluation on 2 synonym "
+        "clauses.");
+  }
+  return EvaluateDeclarationDeclaration(pkb, decl_1_subset, decl_2_subset);
+}
+
+std::optional<PqlDeclaration> SuchThatClause::GetFirstDeclaration() const {
+  if (arg1->GetRefType() == PqlRefType::DECLARATION) {
+    return arg1->GetDeclaration();
+  } else {
+    return std::nullopt;
+  }
+}
+
+std::optional<PqlDeclaration> SuchThatClause::GetSecondDeclaration() const {
+  if (arg2->GetRefType() == PqlRefType::DECLARATION) {
+    return arg2->GetDeclaration();
+  } else {
+    return std::nullopt;
+  }
+}
+
+bool SuchThatClause::SupportsConditionalEvaluation() const {
+  return (arg1->GetRefType() == PqlRefType::DECLARATION &&
+          arg2->GetRefType() == PqlRefType::DECLARATION);
 }
