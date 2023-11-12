@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <utility>
 
 #include "../../program_knowledge_base/utils/AffectsCache.h"
 #include "../node/util_node/CFGNode.h"
