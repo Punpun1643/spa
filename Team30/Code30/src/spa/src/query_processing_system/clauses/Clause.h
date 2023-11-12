@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <string>
+#include <unordered_set>
 
 #include "../../program_knowledge_base/PKBQPSInterface.h"
 #include "ClauseResult.h"
