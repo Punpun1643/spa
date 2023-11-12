@@ -37,9 +37,8 @@ class SuchThatClause : public Clause {
   virtual std::unique_ptr<ClauseResult> EvaluateDeclarationDeclaration(
       PKBQPSInterface& pkb);
   virtual std::unique_ptr<ClauseResult> EvaluateDeclarationDeclaration(
-      PKBQPSInterface& pkb,
-      std::unordered_set<std::string> const& decl_1_subset,
-      std::unordered_set<std::string> const& decl_2_subset);
+      PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+      std::unordered_set<std::string>& decl_2_subset);
 
   void CheckDeclarationArgEntityType(
       int arg_num, std::vector<EntityType> const& allowed_types,

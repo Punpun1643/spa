@@ -33,6 +33,18 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
       std::unordered_set<std::string> const& set1,
       std::unordered_set<std::string> const& set2);
 
+  std::vector<std::pair<std::string, std::string>>
+  GetRelationSynonymSynonymForwardTraverse(
+      RelationType rel_type,
+      std::unordered_set<std::string> const& syn_1_possible_values,
+      std::unordered_set<std::string> const& syn_2_possible_values);
+
+  std::vector<std::pair<std::string, std::string>>
+  GetRelationSynonymSynonymBackwardTraverse(
+      RelationType rel_type,
+      std::unordered_set<std::string> const& syn_1_possible_values,
+      std::unordered_set<std::string> const& syn_2_possible_values);
+
  public:
   PKB();
 
@@ -107,8 +119,8 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
       EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
-      std::unordered_set<std::string> const& syn_1_possible_values,
-      std::unordered_set<std::string> const& syn_2_possible_values) override;
+      std::unordered_set<std::string>& syn_1_possible_values,
+      std::unordered_set<std::string>& syn_2_possible_values) override;
 
   // ---------- PATTERNS ----------
   std::vector<std::string> GetMatchingAssignStmts(
@@ -122,8 +134,8 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(
       std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-      std::unordered_set<std::string> const& assign_syn_possible_values,
-      std::unordered_set<std::string> const& var_syn_possible_values) override;
+      std::unordered_set<std::string>& assign_syn_possible_values,
+      std::unordered_set<std::string>& var_syn_possible_values) override;
 
   std::vector<std::string> GetContainerStmtsWithControlVar(
       EntityType container_stmt_type) override;
@@ -137,7 +149,6 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(
       EntityType container_stmt_type,
-      std::unordered_set<std::string> const& container_syn_possible_values,
-      std::unordered_set<std::string> const& control_var_possible_values)
-      override;
+      std::unordered_set<std::string>& container_syn_possible_values,
+      std::unordered_set<std::string>& control_var_possible_values) override;
 };

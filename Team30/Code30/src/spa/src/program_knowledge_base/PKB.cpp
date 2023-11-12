@@ -187,28 +187,68 @@ std::vector<std::string> PKB::GetRelationValueSynonym(std::string const& value,
 // example Follows(s1, s2), FollowsStar(s1, s2)
 std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
-  std::vector<std::pair<std::string, std::string>> output;
-  std::unordered_set<std::string> ents1 = PKB::ent_data->Get(entity_type_1);
-
-  for (std::string ent1 : ents1) {
-    std::unordered_set<std::string> all_related_to_ent1 =
-        rel_data->GetAllRelatedToValue(rel_type, ent1);
-    std::unordered_set<std::string> ents2 =
-        PKB::GetIntersection(ent_data->Get(entity_type_2), all_related_to_ent1);
-
-    for (std::string ent2 : ents2) {
-      output.push_back(make_pair(ent1, ent2));
-    }
-  }
-
-  return output;
+  return GetRelationSynonymSynonym(entity_type_1, entity_type_2, rel_type,
+                                   ent_data->Get(entity_type_1),
+                                   ent_data->Get(entity_type_2));
 }
 
 std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
+    std::unordered_set<std::string>& syn_1_possible_values,
+    std::unordered_set<std::string>& syn_2_possible_values) {
+  if (syn_1_possible_values.empty()) {
+    syn_1_possible_values = ent_data->Get(entity_type_1);
+  }
+  if (syn_2_possible_values.empty()) {
+    syn_2_possible_values = ent_data->Get(entity_type_2);
+  }
+
+  std::vector<std::pair<std::string, std::string>> output;
+  if (syn_1_possible_values.size() <= syn_2_possible_values.size()) {
+    return GetRelationSynonymSynonymForwardTraverse(
+        rel_type, syn_1_possible_values, syn_2_possible_values);
+  } else {
+    return GetRelationSynonymSynonymBackwardTraverse(
+        rel_type, syn_1_possible_values, syn_2_possible_values);
+  }
+}
+
+std::vector<std::pair<std::string, std::string>>
+PKB::GetRelationSynonymSynonymForwardTraverse(
+    RelationType rel_type,
     std::unordered_set<std::string> const& syn_1_possible_values,
     std::unordered_set<std::string> const& syn_2_possible_values) {
-  return {};
+  std::vector<std::pair<std::string, std::string>> output;
+
+  for (std::string ent1 : syn_1_possible_values) {
+    std::unordered_set<std::string> all_related_to_ent1 =
+        rel_data->GetAllRelatedToValue(rel_type, ent1);
+    std::unordered_set<std::string> ents2 =
+        PKB::GetIntersection(syn_2_possible_values, all_related_to_ent1);
+    for (std::string ent2 : ents2) {
+      output.push_back(make_pair(ent1, ent2));
+    }
+  }
+  return output;
+}
+
+std::vector<std::pair<std::string, std::string>>
+PKB::GetRelationSynonymSynonymBackwardTraverse(
+    RelationType rel_type,
+    std::unordered_set<std::string> const& syn_1_possible_values,
+    std::unordered_set<std::string> const& syn_2_possible_values) {
+  std::vector<std::pair<std::string, std::string>> output;
+
+  for (std::string ent2 : syn_2_possible_values) {
+    std::unordered_set<std::string> all_related_to_ent2 =
+        rel_data->GetAllInverseRelatedToValue(rel_type, ent2);
+    std::unordered_set<std::string> ents1 =
+        PKB::GetIntersection(syn_1_possible_values, all_related_to_ent2);
+    for (std::string ent1 : ents1) {
+      output.push_back(make_pair(ent1, ent2));
+    }
+  }
+  return output;
 }
 
 // ---------- PATTERNS ----------
@@ -228,15 +268,25 @@ std::vector<std::string> PKB::GetMatchingAssignStmts(
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                       MatchType match_type) {
-  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(
+      rhs_expr, match_type, ent_data->Get(EntityType::ASSIGN),
+      ent_data->Get(EntityType::VARIABLE));
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(
     std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-    std::unordered_set<std::string> const& assign_syn_possible_values,
-    std::unordered_set<std::string> const& var_syn_possible_values) {
-  return {};
+    std::unordered_set<std::string>& assign_syn_possible_values,
+    std::unordered_set<std::string>& var_syn_possible_values) {
+  if (assign_syn_possible_values.empty()) {
+    assign_syn_possible_values = ent_data->Get(EntityType::ASSIGN);
+  }
+  if (var_syn_possible_values.empty()) {
+    var_syn_possible_values = ent_data->Get(EntityType::VARIABLE);
+  }
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type,
+                                                    assign_syn_possible_values,
+                                                    var_syn_possible_values);
 }
 
 std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
@@ -252,13 +302,23 @@ std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
-  return pat_data->GetContainerStmtControlVarPairs(container_stmt_type);
+  return pat_data->GetContainerStmtControlVarPairs(
+      container_stmt_type, ent_data->Get(container_stmt_type),
+      ent_data->Get(EntityType::VARIABLE));
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type,
-    std::unordered_set<std::string> const& container_syn_possible_values,
-    std::unordered_set<std::string> const& control_var_possible_values) {
-  return {};
+    std::unordered_set<std::string>& container_syn_possible_values,
+    std::unordered_set<std::string>& control_var_possible_values) {
+  if (container_syn_possible_values.empty()) {
+    container_syn_possible_values = ent_data->Get(container_stmt_type);
+  }
+  if (control_var_possible_values.empty()) {
+    control_var_possible_values = ent_data->Get(EntityType::VARIABLE);
+  }
+  return pat_data->GetContainerStmtControlVarPairs(
+      container_stmt_type, container_syn_possible_values,
+      control_var_possible_values);
 }

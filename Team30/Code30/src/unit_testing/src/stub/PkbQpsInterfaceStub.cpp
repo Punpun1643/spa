@@ -112,8 +112,8 @@ PkbQpsInterfaceStub::GetRelationSynonymSynonym(EntityType entity_type_1,
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
-    std::unordered_set<std::string> const& syn_1_possible_values,
-    std::unordered_set<std::string> const& syn_2_possible_values) {
+    std::unordered_set<std::string>& syn_1_possible_values,
+    std::unordered_set<std::string>& syn_2_possible_values) {
   return GetRelationSynonymSynonym(entity_type_1, entity_type_2, rel_type);
 }
 
@@ -148,8 +148,8 @@ PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetMatchingAssignStmtLhsVarPairs(
     std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-    std::unordered_set<std::string> const& assign_syn_possible_values,
-    std::unordered_set<std::string> const& var_syn_possible_values) {
+    std::unordered_set<std::string>& assign_syn_possible_values,
+    std::unordered_set<std::string>& var_syn_possible_values) {
   return GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
 };
 
@@ -177,7 +177,7 @@ PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(
 std::vector<std::pair<std::string, std::string>>
 PkbQpsInterfaceStub::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type,
-    std::unordered_set<std::string> const& container_syn_possible_values,
-    std::unordered_set<std::string> const& control_var_possible_values) {
+    std::unordered_set<std::string>& container_syn_possible_values,
+    std::unordered_set<std::string>& control_var_possible_values) {
   return GetContainerStmtControlVarPairs(container_stmt_type);
 }

@@ -1,15 +1,20 @@
 #include "PatternDatabase.h"
 
+#include <iostream>
 #include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 PatternDatabase::PatternDatabase() {
-  cond_var_patterns[EntityType::IF] = {};
-  cond_var_patterns[EntityType::WHILE] = {};
-  inv_cond_var_patterns[EntityType::IF] = {};
-  inv_cond_var_patterns[EntityType::WHILE] = {};
+  cond_var_patterns[EntityType::IF] =
+      std::unordered_map<std::string, std::unordered_set<std::string>>();
+  cond_var_patterns[EntityType::WHILE] =
+      std::unordered_map<std::string, std::unordered_set<std::string>>();
+  inv_cond_var_patterns[EntityType::IF] =
+      std::unordered_map<std::string, std::unordered_set<std::string>>();
+  inv_cond_var_patterns[EntityType::WHILE] =
+      std::unordered_map<std::string, std::unordered_set<std::string>>();
 }
 
 void PatternDatabase::InsertAssignment(std::string const& line_num,
@@ -109,31 +114,55 @@ std::unordered_set<std::string> PatternDatabase::GetMatchingAssignStringExact(
 
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
-    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) {
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+    std::unordered_set<std::string> const& assign_syn_possible_values,
+    std::unordered_set<std::string> const& var_syn_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
 
   // Synonym Wild
   if (match_type == MatchType::WILD_MATCH) {
-    for (auto& pair : assignments) {
-      output.push_back(make_pair(pair.first, pair.second.first));
+    for (std::string stmt : assign_syn_possible_values) {
+      output.push_back(make_pair(stmt, assignments.at(stmt).first));
     }
   } else if (match_type == MatchType::PARTIAL_MATCH) {  // Synonym Partial
-    output = GetMatchingAssignSynonymPartial(rhs_expr);
+    std::unordered_set<std::string> valid_assignments =
+        FilterAssignStmtsByStmtAndLHS(assign_syn_possible_values,
+                                      var_syn_possible_values);
+    output = GetMatchingAssignSynonymPartial(rhs_expr, valid_assignments);
   } else {  // Synonym Exact
-    output = GetMatchingAssignSynonymExact(rhs_expr);
+    std::unordered_set<std::string> valid_assignments =
+        FilterAssignStmtsByStmtAndLHS(assign_syn_possible_values,
+                                      var_syn_possible_values);
+    output = GetMatchingAssignSynonymExact(rhs_expr, valid_assignments);
   }
 
   return std::vector<std::pair<std::string, std::string>>(output.begin(),
                                                           output.end());
 }
 
+std::unordered_set<std::string> PatternDatabase::FilterAssignStmtsByStmtAndLHS(
+    std::unordered_set<std::string> const& assign_syn_possible_values,
+    std::unordered_set<std::string> const& var_syn_possible_values) {
+  std::unordered_set<std::string> valid_assignments;
+  for (auto& stmt_lhsrhs : assignments) {
+    if (assign_syn_possible_values.count(stmt_lhsrhs.first) &&
+        var_syn_possible_values.count(stmt_lhsrhs.second.first)) {
+      valid_assignments.insert(stmt_lhsrhs.first);
+    }
+  }
+  return valid_assignments;
+}
+
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetMatchingAssignSynonymPartial(
-    std::shared_ptr<TreeNode> const& rhs_expr) {
+    std::shared_ptr<TreeNode> const& rhs_expr,
+    std::unordered_set<std::string> const& valid_assignments) {
   std::vector<std::pair<std::string, std::string>> output;
-  for (auto& pair : assignments) {
-    if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
-      output.push_back(make_pair(pair.first, pair.second.first));
+  for (auto& stmt : valid_assignments) {
+    std::pair<std::string, std::shared_ptr<TreeNode>> lhs_rhs =
+        assignments.at(stmt);
+    if (TreeNode::IsSubTree(lhs_rhs.second, rhs_expr)) {
+      output.push_back(make_pair(stmt, lhs_rhs.first));
     }
   }
   return output;
@@ -141,11 +170,14 @@ PatternDatabase::GetMatchingAssignSynonymPartial(
 
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetMatchingAssignSynonymExact(
-    std::shared_ptr<TreeNode> const& rhs_expr) {
+    std::shared_ptr<TreeNode> const& rhs_expr,
+    std::unordered_set<std::string> const& valid_assignments) {
   std::vector<std::pair<std::string, std::string>> output;
-  for (auto& pair : assignments) {
-    if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
-      output.push_back(make_pair(pair.first, pair.second.first));
+  for (auto& stmt : valid_assignments) {
+    std::pair<std::string, std::shared_ptr<TreeNode>> lhs_rhs =
+        assignments.at(stmt);
+    if (TreeNode::IsSameTree(lhs_rhs.second, rhs_expr)) {
+      output.push_back(make_pair(stmt, lhs_rhs.first));
     }
   }
   return output;
@@ -177,11 +209,24 @@ std::vector<std::string> PatternDatabase::GetContainerStmtsWithGivenControlVar(
 
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetContainerStmtControlVarPairs(
-    EntityType container_stmt_type) {
+    EntityType container_stmt_type,
+    std::unordered_set<std::string> container_syn_possible_values,
+    std::unordered_set<std::string> control_var_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
-  for (auto const& stmt_vars : cond_var_patterns.at(container_stmt_type)) {
-    for (auto const& vars : stmt_vars.second) {
-      output.push_back(std::make_pair(stmt_vars.first, vars));
+  std::unordered_map<std::string, std::unordered_set<std::string>>
+      container_stmt_vars = cond_var_patterns.at(container_stmt_type);
+
+  for (auto const& stmt : container_syn_possible_values) {
+    // conditional does not have vars
+    if (container_stmt_vars.find(stmt) == container_stmt_vars.end()) {
+      continue;
+    }
+
+    for (auto const& var : container_stmt_vars.at(stmt)) {
+      if (control_var_possible_values.find(var) !=
+          control_var_possible_values.end()) {
+        output.push_back(std::make_pair(stmt, var));
+      }
     }
   }
   return output;

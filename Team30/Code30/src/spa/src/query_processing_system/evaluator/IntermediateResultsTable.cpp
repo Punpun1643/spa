@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "program_knowledge_base/utils/PairHash.h"
+#include "program_knowledge_base/utils/PairHashValueValue.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 
@@ -197,8 +197,8 @@ void IntermediateResultsTable::RemovePairedDeclaration(
   if (table_mapping.at(d1) != table_mapping.at(d2)) {
     MergeExistingTables(table_mapping.at(d1), table_mapping.at(d2), true);
   }
-  std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set(
-      paired_values.begin(), paired_values.end());
+  std::unordered_set<std::pair<std::string, std::string>, PairHashValueValue>
+      value_set(paired_values.begin(), paired_values.end());
   int table_idx = table_mapping.at(d1);
   tables[table_idx].Delete(d1, d2, value_set);
 }

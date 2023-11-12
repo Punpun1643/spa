@@ -126,8 +126,8 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
 }
 
 std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
-    PKBQPSInterface& pkb, std::unordered_set<std::string> const& decl_1_subset,
-    std::unordered_set<std::string> const& decl_2_subset) {
+    PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+    std::unordered_set<std::string>& decl_2_subset) {
   EntityType entity_type_1 = arg1->GetDeclarationType();
   EntityType entity_type_2 = arg2->GetDeclarationType();
 

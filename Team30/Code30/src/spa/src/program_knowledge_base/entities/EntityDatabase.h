@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "program_knowledge_base/utils/PairHash.h"
+#include "program_knowledge_base/utils/PairHashValueValue.h"
 #include "shared/types/AttrType.h"
 #include "shared/types/EntityAttrPairings.h"
 #include "shared/types/EntityType.h"
@@ -20,13 +20,14 @@ class EntityDatabase {
   std::unordered_map<EntityType, std::unordered_set<std::string>> entities;
 
   std::unordered_map<std::pair<EntityType, AttrType>,
-                     std::unordered_map<std::string, std::string>, PairHash>
+                     std::unordered_map<std::string, std::string>,
+                     PairHashValueValue>
       entity_attr_map;
 
   std::unordered_map<
       std::pair<EntityType, AttrType>,
       std::unordered_map<std::string, std::unordered_set<std::string>>,
-      PairHash>
+      PairHashValueValue>
       attr_ent_map;
 
   std::unordered_set<EntityType> statement_types;

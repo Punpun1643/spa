@@ -3,7 +3,7 @@
 #include <unordered_set>
 #include <utility>
 
-struct PairHash2 {
+struct PairHashValueSet {
   template <class T1, class T2>
   std::size_t operator()(std::pair<T1, T2> const& p) const {
     auto h1 = std::hash<T1>{}(p.first);

@@ -1,4 +1,6 @@
 #include "Clause.h"
+
+#include <stdexcept>
 Clause::~Clause() = default;
 
 void Clause::FlagAsNegated() {
