@@ -70,9 +70,5 @@ std::optional<PqlDeclaration> PatternClause::GetSecondDeclaration() const {
 }
 
 bool PatternClause::SupportsConditionalEvaluation() const {
-  if (ent_ref.GetRefType() == PqlRefType::DECLARATION) {
-    return true;
-  } else {
-    return false;
-  }
+  return ent_ref.GetRefType() == PqlRefType::DECLARATION;
 }

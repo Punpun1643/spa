@@ -37,11 +37,11 @@ std::unique_ptr<ClauseResult> QueryEvaluator::EvaluateClauseConditionally(
 
   std::optional<PqlDeclaration> d1 = clause->GetFirstDeclaration();
   if (d1.has_value() && table.HasDeclaration(d1.value())) {
-    d1_existing_set = table.GetValues(d1.value());
+    d1_existing_set = table.GetValues(d1.value()); // assumed not empty
   }
   std::optional<PqlDeclaration> d2 = clause->GetSecondDeclaration();
   if (d2.has_value() && table.HasDeclaration(d2.value())) {
-    d2_existing_set = table.GetValues(d2.value());
+    d2_existing_set = table.GetValues(d2.value()); // assumed not empty
   }
   return clause->EvaluateOnCondition(pkb, d1_existing_set, d2_existing_set);
 }

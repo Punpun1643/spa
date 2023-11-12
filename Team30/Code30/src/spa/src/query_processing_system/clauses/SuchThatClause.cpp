@@ -203,10 +203,6 @@ std::optional<PqlDeclaration> SuchThatClause::GetSecondDeclaration() const {
 }
 
 bool SuchThatClause::SupportsConditionalEvaluation() const {
-  if (arg1->GetRefType() == PqlRefType::DECLARATION &&
-      arg2->GetRefType() == PqlRefType::DECLARATION) {
-    return true;
-  } else {
-    return false;
-  }
+  return (arg1->GetRefType() == PqlRefType::DECLARATION &&
+      arg2->GetRefType() == PqlRefType::DECLARATION);
 }
