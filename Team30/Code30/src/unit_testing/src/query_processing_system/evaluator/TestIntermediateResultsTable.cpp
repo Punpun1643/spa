@@ -343,6 +343,7 @@ TEST_CASE("Intermediate Results Table Tests") {
         {"2", "40"}, {"3", "20"}, {"3", "30"}, {"3", "40"}};
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c}),
                  Catch::UnorderedEquals(expected_output));
+    REQUIRE(irt.GetValues({a}) == std::unordered_set<std::string>(LIST_A.begin(), LIST_A.end()));
   }
 
   SECTION("Check results retrieval - linked") {
@@ -351,6 +352,7 @@ TEST_CASE("Intermediate Results Table Tests") {
         {"1", "20", "1", "20"}, {"2", "30", "2", "30"}, {"3", "40", "3", "40"}};
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a, c, a, c}),
                  Catch::UnorderedEquals(expected_output));
+    REQUIRE(irt.GetValues({c}) == std::unordered_set<std::string>(LIST_C.begin(), LIST_C.end()));
   }
 
   SECTION("Check results retrieval - de-duplication") {
@@ -360,5 +362,6 @@ TEST_CASE("Intermediate Results Table Tests") {
     irt.AddClauseResult(clause_result, false);
     REQUIRE_THAT(irt.GetValuesGivenDeclarations({a}),
                  Catch::UnorderedEquals(LIST_A_PARTIAL_OUTPUT));
+    REQUIRE(irt.GetValues({a}) == std::unordered_set<std::string>(LIST_A_PARTIAL.begin(), LIST_A_PARTIAL.end()));
   }
 }
