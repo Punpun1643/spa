@@ -336,6 +336,51 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
                                     RelationType::PARENT);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "5"}, {"4", "6"}};
+  std::unordered_set<std::string> possible_values_first = {"4"};
+  std::unordered_set<std::string> possible_values_second = {"5", "6", "7"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"6", "7"}};
+  possible_values_first = {"4", "6"};
+  possible_values_second = {"7"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "6"}};
+  possible_values_first = {"4", "77", "8"};
+  possible_values_second = {"7", "3", "4", "6"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "5"}, {"6", "7"}};
+  possible_values_first = {};
+  possible_values_second = {"5", "3", "4", "7"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "5"}, {"4", "6"}};
+  possible_values_first = {};
+  possible_values_second = {"5", "6"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
 }
 
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
@@ -530,7 +575,39 @@ TEST_CASE("Test1-Source PKB") {
   actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
       std::make_shared<TreeNode>("1", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
 
+  std::unordered_set<std::string> possible_values_1;
+  std::unordered_set<std::string> possible_values_2;
+
+  possible_values_1 = {"9", "22", "25"};
+  possible_values_2 = {"x"};
+  expected_pairs = {{"22", "x"}, {"25", "x"}};
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH, possible_values_1, possible_values_2);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
+
+  possible_values_1 = {"9", "22", "25"};
+  possible_values_2 = {};
+  expected_pairs = {{"9", "z"}, {"22", "x"}, {"25", "x"}};
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH, possible_values_1, possible_values_2);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
+
+  possible_values_1 = {};
+  possible_values_2 = {"z"};
+  expected_pairs = {{"9", "z"}};
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH, possible_values_1, possible_values_2);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   std::sort(expected_pairs.begin(), expected_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);

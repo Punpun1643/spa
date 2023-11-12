@@ -210,8 +210,23 @@ TEST_CASE("Pattern Database insertion and retrieval") {
         {"6", "a"}, {"6", "c"}, {"6", "x"}, {"6", "y"},
         {"6", "z"}, {"8", "b"}, {"8", "c"},
     };
-    actual_pairs =
-        db.GetContainerStmtControlVarPairs(EntityType::WHILE, while_stmts, vars);
+    actual_pairs = db.GetContainerStmtControlVarPairs(EntityType::WHILE,
+                                                      while_stmts, vars);
+    std::sort(actual_pairs.begin(), actual_pairs.end());
+    REQUIRE(expected_pairs == actual_pairs);
+
+    std::unordered_set<std::string> while_stmts_reduced = {"6"};
+    expected_pairs = {
+        {"6", "a"}, {"6", "c"}, {"6", "x"}, {"6", "y"}, {"6", "z"}};
+    actual_pairs = db.GetContainerStmtControlVarPairs(
+        EntityType::WHILE, while_stmts_reduced, vars);
+    std::sort(actual_pairs.begin(), actual_pairs.end());
+    REQUIRE(expected_pairs == actual_pairs);
+
+    std::unordered_set<std::string> vars_reduced = {"a", "c"};
+    expected_pairs = {{"6", "a"}, {"6", "c"}, {"8", "c"}};
+    actual_pairs = db.GetContainerStmtControlVarPairs(
+        EntityType::WHILE, while_stmts, vars_reduced);
     std::sort(actual_pairs.begin(), actual_pairs.end());
     REQUIRE(expected_pairs == actual_pairs);
 
@@ -220,6 +235,12 @@ TEST_CASE("Pattern Database insertion and retrieval") {
     actual_pairs =
         db.GetContainerStmtControlVarPairs(EntityType::IF, if_stmts, vars);
     std::sort(actual_pairs.begin(), actual_pairs.end());
+    REQUIRE(expected_pairs == actual_pairs);
+
+    expected_pairs = {};
+    std::unordered_set<std::string> if_stmts_reduced = {"9"};
+    actual_pairs = db.GetContainerStmtControlVarPairs(EntityType::IF,
+                                                      if_stmts_reduced, vars);
     REQUIRE(expected_pairs == actual_pairs);
   }
 }
