@@ -35,6 +35,9 @@ class PatternDatabase {
       inv_cond_var_patterns;
 
   // helper functions
+  std::unordered_set<std::string> FilterAssignStmtsByStmtAndLHS(
+      std::unordered_set<std::string> const& assign_syn_possible_values,
+      std::unordered_set<std::string> const& var_syn_possible_values);
   std::unordered_set<std::string> GetMatchingAssignStringPartial(
       std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr);
   std::unordered_set<std::string> GetMatchingAssignStringExact(
@@ -43,10 +46,15 @@ class PatternDatabase {
       std::shared_ptr<TreeNode> const& rhs_expr);
   std::unordered_set<std::string> GetMatchingAssignWildExact(
       std::shared_ptr<TreeNode> const& rhs_expr);
+
   std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignSynonymPartial(std::shared_ptr<TreeNode> const& rhs_expr);
+  GetMatchingAssignSynonymPartial(
+      std::shared_ptr<TreeNode> const& rhs_expr,
+      std::unordered_set<std::string> const& valid_assignments);
   std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignSynonymExact(std::shared_ptr<TreeNode> const& rhs_expr);
+  GetMatchingAssignSynonymExact(
+      std::shared_ptr<TreeNode> const& rhs_expr,
+      std::unordered_set<std::string> const& valid_assignments);
 
  public:
   PatternDatabase();
@@ -66,8 +74,10 @@ class PatternDatabase {
       std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
       MatchType match_type);
   std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
-                                   MatchType match_type);
+  GetMatchingAssignStmtLhsVarPairs(
+      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+      std::unordered_set<std::string> const& assign_syn_possible_values,
+      std::unordered_set<std::string> const& var_syn_possible_values);
 
   // If/While Patterns
   std::vector<std::string> GetContainerStmtsWithControlVar(
@@ -75,5 +85,8 @@ class PatternDatabase {
   std::vector<std::string> GetContainerStmtsWithGivenControlVar(
       EntityType container_stmt_type, std::string const& var_name);
   std::vector<std::pair<std::string, std::string>>
-  GetContainerStmtControlVarPairs(EntityType container_stmt_type);
+  GetContainerStmtControlVarPairs(
+      EntityType container_stmt_type,
+      std::unordered_set<std::string> container_syn_possible_values,
+      std::unordered_set<std::string> control_var_possible_values);
 };

@@ -268,15 +268,25 @@ std::vector<std::string> PKB::GetMatchingAssignStmts(
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                       MatchType match_type) {
-  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(
+      rhs_expr, match_type, ent_data->Get(EntityType::ASSIGN),
+      ent_data->Get(EntityType::VARIABLE));
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(
     std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-    std::unordered_set<std::string> const& assign_syn_possible_values,
-    std::unordered_set<std::string> const& var_syn_possible_values) {
-  return {};
+    std::unordered_set<std::string> assign_syn_possible_values,
+    std::unordered_set<std::string> var_syn_possible_values) {
+  if (assign_syn_possible_values.empty()) {
+    assign_syn_possible_values = ent_data->Get(EntityType::ASSIGN);
+  }
+  if (var_syn_possible_values.empty()) {
+    var_syn_possible_values = ent_data->Get(EntityType::VARIABLE);
+  }
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type,
+                                                    assign_syn_possible_values,
+                                                    var_syn_possible_values);
 }
 
 std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
@@ -292,13 +302,23 @@ std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
-  return pat_data->GetContainerStmtControlVarPairs(container_stmt_type);
+  return pat_data->GetContainerStmtControlVarPairs(
+      container_stmt_type, ent_data->Get(container_stmt_type),
+      ent_data->Get(EntityType::VARIABLE));
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type,
-    std::unordered_set<std::string> const& container_syn_possible_values,
-    std::unordered_set<std::string> const& control_var_possible_values) {
-  return {};
+    std::unordered_set<std::string> container_syn_possible_values,
+    std::unordered_set<std::string> control_var_possible_values) {
+  if (container_syn_possible_values.empty()) {
+    container_syn_possible_values = ent_data->Get(container_stmt_type);
+  }
+  if (control_var_possible_values.empty()) {
+    control_var_possible_values = ent_data->Get(EntityType::VARIABLE);
+  }
+  return pat_data->GetContainerStmtControlVarPairs(
+      container_stmt_type, container_syn_possible_values,
+      control_var_possible_values);
 }
