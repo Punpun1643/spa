@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "../../program_knowledge_base/utils/AffectsCache.h"
-#include "../../program_knowledge_base/utils/PairHash2.h"
 #include "../node/util_node/CFGNode.h"
+#include "program_knowledge_base/utils/PairHashValueSet.h"
 
 class GraphRelationTraverser {
  private:
@@ -35,7 +35,7 @@ class GraphRelationTraverser {
     std::stack<std::shared_ptr<CFGNode>> nodes_to_visit;
     std::stack<std::unordered_set<std::string>> vars_used_in_nodes;
     std::unordered_set<std::pair<int, std::unordered_set<std::string>>,
-                       PairHash2>
+                       PairHashValueSet>
         visited;
     std::shared_ptr<AffectsCache> cache;
     std::shared_ptr<CFGNode> end_node;

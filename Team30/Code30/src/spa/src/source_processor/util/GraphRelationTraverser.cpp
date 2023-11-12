@@ -6,7 +6,6 @@
 #include <utility>
 #include <vector>
 
-#include "../../program_knowledge_base/utils/PairHash2.h"
 #include "program_knowledge_base/utils/PairHashValueSet.h"
 
 bool GraphRelationTraverser::ShouldVisit(
