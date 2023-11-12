@@ -43,3 +43,30 @@ std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
       break;
   }
 }
+
+std::unique_ptr<ClauseResult> PatternClause::EvaluateOnCondition(
+    PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+    std::unordered_set<std::string>& decl_2_subset) {
+  if (ent_ref.GetRefType() != PqlRefType::DECLARATION) {
+    return Evaluate(pkb);
+  }
+  auto values = EvaluateDeclRef(pkb, decl_1_subset, decl_2_subset);
+  return std::make_unique<ClauseResult>(decl, ent_ref.GetDeclaration(),
+                                        std::move(values));
+}
+
+int PatternClause::GetNumDeclarations() const {
+  if (ent_ref.GetRefType() == PqlRefType::DECLARATION) {
+    return 2;
+  } else {
+    return 1;
+  }
+}
+
+std::vector<PqlDeclaration> PatternClause::GetDeclarations() const {
+  std::vector<PqlDeclaration> output = {decl};
+  if (ent_ref.GetRefType() == PqlRefType::DECLARATION) {
+    output.push_back(ent_ref.GetDeclaration());
+  }
+  return output;
+}

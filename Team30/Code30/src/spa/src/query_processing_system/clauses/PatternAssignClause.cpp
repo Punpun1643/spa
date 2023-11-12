@@ -29,3 +29,11 @@ std::vector<std::string> PatternAssignClause::EvaluateWildRef(
     PKBQPSInterface& pkb) {
   return pkb.GetMatchingAssignStmts(rhs_expr, rhs_expr_match_type);
 }
+
+std::vector<std::pair<std::string, std::string>>
+PatternAssignClause::EvaluateDeclRef(
+    PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+    std::unordered_set<std::string>& decl_2_subset) {
+  return pkb.GetMatchingAssignStmtLhsVarPairs(rhs_expr, rhs_expr_match_type,
+                                              decl_1_subset, decl_2_subset);
+}

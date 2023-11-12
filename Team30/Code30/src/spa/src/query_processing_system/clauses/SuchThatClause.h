@@ -50,9 +50,9 @@ class SuchThatClause : public ConditionalClause {
 
  public:
   std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
-  std::unique_ptr<ClauseResult> EvaluateOnCondition(PKBQPSInterface& pkb,
-                                                            std::unordered_set<std::string> const& decl_1_subset,
-                                                            std::unordered_set<std::string> const& decl_2_subset) override;
+  std::unique_ptr<ClauseResult> EvaluateOnCondition(
+      PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+      std::unordered_set<std::string>& decl_2_subset) override;
   int GetNumDeclarations() const override;
   std::vector<PqlDeclaration> GetDeclarations() const override;
   virtual ~SuchThatClause();
