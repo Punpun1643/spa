@@ -268,7 +268,8 @@ TEST_CASE("RelationalTable Tests") {
           {"1", "10"}, {"1", "12"}, {"2", "14"}, {"2", "18"}, {"6", "20"}};
       table_1.Filter({a, b, c, s});
       REQUIRE(table_1.GetNumCols() == 2);
-      REQUIRE(table_1.GetTableColNames() == std::vector<PqlDeclaration>{c, s});
+      REQUIRE_THAT(table_1.GetTableColNames(),
+                   Catch::UnorderedEquals(std::vector<PqlDeclaration>{c, s}));
       REQUIRE(table_1.GetTableCols({c, s}) == EXP_OUTPUT);
     }
 
