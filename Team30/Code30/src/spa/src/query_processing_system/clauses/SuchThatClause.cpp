@@ -117,12 +117,19 @@ std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(
     PKBQPSInterface& pkb) {
   EntityType entity_type_1 = arg1->GetDeclarationType();
   EntityType entity_type_2 = arg2->GetDeclarationType();
-  PqlDeclaration declaration_1 = arg1->GetDeclaration();
-  PqlDeclaration declaration_2 = arg2->GetDeclaration();
 
   auto possible_values = pkb.GetRelationSynonymSynonym(
       entity_type_1, entity_type_2, relation_type);
-  return std::make_unique<ClauseResult>(declaration_1, declaration_2,
+  return std::make_unique<ClauseResult>(arg1->GetDeclaration(), arg2->GetDeclaration(),
+                                        std::move(possible_values));
+}
+
+std::unique_ptr<ClauseResult> SuchThatClause::EvaluateDeclarationDeclaration(PKBQPSInterface& pkb, std::unordered_set<std::string> const& decl_1_subset, std::unordered_set<std::string> const& decl_2_subset) {
+  EntityType entity_type_1 = arg1->GetDeclarationType();
+  EntityType entity_type_2 = arg2->GetDeclarationType();
+
+  auto possible_values = pkb.GetRelationSynonymSynonym(entity_type_1, entity_type_2, relation_type, decl_1_subset, decl_2_subset);
+  return std::make_unique<ClauseResult>(arg1->GetDeclaration(), arg2->GetDeclaration(),
                                         std::move(possible_values));
 }
 
@@ -160,4 +167,36 @@ std::unique_ptr<ClauseResult> SuchThatClause::Evaluate(PKBQPSInterface& pkb) {
   } else {
     throw std::runtime_error("Unknown combination of reference types");
   }
+}
+
+std::unique_ptr<ClauseResult> SuchThatClause::EvaluateOnCondition(PKBQPSInterface& pkb, std::unordered_set<std::string> const& decl_1_subset, std::unordered_set<std::string> const& decl_2_subset) {
+  PqlRefType ref_type_1 = arg1->GetRefType();
+  PqlRefType ref_type_2 = arg2->GetRefType();
+
+  if (ref_type_1 != PqlRefType::DECLARATION || ref_type_2 != PqlRefType::DECLARATION) {
+    return Evaluate(pkb);
+  }
+  return EvaluateDeclarationDeclaration(pkb, decl_1_subset, decl_2_subset);
+}
+
+int SuchThatClause::GetNumDeclarations() const {
+  int num_decls = 0;
+  if (arg1->GetRefType() == PqlRefType::DECLARATION) {
+    num_decls += 1;
+  }
+  if (arg2->GetRefType() == PqlRefType::DECLARATION) {
+    num_decls += 1;
+  }
+  return num_decls;
+}
+
+std::vector<PqlDeclaration> SuchThatClause::GetDeclarations() const {
+  std::vector<PqlDeclaration> output = {};
+  if (arg1->GetRefType() == PqlRefType::DECLARATION) {
+    output.push_back(arg1->GetDeclaration());
+  }
+  if (arg2->GetRefType() == PqlRefType::DECLARATION) {
+    output.push_back(arg2->GetDeclaration());
+  }
+  return output;
 }

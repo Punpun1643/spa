@@ -5,10 +5,11 @@
 #include <vector>
 
 #include "Clause.h"
+#include "ConditionalClause.h"
 #include "query_processing_system/references/PqlReference.h"
 #include "shared/types/RelationType.h"
 
-class SuchThatClause : public Clause {
+class SuchThatClause : public ConditionalClause {
   // Template Method design pattern
  private:
   RelationType const relation_type;
@@ -35,6 +36,10 @@ class SuchThatClause : public Clause {
       PKBQPSInterface& pkb);
   virtual std::unique_ptr<ClauseResult> EvaluateDeclarationDeclaration(
       PKBQPSInterface& pkb);
+  virtual std::unique_ptr<ClauseResult> EvaluateDeclarationDeclaration(
+      PKBQPSInterface& pkb,
+      std::unordered_set<std::string> const& decl_1_subset,
+      std::unordered_set<std::string> const& decl_2_subset);
 
   void CheckDeclarationArgEntityType(
       int arg_num, std::vector<EntityType> const& allowed_types,
@@ -45,5 +50,10 @@ class SuchThatClause : public Clause {
 
  public:
   std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> EvaluateOnCondition(PKBQPSInterface& pkb,
+                                                            std::unordered_set<std::string> const& decl_1_subset,
+                                                            std::unordered_set<std::string> const& decl_2_subset) override;
+  int GetNumDeclarations() const override;
+  std::vector<PqlDeclaration> GetDeclarations() const override;
   virtual ~SuchThatClause();
 };
