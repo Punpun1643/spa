@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "program_knowledge_base/utils/PairHash.h"
+#include "program_knowledge_base/utils/PairHashValueValue.h"
 
 IntermediateResultsTable::IntermediateResultsTable() = default;
 
@@ -61,6 +61,18 @@ void IntermediateResultsTable::AddClauseResult(ClauseResult& clause_result,
 
 bool IntermediateResultsTable::HasNoResults() const {
   return has_no_results;
+}
+
+std::unordered_set<std::string> IntermediateResultsTable::GetValues(
+    PqlDeclaration const& decl) {
+  if (has_no_results) {
+    return {};
+  }
+  if (!HasDeclaration(decl)) {
+    throw std::invalid_argument("Decl not in table");
+  }
+  RelationalTable relevant_table = tables[table_mapping.at(decl)];
+  return relevant_table.GetCol(decl);
 }
 
 std::vector<std::vector<std::string>>
@@ -185,8 +197,8 @@ void IntermediateResultsTable::RemovePairedDeclaration(
   if (table_mapping.at(d1) != table_mapping.at(d2)) {
     MergeExistingTables(table_mapping.at(d1), table_mapping.at(d2), true);
   }
-  std::unordered_set<std::pair<std::string, std::string>, PairHash> value_set(
-      paired_values.begin(), paired_values.end());
+  std::unordered_set<std::pair<std::string, std::string>, PairHashValueValue>
+      value_set(paired_values.begin(), paired_values.end());
   int table_idx = table_mapping.at(d1);
   tables[table_idx].Delete(d1, d2, value_set);
 }

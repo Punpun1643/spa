@@ -336,6 +336,51 @@ TEST_CASE("Follows, Parent, Follows* and Parent*") {
                                     RelationType::PARENT);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "5"}, {"4", "6"}};
+  std::unordered_set<std::string> possible_values_first = {"4"};
+  std::unordered_set<std::string> possible_values_second = {"5", "6", "7"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"6", "7"}};
+  possible_values_first = {"4", "6"};
+  possible_values_second = {"7"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "6"}};
+  possible_values_first = {"4", "77", "8"};
+  possible_values_second = {"7", "3", "4", "6"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "5"}, {"6", "7"}};
+  possible_values_first = {};
+  possible_values_second = {"5", "3", "4", "7"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
+
+  tmp_pair = {{"4", "5"}, {"4", "6"}};
+  possible_values_first = {};
+  possible_values_second = {"5", "6"};
+  actual_pairs = pkb.GetRelationSynonymSynonym(
+      EntityType::STMT, EntityType::STMT, RelationType::PARENT,
+      possible_values_first, possible_values_second);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  REQUIRE(actual_pairs == tmp_pair);
 }
 
 TEST_CASE("Follows, Parent, Follows* and Parent* with empty PKB") {
@@ -475,6 +520,24 @@ TEST_CASE("Test1-Source PKB") {
   pkb.InsertEntity(EntityType::CONSTANT, "5");
   pkb.InsertEntity(EntityType::VARIABLE, "10");
   pkb.InsertEntity(EntityType::VARIABLE, "100");
+  pkb.InsertEntity(EntityType::ASSIGN, "2");
+  pkb.InsertEntity(EntityType::ASSIGN, "3");
+  pkb.InsertEntity(EntityType::ASSIGN, "5");
+  pkb.InsertEntity(EntityType::ASSIGN, "8");
+  pkb.InsertEntity(EntityType::ASSIGN, "9");
+  pkb.InsertEntity(EntityType::ASSIGN, "10");
+  pkb.InsertEntity(EntityType::ASSIGN, "11");
+  pkb.InsertEntity(EntityType::ASSIGN, "12");
+  pkb.InsertEntity(EntityType::ASSIGN, "13");
+  pkb.InsertEntity(EntityType::ASSIGN, "15");
+  pkb.InsertEntity(EntityType::ASSIGN, "17");
+  pkb.InsertEntity(EntityType::ASSIGN, "18");
+  pkb.InsertEntity(EntityType::ASSIGN, "19");
+  pkb.InsertEntity(EntityType::ASSIGN, "22");
+  pkb.InsertEntity(EntityType::ASSIGN, "23");
+  pkb.InsertEntity(EntityType::ASSIGN, "25");
+  pkb.InsertEntity(EntityType::ASSIGN, "26");
+  pkb.InsertEntity(EntityType::ASSIGN, "27");
 
   pkb.InsertAssignPattern("2", "x", buildTree5());
   pkb.InsertAssignPattern("3", "z", buildTree6());
@@ -512,6 +575,39 @@ TEST_CASE("Test1-Source PKB") {
   actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
       std::make_shared<TreeNode>("1", nullptr, nullptr),
       MatchType::PARTIAL_MATCH);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
+
+  std::unordered_set<std::string> possible_values_1;
+  std::unordered_set<std::string> possible_values_2;
+
+  possible_values_1 = {"9", "22", "25"};
+  possible_values_2 = {"x"};
+  expected_pairs = {{"22", "x"}, {"25", "x"}};
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH, possible_values_1, possible_values_2);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
+
+  possible_values_1 = {"9", "22", "25"};
+  possible_values_2 = {};
+  expected_pairs = {{"9", "z"}, {"22", "x"}, {"25", "x"}};
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH, possible_values_1, possible_values_2);
+  std::sort(actual_pairs.begin(), actual_pairs.end());
+  std::sort(expected_pairs.begin(), expected_pairs.end());
+  REQUIRE(actual_pairs == expected_pairs);
+
+  possible_values_1 = {};
+  possible_values_2 = {"z"};
+  expected_pairs = {{"9", "z"}};
+  actual_pairs = pkb.GetMatchingAssignStmtLhsVarPairs(
+      std::make_shared<TreeNode>("1", nullptr, nullptr),
+      MatchType::PARTIAL_MATCH, possible_values_1, possible_values_2);
   std::sort(actual_pairs.begin(), actual_pairs.end());
   std::sort(expected_pairs.begin(), expected_pairs.end());
   REQUIRE(actual_pairs == expected_pairs);

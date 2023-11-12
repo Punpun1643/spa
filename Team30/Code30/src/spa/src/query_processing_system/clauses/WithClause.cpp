@@ -110,3 +110,19 @@ std::unique_ptr<ClauseResult> WithClause::Evaluate(PKBQPSInterface& pkb) {
     throw std::runtime_error("Unexpected argument");
   }
 }
+
+std::optional<PqlDeclaration> WithClause::GetFirstDeclaration() const {
+  if (std::holds_alternative<AttrRef>(ref1)) {
+    return std::get<AttrRef>(ref1).GetDecl();
+  } else {
+    return std::nullopt;
+  }
+}
+
+std::optional<PqlDeclaration> WithClause::GetSecondDeclaration() const {
+  if (std::holds_alternative<AttrRef>(ref2)) {
+    return std::get<AttrRef>(ref2).GetDecl();
+  } else {
+    return std::nullopt;
+  }
+}

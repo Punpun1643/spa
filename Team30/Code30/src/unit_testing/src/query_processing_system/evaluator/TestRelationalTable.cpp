@@ -86,11 +86,15 @@ TEST_CASE("RelationalTable Tests") {
                 {"5", "5", "2", "2", "2"},
                 {"6", "6", "3", "3", "3"}};
     REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
+    REQUIRE(table.GetCol(a) ==
+            std::unordered_set<std::string>(VEC_1.begin(), VEC_1.end()));
 
     // Make sure de-duplication is done
     auto table_3 = RelationalTable(v, VEC_3);
     table.Join(table_3, true);
     REQUIRE(table.GetTableCols({b, b, a, a, a}) == expected);
+    REQUIRE(table.GetCol(b) ==
+            std::unordered_set<std::string>(VEC_2.begin(), VEC_2.end()));
   }
 
   SECTION("Test cross-product join") {
@@ -226,7 +230,8 @@ TEST_CASE("RelationalTable Tests") {
       std::vector<std::vector<std::string>> EXP_OUTPUT = {
           {"2", "14", "c"}, {"2", "14", "d"}, {"1", "12", "b"}};
 
-      std::unordered_set<std::pair<std::string, std::string>, PairHash>
+      std::unordered_set<std::pair<std::string, std::string>,
+                         PairHashValueValue>
           to_delete;
       to_delete.emplace("1", "10");
       to_delete.emplace("6", "20");
@@ -268,7 +273,8 @@ TEST_CASE("RelationalTable Tests") {
           {"1", "10"}, {"1", "12"}, {"2", "14"}, {"2", "18"}, {"6", "20"}};
       table_1.Filter({a, b, c, s});
       REQUIRE(table_1.GetNumCols() == 2);
-      REQUIRE(table_1.GetTableColNames() == std::vector<PqlDeclaration>{c, s});
+      REQUIRE_THAT(table_1.GetTableColNames(),
+                   Catch::UnorderedEquals(std::vector<PqlDeclaration>{c, s}));
       REQUIRE(table_1.GetTableCols({c, s}) == EXP_OUTPUT);
     }
 

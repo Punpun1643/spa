@@ -16,8 +16,16 @@ std::vector<std::shared_ptr<CFGNode>> CFGNode::GetOutgoingNodes() {
   return outgoing_nodes;
 }
 
+bool CFGNode::HasNoOutgoingNodes() {
+  return outgoing_nodes.empty();
+}
+
 std::vector<std::shared_ptr<CFGNode>> CFGNode::GetIncomingNodes() {
   return incoming_nodes;
+}
+
+bool CFGNode::HasNoIncomingNodes() {
+  return incoming_nodes.empty();
 }
 
 std::shared_ptr<StmtNode> CFGNode::GetNode() {

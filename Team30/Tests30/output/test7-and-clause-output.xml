@@ -1,63 +1,63 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.679000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.879000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Followsstar="1" Parentstar="1" SuchThat="1" CondNum="4" RelNum="2" comment="2 Such That Clauses">1</id><querystr><![CDATA[stmt s; if i; Select s such that Parent* (i, s) and Follows*(s, 10) ]]></querystr>
 <stuans>9</stuans>
 <correct>9</correct>
-<time_taken>1.503000</time_taken>
+<time_taken>1.815000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="2 Pattern Clauses">2</id><querystr><![CDATA[variable v; assign a, a1; Select v pattern a (v, _"x"_) and a1 (v, _"y"_)]]></querystr>
 <stuans>j,q,y,z</stuans>
 <correct>z,j,y,q</correct>
-<time_taken>1.336000</time_taken>
+<time_taken>2.087000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parent="1" UnnamedVar="1" Uses="1" Pattern="1" SuchThat="1" CondNum="6" RelNum="2" comment="Such That AND Such That + Pattern">3</id><querystr><![CDATA[assign a; stmt s; if i; while w; variable v; Select v such that Parent (i, w) and Uses (w, v) pattern a (v, _)]]></querystr>
 <stuans>i,j,p,q,y,z</stuans>
 <correct>z,q,i,j,p,y</correct>
-<time_taken>1.275000</time_taken>
+<time_taken>2.608000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Parentstar="1" UnnamedVar="2" Pattern="1" SuchThat="1" CondNum="6" RelNum="1" comment="Pattern AND Pattern + Such That">4</id><querystr><![CDATA[assign a, a1; while w; stmt s; variable v; Select v pattern a ("x", _) and a1 ("y", _) such that Parent* (w, s)]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.184000</time_taken>
+<time_taken>1.569000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="2" SuchThat="1" CondNum="4" RelNum="2" comment="2 identical Clauses">5</id><querystr><![CDATA[print pn; Select pn such that Uses (pn, "y") and Uses (pn, "y")]]></querystr>
 <stuans>19</stuans>
 <correct>19</correct>
-<time_taken>1.097000</time_taken>
+<time_taken>1.718000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Followsstar="1" Modifies="1" Parent="1" UnnamedVar="2" Pattern="1" SuchThat="1" CondNum="8" RelNum="3" comment="5 chain clause">6</id><querystr><![CDATA[read r; variable v, v1; assign a, a1; stmt s; Select r pattern a (v, _"i"_) and a1 (v1, _"j"_) such that Follows* (15, 20) and Parent(8, s) and Modifies (a, v)]]></querystr>
 <stuans>1,24</stuans>
 <correct>1,24</correct>
-<time_taken>1.507000</time_taken>
+<time_taken>2.569000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Follows="1" Modifies="1" SuchThat="2" CondNum="5" RelNum="2" comment="Invalid 'and' cannot be adjacent to 'such that' keyword">7</id><querystr><![CDATA[assign a; variable v; Select v such that Modifies (a, "i") and such that Follows(5, a) ]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.231000</time_taken>
+<time_taken>1.762000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="Invalid 'and' cannot connect 2 different clause types">8</id><querystr><![CDATA[assign a; variable v; Select v such that Modifies (a, "j") and a (v, _)]]></querystr>
 <stuans>SyntaxError</stuans>
 <correct>SyntaxError</correct>
-<time_taken>1.272000</time_taken>
+<time_taken>1.697000</time_taken>
 <passed/>
 </query>
 </queries>

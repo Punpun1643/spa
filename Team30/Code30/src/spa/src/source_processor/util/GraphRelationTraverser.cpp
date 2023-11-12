@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../../program_knowledge_base/utils/PairHash2.h"
+#include "program_knowledge_base/utils/PairHashValueSet.h"
 
 bool GraphRelationTraverser::ShouldVisit(
     std::shared_ptr<CFGNode> const& node,
@@ -488,7 +489,8 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
   }
 
   std::stack<std::shared_ptr<CFGNode>> nodes_to_visit;
-  std::unordered_set<std::pair<int, std::unordered_set<std::string>>, PairHash2>
+  std::unordered_set<std::pair<int, std::unordered_set<std::string>>,
+                     PairHashValueSet>
       visited;
   std::stack<std::unordered_set<std::string>> vars_used_in_nodes;
   std::unordered_set<std::string> stmts_with_valid_path;
