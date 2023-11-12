@@ -12,6 +12,9 @@ class Clause {
   virtual std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) = 0;
   virtual ~Clause();
 
+  virtual int GetNumDeclarations() const = 0;
+  virtual std::vector<PqlDeclaration> GetDeclarations() const = 0;
+
   void FlagAsNegated();
   bool IsNegated() const;
 };
