@@ -486,6 +486,66 @@ void GraphRelationTraverser::ProcessOutgoingNode(
   }
 }
 
+void GraphRelationTraverser::InitializeBackwardTraversal(
+    AffectsToTraversalContext& context) {
+  std::unordered_set<std::string> unmodified_vars_used_in_end_node =
+      CFGNode::GetVarUsedInEndNode(context.end_node);
+  for (auto incoming_node : context.end_node->GetIncomingNodes()) {
+    context.nodes_to_visit.push(incoming_node);
+    context.vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
+    context.visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
+                                     unmodified_vars_used_in_end_node));
+  }
+}
+
+void GraphRelationTraverser::UpdateForNextNodesTo(
+    std::shared_ptr<CFGNode> curr_node,
+    std::unordered_set<std::string>& unmodified_vars_used_in_end_node,
+    AffectsToTraversalContext& context) {
+  if (CFGNode::IsAssignOrReadOrCallNode(curr_node)) {
+    for (auto const& v : curr_node->GetModifiesVars()) {
+      unmodified_vars_used_in_end_node.erase(v);
+    }
+  }
+  // Explore the incoming nodes of the current node.
+  for (std::shared_ptr<CFGNode> incoming_node : curr_node->GetIncomingNodes()) {
+    if (!context.visited.count(make_pair(incoming_node->GetNodeStmtIndex(),
+                                         unmodified_vars_used_in_end_node))) {
+      context.nodes_to_visit.push(incoming_node);
+      context.vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
+      context.visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
+                                       unmodified_vars_used_in_end_node));
+    }
+  }
+}
+
+bool GraphRelationTraverser::ShouldCacheAffectsTo(
+    std::shared_ptr<CFGNode> curr_node,
+    std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
+    AffectsToTraversalContext& context) {
+  return CFGNode::IsAssignNode(curr_node) &&
+         ValidatePossibleAffectsRelationship(
+             CFGNode::GetVarModifiedInStartNode(curr_node),
+             unmodified_vars_used_in_end_node);
+}
+
+void GraphRelationTraverser::ProcessCurrNodeTo(
+    AffectsToTraversalContext& context) {
+  auto curr_node = context.nodes_to_visit.top();
+  auto unmodified_vars_used_in_end_node = context.vars_used_in_nodes.top();
+  context.nodes_to_visit.pop();
+  context.vars_used_in_nodes.pop();
+
+  if (ShouldCacheAffectsTo(curr_node, unmodified_vars_used_in_end_node,
+                           context)) {
+    context.cache->CacheAffects(curr_node, context.end_node);
+    context.stmts_with_valid_path.insert(
+        std::to_string(curr_node->GetNodeStmtIndex()));
+  }
+
+  UpdateForNextNodesTo(curr_node, unmodified_vars_used_in_end_node, context);
+}
+
 std::unordered_set<std::string>
 GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
     std::shared_ptr<CFGNode> const& end_node,
@@ -498,57 +558,20 @@ GraphRelationTraverser::GetAllStmtsWithAffectsPathTo(
     return cache->GetAllInvAffects(end_node);
   }
 
-  std::stack<std::shared_ptr<CFGNode>> nodes_to_visit;
-  std::unordered_set<std::pair<int, std::unordered_set<std::string>>,
-                     PairHashValueSet>
-      visited;
-  std::stack<std::unordered_set<std::string>> vars_used_in_nodes;
-  std::unordered_set<std::string> stmts_with_valid_path;
+  AffectsToTraversalContext context{
+      std::stack<std::shared_ptr<CFGNode>>{},
+      std::stack<std::unordered_set<std::string>>{},
+      std::unordered_set<std::pair<int, std::unordered_set<std::string>>,
+                         PairHashValueSet>{},
+      end_node,
+      cache,
+      std::unordered_set<std::string>{}};
+  InitializeBackwardTraversal(context);
 
-  std::unordered_set<std::string> unmodified_vars_used_in_end_node =
-      CFGNode::GetVarUsedInEndNode(end_node);
-  for (std::shared_ptr<CFGNode> incoming_node : end_node->GetIncomingNodes()) {
-    nodes_to_visit.push(incoming_node);
-    vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-    visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
-                             unmodified_vars_used_in_end_node));
+  while (!context.nodes_to_visit.empty()) {
+    ProcessCurrNodeTo(context);
   }
 
-  while (!nodes_to_visit.empty()) {
-    std::shared_ptr<CFGNode> curr_node = nodes_to_visit.top();
-    std::unordered_set<std::string> unmodified_vars_used_in_end_node =
-        vars_used_in_nodes.top();
-    nodes_to_visit.pop();
-    vars_used_in_nodes.pop();
-
-    if (CFGNode::IsAssignNode(curr_node) &&
-        ValidatePossibleAffectsRelationship(
-            CFGNode::GetVarModifiedInStartNode(curr_node),
-            unmodified_vars_used_in_end_node)) {
-      cache->CacheAffects(curr_node, end_node);
-      stmts_with_valid_path.insert(
-          std::to_string(curr_node->GetNodeStmtIndex()));
-    }
-
-    // if incoming node changes a variable used by the end node, remove it from
-    // unmodifed vars
-    if (CFGNode::IsAssignOrReadOrCallNode(curr_node)) {
-      for (auto v : curr_node->GetModifiesVars()) {
-        unmodified_vars_used_in_end_node.erase(v);
-      }
-    }
-
-    for (std::shared_ptr<CFGNode> incoming_node :
-         curr_node->GetIncomingNodes()) {
-      if (!visited.count(make_pair(incoming_node->GetNodeStmtIndex(),
-                                   unmodified_vars_used_in_end_node))) {
-        nodes_to_visit.push(incoming_node);
-        vars_used_in_nodes.push(unmodified_vars_used_in_end_node);
-        visited.insert(make_pair(incoming_node->GetNodeStmtIndex(),
-                                 unmodified_vars_used_in_end_node));
-      }
-    }
-  }
   cache->InsertCompletedBackwardTraversal(end_node);
-  return stmts_with_valid_path;
+  return context.stmts_with_valid_path;
 }

@@ -49,6 +49,17 @@ class GraphRelationTraverser {
     std::shared_ptr<AffectsCache> cache;
   };
 
+  struct AffectsToTraversalContext {
+    std::stack<std::shared_ptr<CFGNode>> nodes_to_visit;
+    std::stack<std::unordered_set<std::string>> vars_used_in_nodes;
+    std::unordered_set<std::pair<int, std::unordered_set<std::string>>,
+                       PairHashValueSet>
+        visited;
+    std::shared_ptr<CFGNode> end_node;
+    std::shared_ptr<AffectsCache> cache;
+    std::unordered_set<std::string> stmts_with_valid_path;
+  };
+
   // Next
   static bool HasImmediatePath(std::shared_ptr<CFGNode> const& start_node,
                                std::shared_ptr<CFGNode> const& end_node);
@@ -136,12 +147,20 @@ class GraphRelationTraverser {
       AffectsTraversalContext& context,
       std::unordered_set<std::string> const& unmodified_vars_used_in_end_node);
 
+  static void InitializeBackwardTraversal(AffectsToTraversalContext& context);
+
   static bool ProcessCurrNode(AffectsTraversalContext& context);
+
+  static void ProcessCurrNodeTo(AffectsToTraversalContext& context);
 
   static void UpdateUnmodifiedVars(
       std::shared_ptr<CFGNode> const& curr_node,
       std::unordered_set<std::string>& unmodified_vars_used_in_end_node);
 
+  static void UpdateForNextNodesTo(
+      std::shared_ptr<CFGNode> curr_node,
+      std::unordered_set<std::string>& unmodified_vars_used_in_end_node,
+      AffectsToTraversalContext& context);
   static void AddIncomingNodesToTraversal(
       std::shared_ptr<CFGNode> const& curr_node,
       std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
@@ -155,4 +174,9 @@ class GraphRelationTraverser {
       std::string const& var_modified_in_start_node,
       std::unordered_set<std::string>& stmts_with_valid_path,
       AffectsFromTraversalContext& context);
+
+  static bool ShouldCacheAffectsTo(
+      std::shared_ptr<CFGNode> curr_node,
+      std::unordered_set<std::string> const& unmodified_vars_used_in_end_node,
+      AffectsToTraversalContext& context);
 };
