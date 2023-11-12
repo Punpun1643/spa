@@ -20,7 +20,8 @@ class EntityDatabase {
   std::unordered_map<EntityType, std::unordered_set<std::string>> entities;
 
   std::unordered_map<std::pair<EntityType, AttrType>,
-                     std::unordered_map<std::string, std::string>, PairHashValueValue>
+                     std::unordered_map<std::string, std::string>,
+                     PairHashValueValue>
       entity_attr_map;
 
   std::unordered_map<
