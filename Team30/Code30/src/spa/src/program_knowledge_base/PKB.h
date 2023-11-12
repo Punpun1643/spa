@@ -102,9 +102,13 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   // 2 Declarations
   std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
+      EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type)
+      override;
+
+  std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
       EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
-      std::unordered_set<std::string> const& syn_1_possible_values = {},
-      std::unordered_set<std::string> const& syn_2_possible_values = {})
+      std::unordered_set<std::string> const& syn_1_possible_values,
+      std::unordered_set<std::string> const& syn_2_possible_values)
       override;
 
   // ---------- PATTERNS ----------
@@ -115,9 +119,13 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
       MatchType match_type) override;
   std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(
+      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type)
+      override;
+  std::vector<std::pair<std::string, std::string>>
+  GetMatchingAssignStmtLhsVarPairs(
       std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-      std::unordered_set<std::string> const& assign_syn_possible_values = {},
-      std::unordered_set<std::string> const& var_syn_possible_values = {})
+      std::unordered_set<std::string> const& assign_syn_possible_values,
+      std::unordered_set<std::string> const& var_syn_possible_values)
       override;
 
   std::vector<std::string> GetContainerStmtsWithControlVar(
@@ -128,8 +136,12 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
 
   std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(
+      EntityType container_stmt_type) override;
+
+  std::vector<std::pair<std::string, std::string>>
+  GetContainerStmtControlVarPairs(
       EntityType container_stmt_type,
-      std::unordered_set<std::string> const& container_syn_possible_values = {},
-      std::unordered_set<std::string> const& control_var_possible_values = {})
+      std::unordered_set<std::string> const& container_syn_possible_values,
+      std::unordered_set<std::string> const& control_var_possible_values)
       override;
 };
