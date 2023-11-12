@@ -194,8 +194,8 @@ std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
 
 std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
-    std::unordered_set<std::string> syn_1_possible_values,
-    std::unordered_set<std::string> syn_2_possible_values) {
+    std::unordered_set<std::string>& syn_1_possible_values,
+    std::unordered_set<std::string>& syn_2_possible_values) {
   if (syn_1_possible_values.empty()) {
     syn_1_possible_values = ent_data->Get(entity_type_1);
   }
@@ -276,8 +276,8 @@ PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(
     std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-    std::unordered_set<std::string> assign_syn_possible_values,
-    std::unordered_set<std::string> var_syn_possible_values) {
+    std::unordered_set<std::string>& assign_syn_possible_values,
+    std::unordered_set<std::string>& var_syn_possible_values) {
   if (assign_syn_possible_values.empty()) {
     assign_syn_possible_values = ent_data->Get(EntityType::ASSIGN);
   }
@@ -310,8 +310,8 @@ PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type,
-    std::unordered_set<std::string> container_syn_possible_values,
-    std::unordered_set<std::string> control_var_possible_values) {
+    std::unordered_set<std::string>& container_syn_possible_values,
+    std::unordered_set<std::string>& control_var_possible_values) {
   if (container_syn_possible_values.empty()) {
     container_syn_possible_values = ent_data->Get(container_stmt_type);
   }

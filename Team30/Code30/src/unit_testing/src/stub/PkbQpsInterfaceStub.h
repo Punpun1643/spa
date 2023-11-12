@@ -125,8 +125,8 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
       RelationType rel_type) override;
   std::vector<std::pair<std::string, std::string>> GetRelationSynonymSynonym(
       EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
-      std::unordered_set<std::string> syn_1_possible_values,
-      std::unordered_set<std::string> syn_2_possible_values) override;
+      std::unordered_set<std::string>& syn_1_possible_values,
+      std::unordered_set<std::string>& syn_2_possible_values) override;
 
   // Pattern clause
   std::vector<std::string> GetMatchingAssignStmts(
@@ -140,8 +140,8 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(
       std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
-      std::unordered_set<std::string> assign_syn_possible_values,
-      std::unordered_set<std::string> var_syn_possible_values) override;
+      std::unordered_set<std::string>& assign_syn_possible_values,
+      std::unordered_set<std::string>& var_syn_possible_values) override;
 
   std::vector<std::string> GetContainerStmtsWithControlVar(
       EntityType container_stmt_type) override;
@@ -154,7 +154,7 @@ class PkbQpsInterfaceStub : public PKBQPSInterface {
   std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(
       EntityType container_stmt_type,
-      std::unordered_set<std::string> container_syn_possible_values,
-      std::unordered_set<std::string> control_var_possible_values)
+      std::unordered_set<std::string>& container_syn_possible_values,
+      std::unordered_set<std::string>& control_var_possible_values)
       override;
 };
