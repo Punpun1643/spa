@@ -178,34 +178,33 @@ std::unique_ptr<ClauseResult> SuchThatClause::Evaluate(PKBQPSInterface& pkb) {
 std::unique_ptr<ClauseResult> SuchThatClause::EvaluateOnCondition(
     PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
     std::unordered_set<std::string>& decl_2_subset) {
-  PqlRefType ref_type_1 = arg1->GetRefType();
-  PqlRefType ref_type_2 = arg2->GetRefType();
-
-  if (ref_type_1 != PqlRefType::DECLARATION ||
-      ref_type_2 != PqlRefType::DECLARATION) {
-    return Evaluate(pkb);
+  if (!SupportsConditionalEvaluation()) {
+    throw std::logic_error("SuchThatClause only supports conditional evaluation on 2 synonym clauses.");
   }
   return EvaluateDeclarationDeclaration(pkb, decl_1_subset, decl_2_subset);
 }
 
-int SuchThatClause::GetNumDeclarations() const {
-  int num_decls = 0;
+std::optional<PqlDeclaration> SuchThatClause::GetFirstDeclaration() const {
   if (arg1->GetRefType() == PqlRefType::DECLARATION) {
-    num_decls += 1;
+    return arg1->GetDeclaration();
+  } else {
+    return std::nullopt;
   }
-  if (arg2->GetRefType() == PqlRefType::DECLARATION) {
-    num_decls += 1;
-  }
-  return num_decls;
 }
 
-std::vector<PqlDeclaration> SuchThatClause::GetDeclarations() const {
-  std::vector<PqlDeclaration> output = {};
-  if (arg1->GetRefType() == PqlRefType::DECLARATION) {
-    output.push_back(arg1->GetDeclaration());
-  }
+std::optional<PqlDeclaration> SuchThatClause::GetSecondDeclaration() const {
   if (arg2->GetRefType() == PqlRefType::DECLARATION) {
-    output.push_back(arg2->GetDeclaration());
+    return arg2->GetDeclaration();
+  } else {
+    return std::nullopt;
   }
-  return output;
+}
+
+bool SuchThatClause::SupportsConditionalEvaluation() const {
+  if (arg1->GetRefType() == PqlRefType::DECLARATION &&
+      arg2->GetRefType() == PqlRefType::DECLARATION) {
+    return true;
+  } else {
+    return false;
+  }
 }

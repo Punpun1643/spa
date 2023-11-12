@@ -5,11 +5,10 @@
 #include <vector>
 
 #include "Clause.h"
-#include "ConditionalClause.h"
 #include "query_processing_system/references/PqlReference.h"
 #include "shared/types/RelationType.h"
 
-class SuchThatClause : public ConditionalClause {
+class SuchThatClause : public Clause {
   // Template Method design pattern
  private:
   RelationType const relation_type;
@@ -53,7 +52,8 @@ class SuchThatClause : public ConditionalClause {
   std::unique_ptr<ClauseResult> EvaluateOnCondition(
       PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
       std::unordered_set<std::string>& decl_2_subset) override;
-  int GetNumDeclarations() const override;
-  std::vector<PqlDeclaration> GetDeclarations() const override;
+  bool SupportsConditionalEvaluation() const override;
+  std::optional<PqlDeclaration> GetFirstDeclaration() const override;
+  std::optional<PqlDeclaration> GetSecondDeclaration() const override;
   virtual ~SuchThatClause();
 };

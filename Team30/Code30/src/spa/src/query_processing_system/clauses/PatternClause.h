@@ -6,10 +6,9 @@
 #include <vector>
 
 #include "Clause.h"
-#include "ConditionalClause.h"
 #include "query_processing_system/references/EntRef.h"
 
-class PatternClause : public ConditionalClause {
+class PatternClause : public Clause {
  private:
   PqlDeclaration decl;
 
@@ -32,6 +31,8 @@ class PatternClause : public ConditionalClause {
   std::unique_ptr<ClauseResult> EvaluateOnCondition(
       PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
       std::unordered_set<std::string>& decl_2_subset) override;
-  int GetNumDeclarations() const override;
-  std::vector<PqlDeclaration> GetDeclarations() const override;
+  bool SupportsConditionalEvaluation() const override;
+  std::optional<PqlDeclaration> GetFirstDeclaration() const override;
+  std::optional<PqlDeclaration> GetSecondDeclaration() const override;
+
 };

@@ -9,8 +9,8 @@ QueryEvaluator::QueryEvaluator(PKBQPSInterface& pkb) : pkb(pkb) {}
 
 void QueryEvaluator::PopulateIntermediateResultsTable(
     IntermediateResultsTable& table, ClauseList clauses) {
-  for (auto& clause : clauses) {
-    auto clause_result = clause->Evaluate(pkb);
+  for (const auto& clause : clauses) {
+    auto clause_result = (clause->SupportsConditionalEvaluation == 2) ? EvaluateClauseConditionally(table, clause) : clause->Evaluate(pkb);
     if (clause->IsNegated()) {
       auto decls = clause_result->GetDeclarations();
       FillMissingDecls(table, decls);
@@ -22,6 +22,21 @@ void QueryEvaluator::PopulateIntermediateResultsTable(
       break;  // no point continuing
     }
   }
+}
+
+std::unique_ptr<ClauseResult> QueryEvaluator::EvaluateClauseConditionally(IntermediateResultsTable& table, const std::shared_ptr<Clause>& clause) {
+  std::unordered_set<std::string> d1_existing_set;
+  std::unordered_set<std::string> d2_existing_set;
+
+  std::optional<PqlDeclaration> d1 = clause->GetFirstDeclaration();
+  if (d1.has_value() && table.HasDeclaration(d1.value())) {
+    d1_existing_set = table.GetValue(d1);
+  }
+  std::optional<PqlDeclaration> d2 = clause->GetSecondDeclaration();
+  if (d2.has_value() && table.HasDeclaration(d2.value())) {
+    d2_existing_set = table.GetValue(d2);
+  }
+  return clause->EvaluateOnCondition(pkb, d1_existing_set, d2_existing_set);
 }
 
 bool QueryEvaluator::EvaluateQuery(ClauseList clauses) {
