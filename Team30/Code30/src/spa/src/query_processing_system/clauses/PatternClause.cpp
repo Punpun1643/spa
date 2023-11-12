@@ -43,32 +43,3 @@ std::unique_ptr<ClauseResult> PatternClause::Evaluate(PKBQPSInterface& pkb) {
       break;
   }
 }
-
-std::unique_ptr<ClauseResult> PatternClause::EvaluateOnCondition(
-    PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
-    std::unordered_set<std::string>& decl_2_subset) {
-  if (!SupportsConditionalEvaluation()) {
-    throw std::logic_error(
-        "Pattern Clauses only support Conditional Evaluation on 2 synonym "
-        "clauses.");
-  }
-  auto values = EvaluateDeclRef(pkb, decl_1_subset, decl_2_subset);
-  return std::make_unique<ClauseResult>(decl, ent_ref.GetDeclaration(),
-                                        std::move(values));
-}
-
-std::optional<PqlDeclaration> PatternClause::GetFirstDeclaration() const {
-  return decl;
-}
-
-std::optional<PqlDeclaration> PatternClause::GetSecondDeclaration() const {
-  if (ent_ref.GetRefType() == PqlRefType::DECLARATION) {
-    return ent_ref.GetDeclaration();
-  } else {
-    return std::nullopt;
-  }
-}
-
-bool PatternClause::SupportsConditionalEvaluation() const {
-  return ent_ref.GetRefType() == PqlRefType::DECLARATION;
-}

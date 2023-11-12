@@ -20,14 +20,6 @@ PatternContainerClause::EvaluateDeclRef(PKBQPSInterface& pkb) {
   return pkb.GetContainerStmtControlVarPairs(target_type);
 }
 
-std::vector<std::pair<std::string, std::string>>
-PatternContainerClause::EvaluateDeclRef(
-    PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
-    std::unordered_set<std::string>& decl_2_subset) {
-  return pkb.GetContainerStmtControlVarPairs(target_type, decl_1_subset,
-                                             decl_2_subset);
-}
-
 PatternContainerClause::PatternContainerClause(PqlDeclaration container_decl,
                                                EntRef ent_ref,
                                                EntityType target_type)

@@ -14,11 +14,3 @@ std::unique_ptr<ClauseResult> SelectAllClause::Evaluate(PKBQPSInterface& pkb) {
 
   return std::make_unique<ClauseResult>(declaration, values);
 }
-
-std::optional<PqlDeclaration> SelectAllClause::GetFirstDeclaration() const {
-  return declaration;
-}
-
-std::optional<PqlDeclaration> SelectAllClause::GetSecondDeclaration() const {
-  return std::nullopt;
-}

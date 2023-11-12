@@ -53,19 +53,6 @@ std::vector<std::vector<std::string>> RelationalTable::GetTableCols(
   return output;
 }
 
-std::unordered_set<std::string> RelationalTable::GetCol(
-    PqlDeclaration const& decl) const {
-  if (column_mapping.count(decl) == 0) {
-    throw std::invalid_argument("Decl not in table");
-  }
-  int col_id = column_mapping.at(decl);
-  std::unordered_set<std::string> output;
-  for (auto const& row : table) {
-    output.insert(row[col_id]);
-  }
-  return output;
-}
-
 std::vector<PqlDeclaration> RelationalTable::GetSharedColumns(
     RelationalTable& other_table) const {
   std::vector<PqlDeclaration> shared_cols = {};

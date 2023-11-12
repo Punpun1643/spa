@@ -48,8 +48,6 @@ class RelationalTable {
   std::vector<std::vector<std::string>> GetTableCols(
       std::vector<PqlDeclaration> const& decls) const;
 
-  std::unordered_set<std::string> GetCol(PqlDeclaration const& decl) const;
-
   bool HasNoResults() const;
 
   std::vector<PqlDeclaration> GetTableColNames() const;

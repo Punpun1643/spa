@@ -11,6 +11,4 @@ class SelectAllClause : public Clause {
  public:
   explicit SelectAllClause(PqlDeclaration declaration);
   std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
-  std::optional<PqlDeclaration> GetFirstDeclaration() const override;
-  std::optional<PqlDeclaration> GetSecondDeclaration() const override;
 };

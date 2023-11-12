@@ -63,18 +63,6 @@ bool IntermediateResultsTable::HasNoResults() const {
   return has_no_results;
 }
 
-std::unordered_set<std::string> IntermediateResultsTable::GetValues(
-    PqlDeclaration const& decl) {
-  if (has_no_results) {
-    return {};
-  }
-  if (!HasDeclaration(decl)) {
-    throw std::invalid_argument("Decl not in table");
-  }
-  RelationalTable relevant_table = tables[table_mapping.at(decl)];
-  return relevant_table.GetCol(decl);
-}
-
 std::vector<std::vector<std::string>>
 IntermediateResultsTable::GetValuesGivenDeclarations(
     std::vector<PqlDeclaration> const& decls) {
