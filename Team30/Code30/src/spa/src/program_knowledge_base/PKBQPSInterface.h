@@ -66,8 +66,8 @@ class PKBQPSInterface {
   // 2 Declarations
   // Relation(syn1, syn2)
   virtual std::vector<std::pair<std::string, std::string>>
-  GetRelationSynonymSynonym(
-      EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) = 0;
+  GetRelationSynonymSynonym(EntityType entity_type_1, EntityType entity_type_2,
+                            RelationType rel_type) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetRelationSynonymSynonym(
@@ -86,8 +86,8 @@ class PKBQPSInterface {
       MatchType match_type) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
-  GetMatchingAssignStmtLhsVarPairs(
-      std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type) = 0;
+  GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
+                                   MatchType match_type) = 0;
 
   virtual std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignStmtLhsVarPairs(
