@@ -40,7 +40,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
       std::unordered_set<std::string> const& syn_2_possible_values);
 
   std::vector<std::pair<std::string, std::string>>
-  PKB::GetRelationSynonymSynonymBackwardTraverse(
+  GetRelationSynonymSynonymBackwardTraverse(
       RelationType rel_type,
       std::unordered_set<std::string> const& syn_1_possible_values,
       std::unordered_set<std::string> const& syn_2_possible_values);
@@ -150,6 +150,5 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   GetContainerStmtControlVarPairs(
       EntityType container_stmt_type,
       std::unordered_set<std::string> container_syn_possible_values,
-      std::unordered_set<std::string> control_var_possible_values)
-      override;
+      std::unordered_set<std::string> control_var_possible_values) override;
 };
