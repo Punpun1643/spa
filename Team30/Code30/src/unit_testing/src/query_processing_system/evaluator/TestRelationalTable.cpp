@@ -226,7 +226,7 @@ TEST_CASE("RelationalTable Tests") {
       std::vector<std::vector<std::string>> EXP_OUTPUT = {
           {"2", "14", "c"}, {"2", "14", "d"}, {"1", "12", "b"}};
 
-      std::unordered_set<std::pair<std::string, std::string>, PairHash>
+      std::unordered_set<std::pair<std::string, std::string>, PairHashValueValue>
           to_delete;
       to_delete.emplace("1", "10");
       to_delete.emplace("6", "20");

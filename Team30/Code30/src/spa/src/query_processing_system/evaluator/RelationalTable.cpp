@@ -192,7 +192,7 @@ void RelationalTable::Delete(PqlDeclaration const& decl,
 
 void RelationalTable::Delete(
     PqlDeclaration const& d1, PqlDeclaration const& d2,
-    std::unordered_set<std::pair<std::string, std::string>, PairHash> const&
+    std::unordered_set<std::pair<std::string, std::string>, PairHashValueValue> const&
         values) {
   if (column_mapping.count(d1) == 0 || column_mapping.count(d2) == 0) {
     throw std::invalid_argument(
