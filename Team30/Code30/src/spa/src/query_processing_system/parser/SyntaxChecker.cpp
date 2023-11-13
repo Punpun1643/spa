@@ -1,6 +1,5 @@
 #include "SyntaxChecker.h"
 
-#include <iostream>
 #include <memory>
 #include <queue>
 #include <stdexcept>

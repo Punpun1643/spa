@@ -1,6 +1,5 @@
 #include "CallsManager.h"
 
-#include <iostream>
 #include <vector>
 
 #include "../exceptions/InvalidSourceSemanticsException.h"

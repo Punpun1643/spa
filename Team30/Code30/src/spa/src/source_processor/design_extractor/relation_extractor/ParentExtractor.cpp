@@ -1,6 +1,5 @@
 #include "ParentExtractor.h"
 
-#include <iostream>
 #include <vector>
 
 ParentExtractor::ParentExtractor(PKBSPInterface& pkb)

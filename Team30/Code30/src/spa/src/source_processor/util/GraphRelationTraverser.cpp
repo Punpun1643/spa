@@ -1,6 +1,5 @@
 #include "GraphRelationTraverser.h"
 
-#include <iostream>
 #include <queue>
 #include <stack>
 #include <utility>

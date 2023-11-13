@@ -1,6 +1,5 @@
 #include "QueryInterpreter.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
