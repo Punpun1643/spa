@@ -1,7 +1,6 @@
 #include "PKB.h"
 
 #include <algorithm>
-#include <cassert>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -13,6 +12,7 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 }
 
 // ********** Private methods **********
+// comment: can just use std::set_intersection instead?
 std::unordered_set<std::string> PKB::GetIntersectionHelper(
     std::unordered_set<std::string> const& larger_set,
     std::unordered_set<std::string> const& smaller_set) {
@@ -91,7 +91,7 @@ std::unordered_set<std::string> PKB::GetStatementUses(std::string const& stmt) {
 // ---------- ENTITIES ----------
 std::vector<std::string> PKB::GetEntitiesWithType(EntityType type) {
   std::unordered_set<std::string> e = ent_data->Get(type);
-  return std::vector<std::string>(e.begin(), e.end());
+  return {e.begin(), e.end()};
 }
 
 std::string PKB::ConvertEntityValueToAlias(std::string const& value,
@@ -144,18 +144,18 @@ std::vector<std::string> PKB::GetRelationSynonymWild(EntityType entity_type,
                                                      RelationType rel_type) {
   std::unordered_set<std::string> output =
       rel_data->GetAllWithRelations(rel_type, ent_data->Get(entity_type));
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
-// example Follows(_, s), FolowsStar(_, s)
+// example Follows(_, s), FollowsStar(_, s)
 std::vector<std::string> PKB::GetRelationWildSynonym(EntityType entity_type,
                                                      RelationType rel_type) {
   std::unordered_set<std::string> output = rel_data->GetAllWithInverseRelations(
       rel_type, ent_data->Get(entity_type));
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
-// example Follows(s, 3), FolowsStar(s, 3)
+// example Follows(s, 3), FollowsStar(s, 3)
 std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
                                                       std::string const& value,
                                                       RelationType rel_type) {
@@ -166,7 +166,7 @@ std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
   std::unordered_set<std::string> output =
       GetIntersection(all_inverse_related, entities);
 
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
 // example Follows(3, s)
@@ -180,7 +180,7 @@ std::vector<std::string> PKB::GetRelationValueSynonym(std::string const& value,
   std::unordered_set<std::string> output =
       GetIntersection(all_related, entities);
 
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
 //// 2 Declarations
@@ -220,13 +220,13 @@ PKB::GetRelationSynonymSynonymForwardTraverse(
     std::unordered_set<std::string> const& syn_2_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
 
-  for (std::string ent1 : syn_1_possible_values) {
+  for (const std::string& ent1 : syn_1_possible_values) {
     std::unordered_set<std::string> all_related_to_ent1 =
         rel_data->GetAllRelatedToValue(rel_type, ent1);
     std::unordered_set<std::string> ents2 =
         PKB::GetIntersection(syn_2_possible_values, all_related_to_ent1);
-    for (std::string ent2 : ents2) {
-      output.push_back(make_pair(ent1, ent2));
+    for (const std::string& ent2 : ents2) {
+      output.emplace_back(ent1, ent2);
     }
   }
   return output;
@@ -239,13 +239,13 @@ PKB::GetRelationSynonymSynonymBackwardTraverse(
     std::unordered_set<std::string> const& syn_2_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
 
-  for (std::string ent2 : syn_2_possible_values) {
+  for (const std::string& ent2 : syn_2_possible_values) {
     std::unordered_set<std::string> all_related_to_ent2 =
         rel_data->GetAllInverseRelatedToValue(rel_type, ent2);
     std::unordered_set<std::string> ents1 =
         PKB::GetIntersection(syn_1_possible_values, all_related_to_ent2);
-    for (std::string ent1 : ents1) {
-      output.push_back(make_pair(ent1, ent2));
+    for (const std::string& ent1 : ents1) {
+      output.emplace_back(ent1, ent2);
     }
   }
   return output;
