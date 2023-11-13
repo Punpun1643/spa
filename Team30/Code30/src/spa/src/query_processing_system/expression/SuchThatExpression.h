@@ -12,6 +12,7 @@ class SuchThatExpression : public ClauseExpression {
 
   friend std::ostream& operator<<(std::ostream& os,
                                   SuchThatExpression const& obj) {
+    // should this be here?
     os << "arg1: " << obj.GetArg1();
     os << ", arg2: " << obj.GetArg2();
     os << "\n";

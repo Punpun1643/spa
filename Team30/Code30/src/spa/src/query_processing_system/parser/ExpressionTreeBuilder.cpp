@@ -1,6 +1,5 @@
 #include "ExpressionTreeBuilder.h"
 
-#include <iostream>
 #include <memory>
 #include <queue>
 #include <regex>

@@ -1,7 +1,6 @@
 #include "RelDatabase.h"
 
 #include <algorithm>
-#include <iostream>
 #include <string>
 #include <unordered_set>
 

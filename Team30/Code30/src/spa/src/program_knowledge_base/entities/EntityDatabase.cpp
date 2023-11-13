@@ -1,5 +1,6 @@
 #include "EntityDatabase.h"
 
+#include <stdexcept>
 #include <utility>
 
 EntityDatabase::EntityDatabase() {

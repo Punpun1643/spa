@@ -1,7 +1,6 @@
 #include "UsesModifiesTypeExtractor.h"
 
 #include <algorithm>
-#include <iostream>
 
 UsesModifiesTypeExtractor::UsesModifiesTypeExtractor(
     PKBSPInterface& pkb, std::shared_ptr<CallsManager> calls_manager)

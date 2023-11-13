@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -33,6 +32,7 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
       }
     }
 
+    // not sure if there should be an assert statement here
     assert(node_w_min_calls != NULL);
 
     // checks for cyclic calls
