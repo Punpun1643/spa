@@ -1,7 +1,6 @@
 #include "CallsProcConnector.h"
 
 #include <algorithm>
-#include <cassert>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -31,9 +30,6 @@ void CallsProcConnector::ConnectProcsAndUpdateRelations(
         proc_name_w_min_calls = map_name_node.first;
       }
     }
-
-    // not sure if there should be an assert statement here
-    assert(node_w_min_calls != NULL);
 
     // checks for cyclic calls
     if (min_calls != 0) {
