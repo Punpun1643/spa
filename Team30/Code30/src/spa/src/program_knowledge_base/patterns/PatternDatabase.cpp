@@ -80,8 +80,8 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
     }
     return {lhs_assignments.at(lhs_value).begin(),
             lhs_assignments.at(lhs_value).end()};
-  } 
-  
+  }
+
   std::unordered_set<std::string> valid_assignments =
       GetAllStmtsWithLHS(lhs_value);
   if (match_type == MatchType::PARTIAL_MATCH) {  // String Partial
