@@ -12,19 +12,6 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 }
 
 // ********** Private methods **********
-// comment: can just use std::set_intersection instead?
-std::unordered_set<std::string> PKB::GetIntersectionHelper(
-    std::unordered_set<std::string> const& larger_set,
-    std::unordered_set<std::string> const& smaller_set) {
-  std::unordered_set<std::string> output;
-  for (std::string v : smaller_set) {
-    if (larger_set.count(v)) {
-      output.insert(v);
-    }
-  }
-  return output;
-}
-
 std::unordered_set<std::string> PKB::GetIntersection(
     std::unordered_set<std::string> const& set1,
     std::unordered_set<std::string> const& set2) {
