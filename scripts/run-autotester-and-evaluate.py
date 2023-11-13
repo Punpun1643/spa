@@ -16,7 +16,7 @@ def check_output_all_correct(root, name):
         additional_list = query.findall(".//additional")
         timeout_list = query.findall(".//timeout")
         if missing_list or additional_list or timeout_list:
-            wrong_queries.append(query_idx)
+            wrong_queries.append(query_idx + 1)
     if wrong_queries:
         print(
                 name +
