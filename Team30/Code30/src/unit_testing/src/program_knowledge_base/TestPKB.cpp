@@ -537,7 +537,6 @@ TEST_CASE("Test1-Source PKB") {
   pkb.InsertEntity(EntityType::ASSIGN, "23");
   pkb.InsertEntity(EntityType::ASSIGN, "25");
   pkb.InsertEntity(EntityType::ASSIGN, "26");
-  pkb.InsertEntity(EntityType::ASSIGN, "27");
 
   pkb.InsertAssignPattern("2", "x", buildTree5());
   pkb.InsertAssignPattern("3", "z", buildTree6());
