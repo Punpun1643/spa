@@ -1,0 +1,13 @@
+procedure p1 {
+	while (a > b) {
+		if (a > c) then {
+			a = b + c;
+			print a;
+		} else {
+			read c;
+			print d;
+		}
+	}
+	d = c;
+}
+
