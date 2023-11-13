@@ -9,17 +9,17 @@ Select a such that Uses (a, "a")
 17
 5000
 3 - select variables modified by an assignment with partial pattern 'A'
-assign a; variable v
-Select v such that Modifies (a, v) and pattern a (v, _"A"_)
-SyntaxError
+assign a; variable v;
+Select v such that Modifies (a, v) pattern a (v, _"A"_)
+procedure
 5000
 4 - select assignments with pattern, awkward whitespace
- assign a;variable v
+ assign a;variable v;
 Select  a    pattern a(v,_"a"_  )
-SyntaxError
+17
 5000
 5 - select stmts that Uses the variable (not procedure) 'main'
 stmt s;
 Select s such that Uses (s, "main")
-SyntaxError
+none
 5000
