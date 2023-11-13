@@ -63,6 +63,5 @@ void UsesExtractor::InsertVarWithActors(std::string var) {
     } else {
       pkb.InsertRelation(RelationType::USES_P, uses_actor, var);
     }
-    // std::cout << "(" + usesActor + ", " + var + ")\n";
   }
 }
