@@ -7,8 +7,8 @@
 
 Item | Version
 -|-
-OS | Windows 11
-Toolchain | CMake 3.26 + MSVC 19.37.32822.0
+OS | macOS
+Toolchain | CMake 3.27.6 + Apple clang version 13.0.0 (clang-1300.0.29.30)
 C++ Standard | C++17
 
 ### Additional Build Instructions
