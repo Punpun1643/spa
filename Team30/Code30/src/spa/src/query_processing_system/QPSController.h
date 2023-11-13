@@ -24,6 +24,10 @@ class QPSController {
   TokensToClauses(std::vector<std::shared_ptr<Token>> tokens);
 
  private:
+  static std::string const BOOLEAN_TRUE_RESULT;
+  static std::string const BOOLEAN_FALSE_RESULT;
+  static std::string const RESULT_STRING_DELIMITER;
+
   void CheckSyntax(std::vector<std::shared_ptr<Token>> tokens);
   std::shared_ptr<Context> FormContext(
       std::vector<std::shared_ptr<Token>> tokens);

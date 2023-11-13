@@ -23,6 +23,7 @@
 #include "../expression/ParentTExpression.h"
 #include "../expression/SelectExpression.h"
 #include "../expression/UsesExpression.h"
+#include "../helper/Helper.h"
 #include "shared/types/EntityType.h"
 
 ExpressionTreeBuilder::ExpressionTreeBuilder(
@@ -30,8 +31,8 @@ ExpressionTreeBuilder::ExpressionTreeBuilder(
     std::shared_ptr<Context> context)
     : QpParser(tokens), context(context) {
   // Declaration parsing already done by ContextBuilder
-  while ((GetCurrTokenValue() != QpParser::SELECT) ||
-         (GetCurrTokenValue() == QpParser::SELECT &&
+  while ((GetCurrTokenValue() != Helper::SELECT) ||
+         (GetCurrTokenValue() == Helper::SELECT &&
           std::find(tokens.begin(), tokens.end(), GetCurrToken()) !=
               tokens.begin() &&
           GetPeekBackTokenValue() != ";")) {
@@ -43,8 +44,7 @@ std::shared_ptr<AExpression> ExpressionTreeBuilder::GetExpressionTree() {
   return std::move(this->expression_tree);
 }
 
-// naming convention
-void ExpressionTreeBuilder::parse() {
+void ExpressionTreeBuilder::Parse() {
   std::shared_ptr<SelectExpression> select_expression =
       this->CreateSelectExpressionHead();
 
@@ -59,25 +59,24 @@ void ExpressionTreeBuilder::parse() {
 
 std::optional<std::shared_ptr<SelectExpression>>
 ExpressionTreeBuilder ::CreateSelectExpression() {
-  if (GetCurrTokenValue() == QpParser::BOOLEAN &&
-      !(this->context->CheckDeclarationExists(QpParser::BOOLEAN))) {
+  if (GetCurrTokenValue() == Helper::BOOLEAN &&
+      !(this->context->CheckDeclarationExists(Helper::BOOLEAN))) {
     return std::make_optional<std::shared_ptr<SelectExpression>>(
         std::make_shared<SelectExpression>(true));
 
-  } else if (QpParser::IsSynonym(GetCurrTokenValue())) {
+  } else if (Helper::IsSynonym(GetCurrTokenValue())) {
     std::string synonym = GetCurrTokenValue();
-    // G8: magic number/string should be replaced by constants
-    if (GetPeekTokenValue() == ".") {
+    if (GetPeekTokenValue() == Helper::SELECT_ATTR_TYPE_PREFIX) {
       NextToken();  // .
       std::string attr_type_string = NextToken()->GetTokenVal();
-      AttrType attr_type = QpParser::StringToAttrType(attr_type_string);
+      AttrType attr_type = Helper::StringToAttrType(attr_type_string);
       return std::make_optional<std::shared_ptr<SelectExpression>>(
           std::make_shared<SelectExpression>(synonym, attr_type, false));
     } else {
       EntityType entity_type =
           this->context->GetDeclaration(synonym).GetEntityType();
       AttrType attr_type =
-          QpParser::GetDefaultAttrTypeFromEntityType(entity_type);
+          Helper::GetDefaultAttrTypeFromEntityType(entity_type);
       return std::make_optional<std::shared_ptr<SelectExpression>>(
           std::make_shared<SelectExpression>(synonym, attr_type, false));
     }
@@ -93,8 +92,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
 
   std::optional<std::shared_ptr<SelectExpression>> select_head;
 
-  // G8: magic number/string should be replaced by constants
-  if (GetCurrTokenValue() != "<") {
+  if (GetCurrTokenValue() != Helper::SELECT_MULTIPLE_OPENING_BRACE) {
     select_head = CreateSelectExpression();
   } else {
     std::optional<std::shared_ptr<SelectExpression>> previous_select_expression;
@@ -102,8 +100,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
     bool is_first_run = true;
 
     NextToken();  // elem
-    // G8: magic number/string should be replaced by constants
-    while (GetCurrTokenValue() != ">") {
+    while (GetCurrTokenValue() != Helper::SELECT_MULTIPLE_CLOSING_BRACE) {
       if (GetCurrToken()->GetTokenType() == TokenType::EOF_TOKEN) {
         throw std::runtime_error("ETB multiple select parsing hit eof");
       }
@@ -122,8 +119,7 @@ ExpressionTreeBuilder ::CreateSelectExpressionHead() {
       is_first_run = false;
 
       NextToken();  // , or >
-      // G8: magic number/string should be replaced by constants
-      if (GetCurrTokenValue() == ",") {
+      if (GetCurrTokenValue() == Helper::SELECT_MULTIPLE_DELIMITER) {
         NextToken();  // elem
       }
     }
@@ -140,15 +136,15 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
 
   bool is_first_run = true;
   while (GetCurrToken()->GetTokenType() != TokenType::EOF_TOKEN) {
-    if (GetCurrTokenValue() == QpParser::SUCH) {
+    if (GetCurrTokenValue() == Helper::SUCH) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<SuchThatExpression>>(
               this->CreateSuchThatExpressionHead());
-    } else if (GetCurrTokenValue() == QpParser::PATTERN) {
+    } else if (GetCurrTokenValue() == Helper::PATTERN) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<PatternExpression>>(
               this->CreatePatternExpressionHead());
-    } else if (GetCurrTokenValue() == QpParser::WITH) {
+    } else if (GetCurrTokenValue() == Helper::WITH) {
       current_clause_expression =
           std::make_optional<std::shared_ptr<WithExpression>>(
               this->CreateWithExpressionHead());
@@ -166,7 +162,46 @@ ExpressionTreeBuilder ::CreateClauseExpressionHead() {
   return clause_expression_head;
 }
 
-// this method looks a little bit long
+std::shared_ptr<SuchThatExpression>
+ExpressionTreeBuilder::CreateSuchThatExpression(std::string clause_name,
+                                                std::string arg1,
+                                                std::string arg2, bool is_not) {
+  std::shared_ptr<SuchThatExpression> such_that_expression;
+  if (clause_name == Helper::AFFECTS) {
+    such_that_expression =
+        std::make_shared<AffectsExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::CALLS) {
+    such_that_expression =
+        std::make_shared<CallsExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::CALLS_STAR) {
+    such_that_expression =
+        std::make_shared<CallsTExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::FOLLOWS) {
+    such_that_expression =
+        std::make_shared<FollowsExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::FOLLOWS_STAR) {
+    such_that_expression =
+        std::make_shared<FollowsTExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::MODIFIES) {
+    such_that_expression =
+        std::make_shared<ModifiesExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::NEXT) {
+    such_that_expression = std::make_shared<NextExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::NEXT_STAR) {
+    such_that_expression =
+        std::make_shared<NextTExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::PARENT) {
+    such_that_expression =
+        std::make_shared<ParentExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::PARENT_STAR) {
+    such_that_expression =
+        std::make_shared<ParentTExpression>(arg1, arg2, is_not);
+  } else if (clause_name == Helper::USES) {
+    such_that_expression = std::make_shared<UsesExpression>(arg1, arg2, is_not);
+  }
+  return such_that_expression;
+}
+
 std::shared_ptr<SuchThatExpression>
 ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
   std::shared_ptr<SuchThatExpression> such_that_expression_head;
@@ -177,12 +212,11 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
       previous_such_that_expression;
   std::optional<std::shared_ptr<SuchThatExpression>>
       current_such_that_expression;
-  while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
+  while (is_first_run || GetCurrTokenValue() == Helper::AND) {
     NextToken();
 
     bool is_not = false;
-    // G8: magic number/string should be replaced by constants
-    if (GetCurrTokenValue() == "not") {
+    if (GetCurrTokenValue() == Helper::NOT) {
       is_not = true;
       NextToken();
     }
@@ -192,63 +226,21 @@ ExpressionTreeBuilder::CreateSuchThatExpressionHead() {
 
     std::string arg1 = "";
     NextToken();  // start of arg1
-    while (GetCurrTokenValue() != ",") {
+    while (GetCurrTokenValue() != Helper::CLAUSE_ARG_DELIMITER) {
       arg1 += GetCurrTokenValue();
       NextToken();
     }
 
     std::string arg2 = "";
     NextToken();  // start of arg2
-    while (GetCurrTokenValue() != ")") {
+    while (GetCurrTokenValue() != Helper::CLAUSE_CLOSING_BRACE) {
       arg2 += GetCurrTokenValue();
       NextToken();
     }
 
-    if (clause_name == QpParser::AFFECTS) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<AffectsExpression>>(
-              std::make_shared<AffectsExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::CALLS) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<CallsExpression>>(
-              std::make_shared<CallsExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::CALLS_STAR) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<CallsTExpression>>(
-              std::make_shared<CallsTExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::FOLLOWS) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<FollowsExpression>>(
-              std::make_shared<FollowsExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::FOLLOWS_STAR) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<FollowsTExpression>>(
-              std::make_shared<FollowsTExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::MODIFIES) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<ModifiesExpression>>(
-              std::make_shared<ModifiesExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::NEXT) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<NextExpression>>(
-              std::make_shared<NextExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::NEXT_STAR) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<NextTExpression>>(
-              std::make_shared<NextTExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::PARENT) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<ParentExpression>>(
-              std::make_shared<ParentExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::PARENT_STAR) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<ParentTExpression>>(
-              std::make_shared<ParentTExpression>(arg1, arg2, is_not));
-    } else if (clause_name == QpParser::USES) {
-      current_such_that_expression =
-          std::make_optional<std::shared_ptr<UsesExpression>>(
-              std::make_shared<UsesExpression>(arg1, arg2, is_not));
-    }
+    current_such_that_expression =
+        std::make_optional<std::shared_ptr<SuchThatExpression>>(
+            this->CreateSuchThatExpression(clause_name, arg1, arg2, is_not));
 
     if (previous_such_that_expression.has_value()) {
       previous_such_that_expression.value()->SetNextExpression(
@@ -273,11 +265,11 @@ ExpressionTreeBuilder ::CreatePatternExpressionHead() {
   std::optional<std::shared_ptr<PatternExpression>> previous_pattern_expression;
   std::optional<std::shared_ptr<PatternExpression>> current_pattern_expression;
 
-  while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
+  while (is_first_run || GetCurrTokenValue() == Helper::AND) {
     NextToken();
 
     bool is_not = false;
-    if (GetCurrTokenValue() == "not") {
+    if (GetCurrTokenValue() == Helper::NOT) {
       is_not = true;
       NextToken();
     }
@@ -326,7 +318,7 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
   NextToken();  // (
 
   NextToken();
-  while (GetCurrTokenValue() != ",") {
+  while (GetCurrTokenValue() != Helper::CLAUSE_ARG_DELIMITER) {
     arg1 += GetCurrTokenValue();
     NextToken();
   }
@@ -334,14 +326,15 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
   NextToken();  // start of arg2
   int opening_brace_count = 0;
   // G8: magic number/string should be replaced by constants
-  while ((opening_brace_count >= 1) || GetCurrTokenValue() != ")") {
+  while ((opening_brace_count >= 1) ||
+         GetCurrTokenValue() != Helper::CLAUSE_CLOSING_BRACE) {
     std::string current_token_value = GetCurrTokenValue();
-    if (current_token_value != "_" && current_token_value != "\"") {
+    if (current_token_value != Helper::WILD && current_token_value != "\"") {
       infix_tokens.push_back(GetCurrToken());
     }
-    if (current_token_value == "(") {
+    if (current_token_value == Helper::CLAUSE_OPENING_BRACE) {
       opening_brace_count++;
-    } else if (current_token_value == ")") {
+    } else if (current_token_value == Helper::CLAUSE_CLOSING_BRACE) {
       opening_brace_count--;
     }
     arg2 += current_token_value;
@@ -350,7 +343,7 @@ ExpressionTreeBuilder::CreatePatternAssign(std::string synonym, bool is_not) {
 
   MatchType match_type;
   std::shared_ptr<TreeNode> rhs_expr_tree;
-  if (arg2 == "_") {
+  if (arg2 == Helper::WILD) {
     match_type = MatchType::WILD_MATCH;
     rhs_expr_tree = nullptr;
   } else {
@@ -375,7 +368,7 @@ std::shared_ptr<PatternIfExpression> ExpressionTreeBuilder::CreatePatternIf(
   NextToken();  // (
 
   NextToken();
-  while (GetCurrTokenValue() != ",") {
+  while (GetCurrTokenValue() != Helper::CLAUSE_ARG_DELIMITER) {
     arg1 += GetCurrTokenValue();
     NextToken();
   }
@@ -394,7 +387,7 @@ ExpressionTreeBuilder::CreatePatternWhile(std::string synonym, bool is_not) {
   NextToken();  // (
 
   NextToken();
-  while (GetCurrTokenValue() != ",") {
+  while (GetCurrTokenValue() != Helper::CLAUSE_ARG_DELIMITER) {
     arg1 += GetCurrTokenValue();
     NextToken();
   }
@@ -411,11 +404,11 @@ ExpressionTreeBuilder::CreateWithExpressionHead() {
   std::optional<std::shared_ptr<WithExpression>> previous_with_expression;
   std::optional<std::shared_ptr<WithExpression>> current_with_expression;
 
-  while (is_first_run || GetCurrTokenValue() == QpParser::AND) {
+  while (is_first_run || GetCurrTokenValue() == Helper::AND) {
     NextToken();
 
     bool is_not = false;
-    if (GetCurrTokenValue() == "not") {
+    if (GetCurrTokenValue() == Helper::NOT) {
       is_not = true;
       NextToken();
     }
@@ -434,7 +427,7 @@ ExpressionTreeBuilder::CreateWithExpressionHead() {
       second_ref += GetCurrTokenValue();         // "
       second_ref += NextToken()->GetTokenVal();  // ident
       second_ref += NextToken()->GetTokenVal();  // "
-    } else if (QpParser::IsValidInteger(GetCurrTokenValue())) {
+    } else if (Helper::IsValidInteger(GetCurrTokenValue())) {
       second_ref += GetCurrTokenValue();
     } else {
       // is attrRef

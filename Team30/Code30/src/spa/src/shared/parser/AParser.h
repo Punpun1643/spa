@@ -55,7 +55,7 @@ class AParser {
    */
   std::string GetPeekBackTokenValue();
 
-  virtual void parse() = 0;
+  virtual void Parse() = 0;
 
   virtual ~AParser() = default;
 

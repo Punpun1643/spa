@@ -52,7 +52,7 @@ TEST_CASE("Test parse() method") {
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
-    parser.parse();
+    parser.Parse();
     auto programNode = parser.GetSourceProgramNode();
 
     REQUIRE(programNode != nullptr);
@@ -168,7 +168,7 @@ TEST_CASE("Test parse() method") {
         std::static_pointer_cast<Token>(std::make_shared<EofToken>()));
 
     SpParser parser = SpParser(tokens);
-    parser.parse();
+    parser.Parse();
     auto programNode = parser.GetSourceProgramNode();
 
     REQUIRE(programNode != nullptr);

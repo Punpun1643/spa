@@ -34,7 +34,7 @@ class SpParser : public AParser {
    */
   std::shared_ptr<ProgramNode> GetSourceProgramNode();
 
-  void parse() override;
+  void Parse() override;
 
   ~SpParser() = default;
 

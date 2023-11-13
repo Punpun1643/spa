@@ -16,7 +16,7 @@ class SyntaxChecker : public QpParser {
  public:
   explicit SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens);
 
-  void parse() override;
+  void Parse() override;
 
   ~SyntaxChecker() = default;
 
