@@ -1,42 +1,42 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.328000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>0.402000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check variable used in multiconditional stmt">1</id><querystr><![CDATA[stmt s; Select s such that Uses (s, "d")]]></querystr>
 <stuans>5,6</stuans>
 <correct>5,6</correct>
-<time_taken>2.186000</time_taken>
+<time_taken>1.759000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Uses="1" SuchThat="1" CondNum="3" RelNum="1" comment="check variable used in multiconditional stmt">2</id><querystr><![CDATA[variable v, v1; while w; Select v such that Uses (w, v1)]]></querystr>
 <stuans>a,b,c,d,x,y,z</stuans>
 <correct>a,b,c,d,x,y,z</correct>
-<time_taken>1.805000</time_taken>
+<time_taken>1.577000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="2" Pattern="1" CondNum="4" RelNum="0" comment="check if pattern matches for multiconditional asssign">3</id><querystr><![CDATA[assign a; Select a pattern a (_, _"b"_)]]></querystr>
 <stuans>3,6</stuans>
 <correct>3,6</correct>
-<time_taken>1.817000</time_taken>
+<time_taken>1.830000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" Modifies="1" UnnamedVar="1" Pattern="1" SuchThat="1" CondNum="5" RelNum="1" comment="Multiclause query">4</id><querystr><![CDATA[assign a; Select a such that Modifies (a, "z") pattern a (_, "c")]]></querystr>
 <stuans></stuans>
 <correct></correct>
-<time_taken>1.683000</time_taken>
+<time_taken>1.569000</time_taken>
 <passed/>
 </query>
 <query>
 <id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="Brackets for pattern matching">5</id><querystr><![CDATA[assign a; Select a pattern a (_, "(y)")]]></querystr>
 <stuans>8</stuans>
 <correct>8</correct>
-<time_taken>1.432000</time_taken>
+<time_taken>1.591000</time_taken>
 <passed/>
 </query>
 </queries>
