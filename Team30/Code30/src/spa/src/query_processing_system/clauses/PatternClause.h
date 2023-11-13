@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -21,8 +22,17 @@ class PatternClause : public Clause {
       PKBQPSInterface& pkb) = 0;
   virtual std::vector<std::string> EvaluateValueRef(PKBQPSInterface& pkb) = 0;
   virtual std::vector<std::string> EvaluateWildRef(PKBQPSInterface& pkb) = 0;
+  virtual std::vector<std::pair<std::string, std::string>> EvaluateDeclRef(
+      PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+      std::unordered_set<std::string>& decl_2_subset) = 0;
 
  public:
   virtual ~PatternClause();
   std::unique_ptr<ClauseResult> Evaluate(PKBQPSInterface& pkb) override;
+  std::unique_ptr<ClauseResult> EvaluateOnCondition(
+      PKBQPSInterface& pkb, std::unordered_set<std::string>& decl_1_subset,
+      std::unordered_set<std::string>& decl_2_subset) override;
+  bool SupportsConditionalEvaluation() const override;
+  std::optional<PqlDeclaration> GetFirstDeclaration() const override;
+  std::optional<PqlDeclaration> GetSecondDeclaration() const override;
 };

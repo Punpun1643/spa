@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "program_knowledge_base/utils/PairHash.h"
+#include "program_knowledge_base/utils/PairHashValueValue.h"
 #include "query_processing_system/references/PqlDeclaration.h"
 
 class RelationalTable {
@@ -48,6 +48,8 @@ class RelationalTable {
   std::vector<std::vector<std::string>> GetTableCols(
       std::vector<PqlDeclaration> const& decls) const;
 
+  std::unordered_set<std::string> GetCol(PqlDeclaration const& decl) const;
+
   bool HasNoResults() const;
 
   std::vector<PqlDeclaration> GetTableColNames() const;
@@ -64,7 +66,7 @@ class RelationalTable {
 
   void Delete(PqlDeclaration const& d1, PqlDeclaration const& d2,
               std::unordered_set<std::pair<std::string, std::string>,
-                                 PairHash> const& values);
+                                 PairHashValueValue> const& values);
 
   void Clear();
 };

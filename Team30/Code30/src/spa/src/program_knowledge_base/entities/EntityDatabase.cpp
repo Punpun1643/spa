@@ -38,7 +38,7 @@ std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
   return result;
 }
 
-void EntityDatabase::InsertEntity(EntityType type, std::string value) {
+void EntityDatabase::InsertEntity(EntityType type, std::string const& value) {
   (entities[type]).insert(value);
   if (statement_types.find(type) != statement_types.end()) {
     (entities[EntityType::STMT]).insert(value);
@@ -46,20 +46,19 @@ void EntityDatabase::InsertEntity(EntityType type, std::string value) {
 }
 
 void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
-                                  std::string ent, std::string attribute) {
+                                  std::string const& ent,
+                                  std::string const& attribute) {
   InsertEntity(type, ent);
   entity_attr_map[std::make_pair(type, attr_type)][ent] = attribute;
   attr_ent_map[std::make_pair(type, attr_type)][attribute].insert(ent);
 }
 
-std::unordered_set<std::string>& EntityDatabase::Get(
-    EntityType type) {
+std::unordered_set<std::string>& EntityDatabase::Get(EntityType type) {
   return entities.at(type);
 }
 
-// TODO(@tyanhan): Remove curr_attr_type
 std::string EntityDatabase::ConvertEntityValueToAlias(
-    std::string value, EntityType type, AttrType wanted_attr_type) {
+    std::string const& value, EntityType type, AttrType wanted_attr_type) {
   std::pair key = std::make_pair(type, wanted_attr_type);
 
   if (entity_attr_map.find(key) == entity_attr_map.end() ||
@@ -71,7 +70,7 @@ std::string EntityDatabase::ConvertEntityValueToAlias(
 }
 
 std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
-    EntityType type, AttrType attr_type, std::string value) {
+    EntityType type, AttrType attr_type, std::string const& value) {
   if (EntityAttrPairings::IsDefaultPair(type, attr_type)) {
     std::unordered_set<std::string> ents = Get(type);
     if (ents.find(value) != ents.end()) {

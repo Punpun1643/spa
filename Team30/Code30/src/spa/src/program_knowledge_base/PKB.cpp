@@ -13,70 +13,77 @@ PKB::PKB() : PKBQPSInterface(), PKBSPInterface() {
 }
 
 // ********** Private methods **********
-std::unordered_set<std::string> PKB::GetIntersection(
-    std::unordered_set<std::string> const& set1,
-    std::unordered_set<std::string> const& set2) {
+std::unordered_set<std::string> PKB::GetIntersectionHelper(
+    std::unordered_set<std::string> const& larger_set,
+    std::unordered_set<std::string> const& smaller_set) {
   std::unordered_set<std::string> output;
-  if (set1.size() < set2.size()) {
-    for (std::string v : set1) {
-      if (set2.count(v)) {
-        output.insert(v);
-      }
-    }
-  } else {
-    for (std::string v : set2) {
-      if (set1.count(v)) {
-        output.insert(v);
-      }
+  for (std::string v : smaller_set) {
+    if (larger_set.count(v)) {
+      output.insert(v);
     }
   }
   return output;
 }
 
+std::unordered_set<std::string> PKB::GetIntersection(
+    std::unordered_set<std::string> const& set1,
+    std::unordered_set<std::string> const& set2) {
+  std::unordered_set<std::string> output;
+  if (set1.size() < set2.size()) {
+    return GetIntersectionHelper(set2, set1);
+  }
+  return GetIntersectionHelper(set1, set2);
+}
+
 // ********** SP **********
-void PKB::InsertEntity(EntityType type, std::string value) {
+void PKB::InsertEntity(EntityType type, std::string const& value) {
   ent_data->InsertEntity(type, value);
 }
 
 void PKB::InsertEntity(EntityType type, AttrType attr_type,
-                       std::string statement_number, std::string attribute) {
+                       std::string const& statement_number,
+                       std::string const& attribute) {
   ent_data->InsertEntity(type, attr_type, statement_number, attribute);
 }
 
-void PKB::InsertRelation(RelationType type, std::string input1,
-                         std::string input2) {
+void PKB::InsertRelation(RelationType type, std::string const& input1,
+                         std::string const& input2) {
   rel_data->Insert(type, input1, input2);
 }
 
-void PKB::InsertAssignPattern(std::string statement_number, std::string lhs,
+void PKB::InsertAssignPattern(std::string const& statement_number,
+                              std::string const& lhs,
                               std::shared_ptr<TreeNode> const& rhs) {
   pat_data->InsertAssignment(statement_number, lhs, rhs);
 }
 
-void PKB::InsertCondVarPattern(EntityType type, std::string statement_number,
-                               std::string var) {
+void PKB::InsertCondVarPattern(EntityType type,
+                               std::string const& statement_number,
+                               std::string const& var) {
   pat_data->InsertCondVar(type, statement_number, var);
 }
 
-void PKB::InsertCFGNode(std::string statement_number,
+void PKB::InsertCFGNode(std::string const& statement_num,
                         std::shared_ptr<CFGNode> const& node) {
-  rel_data->InsertCFGNode(statement_number, node);
+  rel_data->InsertCFGNode(statement_num, node);
 }
 
 std::unordered_set<std::string> PKB::GetProcedureModifies(
-    std::string proc_name) {
+    std::string const& proc_name) {
   return rel_data->GetAllRelatedToValue(RelationType::MODIFIES_P, proc_name);
 }
 
-std::unordered_set<std::string> PKB::GetProcedureUses(std::string proc_name) {
+std::unordered_set<std::string> PKB::GetProcedureUses(
+    std::string const& proc_name) {
   return rel_data->GetAllRelatedToValue(RelationType::USES_P, proc_name);
 }
 
-std::unordered_set<std::string> PKB::GetStatementModifies(std::string stmt) {
+std::unordered_set<std::string> PKB::GetStatementModifies(
+    std::string const& stmt) {
   return rel_data->GetAllRelatedToValue(RelationType::MODIFIES_S, stmt);
 }
 
-std::unordered_set<std::string> PKB::GetStatementUses(std::string stmt) {
+std::unordered_set<std::string> PKB::GetStatementUses(std::string const& stmt) {
   return rel_data->GetAllRelatedToValue(RelationType::USES_S, stmt);
 }
 
@@ -87,14 +94,14 @@ std::vector<std::string> PKB::GetEntitiesWithType(EntityType type) {
   return std::vector<std::string>(e.begin(), e.end());
 }
 
-std::string PKB::ConvertEntityValueToAlias(std::string value, EntityType type,
+std::string PKB::ConvertEntityValueToAlias(std::string const& value,
+                                           EntityType type,
                                            AttrType wanted_attr_type) {
   return ent_data->ConvertEntityValueToAlias(value, type, wanted_attr_type);
 }
 
-std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(EntityType type,
-                                                           AttrType attr_type,
-                                                           std::string value) {
+std::vector<std::string> PKB::GetEntitiesMatchingAttrValue(
+    EntityType type, AttrType attr_type, std::string const& value) {
   return ent_data->GetEntitiesMatchingAttrValue(type, attr_type, value);
 }
 
@@ -108,18 +115,21 @@ PKB::GetEntitiesWhereAttributesMatch(EntityType type_1, AttrType attr_type_1,
 // ---------- RELATIONS ----------
 // 0 Declarations
 // example Follows(1, 3)
-bool PKB::IsRelationTrueValueValue(std::string value_1, std::string value_2,
+bool PKB::IsRelationTrueValueValue(std::string const& value_1,
+                                   std::string const& value_2,
                                    RelationType rel_type) {
   return rel_data->IsRelated(rel_type, value_1, value_2);
 }
 
 // example Follows(1, _)
-bool PKB::IsRelationTrueValueWild(std::string value, RelationType rel_type) {
+bool PKB::IsRelationTrueValueWild(std::string const& value,
+                                  RelationType rel_type) {
   return rel_data->HasRelations(rel_type, value);
 }
 
 // example Follows(_, 1)
-bool PKB::IsRelationTrueWildValue(std::string value, RelationType rel_type) {
+bool PKB::IsRelationTrueWildValue(std::string const& value,
+                                  RelationType rel_type) {
   return rel_data->HasInverseRelations(rel_type, value);
 }
 
@@ -147,28 +157,28 @@ std::vector<std::string> PKB::GetRelationWildSynonym(EntityType entity_type,
 
 // example Follows(s, 3), FolowsStar(s, 3)
 std::vector<std::string> PKB::GetRelationSynonymValue(EntityType entity_type,
-                                                      std::string value,
+                                                      std::string const& value,
                                                       RelationType rel_type) {
-  std::unordered_set<std::string> allInverseRelated =
+  std::unordered_set<std::string> all_inverse_related =
       rel_data->GetAllInverseRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = ent_data->Get(entity_type);
 
   std::unordered_set<std::string> output =
-      GetIntersection(allInverseRelated, entities);
+      GetIntersection(all_inverse_related, entities);
 
   return std::vector<std::string>(output.begin(), output.end());
 }
 
 // example Follows(3, s)
-std::vector<std::string> PKB::GetRelationValueSynonym(std::string value,
+std::vector<std::string> PKB::GetRelationValueSynonym(std::string const& value,
                                                       EntityType entity_type,
                                                       RelationType rel_type) {
-  std::unordered_set<std::string> allRelated =
+  std::unordered_set<std::string> all_related =
       rel_data->GetAllRelatedToValue(rel_type, value);
   std::unordered_set<std::string> entities = ent_data->Get(entity_type);
 
   std::unordered_set<std::string> output =
-      GetIntersection(allRelated, entities);
+      GetIntersection(all_related, entities);
 
   return std::vector<std::string>(output.begin(), output.end());
 }
@@ -177,20 +187,67 @@ std::vector<std::string> PKB::GetRelationValueSynonym(std::string value,
 // example Follows(s1, s2), FollowsStar(s1, s2)
 std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
     EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type) {
-  std::vector<std::pair<std::string, std::string>> output;
-  std::unordered_set<std::string> ents1 = PKB::ent_data->Get(entity_type_1);
+  return GetRelationSynonymSynonym(entity_type_1, entity_type_2, rel_type,
+                                   ent_data->Get(entity_type_1),
+                                   ent_data->Get(entity_type_2));
+}
 
-  for (std::string ent1 : ents1) {
+std::vector<std::pair<std::string, std::string>> PKB::GetRelationSynonymSynonym(
+    EntityType entity_type_1, EntityType entity_type_2, RelationType rel_type,
+    std::unordered_set<std::string>& syn_1_possible_values,
+    std::unordered_set<std::string>& syn_2_possible_values) {
+  if (syn_1_possible_values.empty()) {
+    syn_1_possible_values = ent_data->Get(entity_type_1);
+  }
+  if (syn_2_possible_values.empty()) {
+    syn_2_possible_values = ent_data->Get(entity_type_2);
+  }
+
+  std::vector<std::pair<std::string, std::string>> output;
+  if (syn_1_possible_values.size() <= syn_2_possible_values.size()) {
+    return GetRelationSynonymSynonymForwardTraverse(
+        rel_type, syn_1_possible_values, syn_2_possible_values);
+  } else {
+    return GetRelationSynonymSynonymBackwardTraverse(
+        rel_type, syn_1_possible_values, syn_2_possible_values);
+  }
+}
+
+std::vector<std::pair<std::string, std::string>>
+PKB::GetRelationSynonymSynonymForwardTraverse(
+    RelationType rel_type,
+    std::unordered_set<std::string> const& syn_1_possible_values,
+    std::unordered_set<std::string> const& syn_2_possible_values) {
+  std::vector<std::pair<std::string, std::string>> output;
+
+  for (std::string ent1 : syn_1_possible_values) {
     std::unordered_set<std::string> all_related_to_ent1 =
         rel_data->GetAllRelatedToValue(rel_type, ent1);
     std::unordered_set<std::string> ents2 =
-        PKB::GetIntersection(ent_data->Get(entity_type_2), all_related_to_ent1);
-
+        PKB::GetIntersection(syn_2_possible_values, all_related_to_ent1);
     for (std::string ent2 : ents2) {
       output.push_back(make_pair(ent1, ent2));
     }
   }
+  return output;
+}
 
+std::vector<std::pair<std::string, std::string>>
+PKB::GetRelationSynonymSynonymBackwardTraverse(
+    RelationType rel_type,
+    std::unordered_set<std::string> const& syn_1_possible_values,
+    std::unordered_set<std::string> const& syn_2_possible_values) {
+  std::vector<std::pair<std::string, std::string>> output;
+
+  for (std::string ent2 : syn_2_possible_values) {
+    std::unordered_set<std::string> all_related_to_ent2 =
+        rel_data->GetAllInverseRelatedToValue(rel_type, ent2);
+    std::unordered_set<std::string> ents1 =
+        PKB::GetIntersection(syn_1_possible_values, all_related_to_ent2);
+    for (std::string ent1 : ents1) {
+      output.push_back(make_pair(ent1, ent2));
+    }
+  }
   return output;
 }
 
@@ -203,7 +260,7 @@ std::vector<std::string> PKB::GetMatchingAssignStmts(
 }
 
 std::vector<std::string> PKB::GetMatchingAssignStmts(
-    std::string lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
+    std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr,
     MatchType match_type) {
   return pat_data->GetMatchingAssignStmts(lhs_value, rhs_expr, match_type);
 }
@@ -211,7 +268,25 @@ std::vector<std::string> PKB::GetMatchingAssignStmts(
 std::vector<std::pair<std::string, std::string>>
 PKB::GetMatchingAssignStmtLhsVarPairs(std::shared_ptr<TreeNode> const& rhs_expr,
                                       MatchType match_type) {
-  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type);
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(
+      rhs_expr, match_type, ent_data->Get(EntityType::ASSIGN),
+      ent_data->Get(EntityType::VARIABLE));
+}
+
+std::vector<std::pair<std::string, std::string>>
+PKB::GetMatchingAssignStmtLhsVarPairs(
+    std::shared_ptr<TreeNode> const& rhs_expr, MatchType match_type,
+    std::unordered_set<std::string>& assign_syn_possible_values,
+    std::unordered_set<std::string>& var_syn_possible_values) {
+  if (assign_syn_possible_values.empty()) {
+    assign_syn_possible_values = ent_data->Get(EntityType::ASSIGN);
+  }
+  if (var_syn_possible_values.empty()) {
+    var_syn_possible_values = ent_data->Get(EntityType::VARIABLE);
+  }
+  return pat_data->GetMatchingAssignStmtLhsVarPairs(rhs_expr, match_type,
+                                                    assign_syn_possible_values,
+                                                    var_syn_possible_values);
 }
 
 std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
@@ -220,12 +295,30 @@ std::vector<std::string> PKB::GetContainerStmtsWithControlVar(
 }
 
 std::vector<std::string> PKB::GetContainerStmtsWithGivenControlVar(
-    EntityType container_stmt_type, std::string var_name) {
+    EntityType container_stmt_type, std::string const& var_name) {
   return pat_data->GetContainerStmtsWithGivenControlVar(container_stmt_type,
                                                         var_name);
 }
 
 std::vector<std::pair<std::string, std::string>>
 PKB::GetContainerStmtControlVarPairs(EntityType container_stmt_type) {
-  return pat_data->GetContainerStmtControlVarPairs(container_stmt_type);
+  return pat_data->GetContainerStmtControlVarPairs(
+      container_stmt_type, ent_data->Get(container_stmt_type),
+      ent_data->Get(EntityType::VARIABLE));
+}
+
+std::vector<std::pair<std::string, std::string>>
+PKB::GetContainerStmtControlVarPairs(
+    EntityType container_stmt_type,
+    std::unordered_set<std::string>& container_syn_possible_values,
+    std::unordered_set<std::string>& control_var_possible_values) {
+  if (container_syn_possible_values.empty()) {
+    container_syn_possible_values = ent_data->Get(container_stmt_type);
+  }
+  if (control_var_possible_values.empty()) {
+    control_var_possible_values = ent_data->Get(EntityType::VARIABLE);
+  }
+  return pat_data->GetContainerStmtControlVarPairs(
+      container_stmt_type, container_syn_possible_values,
+      control_var_possible_values);
 }
