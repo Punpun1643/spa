@@ -35,17 +35,16 @@ class PatternDatabase {
       inv_cond_var_patterns;
 
   // helper functions
+  std::unordered_set<std::string> GetAllStmtsWithLHS(std::string const& lhs);
   std::unordered_set<std::string> FilterAssignStmtsByStmtAndLHS(
       std::unordered_set<std::string> const& assign_syn_possible_values,
       std::unordered_set<std::string> const& var_syn_possible_values);
-  std::unordered_set<std::string> GetMatchingAssignStringPartial(
-      std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr);
-  std::unordered_set<std::string> GetMatchingAssignStringExact(
-      std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr);
-  std::unordered_set<std::string> GetMatchingAssignWildPartial(
-      std::shared_ptr<TreeNode> const& rhs_expr);
-  std::unordered_set<std::string> GetMatchingAssignWildExact(
-      std::shared_ptr<TreeNode> const& rhs_expr);
+  std::unordered_set<std::string> GetMatchingAssignPartial(
+      std::shared_ptr<TreeNode> const& rhs_expr,
+      std::unordered_set<std::string> const& valid_assignments);
+  std::unordered_set<std::string> GetMatchingAssignExact(
+      std::shared_ptr<TreeNode> const& rhs_expr,
+      std::unordered_set<std::string> const& valid_assignments);
 
   std::vector<std::pair<std::string, std::string>>
   GetMatchingAssignSynonymPartial(

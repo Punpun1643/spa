@@ -39,31 +39,32 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
   if (match_type == MatchType::WILD_MATCH) {
     output = assign_stmts;
   } else if (match_type == MatchType::PARTIAL_MATCH) {  // Wild Partial
-    output = GetMatchingAssignWildPartial(rhs_expr);
+    output = GetMatchingAssignPartial(rhs_expr, assign_stmts);
   } else {  // Wild Exact
-    output = GetMatchingAssignWildExact(rhs_expr);
+    output = GetMatchingAssignExact(rhs_expr, assign_stmts);
   }
-
   return std::vector<std::string>(output.begin(), output.end());
 }
 
-std::unordered_set<std::string> PatternDatabase::GetMatchingAssignWildPartial(
-    std::shared_ptr<TreeNode> const& rhs_expr) {
+std::unordered_set<std::string> PatternDatabase::GetMatchingAssignPartial(
+    std::shared_ptr<TreeNode> const& rhs_expr,
+    std::unordered_set<std::string> const& valid_assignments) {
   std::unordered_set<std::string> output;
-  for (auto& pair : assignments) {
-    if (TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
-      output.insert(pair.first);
+  for (auto& stmt : valid_assignments) {
+    if (TreeNode::IsSubTree(assignments.at(stmt).second, rhs_expr)) {
+      output.insert(stmt);
     }
   }
   return output;
 }
 
-std::unordered_set<std::string> PatternDatabase::GetMatchingAssignWildExact(
-    std::shared_ptr<TreeNode> const& rhs_expr) {
+std::unordered_set<std::string> PatternDatabase::GetMatchingAssignExact(
+    std::shared_ptr<TreeNode> const& rhs_expr,
+    std::unordered_set<std::string> const& valid_assignments) {
   std::unordered_set<std::string> output;
-  for (auto& pair : assignments) {
-    if (TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
-      output.insert(pair.first);
+  for (auto& stmt : valid_assignments) {
+    if (TreeNode::IsSameTree(assignments.at(stmt).second, rhs_expr)) {
+      output.insert(stmt);
     }
   }
   return output;
@@ -76,40 +77,21 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
   // String Wild
   if (match_type == MatchType::WILD_MATCH) {
     if (lhs_assignments.count(lhs_value) == 0) {
-      return std::vector<std::string>();
+      return {};
     }
-    output = lhs_assignments.at(lhs_value);
-  } else if (match_type == MatchType::PARTIAL_MATCH) {  // String Partial
-    output = GetMatchingAssignStringPartial(lhs_value, rhs_expr);
+    return {lhs_assignments.at(lhs_value).begin(),
+            lhs_assignments.at(lhs_value).end()};
+  } 
+  
+  std::unordered_set<std::string> valid_assignments =
+      GetAllStmtsWithLHS(lhs_value);
+  if (match_type == MatchType::PARTIAL_MATCH) {  // String Partial
+    output = GetMatchingAssignPartial(rhs_expr, valid_assignments);
   } else {  // String Exact
-    output = GetMatchingAssignStringExact(lhs_value, rhs_expr);
+    output = GetMatchingAssignExact(rhs_expr, valid_assignments);
   }
 
   return std::vector<std::string>(output.begin(), output.end());
-}
-
-std::unordered_set<std::string> PatternDatabase::GetMatchingAssignStringPartial(
-    std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr) {
-  std::unordered_set<std::string> output;
-  for (auto& pair : assignments) {
-    if (pair.second.first == lhs_value &&
-        TreeNode::IsSubTree(pair.second.second, rhs_expr)) {
-      output.insert(pair.first);
-    }
-  }
-  return output;
-}
-
-std::unordered_set<std::string> PatternDatabase::GetMatchingAssignStringExact(
-    std::string const& lhs_value, std::shared_ptr<TreeNode> const& rhs_expr) {
-  std::unordered_set<std::string> output;
-  for (auto& pair : assignments) {
-    if (pair.second.first == lhs_value &&
-        TreeNode::IsSameTree(pair.second.second, rhs_expr)) {
-      output.insert(pair.first);
-    }
-  }
-  return output;
 }
 
 std::vector<std::pair<std::string, std::string>>
@@ -230,4 +212,15 @@ PatternDatabase::GetContainerStmtControlVarPairs(
     }
   }
   return output;
+}
+
+std::unordered_set<std::string> PatternDatabase::GetAllStmtsWithLHS(
+    std::string const& lhs) {
+  std::unordered_set<std::string> valid_assignments;
+  for (auto& stmt_lhsrhs : assignments) {
+    if (stmt_lhsrhs.second.first == lhs) {
+      valid_assignments.insert(stmt_lhsrhs.first);
+    }
+  }
+  return valid_assignments;
 }
