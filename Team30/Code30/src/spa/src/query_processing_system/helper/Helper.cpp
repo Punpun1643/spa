@@ -1,5 +1,7 @@
 #include "Helper.h"
 
+#include <unordered_map>
+
 #include "../../shared/tokenizer/token/SpecialCharToken.h"
 #include "../exceptions/InvalidSyntaxException.h"
 #include "../references/AttrRef.h"
