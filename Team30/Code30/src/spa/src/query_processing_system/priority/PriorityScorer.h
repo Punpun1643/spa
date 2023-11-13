@@ -9,8 +9,10 @@
 class Context;
 class PatternExpression;
 class SuchThatExpression;
-class NextExpression;
 class NextTExpression;
+class CallsTExpression;
+class FollowsTExpression;
+class ParentTExpression;
 class WithExpression;
 
 class PriorityScorer {
@@ -19,16 +21,20 @@ class PriorityScorer {
 
   float GetPriorityScore(std::shared_ptr<PatternExpression> expression);
   float GetPriorityScore(std::shared_ptr<SuchThatExpression> expression);
-  float GetPriorityScore(std::shared_ptr<NextExpression> expression);
   float GetPriorityScore(std::shared_ptr<NextTExpression> expression);
+  float GetPriorityScore(std::shared_ptr<CallsTExpression> expression);
+  float GetPriorityScore(std::shared_ptr<FollowsTExpression> expression);
+  float GetPriorityScore(std::shared_ptr<ParentTExpression> expression);
   float GetPriorityScore(std::shared_ptr<WithExpression> expression);
 
  private:
   float const WITH_PRIORITY = 1;
   float const PATTERN_PRIORITY = 2;
   float const SUCH_THAT_PRIORITY = 3;
-  float const NEXT_PRIORITY = 98;
   float const NEXT_T_PRIORITY = 99;
+  float const FOLLOWS_T_PRIORITY = 98;
+  float const PARENT_T_PRIORITY = 97;
+  float const CALLS_T_PRIORITY = 96;
   float const NUM_NEW_SYNONYMS_PRIORITY_NORMALISER = 1.0 * pow(10, 0);
   float const NUM_SYNONYMS_PRIORITY_NORMALISER = 1.0 * pow(10, -1);
   float const NEGATED_CLAUSE_NORMALISER = 1.0 * pow(10, -2);
