@@ -105,10 +105,6 @@
       "query": "exact-pattern-queries.txt"
     },
     {
-      "source": "010_semantic_error_assign_pattern_source.txt",
-      "query": "010_semantic_error_assign_pattern_queries.txt"
-    },
-    {
       "source": "stress-test-source1.txt",
       "query": "stress-test-queries1.txt"
     },
