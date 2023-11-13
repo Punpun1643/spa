@@ -104,9 +104,9 @@ Select v such that Parent* (_, 2)
 none
 5000
 22 - Parent* container syn and wildcard RHS
-variable v;
+variable v; while w;
 Select v such that Parent* (w, _)
-SemanticError
+a, b, i, j, p, q, t, x, y, z 
 5000
 23 - Parent* line num LHS and wildcard RHS
 variable v;
