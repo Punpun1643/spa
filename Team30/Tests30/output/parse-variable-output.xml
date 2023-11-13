@@ -1,14 +1,14 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>23s1-cp-spa-team-30</name><parsing_time_taken>4.198000</parsing_time_taken>
+<name>23s1-cp-spa-team-30</name><parsing_time_taken>2.447000</parsing_time_taken>
 </info>
 <queries>
 <query>
 <id ReturnTuple="1" CondNum="1" RelNum="0" comment="Select variable">0</id><querystr><![CDATA[variable v; Select v]]></querystr>
 <stuans>a,assign,b,c,call,d,e,f,g,h,humpyty,i,if,j,k,l,m,n,o,p,print,q,r,read,s,t,temp,u,v,var2,w,while,x,y,z</stuans>
 <correct>a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,assign,read,print,call,if,while,temp,humpyty,var2</correct>
-<time_taken>1.892000</time_taken>
+<time_taken>1.659000</time_taken>
 <passed/>
 </query>
 </queries>
