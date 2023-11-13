@@ -26,5 +26,5 @@ Select <w, p> such that not Follows (w, i) and Uses(w, v) and Uses(i, v) with no
 6 - not with and not pattern
 assign a; if i; stmt s; variable v;
 Select v pattern not a (v, "y") and i (v, _, _) with not s.stmt# = 13 and not v.varName = "z"
-y
+y, x
 5000
