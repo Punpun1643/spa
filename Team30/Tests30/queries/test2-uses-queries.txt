@@ -48,7 +48,7 @@ assign a;
 Select a such that Uses (_, "b")
 SemanticError
 5000
-11 - Invalid cannot have read as first param of Uses
+11 - Valid, read as first param of Uses
 read r;
 Select r such that Uses (r, _)
 none
