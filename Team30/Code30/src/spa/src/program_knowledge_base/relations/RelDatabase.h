@@ -28,8 +28,6 @@ class RelDatabase {
   // helper functions
   bool IsCFGRelation(RelationType type);
   bool IsValidStatementNumber(std::string const& val);
-  std::unordered_set<std::string> GetAllWithAffectsPathTo(
-      std::shared_ptr<CFGNode> const& node);
 
   bool IsEmptyCFG(RelationType type);
   bool IsRelatedCFG(RelationType type, std::string const& val1,

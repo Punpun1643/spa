@@ -1,6 +1,5 @@
 #include "LinkedListTable.h"
 
-#include <iostream>
 #include <memory>
 #include <queue>
 #include <string>
@@ -21,7 +20,7 @@ bool LinkedListTable::IsRelated(std::string const& i, std::string const& j) {
   std::shared_ptr<Node> curr = relations.GetNode(j);
 
   std::queue<std::shared_ptr<Node>> q;
-  for (std::shared_ptr<Node> n : curr->prev) {
+  for (const std::shared_ptr<Node>& n : curr->prev) {
     q.push(n);
   }
 
@@ -32,7 +31,7 @@ bool LinkedListTable::IsRelated(std::string const& i, std::string const& j) {
     }
     q.pop();
 
-    for (std::shared_ptr<Node> n : curr->prev) {
+    for (const std::shared_ptr<Node>& n : curr->prev) {
       q.push(n);
     }
   }
@@ -53,7 +52,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
     std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
 
-  for (std::string val : vals) {
+  for (const std::string& val : vals) {
     if (HasRelations(val)) {
       output.insert(val);
     }
@@ -65,7 +64,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
     std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
 
-  for (std::string val : vals) {
+  for (const std::string& val : vals) {
     if (HasInverseRelations(val)) {
       output.insert(val);
     }
@@ -74,7 +73,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
-    std::string val) {
+    std::string const& val) {
   std::shared_ptr<Node> curr = relations.GetNode(val);
   std::queue<std::shared_ptr<Node>> q;
   std::unordered_set<std::string> output;
@@ -83,7 +82,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
 
   while (!q.empty()) {
     curr = q.front();
-    for (std::shared_ptr<Node> neighbour : curr->next) {
+    for (const std::shared_ptr<Node>& neighbour : curr->next) {
       if (output.count(neighbour->value) == 0) {
         output.insert(neighbour->value);
         q.push(neighbour);
@@ -97,7 +96,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
 }
 
 std::unordered_set<std::string> LinkedListTable::GetAllInverseRelatedToValue(
-    std::string val) {
+    std::string const& val) {
   std::shared_ptr<Node> curr = relations.GetNode(val);
   std::queue<std::shared_ptr<Node>> q;
   std::unordered_set<std::string> output;
@@ -106,7 +105,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllInverseRelatedToValue(
 
   while (!q.empty()) {
     curr = q.front();
-    for (std::shared_ptr<Node> neighbour : curr->prev) {
+    for (const std::shared_ptr<Node>& neighbour : curr->prev) {
       if (output.count(neighbour->value) == 0) {
         output.insert(neighbour->value);
         q.push(neighbour);

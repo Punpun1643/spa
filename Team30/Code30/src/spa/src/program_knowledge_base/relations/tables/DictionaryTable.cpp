@@ -1,6 +1,5 @@
 #include "DictionaryTable.h"
 
-#include <memory>
 #include <string>
 
 DictionaryTable::DictionaryTable() : RelationTable() {}
@@ -22,7 +21,7 @@ void DictionaryTable::Insert(std::string const& i, std::string const& j) {
 }
 
 bool DictionaryTable::IsEmpty() {
-  return relations.size() == 0;
+  return relations.empty();
 }
 
 bool DictionaryTable::IsRelated(std::string const& i, std::string const& j) {
@@ -43,7 +42,7 @@ bool DictionaryTable::HasInverseRelations(std::string const& val) {
 std::unordered_set<std::string> DictionaryTable::GetAllWithRelations(
     std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
-  for (std::string val : vals) {
+  for (const std::string& val : vals) {
     if (HasRelations(val)) {
       output.insert(val);
     }
@@ -54,7 +53,7 @@ std::unordered_set<std::string> DictionaryTable::GetAllWithRelations(
 std::unordered_set<std::string> DictionaryTable::GetAllWithInverseRelations(
     std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
-  for (std::string val : vals) {
+  for (const std::string& val : vals) {
     if (HasInverseRelations(val)) {
       output.insert(val);
     }
@@ -63,17 +62,17 @@ std::unordered_set<std::string> DictionaryTable::GetAllWithInverseRelations(
 }
 
 std::unordered_set<std::string> DictionaryTable::GetAllRelatedToValue(
-    std::string val) {
+    std::string const& val) {
   if (relations.count(val) == 0) {
-    return std::unordered_set<std::string>();
+    return {};
   }
   return relations.at(val);
 }
 
 std::unordered_set<std::string> DictionaryTable::GetAllInverseRelatedToValue(
-    std::string val) {
+    std::string const& val) {
   if (inverse_relations.count(val) == 0) {
-    return std::unordered_set<std::string>();
+    return {};
   }
   return inverse_relations.at(val);
 }
