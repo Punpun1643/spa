@@ -21,7 +21,7 @@ Select a such that Parent*(w, i) and Parent(i, a) and not Modifies(a, "t")
 5 - Multi Pattern (mix of not and +ve)
 if i; assign a; while w; variable v;
 Select v pattern a(v, _) and not i(v,_,_) and not w(v, _)
-a,f,i,q,r,t,w,y
+a, f, i, q, r, t, w, y
 5000
 6 - Multi with (mix of not and +ve)
 print p;
