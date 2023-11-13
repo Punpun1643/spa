@@ -87,6 +87,6 @@ class PatternDatabase {
   std::vector<std::pair<std::string, std::string>>
   GetContainerStmtControlVarPairs(
       EntityType container_stmt_type,
-      std::unordered_set<std::string> container_syn_possible_values,
-      std::unordered_set<std::string> control_var_possible_values);
+      const std::unordered_set<std::string>& container_syn_possible_values,
+      const std::unordered_set<std::string>& control_var_possible_values);
 };
