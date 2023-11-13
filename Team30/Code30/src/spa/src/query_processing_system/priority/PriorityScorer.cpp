@@ -3,8 +3,10 @@
 #include <memory>
 
 #include "../context/Context.h"
-#include "../expression/NextExpression.h"
+#include "../expression/CallsTExpression.h"
+#include "../expression/FollowsTExpression.h"
 #include "../expression/NextTExpression.h"
+#include "../expression/ParentTExpression.h"
 #include "../expression/PatternExpression.h"
 #include "../expression/SuchThatExpression.h"
 #include "../expression/WithExpression.h"
@@ -48,14 +50,13 @@ float PriorityScorer::GetPriorityScore(
 }
 
 float PriorityScorer::GetPriorityScore(
-    std::shared_ptr<NextExpression> expression) {
-  std::cout << "next123\n";
+    std::shared_ptr<NextTExpression> expression) {
   float priority_score = 0;
   int num_synonyms = 0;
   int num_new_synonyms = 0;
   int const negated = (expression->IsNot() ? 1 : 0);
   int const clause_type_priority = this->SUCH_THAT_PRIORITY;
-  int const such_that_type_priority = this->NEXT_PRIORITY;
+  int const such_that_type_priority = this->NEXT_T_PRIORITY;
 
   std::string const arg1 = expression->GetArg1();
   std::string const arg2 = expression->GetArg2();
@@ -70,13 +71,55 @@ float PriorityScorer::GetPriorityScore(
 }
 
 float PriorityScorer::GetPriorityScore(
-    std::shared_ptr<NextTExpression> expression) {
+    std::shared_ptr<CallsTExpression> expression) {
   float priority_score = 0;
   int num_synonyms = 0;
   int num_new_synonyms = 0;
   int const negated = (expression->IsNot() ? 1 : 0);
   int const clause_type_priority = this->SUCH_THAT_PRIORITY;
-  int const such_that_type_priority = this->NEXT_T_PRIORITY;
+  int const such_that_type_priority = this->CALLS_T_PRIORITY;
+
+  std::string const arg1 = expression->GetArg1();
+  std::string const arg2 = expression->GetArg2();
+
+  this->IncrementSynonymPriorities(arg1, num_synonyms, num_new_synonyms);
+  this->IncrementSynonymPriorities(arg2, num_synonyms, num_new_synonyms);
+  num_new_synonyms = 0;
+
+  return this->CalculatePriorityScore(num_synonyms, num_new_synonyms, negated,
+                                      clause_type_priority,
+                                      such_that_type_priority);
+}
+
+float PriorityScorer::GetPriorityScore(
+    std::shared_ptr<FollowsTExpression> expression) {
+  float priority_score = 0;
+  int num_synonyms = 0;
+  int num_new_synonyms = 0;
+  int const negated = (expression->IsNot() ? 1 : 0);
+  int const clause_type_priority = this->SUCH_THAT_PRIORITY;
+  int const such_that_type_priority = this->FOLLOWS_T_PRIORITY;
+
+  std::string const arg1 = expression->GetArg1();
+  std::string const arg2 = expression->GetArg2();
+
+  this->IncrementSynonymPriorities(arg1, num_synonyms, num_new_synonyms);
+  this->IncrementSynonymPriorities(arg2, num_synonyms, num_new_synonyms);
+  num_new_synonyms = 0;
+
+  return this->CalculatePriorityScore(num_synonyms, num_new_synonyms, negated,
+                                      clause_type_priority,
+                                      such_that_type_priority);
+}
+
+float PriorityScorer::GetPriorityScore(
+    std::shared_ptr<ParentTExpression> expression) {
+  float priority_score = 0;
+  int num_synonyms = 0;
+  int num_new_synonyms = 0;
+  int const negated = (expression->IsNot() ? 1 : 0);
+  int const clause_type_priority = this->SUCH_THAT_PRIORITY;
+  int const such_that_type_priority = this->PARENT_T_PRIORITY;
 
   std::string const arg1 = expression->GetArg1();
   std::string const arg2 = expression->GetArg2();
