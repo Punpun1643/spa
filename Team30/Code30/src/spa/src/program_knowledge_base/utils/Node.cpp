@@ -2,13 +2,13 @@
 
 #include <utility>
 
-Node::Node(std::string  value) : value(std::move(value)) {}
+Node::Node(std::string value) : value(std::move(value)) {}
 
-void Node::InsertNext(const std::shared_ptr<Node>& node) {
+void Node::InsertNext(std::shared_ptr<Node> const& node) {
   next.insert(node);
 }
 
-void Node::InsertPrev(const std::shared_ptr<Node>& node) {
+void Node::InsertPrev(std::shared_ptr<Node> const& node) {
   prev.insert(node);
 }
 

@@ -20,7 +20,7 @@ bool LinkedListTable::IsRelated(std::string const& i, std::string const& j) {
   std::shared_ptr<Node> curr = relations.GetNode(j);
 
   std::queue<std::shared_ptr<Node>> q;
-  for (const std::shared_ptr<Node>& n : curr->prev) {
+  for (std::shared_ptr<Node> const& n : curr->prev) {
     q.push(n);
   }
 
@@ -31,7 +31,7 @@ bool LinkedListTable::IsRelated(std::string const& i, std::string const& j) {
     }
     q.pop();
 
-    for (const std::shared_ptr<Node>& n : curr->prev) {
+    for (std::shared_ptr<Node> const& n : curr->prev) {
       q.push(n);
     }
   }
@@ -52,7 +52,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithRelations(
     std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
 
-  for (const std::string& val : vals) {
+  for (std::string const& val : vals) {
     if (HasRelations(val)) {
       output.insert(val);
     }
@@ -64,7 +64,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllWithInverseRelations(
     std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
 
-  for (const std::string& val : vals) {
+  for (std::string const& val : vals) {
     if (HasInverseRelations(val)) {
       output.insert(val);
     }
@@ -82,7 +82,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllRelatedToValue(
 
   while (!q.empty()) {
     curr = q.front();
-    for (const std::shared_ptr<Node>& neighbour : curr->next) {
+    for (std::shared_ptr<Node> const& neighbour : curr->next) {
       if (output.count(neighbour->value) == 0) {
         output.insert(neighbour->value);
         q.push(neighbour);
@@ -105,7 +105,7 @@ std::unordered_set<std::string> LinkedListTable::GetAllInverseRelatedToValue(
 
   while (!q.empty()) {
     curr = q.front();
-    for (const std::shared_ptr<Node>& neighbour : curr->prev) {
+    for (std::shared_ptr<Node> const& neighbour : curr->prev) {
       if (output.count(neighbour->value) == 0) {
         output.insert(neighbour->value);
         q.push(neighbour);

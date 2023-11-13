@@ -220,12 +220,12 @@ PKB::GetRelationSynonymSynonymForwardTraverse(
     std::unordered_set<std::string> const& syn_2_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
 
-  for (const std::string& ent1 : syn_1_possible_values) {
+  for (std::string const& ent1 : syn_1_possible_values) {
     std::unordered_set<std::string> all_related_to_ent1 =
         rel_data->GetAllRelatedToValue(rel_type, ent1);
     std::unordered_set<std::string> ents2 =
         PKB::GetIntersection(syn_2_possible_values, all_related_to_ent1);
-    for (const std::string& ent2 : ents2) {
+    for (std::string const& ent2 : ents2) {
       output.emplace_back(ent1, ent2);
     }
   }
@@ -239,12 +239,12 @@ PKB::GetRelationSynonymSynonymBackwardTraverse(
     std::unordered_set<std::string> const& syn_2_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
 
-  for (const std::string& ent2 : syn_2_possible_values) {
+  for (std::string const& ent2 : syn_2_possible_values) {
     std::unordered_set<std::string> all_related_to_ent2 =
         rel_data->GetAllInverseRelatedToValue(rel_type, ent2);
     std::unordered_set<std::string> ents1 =
         PKB::GetIntersection(syn_1_possible_values, all_related_to_ent2);
-    for (const std::string& ent1 : ents1) {
+    for (std::string const& ent1 : ents1) {
       output.emplace_back(ent1, ent2);
     }
   }

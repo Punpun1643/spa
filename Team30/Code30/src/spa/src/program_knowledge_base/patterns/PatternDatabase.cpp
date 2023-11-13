@@ -120,7 +120,7 @@ PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
 
   // Synonym Wild
   if (match_type == MatchType::WILD_MATCH) {
-    for (const std::string& stmt : assign_syn_possible_values) {
+    for (std::string const& stmt : assign_syn_possible_values) {
       output.emplace_back(stmt, assignments.at(stmt).first);
     }
   } else if (match_type == MatchType::PARTIAL_MATCH) {  // Synonym Partial
@@ -135,7 +135,7 @@ PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
     output = GetMatchingAssignSynonymExact(rhs_expr, valid_assignments);
   }
 
-  return {output.begin(),output.end()};
+  return {output.begin(), output.end()};
 }
 
 std::unordered_set<std::string> PatternDatabase::FilterAssignStmtsByStmtAndLHS(
@@ -208,8 +208,8 @@ std::vector<std::string> PatternDatabase::GetContainerStmtsWithGivenControlVar(
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type,
-    const std::unordered_set<std::string>& container_syn_possible_values,
-    const std::unordered_set<std::string>& control_var_possible_values) {
+    std::unordered_set<std::string> const& container_syn_possible_values,
+    std::unordered_set<std::string> const& control_var_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
   std::unordered_map<std::string, std::unordered_set<std::string>>
       container_stmt_vars = cond_var_patterns.at(container_stmt_type);

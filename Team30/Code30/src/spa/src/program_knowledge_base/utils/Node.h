@@ -10,11 +10,11 @@ class Node {
   std::unordered_set<std::shared_ptr<Node>> prev;
   std::string value;
 
-  void InsertNext(const std::shared_ptr<Node>& node);
-  void InsertPrev(const std::shared_ptr<Node>& node);
+  void InsertNext(std::shared_ptr<Node> const& node);
+  void InsertPrev(std::shared_ptr<Node> const& node);
   bool IsNextEmpty() const;
   bool IsPrevEmpty() const;
 
-  explicit Node(std::string  value);
+  explicit Node(std::string value);
   ~Node() = default;
 };

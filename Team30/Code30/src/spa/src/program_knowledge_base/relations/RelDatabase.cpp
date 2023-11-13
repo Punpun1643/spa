@@ -48,7 +48,7 @@ bool RelDatabase::IsCFGRelation(RelationType type) {
 }
 
 bool RelDatabase::IsEmptyCFG(RelationType type) {
-  for (const auto& pair : cfg_nodes) {
+  for (auto const& pair : cfg_nodes) {
     if (HasRelations(type, pair.first)) {
       return false;
     }
@@ -104,7 +104,7 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type,
 std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
     RelationType type, std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
-  for (const std::string& val : vals) {
+  for (std::string const& val : vals) {
     if (HasRelations(type, val)) {
       output.insert(val);
     }
@@ -115,7 +115,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
     RelationType type, std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
-  for (const std::string& val : vals) {
+  for (std::string const& val : vals) {
     if (HasInverseRelations(type, val)) {
       output.insert(val);
     }
