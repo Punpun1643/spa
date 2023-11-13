@@ -40,9 +40,9 @@ void PKB::InsertEntity(EntityType type, std::string const& value) {
 }
 
 void PKB::InsertEntity(EntityType type, AttrType attr_type,
-                       std::string const& statement_number,
+                       std::string const& entity,
                        std::string const& attribute) {
-  ent_data->InsertEntity(type, attr_type, statement_number, attribute);
+  ent_data->InsertEntity(type, attr_type, entity, attribute);
 }
 
 void PKB::InsertRelation(RelationType type, std::string const& input1,

@@ -51,7 +51,7 @@ class PKB : public PKBQPSInterface, public PKBSPInterface {
   // ********** SP **********
   void InsertEntity(EntityType type, std::string const& value) override;
   void InsertEntity(EntityType type, AttrType attr_type,
-                    std::string const& statement_number,
+                    std::string const& entity,
                     std::string const& attribute) override;
   void InsertRelation(RelationType rel_type, std::string const& input1,
                       std::string const& input2) override;
