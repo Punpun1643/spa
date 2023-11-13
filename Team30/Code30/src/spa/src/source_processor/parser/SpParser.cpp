@@ -625,7 +625,7 @@ std::shared_ptr<StmtLstNode> SpParser::ParseStmtLst() {
   return std::make_shared<StmtLstNode>(stmts);
 }
 
-void SpParser::parse() {
+void SpParser::Parse() {
   source_program_node = ParseProgram();
 }
 

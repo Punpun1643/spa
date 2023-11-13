@@ -1,7 +1,6 @@
 #include "RelDatabase.h"
 
 #include <algorithm>
-#include <iostream>
 #include <string>
 #include <unordered_set>
 
@@ -49,7 +48,7 @@ bool RelDatabase::IsCFGRelation(RelationType type) {
 }
 
 bool RelDatabase::IsEmptyCFG(RelationType type) {
-  for (auto pair : cfg_nodes) {
+  for (auto const& pair : cfg_nodes) {
     if (HasRelations(type, pair.first)) {
       return false;
     }
@@ -105,7 +104,7 @@ bool RelDatabase::HasInverseRelationsCFG(RelationType type,
 std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
     RelationType type, std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
-  for (std::string val : vals) {
+  for (std::string const& val : vals) {
     if (HasRelations(type, val)) {
       output.insert(val);
     }
@@ -116,7 +115,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithRelationsCFG(
 std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
     RelationType type, std::unordered_set<std::string> const& vals) {
   std::unordered_set<std::string> output;
-  for (std::string val : vals) {
+  for (std::string const& val : vals) {
     if (HasInverseRelations(type, val)) {
       output.insert(val);
     }
@@ -127,7 +126,7 @@ std::unordered_set<std::string> RelDatabase::GetAllWithInverseRelationsCFG(
 std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
     RelationType type, std::string const& val) {
   if (!IsValidStatementNumber(val)) {
-    return std::unordered_set<std::string>();
+    return {};
   }
 
   std::shared_ptr<CFGNode> node = cfg_nodes.at(val);
@@ -149,7 +148,7 @@ std::unordered_set<std::string> RelDatabase::GetAllRelatedToValueCFG(
 std::unordered_set<std::string> RelDatabase::GetAllInverseRelatedToValueCFG(
     RelationType type, std::string const& val) {
   if (!IsValidStatementNumber(val)) {
-    return std::unordered_set<std::string>();
+    return {};
   }
 
   std::shared_ptr<CFGNode> node = cfg_nodes.at(val);

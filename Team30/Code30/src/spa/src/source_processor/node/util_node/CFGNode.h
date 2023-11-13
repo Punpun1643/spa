@@ -41,9 +41,15 @@ class CFGNode {
 
   void AddIncomingNode(std::shared_ptr<CFGNode>);
 
-  static bool IsAssignOrReadOutgoingNode(std::shared_ptr<CFGNode> node);
+  static bool IsAssignOrReadNode(std::shared_ptr<CFGNode> node);
 
-  static bool IsCallOutgoingNode(std::shared_ptr<CFGNode> node);
+  static bool IsReadNode(std::shared_ptr<CFGNode> node);
+
+  static bool IsCallNode(std::shared_ptr<CFGNode> node);
+
+  static bool IsAssignNode(std::shared_ptr<CFGNode> node);
+
+  static bool IsAssignOrReadOrCallNode(std::shared_ptr<CFGNode> node);
 
   static std::string GetVarModifiedInStartNode(
       std::shared_ptr<CFGNode> start_node);

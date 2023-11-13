@@ -1,6 +1,5 @@
 #include "PatternDatabase.h"
 
-#include <iostream>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -43,7 +42,7 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
   } else {  // Wild Exact
     output = GetMatchingAssignExact(rhs_expr, assign_stmts);
   }
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
 std::unordered_set<std::string> PatternDatabase::GetMatchingAssignPartial(
@@ -91,7 +90,7 @@ std::vector<std::string> PatternDatabase::GetMatchingAssignStmts(
     output = GetMatchingAssignExact(rhs_expr, valid_assignments);
   }
 
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
 std::vector<std::pair<std::string, std::string>>
@@ -103,8 +102,8 @@ PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
 
   // Synonym Wild
   if (match_type == MatchType::WILD_MATCH) {
-    for (std::string stmt : assign_syn_possible_values) {
-      output.push_back(make_pair(stmt, assignments.at(stmt).first));
+    for (std::string const& stmt : assign_syn_possible_values) {
+      output.emplace_back(stmt, assignments.at(stmt).first);
     }
   } else if (match_type == MatchType::PARTIAL_MATCH) {  // Synonym Partial
     std::unordered_set<std::string> valid_assignments =
@@ -118,8 +117,7 @@ PatternDatabase::GetMatchingAssignStmtLhsVarPairs(
     output = GetMatchingAssignSynonymExact(rhs_expr, valid_assignments);
   }
 
-  return std::vector<std::pair<std::string, std::string>>(output.begin(),
-                                                          output.end());
+  return {output.begin(), output.end()};
 }
 
 std::unordered_set<std::string> PatternDatabase::FilterAssignStmtsByStmtAndLHS(
@@ -144,7 +142,7 @@ PatternDatabase::GetMatchingAssignSynonymPartial(
     std::pair<std::string, std::shared_ptr<TreeNode>> lhs_rhs =
         assignments.at(stmt);
     if (TreeNode::IsSubTree(lhs_rhs.second, rhs_expr)) {
-      output.push_back(make_pair(stmt, lhs_rhs.first));
+      output.emplace_back(stmt, lhs_rhs.first);
     }
   }
   return output;
@@ -159,7 +157,7 @@ PatternDatabase::GetMatchingAssignSynonymExact(
     std::pair<std::string, std::shared_ptr<TreeNode>> lhs_rhs =
         assignments.at(stmt);
     if (TreeNode::IsSameTree(lhs_rhs.second, rhs_expr)) {
-      output.push_back(make_pair(stmt, lhs_rhs.first));
+      output.emplace_back(stmt, lhs_rhs.first);
     }
   }
   return output;
@@ -174,40 +172,39 @@ std::vector<std::string> PatternDatabase::GetContainerStmtsWithControlVar(
       output.insert(stmt_vars.first);
     }
   }
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
 std::vector<std::string> PatternDatabase::GetContainerStmtsWithGivenControlVar(
     EntityType container_stmt_type, std::string const& var_name) {
   if (inv_cond_var_patterns.at(container_stmt_type).count(var_name) == 0) {
-    return std::vector<std::string>();
+    return {};
   }
 
   std::unordered_set<std::string> output =
       inv_cond_var_patterns.at(container_stmt_type).at(var_name);
 
-  return std::vector<std::string>(output.begin(), output.end());
+  return {output.begin(), output.end()};
 }
 
 std::vector<std::pair<std::string, std::string>>
 PatternDatabase::GetContainerStmtControlVarPairs(
     EntityType container_stmt_type,
-    std::unordered_set<std::string> container_syn_possible_values,
-    std::unordered_set<std::string> control_var_possible_values) {
+    std::unordered_set<std::string> const& container_syn_possible_values,
+    std::unordered_set<std::string> const& control_var_possible_values) {
   std::vector<std::pair<std::string, std::string>> output;
   std::unordered_map<std::string, std::unordered_set<std::string>>
       container_stmt_vars = cond_var_patterns.at(container_stmt_type);
 
   for (auto const& stmt : container_syn_possible_values) {
     // conditional does not have vars
-    if (container_stmt_vars.find(stmt) == container_stmt_vars.end()) {
+    if (container_stmt_vars.count(stmt) == 0) {
       continue;
     }
 
     for (auto const& var : container_stmt_vars.at(stmt)) {
-      if (control_var_possible_values.find(var) !=
-          control_var_possible_values.end()) {
-        output.push_back(std::make_pair(stmt, var));
+      if (control_var_possible_values.count(var) == 1) {
+        output.emplace_back(stmt, var);
       }
     }
   }

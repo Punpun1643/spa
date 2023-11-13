@@ -1,7 +1,5 @@
 #include "Tokenizer.h"
 
-#include <iostream>
-
 #include "token/EofToken.h"
 #include "token/IntegerToken.h"
 #include "token/SpecialCharToken.h"
@@ -49,6 +47,10 @@ std::shared_ptr<Token> Tokenizer::Next() {
 
       if (std::isalpha(input.peek())) {
         throw std::invalid_argument("Invalid Syntax, invalid integer or name");
+      }
+
+      if (number.length() > 1 && number[0] == '0') {
+        throw std::invalid_argument("Integer has leading zero!");
       }
 
       return std::make_shared<IntegerToken>(number);

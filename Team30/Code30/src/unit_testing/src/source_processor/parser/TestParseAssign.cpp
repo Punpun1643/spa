@@ -18,7 +18,7 @@ class TestableParser : public SpParser {
   using SpParser::ParseAssign;
   using SpParser::ParseStmtLst;
 
-  void parse() override {}
+  void Parse() override {}
 };
 }  // namespace TestParseAssign
 

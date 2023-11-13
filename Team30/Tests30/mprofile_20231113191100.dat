@@ -1,0 +1,5 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\601_GH330_Affects_Typing_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\601_GH330_Affects_Typing_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/601_GH330_Affects_Typing_out.xml
+MEM 1.695312 1699873860.2109
+MEM 4.828125 1699873860.2199
+MEM 5.960938 1699873860.2287
+MEM 6.777344 1699873860.2373

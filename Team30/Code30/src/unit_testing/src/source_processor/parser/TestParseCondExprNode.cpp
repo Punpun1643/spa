@@ -17,7 +17,7 @@ class TestableParser : public SpParser {
 
   using SpParser::ParseCondExpr;
 
-  void parse() override {}
+  void Parse() override {}
 };
 }  // namespace TestParseCondExprNode
 

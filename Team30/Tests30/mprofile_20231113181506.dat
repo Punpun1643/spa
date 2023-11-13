@@ -1,0 +1,12 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\141_with_clause_conflicting_values_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\141_with_clause_conflicting_values_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/141_with_clause_conflicting_values_out.xml
+MEM 1.621094 1699870506.4241
+MEM 4.824219 1699870506.4425
+MEM 5.429688 1699870506.4510
+MEM 6.542969 1699870506.4591
+MEM 6.597656 1699870506.4679
+MEM 6.578125 1699870506.4765
+MEM 6.582031 1699870506.4852
+MEM 6.585938 1699870506.4931
+MEM 6.585938 1699870506.5022
+MEM 6.617188 1699870506.5103
+MEM 6.644531 1699870506.5194

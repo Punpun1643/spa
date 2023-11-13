@@ -20,7 +20,7 @@ class ExpressionTreeBuilder : public QpParser {
   ExpressionTreeBuilder(std::vector<std::shared_ptr<Token>> tokens,
                         std::shared_ptr<Context> context);
 
-  void parse() override;
+  void Parse() override;
   std::shared_ptr<AExpression> GetExpressionTree();
 
   ~ExpressionTreeBuilder() = default;
@@ -39,6 +39,8 @@ class ExpressionTreeBuilder : public QpParser {
       std::string synonym, bool is_not);
   std::optional<std::shared_ptr<SelectExpression>> CreateSelectExpression();
   std::shared_ptr<SelectExpression> CreateSelectExpressionHead();
+  std::shared_ptr<SuchThatExpression> CreateSuchThatExpression(
+      std::string clause_name, std::string arg1, std::string arg2, bool is_not);
   std::shared_ptr<SuchThatExpression> CreateSuchThatExpressionHead();
   std::shared_ptr<WithExpression> CreateWithExpressionHead();
 };

@@ -1,12 +1,11 @@
 #include "AffectsCache.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 
 #include "source_processor/node/util_node/CFGNode.h"
 
-AffectsCache::AffectsCache() {}
+AffectsCache::AffectsCache() = default;
 
 void AffectsCache::CacheAffects(std::shared_ptr<CFGNode> const& node1,
                                 std::shared_ptr<CFGNode> const& node2) {
@@ -88,7 +87,7 @@ std::unordered_set<std::string> AffectsCache::GetAllAffects(
     std::shared_ptr<CFGNode> const& node) {
   int line = node->GetNodeStmtIndex();
   if (affects_cache.count(line) == 0) {
-    return std::unordered_set<std::string>();
+    return {};
   }
   return ConvertToStrings(affects_cache.at(line));
 }
@@ -97,7 +96,7 @@ std::unordered_set<std::string> AffectsCache::GetAllInvAffects(
     std::shared_ptr<CFGNode> const& node) {
   int line = node->GetNodeStmtIndex();
   if (inv_affects_cache.count(line) == 0) {
-    return std::unordered_set<std::string>();
+    return {};
   }
   return ConvertToStrings(inv_affects_cache.at(line));
 }

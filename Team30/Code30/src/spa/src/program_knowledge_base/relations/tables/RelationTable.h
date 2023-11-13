@@ -22,7 +22,7 @@ class RelationTable {
   virtual std::unordered_set<std::string> GetAllWithInverseRelations(
       std::unordered_set<std::string> const& vals) = 0;
   virtual std::unordered_set<std::string> GetAllRelatedToValue(
-      std::string val) = 0;
+      std::string const& val) = 0;
   virtual std::unordered_set<std::string> GetAllInverseRelatedToValue(
-      std::string val) = 0;
+      std::string const& val) = 0;
 };

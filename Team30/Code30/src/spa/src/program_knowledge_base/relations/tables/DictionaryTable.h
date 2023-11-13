@@ -29,7 +29,7 @@ class DictionaryTable : public RelationTable {
   std::unordered_set<std::string> GetAllWithInverseRelations(
       std::unordered_set<std::string> const& vals) override;
   std::unordered_set<std::string> GetAllRelatedToValue(
-      std::string val) override;
+      std::string const& val) override;
   std::unordered_set<std::string> GetAllInverseRelatedToValue(
-      std::string val) override;
+      std::string const& val) override;
 };

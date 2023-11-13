@@ -1,0 +1,6 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\multiconditional-source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\multiconditional-queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/multiconditional-out.xml
+MEM 1.597656 1699870591.7706
+MEM 5.074219 1699870591.7919
+MEM 5.382812 1699870591.8018
+MEM 6.566406 1699870591.8108
+MEM 6.617188 1699870591.8204

@@ -1,0 +1,4 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\609_GH424_dup_with_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\609_GH424_dup_with_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/609_GH424_dup_with_out.xml
+MEM 1.585938 1699870580.5787
+MEM 4.308594 1699870580.6024
+MEM 5.707031 1699870580.6113

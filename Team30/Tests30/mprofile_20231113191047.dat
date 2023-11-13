@@ -1,0 +1,6 @@
+CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\004_pattern_syntax_error_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\004_pattern_syntax_error_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/004_pattern_syntax_error_out.xml
+MEM 1.585938 1699873847.9443
+MEM 4.308594 1699873847.9629
+MEM 5.363281 1699873847.9723
+MEM 6.214844 1699873847.9815
+MEM 6.214844 1699873847.9902

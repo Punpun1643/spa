@@ -1,6 +1,6 @@
 #include "LinkedList.h"
 
-LinkedList::LinkedList() {}
+LinkedList::LinkedList() = default;
 
 std::shared_ptr<Node> LinkedList::GetNode(std::string const& val) {
   auto it = nodes.find(val);

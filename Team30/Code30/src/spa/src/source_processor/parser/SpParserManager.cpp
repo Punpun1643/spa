@@ -24,7 +24,7 @@ std::shared_ptr<ProgramNode> SpParserManager::ParseInputFile(
   }
 
   SpParser parser(tokens);
-  parser.parse();
+  parser.Parse();
   std::shared_ptr<ProgramNode> program_node = parser.GetSourceProgramNode();
 
   return program_node;

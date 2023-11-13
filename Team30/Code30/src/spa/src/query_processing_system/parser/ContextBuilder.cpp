@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../exceptions/InvalidSyntaxException.h"
+#include "../helper/Helper.h"
 #include "shared/types/EntityType.h"
 
 ContextBuilder::ContextBuilder(std::vector<std::shared_ptr<Token>> tokens)
@@ -17,15 +18,16 @@ std::shared_ptr<Context> ContextBuilder::GetContext() {
   return std::move(this->context);
 }
 
-void ContextBuilder::parse() {
-  while (GetCurrToken()->GetTokenVal() != "Select") {
+void ContextBuilder::Parse() {
+  // magic string
+  while (GetCurrToken()->GetTokenVal() != Helper::SELECT) {
     this->parseDeclaration();
   }
 }
 
 void ContextBuilder::parseDeclaration() {
   EntityType entity_type =
-      QpParser::StringToEntityType(GetCurrToken()->GetTokenVal());
+      Helper::StringToEntityType(GetCurrToken()->GetTokenVal());
   std::shared_ptr<std::vector<std::string>> synonym_list(
       std::make_shared<std::vector<std::string>>());
   std::string synonym = NextToken()->GetTokenVal();
