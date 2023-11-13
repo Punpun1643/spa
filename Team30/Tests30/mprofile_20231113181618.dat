@@ -1,8 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\605_GH338_if_while_pattern_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\605_GH338_if_while_pattern_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/605_GH338_if_while_pattern_out.xml
-MEM 1.675781 1699870578.1854
-MEM 4.300781 1699870578.2029
-MEM 5.652344 1699870578.2122
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\606_GH343_with_compare_nondefault_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\606_GH343_with_compare_nondefault_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/606_GH343_with_compare_nondefault_out.xml
-MEM 1.644531 1699870578.9908
-MEM 4.960938 1699870579.0092
-MEM 6.390625 1699870579.0194

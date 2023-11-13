@@ -1,8 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\610_GH428_next_queryTo_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\610_GH428_next_queryTo_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/610_GH428_next_queryTo_out.xml
-MEM 1.652344 1699870581.0291
-MEM 5.398438 1699870581.0405
-MEM 6.632812 1699870581.0490
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\611_GH452_zero_with_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\611_GH452_zero_with_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/611_GH452_zero_with_out.xml
-MEM 1.664062 1699870581.8218
-MEM 5.222656 1699870581.8359
-MEM 6.398438 1699870581.8446

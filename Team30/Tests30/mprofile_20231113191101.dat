@@ -1,9 +1,0 @@
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\604_GH336_Same_Syn_Constraint_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\604_GH336_Same_Syn_Constraint_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/604_GH336_Same_Syn_Constraint_out.xml
-MEM 1.667969 1699873861.0599
-MEM 5.289062 1699873861.0691
-MEM 6.562500 1699873861.0779
-CMDLINE C:/Users/ASUS/Documents/NUS/CS3203/23s1-cp-spa-team-30/Team30/Code30/out/build/x64-Debug/src/autotester/autotester.exe C:/Users/ASUS/Documents/NUS/CS3203/tests\609_GH424_dup_with_source.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\609_GH424_dup_with_queries.txt C:/Users/ASUS/Documents/NUS/CS3203/tests\results\xml_files/609_GH424_dup_with_out.xml
-MEM 1.675781 1699873861.9280
-MEM 5.417969 1699873861.9392
-MEM 6.617188 1699873861.9483
-MEM 6.644531 1699873861.9566
