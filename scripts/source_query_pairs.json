@@ -103,6 +103,54 @@
     {
       "source": "exact-pattern-source.txt",
       "query": "exact-pattern-queries.txt"
+    },
+    {
+      "source": "010_semantic_error_assign_pattern_source.txt",
+      "query": "010_semantic_error_assign_pattern_queries.txt"
+    },
+    {
+      "source": "stress-test-source1.txt",
+      "query": "stress-test-queries1.txt"
+    },
+    {
+      "source": "stress-test-source2.txt",
+      "query": "stress-test-queries2.txt"
+    },
+    {
+      "source": "test11-if-while-patterns-source.txt",
+      "query": "test11-if-while-pattern-queries.txt"
+    },
+    {
+      "source": "test12-not-source.txt",
+      "query": "test12-not-queries.txt"
+    },
+    {
+      "source": "test13-not-source.txt",
+      "query": "test13-not_queries.txt"
+    },
+    {
+      "source": "test14-not-such-that-source.txt",
+      "query": "test14-not-such-that-queries.txt"
+    },
+    {
+      "source": "test15-not-such-that-source.txt",
+      "query": "test15-not-such-that-queries.txt"
+    },
+    {
+      "source": "test16-not-pattern-source.txt",
+      "query": "test16-not-pattern-queries.txt"
+    },
+    {
+      "source": "test17-not-with-source.txt",
+      "query": "test17-not-with-queries.txt"
+    },
+    {
+      "source": "test18-not-complex-source.txt",
+      "query": "test18-not-compex-queries.txt"
+    },
+    {
+      "source": "test19-not-pattern-source.txt",
+      "query": "test19-not-pattern-queries.txt"
     }
   ]
 }

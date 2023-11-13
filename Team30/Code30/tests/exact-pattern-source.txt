@@ -1,0 +1,24 @@
+procedure Exact {
+    w = 5;
+    w = (a + a) - (a * a / a) % a;
+    x = 5 + y + z;
+    y = x * 5 + 8 / 6;
+    z = y + z * y - z;
+
+    a = (b + c) / (c * a);
+    a = (7 - (11 + a - c) * d - (z * y * a));
+    b = (7 - (11 + a - c) * d - (z * y * a));
+    c = (a / b - (c / c) + (d - z * y));
+    d = a * c + b - d * d - z * y / b;
+    
+    g = (a+(a-(a*(a/(a%(((a))))))));
+    h = a + a - a * a / a % a;
+    i = a + (a - a) * a / (a % a);
+    j = (a + a) - (a * a / a) % a;
+}
+
+procedure Exact2 {
+    a = 5;
+    h = a + a - a * a / a % a;
+    y = x * 5 + 8 / 6;
+}

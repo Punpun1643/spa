@@ -1,0 +1,25 @@
+1 - with not v.varName = p.procName
+procedure p; variable v;
+Select <p, v> with not v.varName = p.procName
+x y, x z, y x, y z, z x, z y
+5000
+2 - with not assignment.stmt# = const.value
+assign a; constant c;
+Select <a, c> with not a.stmt# = c.value
+3 6, 3 9, 6 3, 6 9, 9 3, 9 6
+5000
+3 - with not irrelevant to select
+read re; print pn;
+Select re with not re.varName = pn.varName
+1, 4, 7
+5000
+4 - with not re.varName = pn.varName
+read re; print pn;
+Select <re.varName, pn.varName> with not re.varName = pn.varName
+x y, x z
+5000
+5 - with not re.varName = pn.varName combined with all read statements
+read re; print pn;
+Select <re, pn.varName> with not re.varName = pn.varName
+1 y, 1 z, 4 y, 4 z, 7 y, 7 z
+5000

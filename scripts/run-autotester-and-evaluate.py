@@ -7,14 +7,15 @@ from pathlib import Path
 import json
 import xml.etree.ElementTree as ET
 
-NUM_RUNS = 20
+NUM_RUNS = 10
 
 def check_output_all_correct(root, name):
     wrong_queries = []
     for query_idx, query in enumerate(root[1]):
         missing_list = query.findall(".//missing")
         additional_list = query.findall(".//additional")
-        if missing_list or additional_list:
+        timeout_list = query.findall(".//timeout")
+        if missing_list or additional_list or timeout_list:
             wrong_queries.append(query_idx)
     if wrong_queries:
         print(

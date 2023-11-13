@@ -1,0 +1,90 @@
+1 - If Pattern Wildcard
+if i;
+Select i pattern i(_, _, _ )
+1, 9, 10
+5000
+2 - If Pattern Variable Name
+if ifs;
+Select ifs pattern ifs ("x",_,_)
+1, 10
+5000
+3 - If Pattern Variable Syn Tuple
+if if; variable v;
+Select <if, v> pattern if(  v, _, _)
+1 x, 1 y, 9 a, 9 b, 9 c, 10 x, 10 z
+5000
+4 - Multi If Pattern
+if if;
+Select if pattern if ("x", _, _) and if ("z", _, _)
+10
+5000
+5 - While Pattern Wildcard
+while w;
+Select w pattern w(_,        _)
+5, 7, 13
+5000
+6 - While Pattern Variable Name
+while w;
+Select w pattern w ("c", _)
+13
+5000
+7 - While Pattern Variable Syn
+while while; variable var;
+Select <while, var> pattern while( var, _)
+5 a, 5 b, 5 d, 7 z, 7 w, 13 a, 13 b, 13 c
+5000
+8 - Multi While Pattern
+while w;
+Select w pattern w("a",_) and w ("d", _ )
+5
+5000
+9 - If Pattern Invalid 2nd param not Wildcard
+if ifs; variable v;
+Select ifs pattern ifs (_, v , _)
+SyntaxError
+5000
+10 - If Pattern Invalid 3rd param not Wildcard
+if ifs;
+Select ifs pattern ifs (_,_,"x")
+SyntaxError
+5000
+11 - While Pattern Invalid 2nd param not Wildcard
+read r;
+Select w pattern w (_, r)
+SyntaxError
+5000
+12 - If Pattern Invalid not an if syn
+stmt s;
+Select s pattern s(_, _, _) 
+SemanticError
+5000
+13 - While Pattern Invalid not an while syn
+if i;
+Select i pattern i(_, _) 
+SemanticError
+5000
+14 - If Pattern Invalid not a variable string
+if i;
+Select i pattern i("3", _, _) 
+SyntaxError
+5000
+15 - While Pattern Invalid not a variable string
+while w;
+Select w pattern w("==",   _) 
+SyntaxError
+5000
+16 - If Pattern Invalid not a variable string
+if i;
+Select i pattern i("3", _, _) 
+SyntaxError
+5000
+17 - While Pattern Invalid not a variable syn
+constant c; while w;
+Select <w, c> pattern w(c,   _) 
+SemanticError
+5000
+18 - If Pattern Invalid not a variable syn
+read r; if i;
+Select <i, r> pattern i(i, _,  _) 
+SemanticError
+5000

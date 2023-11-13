@@ -1,0 +1,17 @@
+procedure x {
+    read x;
+	print x;
+	x = 3;
+}
+
+procedure y {
+    read x;
+	print y;
+	y = 6;
+}
+
+procedure z {
+    read x;
+	print z;
+	z = 9;
+}

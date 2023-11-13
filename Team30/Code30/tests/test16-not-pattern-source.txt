@@ -1,0 +1,16 @@
+procedure p1 {
+    x = x + x + y;
+	y = x + x + y;
+	z = x + x + y;
+}
+
+procedure p2 {
+	y = x + x + y;
+	z = x + x + y;
+}
+
+procedure p3 {
+	y = x + x + y;
+	y = x;
+	x = y;
+}
