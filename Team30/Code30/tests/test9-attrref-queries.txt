@@ -1,0 +1,85 @@
+1 - AttrRef print stmt#
+print pn; variable v;
+Select pn.stmt# such that Uses (pn, v)
+12, 13, 16, 21
+5000
+2 - AttrRef print varName
+print pn; variable v;
+Select pn.varName such that Uses (pn, v)
+v3, v4, v2
+5000
+3 - AttrRef call different attrRef tyoes
+call c;
+Select <c.stmt#, c.procName>
+11 p2, 17 v3
+5000
+4 - AttrRef constant attrRef type
+constant c1;
+Select c1.value
+2, 99, 4, 7, 3, 1, 0
+5000
+5 - AttrRef Invalid, wrong attrRef for entity 
+call c; variable v;
+Select c.varName
+SemanticError 
+5000
+6 - AttrRef Invalid, cannot put AttrRef in Relation params
+stmt s, s1;
+Select s such that Follows(s, s1.stmt#)
+SyntaxError
+5000
+7 - AttrRef Invalid, cannot put AttrRef in Pattern params
+variable v; assign a;
+Select v pattern a (v.varName, _"v2"_)
+SyntaxError
+5000
+8 - AttrRef procedure procName
+procedure p;
+Select <p, p.procName>
+p1 p1, p2 p2, v3 v3, p4 p4
+5000
+9 - AttrRef variable varName and procedure procName with With clauses
+variable v; procedure p;
+Select v.varName with v.varName = p.procName
+v3, p1
+5000
+10 - Read stmt# and varName
+read r;
+Select <r.stmt#, r.varName> with r.varName = "v2"
+5 v2, 18 v2
+5000
+11 - Stmt stmt#
+stmt s;
+Select s.stmt# with s.stmt# = 4
+4
+5000
+12 - While stmt#
+while w;
+Select w.stmt#
+6, 22
+5000
+13 - If stmt#
+if i;
+Select i.stmt#
+8
+5000
+14 - Assign stmt#
+assign a;
+Select a.stmt#
+1, 2, 3, 7, 9, 10, 14, 15, 23
+5000
+15 - Invalid attrRef proc.varName
+procedure p;
+Select p.varName
+SemanticError
+5000
+16 - Invalid attrRef var.procName
+variable v;
+Select v.procName
+SemanticError
+5000
+17 - Invalid attrRef constant.stmt#
+constant c;
+Select c.stmt#
+SemanticError
+5000

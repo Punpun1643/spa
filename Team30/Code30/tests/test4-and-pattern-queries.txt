@@ -1,0 +1,10 @@
+1 - Simple multiple pattern
+assign a;
+Select a pattern a ("y", _"z"_) and a ("y", _"x"_)
+9, 21
+5000
+2 - Complex multiple pattern
+assign a, a2; stmt pattern;
+Select a pattern a ("y", _"z"_) and a ("y", _"x"_) such that Follows(11, a2) pattern a2 ("q", _"y"_) and a ("y", _) such that Parent(19, a)
+21
+5000

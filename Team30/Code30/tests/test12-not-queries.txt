@@ -1,0 +1,60 @@
+1 - Not such that
+procedure p, p1;
+Select p such that not Calls(p, p1)
+p1, p2, p3, p4
+5000
+2 - Not pattern
+assign a;
+Select a pattern not a (_, _"a"_)
+1, 8, 16, 19, 20, 21, 24, 33, 35
+5000
+3 - Not With
+read r;
+Select r with not r.varName = "r"
+4, 13, 38
+5000
+4 - Multi Such That
+if i; assign a; while w;
+Select a such that Parent*(w, i) and Parent(i, a) and not Modifies(a, "t") 
+23, 24, 35, 37
+5000
+5 - Multi Pattern (mix of not and +ve)
+if i; assign a; while w; variable v;
+Select v pattern a(v, _) and not i(v,_,_) and not w(v, _)
+a,f,i,q,r,t,w,y
+5000
+6 - Multi with (mix of not and +ve)
+print p;
+Select p with p.varName = "p" and not p.stmt# = 15
+39
+5000
+7 - Multi Clause
+while w; variable v; print p; assign a;
+Select a pattern not a(v,_"a"_) such that not Parent*(w, a) and not Uses(p, v)
+1, 5, 8, 9, 16, 19, 20, 21, 23, 24, 33, 35, 36, 37
+5000
+8 - Stress Test Clause
+assign a;
+Select a with not a.stmt# = 1 and not a.stmt# = 5 and not a.stmt# = 8 and not a.stmt# = 9 and not a.stmt# = 19 and not a.stmt# = 20 and not a.stmt# = 21 and not a.stmt# = 23
+16, 24, 33, 35, 36, 37
+5000
+9 - Invalid, wrong position of not
+if i; assign a; while w; variable v;
+Select v not pattern a(v, _) and i(v,_,_) and not w(v, _, _)
+SyntaxError
+5000
+10 - Invalid, wrong position of not
+read r;
+Select r not with r.value = "r"
+SyntaxError
+5000
+11 - Invalid, wrong case for not
+procedure p, p1;
+Select p such that NOT Calls(p, p1)
+SyntaxError
+5000
+12 - Invalid, cannot have double not
+procedure p, p1;
+Select p such that not not Calls(p, p1)
+SyntaxError
+5000

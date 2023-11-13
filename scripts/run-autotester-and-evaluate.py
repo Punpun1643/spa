@@ -7,7 +7,22 @@ from pathlib import Path
 import json
 import xml.etree.ElementTree as ET
 
-NUM_RUNS = 20
+NUM_RUNS = 10
+
+def check_output_all_correct(root, name):
+    wrong_queries = []
+    for query_idx, query in enumerate(root[1]):
+        missing_list = query.findall(".//missing")
+        additional_list = query.findall(".//additional")
+        timeout_list = query.findall(".//timeout")
+        if missing_list or additional_list or timeout_list:
+            wrong_queries.append(query_idx + 1)
+    if wrong_queries:
+        print(
+                name +
+                ("." * (80 - len(name))) +
+                f"Queries {', '.join(map(str, wrong_queries))} is/are wrong"
+                )
 
 if __name__ == "__main__":
     autotester_dir = Path(sys.argv[1])
@@ -28,25 +43,35 @@ if __name__ == "__main__":
                 query_file_w_extension = os.path.basename(query_file)
                 query_file_name = os.path.splitext(query_file_w_extension)[0]
                 output_file = str(test_dir / f"{query_file_name}_out.xml")
-                # output_file = os.path.join("../../../tests", f"{query_file_name}_out.xml")
                 print(["./autotester", source_file, query_file, output_file])
                 os.system(str("." / autotester_dir / "autotester") + " " + source_file + " " + query_file + " " + output_file)
-                # subprocess.run(["." / autotester_dir / "autotester", source_file, query_file, output_file], check=True)
             else:
                 print(f"Error: One or both files do no exist: {source_file}, {query_file}")
         
-        # os.system("python3 run-autotester.py")
         for output_file in test_dir.glob("*.xml"):
-            if (str(output_file) != "analysis.xml"):
-                tree = ET.parse(str(output_file))
-                root = tree.getroot()
-                time_taken = run_evaluator.calculate_average_time_taken(root)
-                timings[output_file].append(time_taken)
+            tree = ET.parse(str(output_file))
+            root = tree.getroot()
+            time_taken = run_evaluator.calculate_average_time_taken(root)
+            timings[output_file].append(time_taken)
 
-    print("Average timings over", NUM_RUNS, "run(s):")
+    print("\n" + "-" * 50 + f"AVERAGE TIMINGS OVER {NUM_RUNS} RUN(S)" + "-" * 50)
     outputs = []
     for output_file, timing in timings.items():
-        outputs.append(str(output_file) + " : " + str(sum(timing) / len(timing)))
+        name = str(output_file)[str(output_file).find("tests/") + 6:]
+        outputs.append(
+                name +
+                ("." * (80 - len(name))) +
+                str(sum(timing) / len(timing))
+                )
     outputs.sort()
     for output in outputs:
         print(output)
+
+    print("-" * 50 + "Queries with wrong outputs:" + "-" * 50)
+    for output_file in test_dir.glob("*.xml"):
+        name = str(output_file)[str(output_file).find("tests/") + 6:]
+        tree = ET.parse(str(output_file))
+        root = tree.getroot()
+        check_output_all_correct(root, name)
+    print("-" * 127)
+

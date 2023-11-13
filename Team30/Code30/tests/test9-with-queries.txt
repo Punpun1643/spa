@@ -1,0 +1,105 @@
+1 - Int Comparison which is False
+stmt s;
+Select s with 152 = 1231234
+none
+5000
+2 - Int Comparison which is True
+read r;
+Select r.varName with 4442 = 4442
+v1, v2, v4, v7
+5000
+3 - String Comparison which is False
+call c;
+Select c.procName with "thisIsaVar231awd" = "a241bc"
+none
+5000
+4 - String Comparison which is True
+call c;
+Select c.procName with "aoibvoib10412oainaw2013" = "aoibvoib10412oainaw2013"
+p2, v3
+5000
+5 - .Stmt# to .Stmt#
+stmt s; read r;
+Select r with r.stmt# = s.stmt#
+4, 5, 18, 19, 20, 24
+5000
+6 - With .Stmt# = .value
+assign a; constant c;
+Select a with a.stmt# = c.value
+2, 7, 1, 3
+5000
+7 - With .Stmt# = (raw value)
+while w; variable v; 
+Select v such that Modifies (w, v) with w.stmt# = 22
+v3
+5000
+8 - With (raw value) = .Stmt#
+while w; variable v;
+Select v such that Modifies (w, v) with 22 = w.stmt#
+v3
+5000
+9 - With .value = .value
+constant c, c1;
+Select c with c.value = c1.value
+0, 1, 2, 3, 4, 7, 99 
+5000
+10 - With .value = (raw value)
+constant c;
+Select c with c.value = 7
+7
+5000
+11 - With .procName = .procName
+procedure p; call c;
+Select p with p.procName = c.procName
+p2, v3
+5000
+11 - With .procName = .procName and select c
+procedure p; call c;
+Select <c, p> with p.procName = c.procName
+11 p2, 17 v3
+5000
+12 - With .procName = .varName
+procedure p; variable v;
+Select p with p.procName = v.varName
+p1, v3
+5000
+13 - With .procName = (raw value)
+procedure p; variable v;
+Select v such that Uses (p, v) with p.procName = "p2"
+v5, v6, v4, v2
+5000
+14 - With .procName = (raw value)
+procedure p; variable v;
+Select v such that Uses (p, v) with "p2" = p.procName
+v5, v6, v4, v2
+5000
+15 - With .varName = .varName
+read r; print pn;
+Select <pn, r> with r.varName = pn.varName
+12 20, 16 20, 12 24, 16 24, 21 5, 21 18
+5000
+16 - With .varName = (raw value)
+assign a; variable v;
+Select a pattern a (v, _) with v.varName = "v3"
+3, 23
+5000
+17 - Multi With Clause + Such That
+stmt s; variable v;
+Select BOOLEAN such that Uses(s, v) with v.varName = "v3" and s.stmt# = 3
+FALSE
+5000
+18 - With Clause, Such That and Pattern
+assign a; variable v; if i;
+Select BOOLEAN such that Parent(i, a) pattern a (v, _) with v.varName = "v1"  
+TRUE
+5000
+19 - 3+ With Clauses
+read r; variable v; constant c; procedure p;
+Select r.varName with r.stmt# = c.value and c.value = 4 and p.procName = v.varName
+v1
+5000
+20 - blah
+
+Select BOOLEAN with 123 = 123
+TRUE
+5000

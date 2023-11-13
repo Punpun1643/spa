@@ -1,0 +1,140 @@
+1 - Parent container syn LHS and stmt syn RHS
+while w; stmt s;
+Select s such that Parent (w, s)
+8, 9, 15, 16 
+5000
+2 - Parent line num LHS and stmt syn RHS
+assign a;
+Select a such that Parent (4, a)
+5, 10
+5000
+3 - Parent wildcard LHS and stmt syn RHS
+assign a;
+Select a such that Parent (_, a)
+5, 8, 9, 10, 15, 22, 23, 25, 26
+5000
+4 - Parent container syn LHS and container syn RHS
+if i, i1;
+Select i such that Parent (i, i1)
+20
+5000
+5 - Parent line num LHS and container syn RHS
+while w;
+Select w such that Parent (20, w)
+none
+5000
+6 - Parent wildcard LHS and container syn RHS
+while w;
+Select w such that Parent (_, w)
+7
+5000
+7 - Parent container syn LHS and line num RHS
+while w;
+Select w such that Parent (w, 7)
+none
+5000
+8 - Parent line num LHS and line num RHS
+print pn;
+Select pn such that Parent (4, 8)
+none
+5000
+9 - Parent wildcard LHS and line num RHS
+read r;
+Select r such that Parent (_, 24)
+1, 21, 28
+5000
+10 - Parent container syn and wildcard RHS
+while w;
+Select w such that Parent (w, _)
+7, 14
+5000
+11 - Parent line num LHS and wildcard RHS
+stmt s;
+Select s such that Parent (10, _)
+none
+5000
+12 - Parent wildcard LHS, wildcard RHS
+read r;
+Select r such that Parent (_, _)
+1, 21, 28
+5000
+13 - Parent* container syn LHS and stmt syn RHS
+if i; stmt s;
+Select s such that Parent* (i, s)
+5, 6, 7, 8, 9, 10, 21, 22, 23, 24, 25, 26
+5000
+14 - Parent* line num LHS and stmt syn RHS
+if i; assign a;
+Select a such that Parent* (4, a)
+5, 8, 9, 10
+5000
+15 - Parent* wildcard LHS and stmt syn RHS
+print pn;
+Select pn such that Parent* (_, pn)
+6, 16
+5000
+16 - Parent* container syn LHS and container syn RHS
+while w, w1;
+Select w such that Parent* (w, w1)
+none
+5000
+17 - Parent* line num LHS and container syn RHS
+if i;
+Select i such that Parent* (20, i)
+24
+5000
+18 - Parent* wildcard LHS and container syn RHS
+while w;
+Select w such that Parent* (_, w)
+7
+5000
+19 - Parent* container syn LHS and line num RHS
+if i;
+Select i such that Parent* (i, 25)
+20, 24
+5000
+20 - Parent* line num LHS and line num RHS
+print pn;
+Select pn such that Parent* (4, 8)
+6, 16, 29
+5000
+21 - Parent* wildcard LHS and line num RHS
+variable v;
+Select v such that Parent* (_, 2) 
+none
+5000
+22 - Parent* container syn and wildcard RHS
+variable v;
+Select v such that Parent* (w, _)
+SemanticError
+5000
+23 - Parent* line num LHS and wildcard RHS
+variable v;
+Select v such that Parent* (22, _)
+none
+5000
+24 - Parent* wildcard LHS, wildcard RHS
+read r;
+Select r such that Parent* (_, _)
+1, 21, 28
+5000
+25 - Invalid cannot have constant/variable as 1st param of Parent
+stmt s;
+Select s such that Parent ("r", _) 
+SyntaxError
+5000
+26 - Invalid cannot have constant/variable as 2nd param of Parent
+assign a;
+Select a such that Parent (13, "1") 
+SyntaxError
+5000
+27 - Invalid cannot have constant/variable as 1st param of Parent*
+read r;
+Select r such that Parent* ("2", _) 
+SyntaxError
+5000
+28 - Invalid cannot have constant/variable as 2nd param of Parent*
+assign a;
+Select a such that Parent* (10, "x") 
+SyntaxError
+5000

@@ -1,0 +1,10 @@
+1 - pattern not if pattern
+if i;
+Select i pattern not i ("a",_,_)
+1
+5000
+2 - pattern not while pattern
+while w;
+Select w pattern not w ("b",_)
+4
+5000
