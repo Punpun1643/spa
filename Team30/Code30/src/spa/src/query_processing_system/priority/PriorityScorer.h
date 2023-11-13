@@ -41,7 +41,7 @@ class PriorityScorer {
   float CalculatePriorityScore(int const num_synonyms,
                                int const num_new_synonyms, int const negated,
                                int const clause_type_priority,
-                               int const such_that_type_priority=0);
+                               int const such_that_type_priority = 0);
   void IncrementSynonymPriorities(std::string string, int& num_synonyms,
                                   int& num_new_synonyms);
 
