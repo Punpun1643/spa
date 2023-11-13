@@ -51,6 +51,10 @@ std::shared_ptr<Token> Tokenizer::Next() {
         throw std::invalid_argument("Invalid Syntax, invalid integer or name");
       }
 
+      if (number.length() > 1 && number[0] == '0') {
+        throw std::invalid_argument("Integer has leading zero!");
+      }
+
       return std::make_shared<IntegerToken>(number);
     } else if (c == '&' || c == '|' || c == '!' || c == '=' || c == '>' ||
                c == '<') {
