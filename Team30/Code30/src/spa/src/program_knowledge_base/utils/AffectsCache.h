@@ -9,7 +9,7 @@
 
 class AffectsCache {
  private:
-  std::unordered_set<std::string> ConvertToStrings(
+  static std::unordered_set<std::string> ConvertToStrings(
       std::unordered_set<int> const& set);
   std::unordered_map<int, std::unordered_set<int>> affects_cache = {};
   std::unordered_map<int, std::unordered_set<int>> inv_affects_cache = {};

@@ -27,7 +27,7 @@ std::unordered_set<std::string> EntityDatabase::GetUniqueAttributes(
 
   std::pair key = std::make_pair(ent_type, attr_type);
   if (entity_attr_map.find(key) == entity_attr_map.end()) {
-    return std::unordered_set<std::string>();
+    return {};
   }
 
   std::unordered_set<std::string> result;
@@ -48,6 +48,7 @@ void EntityDatabase::InsertEntity(EntityType type, std::string const& value) {
 void EntityDatabase::InsertEntity(EntityType type, AttrType attr_type,
                                   std::string const& ent,
                                   std::string const& attribute) {
+  // For inserting entities with alternative attributes
   InsertEntity(type, ent);
   entity_attr_map[std::make_pair(type, attr_type)][ent] = attribute;
   attr_ent_map[std::make_pair(type, attr_type)][attribute].insert(ent);
@@ -76,17 +77,17 @@ std::vector<std::string> EntityDatabase::GetEntitiesMatchingAttrValue(
     if (ents.find(value) != ents.end()) {
       return std::vector<std::string>({value});
     }
-    return std::vector<std::string>();
+    return {};
   }
   std::pair<EntityType, AttrType> key = std::make_pair(type, attr_type);
 
   if (attr_ent_map.find(key) == attr_ent_map.end() ||
       attr_ent_map.at(key).find(value) == attr_ent_map.at(key).end()) {
-    return std::vector<std::string>();
+    return {};
   }
 
   std::unordered_set<std::string> set = attr_ent_map.at(key).at(value);
-  return std::vector<std::string>(set.begin(), set.end());
+  return {set.begin(), set.end()};
 }
 
 std::vector<std::pair<std::string, std::string>>
@@ -116,7 +117,7 @@ EntityDatabase::GetEntitiesWhereAttributesMatch(EntityType type_1,
 
     for (auto const& ent_1 : ent_vec_1) {
       for (auto const& ent_2 : ent_vec_2) {
-        res.push_back(std::make_pair(ent_1, ent_2));
+        res.emplace_back(ent_1, ent_2);
       }
     }
   }

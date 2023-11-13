@@ -1,3 +1,3 @@
 #include "RelationTable.h"
 
-RelationTable::RelationTable() {}
+RelationTable::RelationTable() = default;
