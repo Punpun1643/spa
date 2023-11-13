@@ -15,7 +15,7 @@ class TestableParser : public SpParser {
 
   using SpParser::ParseRead;
 
-  void parse() override {}
+  void Parse() override {}
 };
 }  // namespace TestParseReadNode
 

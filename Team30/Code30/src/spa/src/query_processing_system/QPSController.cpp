@@ -15,6 +15,10 @@
 
 QPSController::QPSController() {}
 
+std::string const QPSController::BOOLEAN_TRUE_RESULT = "TRUE";
+std::string const QPSController::BOOLEAN_FALSE_RESULT = "FALSE";
+std::string const QPSController::RESULT_STRING_DELIMITER = " ";
+
 void QPSController::HandleQuery(
     std::string& query, std::list<std::string>& results,
     std::shared_ptr<QueryEvaluator> query_evaluator) {
@@ -34,7 +38,8 @@ void QPSController::HandleQuery(
 
   if (selected_attr_refs.empty()) {
     bool query_results = query_evaluator->EvaluateQuery(other_clauses);
-    results.push_back(query_results ? "TRUE" : "FALSE");
+    results.push_back(query_results ? this->BOOLEAN_TRUE_RESULT
+                                    : this->BOOLEAN_FALSE_RESULT);
   } else {
     std::vector<std::vector<std::string>> query_results =
         query_evaluator->EvaluateQuery(selected_attr_refs, other_clauses);
@@ -44,7 +49,7 @@ void QPSController::HandleQuery(
            it != result.end(); it++) {
         result_string += *it;
         if (it != std::prev(result.end())) {
-          result_string += " ";
+          result_string += this->RESULT_STRING_DELIMITER;
         }
       }
       results.push_back(result_string);
@@ -72,13 +77,13 @@ QPSController::TokensToClauses(std::vector<std::shared_ptr<Token>> tokens) {
 void QPSController::CheckSyntax(std::vector<std::shared_ptr<Token>> tokens) {
   std::unique_ptr<SyntaxChecker> syntax_checker =
       std::make_unique<SyntaxChecker>(tokens);
-  syntax_checker->parse();
+  syntax_checker->Parse();
 }
 
 std::shared_ptr<Context> QPSController::FormContext(
     std::vector<std::shared_ptr<Token>> tokens) {
   ContextBuilder context_builder(tokens);
-  context_builder.parse();
+  context_builder.Parse();
   return context_builder.GetContext();
 }
 
@@ -87,7 +92,7 @@ std::shared_ptr<AExpression> QPSController::FormExpressionTree(
     std::shared_ptr<Context> context) {
   std::unique_ptr<ExpressionTreeBuilder> expression_tree_builder =
       std::make_unique<ExpressionTreeBuilder>(tokens, context);
-  expression_tree_builder->parse();
+  expression_tree_builder->Parse();
   return expression_tree_builder->GetExpressionTree();
 }
 

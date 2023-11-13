@@ -11,18 +11,19 @@
 
 #include "../exceptions/InvalidSemanticsException.h"
 #include "../exceptions/InvalidSyntaxException.h"
+#include "../helper/Helper.h"
 
 SyntaxChecker::SyntaxChecker(std::vector<std::shared_ptr<Token>> tokens)
     : QpParser(tokens), has_semantic_exception(false) {}
 
-void SyntaxChecker::parse() {
+void SyntaxChecker::Parse() {
   std::shared_ptr<Token> current_token = GetCurrToken();
   if (!IsWordToken(current_token)) {
     throw InvalidSyntaxException(
         "Incorrect query format: Expected to start with either 'Select' or a "
         "<Declaration>");
   }
-  if (GetCurrTokenValue() != QpParser::SELECT) {
+  if (GetCurrTokenValue() != Helper::SELECT) {
     CheckDeclaration();
   }
   CheckSelect();
@@ -100,11 +101,11 @@ void SyntaxChecker::CheckCalls() {
 void SyntaxChecker::CheckClauses() {
   while (GetCurrToken()->GetTokenType() != TokenType::EOF_TOKEN) {
     std::string clause_name = GetCurrTokenValue();
-    if (clause_name == QpParser::SUCH) {
+    if (clause_name == Helper::SUCH) {
       this->CheckSuchThat(false);
-    } else if (clause_name == QpParser::PATTERN) {
+    } else if (clause_name == Helper::PATTERN) {
       this->CheckPattern(false);
-    } else if (clause_name == QpParser::WITH) {
+    } else if (clause_name == Helper::WITH) {
       this->CheckWith(false);
     } else {
       throw InvalidSyntaxException("Did not encounter expected clause");
@@ -113,14 +114,14 @@ void SyntaxChecker::CheckClauses() {
 }
 
 void SyntaxChecker::CheckDeclaration() {
-  while (GetCurrTokenValue() != QpParser::SELECT) {
+  while (GetCurrTokenValue() != Helper::SELECT) {
     if (IsEOFToken(GetCurrToken())) {
       throw InvalidSyntaxException("Query missing Select Clause");
     }
-    EntityType entity_type = QpParser::StringToEntityType(
+    EntityType entity_type = Helper::StringToEntityType(
         GetCurrTokenValue());  // throws an error if not valid entity_type
     NextToken();               // synonym
-    if (!IsSynonym(GetCurrTokenValue())) {
+    if (!Helper::IsSynonym(GetCurrTokenValue())) {
       throw InvalidSyntaxException("Invalid synonym given in declaration");
     } else {
       if (existing_declarations.find(GetCurrTokenValue()) !=
@@ -135,7 +136,7 @@ void SyntaxChecker::CheckDeclaration() {
     NextToken();  // , OR ;
     while (GetCurrTokenValue() == ",") {
       NextToken();  // synonym
-      if (!IsSynonym(GetCurrTokenValue())) {
+      if (!Helper::IsSynonym(GetCurrTokenValue())) {
         throw InvalidSyntaxException("Invalid synonym given in declaration");
       } else {
         if (existing_declarations.find(GetCurrTokenValue()) !=
@@ -190,7 +191,7 @@ void SyntaxChecker::CheckModifies() {
   CheckCurrentTokenSyntax("(", "Expected \'(\' for Modifies clause");
 
   NextToken();
-  if (QpParser::IsStmtRef(GetCurrTokenValue())) {
+  if (Helper::IsStmtRef(GetCurrTokenValue())) {
     this->CheckCurrentTokenStmtRef(
         "First arg of Modifies clause not valid stmt ref",
         "First arg of Modifies clause has not been declared");
@@ -365,7 +366,7 @@ void SyntaxChecker::CheckPatternAssign() {
   this->CheckCurrentTokenSyntax(")", "Expected \')\' for Pattern clause");
 
   NextToken();
-  if (GetCurrTokenValue() == QpParser::AND) {
+  if (GetCurrTokenValue() == Helper::AND) {
     CheckAnd(ClauseType::pattern);
   }
 }
@@ -383,7 +384,7 @@ void SyntaxChecker::CheckPatternIf() {
   this->CheckCurrentTokenSyntax(")", "Expected ')' for pattern if clause");
 
   NextToken();
-  if (GetCurrTokenValue() == QpParser::AND) {
+  if (GetCurrTokenValue() == Helper::AND) {
     CheckAnd(ClauseType::pattern);
   }
 }
@@ -395,19 +396,19 @@ void SyntaxChecker::CheckPatternWhile() {
   this->CheckCurrentTokenSyntax(")", "Expected ')' for pattern while clause");
 
   NextToken();
-  if (GetCurrTokenValue() == QpParser::AND) {
+  if (GetCurrTokenValue() == Helper::AND) {
     CheckAnd(ClauseType::pattern);
   }
 }
 
 void SyntaxChecker::CheckSelect() {
-  if (GetCurrTokenValue() != QpParser::SELECT) {
+  if (GetCurrTokenValue() != Helper::SELECT) {
     throw InvalidSyntaxException("Expected 'Select'");
   }
 
   NextToken();  // result-cl
-  if (GetCurrTokenValue() == QpParser::BOOLEAN) {
-    if (existing_declarations.find(QpParser::BOOLEAN) !=
+  if (GetCurrTokenValue() == Helper::BOOLEAN) {
+    if (existing_declarations.find(Helper::BOOLEAN) !=
         existing_declarations.end()) {
       CheckSelectSingle();
     }
@@ -445,15 +446,15 @@ void SyntaxChecker::CheckSelectMultiple() {
 
 void SyntaxChecker::CheckSelectSingle() {
   std::string synonym = GetCurrTokenValue();
-  if (synonym == QpParser::BOOLEAN) {
-    if (existing_declarations.find(QpParser::BOOLEAN) ==
+  if (synonym == Helper::BOOLEAN) {
+    if (existing_declarations.find(Helper::BOOLEAN) ==
         existing_declarations.end()) {
       throw InvalidSyntaxException(
           "Expected 'BOOLEAN' to be a declared synonym, but has not been "
           "declared");
     }
   }
-  if (!IsSynonym(synonym)) {
+  if (!Helper::IsSynonym(synonym)) {
     throw InvalidSyntaxException("Expected synonym for select clause");
   } else {
     CheckSynonymExists(synonym);
@@ -478,28 +479,27 @@ void SyntaxChecker::CheckSuchThat(bool has_and) {
     NextToken();
   }
 
-  if (!QpParser::IsRelRef(GetCurrTokenValue())) {
+  if (!Helper::IsRelRef(GetCurrTokenValue())) {
     throw InvalidSyntaxException("Invalid relref for such that clause");
   }
   std::string rel_ref = GetCurrTokenValue();
-  if (rel_ref == QpParser::AFFECTS) {
+  if (rel_ref == Helper::AFFECTS) {
     this->CheckAffects();
-  } else if (rel_ref == QpParser::CALLS || rel_ref == QpParser::CALLS_STAR) {
+  } else if (rel_ref == Helper::CALLS || rel_ref == Helper::CALLS_STAR) {
     this->CheckCalls();
-  } else if (rel_ref == QpParser::FOLLOWS ||
-             rel_ref == QpParser::FOLLOWS_STAR) {
+  } else if (rel_ref == Helper::FOLLOWS || rel_ref == Helper::FOLLOWS_STAR) {
     this->CheckFollows();
-  } else if (rel_ref == QpParser::MODIFIES) {
+  } else if (rel_ref == Helper::MODIFIES) {
     this->CheckModifies();
-  } else if (rel_ref == QpParser::NEXT || rel_ref == QpParser::NEXT_STAR) {
+  } else if (rel_ref == Helper::NEXT || rel_ref == Helper::NEXT_STAR) {
     this->CheckNext();
-  } else if (rel_ref == QpParser::PARENT || rel_ref == QpParser::PARENT_STAR) {
+  } else if (rel_ref == Helper::PARENT || rel_ref == Helper::PARENT_STAR) {
     this->CheckParent();
-  } else if (rel_ref == QpParser::USES) {
+  } else if (rel_ref == Helper::USES) {
     this->CheckUses();
   }
 
-  if (GetCurrTokenValue() == QpParser::AND) {
+  if (GetCurrTokenValue() == Helper::AND) {
     CheckAnd(ClauseType::such_that);
   }
 }
@@ -509,7 +509,7 @@ void SyntaxChecker::CheckUses() {
   CheckCurrentTokenSyntax("(", "Expected \'(\' for Uses clause");
 
   NextToken();
-  if (QpParser::IsStmtRef(GetCurrTokenValue())) {
+  if (Helper::IsStmtRef(GetCurrTokenValue())) {
     this->CheckCurrentTokenStmtRef(
         "First arg of Uses clause not valid stmt ref",
         "First arg of Uses clause has not been declared");
@@ -552,7 +552,7 @@ void SyntaxChecker::CheckWith(bool has_and) {
   NextToken();
   CheckUpcomingTokensAreWithRef();
 
-  if (NextToken()->GetTokenVal() == QpParser::AND) {
+  if (NextToken()->GetTokenVal() == Helper::AND) {
     CheckAnd(ClauseType::with);
   }
 }
@@ -561,7 +561,7 @@ void SyntaxChecker::CheckWith(bool has_and) {
 
 std::optional<EntityType> SyntaxChecker::CheckCurrentTokenPatternEntity() {
   std::string token_value = GetCurrTokenValue();
-  if (!IsIdentifier(token_value)) {
+  if (!Helper::IsIdentifier(token_value)) {
     throw InvalidSyntaxException("Invalid identifier used for pattern");
   } else {
     CheckSynonymExists(token_value);
@@ -585,7 +585,7 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
   std::string ref = GetCurrTokenValue();
   if (ref == "\"") {
     NextToken();  // ident
-    if (IsIdentifier(GetCurrTokenValue())) {
+    if (Helper::IsIdentifier(GetCurrTokenValue())) {
       ref += GetCurrTokenValue();
     } else {
       throw InvalidSyntaxException("Expected valid identifier for with ref");
@@ -597,7 +597,7 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
           "Expected \" after indentifier for with ref");
     }
     return;
-  } else if (QpParser::IsSynonym(ref)) {
+  } else if (Helper::IsSynonym(ref)) {
     if (GetPeekTokenValue() != ".") {
       throw InvalidSyntaxException("Expected . after synonym for with ref");
     }
@@ -609,7 +609,7 @@ void SyntaxChecker::CheckUpcomingTokensAreWithRef() {
     CheckUpcomingTokensAreValidAttrName();
     return;
   } else {
-    if (!QpParser::IsValidInteger(ref)) {
+    if (!Helper::IsValidInteger(ref)) {
       throw InvalidSyntaxException("Expected valid integer for with ref");
     }
     return;
@@ -626,10 +626,10 @@ void SyntaxChecker::CheckCurrentTokenPatternFirstArg() {
 void SyntaxChecker::CheckCurrentTokenStmtRef(
     std::string syntax_error_msg, std::string not_existing_error_msg) {
   std::string token_value = GetCurrTokenValue();
-  if (!QpParser::IsStmtRef(token_value)) {
+  if (!Helper::IsStmtRef(token_value)) {
     throw InvalidSyntaxException(syntax_error_msg);
   } else {
-    if (QpParser::IsSynonym(token_value)) {
+    if (Helper::IsSynonym(token_value)) {
       this->CheckSynonymExists(token_value);
     }
   }
@@ -696,18 +696,17 @@ void SyntaxChecker::CheckUpcomingTokensAreEntRef(
     value += "\"";
     NextToken();
   }
-  if (QpParser::IsIdentifier(GetCurrTokenValue()) ||
-      GetCurrTokenValue() == "_") {
+  if (Helper::IsIdentifier(GetCurrTokenValue()) || GetCurrTokenValue() == "_") {
     value += GetCurrTokenValue();
   }
   if (GetPeekTokenValue() == "\"") {
     value += NextToken()->GetTokenVal();
   }
 
-  if (!QpParser::IsEntRef(value)) {
+  if (!Helper::IsEntRef(value)) {
     throw InvalidSyntaxException(syntax_error_msg);
   } else {
-    if (QpParser::IsSynonym(value)) {
+    if (Helper::IsSynonym(value)) {
       this->CheckSynonymExists(value);
     }
   }
@@ -725,8 +724,8 @@ void SyntaxChecker::CheckUpcomingTokensAreQuotedExpr(std::string error_msg) {
 void SyntaxChecker::CheckUpcomingTokensAreValidAttrName() {
   std::string attr_name = GetCurrTokenValue();
 
-  if (attr_name != QpParser::STMT_NUM && attr_name != QpParser::PROC_NAME &&
-      attr_name != QpParser::VAR_NAME && attr_name != QpParser::VALUE) {
+  if (attr_name != Helper::STMT_NUM && attr_name != Helper::PROC_NAME &&
+      attr_name != Helper::VAR_NAME && attr_name != Helper::VALUE) {
     throw InvalidSyntaxException("Invalid attr name");
   }
 }

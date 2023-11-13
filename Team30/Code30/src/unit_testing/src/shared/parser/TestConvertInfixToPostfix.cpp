@@ -15,7 +15,7 @@ class TestableParser : public AParser {
 
   using AParser::ConvertInfixToPostfix;
 
-  void parse() override {}
+  void Parse() override {}
 };
 }  // namespace TestConvertInfixToPostfix
 

@@ -20,7 +20,7 @@ class ContextBuilder : public QpParser {
  public:
   explicit ContextBuilder(std::vector<std::shared_ptr<Token>> tokens);
 
-  void parse() override;
+  void Parse() override;
   std::shared_ptr<Context> GetContext();
 
   ~ContextBuilder() = default;

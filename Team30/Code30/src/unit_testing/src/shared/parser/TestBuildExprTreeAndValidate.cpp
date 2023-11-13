@@ -19,7 +19,7 @@ class TestableParser : public AParser {
 
   using AParser::BuildExprTreeAndValidate;
 
-  void parse() override {}
+  void Parse() override {}
 };
 }  // namespace TestBuildExprTreeAndValidate
 
